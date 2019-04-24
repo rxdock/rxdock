@@ -68,7 +68,7 @@ CPPUNIT_TEST( testOccupancyThreshold );
 CPPUNIT_TEST_SUITE_END();
 
 public:
-  static const RbtDouble TINY = 1E-4;
+  static RbtDouble TINY;
   //TextFixture methods
   void setUp();
   void tearDown();

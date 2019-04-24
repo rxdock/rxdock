@@ -33,7 +33,6 @@ CPPUNIT_TEST( testRestart );
 CPPUNIT_TEST_SUITE_END();
 
 public:
-  static const RbtDouble TINY = 1E-4;
   //TextFixture methods
   void setUp();
   void tearDown();

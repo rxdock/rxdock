@@ -13,6 +13,8 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION( OccupancyTest );
 
+RbtDouble OccupancyTest::TINY = 1E-4;
+
 void OccupancyTest::setUp() {
     try {
         //Create the docking site, receptor, and ligand objects

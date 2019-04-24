@@ -16,6 +16,8 @@
     
     CPPUNIT_TEST_SUITE_REGISTRATION( RbtChromTest );
     
+    RbtDouble RbtChromTest::TINY = 1E-4;
+
     void RbtChromTest::setUp() {
         try {
             //Create a receptor model, ligand model, and docking site
