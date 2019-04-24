@@ -76,24 +76,32 @@ RbtStringList RbtParameterFileSource::GetParameterList()
 RbtDouble RbtParameterFileSource::GetParameterValue(const RbtString& strParamName) throw (RbtError)
 {
   Parse();
+  if (!strParamName.empty())
+  {
   RbtString strFullParamName = GetFullParameterName(strParamName);
   RbtStringVariantMapConstIter iter = m_paramsMap.find(strFullParamName);
   if (iter != m_paramsMap.end())
     return (*iter).second;
   else
     throw RbtFileMissingParameter(_WHERE_,strFullParamName + " parameter not found in " + GetFileName());
+  }
+  return 0.0;
 }
 
 //DM 12 Feb 1999 Get a particular named parameter value as a string
 RbtString RbtParameterFileSource::GetParameterValueAsString(const RbtString& strParamName) throw (RbtError)
 {
   Parse();
+  if (!strParamName.empty())
+  {
   RbtString strFullParamName = GetFullParameterName(strParamName);
   RbtStringVariantMapConstIter iter = m_paramsMap.find(strFullParamName);
   if (iter != m_paramsMap.end())
     return (*iter).second;
   else
     throw RbtFileMissingParameter(_WHERE_,strFullParamName + " parameter not found in " + GetFileName());
+  }
+  return "";
 }
 
 //DM 11 Feb 1999 Check if parameter is present
