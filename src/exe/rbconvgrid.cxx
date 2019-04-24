@@ -61,9 +61,9 @@ int main(int argc,char* argv[])
   try {
     //Read the grid file header
 #if defined(__sgi) && !defined(__GNUC__)
-    ifstream istr(strInputFile.c_str(),ios_base::in);
+    std::ifstream istr(strInputFile.c_str(),ios_base::in);
 #else
-    ifstream istr(strInputFile.c_str(),ios_base::in|ios_base::binary);
+    std::ifstream istr(strInputFile.c_str(),ios_base::in|ios_base::binary);
 #endif
     if (istr) {
       cout << strInputFile << " opened OK" << endl;
@@ -111,7 +111,7 @@ int main(int argc,char* argv[])
     //If we are not in listing mode, write the grid
     if ((iGrid <= nGrids) && (iGrid >= 1)) {
       cout << "Writing grid# " << iGrid << " to " << strOutputFile << "..." << endl;
-      ofstream ostr(strOutputFile.c_str());
+      std::ofstream ostr(strOutputFile.c_str());
       spGrid->PrintInsightGrid(ostr);
       ostr.close();
     }

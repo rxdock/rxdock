@@ -34,6 +34,7 @@ using std::set;
 
 #include <algorithm>
 //DM 9 Dec 1998 - add copy_if template to std namespace (not included in STL)
+#if (defined(__clang__) && (__clang_major__ < 3 || (__clang_major__ == 3 && __clang_minor__ < 3) ) ) || (!defined(__clang__) && defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 8) ) )
 namespace std
 {
   template <class InputIterator, class OutputIterator, class Predicate>
@@ -47,6 +48,7 @@ namespace std
     return result;
   }
 }
+#endif //(defined(__clang__) ...) || (!defined(__clang__) && defined(__GNUC__) ...)
 
 // Container Typedefs
 	
