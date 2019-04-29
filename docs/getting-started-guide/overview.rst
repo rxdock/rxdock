@@ -29,5 +29,3 @@ distribution. The instructions assume that you are comfortable with simple Linux
 command line administration tasks, and with building Linux application from
 makefiles. Once you are familiar with these steps you should proceed to the User
 and Reference Guide for more detailed documentation on the usage of rDock.
-
-.. [RiboDock2004] Validation of an empirical RNA-ligand scoring function for fast flexible docking using RiboDock, SD Morley and M Afshar, J. Comput.-Aided Mol. Des., 18 (2004) 189-208.
