@@ -14,7 +14,7 @@
 #include <iomanip>
 using std::setw;
 
-#include <popt.h>		// for command-line parsing
+#include <unistd.h>
 #include <errno.h>
 
 #include "RbtBiMolWorkSpace.h"
@@ -42,18 +42,18 @@ const RbtString _ROOT_TRANSFORM = "DOCK";
 void PrintUsage(void)
 {
   cout << endl << "Usage:" << endl;
-  cout << "rbdock -i <sdFile> -o <outputRoot> -r <recepPrmFile> -p <protoPrmFile> [-n <nRuns>] [-ap] [-an] [-allH]" << endl;
+  cout << "rbdock -i <sdFile> -o <outputRoot> -r <recepPrmFile> -p <protoPrmFile> [-n <nRuns>] [-P] [-D] [-H]" << endl;
   cout << "       [-t <targetScore|targetFilterFile>] [-c] [-T <traceLevel>] [-s <rndSeed>]" << endl;
   cout << endl << "Options:\t-i <sdFile> - input ligand SD file" << endl;
   cout << "\t\t-o <outputRoot> - root name for output file(s)" << endl;
   cout << "\t\t-r <recepPrmFile> - receptor parameter file " << endl;
   cout << "\t\t-p <protoPrmFile> - docking protocol parameter file" << endl;
   cout << "\t\t-n <nRuns> - number of runs/ligand (default=1)" << endl;
-  cout << "\t\t-ap - protonate all neutral amines, guanidines, imidazoles (default=disabled)" << endl;
-  cout << "\t\t-an - deprotonate all carboxylic, sulphur and phosphorous acid groups (default=disabled)" << endl;
-  cout << "\t\t-allH - read all hydrogens present (default=polar hydrogens only)" << endl;
+  cout << "\t\t-P - protonate all neutral amines, guanidines, imidazoles (default=disabled)" << endl;
+  cout << "\t\t-D - deprotonate all carboxylic, sulphur and phosphorous acid groups (default=disabled)" << endl;
+  cout << "\t\t-H - read all hydrogens present (default=polar hydrogens only)" << endl;
   cout << "\t\t-t - score threshold OR filter file name" << endl;
-  cout << "\t\t-c - continue if score threshold is met (use with -t <targetScore>, default=terminate ligand)" << endl;
+  cout << "\t\t-C - continue if score threshold is met (use with -t <targetScore>, default=terminate ligand)" << endl;
   cout << "\t\t-T <traceLevel> - controls output level for debugging (0 = minimal, >0 = more verbose)" << endl;
   cout << "\t\t-s <rndSeed> - random number seed (default=from sys clock)" << endl;
 }
@@ -62,8 +62,25 @@ void PrintUsage(void)
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
 
-int main(int argc, const char* argv[])
+int main(int argc, char* argv[])
 {
+	//Brief help message
+	if (argc < 2) {
+		PrintUsage();
+		return 1;
+	}
+
+	//Handle obsolete arguments, if any
+	for (int i = 0; i < argc; i++)
+	{
+		RbtString opt = argv[i];
+		if(opt == "-ap" || opt == "-an" || opt == "-allH" || opt == "-cont")
+		{
+			cout << "Options -ap, -an, -allH, and -cont are no longer supported; use -P, -D, -H, and -C (respectively) instead." << endl;
+			return 2;
+		}
+	}
+
 	cout.setf(ios_base::left,ios_base::adjustfield);
 
 	//Strip off the path to the executable, leaving just the file name
@@ -99,42 +116,25 @@ int main(int argc, const char* argv[])
 	RbtBool         bTrace(false);
 	RbtInt		iTrace(0);//Trace level, for debugging
 
-	// variables for popt command-line parsing
-	char 			c;						// for argument parsing
-	poptContext		optCon;					// ditto
-
-	char 			*inputFile=NULL;		// will be 'strLigandMdlFile'
-	char 			*outputFile=NULL;		// will be 'strRunName'
-	char 			*receptorFile=NULL;		// will be 'strReceptorPrmFile'
-	char 			*protocolFile=NULL;		// will be 'strParamFile'
-	char 			*strTargetScr=NULL;		// will be 'dTargetScore' 
-	struct poptOption optionsTable[] = {	// command line options
-		{"input",		'i',POPT_ARG_STRING|POPT_ARGFLAG_ONEDASH,&inputFile,   'i',"input file"},
-		{"output",		'o',POPT_ARG_STRING|POPT_ARGFLAG_ONEDASH,&outputFile,  'o',"output file"},
-		{"receptor",	'r',POPT_ARG_STRING|POPT_ARGFLAG_ONEDASH,&receptorFile,'r',"receptor file"},
-		{"protocol",	'p',POPT_ARG_STRING|POPT_ARGFLAG_ONEDASH,&protocolFile,'p',"protocol file"},
-		{"runs",		'n',POPT_ARG_INT   |POPT_ARGFLAG_ONEDASH,&nDockingRuns,'n',"number of runs"},
-		{"trace",		'T',POPT_ARG_INT   |POPT_ARGFLAG_ONEDASH,&iTrace,'T',"trace level for debugging"},
-		{"seed",		's',POPT_ARG_INT   |POPT_ARGFLAG_ONEDASH,&nSeed,       's',"random seed"},
-		{"ap",			'P',POPT_ARG_NONE  |POPT_ARGFLAG_ONEDASH,0,            'P',"protonate groups"},
-		{"an",			'D',POPT_ARG_NONE  |POPT_ARGFLAG_ONEDASH,0,            'D',"DEprotonate groups"},
-		{"allH",        'H',POPT_ARG_NONE  |POPT_ARGFLAG_ONEDASH,0,            'H',"read all Hs"},
-		{"target",      't',POPT_ARG_STRING|POPT_ARGFLAG_ONEDASH,&strTargetScr,'t',"target score"},
-		{"cont",        'C',POPT_ARG_NONE  |POPT_ARGFLAG_ONEDASH,0,            'C',"continue even if target met"},
-		POPT_AUTOHELP
-		{NULL,0,0,NULL,0}
-	};
-
-	optCon	= poptGetContext(NULL, argc, argv, optionsTable, 0);
-	poptSetOtherOptionHelp(optCon, "-r<receptor.prm> -p<protocol.prm> -i<infile> -o<outfile> [options]");
-	//Brief help message
-	if (argc < 2) {
-		PrintUsage();
-		return 1;
-	}
 	RbtDouble val(0.0);
-	while ( (c=poptGetNextOpt(optCon))>= 0) {
+	char c;
+	while ((c=getopt(argc, argv, "i:o:r:p:n:PDHtCT:s:")) != -1) {
 		switch(c) {
+			case 'i':
+				strLigandMdlFile = optarg;
+				break;
+			case 'o':
+				strRunName = optarg;
+				break;
+			case 'r':
+				strReceptorPrmFile = optarg;
+				break;
+			case 'p':
+				strParamFile = optarg;
+				break;
+			case 'n':
+				nDockingRuns = atoi(optarg);
+				break;
 			case 'P':	// protonate
 				bPosIonise = true;
 				break;
@@ -152,7 +152,7 @@ int main(int argc, const char* argv[])
 			  // threshold. Otherwise, I assume is the filter file name
 			  char *error;
 			  errno = 0;
-			  val = strtod(strTargetScr, &error);
+			  val = strtod(optarg, &error);
 			  if (!errno && !*error)  // Is it a number?
 			    {
 			      dTargetScore = val;
@@ -161,39 +161,35 @@ int main(int argc, const char* argv[])
 			  else // Assume is the filter file name
 			    {
 			      bFilter = true;
-			      strFilterFile = strTargetScr;
+			      strFilterFile = optarg;
 			    }
 			  break;
 			case 's':
 				bSeed = true;
+				nSeed = atoi(optarg);
 				break;
 			case 'T':
 				bTrace = true;
+				iTrace = atoi(optarg);
 				break;
 			default:
 				break;
 		}
 	}
 	cout << endl;
-	poptFreeContext(optCon);
-	
+
 	// print out arguments
 	// input ligand file, receptor and parameter is compulsory
 	cout << endl << "Command line args:" << endl;
-	if(!inputFile || !receptorFile || !protocolFile) { // if any of them is missing
-		poptPrintUsage(optCon, stderr, 0);
+	if(strLigandMdlFile.empty() || strReceptorPrmFile.empty() || strParamFile.empty()) { // if any of them is missing
+		cout << "Missing required parameter(s)" << endl;
 		exit(1);
-	} else {
-		strLigandMdlFile	= inputFile;
-		strReceptorPrmFile	= receptorFile;
-		strParamFile		= protocolFile;
+	}
 		cout << " -i " << strLigandMdlFile		<< endl;
 		cout << " -r " << strReceptorPrmFile	<< endl;
 		cout << " -p " << strParamFile			<< endl;
-	}
 	// output is not that important but good to have
-	if(outputFile) {
-		strRunName	= outputFile;
+	if(!strRunName.empty()) {
 		bOutput = true;
 		cout << " -o " << strRunName << endl;
 	} else {

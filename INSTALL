@@ -29,8 +29,6 @@ Make sure you have the following packages installed:
 - gcc		GNU C compiler (or your preferred C compiler)
 - g++		GNU C++ compiler (or your preferred C++ compiler)
 - make
-- popt		Command-line argument processing (run-time)
-- popt-devel	Command-line argument processing (compile-time)
 - cppunit		C++ unit testing framework (port of JUnit)
 - cppunit-devel		C++ unit testing framework (port of JUnit)
 

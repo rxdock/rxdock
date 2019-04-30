@@ -80,14 +80,13 @@ libRbt = library(
   include_directories : incRbtAll
 )
 
-popt_dep = dependency('popt')
 executable(
-  'rbdock', 'src/exe/rbdock.cxx', dependencies : popt_dep,
-  link_with : libRbt, include_directories : incRbt
+  'rbdock', 'src/exe/rbdock.cxx', link_with : libRbt,
+  include_directories : incRbt
 )
 executable(
-  'rbcavity', 'src/exe/rbcavity.cxx', dependencies : popt_dep,
-  link_with : libRbt, include_directories : incRbt
+  'rbcavity', 'src/exe/rbcavity.cxx', link_with : libRbt,
+  include_directories : incRbt
 )
 executable(
   'rbrms', 'src/exe/rbrms.cxx', link_with : libRbt, include_directories : incRbt

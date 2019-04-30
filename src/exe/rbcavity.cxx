@@ -16,7 +16,7 @@
 using std::setw;
 
 #include <algorithm>
-#include <popt.h>				// for popt command-line parsing
+#include <unistd.h>
 
 #include "RbtBiMolWorkSpace.h"
 #include "RbtParameterFileSource.h"
@@ -31,16 +31,16 @@ const RbtString EXEVERSION = " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rb
 void PrintUsage(void)
 {
 	cout << "rbcavity - calculate docking cavities" << endl;
-	cout << "Usage:\trbcavity -r<ReceptorPrmFile> [-was -ras -d -l<dist> -b<border>" << endl;
+	cout << "Usage:\trbcavity -r <ReceptorPrmFile> [-W] [-R] [-d] [-v] [-l <dist>] [-s] [-b <border> [-m]" << endl;
 	cout << "Options:"<<endl;
-	cout << "\t\t-r<PrmFile> - receptor param file (contains active site params)" << endl;
-	cout << "\t\t-was [-W]   - write docking cavities (plus distance grid) to .as file" << endl;
-	cout << "\t\t-ras [-R]   - read docking cavities (plus distance grid) from .as file" << endl;
+	cout << "\t\t-r <PrmFile> - receptor param file (contains active site params)" << endl;
+	cout << "\t\t-W          - write docking cavities (plus distance grid) to .as file" << endl;
+	cout << "\t\t-R          - read docking cavities (plus distance grid) from .as file" << endl;
 	cout << "\t\t-d          - dump InsightII grids for each cavity for visualisation" << endl;
 	cout << "\t\t-v          - dump target PSF/CRD files for rDock Viewer" << endl;
-	cout << "\t\t-l<dist>    - list receptor atoms with <dist> A of any cavity" << endl;
+	cout << "\t\t-l <dist>   - list receptor atoms with <dist> A of any cavity" << endl;
 	cout << "\t\t-s          - print SITE descriptors (counts of exposed atoms)" << endl;
-	cout << "\t\t-b<border>  - set the border around the cavities for the distance grid (default=8A)" << endl;
+	cout << "\t\t-b <border> - set the border around the cavities for the distance grid (default=8A)" << endl;
 	cout << "\t\t-m          - write active site into a MOE grid" << endl;
 }
 
@@ -48,33 +48,25 @@ void PrintUsage(void)
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
 
-int main(int argc,const char* argv[])
+int main(int argc, char* argv[])
 {
-	char 			c;					// for argument parsing
-	poptContext		optCon;				// ditto
-	char 			*prmFile=NULL;		// will be strReceptorPrmFile
-	char 			*listDist=NULL;		// will be 'dist' 
-	char 			*borderDist=NULL;	// will be 'border' 
-	struct poptOption optionsTable[] = {	// command line options
-		{"receptor",	'r',POPT_ARG_STRING|POPT_ARGFLAG_ONEDASH,&prmFile ,    0,  "receptor file"},
-		{"was",			'W',POPT_ARG_NONE  |POPT_ARGFLAG_ONEDASH,0,          'W',"write active site"},
-		{"ras",			'R',POPT_ARG_NONE  |POPT_ARGFLAG_ONEDASH,0,          'R',"read active site"},
-		{"dump-insight",'d',POPT_ARG_NONE  |POPT_ARGFLAG_ONEDASH,0,          'd',"dump InsightII/PyMol grids"},
-		//{"dump-moe",    'm',POPT_ARG_NONE  |POPT_ARGFLAG_ONEDASH,0,          'm',"dump MOE grids"}, //not working right now so commenting it
-		{"viewer",      'v',POPT_ARG_NONE  |POPT_ARGFLAG_ONEDASH,0,          'v',"dump Viewer PSF/CRD files"},
-		{"list",        'l',POPT_ARG_STRING|POPT_ARGFLAG_ONEDASH,&listDist,  'l',"list receptor atoms within <dist>"},
-		{"site",        's',POPT_ARG_NONE  |POPT_ARGFLAG_ONEDASH,0,          's',"print site descriptors"},
-		{"border",      'b',POPT_ARG_STRING|POPT_ARGFLAG_ONEDASH,&borderDist,'b',"set the border around the cavities"},
-		POPT_AUTOHELP
-		{NULL,0,0,NULL,0}
-	};
-
 	//Display brief help message if no args
 	if (argc < 2) {
 		PrintUsage();
 		return 1;
 	}
-	
+
+	//Handle obsolete arguments, if any
+	for (int i = 0; i < argc; i++)
+	{
+		RbtString opt = argv[i];
+		if(opt == "-was" || opt == "-ras")
+		{
+			cout << "Options -was and -ras are no longer supported; use -W and -R (respectively) instead." << endl;
+			return 2;
+		}
+	}
+
 	//Strip off the path to the executable, leaving just the file name
 	RbtString strExeName(argv[0]);
 	RbtString::size_type i = strExeName.rfind("/");
@@ -93,19 +85,19 @@ int main(int argc,const char* argv[])
 	RbtBool 	bList(false);		//If true, list atoms within 'distance' of cavity
 	RbtBool 	bSite(false);		//If true, print out "SITE" descriptors (counts of exposed atoms)
 	RbtBool 	bMOEgrid(false);	//If true, create a MOE grid file for AS visualisation
+	RbtBool		bBorderArg(false);	//If true, border was specified in the command line
 	RbtDouble 	border(8.0);		//Border to allow around cavities for distance grid
 	RbtDouble 	dist(5.0);
 
-	optCon	= poptGetContext(NULL, argc, argv, optionsTable, 0);
-	poptSetOtherOptionHelp(optCon, "-r<receptor.prm> [options]");
-	if(argc < 2) {
-		poptPrintUsage(optCon, stderr, 0);
-		exit(1);
-	}
-	while ( (c=poptGetNextOpt(optCon))>= 0) {
+	char c;
+	while ((c=getopt(argc, argv, "r:b:RWdvl:ms")) != -1) {
 		switch(c) {
+			case 'r':
+				strReceptorPrmFile = optarg;
+				break;
 			case 'b':
-				border = atof(borderDist);
+				bBorderArg = true;
+				border = atof(optarg);
 				break;
 			case 'R':				// also for -ras
 				bReadAS = true;
@@ -121,7 +113,7 @@ int main(int argc,const char* argv[])
 				break;
 			case 'l':
 				bList = true;
-				dist	= atof(listDist);
+				dist = atof(optarg);
 				break;
 			case 'm':
 				bMOEgrid = true;
@@ -129,34 +121,34 @@ int main(int argc,const char* argv[])
 			case 's':
 				bSite = true;
 				break;
+			case '?':
+				break;
 			default:
 				cout << "WARNING: unknown argument: "<< c <<endl;; 
 				break;
 		}
 	}
 	cout << endl;
-	poptFreeContext(optCon);
 
 	// check for parameter file name
-	if(prmFile) {
+	/*if(prmFile) {
 		strReceptorPrmFile	= prmFile;
-	}
-	else {
+	}*/
+	if(strReceptorPrmFile.empty()) {
 		cout << "Missing receptor parameter file name"<<endl;
-		poptPrintUsage(optCon, stderr, 0);
 		exit(1);
 	}
 	// writing command line arguments
 	cout << "Command line arguments:"		<< endl;
 	cout << "-r "<< strReceptorPrmFile	<< endl;
-	if(listDist)
+	if(bList)
 		cout << "-l "<< dist		<< endl;
-	if(borderDist)
+	if(bBorderArg)
 		cout << "-b "<< border	<< endl;
 	if(bWriteAS)
-		cout << "-was"<< endl;
+		cout << "-W"<< endl;
 	if(bReadAS)
-		cout << "-ras"<< endl;
+		cout << "-R"<< endl;
 	if(bMOEgrid)
 		cout << "-m"<< endl;
 	if(bDump)	

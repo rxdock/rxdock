@@ -38,7 +38,6 @@ running rDock:
 * gcc and g++ compilers version > 3.3
 * make
 * cppunit and cppunit-devel
-* popt and popt-devel
 
 .. note::
 

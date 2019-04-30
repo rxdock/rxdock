@@ -76,12 +76,6 @@ the major version string (see above).
    ./data/pmf/smoothed
    ./data/scripts
    ./lib
-   ./popt
-   ./popt/intl
-   ./popt/po
-   ./popt/.deps
-   ./popt/test3-data
-   ./popt/autom4te.cache
    ./import
    ./import/tnt
    ./import/tnt/include

@@ -37,12 +37,6 @@ may be required for your particular Linux distribution.
    +-------------------+----------------------------+--------------+-----------+
    | ``g++``           | GNU C++ compiler           | Compile-time | >=3.3.4   |
    +-------------------+----------------------------+--------------+-----------+
-   | ``popt``          | C++ command-line argument  | Run-time     | >=1.7-190 |
-   |                   | processing                 |              |           |
-   +-------------------+----------------------------+--------------+-----------+
-   | ``popt-devel``    | Development files for popt | Run-time     | >=1.7-190 |
-   |                   | library                    |              |           |
-   +-------------------+----------------------------+--------------+-----------+
    | ``cppunit``       | C++ unit test framework    | Compile-time | >=1.10.2  |
    +-------------------+----------------------------+--------------+-----------+
    | ``cppunit-devel`` | Development files for      | Compile-time | >=1.10.2  |
