@@ -93,8 +93,10 @@ public:
 */
 template <class T>
 Sparse_Matrix_CompRow<T>::Sparse_Matrix_CompRow(int M, int N, int nz,
-	const T *val, const int *r, const int *c) : val_(nz,val), 
-		rowptr_(M, r), colind_(nz, c), dim1_(M), dim2_(N) {}
+	const T *val, const int *r, const int *c) :
+		val_(nz,const_cast<T*>(val)),
+		rowptr_(M, const_cast<int*>(r)),
+		colind_(nz, const_cast<int*>(c)), dim1_(M), dim2_(N) {}
 
 
 }
