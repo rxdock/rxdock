@@ -14,6 +14,8 @@
 #include "RbtCommands.h"
 #include "RbtDebug.h"
 
+static const RbtVble default_vble;
+
 RbtString RbtToken::_CT("RbtToken");
 
     ///////////////////
@@ -24,7 +26,7 @@ RbtToken::RbtToken(const RbtVble& v) : isvble(true), vble(v), comm(-1)
     _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
-RbtToken::RbtToken(RbtCommands c) : isvble(false), comm(c), vble(RbtVble()) 
+RbtToken::RbtToken(RbtCommands c) : isvble(false), comm(c), vble(default_vble)
 {
     _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
