@@ -143,10 +143,10 @@ experiments section <validation-experiments>`.
    getting-started-guide/building
    getting-started-guide/validation-experiments
 
-.. _full-documenation:
+.. _reference-guide:
 
-Documentation
--------------
+Reference guide
+---------------
 
 In this section you can find the documentation containing full explanation of
 all rDock software package and features.
@@ -159,7 +159,27 @@ For installation details and first-users instructions, please visit
    :maxdepth: 2
    :caption: Contents:
 
-   reference-guide/index
+   reference-guide/preface
+   reference-guide/acknowledgements
+   reference-guide/introduction
+   reference-guide/configuration
+   reference-guide/cavity-mapping
+   reference-guide/scoring-functions
+   reference-guide/docking-protocol
+   reference-guide/system-definition-file
+   reference-guide/atom-typing
+   reference-guide/file-formats
+   reference-guide/programs
+   reference-guide/use-cases
+   reference-guide/appendix
+
+Tutorials
+---------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
    tutorials/index
 
 .. _support:
