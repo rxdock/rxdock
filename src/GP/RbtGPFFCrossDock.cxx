@@ -17,7 +17,7 @@
 #include <fstream>
 #include <sstream>
 
-RbtString RbtGPFFCrossDock::_CT("RbtGPFFCrossDock");
+std::string RbtGPFFCrossDock::_CT("RbtGPFFCrossDock");
 
 void RbtGPFFCrossDock::ReadTables(istream &in, RbtReturnTypeArray &it,
                                   RbtReturnTypeArray &sft) {

@@ -24,15 +24,15 @@
 class RbtVdwSF : public virtual RbtBaseSF, public virtual RbtAnnotationHandler {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _USE_4_8; // TRUE = 4-8; FALSE = 6-12
-  static RbtString
+  static std::string _USE_4_8; // TRUE = 4-8; FALSE = 6-12
+  static std::string
       _USE_TRIPOS; // TRUE = Tripos 5.2 well depths; FALSE = GOLD well depths
-  static RbtString _RMAX; // Maximum range as a multiple of rmin
-  static RbtString _ECUT; // Energy cutoff for transition to short-range
-                          // quadratic, as a multiple of well depth
-  static RbtString _E0;   // Energy at zero distance, as a multiple of ECUT
+  static std::string _RMAX; // Maximum range as a multiple of rmin
+  static std::string _ECUT; // Energy cutoff for transition to short-range
+                            // quadratic, as a multiple of well depth
+  static std::string _E0;   // Energy at zero distance, as a multiple of ECUT
 
   virtual ~RbtVdwSF();
 
@@ -42,7 +42,7 @@ protected:
   // As this has a virtual base class we need a separate OwnParameterUpdated
   // which can be called by concrete subclass ParameterUpdated methods
   // See Stroustrup C++ 3rd edition, p395, on programming virtual base classes
-  void OwnParameterUpdated(const RbtString &strName);
+  void OwnParameterUpdated(const std::string &strName);
 
   // Used by subclasses to calculate vdW potential between pAtom and all atoms
   // in atomList

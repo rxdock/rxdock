@@ -17,7 +17,7 @@
 #include "RbtSphereSiteMapper.h"
 
 // Parameter name which identifies a scoring function definition
-RbtString RbtSiteMapperFactory::_MAPPER("SITE_MAPPER");
+std::string RbtSiteMapperFactory::_MAPPER("SITE_MAPPER");
 
 ////////////////////////////////////////
 // Constructors/destructors
@@ -30,8 +30,8 @@ RbtSiteMapperFactory::~RbtSiteMapperFactory() {}
 ////////////////
 // Creates a single site mapper object of named class
 RbtSiteMapper *
-RbtSiteMapperFactory::Create(const RbtString &strMapperClass,
-                             const RbtString &strName) throw(RbtError) {
+RbtSiteMapperFactory::Create(const std::string &strMapperClass,
+                             const std::string &strName) throw(RbtError) {
   if (strMapperClass == RbtSphereSiteMapper::_CT)
     return new RbtSphereSiteMapper(strName);
   if (strMapperClass == RbtLigandSiteMapper::_CT)
@@ -45,13 +45,13 @@ RbtSiteMapperFactory::Create(const RbtString &strMapperClass,
 // parameter file source argument. Also sets the site mapper parameters from the
 // remaining parameter values in the current section
 // Note: the current section is restored to its original value upon exit
-RbtSiteMapper *
-RbtSiteMapperFactory::CreateFromFile(RbtParameterFileSourcePtr spPrmSource,
-                                     const RbtString &strName) throw(RbtError) {
-  RbtString strOrigSection(spPrmSource->GetSection());
+RbtSiteMapper *RbtSiteMapperFactory::CreateFromFile(
+    RbtParameterFileSourcePtr spPrmSource,
+    const std::string &strName) throw(RbtError) {
+  std::string strOrigSection(spPrmSource->GetSection());
   spPrmSource->SetSection(strName);
   if (spPrmSource->isParameterPresent(_MAPPER)) {
-    RbtString strMapperClass(spPrmSource->GetParameterValueAsString(_MAPPER));
+    std::string strMapperClass(spPrmSource->GetParameterValueAsString(_MAPPER));
     // Create new site mapper according to the string value of _MAPPER parameter
     RbtSiteMapper *pSiteMapper = Create(strMapperClass, strName);
     // Set all the mapper parameters from the rest of the parameters listed

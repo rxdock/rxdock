@@ -85,8 +85,8 @@ public:
   virtual ~RbtHHSType();
 
   eType operator()(RbtAtom *anAtom) const;
-  RbtString Type2Str(eType) const;
-  eType Str2Type(const RbtString &) const;
+  std::string Type2Str(eType) const;
+  eType Str2Type(const std::string &) const;
 
 private:
   void SetupTypeNames();

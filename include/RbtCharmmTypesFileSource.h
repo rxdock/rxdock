@@ -24,10 +24,10 @@ public:
   CharmmType()
       : nAtomType(0), strAtomType(""), mass(0.0), element(""), comment("") {}
   RbtInt nAtomType;
-  RbtString strAtomType;
+  std::string strAtomType;
   RbtDouble mass;
-  RbtString element;
-  RbtString comment;
+  std::string element;
+  std::string comment;
 };
 
 typedef vector<CharmmType> RbtCharmmTypeList;
@@ -37,7 +37,7 @@ class RbtCharmmTypesFileSource : public RbtBaseFileSource {
 public:
   // Constructors
   RbtCharmmTypesFileSource(const char *fileName);
-  RbtCharmmTypesFileSource(const RbtString fileName);
+  RbtCharmmTypesFileSource(const std::string fileName);
 
   // Destructor
   virtual ~RbtCharmmTypesFileSource();

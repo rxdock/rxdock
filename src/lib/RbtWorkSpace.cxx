@@ -15,8 +15,8 @@
 #include "RbtBaseTransform.h"
 
 // Static data members
-RbtString RbtWorkSpace::_CT("RbtWorkSpace");
-RbtString RbtWorkSpace::_NAME("NAME");
+std::string RbtWorkSpace::_CT("RbtWorkSpace");
+std::string RbtWorkSpace::_NAME("NAME");
 
 ////////////////////////////////////////
 // Constructors/destructors
@@ -39,8 +39,8 @@ RbtWorkSpace::~RbtWorkSpace() { _RBTOBJECTCOUNTER_DESTR_("RbtWorkSpace"); }
 ////////////////
 
 // Get/set workspace name
-RbtString RbtWorkSpace::GetName() const { return GetParameter(_NAME); }
-void RbtWorkSpace::SetName(const RbtString &strName) {
+std::string RbtWorkSpace::GetName() const { return GetParameter(_NAME); }
+void RbtWorkSpace::SetName(const std::string &strName) {
   SetParameter(_NAME, strName);
 }
 

@@ -14,9 +14,9 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtBaseIdxSF::_CT("RbtBaseIdxSF");
-RbtString RbtBaseIdxSF::_GRIDSTEP("GRIDSTEP");
-RbtString RbtBaseIdxSF::_BORDER("BORDER");
+std::string RbtBaseIdxSF::_CT("RbtBaseIdxSF");
+std::string RbtBaseIdxSF::_GRIDSTEP("GRIDSTEP");
+std::string RbtBaseIdxSF::_BORDER("BORDER");
 
 RbtBaseIdxSF::RbtBaseIdxSF() : m_gridStep(0.5), m_border(1.0) {
 #ifdef _DEBUG
@@ -124,7 +124,7 @@ RbtDouble RbtBaseIdxSF::GetCorrectedRange() const {
 // As this has a virtual base class we need a separate OwnParameterUpdated
 // which can be called by concrete subclass ParameterUpdated methods
 // See Stroustrup C++ 3rd edition, p395, on programming virtual base classes
-void RbtBaseIdxSF::OwnParameterUpdated(const RbtString &strName) {
+void RbtBaseIdxSF::OwnParameterUpdated(const std::string &strName) {
   if (strName == _GRIDSTEP) {
     m_gridStep = GetParameter(_GRIDSTEP);
   } else if (strName == _BORDER) {

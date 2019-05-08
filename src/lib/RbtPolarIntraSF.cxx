@@ -14,12 +14,12 @@
 #include "RbtSFRequest.h"
 
 // Static data members
-RbtString RbtPolarIntraSF::_CT("RbtPolarIntraSF");
-RbtString RbtPolarIntraSF::_ATTR("ATTR");
+std::string RbtPolarIntraSF::_CT("RbtPolarIntraSF");
+std::string RbtPolarIntraSF::_ATTR("ATTR");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
-RbtPolarIntraSF::RbtPolarIntraSF(const RbtString &strName)
+RbtPolarIntraSF::RbtPolarIntraSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_bAttr(true) {
   // Add parameters
   AddParameter(_ATTR, m_bAttr);
@@ -93,7 +93,7 @@ void RbtPolarIntraSF::ClearModel() {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtPolarIntraSF::ParameterUpdated(const RbtString &strName) {
+void RbtPolarIntraSF::ParameterUpdated(const std::string &strName) {
   // DM 25 Oct 2000 - heavily used params
   if (strName == _ATTR) {
     m_bAttr = GetParameter(_ATTR);

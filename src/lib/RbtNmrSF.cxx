@@ -15,16 +15,16 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtNmrSF::_CT("RbtNmrSF");
-RbtString RbtNmrSF::_FILENAME("FILENAME");
-RbtString RbtNmrSF::_QUADRATIC("QUADRATIC");
+std::string RbtNmrSF::_CT("RbtNmrSF");
+std::string RbtNmrSF::_FILENAME("FILENAME");
+std::string RbtNmrSF::_QUADRATIC("QUADRATIC");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructors for RbtBaseInterSF is called second
-RbtNmrSF::RbtNmrSF(const RbtString &strName)
+RbtNmrSF::RbtNmrSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_bQuadratic(true) {
   // Add parameters
-  AddParameter(_FILENAME, RbtString("default.noe"));
+  AddParameter(_FILENAME, std::string("default.noe"));
   AddParameter(_QUADRATIC, m_bQuadratic);
   SetRange(6.0);
   SetTrace(1);
@@ -98,11 +98,11 @@ void RbtNmrSF::SetupScore() {
   RbtInt iTrace = GetTrace();
 
   // Create a restraint filesource with the appropriate filename
-  RbtString strRestrFile =
+  std::string strRestrFile =
       Rbt::GetRbtFileName("data/receptors", GetParameter(_FILENAME));
   RbtNmrRestraintFileSourcePtr spRestrSource(
       new RbtNmrRestraintFileSource(strRestrFile));
-  RbtString strName = GetName();
+  std::string strName = GetName();
 
   // Now convert from restraint names to an actual restraint atoms list by
   // matching against the receptor and ligand atom lists, and setup the noe
@@ -303,7 +303,7 @@ RbtDouble RbtNmrSF::StdDistance(const RbtStdRestraintAtoms &std) const {
   return sqrt(dist_sq);
 }
 
-void RbtNmrSF::ParameterUpdated(const RbtString &strName) {
+void RbtNmrSF::ParameterUpdated(const std::string &strName) {
   if (strName == _QUADRATIC) {
     m_bQuadratic = GetParameter(_QUADRATIC);
   } else {

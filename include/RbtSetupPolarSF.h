@@ -24,16 +24,16 @@
 class RbtSetupPolarSF : public RbtBaseInterSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _RADIUS;
-  static RbtString _NORM;
-  static RbtString _POWER;
-  static RbtString _CHGFACTOR;
+  static std::string _RADIUS;
+  static std::string _NORM;
+  static std::string _POWER;
+  static std::string _CHGFACTOR;
   // DM 14 Nov 2001 - relative strength of guanidinium intns
-  static RbtString _GUANFACTOR;
+  static std::string _GUANFACTOR;
 
-  RbtSetupPolarSF(const RbtString &strName = "SETUP_POLAR");
+  RbtSetupPolarSF(const std::string &strName = "SETUP_POLAR");
   virtual ~RbtSetupPolarSF();
 
 protected:

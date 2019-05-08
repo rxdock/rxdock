@@ -21,11 +21,11 @@
 class RbtNullTransform : public RbtBaseTransform {
 public:
   // Static data member for class type
-  static RbtString _CT;
+  static std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtNullTransform(const RbtString &strName = "NULL");
+  RbtNullTransform(const std::string &strName = "NULL");
   virtual ~RbtNullTransform();
 
   ////////////////////////////////////////

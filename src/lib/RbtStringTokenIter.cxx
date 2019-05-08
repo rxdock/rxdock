@@ -15,7 +15,7 @@
 #include <cstdlib>
 #include <errno.h>
 
-RbtString RbtStringTokenIter::_CT("RbtStringTokenIter");
+std::string RbtStringTokenIter::_CT("RbtStringTokenIter");
 
 ///////////////////
 // Constructors
@@ -48,7 +48,7 @@ void RbtStringTokenIter::copy(const RbtStringTokenIter &ti) {
   contextp = ti.contextp;
 }
 
-RbtTokenPtr RbtStringTokenIter::translate(RbtString s) {
+RbtTokenPtr RbtStringTokenIter::translate(std::string s) {
   if (s.length() == 0)
     throw RbtError(_WHERE_, "Missing token, can't translate the expression");
   if (s == "+")
@@ -68,8 +68,9 @@ RbtTokenPtr RbtStringTokenIter::translate(RbtString s) {
     return new RbtToken(RbtCommands(RbtCommands::EXP));
   if (s == "and")
     return new RbtToken(RbtCommands(RbtCommands::AND));
-  if ((string::npos != s.find("SCORE")) || (string::npos != s.find("SITE")) ||
-      (string::npos != s.find("LIG"))) {
+  if ((std::string::npos != s.find("SCORE")) ||
+      (std::string::npos != s.find("SITE")) ||
+      (std::string::npos != s.find("LIG"))) {
     contextp->Assign(s, 0.0);
     return new RbtToken(contextp->GetVble(s));
   } else // I assume is a double. If it is not, need to send an RbtError

@@ -56,7 +56,7 @@ public:
   // RbtModels are designed to be CreateOnce (from file), ReadMany
 
   // Model name
-  RbtString GetName() const { return m_strName; }
+  std::string GetName() const { return m_strName; }
 
   // Titles
   RbtInt GetNumTitles() const { return m_titleList.size(); }
@@ -87,15 +87,16 @@ public:
   // string list)
   RbtStringVariantMap GetDataMap() const { return m_dataMap; }
   // Query as to whether a particular data field name is present
-  RbtBool isDataFieldPresent(const RbtString &strDataField) const;
+  RbtBool isDataFieldPresent(const std::string &strDataField) const;
   // Get a particular data value
-  RbtVariant GetDataValue(const RbtString &strDataField) const;
+  RbtVariant GetDataValue(const std::string &strDataField) const;
   // Set a data value (replaces existing value if field name already exists)
-  void SetDataValue(const RbtString &strDataField, const RbtVariant &dataValue);
+  void SetDataValue(const std::string &strDataField,
+                    const RbtVariant &dataValue);
   // Removes a data field completely from the data map
-  void ClearDataField(const RbtString &strDataField);
+  void ClearDataField(const std::string &strDataField);
   // Removes all data fields starting with a given prefix from the data map
-  void ClearAllDataFields(const RbtString &strDataFieldPrefix);
+  void ClearAllDataFields(const std::string &strDataFieldPrefix);
   // Removes all data fields from the data map
   void ClearAllDataFields();
 
@@ -154,8 +155,8 @@ public:
   void RotateBond(RbtBondPtr spBond, RbtDouble thetaDeg, RbtBool bSwap);
 
   // DM 8 Feb 1999
-  void SaveCoords(const RbtString &coordName = "");
-  void RevertCoords(const RbtString &coordName = "") throw(RbtError);
+  void SaveCoords(const std::string &coordName = "");
+  void RevertCoords(const std::string &coordName = "") throw(RbtError);
   RbtStringIntMap GetSavedCoordNames() const { return m_coordNames; }
   RbtInt GetNumSavedCoords() const { return m_coordNames.size(); }
   RbtInt GetCurrentCoords() const { return m_currentCoord; }
@@ -254,8 +255,8 @@ public:
   RbtAtomList GetAtomListWithAtomicNo_eq(RbtInt nAtomicNo);
 
   // Atoms with FFType = strFFType
-  RbtUInt GetNumAtomsWithFFType_eq(RbtString strFFType);
-  RbtAtomList GetAtomListWithFFType_eq(RbtString strFFType);
+  RbtUInt GetNumAtomsWithFFType_eq(std::string strFFType);
+  RbtAtomList GetAtomListWithFFType_eq(std::string strFFType);
 
   ////////////////////////////////////////////
   // Bond list functions (provided for convenience, as user could just as well
@@ -322,7 +323,7 @@ private:
   // Private data
   //////////////////////
 private:
-  RbtString m_strName;        // Model name
+  std::string m_strName;      // Model name
   RbtStringList m_titleList;  // Title list (read from file)
   RbtAtomList m_atomList;     // atom list
   RbtBondList m_bondList;     // bond list

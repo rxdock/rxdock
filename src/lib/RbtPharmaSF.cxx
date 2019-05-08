@@ -17,15 +17,15 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtPharmaSF::_CT("RbtPharmaSF");
-RbtString RbtPharmaSF::_CONSTRAINTS_FILE("CONSTRAINTS_FILE");
-RbtString RbtPharmaSF::_OPTIONAL_FILE("OPTIONAL_FILE");
-RbtString RbtPharmaSF::_NOPT("NOPT");
-RbtString RbtPharmaSF::_WRITE_ERRORS("WRITE_ERRORS");
+std::string RbtPharmaSF::_CT("RbtPharmaSF");
+std::string RbtPharmaSF::_CONSTRAINTS_FILE("CONSTRAINTS_FILE");
+std::string RbtPharmaSF::_OPTIONAL_FILE("OPTIONAL_FILE");
+std::string RbtPharmaSF::_NOPT("NOPT");
+std::string RbtPharmaSF::_WRITE_ERRORS("WRITE_ERRORS");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
-RbtPharmaSF::RbtPharmaSF(const RbtString &strName)
+RbtPharmaSF::RbtPharmaSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_nopt(0), m_bWriteErrors(false) {
   // Add parameters It gets the right name in SetupReceptor
   AddParameter(_CONSTRAINTS_FILE, ".const");
@@ -54,10 +54,11 @@ void RbtPharmaSF::SetupReceptor() {
 
   if (GetReceptor().Null())
     return;
-  RbtString strWSName = GetWorkSpace()->GetName();
-  RbtString strConstraintFile =
+  std::string strWSName = GetWorkSpace()->GetName();
+  std::string strConstraintFile =
       Rbt::GetRbtFileName("", GetParameter(_CONSTRAINTS_FILE));
-  RbtString strOptFile = Rbt::GetRbtFileName("", GetParameter(_OPTIONAL_FILE));
+  std::string strOptFile =
+      Rbt::GetRbtFileName("", GetParameter(_OPTIONAL_FILE));
 
   // Create an output sink for ligands that do not have sufficient
   // pharmacophore features. These ligands will be written to an error SD file
@@ -70,7 +71,7 @@ void RbtPharmaSF::SetupReceptor() {
       // Should never happen with the current rbdock.cxx executable
       throw RbtError(_WHERE_, "Ligand output file sink undefined");
     }
-    RbtString strOutputFile(p->GetFileName());
+    std::string strOutputFile(p->GetFileName());
     strOutputFile.erase(strOutputFile.find(".sd"), 3);
     strOutputFile += "_errors.sd";
     if (GetTrace() > 0) {
@@ -186,7 +187,7 @@ RbtDouble RbtPharmaSF::RawScore() const {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtPharmaSF::ParameterUpdated(const RbtString &strName) {
+void RbtPharmaSF::ParameterUpdated(const std::string &strName) {
   if (strName == _WRITE_ERRORS) {
     m_bWriteErrors = GetParameter(_WRITE_ERRORS);
   } else if (strName == _NOPT) {
@@ -200,7 +201,7 @@ void RbtPharmaSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
   if (isEnabled()) {
     // Copied from RbtBaseSF
     RbtDouble rs = RawScore();
-    RbtString name = GetFullName();
+    std::string name = GetFullName();
     scoreMap[name] = rs;
     AddToParentMapEntry(scoreMap, rs);
     // Store the mandatory constraint scores

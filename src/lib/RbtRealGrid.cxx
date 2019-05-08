@@ -19,7 +19,7 @@ using std::setw;
 #include "RbtRealGrid.h"
 
 // Static data members
-RbtString RbtRealGrid::_CT("RbtRealGrid");
+std::string RbtRealGrid::_CT("RbtRealGrid");
 
 ////////////////////////////////////////
 // Constructors/destructors

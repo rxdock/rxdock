@@ -15,11 +15,11 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtCavityFillSF::_CT("RbtCavityFillSF");
+std::string RbtCavityFillSF::_CT("RbtCavityFillSF");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
-RbtCavityFillSF::RbtCavityFillSF(const RbtString &strName)
+RbtCavityFillSF::RbtCavityFillSF(const std::string &strName)
     : RbtBaseSF(_CT, strName) {
   // Add parameters
 #ifdef _DEBUG
@@ -177,6 +177,6 @@ RbtDouble RbtCavityFillSF::RawScore() const {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtCavityFillSF::ParameterUpdated(const RbtString &strName) {
+void RbtCavityFillSF::ParameterUpdated(const std::string &strName) {
   RbtBaseSF::ParameterUpdated(strName);
 }

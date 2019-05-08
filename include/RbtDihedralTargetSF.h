@@ -21,10 +21,10 @@
 class RbtDihedralTargetSF : public RbtBaseInterSF, public RbtDihedralSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
 
-  RbtDihedralTargetSF(const RbtString &strName = "DIHEDRAL");
+  RbtDihedralTargetSF(const std::string &strName = "DIHEDRAL");
   virtual ~RbtDihedralTargetSF();
 
 protected:

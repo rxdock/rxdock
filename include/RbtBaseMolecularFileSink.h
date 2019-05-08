@@ -25,7 +25,7 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   // RbtBaseMolecularFileSink(const char* fileName, RbtModelPtr spModel);
-  RbtBaseMolecularFileSink(const RbtString &fileName, RbtModelPtr spModel,
+  RbtBaseMolecularFileSink(const std::string &fileName, RbtModelPtr spModel,
                            RbtBool bUseModelSegmentNames = true);
 
   virtual ~RbtBaseMolecularFileSink(); // Default destructor

@@ -13,15 +13,15 @@
 #include "RbtLigandFlexData.h"
 #include "RbtChromElement.h"
 
-const RbtString &RbtLigandFlexData::_TRANS_STEP = "TRANS_STEP";
-const RbtString &RbtLigandFlexData::_ROT_STEP = "ROT_STEP";
-const RbtString &RbtLigandFlexData::_DIHEDRAL_STEP = "DIHEDRAL_STEP";
-const RbtString &RbtLigandFlexData::_TRANS_MODE = "TRANS_MODE";
-const RbtString &RbtLigandFlexData::_ROT_MODE = "ROT_MODE";
-const RbtString &RbtLigandFlexData::_DIHEDRAL_MODE = "DIHEDRAL_MODE";
-const RbtString &RbtLigandFlexData::_MAX_TRANS = "MAX_TRANS";
-const RbtString &RbtLigandFlexData::_MAX_ROT = "MAX_ROT";
-const RbtString &RbtLigandFlexData::_MAX_DIHEDRAL = "MAX_DIHEDRAL";
+const std::string &RbtLigandFlexData::_TRANS_STEP = "TRANS_STEP";
+const std::string &RbtLigandFlexData::_ROT_STEP = "ROT_STEP";
+const std::string &RbtLigandFlexData::_DIHEDRAL_STEP = "DIHEDRAL_STEP";
+const std::string &RbtLigandFlexData::_TRANS_MODE = "TRANS_MODE";
+const std::string &RbtLigandFlexData::_ROT_MODE = "ROT_MODE";
+const std::string &RbtLigandFlexData::_DIHEDRAL_MODE = "DIHEDRAL_MODE";
+const std::string &RbtLigandFlexData::_MAX_TRANS = "MAX_TRANS";
+const std::string &RbtLigandFlexData::_MAX_ROT = "MAX_ROT";
+const std::string &RbtLigandFlexData::_MAX_DIHEDRAL = "MAX_DIHEDRAL";
 
 RbtLigandFlexData::RbtLigandFlexData(RbtDockingSite *pDockSite)
     : RbtFlexData(pDockSite) {

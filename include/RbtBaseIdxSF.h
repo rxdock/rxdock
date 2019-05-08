@@ -24,10 +24,10 @@
 class RbtBaseIdxSF : public virtual RbtBaseSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _GRIDSTEP;
-  static RbtString _BORDER;
+  static std::string _GRIDSTEP;
+  static std::string _BORDER;
 
   ////////////////////////////////////////
   // Constructors/destructors
@@ -61,7 +61,7 @@ protected:
   // As this has a virtual base class we need a separate OwnParameterUpdated
   // which can be called by concrete subclass ParameterUpdated methods
   // See Stroustrup C++ 3rd edition, p395, on programming virtual base classes
-  void OwnParameterUpdated(const RbtString &strName);
+  void OwnParameterUpdated(const std::string &strName);
 
 private:
   ////////////////////////////////////////

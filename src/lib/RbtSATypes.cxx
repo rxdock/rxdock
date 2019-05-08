@@ -226,11 +226,11 @@ RbtHHSType::eType RbtHHSType::operator()(RbtAtom *anAtom) const {
   }
 }
 
-RbtString RbtHHSType::Type2Str(RbtHHSType::eType aType) const {
+std::string RbtHHSType::Type2Str(RbtHHSType::eType aType) const {
   return m_typeNames[aType];
 }
 
-RbtHHSType::eType RbtHHSType::Str2Type(const RbtString &strType) const {
+RbtHHSType::eType RbtHHSType::Str2Type(const std::string &strType) const {
   RbtStringListConstIter iter =
       std::find(m_typeNames.begin(), m_typeNames.end(), strType);
   if (iter != m_typeNames.end()) {
@@ -242,7 +242,7 @@ RbtHHSType::eType RbtHHSType::Str2Type(const RbtString &strType) const {
 
 void RbtHHSType::SetupTypeNames() {
   // Create a vector<string> of the right size
-  m_typeNames = RbtStringList(RbtHHSType::MAXTYPES, RbtString());
+  m_typeNames = RbtStringList(RbtHHSType::MAXTYPES, std::string());
   m_typeNames[RbtHHSType::UNDEFINED] = "UNDEFINED";
   m_typeNames[RbtHHSType::C_sp3] = "C_sp3";
   m_typeNames[RbtHHSType::CH_sp3] = "CH_sp3";

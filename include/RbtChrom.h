@@ -24,7 +24,7 @@
 class RbtChrom : public RbtChromElement {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Constructor for an empty chromosome
   RbtChrom();
   // Constructor for a combined chromosome for each model

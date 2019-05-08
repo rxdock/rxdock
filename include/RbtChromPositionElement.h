@@ -21,7 +21,7 @@
 class RbtChromPositionElement : public RbtChromElement {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
 
   RbtChromPositionElement(
       const RbtModel *pModel, const RbtDockingSite *pDockSite,

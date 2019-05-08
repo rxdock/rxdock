@@ -13,9 +13,9 @@
 #include "RbtDihedralIntraSF.h"
 
 // Static data members
-RbtString RbtDihedralIntraSF::_CT("RbtDihedralIntraSF");
+std::string RbtDihedralIntraSF::_CT("RbtDihedralIntraSF");
 
-RbtDihedralIntraSF::RbtDihedralIntraSF(const RbtString &strName)
+RbtDihedralIntraSF::RbtDihedralIntraSF(const std::string &strName)
     : RbtBaseSF(_CT, strName) {
 #ifdef _DEBUG
   cout << _CT << " parameterised constructor" << endl;

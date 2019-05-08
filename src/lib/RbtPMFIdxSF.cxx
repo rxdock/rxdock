@@ -22,14 +22,14 @@ const RbtDouble cPMFEnd = 12.0;  // farest point in PMFs
 const RbtUInt cPlStart = 1; // index value to get where the PMF plateau starts
 const RbtUInt cPlVal = 2;   // index value to get the PMF plateau value
 
-RbtString RbtPMFIdxSF::_CT("RbtPMFIdxSF");
-RbtString RbtPMFIdxSF::_PMFDIR("PMFDIR");
-RbtString RbtPMFIdxSF::_CC_CUTOFF("CC_CUTOFF");
-RbtString RbtPMFIdxSF::_SLOPE("SLOPE");
+std::string RbtPMFIdxSF::_CT("RbtPMFIdxSF");
+std::string RbtPMFIdxSF::_PMFDIR("PMFDIR");
+std::string RbtPMFIdxSF::_CC_CUTOFF("CC_CUTOFF");
+std::string RbtPMFIdxSF::_SLOPE("SLOPE");
 
 RbtDouble delta; // used for linear interpolation
 
-RbtPMFIdxSF::RbtPMFIdxSF(const RbtString &aName) : RbtBaseSF(_CT, aName) {
+RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
   // see PMF-related .prm files for explanation
   AddParameter(_PMFDIR, "data/pmf");
   AddParameter(_CC_CUTOFF, 6.0);
@@ -53,10 +53,10 @@ RbtPMFIdxSF::RbtPMFIdxSF(const RbtString &aName) : RbtBaseSF(_CT, aName) {
   // setup the grids for every types
   // first read .pmf files from directory
   RbtPMFDirSource theSrcDir(Rbt::GetRbtRoot() + "/" +
-                            (RbtString)GetParameter(_PMFDIR));
+                            (std::string)GetParameter(_PMFDIR));
   vector<vector<RbtPMFValue>> thePMF; // vector helping to read PMF files
-  vector<string> theFileNames; // vector storing filenames (needed to find out
-                               // types in thePMF)
+  vector<std::string> theFileNames; // vector storing filenames (needed to find
+                                    // out types in thePMF)
   vector<RbtPMFValue>
       theSlopeIndex; // contains the first value where plateau starts
   theSrcDir.ReadFiles(&thePMF, &theFileNames, &theSlopeIndex);

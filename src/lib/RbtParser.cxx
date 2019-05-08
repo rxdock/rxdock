@@ -13,7 +13,7 @@
 #include "RbtParser.h"
 #include "RbtDebug.h"
 
-RbtString RbtParser::_CT("RbtParser");
+std::string RbtParser::_CT("RbtParser");
 RbtParser::RbtParser(const RbtParser &p) { _RBTOBJECTCOUNTER_COPYCONSTR_(_CT); }
 
 RbtParser::RbtParser() { _RBTOBJECTCOUNTER_CONSTR_(_CT); }

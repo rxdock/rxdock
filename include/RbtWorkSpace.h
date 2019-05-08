@@ -36,9 +36,9 @@ class RbtBaseTransform; // Forward definition
 class RbtWorkSpace : public RbtSubject, public RbtParamHandler {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _NAME;
+  static std::string _NAME;
 
   ////////////////////////////////////////
   // Constructors/destructors
@@ -51,8 +51,8 @@ public:
   ////////////////
 
   // Get/set workspace name
-  RbtString GetName() const;
-  void SetName(const RbtString &);
+  std::string GetName() const;
+  void SetName(const std::string &);
 
   // Model handling
 

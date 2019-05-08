@@ -70,7 +70,7 @@ RbtStringList RbtModel::GetDataFieldList() const {
 }
 
 // Query as to whether a particular data field name is present
-RbtBool RbtModel::isDataFieldPresent(const RbtString &strDataField) const {
+RbtBool RbtModel::isDataFieldPresent(const std::string &strDataField) const {
   return m_dataMap.find(strDataField) != m_dataMap.end();
 }
 
@@ -78,7 +78,7 @@ RbtBool RbtModel::isDataFieldPresent(const RbtString &strDataField) const {
 // Note: unlike the MolecularFileSource method, the RbtModel version
 // doesn't throw an error if the field name is not found.
 // Instead, an empty variant is returned.
-RbtVariant RbtModel::GetDataValue(const RbtString &strDataField) const {
+RbtVariant RbtModel::GetDataValue(const std::string &strDataField) const {
   RbtStringVariantMapConstIter iter = m_dataMap.find(strDataField);
   if (iter != m_dataMap.end())
     return (*iter).second;
@@ -87,18 +87,18 @@ RbtVariant RbtModel::GetDataValue(const RbtString &strDataField) const {
 }
 
 // Set a data value (replaces existing value if field name already exists)
-void RbtModel::SetDataValue(const RbtString &strDataField,
+void RbtModel::SetDataValue(const std::string &strDataField,
                             const RbtVariant &dataValue) {
   m_dataMap[strDataField] = dataValue;
 }
 
 // Removes a data field completely from the data map
-void RbtModel::ClearDataField(const RbtString &strDataField) {
+void RbtModel::ClearDataField(const std::string &strDataField) {
   m_dataMap.erase(strDataField);
 }
 
 // Removes all data fields starting with a given prefix from the data map
-void RbtModel::ClearAllDataFields(const RbtString &strDataFieldPrefix) {
+void RbtModel::ClearAllDataFields(const std::string &strDataFieldPrefix) {
   RbtStringList dataFields = GetDataFieldList();
   for (RbtStringListConstIter iter = dataFields.begin();
        iter != dataFields.end(); iter++) {
@@ -446,7 +446,7 @@ void RbtModel::RotateBond(RbtBondPtr spBond, RbtDouble thetaDeg,
                        // hand
 }
 
-void RbtModel::SaveCoords(const RbtString &coordName) {
+void RbtModel::SaveCoords(const std::string &coordName) {
   // Look up the coord name in the map
   RbtStringIntMapConstIter iter = m_coordNames.find(coordName);
   if (iter != m_coordNames.end()) {
@@ -465,7 +465,7 @@ void RbtModel::SaveCoords(const RbtString &coordName) {
   }
 }
 
-void RbtModel::RevertCoords(const RbtString &coordName) throw(RbtError) {
+void RbtModel::RevertCoords(const std::string &coordName) throw(RbtError) {
   // Look up the coord name in the map
   RbtStringIntMapConstIter iter = m_coordNames.find(coordName);
   if (iter != m_coordNames.end()) {
@@ -738,11 +738,11 @@ RbtAtomList RbtModel::GetAtomListWithAtomicNo_eq(RbtInt nAtomicNo) {
 }
 
 // Atoms with FFType = strFFType
-RbtUInt RbtModel::GetNumAtomsWithFFType_eq(RbtString strFFType) {
+RbtUInt RbtModel::GetNumAtomsWithFFType_eq(std::string strFFType) {
   return Rbt::GetNumAtomsWithFFType_eq(m_atomList, strFFType);
 }
 
-RbtAtomList RbtModel::GetAtomListWithFFType_eq(RbtString strFFType) {
+RbtAtomList RbtModel::GetAtomListWithFFType_eq(std::string strFFType) {
   return Rbt::GetAtomListWithFFType_eq(m_atomList, strFFType);
 }
 
@@ -843,11 +843,11 @@ RbtStringIntMap RbtModel::GetBondTypeMap() {
   RbtStringIntMap bondTypeMap;
   for (RbtBondListIter iter = m_bondList.begin(); iter != m_bondList.end();
        iter++) {
-    RbtString atom1Type = (*iter)->GetAtom1Ptr()->GetFFType();
-    RbtString atom2Type = (*iter)->GetAtom2Ptr()->GetFFType();
+    std::string atom1Type = (*iter)->GetAtom1Ptr()->GetFFType();
+    std::string atom2Type = (*iter)->GetAtom2Ptr()->GetFFType();
     if (atom1Type > atom2Type)
       std::swap(atom1Type, atom2Type);
-    RbtString bondPair = atom1Type + " " + atom2Type;
+    std::string bondPair = atom1Type + " " + atom2Type;
     bondTypeMap[bondPair]++;
   }
   return bondTypeMap;
@@ -915,8 +915,8 @@ void RbtModel::Create(RbtBaseMolecularFileSource *pMolSource) throw(RbtError) {
     // present
     if (pMolSource->isDataSupported()) {
       m_dataMap = pMolSource->GetDataMap();
-      RbtString strRegNum = GetDataValue("REG_Number");
-      RbtString strName = GetDataValue("Name");
+      std::string strRegNum = GetDataValue("REG_Number");
+      std::string strName = GetDataValue("Name");
       // In general, we want to use the Reg Number for the model name
       // except in the case of RBT compounds, where it's nice to keep the RBT
       // prefix

@@ -25,12 +25,12 @@ public:
   // Constructors
   // RbtBaseMolecularFileSource(const char* fileName, const char* sourceName);
   // Single-record version
-  RbtBaseMolecularFileSource(const RbtString &fileName,
-                             const RbtString &sourceName);
+  RbtBaseMolecularFileSource(const std::string &fileName,
+                             const std::string &sourceName);
   // Multi-record version, with record delimiter passed as an argument
-  RbtBaseMolecularFileSource(const RbtString &fileName,
-                             const RbtString &strRecDelim,
-                             const RbtString &sourceName);
+  RbtBaseMolecularFileSource(const std::string &fileName,
+                             const std::string &strRecDelim,
+                             const std::string &sourceName);
 
   // Destructor
   virtual ~RbtBaseMolecularFileSource();
@@ -56,10 +56,10 @@ public:
   // string list)
   virtual RbtStringVariantMap GetDataMap() throw(RbtError);
   // Query as to whether a particular data field name is present
-  virtual RbtBool isDataFieldPresent(const RbtString &strDataField);
+  virtual RbtBool isDataFieldPresent(const std::string &strDataField);
   // Get a particular data value
   virtual RbtVariant
-  GetDataValue(const RbtString &strDataField) throw(RbtError);
+  GetDataValue(const std::string &strDataField) throw(RbtError);
 
   // These methods allow filtering of the data source by segment name
   // So for example, we could just read the segment named TAR from the source

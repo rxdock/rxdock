@@ -15,16 +15,16 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtBaseObject::_CT("RbtBaseObject");
-RbtString RbtBaseObject::_CLASS("CLASS");
-RbtString RbtBaseObject::_NAME("NAME");
-RbtString RbtBaseObject::_ENABLED("ENABLED");
-RbtString RbtBaseObject::_TRACE("TRACE");
+std::string RbtBaseObject::_CT("RbtBaseObject");
+std::string RbtBaseObject::_CLASS("CLASS");
+std::string RbtBaseObject::_NAME("NAME");
+std::string RbtBaseObject::_ENABLED("ENABLED");
+std::string RbtBaseObject::_TRACE("TRACE");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtBaseObject::RbtBaseObject(const RbtString &strClass,
-                             const RbtString &strName)
+RbtBaseObject::RbtBaseObject(const std::string &strClass,
+                             const std::string &strName)
     : m_workspace(NULL), m_enabled(true), m_trace(0) {
   // Add parameters
   AddParameter(_CLASS, strClass);
@@ -59,15 +59,15 @@ RbtBaseObject::~RbtBaseObject() {
 ////////////////
 
 // Class name (e.g. RbtConstSF)
-RbtString RbtBaseObject::GetClass() const { return GetParameter(_CLASS); }
+std::string RbtBaseObject::GetClass() const { return GetParameter(_CLASS); }
 
-RbtString RbtBaseObject::GetName() const { return GetParameter(_NAME); }
-void RbtBaseObject::SetName(const RbtString &strName) {
+std::string RbtBaseObject::GetName() const { return GetParameter(_NAME); }
+void RbtBaseObject::SetName(const std::string &strName) {
   SetParameter(_NAME, strName);
 }
 // Fully qualified name (should be overridden by subclasses which can be
 // aggregated to prefix the name with the parent's name)
-RbtString RbtBaseObject::GetFullName() const { return GetName(); }
+std::string RbtBaseObject::GetFullName() const { return GetName(); }
 
 void RbtBaseObject::Enable() { SetParameter(_ENABLED, true); }
 void RbtBaseObject::Disable() { SetParameter(_ENABLED, false); }
@@ -194,7 +194,7 @@ void RbtBaseObject::Print(ostream &s) const {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtBaseObject::ParameterUpdated(const RbtString &strName) {
+void RbtBaseObject::ParameterUpdated(const std::string &strName) {
   if (strName == _ENABLED) {
     m_enabled = GetParameter(_ENABLED);
   } else if (strName == _TRACE) {

@@ -33,12 +33,12 @@ using std::setw;
 #include "RbtSFRequest.h"
 #include "RbtTransformFactory.h"
 
-const RbtString EXEVERSION =
+const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbdock.cxx#4 $)";
 // Section name in docking prm file containing scoring function definition
-const RbtString _ROOT_SF = "SCORE";
-const RbtString _RESTRAINT_SF = "RESTR";
-const RbtString _ROOT_TRANSFORM = "DOCK";
+const std::string _ROOT_SF = "SCORE";
+const std::string _RESTRAINT_SF = "RESTR";
+const std::string _ROOT_TRANSFORM = "DOCK";
 
 void PrintUsage(void) {
   cout << endl << "Usage:" << endl;
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 
   // Handle obsolete arguments, if any
   for (int i = 0; i < argc; i++) {
-    RbtString opt = argv[i];
+    std::string opt = argv[i];
     if (opt == "-ap" || opt == "-an" || opt == "-allH" || opt == "-cont") {
       cout << "Options -ap, -an, -allH, and -cont are no longer supported; use "
               "-P, -D, -H, and -C (respectively) instead."
@@ -97,21 +97,21 @@ int main(int argc, char *argv[]) {
   cout.setf(ios_base::left, ios_base::adjustfield);
 
   // Strip off the path to the executable, leaving just the file name
-  RbtString strExeName(argv[0]);
-  RbtString::size_type i = strExeName.rfind("/");
-  if (i != RbtString::npos)
+  std::string strExeName(argv[0]);
+  std::string::size_type i = strExeName.rfind("/");
+  if (i != std::string::npos)
     strExeName.erase(0, i + 1);
 
   // Print a standard header
   Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
 
   // Command line arguments and default values
-  RbtString strLigandMdlFile;
+  std::string strLigandMdlFile;
   RbtBool bOutput(false);
-  RbtString strRunName;
-  RbtString strReceptorPrmFile; // Receptor param file
-  RbtString strParamFile;       // Docking run param file
-  RbtString strFilterFile;      // Filter file
+  std::string strRunName;
+  std::string strReceptorPrmFile; // Receptor param file
+  std::string strParamFile;       // Docking run param file
+  std::string strFilterFile;      // Filter file
   RbtInt nDockingRuns(
       0); // Init to zero, so can detect later whether user explictly typed -n
 
@@ -292,7 +292,7 @@ int main(int argc, char *argv[]) {
     // Set the workspace name to the root of the receptor .prm filename
     RbtStringList componentList =
         Rbt::ConvertDelimitedStringToList(strReceptorPrmFile, ".");
-    RbtString wsName = componentList.front();
+    std::string wsName = componentList.front();
     spWS->SetName(wsName);
 
     // Read the docking protocol parameter file
@@ -331,7 +331,7 @@ int main(int argc, char *argv[]) {
     for (RbtStringListConstIter sfIter = sfList.begin(); sfIter != sfList.end();
          sfIter++) {
       // sfFile = file name for scoring function subaggregate
-      RbtString sfFile(Rbt::GetRbtFileName(
+      std::string sfFile(Rbt::GetRbtFileName(
           "data/sf", spParamSource->GetParameterValueAsString(*sfIter)));
       RbtParameterFileSourcePtr spSFSource(new RbtParameterFileSource(sfFile));
       // Create and add the subaggregate
@@ -376,8 +376,8 @@ int main(int argc, char *argv[]) {
 
     spRecepPrmSource->SetSection();
     // Read docking site from file and register with workspace
-    RbtString strASFile = spWS->GetName() + ".as";
-    RbtString strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
+    std::string strASFile = spWS->GetName() + ".as";
+    std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
     // DM 26 Sep 2000 - ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
     ifstream istr(strInputFile.c_str(), ios_base::in);
@@ -388,8 +388,8 @@ int main(int argc, char *argv[]) {
     //(the cryptic "Error reading from input stream" message, if cavity file was
     // missing)
     if (!istr) {
-      RbtString message = "Cavity file (" + strASFile +
-                          ") not found in current directory or $RBT_HOME";
+      std::string message = "Cavity file (" + strASFile +
+                            ") not found in current directory or $RBT_HOME";
       message += " - run rbcavity first";
       throw RbtFileReadError(_WHERE_, message);
     }
@@ -486,7 +486,7 @@ int main(int argc, char *argv[]) {
 
         // Create and register the ligand model
         RbtModelPtr spLigand = prmFactory.CreateLigand(spMdlFileSource);
-        RbtString strMolName = spLigand->GetName();
+        std::string strMolName = spLigand->GetName();
         spWS->SetLigand(spLigand);
         // Update any model coords from embedded chromosomes in the ligand file
         spWS->UpdateModelCoordsFromChromRecords(spMdlFileSource, iTrace);

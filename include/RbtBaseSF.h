@@ -22,17 +22,17 @@ class RbtSFAgg; // forward declaration
 class RbtBaseSF : public RbtBaseObject {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _WEIGHT;
+  static std::string _WEIGHT;
   // DM 09 Apr 2002 - max distance range over which scoring function operates
   // Subclasses are free not to use if not required
-  static RbtString _RANGE;
+  static std::string _RANGE;
   // DM 17 Jan 2006 - hardcoded name of scoring function branch under which to
   // save "system" scoring function terms (e.g. intra-receptor, intra-solvent).
   // This is a dirty (and hopefully temporary) solution!
-  static RbtString _SYSTEM_SF;
-  static RbtString _INTRA_SF; // Ditto, for ligand intramolecular terms
+  static std::string _SYSTEM_SF;
+  static std::string _INTRA_SF; // Ditto, for ligand intramolecular terms
 
   ////////////////////////////////////////
   // Constructors/destructors
@@ -45,7 +45,7 @@ public:
   // Public methods
   ////////////////
   // Fully qualified name, prefixed by all ancestors (e.g. SCORE.INTER.HBOND)
-  RbtString GetFullName() const;
+  std::string GetFullName() const;
   RbtDouble GetWeight() const;
   void SetWeight(RbtDouble);
 
@@ -72,13 +72,13 @@ protected:
   ////////////////////////////////////////
   // Protected methods
   ///////////////////
-  RbtBaseSF(const RbtString &strClass, const RbtString &strName);
+  RbtBaseSF(const std::string &strClass, const std::string &strName);
   RbtBaseSF();
   // PURE VIRTUAL - DERIVED CLASSES MUST OVERRIDE
   virtual RbtDouble RawScore() const = 0;
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
   // Helper method for ScoreMap
   void AddToParentMapEntry(RbtStringVariantMap &scoreMap, RbtDouble rs) const;
 

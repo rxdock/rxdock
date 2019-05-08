@@ -21,9 +21,9 @@
 class RbtVdwIntraSF : public RbtBaseIntraSF, public RbtVdwSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
 
-  RbtVdwIntraSF(const RbtString &strName = "VDW");
+  RbtVdwIntraSF(const std::string &strName = "VDW");
   virtual ~RbtVdwIntraSF();
 
   // Request Handling method
@@ -36,7 +36,7 @@ protected:
 
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   RbtAtomRListList m_vdwIntns; // The full list of vdW interactions

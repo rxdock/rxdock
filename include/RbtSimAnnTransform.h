@@ -46,22 +46,22 @@ typedef SmartPtr<RbtMCStats> RbtMCStatsPtr; // Smart pointer
 class RbtSimAnnTransform : public RbtBaseBiMolTransform {
 public:
   // Static data member for class type
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _START_T;
-  static RbtString _FINAL_T;
-  static RbtString _BLOCK_LENGTH;
-  static RbtString _SCALE_CHROM_LENGTH;
-  static RbtString _NUM_BLOCKS;
-  static RbtString _STEP_SIZE;
-  static RbtString _MIN_ACC_RATE;
-  static RbtString _PARTITION_DIST;
-  static RbtString _PARTITION_FREQ;
-  static RbtString _HISTORY_FREQ;
+  static std::string _START_T;
+  static std::string _FINAL_T;
+  static std::string _BLOCK_LENGTH;
+  static std::string _SCALE_CHROM_LENGTH;
+  static std::string _NUM_BLOCKS;
+  static std::string _STEP_SIZE;
+  static std::string _MIN_ACC_RATE;
+  static std::string _PARTITION_DIST;
+  static std::string _PARTITION_FREQ;
+  static std::string _HISTORY_FREQ;
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtSimAnnTransform(const RbtString &strName = "SIMANN");
+  RbtSimAnnTransform(const std::string &strName = "SIMANN");
   virtual ~RbtSimAnnTransform();
 
   ////////////////////////////////////////

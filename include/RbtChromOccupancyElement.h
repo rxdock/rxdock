@@ -21,7 +21,7 @@
 class RbtChromOccupancyElement : public RbtChromElement {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Sole constructor
   RbtChromOccupancyElement(RbtModel *pModel, RbtDouble stepSize,
                            RbtDouble threshold);

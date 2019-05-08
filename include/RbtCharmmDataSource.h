@@ -19,7 +19,7 @@
 #include "RbtConfig.h"
 
 // Added by DM, 8 Dec 1998 for HybridState lookup method
-typedef map<RbtString, RbtAtom::eHybridState> RbtStringHybridStateMap;
+typedef map<std::string, RbtAtom::eHybridState> RbtStringHybridStateMap;
 typedef RbtStringHybridStateMap::iterator RbtStringHybridStateMapIter;
 typedef RbtStringHybridStateMap::const_iterator
     RbtStringHybridStateMapConstIter;
@@ -30,7 +30,7 @@ public:
   // Constructors/destructors
 
   // DM 30 Apr 1999 - pass in masses.rtf file name as parameter
-  RbtCharmmDataSource(const RbtString &strMassesFile =
+  RbtCharmmDataSource(const std::string &strMassesFile =
                           Rbt::GetRbtFileName("data", "masses.rtf"));
 
   ~RbtCharmmDataSource(); // Default destructor
@@ -38,13 +38,13 @@ public:
   ////////////////////////////////////////
   // Public methods
   ////////////////
-  RbtString AtomTypeString(RbtInt nAtomType) throw(RbtError);
-  RbtInt ImplicitHydrogens(const RbtString &strFFType) throw(RbtError);
-  RbtInt AtomicNumber(const RbtString &strFFType) throw(RbtError);
-  RbtInt FormalCharge(const RbtString &strFFType) throw(
+  std::string AtomTypeString(RbtInt nAtomType) throw(RbtError);
+  RbtInt ImplicitHydrogens(const std::string &strFFType) throw(RbtError);
+  RbtInt AtomicNumber(const std::string &strFFType) throw(RbtError);
+  RbtInt FormalCharge(const std::string &strFFType) throw(
       RbtError); // DM 24 Mar 1999 - changed from double to int
   RbtAtom::eHybridState
-  HybridState(const RbtString &strFFType) throw(RbtError); // DM 8 Dec 1998
+  HybridState(const std::string &strFFType) throw(RbtError); // DM 8 Dec 1998
 
 protected:
   ////////////////////////////////////////
@@ -66,7 +66,7 @@ private:
   // comment field Valid strings are (RBT::SP), (RBT::SP2), (RBT::SP3),
   // (RBT::AROM), (RBT::TRI) (brackets are important)
   RbtAtom::eHybridState
-  ConvertCommentStringToHybridState(const RbtString &strComment);
+  ConvertCommentStringToHybridState(const std::string &strComment);
 
 protected:
   ////////////////////////////////////////

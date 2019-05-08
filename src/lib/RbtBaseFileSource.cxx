@@ -22,7 +22,7 @@
 //  _RBTOBJECTCOUNTER_CONSTR_("RbtBaseFileSource");
 //}
 
-RbtBaseFileSource::RbtBaseFileSource(const RbtString &fileName)
+RbtBaseFileSource::RbtBaseFileSource(const std::string &fileName)
     : m_bMultiRec(false), m_bFileOpen(false) {
   m_strFileName = fileName;
   m_szBuf = new char[MAXLINELENGTH + 1]; // DM 24 Mar - allocate line buffer
@@ -31,8 +31,8 @@ RbtBaseFileSource::RbtBaseFileSource(const RbtString &fileName)
 }
 
 // Multi-record constructor
-RbtBaseFileSource::RbtBaseFileSource(const RbtString &fileName,
-                                     const RbtString &strRecDelim)
+RbtBaseFileSource::RbtBaseFileSource(const std::string &fileName,
+                                     const std::string &strRecDelim)
     : m_bMultiRec(true), m_strRecDelim(strRecDelim), m_bFileOpen(false) {
   m_strFileName = fileName;
   m_szBuf = new char[MAXLINELENGTH + 1]; // DM 24 Mar - allocate line buffer
@@ -49,7 +49,7 @@ RbtBaseFileSource::~RbtBaseFileSource() {
 }
 
 // Public methods
-RbtString RbtBaseFileSource::GetFileName() { return m_strFileName; }
+std::string RbtBaseFileSource::GetFileName() { return m_strFileName; }
 
 // void RbtBaseFileSource::SetFileName(const char* fileName)
 //{
@@ -58,7 +58,7 @@ RbtString RbtBaseFileSource::GetFileName() { return m_strFileName; }
 //  m_strFileName = fileName;
 //}
 
-void RbtBaseFileSource::SetFileName(const RbtString &fileName) {
+void RbtBaseFileSource::SetFileName(const std::string &fileName) {
   Close();
   ClearCache();
   m_strFileName = fileName;

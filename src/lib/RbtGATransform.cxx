@@ -17,18 +17,18 @@
 #include <iomanip>
 using std::setw;
 
-RbtString RbtGATransform::_CT("RbtGATransform");
-RbtString RbtGATransform::_NEW_FRACTION("NEW_FRACTION");
-RbtString RbtGATransform::_PCROSSOVER("PCROSSOVER");
-RbtString RbtGATransform::_XOVERMUT("XOVERMUT");
-RbtString RbtGATransform::_CMUTATE("CMUTATE");
-RbtString RbtGATransform::_STEP_SIZE("STEP_SIZE");
-RbtString RbtGATransform::_EQUALITY_THRESHOLD("EQUALITY_THRESHOLD");
-RbtString RbtGATransform::_NCYCLES("NCYCLES");
-RbtString RbtGATransform::_NCONVERGENCE("NCONVERGENCE");
-RbtString RbtGATransform::_HISTORY_FREQ("HISTORY_FREQ");
+std::string RbtGATransform::_CT("RbtGATransform");
+std::string RbtGATransform::_NEW_FRACTION("NEW_FRACTION");
+std::string RbtGATransform::_PCROSSOVER("PCROSSOVER");
+std::string RbtGATransform::_XOVERMUT("XOVERMUT");
+std::string RbtGATransform::_CMUTATE("CMUTATE");
+std::string RbtGATransform::_STEP_SIZE("STEP_SIZE");
+std::string RbtGATransform::_EQUALITY_THRESHOLD("EQUALITY_THRESHOLD");
+std::string RbtGATransform::_NCYCLES("NCYCLES");
+std::string RbtGATransform::_NCONVERGENCE("NCONVERGENCE");
+std::string RbtGATransform::_HISTORY_FREQ("HISTORY_FREQ");
 
-RbtGATransform::RbtGATransform(const RbtString &strName)
+RbtGATransform::RbtGATransform(const std::string &strName)
     : RbtBaseBiMolTransform(_CT, strName), m_rand(Rbt::GetRbtRand()) {
   AddParameter(_NEW_FRACTION, 0.5);
   AddParameter(_PCROSSOVER, 0.4);

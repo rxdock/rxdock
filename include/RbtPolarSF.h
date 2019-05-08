@@ -25,31 +25,31 @@ class RbtPolarSF : public virtual RbtBaseSF,
                    public virtual RbtAnnotationHandler {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _INCR;
-  static RbtString _R12FACTOR;
-  static RbtString _R12INCR;
-  static RbtString _DR12MIN;
-  static RbtString _DR12MAX;
-  static RbtString _A1;
-  static RbtString _DA1MIN;
-  static RbtString _DA1MAX;
-  static RbtString _A2;
-  static RbtString _DA2MIN;
-  static RbtString _DA2MAX;
-  static RbtString _INCMETAL;
-  static RbtString _INCHBD;
-  static RbtString _INCHBA;
-  static RbtString _INCGUAN;
-  static RbtString _GUAN_PLANE;
-  static RbtString _ABS_DR12;
-  static RbtString _LP_OSP2;
-  static RbtString _LP_PHI;
-  static RbtString _LP_DPHIMIN;
-  static RbtString _LP_DPHIMAX;
-  static RbtString _LP_DTHETAMIN;
-  static RbtString _LP_DTHETAMAX;
+  static std::string _INCR;
+  static std::string _R12FACTOR;
+  static std::string _R12INCR;
+  static std::string _DR12MIN;
+  static std::string _DR12MAX;
+  static std::string _A1;
+  static std::string _DA1MIN;
+  static std::string _DA1MAX;
+  static std::string _A2;
+  static std::string _DA2MIN;
+  static std::string _DA2MAX;
+  static std::string _INCMETAL;
+  static std::string _INCHBD;
+  static std::string _INCHBA;
+  static std::string _INCGUAN;
+  static std::string _GUAN_PLANE;
+  static std::string _ABS_DR12;
+  static std::string _LP_OSP2;
+  static std::string _LP_PHI;
+  static std::string _LP_DPHIMIN;
+  static std::string _LP_DPHIMAX;
+  static std::string _LP_DTHETAMIN;
+  static std::string _LP_DTHETAMAX;
 
   virtual ~RbtPolarSF();
 
@@ -97,7 +97,7 @@ protected:
   // As this has a virtual base class we need a separate OwnParameterUpdated
   // which can be called by concrete subclass ParameterUpdated methods
   // See Stroustrup C++ 3rd edition, p395, on programming virtual base classes
-  void OwnParameterUpdated(const RbtString &strName);
+  void OwnParameterUpdated(const std::string &strName);
 
 private:
   // Generic scoring function primitive

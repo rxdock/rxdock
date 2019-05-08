@@ -36,13 +36,13 @@ public:
   };
 
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _RMAX;
-  static RbtString
+  static std::string _RMAX;
+  static std::string
       _QUADRATIC; // True = quadratic penalty function; false = linear
 
-  RbtCavityGridSF(const RbtString &strName = "CAVITY");
+  RbtCavityGridSF(const std::string &strName = "CAVITY");
   virtual ~RbtCavityGridSF();
 
 protected:
@@ -53,7 +53,7 @@ protected:
   virtual RbtDouble RawScore() const;
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   RbtRealGridPtr m_spGrid;

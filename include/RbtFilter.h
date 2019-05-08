@@ -25,8 +25,8 @@ class RbtFilterExpressionVisitor;
 
 class RbtFilter : public RbtBaseObject {
 public:
-  static RbtString _CT;
-  RbtFilter(RbtString strfilter, RbtBool filter = false);
+  static std::string _CT;
+  RbtFilter(std::string strfilter, RbtBool filter = false);
   ///////////////////
   // Destructor
   //////////////////

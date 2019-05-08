@@ -21,7 +21,7 @@
 class RbtBaseBiMolTransform : public RbtBaseTransform {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~RbtBaseBiMolTransform();
@@ -42,7 +42,8 @@ protected:
   ////////////////////////////////////////
   // Protected methods
   ///////////////////
-  RbtBaseBiMolTransform(const RbtString &strClass, const RbtString &strName);
+  RbtBaseBiMolTransform(const std::string &strClass,
+                        const std::string &strName);
 
   // PURE VIRTUAL - Derived classes must override
   virtual void SetupReceptor() = 0; // Called by Update when receptor is changed

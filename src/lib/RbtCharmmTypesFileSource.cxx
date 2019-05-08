@@ -18,7 +18,7 @@ RbtCharmmTypesFileSource::RbtCharmmTypesFileSource(const char *fileName)
   _RBTOBJECTCOUNTER_CONSTR_("RbtCharmmTypesFileSource");
 }
 
-RbtCharmmTypesFileSource::RbtCharmmTypesFileSource(const RbtString fileName)
+RbtCharmmTypesFileSource::RbtCharmmTypesFileSource(const std::string fileName)
     : RbtBaseFileSource(fileName) {
   _RBTOBJECTCOUNTER_CONSTR_("RbtCharmmTypesFileSource");
 }
@@ -45,7 +45,7 @@ RbtCharmmTypeList RbtCharmmTypesFileSource::GetTypeList() {
 // Pure virtual in RbtBaseFileSource - needs to be defined here
 void RbtCharmmTypesFileSource::Parse() throw(RbtError) {
   // Expected string constants in MASSES.RTF file
-  const RbtString strMassKey("MASS");
+  const std::string strMassKey("MASS");
 
   // Only parse if we haven't already done so
   if (!m_bParsedOK) {
@@ -60,7 +60,7 @@ void RbtCharmmTypesFileSource::Parse() throw(RbtError) {
         if ((*fileIter).substr(0, 4) == strMassKey) {
           // We have a match so read in the line and store in the types list
           CharmmType chrmType;
-          RbtString strDummy;
+          std::string strDummy;
           istringstream istr(*fileIter);
           istr >> strDummy >> chrmType.nAtomType >> chrmType.strAtomType >>
               chrmType.mass >> chrmType.element;

@@ -18,7 +18,7 @@
 using std::ifstream;
 using std::ios_base;
 
-RbtString RbtGPGenome::_CT("RbtGPGenome");
+std::string RbtGPGenome::_CT("RbtGPGenome");
 RbtInt RbtGPGenome::npi;
 RbtInt RbtGPGenome::nfi;
 RbtInt RbtGPGenome::nsfi;
@@ -55,7 +55,7 @@ RbtGPGenome::RbtGPGenome(istream &in) : m_rand(Rbt::GetRbtRand()) {
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
-RbtGPGenome::RbtGPGenome(RbtString str) : m_rand(Rbt::GetRbtRand()) {
+RbtGPGenome::RbtGPGenome(std::string str) : m_rand(Rbt::GetRbtRand()) {
   istringstream ist(str);
   // Get structure
   ist >> npi >> nfi >> nsfi >> no >> nf >> nr >> nc >> l;

@@ -25,7 +25,7 @@ using std::ostringstream;
 //  _RBTOBJECTCOUNTER_CONSTR_("RbtElementFileSource");
 //}
 
-RbtElementFileSource::RbtElementFileSource(const RbtString &fileName)
+RbtElementFileSource::RbtElementFileSource(const std::string &fileName)
     : RbtBaseFileSource(fileName), m_dHBondRadiusIncr(0.0),
       m_dImplicitRadiusIncr(0.0) {
   _RBTOBJECTCOUNTER_CONSTR_("RbtElementFileSource");
@@ -39,12 +39,12 @@ RbtElementFileSource::~RbtElementFileSource() {
 
 ////////////////////////////////////////
 // Public methods
-RbtString RbtElementFileSource::GetTitle() {
+std::string RbtElementFileSource::GetTitle() {
   Parse();
   return m_strTitle;
 }
 
-RbtString RbtElementFileSource::GetVersion() {
+std::string RbtElementFileSource::GetVersion() {
   Parse();
   return m_strVersion;
 }
@@ -78,7 +78,7 @@ RbtIntList RbtElementFileSource::GetAtomicNumberList() {
 
 // Get element data for a given element name, throws error if not found
 RbtElementData RbtElementFileSource::GetElementData(
-    const RbtString &strElementName) throw(RbtError) {
+    const std::string &strElementName) throw(RbtError) {
   Parse();
   RbtStringElementDataMapIter iter = m_elementNameMap.find(strElementName);
   if (iter != m_elementNameMap.end())
@@ -100,7 +100,7 @@ RbtElementFileSource::GetElementData(RbtInt nAtomicNumber) throw(RbtError) {
     ostringstream ostr;
     ostr << "Atomic number " << nAtomicNumber << " not found in "
          << GetFileName() << ends;
-    RbtString strError(ostr.str());
+    std::string strError(ostr.str());
     // delete ostr.str();
     throw RbtFileMissingParameter(_WHERE_, strError);
   }
@@ -108,7 +108,7 @@ RbtElementFileSource::GetElementData(RbtInt nAtomicNumber) throw(RbtError) {
 
 // Check if given element name is present
 RbtBool
-RbtElementFileSource::isElementNamePresent(const RbtString &strElementName) {
+RbtElementFileSource::isElementNamePresent(const std::string &strElementName) {
   Parse();
   RbtStringElementDataMapIter iter = m_elementNameMap.find(strElementName);
   if (iter != m_elementNameMap.end())
@@ -142,12 +142,12 @@ RbtDouble RbtElementFileSource::GetImplicitRadiusIncr() {
 // Private methods
 // Pure virtual in RbtBaseFileSource - needs to be defined here
 void RbtElementFileSource::Parse() throw(RbtError) {
-  const RbtString strRbtKey = "RBT_ELEMENT_FILE_V1.01";
-  const RbtString strTitleKey = "TITLE ";
-  const RbtString strVersionKey = "VERSION ";
-  const RbtString strElementKey = "ELEMENT";
-  const RbtString strHBondRadiusKey = "HBOND_RADIUS_INCREMENT";
-  const RbtString strImplicitRadiusKey = "IMPLICIT_RADIUS_INCREMENT";
+  const std::string strRbtKey = "RBT_ELEMENT_FILE_V1.01";
+  const std::string strTitleKey = "TITLE ";
+  const std::string strVersionKey = "VERSION ";
+  const std::string strElementKey = "ELEMENT";
+  const std::string strHBondRadiusKey = "HBOND_RADIUS_INCREMENT";
+  const std::string strImplicitRadiusKey = "IMPLICIT_RADIUS_INCREMENT";
 
   // Only parse if we haven't already done so
   if (!m_bParsedOK) {
@@ -183,20 +183,20 @@ void RbtElementFileSource::Parse() throw(RbtError) {
         }
         // Check for HBond radius increment
         else if ((*fileIter).find(strHBondRadiusKey) == 0) {
-          RbtString strDummy;
+          std::string strDummy;
           istringstream istr((*fileIter).c_str());
           istr >> strDummy >> m_dHBondRadiusIncr;
         }
         // Check for Implicit radius increment
         else if ((*fileIter).find(strImplicitRadiusKey) == 0) {
-          RbtString strDummy;
+          std::string strDummy;
           istringstream istr((*fileIter).c_str());
           istr >> strDummy >> m_dImplicitRadiusIncr;
         }
         // Check for element record
         else if ((*fileIter).find(strElementKey) == 0) {
           RbtElementData elemData;
-          RbtString strDummy;
+          std::string strDummy;
           istringstream istr((*fileIter).c_str());
           istr >> strDummy >> elemData.atomicNo >> elemData.element >>
               elemData.minVal >> elemData.maxVal >> elemData.commonVal >>

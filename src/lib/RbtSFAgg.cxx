@@ -15,11 +15,11 @@
 #include "RbtWorkSpace.h"
 
 // Static data member for class type
-RbtString RbtSFAgg::_CT("RbtSFAgg");
+std::string RbtSFAgg::_CT("RbtSFAgg");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtSFAgg::RbtSFAgg(const RbtString &strName)
+RbtSFAgg::RbtSFAgg(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_nNonHLigandAtoms(0) {
 #ifdef _DEBUG
   cout << _CT << " parameterised constructor" << endl;
@@ -66,7 +66,7 @@ void RbtSFAgg::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // without calculating it directly,
     // as the child terms will have incremented the total as part of their
     // ScoreMap implementation
-    RbtString name = GetFullName();
+    std::string name = GetFullName();
     RbtDouble rs = scoreMap[name];
 
     // Cascade to the parent of this aggregate

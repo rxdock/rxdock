@@ -18,7 +18,7 @@ using namespace std;
 #include "RbtMdlFileSink.h"
 #include "RbtMdlFileSource.h"
 
-const RbtString EXEVERSION =
+const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rblist.cxx#4 $)";
 
 namespace Rbt {
@@ -42,7 +42,7 @@ public:
 };
 } // namespace Rbt
 
-void ListAtoms(const RbtAtomList &atomList, RbtString strTitle,
+void ListAtoms(const RbtAtomList &atomList, std::string strTitle,
                RbtInt nMaxToPrint = 20) {
   RbtInt nSize = atomList.size();
   RbtInt nToPrint = std::min(nMaxToPrint, nSize);
@@ -55,7 +55,7 @@ void ListAtoms(const RbtAtomList &atomList, RbtString strTitle,
     cout << (**iter) << endl;
 }
 
-void ListBonds(const RbtBondList &bondList, RbtString strTitle,
+void ListBonds(const RbtBondList &bondList, std::string strTitle,
                RbtInt nMaxToPrint = 20) {
   RbtInt nSize = bondList.size();
   RbtInt nToPrint = std::min(nMaxToPrint, nSize);
@@ -124,17 +124,17 @@ int main(int argc, char *argv[]) {
   cout.setf(ios_base::left, ios_base::adjustfield);
 
   // Strip off the path to the executable, leaving just the file name
-  RbtString strExeName(argv[0]);
-  RbtString::size_type i = strExeName.rfind("/");
-  if (i != RbtString::npos)
+  std::string strExeName(argv[0]);
+  std::string::size_type i = strExeName.rfind("/");
+  if (i != std::string::npos)
     strExeName.erase(0, i + 1);
 
   // Print a standard header
   Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
 
   // Default values for optional arguments
-  RbtString strInputSDFile;
-  RbtString strOutputSDFile;
+  std::string strInputSDFile;
+  std::string strOutputSDFile;
   RbtBool bPosIonise(false);
   RbtBool bNegIonise(false);
   RbtBool bImplH(true); // if true, read only polar hydrogens from SD file, else
@@ -177,7 +177,7 @@ int main(int argc, char *argv[]) {
   cout << endl << "Command line args:" << endl;
   for (RbtInt iarg = 1; iarg < argc; iarg++) {
     cout << argv[iarg];
-    RbtString strArg(argv[iarg]);
+    std::string strArg(argv[iarg]);
     if (strArg.find("-i") == 0)
       strInputSDFile = strArg.substr(2);
     else if (strArg.find("-o") == 0)
@@ -239,7 +239,7 @@ int main(int argc, char *argv[]) {
 
       // Create the ligand model
       RbtModelPtr spModel(new RbtModel(spMdlFileSource));
-      RbtString strModelName = spModel->GetName();
+      std::string strModelName = spModel->GetName();
 
       if (bList) {
         RbtAtomList atomList = spModel->GetAtomList();

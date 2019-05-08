@@ -24,7 +24,7 @@
 class RbtChromDihedralRefData {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Sole constructor
   // If the tetheredAtoms list is empty, then
   //  the end of the bond with the fewest pendant atoms is rotated (other half

@@ -20,18 +20,18 @@
 class RbtSphereSiteMapper : public RbtSiteMapper {
 public:
   // Static data member for class type
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _VOL_INCR;
-  static RbtString _SMALL_SPHERE;
-  static RbtString _LARGE_SPHERE;
-  static RbtString _GRIDSTEP;
-  static RbtString _CENTER;
-  static RbtString _RADIUS;
-  static RbtString _MIN_VOLUME;
-  static RbtString _MAX_CAVITIES;
+  static std::string _VOL_INCR;
+  static std::string _SMALL_SPHERE;
+  static std::string _LARGE_SPHERE;
+  static std::string _GRIDSTEP;
+  static std::string _CENTER;
+  static std::string _RADIUS;
+  static std::string _MIN_VOLUME;
+  static std::string _MAX_CAVITIES;
 
-  RbtSphereSiteMapper(const RbtString &strName = "SPHERE_MAPPER");
+  RbtSphereSiteMapper(const std::string &strName = "SPHERE_MAPPER");
   virtual ~RbtSphereSiteMapper();
 
   // Override RbtSiteMapper pure virtual

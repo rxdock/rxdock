@@ -62,9 +62,9 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  RbtString strRefSDFile(argv[1]);
-  RbtString strInputSDFile(argv[2]);
-  RbtString strOutputSDFile;
+  std::string strRefSDFile(argv[1]);
+  std::string strInputSDFile(argv[2]);
+  std::string strOutputSDFile;
   RbtBool bOutput(false);
   if (argc > 3) {
     strOutputSDFile = argv[3];
@@ -85,8 +85,8 @@ int main(int argc, char *argv[]) {
     // Get reference ligand (first record)
     RbtModelPtr spRefModel(new RbtModel(spRefFileSource));
     RbtCoordListList cll;
-    RbtString strSmarts;
-    RbtString strSmiles;
+    std::string strSmarts;
+    std::string strSmiles;
     RbtAtomListList pathset = DT::QueryModel(spRefModel, strSmarts, strSmiles);
     cout << "Reference SMILES: " << strSmiles << endl;
     cout << "Paths found = " << pathset.size() << endl;

@@ -21,7 +21,7 @@
 
 class RbtAnnotationHandler {
 public:
-  static RbtString _ANNOTATION_FIELD;
+  static std::string _ANNOTATION_FIELD;
 
   ////////////////////////////////////////
   // Constructors/destructors
@@ -34,7 +34,7 @@ public:
   // Get a const ref to the annotation list (read-only)
   const RbtAnnotationList &GetAnnotationList() const;
   RbtInt GetNumAnnotations() const;
-  void RenderAnnotationList(const RbtString &strName,
+  void RenderAnnotationList(const std::string &strName,
                             RbtStringList &retVal) const;
 
 protected:

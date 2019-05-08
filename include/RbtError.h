@@ -35,12 +35,12 @@
 #define _WHERE_ __FILE__, __LINE__
 
 // General errors
-const RbtString IDS_ERROR = "RBT_ERROR";
-const RbtString IDS_OK = "RBT_OK";
-const RbtString IDS_INVALID_REQUEST = "RBT_INVALID_REQUEST";
-const RbtString IDS_BAD_ARGUMENT = "RBT_BAD_ARGUMENT";
-const RbtString IDS_ASSERT = "RBT_ASSERT";
-const RbtString IDS_BAD_RECEPTOR_FILE = "BAD_RECEPTOR_FILE";
+const std::string IDS_ERROR = "RBT_ERROR";
+const std::string IDS_OK = "RBT_OK";
+const std::string IDS_INVALID_REQUEST = "RBT_INVALID_REQUEST";
+const std::string IDS_BAD_ARGUMENT = "RBT_BAD_ARGUMENT";
+const std::string IDS_ASSERT = "RBT_ASSERT";
+const std::string IDS_BAD_RECEPTOR_FILE = "BAD_RECEPTOR_FILE";
 
 // Template for throwing exceptions from assert failures
 //(The C++ Programming Language, 3rd Ed, p750)
@@ -67,8 +67,8 @@ public:
 
   // Parameterised constructor
   // Use to create unspecified Rbt Errors
-  RbtError(const RbtString &strFile, RbtInt nLine,
-           const RbtString &strMessage = "")
+  RbtError(const std::string &strFile, RbtInt nLine,
+           const std::string &strMessage = "")
       : m_strName(IDS_ERROR), m_strFile(strFile), m_nLine(nLine),
         m_strMessage(strMessage), m_bOK(false) {}
 
@@ -86,30 +86,30 @@ public:
   }
 
   // Attribute methods
-  RbtString File() const { return m_strFile; }       // Get filename
-  RbtInt Line() const { return m_nLine; }            // Get line number
-  RbtString Message() const { return m_strMessage; } // Get message
-  RbtString Name() const { return m_strName; }       // Get error name
+  std::string File() const { return m_strFile; }       // Get filename
+  RbtInt Line() const { return m_nLine; }              // Get line number
+  std::string Message() const { return m_strMessage; } // Get message
+  std::string Name() const { return m_strName; }       // Get error name
   RbtBool isOK() const { return m_bOK; } // If true, status is OK (not an error)
 
   // Append new message to existing message
-  void AddMessage(const RbtString &strMessage) { m_strMessage += strMessage; }
+  void AddMessage(const std::string &strMessage) { m_strMessage += strMessage; }
 
   ///////////////////////
   // Protected methods
 protected:
   // Protected constructor to allow derived error classes to set error name
-  RbtError(const RbtString &strName, const RbtString &strFile, RbtInt nLine,
-           const RbtString &strMessage = "")
+  RbtError(const std::string &strName, const std::string &strFile, RbtInt nLine,
+           const std::string &strMessage = "")
       : m_strName(strName), m_strFile(strFile), m_nLine(nLine),
         m_strMessage(strMessage), m_bOK(false) {}
 
   ///////////////////////
   // Private data
 private:
-  RbtString m_strName;
-  RbtString m_strFile;
-  RbtString m_strMessage;
+  std::string m_strName;
+  std::string m_strFile;
+  std::string m_strMessage;
   RbtInt m_nLine;
   RbtBool m_bOK;
 };
@@ -121,15 +121,15 @@ private:
 // Invalid request - object does not supported the request
 class RbtInvalidRequest : public RbtError {
 public:
-  RbtInvalidRequest(const RbtString &strFile, RbtInt nLine,
-                    const RbtString &strMessage = "")
+  RbtInvalidRequest(const std::string &strFile, RbtInt nLine,
+                    const std::string &strMessage = "")
       : RbtError(IDS_INVALID_REQUEST, strFile, nLine, strMessage) {}
 };
 // Bad argument - e.g. empty atom list
 class RbtBadArgument : public RbtError {
 public:
-  RbtBadArgument(const RbtString &strFile, RbtInt nLine,
-                 const RbtString &strMessage = "")
+  RbtBadArgument(const std::string &strFile, RbtInt nLine,
+                 const std::string &strMessage = "")
       : RbtError(IDS_BAD_ARGUMENT, strFile, nLine, strMessage) {}
 };
 // Assertion failure
@@ -144,8 +144,8 @@ public:
 // bad receptor type (ie not PSF/CRD either mol2
 class RbtBadReceptorFile : public RbtError {
 public:
-  RbtBadReceptorFile(const RbtString &strFile, RbtInt nLine,
-                     const RbtString &strMessage = "")
+  RbtBadReceptorFile(const std::string &strFile, RbtInt nLine,
+                     const std::string &strMessage = "")
       : RbtError(IDS_BAD_RECEPTOR_FILE, strFile, nLine, strMessage) {}
 };
 

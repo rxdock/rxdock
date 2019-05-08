@@ -12,8 +12,8 @@
 
 #include "RbtReceptorFlexData.h"
 
-const RbtString &RbtReceptorFlexData::_FLEX_DISTANCE = "FLEX_DISTANCE";
-const RbtString &RbtReceptorFlexData::_DIHEDRAL_STEP = "DIHEDRAL_STEP";
+const std::string &RbtReceptorFlexData::_FLEX_DISTANCE = "FLEX_DISTANCE";
+const std::string &RbtReceptorFlexData::_DIHEDRAL_STEP = "DIHEDRAL_STEP";
 
 RbtReceptorFlexData::RbtReceptorFlexData(RbtDockingSite *pDockSite)
     : RbtFlexData(pDockSite) {

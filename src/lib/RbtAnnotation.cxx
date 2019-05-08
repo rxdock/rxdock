@@ -31,7 +31,7 @@ RbtDouble RbtAnnotation::GetDistance() const { return m_dist; }
 RbtDouble RbtAnnotation::GetScore() const { return m_score; }
 
 // Get the fully qualified (FQ) residue name for atom 2 (target atom)
-RbtString RbtAnnotation::GetFQResName() const {
+std::string RbtAnnotation::GetFQResName() const {
   return m_pAtom2->GetSegmentName() + ":" + m_pAtom2->GetSubunitName() + "_" +
          m_pAtom2->GetSubunitId() + ":";
 }
@@ -46,7 +46,7 @@ void RbtAnnotation::SetScore(RbtDouble s) { m_score = s; }
 // Note: string does not contain the first field (annotation name)
 // Full string required for SD file is:
 // strName + "," + Render();
-RbtString RbtAnnotation::Render() const {
+std::string RbtAnnotation::Render() const {
   ostringstream ostr;
   // Check if either atom is a pseudoatom
   // If so, arbitrarily write the first non-bridgehead atom ID
@@ -77,7 +77,7 @@ RbtString RbtAnnotation::Render() const {
   ostr.setf(ios_base::fixed, ios_base::floatfield);
   ostr.precision(2);
   ostr << m_dist << "," << m_score;
-  RbtString retVal(ostr.str());
+  std::string retVal(ostr.str());
   return retVal;
 }
 

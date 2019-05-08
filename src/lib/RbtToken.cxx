@@ -16,7 +16,7 @@
 
 static const RbtVble default_vble;
 
-RbtString RbtToken::_CT("RbtToken");
+std::string RbtToken::_CT("RbtToken");
 
 ///////////////////
 // Constructors

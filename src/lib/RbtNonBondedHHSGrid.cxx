@@ -14,7 +14,7 @@
 #include "RbtAtom.h"
 #include "RbtFileError.h"
 
-RbtString RbtNonBondedHHSGrid::_CT("RbtNonBondedHHSGrid");
+std::string RbtNonBondedHHSGrid::_CT("RbtNonBondedHHSGrid");
 
 RbtNonBondedHHSGrid::RbtNonBondedHHSGrid(const RbtCoord &gridMin,
                                          const RbtCoord &gridStep, RbtUInt NX,

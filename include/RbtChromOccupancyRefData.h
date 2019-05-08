@@ -23,7 +23,7 @@ class RbtModel;
 class RbtChromOccupancyRefData {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Sole constructor
   RbtChromOccupancyRefData(
       RbtModel *pModel,

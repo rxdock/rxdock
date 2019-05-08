@@ -23,24 +23,24 @@ class RbtVdwIdxSF : public RbtBaseInterSF,
                     public RbtVdwSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
   // DM 12 Jun 2002 - score thresholds used for counting attractive and
   // repulsive interactions (thresholds represent partial vdW scores summed per
   // ligand atom, used for outputting ligand atom counts)
-  static RbtString _THRESHOLD_ATTR;
-  static RbtString _THRESHOLD_REP;
+  static std::string _THRESHOLD_ATTR;
+  static std::string _THRESHOLD_REP;
   // DM 03 Feb 2003 - score threshold for outputting individual (atom-atom)
   // lipophilic vdW interactions i.e between two non-polar carbons/hydrogens
-  static RbtString _ANNOTATION_LIPO;
+  static std::string _ANNOTATION_LIPO;
   // DM 10 Apr 2003 - vdw annotation can be quite slow so provide boolean option
   // to disable
-  static RbtString _ANNOTATE;
+  static std::string _ANNOTATE;
   // DM 14 Jun 2006 - option to disable solvent performance enhancements, mainly
   // for testing
-  static RbtString _FAST_SOLVENT;
+  static std::string _FAST_SOLVENT;
 
-  RbtVdwIdxSF(const RbtString &strName = "VDW");
+  RbtVdwIdxSF(const std::string &strName = "VDW");
   virtual ~RbtVdwIdxSF();
 
   // Override RbtBaseSF::ScoreMap to provide additional raw descriptors
@@ -60,7 +60,7 @@ protected:
 
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   void RenderAnnotationsByResidue(RbtStringList &retVal) const;

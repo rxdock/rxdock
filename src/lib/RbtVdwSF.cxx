@@ -14,12 +14,12 @@
 #include "RbtModel.h"
 
 // Static data members
-RbtString RbtVdwSF::_CT("RbtVdwSF");
-RbtString RbtVdwSF::_USE_4_8("USE_4_8");
-RbtString RbtVdwSF::_USE_TRIPOS("USE_TRIPOS");
-RbtString RbtVdwSF::_RMAX("RMAX");
-RbtString RbtVdwSF::_ECUT("ECUT");
-RbtString RbtVdwSF::_E0("E0");
+std::string RbtVdwSF::_CT("RbtVdwSF");
+std::string RbtVdwSF::_USE_4_8("USE_4_8");
+std::string RbtVdwSF::_USE_TRIPOS("USE_TRIPOS");
+std::string RbtVdwSF::_RMAX("RMAX");
+std::string RbtVdwSF::_ECUT("ECUT");
+std::string RbtVdwSF::_E0("E0");
 
 RbtVdwSF::RbtVdwSF()
     : m_use_4_8(true), m_use_tripos(false), m_rmax(1.5), m_ecut(1.0),
@@ -49,7 +49,7 @@ RbtVdwSF::~RbtVdwSF() {
 // As this has a virtual base class we need a separate OwnParameterUpdated
 // which can be called by concrete subclass ParameterUpdated methods
 // See Stroustrup C++ 3rd edition, p395, on programming virtual base classes
-void RbtVdwSF::OwnParameterUpdated(const RbtString &strName) {
+void RbtVdwSF::OwnParameterUpdated(const std::string &strName) {
   // DM 25 Oct 2000 - heavily used params
   if (strName == _USE_4_8) {
     m_use_4_8 = GetParameter(_USE_4_8);
@@ -294,19 +294,19 @@ void RbtVdwSF::Setup() {
   // Dummy read to force parsing of file, otherwise the first SetSection is
   // overridden
   RbtStringList secList = m_spVdwSource->GetSectionList();
-  RbtString _R("R");
-  RbtString _K("K");
-  RbtString _IP("IP");
-  RbtString _POL("POL");
-  RbtString _ISHBD("isHBD");
-  RbtString _ISHBA("isHBA");
+  std::string _R("R");
+  std::string _K("K");
+  std::string _IP("IP");
+  std::string _POL("POL");
+  std::string _ISHBD("isHBD");
+  std::string _ISHBA("isHBA");
   m_vdwTable = RbtVdwTable(RbtTriposAtomType::MAXTYPES,
                            RbtVdwRow(RbtTriposAtomType::MAXTYPES));
   m_maxRange = RbtDoubleList(RbtTriposAtomType::MAXTYPES, 0.0);
   for (RbtInt i = RbtTriposAtomType::UNDEFINED; i < RbtTriposAtomType::MAXTYPES;
        i++) {
     // Read the params for atom type i
-    RbtString stri = triposType.Type2Str(RbtTriposAtomType::eType(i));
+    std::string stri = triposType.Type2Str(RbtTriposAtomType::eType(i));
     m_spVdwSource->SetSection(stri);
     RbtDouble Ri = m_spVdwSource->GetParameterValue(_R); // vdw radius
     RbtDouble Ki = m_spVdwSource->GetParameterValue(_K); // Tripos 5.2 well
@@ -323,7 +323,7 @@ void RbtVdwSF::Setup() {
     // m_vdwTable[i][j] = m_vdwTable[j][i])
     for (RbtInt j = i; j < RbtTriposAtomType::MAXTYPES; j++) {
       // Read the params for atom type j
-      RbtString strj = triposType.Type2Str(RbtTriposAtomType::eType(j));
+      std::string strj = triposType.Type2Str(RbtTriposAtomType::eType(j));
       m_spVdwSource->SetSection(strj);
       RbtDouble Rj = m_spVdwSource->GetParameterValue(_R); // vdw radius
       RbtDouble Kj =

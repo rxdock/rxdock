@@ -18,15 +18,15 @@
 #include <stdio.h>
 void main(int argc, char *argv[]) {
   /*cout << "Genome file: \n";
-  RbtString gfile;
+  std::string gfile;
   cin >> gfile; */
-  RbtString gfile(argv[1]);
+  std::string gfile(argv[1]);
   ifstream gstr(gfile.c_str(), ios::in);
   RbtGPGenome gen(gstr);
   /*cout << "Names file: \n";
-  RbtString nfile;
+  std::string nfile;
   cin >> nfile;*/
-  RbtString nfile(argv[2]);
+  std::string nfile(argv[2]);
   ifstream nstr(nfile.c_str(), ios::in);
   RbtParser p(gen.GetNIP(), gen.GetNIF(), gen.GetNN(), gen.GetNO());
   RbtInt i = 1;

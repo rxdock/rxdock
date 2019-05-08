@@ -22,13 +22,13 @@
 class RbtRandLigTransform : public RbtBaseUniMolTransform {
 public:
   // Static data member for class type
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _TORS_STEP;
+  static std::string _TORS_STEP;
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtRandLigTransform(const RbtString &strName = "RANDLIG");
+  RbtRandLigTransform(const std::string &strName = "RANDLIG");
   virtual ~RbtRandLigTransform();
 
   ////////////////////////////////////////

@@ -84,11 +84,11 @@ void RbtBiMolWorkSpace::UpdateModelCoordsFromChromRecords(
         if (chromLength > 0) {
           ostringstream ostr;
           ostr << "CHROM." << iModel;
-          RbtString chromField = ostr.str();
+          std::string chromField = ostr.str();
           if (pSource->isDataFieldPresent(chromField)) {
             // TODO: Move this code to RbtVariant class
             // Concatenate the multi-record value into a single string
-            RbtString chromRecord = Rbt::ConvertListToDelimitedString(
+            std::string chromRecord = Rbt::ConvertListToDelimitedString(
                 pSource->GetDataValue(chromField), ",");
             // Now split into string values and convert to doubles
             RbtStringList chromValues =
@@ -97,7 +97,7 @@ void RbtBiMolWorkSpace::UpdateModelCoordsFromChromRecords(
               RbtDoubleList chromVec;
               for (RbtStringListConstIter iter = chromValues.begin();
                    iter != chromValues.end(); ++iter) {
-                RbtString chromValue(*iter);
+                std::string chromValue(*iter);
                 chromVec.push_back(atof(chromValue.c_str()));
               }
               spChrom->SetVector(chromVec);
@@ -142,7 +142,7 @@ void RbtBiMolWorkSpace::SaveLigand(RbtMolecularFileSinkPtr spSink,
   RbtBaseSF *pSF(GetSF());
   // If we have a scoring function, clear any current score data
   if (pSF) {
-    RbtString strSFName(pSF->GetFullName());
+    std::string strSFName(pSF->GetFullName());
     spLigand->ClearAllDataFields(strSFName);
     spLigand->ClearAllDataFields(RbtAnnotationHandler::_ANNOTATION_FIELD);
   }

@@ -18,7 +18,7 @@ using std::setw;
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtMdlFileSink::RbtMdlFileSink(const RbtString &fileName, RbtModelPtr spModel)
+RbtMdlFileSink::RbtMdlFileSink(const std::string &fileName, RbtModelPtr spModel)
     : RbtBaseMolecularFileSink(fileName, spModel), m_bFirstRender(true) {
   // DM 27 Apr 1999 - default behaviour is for the first Render to overwrite any
   // existing file then subsequent Renders to append.
@@ -67,7 +67,7 @@ void RbtMdlFileSink::Render() throw(RbtError) {
       AddLine(titleList[0]);
     else
       AddLine(spModel->GetName());
-    AddLine(RbtString("  rDOCK(R)          3D"));
+    AddLine(std::string("  rDOCK(R)          3D"));
     AddLine(Rbt::GetProduct() + "/" + Rbt::GetVersion() + "/" +
             Rbt::GetBuild());
 

@@ -12,7 +12,7 @@
 
 #include "RbtFilterExpression.h"
 
-RbtString RbtFilterExpression::_CT("FilterExpression");
+std::string RbtFilterExpression::_CT("FilterExpression");
 
 RbtFilterExpression::RbtFilterExpression() { _RBTOBJECTCOUNTER_CONSTR_(_CT); }
 

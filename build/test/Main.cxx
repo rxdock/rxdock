@@ -2,10 +2,10 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 
-const RbtString EXEVERSION = " ($Id$)";
+const std::string EXEVERSION = " ($Id$)";
 
 int main(int argc, char **argv) {
-  RbtString strExeName(argv[0]);
+  std::string strExeName(argv[0]);
   Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
   CppUnit::TextUi::TestRunner runner;
   CppUnit::TestFactoryRegistry &registry =

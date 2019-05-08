@@ -23,7 +23,7 @@
 
 class RbtGPPopulation {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////
@@ -42,14 +42,14 @@ public:
   void Initialise(RbtDouble, RbtBool);
   void ScaleFitness();
   void Eval(RbtDouble, RbtBool);
-  RbtGPGenomePtr Select(RbtString) const;
+  RbtGPGenomePtr Select(std::string) const;
 
-  void SelectionUpdate(RbtString);
+  void SelectionUpdate(std::string);
 
-  void GAstep(RbtString, RbtDouble, RbtDouble, RbtDouble, RbtDouble, RbtDouble,
-              RbtBool) throw(RbtError);
-  void EPstep(RbtString, RbtDouble, RbtDouble, RbtDouble, RbtDouble, RbtDouble,
-              RbtBool) throw(RbtError);
+  void GAstep(std::string, RbtDouble, RbtDouble, RbtDouble, RbtDouble,
+              RbtDouble, RbtBool) throw(RbtError);
+  void EPstep(std::string, RbtDouble, RbtDouble, RbtDouble, RbtDouble,
+              RbtDouble, RbtBool) throw(RbtError);
   RbtGPGenomePtr Best() const;
   ostream &Print(ostream &) const;
   friend ostream &operator<<(ostream &, const RbtGPPopulation &);

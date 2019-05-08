@@ -22,7 +22,7 @@
 
 class RbtNonBondedHHSGrid : public RbtBaseGrid {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   RbtNonBondedHHSGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
                       RbtUInt NX, RbtUInt NY, RbtUInt NZ, RbtUInt NPad = 0);
   RbtNonBondedHHSGrid(istream &istr);

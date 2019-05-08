@@ -25,7 +25,7 @@
 
 class RbtGPFFCHK1 : public RbtGPFitnessFunction {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   RbtGPFFCHK1(RbtContextPtr c) : contextp(c) { _RBTOBJECTCOUNTER_CONSTR_(_CT); }
   virtual ~RbtGPFFCHK1() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 

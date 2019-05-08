@@ -12,7 +12,7 @@
 
 #include "RbtCellTokenIter.h"
 
-RbtString RbtCellTokenIter::_CT("RbtCellTokenIter");
+std::string RbtCellTokenIter::_CT("RbtCellTokenIter");
 
 ///////////////////
 // Constructors

@@ -23,7 +23,7 @@
 
 class RbtConstraint {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////
@@ -66,7 +66,7 @@ typedef RbtConstraintList::iterator RbtConstraintListIter;
 typedef RbtConstraintList::const_iterator RbtConstraintListConstIter;
 
 namespace Rbt {
-RbtConstraintPtr CreateConstraint(RbtCoord &c, RbtDouble &t, RbtString &n,
+RbtConstraintPtr CreateConstraint(RbtCoord &c, RbtDouble &t, std::string &n,
                                   RbtBool bCount = true);
 void ZeroCounters();
 void ReadConstraint(istream &ifile, RbtConstraintPtr &cnt,

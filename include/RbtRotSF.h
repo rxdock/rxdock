@@ -21,14 +21,14 @@
 class RbtRotSF : public RbtBaseInterSF {
 public:
   // Static data member for class type
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
   // Boolean controlling whether to include bonds to NH3+ in rotable bond count
-  static RbtString _INCNH3;
+  static std::string _INCNH3;
   // Boolean controlling whether to include bonds to OH in  rotable bond count
-  static RbtString _INCOH;
+  static std::string _INCOH;
 
-  RbtRotSF(const RbtString &strName = "ROT");
+  RbtRotSF(const std::string &strName = "ROT");
   virtual ~RbtRotSF();
 
 protected:
@@ -36,7 +36,7 @@ protected:
   virtual void SetupLigand();
   virtual void SetupScore();
   virtual RbtDouble RawScore() const;
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   RbtInt nRot;

@@ -21,7 +21,7 @@ RbtCrdFileSource::RbtCrdFileSource(const char *fileName)
   _RBTOBJECTCOUNTER_CONSTR_("RbtCrdFileSource");
 }
 
-RbtCrdFileSource::RbtCrdFileSource(const RbtString fileName)
+RbtCrdFileSource::RbtCrdFileSource(const std::string fileName)
     : RbtBaseMolecularFileSource(
           fileName, "CRD_FILE_SOURCE") // Call base class constructor
 {
@@ -66,15 +66,15 @@ void RbtCrdFileSource::Parse() throw(RbtError) {
       fileIter++;
       m_atomList.reserve(nAtomRec); // Allocate enough memory for the vector
 
-      RbtInt nAtomId;           // original atom number in CRD file
-      RbtString strSegmentName; // segment name in PSF file
-      RbtInt nSubunitId;        // subunit(residue) number in CRD file
+      RbtInt nAtomId;             // original atom number in CRD file
+      std::string strSegmentName; // segment name in PSF file
+      RbtInt nSubunitId;          // subunit(residue) number in CRD file
       //(residues are numbered consecutively across all segments.
       // Note that we don't store the residue number in RbtAtom)
-      RbtString strSubunitId;   // subunit(residue) ID in CRD file
-      RbtString strSubunitName; // subunit(residue) name in CRD file
-      RbtString strAtomName;    // atom name from CRD file
-      RbtCoord coord;           // X,Y,Z coords
+      std::string strSubunitId;   // subunit(residue) ID in CRD file
+      std::string strSubunitName; // subunit(residue) name in CRD file
+      std::string strAtomName;    // atom name from CRD file
+      RbtCoord coord;             // X,Y,Z coords
       // NOTE: we do not read the weighting array value at present
 
       while ((m_atomList.size() < nAtomRec) && (fileIter != fileEnd)) {

@@ -22,9 +22,9 @@
 #include <fstream>
 #include <iomanip>
 
-const RbtString EXEVERSION =
+const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbcalcgrid.cxx#3 $)";
-const RbtString _ROOT_SF = "SCORE";
+const std::string _ROOT_SF = "SCORE";
 
 // Creates list of probe models
 // NOTE: MUST BE IN ORDER OF ASCENDING RADII
@@ -87,20 +87,20 @@ int main(int argc, char *argv[]) {
   cout.setf(ios_base::left, ios_base::adjustfield);
 
   // Strip off the path to the executable, leaving just the file name
-  RbtString strExeName(argv[0]);
-  RbtString::size_type i = strExeName.rfind("/");
-  if (i != RbtString::npos)
+  std::string strExeName(argv[0]);
+  std::string::size_type i = strExeName.rfind("/");
+  if (i != std::string::npos)
     strExeName.erase(0, i + 1);
 
   // Print a standard header
   Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
 
   // Command line arguments and default values
-  RbtString strSuffix(".grd");
-  RbtString strReceptorPrmFile;             // Receptor param file
-  RbtString strSFFile("calcgrid_attr.prm"); // Scoring function file
-  RbtDouble gs(0.5);                        // grid step
-  RbtDouble border(1.0);                    // grid border around docking site
+  std::string strSuffix(".grd");
+  std::string strReceptorPrmFile;             // Receptor param file
+  std::string strSFFile("calcgrid_attr.prm"); // Scoring function file
+  RbtDouble gs(0.5);                          // grid step
+  RbtDouble border(1.0);                      // grid border around docking site
 
   // Brief help message
   if (argc == 1) {
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
   cout << endl << "Command line args:" << endl;
   for (RbtInt iarg = 1; iarg < argc; iarg++) {
     cout << argv[iarg];
-    RbtString strArg(argv[iarg]);
+    std::string strArg(argv[iarg]);
     if (strArg.find("-o") == 0)
       strSuffix = strArg.substr(2);
     else if (strArg.find("-r") == 0)
@@ -137,10 +137,10 @@ int main(int argc, char *argv[]) {
     else if (strArg.find("-p") == 0)
       strSFFile = strArg.substr(2);
     else if (strArg.find("-g") == 0) {
-      RbtString strGridStep = strArg.substr(2);
+      std::string strGridStep = strArg.substr(2);
       gs = atof(strGridStep.c_str());
     } else if (strArg.find("-b") == 0) {
-      RbtString strBorder = strArg.substr(2);
+      std::string strBorder = strArg.substr(2);
       border = atof(strBorder.c_str());
     } else {
       cout << " ** INVALID ARGUMENT" << endl;
@@ -157,7 +157,7 @@ int main(int argc, char *argv[]) {
     // Set the workspace name to the root of the receptor .prm filename
     RbtStringList componentList =
         Rbt::ConvertDelimitedStringToList(strReceptorPrmFile, ".");
-    RbtString wsName = componentList.front();
+    std::string wsName = componentList.front();
     spWS->SetName(wsName);
 
     // Read the receptor parameter file
@@ -190,14 +190,14 @@ int main(int argc, char *argv[]) {
     // yet
     RbtBool bEnsemble = (spReceptor->GetNumSavedCoords() > 1);
     if (bEnsemble) {
-      RbtString message(
+      std::string message(
           "rbcalcgrid does not support multiple receptor conformations yet");
       throw RbtInvalidRequest(_WHERE_, message);
     }
 
     // Read docking site from file and register with workspace
-    RbtString strASFile = spWS->GetName() + ".as";
-    RbtString strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
+    std::string strASFile = spWS->GetName() + ".as";
+    std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
     // DM 26 Sep 2000 - ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
     ifstream istr(strInputFile.c_str(), ios_base::in);
@@ -229,7 +229,7 @@ int main(int argc, char *argv[]) {
     RbtModelList probes = CreateProbes();
 
     // Open output file
-    RbtString strOutputFile(spWS->GetName() + strSuffix);
+    std::string strOutputFile(spWS->GetName() + strSuffix);
 #if defined(__sgi) && !defined(__GNUC__)
     ofstream ostr(strOutputFile.c_str(), ios_base::out | ios_base::trunc);
 #else
@@ -255,7 +255,7 @@ int main(int argc, char *argv[]) {
       RbtModelPtr spLigand(*mIter);
       RbtAtom *pAtom = spLigand->GetAtomList().front();
       RbtTriposAtomType::eType atomType = pAtom->GetTriposType();
-      RbtString strType = triposType.Type2Str(atomType);
+      std::string strType = triposType.Type2Str(atomType);
       cout << "Atom type=" << strType << endl;
       // Register ligand with workspace
       spWS->SetLigand(spLigand);

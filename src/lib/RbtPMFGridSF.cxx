@@ -14,11 +14,11 @@
 #include "RbtFileError.h"
 #include "RbtWorkSpace.h"
 
-RbtString RbtPMFGridSF::_CT("RbtPMFGridSF");
-RbtString RbtPMFGridSF::_GRID("GRID");
-RbtString RbtPMFGridSF::_SMOOTHED("SMOOTHED");
+std::string RbtPMFGridSF::_CT("RbtPMFGridSF");
+std::string RbtPMFGridSF::_GRID("GRID");
+std::string RbtPMFGridSF::_SMOOTHED("SMOOTHED");
 
-RbtPMFGridSF::RbtPMFGridSF(const RbtString &strName)
+RbtPMFGridSF::RbtPMFGridSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_bSmoothed(true) {
   AddParameter(_GRID, ".grd");
   AddParameter(_SMOOTHED, m_bSmoothed);
@@ -40,10 +40,11 @@ void RbtPMFGridSF::SetupReceptor() {
   if (GetReceptor().Null())
     return;
 
-  RbtString strWSName = GetWorkSpace()->GetName();
+  std::string strWSName = GetWorkSpace()->GetName();
 
-  RbtString strSuffix = GetParameter(_GRID);
-  RbtString strFile = Rbt::GetRbtFileName("data/grids", strWSName + strSuffix);
+  std::string strSuffix = GetParameter(_GRID);
+  std::string strFile =
+      Rbt::GetRbtFileName("data/grids", strWSName + strSuffix);
   cout << _CT << " Reading PMF grid from " << strFile << endl;
   ifstream istr(strFile.c_str(), ios_base::in | ios_base::binary);
   ReadGrids(istr);

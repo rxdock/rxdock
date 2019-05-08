@@ -13,10 +13,10 @@
 #include "RbtConstSF.h"
 
 // Static data member for class type
-RbtString RbtConstSF::_CT("RbtConstSF");
-RbtString RbtConstSF::_SOLVENT_PENALTY("SOLVENT_PENALTY");
+std::string RbtConstSF::_CT("RbtConstSF");
+std::string RbtConstSF::_SOLVENT_PENALTY("SOLVENT_PENALTY");
 
-RbtConstSF::RbtConstSF(const RbtString &strName)
+RbtConstSF::RbtConstSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_solventPenalty(0.5) {
   AddParameter(_SOLVENT_PENALTY, m_solventPenalty);
 #ifdef _DEBUG
@@ -39,14 +39,14 @@ void RbtConstSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
 
     // First deal with the inter score which is stored in its natural location
     // in the map
-    RbtString name = GetFullName();
+    std::string name = GetFullName();
     scoreMap[name] = rs;
     AddToParentMapEntry(scoreMap, rs);
 
     // Now deal with the system raw score which needs to be stored in
     // SCORE.SYSTEM.CONST
     RbtDouble system_rs = SystemScore();
-    RbtString systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
+    std::string systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
     scoreMap[systemName] = system_rs;
     // increment the SCORE.SYSTEM total
     RbtDouble parentScore = scoreMap[RbtBaseSF::_SYSTEM_SF];
@@ -75,7 +75,7 @@ RbtDouble RbtConstSF::SystemScore() const {
   return retVal;
 }
 
-void RbtConstSF::ParameterUpdated(const RbtString &strName) {
+void RbtConstSF::ParameterUpdated(const std::string &strName) {
   if (strName == _SOLVENT_PENALTY) {
     m_solventPenalty = GetParameter(_SOLVENT_PENALTY);
   } else {

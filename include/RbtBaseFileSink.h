@@ -28,16 +28,16 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   // RbtBaseFileSink(const char* fileName);
-  RbtBaseFileSink(const RbtString &fileName);
+  RbtBaseFileSink(const std::string &fileName);
 
   virtual ~RbtBaseFileSink(); // Default destructor
 
   ////////////////////////////////////////
   // Public methods
   ////////////////
-  RbtString GetFileName() const { return m_strFileName; }
+  std::string GetFileName() const { return m_strFileName; }
   // void SetFileName(const char* fileName);
-  void SetFileName(const RbtString &fileName);
+  void SetFileName(const std::string &fileName);
   RbtBool StatusOK() { return Status().isOK(); }
   RbtError Status();
 
@@ -53,9 +53,9 @@ protected:
   // it
   void Write(RbtBool bClearCache = true) throw(RbtError);
   // Add a complete line to the cache
-  void AddLine(const RbtString &fileRec);
+  void AddLine(const std::string &fileRec);
   // Replace a complete line in the cache
-  void ReplaceLine(const RbtString &fileRec, RbtUInt nRec);
+  void ReplaceLine(const std::string &fileRec, RbtUInt nRec);
   // Is cache empty
   RbtBool isCacheEmpty() const { return m_lineRecs.empty(); }
 
@@ -92,7 +92,7 @@ private:
   // Private data
   //////////////
   RbtStringList m_lineRecs;
-  RbtString m_strFileName;
+  std::string m_strFileName;
   ofstream m_fileOut;
   RbtBool m_bAppend; // If true, Write() appends to file rather than overwriting
 };

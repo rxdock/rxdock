@@ -21,7 +21,7 @@
 class RbtBaseInterSF : public virtual RbtBaseSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors

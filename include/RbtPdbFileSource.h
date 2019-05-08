@@ -22,7 +22,7 @@ class RbtPdbFileSource : public RbtBaseMolecularFileSource {
 public:
   // Constructors
   RbtPdbFileSource(const char *fileName);
-  RbtPdbFileSource(const RbtString fileName);
+  RbtPdbFileSource(const std::string fileName);
 
   // Default destructor
   virtual ~RbtPdbFileSource();

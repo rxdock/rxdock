@@ -14,10 +14,10 @@
 #include "RbtSFRequest.h"
 #include "RbtWorkSpace.h"
 
-RbtString RbtSAIdxSF::_CT("RbtSAIdxSF");
-RbtString RbtSAIdxSF::_INCR("INCR");
+std::string RbtSAIdxSF::_CT("RbtSAIdxSF");
+std::string RbtSAIdxSF::_INCR("INCR");
 
-RbtSAIdxSF::RbtSAIdxSF(const RbtString &aName)
+RbtSAIdxSF::RbtSAIdxSF(const std::string &aName)
     : RbtBaseSF(_CT, aName), m_maxR(2.0), m_bFlexRec(false), m_lig_0(0.0),
       m_lig_free(0.0), m_lig_bound(0.0), m_site_0(0.0), m_site_free(0.0),
       m_site_bound(0.0), m_solvent_0(0.0), m_solvent_free(0.0),
@@ -242,7 +242,7 @@ void RbtSAIdxSF::SetupLigand() {
   // point energy from the initial (Corina) conformation of the ligand. Read the
   // zero (free ligand) value from the input model if it exists, otherwise
   // calculate here
-  RbtString name = RbtBaseSF::_INTRA_SF + "." + GetName() + ".lig_0";
+  std::string name = RbtBaseSF::_INTRA_SF + "." + GetName() + ".lig_0";
   if (spModel->isDataFieldPresent(name)) {
     if (iTrace > 0) {
       cout << "Restoring initial ligand solvation energy from file..." << endl;
@@ -543,7 +543,7 @@ void RbtSAIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     EnableAnnotations(true);
     RbtDouble rs = RawScore();
     EnableAnnotations(false);
-    RbtString name = GetFullName();
+    std::string name = GetFullName();
 
     // INTER - the change in desolvation score for all components (site, ligand,
     // solvent) for the current internal conformations when intermolecular
@@ -560,7 +560,7 @@ void RbtSAIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // conformation. This is nothing to do with the binding event, and so
     // belongs with the other ligand intramolecular scores.
     RbtDouble intra_rs = m_lig_free - m_lig_0;
-    RbtString intraName = RbtBaseSF::_INTRA_SF + "." + GetName();
+    std::string intraName = RbtBaseSF::_INTRA_SF + "." + GetName();
     scoreMap[intraName] = intra_rs;
     scoreMap[intraName + ".lig_0"] = m_lig_0;
     // increment the SCORE.INTRA total
@@ -574,7 +574,7 @@ void RbtSAIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // other system scores.
     RbtDouble system_rs =
         (m_site_free - m_site_0) + (m_solvent_free - m_solvent_0);
-    RbtString systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
+    std::string systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
     scoreMap[systemName] = system_rs;
     // increment the SCORE.SYSTEM total
     parentScore = scoreMap[RbtBaseSF::_SYSTEM_SF];
@@ -594,14 +594,14 @@ void RbtSAIdxSF::Setup() {
   // Dummy read to force parsing of file, otherwise the first SetSection is
   // overridden
   RbtStringList secList = m_spSolvSource->GetSectionList();
-  RbtString _R("R");
-  RbtString _P("P");
-  RbtString _ASP("ASP");
-  RbtString _CHG_SCALING("CHG_SCALING");
+  std::string _R("R");
+  std::string _P("P");
+  std::string _ASP("ASP");
+  std::string _CHG_SCALING("CHG_SCALING");
   m_solvTable.clear();
 
   for (RbtInt i = RbtHHSType::UNDEFINED; i < RbtHHSType::MAXTYPES; i++) {
-    RbtString stri = hhsType.Type2Str(RbtHHSType::eType(i));
+    std::string stri = hhsType.Type2Str(RbtHHSType::eType(i));
     m_spSolvSource->SetSection(stri);
     RbtDouble r = m_spSolvSource->GetParameterValue(_R);
     RbtDouble p = m_spSolvSource->GetParameterValue(_P);

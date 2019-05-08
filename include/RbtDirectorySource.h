@@ -42,18 +42,18 @@ protected:
 #ifdef sun                   // for gcc
   struct direct **fNameList; // file name list in directory
 #endif
-#endif                              // COMMENT
-  int fNum;                         // number of files in the dir
-  struct dirent **fNameList;        // file name list in directory
-  ifstream inFile;                  // an actual file to read
-  RbtString thePath;                // leading path
-  void CheckDirectory(RbtString &); // to check directory access
+#endif                                // COMMENT
+  int fNum;                           // number of files in the dir
+  struct dirent **fNameList;          // file name list in directory
+  ifstream inFile;                    // an actual file to read
+  std::string thePath;                // leading path
+  void CheckDirectory(std::string &); // to check directory access
 
 public:
-  RbtDirectorySource(const RbtString &) throw(RbtError);
+  RbtDirectorySource(const std::string &) throw(RbtError);
   virtual ~RbtDirectorySource();
 
-  static RbtString _CT;
+  static std::string _CT;
 
   /**
    * ReadFiles should be re-defined by derived classes to match argument

@@ -58,22 +58,22 @@ RbtDouble RbtMCStats::AccRate() const {
 }
 
 // Static data member for class type
-RbtString RbtSimAnnTransform::_CT("RbtSimAnnTransform");
+std::string RbtSimAnnTransform::_CT("RbtSimAnnTransform");
 // Parameter names
-RbtString RbtSimAnnTransform::_START_T("START_T");
-RbtString RbtSimAnnTransform::_FINAL_T("FINAL_T");
-RbtString RbtSimAnnTransform::_BLOCK_LENGTH("BLOCK_LENGTH");
-RbtString RbtSimAnnTransform::_SCALE_CHROM_LENGTH("SCALE_CHROM_LENGTH");
-RbtString RbtSimAnnTransform::_NUM_BLOCKS("NUM_BLOCKS");
-RbtString RbtSimAnnTransform::_STEP_SIZE("STEP_SIZE");
-RbtString RbtSimAnnTransform::_MIN_ACC_RATE("MIN_ACC_RATE");
-RbtString RbtSimAnnTransform::_PARTITION_DIST("PARTITION_DIST");
-RbtString RbtSimAnnTransform::_PARTITION_FREQ("PARTITION_FREQ");
-RbtString RbtSimAnnTransform::_HISTORY_FREQ("HISTORY_FREQ");
+std::string RbtSimAnnTransform::_START_T("START_T");
+std::string RbtSimAnnTransform::_FINAL_T("FINAL_T");
+std::string RbtSimAnnTransform::_BLOCK_LENGTH("BLOCK_LENGTH");
+std::string RbtSimAnnTransform::_SCALE_CHROM_LENGTH("SCALE_CHROM_LENGTH");
+std::string RbtSimAnnTransform::_NUM_BLOCKS("NUM_BLOCKS");
+std::string RbtSimAnnTransform::_STEP_SIZE("STEP_SIZE");
+std::string RbtSimAnnTransform::_MIN_ACC_RATE("MIN_ACC_RATE");
+std::string RbtSimAnnTransform::_PARTITION_DIST("PARTITION_DIST");
+std::string RbtSimAnnTransform::_PARTITION_FREQ("PARTITION_FREQ");
+std::string RbtSimAnnTransform::_HISTORY_FREQ("HISTORY_FREQ");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtSimAnnTransform::RbtSimAnnTransform(const RbtString &strName)
+RbtSimAnnTransform::RbtSimAnnTransform(const std::string &strName)
     : RbtBaseBiMolTransform(_CT, strName), m_rand(Rbt::GetRbtRand()) {
   // Add parameters
   AddParameter(_START_T, 1000.0);

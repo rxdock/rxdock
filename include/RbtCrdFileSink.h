@@ -22,7 +22,7 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   // RbtCrdFileSink(const char* fileName, RbtModelPtr spModel);
-  RbtCrdFileSink(const RbtString &fileName, RbtModelPtr spModel);
+  RbtCrdFileSink(const std::string &fileName, RbtModelPtr spModel);
 
   virtual ~RbtCrdFileSink(); // Default destructor
 

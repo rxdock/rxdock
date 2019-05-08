@@ -28,8 +28,8 @@ using std::ostringstream;
 #include "RbtTypes.h"
 
 // Strings representing TRUE and FALSE
-const RbtString _TRUE("TRUE");
-const RbtString _FALSE("FALSE");
+const std::string _TRUE("TRUE");
+const std::string _FALSE("FALSE");
 
 class RbtVariant {
 public:
@@ -38,8 +38,8 @@ public:
   RbtVariant() : m_d(0.0) {}
   RbtVariant(RbtInt i) { SetDouble(i); }
   RbtVariant(RbtDouble d) { SetDouble(d); }
-  RbtVariant(const RbtString &s) { SetString(s); }
-  RbtVariant(const char *c) { SetString(RbtString(c)); }
+  RbtVariant(const std::string &s) { SetString(s); }
+  RbtVariant(const char *c) { SetString(std::string(c)); }
   RbtVariant(const RbtStringList &sl) { SetStringList(sl); }
   RbtVariant(RbtBool b) { SetBool(b); }
   RbtVariant(const RbtCoord &c) { SetCoord(c); }
@@ -86,12 +86,12 @@ public:
     SetDouble(d);
     return *this;
   }
-  RbtVariant &operator=(const RbtString &s) {
+  RbtVariant &operator=(const std::string &s) {
     SetString(s);
     return *this;
   }
   RbtVariant &operator=(const char *c) {
-    SetString(RbtString(c));
+    SetString(std::string(c));
     return *this;
   }
   RbtVariant &operator=(const RbtStringList &sl) {
@@ -115,7 +115,7 @@ public:
   // Conversion operators to convert back to basic types
   operator RbtInt() const { return int(Double()); }
   operator RbtDouble() const { return Double(); }
-  operator RbtString() const { return String(); }
+  operator std::string() const { return String(); }
   operator RbtStringList() const { return StringList(); }
   operator RbtBool() const { return Bool(); }
   operator RbtCoord() const { return Coord(); }
@@ -126,7 +126,9 @@ public:
 
   // Get methods
   RbtDouble Double() const { return m_d; }
-  RbtString String() const { return m_sl.empty() ? RbtString() : m_sl.front(); }
+  std::string String() const {
+    return m_sl.empty() ? std::string() : m_sl.front();
+  }
   RbtStringList StringList() const { return m_sl; }
   RbtBool Bool() const { return m_d != 0.0 || String() == _TRUE; }
   RbtCoord Coord() const {
@@ -159,12 +161,12 @@ private:
     //(was introducing a non-ASCII \0 char into log files
     // ostr << d << ends;
     ostr << d;
-    RbtString s(ostr.str());
+    std::string s(ostr.str());
     // delete ostr.str();
     m_sl.push_back(s);
   }
 
-  void SetString(const RbtString &s) {
+  void SetString(const std::string &s) {
     m_sl.clear();
     if (!s.empty())
       m_sl.push_back(s);
@@ -192,7 +194,7 @@ private:
     //(was introducing a non-ASCII \0 char into log files
     // ostr << c << ends;
     ostr << c;
-    RbtString s(ostr.str());
+    std::string s(ostr.str());
     // delete ostr.str();
     m_sl.push_back(s);
   }
@@ -237,7 +239,7 @@ typedef RbtVariantList::iterator RbtVariantListIter;
 typedef RbtVariantList::const_iterator RbtVariantListConstIter;
 
 // Map of (key=string, value=variant)
-typedef map<RbtString, RbtVariant> RbtStringVariantMap;
+typedef map<std::string, RbtVariant> RbtStringVariantMap;
 typedef RbtStringVariantMap::iterator RbtStringVariantMapIter;
 typedef RbtStringVariantMap::const_iterator RbtStringVariantMapConstIter;
 

@@ -13,11 +13,11 @@
 #include "RbtRotSF.h"
 
 // Static data member for class type
-RbtString RbtRotSF::_CT("RbtRotSF");
-RbtString RbtRotSF::_INCNH3("INCNH3");
-RbtString RbtRotSF::_INCOH("INCOH");
+std::string RbtRotSF::_CT("RbtRotSF");
+std::string RbtRotSF::_INCNH3("INCNH3");
+std::string RbtRotSF::_INCOH("INCOH");
 
-RbtRotSF::RbtRotSF(const RbtString &strName)
+RbtRotSF::RbtRotSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), nRot(0), bIncNH3(false), bIncOH(false) {
   // Add parameters
   AddParameter(_INCNH3, bIncNH3);
@@ -59,7 +59,7 @@ void RbtRotSF::SetupScore() {}
 
 RbtDouble RbtRotSF::RawScore() const { return RbtDouble(nRot); }
 
-void RbtRotSF::ParameterUpdated(const RbtString &strName) {
+void RbtRotSF::ParameterUpdated(const std::string &strName) {
   if (strName == _INCNH3) {
     bIncNH3 = GetParameter(_INCNH3);
   } else if (strName == _INCOH) {

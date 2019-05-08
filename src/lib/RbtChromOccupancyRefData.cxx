@@ -13,7 +13,7 @@
 #include "RbtChromOccupancyRefData.h"
 #include "RbtModel.h"
 
-RbtString RbtChromOccupancyRefData::_CT = "RbtChromOccupancyRefData";
+std::string RbtChromOccupancyRefData::_CT = "RbtChromOccupancyRefData";
 
 RbtChromOccupancyRefData::RbtChromOccupancyRefData(RbtModel *pModel,
                                                    RbtDouble stepSize,

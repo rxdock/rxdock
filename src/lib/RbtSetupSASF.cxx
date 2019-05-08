@@ -12,9 +12,10 @@
 
 #include "RbtSetupSASF.h"
 
-RbtString RbtSetupSASF::_CT("RbtSetupSASF");
+std::string RbtSetupSASF::_CT("RbtSetupSASF");
 
-RbtSetupSASF::RbtSetupSASF(const RbtString &strName) : RbtBaseSF(_CT, strName) {
+RbtSetupSASF::RbtSetupSASF(const std::string &strName)
+    : RbtBaseSF(_CT, strName) {
 #ifdef _DEBUG
   cout << _CT << "parameterized constructor      <--------" << endl;
 #endif //_DEBUG

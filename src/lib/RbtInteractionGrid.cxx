@@ -57,7 +57,7 @@ void Rbt::SelectInteractionCenter::operator()(RbtInteractionCenter *pIC) {
 }
 
 // Static data members
-RbtString RbtInteractionGrid::_CT("RbtInteractionGrid");
+std::string RbtInteractionGrid::_CT("RbtInteractionGrid");
 
 ////////////////////////////////////////
 // Constructors/destructors

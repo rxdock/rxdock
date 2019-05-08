@@ -33,7 +33,7 @@ public:
 };
 
 // Static data members
-RbtString RbtDockingSite::_CT("RbtDockingSite");
+std::string RbtDockingSite::_CT("RbtDockingSite");
 
 // STL predicate for selecting atoms within a defined distance range from
 // nearest cavity coords Uses precalculated distance grid

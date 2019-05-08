@@ -24,7 +24,7 @@
 #include <fstream>
 #include <sstream>
 
-RbtString RbtGPFFHSP90::_CT("RbtGPFFHSP90");
+std::string RbtGPFFHSP90::_CT("RbtGPFFHSP90");
 int nInversions(RbtInt idx, RbtReturnTypeArray &list);
 
 void RbtGPFFHSP90::ReadTables(istream &in, RbtReturnTypeArray &it,

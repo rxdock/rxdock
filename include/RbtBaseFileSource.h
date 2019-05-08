@@ -21,7 +21,7 @@ using std::ifstream;
 #include "RbtConfig.h"
 
 // useful typedefs
-typedef RbtString RbtFileRec;
+typedef std::string RbtFileRec;
 typedef vector<RbtFileRec> RbtFileRecList;
 typedef RbtFileRecList::iterator RbtFileRecListIter;
 
@@ -32,17 +32,18 @@ class RbtBaseFileSource {
 public:
   // Constructors
   // RbtBaseFileSource(const char* fileName);
-  RbtBaseFileSource(const RbtString &fileName);
-  RbtBaseFileSource(const RbtString &fileName, const RbtString &strRecDelim);
+  RbtBaseFileSource(const std::string &fileName);
+  RbtBaseFileSource(const std::string &fileName,
+                    const std::string &strRecDelim);
 
   // Default destructor
   virtual ~RbtBaseFileSource();
 
   // Public methods
 
-  RbtString GetFileName();
+  std::string GetFileName();
   // void SetFileName(const char* fileName);
-  void SetFileName(const RbtString &fileName);
+  void SetFileName(const std::string &fileName);
 
   // Status and StatusOK parse the file to check for errors
   RbtBool StatusOK();
@@ -85,13 +86,13 @@ private:
 
   // Private data
 private:
-  RbtString m_strFileName;
+  std::string m_strFileName;
   RbtBool m_bReadOK; // For use by Read
   ifstream m_fileIn;
-  char *m_szBuf;           // Line buffer
-  RbtBool m_bFileOpen;     // Keep track of whether we've opened the file or not
-  RbtBool m_bMultiRec;     // Is file multi-record ?
-  RbtString m_strRecDelim; // Record delimiter
+  char *m_szBuf;       // Line buffer
+  RbtBool m_bFileOpen; // Keep track of whether we've opened the file or not
+  RbtBool m_bMultiRec; // Is file multi-record ?
+  std::string m_strRecDelim; // Record delimiter
 };
 
 #endif //_RBTBASEFILESOURCE_H_

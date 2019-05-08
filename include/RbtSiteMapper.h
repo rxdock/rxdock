@@ -28,7 +28,7 @@
 class RbtSiteMapper : public RbtBaseObject {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors
@@ -50,7 +50,7 @@ protected:
   ////////////////////////////////////////
   // Protected methods
   ///////////////////
-  RbtSiteMapper(const RbtString &strClass, const RbtString &strName);
+  RbtSiteMapper(const std::string &strClass, const std::string &strName);
 
 private:
   ////////////////////////////////////////

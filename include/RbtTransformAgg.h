@@ -29,11 +29,11 @@ const RbtBool TRANSFORMAGG_CHECK = true;
 class RbtTransformAgg : public RbtBaseTransform {
 public:
   // Static data member for class type (i.e. "RbtTransformAgg")
-  static RbtString _CT;
+  static std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtTransformAgg(const RbtString &strName = "DOCK");
+  RbtTransformAgg(const std::string &strName = "DOCK");
   virtual ~RbtTransformAgg();
 
   ////////////////////////////////////////

@@ -73,11 +73,11 @@ public:
   };
 
   struct info {
-    RbtString name;
+    std::string name;
     RbtInt atomicNo;
     int hybrid;
     info() : atomicNo(0), hybrid(0) {}
-    info(const RbtString &n, RbtInt a, RbtInt h)
+    info(const std::string &n, RbtInt a, RbtInt h)
         : name(n), atomicNo(a), hybrid(h) {}
   };
 
@@ -96,13 +96,13 @@ public:
   // are used
   eType operator()(RbtAtom *pAtom, RbtBool useExtendedTypes = false) const;
   // Converts Tripos type to string
-  RbtString Type2Str(eType) const;
+  std::string Type2Str(eType) const;
   // Get hybridisation from Tripos type
   int Type2Hybrid(eType) const;
   // Get atomic number from Tripos type
   RbtInt Type2AtomicNo(eType) const;
   // Converts string to Tripos type
-  eType Str2Type(const RbtString &) const;
+  eType Str2Type(const std::string &) const;
 
 protected:
   ////////////////////////////////////////

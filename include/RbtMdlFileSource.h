@@ -18,13 +18,13 @@
 #include "RbtBaseMolecularFileSource.h"
 #include "RbtElementFileSource.h"
 
-const RbtString IDS_MDL_RECDELIM = "$$$$";
+const std::string IDS_MDL_RECDELIM = "$$$$";
 
 class RbtMdlFileSource : public RbtBaseMolecularFileSource {
 public:
   // Constructors
   // RbtMdlFileSource(const char* fileName);
-  RbtMdlFileSource(const RbtString &fileName, RbtBool bPosIonisable = true,
+  RbtMdlFileSource(const std::string &fileName, RbtBool bPosIonisable = true,
                    RbtBool bNegIonisable = true, RbtBool bImplHydrogens = true);
 
   // Default destructor

@@ -14,17 +14,17 @@
 #include "RbtFFTGrid.h"
 
 // Static data member for class type
-RbtString RbtSphereSiteMapper::_CT("RbtSphereSiteMapper");
-RbtString RbtSphereSiteMapper::_VOL_INCR("VOL_INCR");
-RbtString RbtSphereSiteMapper::_SMALL_SPHERE("SMALL_SPHERE");
-RbtString RbtSphereSiteMapper::_LARGE_SPHERE("LARGE_SPHERE");
-RbtString RbtSphereSiteMapper::_GRIDSTEP("GRIDSTEP");
-RbtString RbtSphereSiteMapper::_CENTER("CENTER");
-RbtString RbtSphereSiteMapper::_RADIUS("RADIUS");
-RbtString RbtSphereSiteMapper::_MIN_VOLUME("MIN_VOLUME");
-RbtString RbtSphereSiteMapper::_MAX_CAVITIES("MAX_CAVITIES");
+std::string RbtSphereSiteMapper::_CT("RbtSphereSiteMapper");
+std::string RbtSphereSiteMapper::_VOL_INCR("VOL_INCR");
+std::string RbtSphereSiteMapper::_SMALL_SPHERE("SMALL_SPHERE");
+std::string RbtSphereSiteMapper::_LARGE_SPHERE("LARGE_SPHERE");
+std::string RbtSphereSiteMapper::_GRIDSTEP("GRIDSTEP");
+std::string RbtSphereSiteMapper::_CENTER("CENTER");
+std::string RbtSphereSiteMapper::_RADIUS("RADIUS");
+std::string RbtSphereSiteMapper::_MIN_VOLUME("MIN_VOLUME");
+std::string RbtSphereSiteMapper::_MAX_CAVITIES("MAX_CAVITIES");
 
-RbtSphereSiteMapper::RbtSphereSiteMapper(const RbtString &strName)
+RbtSphereSiteMapper::RbtSphereSiteMapper(const std::string &strName)
     : RbtSiteMapper(_CT, strName) {
   // Add parameters
   AddParameter(_VOL_INCR, 0.0);

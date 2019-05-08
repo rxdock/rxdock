@@ -20,11 +20,11 @@
 class RbtTetherSF : public RbtBaseInterSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _REFERENCE_FILE;
+  static std::string _REFERENCE_FILE;
 
-  RbtTetherSF(const RbtString &strName = "TETHER");
+  RbtTetherSF(const std::string &strName = "TETHER");
   virtual ~RbtTetherSF();
 
 protected:
@@ -34,7 +34,7 @@ protected:
   virtual RbtDouble RawScore() const;
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   RbtIntList ReadTetherAtoms(RbtStringList &);

@@ -27,13 +27,13 @@ class RbtSAIdxSF : public RbtBaseInterSF,
                    public RbtBaseIdxSF,
                    public RbtAnnotationHandler {
 public:
-  RbtSAIdxSF(const RbtString &strName = "SAIdxSF");
+  RbtSAIdxSF(const std::string &strName = "SAIdxSF");
   virtual ~RbtSAIdxSF();
   // write score components
   virtual void ScoreMap(RbtStringVariantMap &scoreMap) const;
 
-  static RbtString _CT;
-  static RbtString _INCR;
+  static std::string _CT;
+  static std::string _INCR;
 
   // Request Handling method
   // Handles the Partition request

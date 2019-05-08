@@ -14,11 +14,11 @@
 #include "RbtSFRequest.h"
 
 // Static data members
-RbtString RbtVdwIntraSF::_CT("RbtVdwIntraSF");
+std::string RbtVdwIntraSF::_CT("RbtVdwIntraSF");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
-RbtVdwIntraSF::RbtVdwIntraSF(const RbtString &strName)
+RbtVdwIntraSF::RbtVdwIntraSF(const std::string &strName)
     : RbtBaseSF(_CT, strName) {
 #ifdef _DEBUG
   cout << _CT << " parameterised constructor" << endl;
@@ -123,7 +123,7 @@ RbtDouble RbtVdwIntraSF::RawScore() const {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtVdwIntraSF::ParameterUpdated(const RbtString &strName) {
+void RbtVdwIntraSF::ParameterUpdated(const std::string &strName) {
   RbtVdwSF::OwnParameterUpdated(strName);
   RbtBaseSF::ParameterUpdated(strName);
 }

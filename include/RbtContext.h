@@ -25,14 +25,14 @@
 #include <fstream>
 using std::ifstream;
 
-typedef map<RbtString, RbtVblePtr> RbtStringVbleMap; // Map of Vbles
-typedef map<RbtInt, RbtVblePtr> RbtIntVbleMap;       // Map of Vbles
+typedef map<std::string, RbtVblePtr> RbtStringVbleMap; // Map of Vbles
+typedef map<RbtInt, RbtVblePtr> RbtIntVbleMap;         // Map of Vbles
 typedef RbtStringVbleMap::iterator RbtStringVbleMapIter;
 typedef RbtIntVbleMap::iterator RbtIntVbleMapIter;
 
 class RbtContext {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////
@@ -42,10 +42,10 @@ public:
                 // Destructors
                 ///////////////////
   virtual ~RbtContext();
-  virtual void Assign(RbtString, RbtReturnType) = 0;
+  virtual void Assign(std::string, RbtReturnType) = 0;
   virtual void Assign(RbtInt, RbtReturnType) = 0;
   virtual const RbtVble &GetVble(RbtInt) = 0;
-  virtual const RbtVble &GetVble(RbtString) = 0;
+  virtual const RbtVble &GetVble(std::string) = 0;
   virtual void SetVble(RbtInt key, const RbtVble &v) = 0;
   //    virtual RbtString GetName(RbtInt)=0;
   //    virtual RbtReturnType GetValue(RbtInt)=0;
@@ -68,7 +68,7 @@ public:
       vm[key] = new RbtVble(std::to_string(val), val);
     }
   }
-  void Assign(RbtString s, RbtReturnType val) {
+  void Assign(std::string s, RbtReturnType val) {
     throw RbtError(_WHERE_, "This is not a string context");
   }
   //    RbtString GetName(RbtInt key) { return vm[key].GetName();}
@@ -77,7 +77,7 @@ public:
   //    RbtReturnType GetValue(RbtString){return 0.0;}
   const RbtVble &GetVble(RbtInt key) { return *(vm[key]); }
   void SetVble(RbtInt key, const RbtVble &v) { *(vm[key]) = v; }
-  const RbtVble &GetVble(RbtString key) {
+  const RbtVble &GetVble(std::string key) {
     throw RbtError(_WHERE_, "This is not a string context");
   }
   //    void Clear();
@@ -94,7 +94,7 @@ public:
   RbtStringContext(SmartPtr<ifstream> ifile);
   RbtStringContext(const RbtStringContext &c);
   virtual ~RbtStringContext();
-  void Assign(RbtString key, RbtReturnType val) {
+  void Assign(std::string key, RbtReturnType val) {
     RbtStringVbleMapIter it = vm.find(key);
     if (it != vm.end())
       vm[key]->SetValue(val);
@@ -110,10 +110,10 @@ public:
   //    RbtReturnType GetValue(RbtInt){return 0.0;}
   //    RbtString GetName(RbtString key) { return vm[key].GetName();}
   //    RbtReturnType GetValue(RbtString key) {return vm[key].GetValue();}
-  RbtDouble Get(RbtModelPtr lig, RbtString name);
-  RbtDouble Get(RbtModelPtr rec, RbtDockingSitePtr site, RbtString name);
-  RbtDouble Get(RbtBaseSF *spSF, RbtString name, RbtModelPtr lig);
-  const RbtVble &GetVble(RbtString key) { return *(vm[key]); }
+  RbtDouble Get(RbtModelPtr lig, std::string name);
+  RbtDouble Get(RbtModelPtr rec, RbtDockingSitePtr site, std::string name);
+  RbtDouble Get(RbtBaseSF *spSF, std::string name, RbtModelPtr lig);
+  const RbtVble &GetVble(std::string key) { return *(vm[key]); }
   const RbtVble &GetVble(RbtInt key) {
     throw RbtError(_WHERE_, "This is not a cell context");
   }

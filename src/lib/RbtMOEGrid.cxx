@@ -18,7 +18,7 @@
 #include "RbtParameterFileSource.h"
 #include "RbtRealGrid.h"
 
-const string GRID_SIGNATURE = "SVLgrid\n";
+const std::string GRID_SIGNATURE = "SVLgrid\n";
 const int VERSION = 100;
 const int SKIP = 0;
 
@@ -134,24 +134,24 @@ RbtMOEGrid::RbtMOEGrid() {
 
 // parameterised ctor needs the shape and the data vector
 RbtMOEGrid::RbtMOEGrid(RbtMOEGridShape &a_shape, RbtMOEGridData &a_data,
-                       RbtString a_strfName = "moegrid.grd") {
+                       std::string a_strfName = "moegrid.grd") {
   stream_name = a_strfName;
   myShape = a_shape;
   myData = a_data;
 }
 
 // read a single rDock .as /.prm file to get the docking site extents
-void RbtMOEGrid::GetDockingSiteExtents(RbtString &a_strPrmFile) {
+void RbtMOEGrid::GetDockingSiteExtents(std::string &a_strPrmFile) {
   // Create a bimolecular workspace
   RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
   // Set the workspace name to the root of the receptor .prm filename
   RbtStringList componentList =
       Rbt::ConvertDelimitedStringToList(a_strPrmFile, ".");
-  RbtString wsName = componentList.front();
+  std::string wsName = componentList.front();
   spWS->SetName(wsName);
   // Read docking site from file
-  RbtString strASFile = spWS->GetName() + ".as";
-  RbtString strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
+  std::string strASFile = spWS->GetName() + ".as";
+  std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
 #if defined(__sgi) && !defined(__GNUC__)
   ifstream istr(strInputFile.c_str(), ios_base::in);
 #else
@@ -165,10 +165,10 @@ void RbtMOEGrid::GetDockingSiteExtents(RbtString &a_strPrmFile) {
 }
 // reads all the .prm files and calculates the common extents for all
 // cavities to get a grid that includes them all
-void RbtMOEGrid::CalculateCommonExtents(vector<RbtString> strPrmFiles) {
+void RbtMOEGrid::CalculateCommonExtents(vector<std::string> strPrmFiles) {
 
   cout << "Receptors: " << endl;
-  vector<RbtString>::iterator strPrmFilesIter;
+  vector<std::string>::iterator strPrmFilesIter;
   for (strPrmFilesIter = strPrmFiles.begin();
        strPrmFilesIter != strPrmFiles.end(); ++strPrmFilesIter) {
     cout << "\t" << (*strPrmFilesIter) << endl;

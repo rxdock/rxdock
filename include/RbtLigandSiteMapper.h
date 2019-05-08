@@ -20,17 +20,17 @@
 class RbtLigandSiteMapper : public RbtSiteMapper {
 public:
   // Static data member for class type
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _REF_MOL;
-  static RbtString _VOL_INCR;
-  static RbtString _SMALL_SPHERE;
-  static RbtString _GRIDSTEP;
-  static RbtString _RADIUS;
-  static RbtString _MIN_VOLUME;
-  static RbtString _MAX_CAVITIES;
+  static std::string _REF_MOL;
+  static std::string _VOL_INCR;
+  static std::string _SMALL_SPHERE;
+  static std::string _GRIDSTEP;
+  static std::string _RADIUS;
+  static std::string _MIN_VOLUME;
+  static std::string _MAX_CAVITIES;
 
-  RbtLigandSiteMapper(const RbtString &strName = "LIGAND_MAPPER");
+  RbtLigandSiteMapper(const std::string &strName = "LIGAND_MAPPER");
   virtual ~RbtLigandSiteMapper();
 
   // Override RbtSiteMapper pure virtual

@@ -26,9 +26,9 @@ class RbtSetupSASF : public RbtBaseInterSF {
   RbtAtomList theReceptorList; // receptor typing
 
 public:
-  static RbtString _CT;
+  static std::string _CT;
 
-  RbtSetupSASF(const RbtString &strName = "SETUP_SA");
+  RbtSetupSASF(const std::string &strName = "SETUP_SA");
   ~RbtSetupSASF();
 
 protected:

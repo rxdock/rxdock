@@ -15,14 +15,14 @@
 #include "RbtWorkSpace.h"
 
 // Static data member for class type
-RbtString RbtAlignTransform::_CT("RbtAlignTransform");
+std::string RbtAlignTransform::_CT("RbtAlignTransform");
 // Parameter names
-RbtString RbtAlignTransform::_COM("COM");
-RbtString RbtAlignTransform::_AXES("AXES");
+std::string RbtAlignTransform::_COM("COM");
+std::string RbtAlignTransform::_AXES("AXES");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtAlignTransform::RbtAlignTransform(const RbtString &strName)
+RbtAlignTransform::RbtAlignTransform(const std::string &strName)
     : RbtBaseBiMolTransform(_CT, strName), m_rand(Rbt::GetRbtRand()),
       m_totalSize(0) {
   // Add parameters
@@ -93,8 +93,8 @@ void RbtAlignTransform::Execute() {
   const RbtPrincipalAxes &prAxes = spCavity->GetPrincipalAxes();
 
   // Get the alignment parameters
-  RbtString strPlaceCOM = GetParameter(_COM);
-  RbtString strPlaceAxes = GetParameter(_AXES);
+  std::string strPlaceCOM = GetParameter(_COM);
+  std::string strPlaceAxes = GetParameter(_AXES);
 
   // 1. Ligand translation
   // A. Random

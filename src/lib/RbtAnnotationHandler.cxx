@@ -13,7 +13,7 @@
 #include "RbtAnnotationHandler.h"
 
 // Static data members
-RbtString RbtAnnotationHandler::_ANNOTATION_FIELD("ANNOTATIONS");
+std::string RbtAnnotationHandler::_ANNOTATION_FIELD("ANNOTATIONS");
 
 ////////////////////////////////////////
 // Constructors/destructors
@@ -38,7 +38,7 @@ RbtInt RbtAnnotationHandler::GetNumAnnotations() const {
   return m_annotationList.size();
 }
 
-void RbtAnnotationHandler::RenderAnnotationList(const RbtString &strName,
+void RbtAnnotationHandler::RenderAnnotationList(const std::string &strName,
                                                 RbtStringList &retVal) const {
   // It is callers responsibility to clear retVal before calling
   // RenderAnnotationList Allows for appending to existing string list

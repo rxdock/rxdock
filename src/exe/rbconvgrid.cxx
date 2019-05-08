@@ -21,8 +21,8 @@
 
 int main(int argc, char *argv[]) {
   // Command line arguments and default values
-  RbtString strInputFile;
-  RbtString strOutputFile("insight.grid");
+  std::string strInputFile;
+  std::string strOutputFile("insight.grid");
   RbtInt iGrid = 999;
 
   // Brief help message
@@ -47,13 +47,13 @@ int main(int argc, char *argv[]) {
   cout << endl << "Command line args:" << endl;
   for (RbtInt iarg = 1; iarg < argc; iarg++) {
     cout << argv[iarg];
-    RbtString strArg(argv[iarg]);
+    std::string strArg(argv[iarg]);
     if (strArg.find("-i") == 0)
       strInputFile = strArg.substr(2);
     else if (strArg.find("-o") == 0)
       strOutputFile = strArg.substr(2);
     else if (strArg.find("-n") == 0) {
-      RbtString strGridNum = strArg.substr(2);
+      std::string strGridNum = strArg.substr(2);
       iGrid = atoi(strGridNum.c_str());
     } else {
       cout << " ** INVALID ARGUMENT" << endl;
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
       Rbt::ReadWithThrow(istr, szType, length);
       // Add null character to end of string
       szType[length] = '\0';
-      RbtString strType(szType);
+      std::string strType(szType);
       delete[] szType;
       RbtTriposAtomType triposType;
       RbtTriposAtomType::eType aType = triposType.Str2Type(strType);

@@ -14,7 +14,7 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtBaseIntraSF::_CT("RbtBaseIntraSF");
+std::string RbtBaseIntraSF::_CT("RbtBaseIntraSF");
 
 RbtBaseIntraSF::RbtBaseIntraSF() : m_zero(0.0) {
 #ifdef _DEBUG
@@ -52,7 +52,7 @@ void RbtBaseIntraSF::Update(RbtSubject *theChangedSubject) {
         SetupScore();
         // Retain the zero-point offset from the ligand model data if present
         // Otherwise set the zero-point to the current score
-        RbtString name = GetFullName() + ".0";
+        std::string name = GetFullName() + ".0";
         if (m_spLigand->isDataFieldPresent(name)) {
           m_zero = m_spLigand->GetDataValue(name);
         } else {
@@ -69,7 +69,7 @@ void RbtBaseIntraSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     RbtDouble rs =
         RawScore() -
         m_zero; // report the raw score relative to the zero-point offset
-    RbtString name = GetFullName();
+    std::string name = GetFullName();
     scoreMap[name] = rs;
     AddToParentMapEntry(scoreMap, rs);
     scoreMap[name + ".0"] = m_zero;

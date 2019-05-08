@@ -33,16 +33,17 @@ public:
   // Get number of stored parameters
   RbtUInt GetNumParameters() const;
   // Get a named parameter, throws error if name not found
-  RbtVariant GetParameter(const RbtString &strName) const throw(RbtBadArgument);
+  RbtVariant GetParameter(const std::string &strName) const
+      throw(RbtBadArgument);
   // Check if named parameter is present
-  RbtBool isParameterValid(const RbtString &strName) const;
+  RbtBool isParameterValid(const std::string &strName) const;
   // Get list of all parameter names
   RbtStringList GetParameterNames() const;
   // Get list of all parameter
   RbtStringVariantMap GetParameters() const;
 
   // Set named parameter to new value, throws error if name not found
-  void SetParameter(const RbtString &strName,
+  void SetParameter(const std::string &strName,
                     const RbtVariant &vValue) throw(RbtBadArgument);
 
   // Virtual function for dumping parameters to an output stream
@@ -56,15 +57,15 @@ protected:
   RbtParamHandler(); // Default constructor
 
   // Only derived classes can mess with the parameter list
-  void AddParameter(const RbtString &strName, const RbtVariant &vValue);
-  void DeleteParameter(const RbtString &strName);
+  void AddParameter(const std::string &strName, const RbtVariant &vValue);
+  void DeleteParameter(const std::string &strName);
   void ClearParameters();
   // DM 25 Oct 2000 - ParameterUpdated is invoked whenever SetParameter is
   // called to allow derived classes to manage a data member which tracks the
   // param value Useful for performance purposes as there is quite an overhead
   // in finding a string in a map, then converting from a Variant to the native
   // datatype Base class version does nothing
-  virtual void ParameterUpdated(const RbtString &strName) {}
+  virtual void ParameterUpdated(const std::string &strName) {}
 
 private:
   ////////////////////////////////////////

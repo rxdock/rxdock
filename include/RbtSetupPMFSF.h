@@ -20,9 +20,9 @@ class RbtSetupPMFSF : public RbtBaseInterSF {
   RbtAtomList theReceptorList; // receptor typing
 
 public:
-  static RbtString _CT;
+  static std::string _CT;
 
-  RbtSetupPMFSF(const RbtString &strName = "SETUP_PMF");
+  RbtSetupPMFSF(const std::string &strName = "SETUP_PMF");
   ~RbtSetupPMFSF();
 
 protected:

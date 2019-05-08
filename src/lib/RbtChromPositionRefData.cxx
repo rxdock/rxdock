@@ -12,7 +12,7 @@
 
 #include "RbtChromPositionRefData.h"
 
-RbtString RbtChromPositionRefData::_CT = "RbtChromPositionRefData";
+std::string RbtChromPositionRefData::_CT = "RbtChromPositionRefData";
 const RbtPrincipalAxes RbtChromPositionRefData::CARTESIAN_AXES;
 
 RbtChromPositionRefData::RbtChromPositionRefData(

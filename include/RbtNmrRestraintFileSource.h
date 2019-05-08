@@ -44,7 +44,7 @@ class RbtNmrRestraintFileSource : public RbtBaseFileSource {
 public:
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtNmrRestraintFileSource(const RbtString &fileName);
+  RbtNmrRestraintFileSource(const std::string &fileName);
 
   // Destructor
   virtual ~RbtNmrRestraintFileSource();
@@ -79,7 +79,7 @@ private:
 
   // Returns NOE restraint type and modifies the atom name string accordingly
   // Returns UNDEFINED if the atom name string has bad syntax
-  Rbt::eNoeType NoeRestraintType(RbtString &strAtomNames);
+  Rbt::eNoeType NoeRestraintType(std::string &strAtomNames);
 
 protected:
   ////////////////////////////////////////

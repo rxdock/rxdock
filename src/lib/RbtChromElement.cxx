@@ -13,13 +13,13 @@
 #include "RbtChromElement.h"
 #include "RbtRand.h"
 
-RbtString RbtChromElement::_CT = "RbtChromElement";
+std::string RbtChromElement::_CT = "RbtChromElement";
 RbtDouble RbtChromElement::_THRESHOLD = 1E-4;
 
 RbtChromElement::eMode
-RbtChromElement::StrToMode(const RbtString &modeStr) throw(RbtError) {
+RbtChromElement::StrToMode(const std::string &modeStr) throw(RbtError) {
   eMode retVal;
-  RbtString modeStrUpper = modeStr;
+  std::string modeStrUpper = modeStr;
   std::transform(modeStrUpper.begin(), modeStrUpper.end(), modeStrUpper.begin(),
                  toupper);
   if (modeStrUpper == "FIXED") {
@@ -35,8 +35,8 @@ RbtChromElement::StrToMode(const RbtString &modeStr) throw(RbtError) {
   return retVal;
 }
 
-RbtString RbtChromElement::ModeToStr(RbtChromElement::eMode mode) {
-  RbtString retVal;
+std::string RbtChromElement::ModeToStr(RbtChromElement::eMode mode) {
+  std::string retVal;
   switch (mode) {
   case FIXED:
     retVal = "FIXED";

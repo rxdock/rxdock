@@ -18,7 +18,7 @@ using std::ends;
 using std::ostringstream;
 
 // initialization of the static data of RbtConstraint
-RbtString RbtConstraint::_CT("RbtConstraint");
+std::string RbtConstraint::_CT("RbtConstraint");
 RbtInt RbtHeavyConstraint::counter = 0; // 7 Feb 2005 (DM) new constraint type
 RbtInt RbtHBAConstraint::counter = 0;
 RbtInt RbtHBDConstraint::counter = 0;
@@ -85,8 +85,8 @@ RbtDouble RbtConstraint::Score() const {
   return (dr > 0.0) ? dr * dr : 0.0;
 }
 
-RbtConstraintPtr Rbt::CreateConstraint(RbtCoord &c, RbtDouble &t, RbtString &n,
-                                       RbtBool bCount) {
+RbtConstraintPtr Rbt::CreateConstraint(RbtCoord &c, RbtDouble &t,
+                                       std::string &n, RbtBool bCount) {
   if (n == "Any") {
     if (bCount)
       RbtHeavyConstraint::counter++;
@@ -141,7 +141,7 @@ void Rbt::ZeroCounters() {
 
 void Rbt::ReadConstraint(istream &ifile, RbtConstraintPtr &cnt,
                          RbtBool bCount) {
-  RbtString n;
+  std::string n;
   RbtCoord c;
   RbtDouble t;
   ifile >> c;
@@ -155,7 +155,7 @@ void Rbt::ReadConstraint(istream &ifile, RbtConstraintPtr &cnt,
 
 void Rbt::ReadConstraintFromMoe(istream &ifile, RbtConstraintPtr &cnt,
                                 RbtBool bCount) {
-  string n, extra;
+  std::string n, extra;
   RbtDouble x, y, z, t;
   ifile >> n;
   cout << n << endl;

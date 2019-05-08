@@ -36,7 +36,7 @@ public:
   RbtDouble GetDistance() const;
   RbtDouble GetScore() const;
   // Get the fully qualified (FQ) residue name for atom 2 (target atom)
-  RbtString GetFQResName() const;
+  std::string GetFQResName() const;
 
   // Set
   void SetAtom1Ptr(const RbtAtom *pAt1);
@@ -45,7 +45,7 @@ public:
   void SetScore(RbtDouble s);
 
   // Render annotation into string in rDock Viewer format
-  RbtString Render() const;
+  std::string Render() const;
 
   // Operators
   // Special meaning of operator+ for accumulating annotations by residue

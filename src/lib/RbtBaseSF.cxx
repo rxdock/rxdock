@@ -14,15 +14,15 @@
 #include "RbtSFRequest.h"
 
 // Static data members
-RbtString RbtBaseSF::_CT("RbtBaseSF");
-RbtString RbtBaseSF::_WEIGHT("WEIGHT");
-RbtString RbtBaseSF::_RANGE("RANGE");
-RbtString RbtBaseSF::_SYSTEM_SF("SCORE.SYSTEM");
-RbtString RbtBaseSF::_INTRA_SF("SCORE.INTRA");
+std::string RbtBaseSF::_CT("RbtBaseSF");
+std::string RbtBaseSF::_WEIGHT("WEIGHT");
+std::string RbtBaseSF::_RANGE("RANGE");
+std::string RbtBaseSF::_SYSTEM_SF("SCORE.SYSTEM");
+std::string RbtBaseSF::_INTRA_SF("SCORE.INTRA");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtBaseSF::RbtBaseSF(const RbtString &strClass, const RbtString &strName)
+RbtBaseSF::RbtBaseSF(const std::string &strClass, const std::string &strName)
     : RbtBaseObject(strClass, strName), m_parent(NULL), m_weight(1.0),
       m_range(10.0) {
 #ifdef _DEBUG
@@ -56,7 +56,7 @@ RbtBaseSF::~RbtBaseSF() {
 ////////////////
 
 // Fully qualified name, prefixed by all ancestors (e.g. SCORE.INTER.HBOND)
-RbtString RbtBaseSF::GetFullName() const {
+std::string RbtBaseSF::GetFullName() const {
   // If we have a parent, prefix our short name with our parents full name,
   // else full name is just our short name
   return (m_parent) ? m_parent->GetFullName() + "." + GetName() : GetName();
@@ -83,7 +83,7 @@ void RbtBaseSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // 1) We record the raw, unweighted score for this term
     // in the map
     RbtDouble rs = RawScore();
-    RbtString name = GetFullName();
+    std::string name = GetFullName();
     scoreMap[name] = rs;
     // 2) We add the weighted score to the parent aggregate
     // entry. This gives us the opportunity to override
@@ -101,7 +101,7 @@ void RbtBaseSF::AddToParentMapEntry(RbtStringVariantMap &scoreMap,
   if (m_parent) {
     RbtDouble w = GetWeight();
     RbtDouble s = w * rs;
-    RbtString parentName = m_parent->GetFullName();
+    std::string parentName = m_parent->GetFullName();
     RbtDouble parentScore = scoreMap[parentName];
     parentScore += s;
     scoreMap[parentName] = parentScore;
@@ -142,7 +142,7 @@ void RbtBaseSF::Orphan() {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtBaseSF::ParameterUpdated(const RbtString &strName) {
+void RbtBaseSF::ParameterUpdated(const std::string &strName) {
   if (strName == _WEIGHT) {
     m_weight = GetParameter(_WEIGHT);
   } else if (strName == _RANGE) {

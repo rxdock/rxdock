@@ -18,7 +18,7 @@
 #include "RbtFileError.h"
 
 // Static data members
-RbtString RbtBaseGrid::_CT("RbtBaseGrid");
+std::string RbtBaseGrid::_CT("RbtBaseGrid");
 
 ////////////////////////////////////////
 // Constructors/destructors

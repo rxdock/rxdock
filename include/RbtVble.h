@@ -20,12 +20,12 @@
 
 class RbtVble {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   enum VbleType { CTE, LIG, SCORE, SITE };
   RbtVble() : value(0.0), vt(CTE), name("") {
     _RBTOBJECTCOUNTER_CONSTR_(_CT);
   } // default const.
-  RbtVble(RbtString s, RbtReturnType val = 0.0) : value(val), name(s) {
+  RbtVble(std::string s, RbtReturnType val = 0.0) : value(val), name(s) {
     if (s.find("LIG_") == 0)
       vt = LIG;
     else if (s.find("SITE_") == 0)
@@ -47,8 +47,8 @@ public:
   }
   RbtReturnType GetValue() const { return value; }
   virtual ~RbtVble() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
-  void SetName(RbtString nm) { name = nm; }
-  RbtString GetName() const { return name; }
+  void SetName(std::string nm) { name = nm; }
+  std::string GetName() const { return name; }
 
   RbtBool IsLig() { return (vt == LIG); }
   RbtBool IsScore() { return (vt == SCORE); }
@@ -57,7 +57,7 @@ public:
 private:
   VbleType vt;
   RbtReturnType value;
-  RbtString name;
+  std::string name;
 };
 
 // Useful typedefs

@@ -25,11 +25,11 @@ class RbtPMFGridSF : public RbtBaseInterSF {
   void ReadGrids(istream &istr) throw(RbtError);
 
 public:
-  static RbtString _CT;       // class name
-  static RbtString _GRID;     // filename extension (.grd)
-  static RbtString _SMOOTHED; // controls wether to smooth the grid values
+  static std::string _CT;       // class name
+  static std::string _GRID;     // filename extension (.grd)
+  static std::string _SMOOTHED; // controls wether to smooth the grid values
 
-  RbtPMFGridSF(const RbtString &strName = "PMFGRID");
+  RbtPMFGridSF(const std::string &strName = "PMFGRID");
   virtual ~RbtPMFGridSF();
 
 protected:

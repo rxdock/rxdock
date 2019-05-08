@@ -25,16 +25,16 @@ class RbtPolarIdxSF : public RbtBaseInterSF,
                       public RbtPolarSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _INCR;
-  static RbtString _ATTR;
+  static std::string _INCR;
+  static std::string _ATTR;
   // DM 12 Jun 2002 - score thresholds used for counting attractive and
   // repulsive interactions
-  static RbtString _THRESHOLD_POS;
-  static RbtString _THRESHOLD_NEG;
+  static std::string _THRESHOLD_POS;
+  static std::string _THRESHOLD_NEG;
 
-  RbtPolarIdxSF(const RbtString &strName = "POLAR");
+  RbtPolarIdxSF(const std::string &strName = "POLAR");
   virtual ~RbtPolarIdxSF();
 
   // Override RbtBaseSF::ScoreMap to provide additional raw descriptors
@@ -57,7 +57,7 @@ protected:
 
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   RbtDouble ReceptorScore() const;

@@ -22,18 +22,18 @@
 #include "RbtReceptorFlexData.h"
 #include "RbtSolventFlexData.h"
 
-const RbtString &RbtPRMFactory::_CT = "RbtPRMFactory";
-const RbtString &RbtPRMFactory::_REC_SECTION = "";
-const RbtString &RbtPRMFactory::_REC_FILE = "RECEPTOR_FILE";
-const RbtString &RbtPRMFactory::_REC_TOPOL_FILE = "RECEPTOR_TOPOL_FILE";
-const RbtString &RbtPRMFactory::_REC_COORD_FILE = "RECEPTOR_COORD_FILE";
-const RbtString &RbtPRMFactory::_REC_NUM_COORD_FILES =
+const std::string &RbtPRMFactory::_CT = "RbtPRMFactory";
+const std::string &RbtPRMFactory::_REC_SECTION = "";
+const std::string &RbtPRMFactory::_REC_FILE = "RECEPTOR_FILE";
+const std::string &RbtPRMFactory::_REC_TOPOL_FILE = "RECEPTOR_TOPOL_FILE";
+const std::string &RbtPRMFactory::_REC_COORD_FILE = "RECEPTOR_COORD_FILE";
+const std::string &RbtPRMFactory::_REC_NUM_COORD_FILES =
     "RECEPTOR_NUM_COORD_FILES";
-const RbtString &RbtPRMFactory::_REC_FLEX_DISTANCE = "RECEPTOR_FLEX";
-const RbtString &RbtPRMFactory::_REC_DIHEDRAL_STEP = "RECEPTOR_DIHEDRAL_STEP";
-const RbtString &RbtPRMFactory::_LIG_SECTION = "LIGAND";
-const RbtString &RbtPRMFactory::_SOLV_SECTION = "SOLVENT";
-const RbtString &RbtPRMFactory::_SOLV_FILE = "FILE";
+const std::string &RbtPRMFactory::_REC_FLEX_DISTANCE = "RECEPTOR_FLEX";
+const std::string &RbtPRMFactory::_REC_DIHEDRAL_STEP = "RECEPTOR_DIHEDRAL_STEP";
+const std::string &RbtPRMFactory::_LIG_SECTION = "LIGAND";
+const std::string &RbtPRMFactory::_SOLV_SECTION = "SOLVENT";
+const std::string &RbtPRMFactory::_SOLV_FILE = "FILE";
 
 RbtPRMFactory::RbtPRMFactory(RbtParameterFileSource *pParamSource)
     : m_pParamSource(pParamSource), m_pDS(NULL), m_iTrace(0) {}
@@ -57,7 +57,7 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
            << " as combined source of topology and 3D coordinates" << endl
            << endl;
     }
-    RbtString strFile = m_pParamSource->GetParameterValueAsString(_REC_FILE);
+    std::string strFile = m_pParamSource->GetParameterValueAsString(_REC_FILE);
     RbtMolecularFileSourcePtr theSource = CreateMolFileSource(strFile);
     RbtBool isOK = theSource->isAtomListSupported() &&
                    theSource->isBondListSupported() &&
@@ -89,7 +89,7 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
            << "Using " << _REC_TOPOL_FILE << " as topology source" << endl
            << endl;
     }
-    RbtString strTopolFile =
+    std::string strTopolFile =
         m_pParamSource->GetParameterValueAsString(_REC_TOPOL_FILE);
     RbtMolecularFileSourcePtr theTopolSource =
         CreateMolFileSource(strTopolFile);
@@ -118,7 +118,7 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
              << endl
              << endl;
       }
-      RbtString strCoordFile =
+      std::string strCoordFile =
           m_pParamSource->GetParameterValueAsString(_REC_COORD_FILE);
       RbtMolecularFileSourcePtr theCoordSource =
           CreateMolFileSource(strCoordFile);
@@ -154,8 +154,8 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
     for (RbtInt i = 1; i <= n; i++) {
       ostringstream ostr;
       ostr << _REC_COORD_FILE << "_" << i;
-      RbtString paramName(ostr.str());
-      RbtString strCoordFile =
+      std::string paramName(ostr.str());
+      std::string strCoordFile =
           m_pParamSource->GetParameterValueAsString(paramName);
       if (m_iTrace > 0) {
         cout << endl << "I=" << i << endl;
@@ -211,7 +211,7 @@ RbtModelList RbtPRMFactory::CreateSolvent() throw(RbtError) {
   RbtModelList retVal;
   m_pParamSource->SetSection(_SOLV_SECTION);
   if (m_pParamSource->isParameterPresent(_SOLV_FILE)) {
-    RbtString strFile = m_pParamSource->GetParameterValueAsString(_SOLV_FILE);
+    std::string strFile = m_pParamSource->GetParameterValueAsString(_SOLV_FILE);
     if (m_iTrace > 0) {
       cout << endl << "Reading solvent from " << strFile << endl << endl;
     }
@@ -348,7 +348,7 @@ void RbtPRMFactory::AttachLigandFlexData(RbtModel *pLigand) {
   RbtFlexData *pFlexData = new RbtLigandFlexData(m_pDS);
   for (RbtStringListConstIter iter = paramList.begin(); iter != paramList.end();
        ++iter) {
-    RbtString strValue = m_pParamSource->GetParameterValueAsString(*iter);
+    std::string strValue = m_pParamSource->GetParameterValueAsString(*iter);
     pFlexData->SetParameter(*iter, strValue);
   }
   pLigand->SetFlexData(pFlexData);
@@ -401,7 +401,7 @@ void RbtPRMFactory::AttachSolventFlexData(RbtModel *pSolvent) {
   for (RbtStringListConstIter iter = paramList.begin(); iter != paramList.end();
        ++iter) {
     if ((*iter) != _SOLV_FILE) {
-      RbtString strValue = m_pParamSource->GetParameterValueAsString(*iter);
+      std::string strValue = m_pParamSource->GetParameterValueAsString(*iter);
       pFlexData->SetParameter(*iter, strValue);
     }
   }
@@ -413,14 +413,14 @@ void RbtPRMFactory::AttachSolventFlexData(RbtModel *pSolvent) {
   }
 }
 
-RbtMolecularFileSourcePtr
-RbtPRMFactory::CreateMolFileSource(const RbtString &fileName) throw(RbtError) {
+RbtMolecularFileSourcePtr RbtPRMFactory::CreateMolFileSource(
+    const std::string &fileName) throw(RbtError) {
   RbtMolecularFileSourcePtr retVal;
-  RbtString fileType = Rbt::GetFileType(fileName);
-  RbtString fileTypeUpper;
+  std::string fileType = Rbt::GetFileType(fileName);
+  std::string fileTypeUpper;
   std::transform(fileType.begin(), fileType.end(),
                  std::back_inserter(fileTypeUpper), toupper);
-  RbtString fullFileName = Rbt::GetRbtFileName("", fileName);
+  std::string fullFileName = Rbt::GetRbtFileName("", fileName);
 
   if (m_iTrace > 0) {
     cout << _CT << ": File name requested = " << fileName
@@ -438,7 +438,7 @@ RbtPRMFactory::CreateMolFileSource(const RbtString &fileName) throw(RbtError) {
   if (fileTypeUpper == "MOL2") {
     retVal = new RbtMOL2FileSource(fullFileName, bImplH);
   } else if (fileTypeUpper == "PSF") {
-    RbtString strMassesFile =
+    std::string strMassesFile =
         m_pParamSource->GetParameterValueAsString("RECEPTOR_MASSES_FILE");
     strMassesFile = Rbt::GetRbtFileName("data", strMassesFile);
     if (m_iTrace > 0) {
@@ -460,7 +460,7 @@ RbtPRMFactory::CreateMolFileSource(const RbtString &fileName) throw(RbtError) {
   }
 
   if (m_pParamSource->isParameterPresent("RECEPTOR_SEGMENT_NAME")) {
-    RbtString strSegmentName =
+    std::string strSegmentName =
         m_pParamSource->GetParameterValueAsString("RECEPTOR_SEGMENT_NAME");
     RbtSegmentMap segmentMap = Rbt::ConvertStringToSegmentMap(strSegmentName);
     retVal->SetSegmentFilterMap(segmentMap);

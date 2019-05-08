@@ -23,11 +23,11 @@
 class RbtPolarIntraSF : public RbtBaseIntraSF, public RbtPolarSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _ATTR;
+  static std::string _ATTR;
 
-  RbtPolarIntraSF(const RbtString &strName = "POLAR");
+  RbtPolarIntraSF(const std::string &strName = "POLAR");
   virtual ~RbtPolarIntraSF();
 
 protected:
@@ -44,7 +44,7 @@ protected:
 
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   RbtInteractionCenterList m_posList;

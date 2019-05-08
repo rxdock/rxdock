@@ -48,7 +48,7 @@ class RbtInteractionNodeListMapConstIter
 // Most of the stuff is copied shamelessly from RbtInteractionGrid.[cxx,h]
 template <class T> class RbtInteractionGridTemplate : public RbtBaseGrid {
 public:
-  static RbtString _CT;
+  static std::string _CT;
 
   RbtInteractionGridTemplate(const RbtCoord &gridMin, const RbtCoord &gridStep,
                              RbtUInt NX, RbtUInt NY, RbtUInt NZ,

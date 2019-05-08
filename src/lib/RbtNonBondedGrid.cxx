@@ -14,7 +14,7 @@
 #include "RbtFileError.h"
 
 // Static data members
-RbtString RbtNonBondedGrid::_CT("RbtNonBondedGrid");
+std::string RbtNonBondedGrid::_CT("RbtNonBondedGrid");
 
 ////////////////////////////////////////
 // Constructors/destructors

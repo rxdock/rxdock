@@ -16,7 +16,7 @@
 #include <float.h>
 
 // Static data members for RbtGPPopulation
-RbtString RbtGPPopulation::_CT("RbtGPPopulation");
+std::string RbtGPPopulation::_CT("RbtGPPopulation");
 
 // Constructor
 
@@ -117,11 +117,11 @@ RbtGPGenomePtr RbtGPPopulation::TSelect(RbtDouble tp) const {
     return (pop[ind1]);
 }
 
-RbtGPGenomePtr RbtGPPopulation::Select(RbtString selector) const {
+RbtGPGenomePtr RbtGPPopulation::Select(std::string selector) const {
   return TSelect(0.7);
 }
 
-void RbtGPPopulation::GAstep(RbtString selector, RbtDouble pcross,
+void RbtGPPopulation::GAstep(std::string selector, RbtDouble pcross,
                              RbtDouble pmut, RbtDouble mean, RbtDouble variance,
                              RbtDouble hitlimit,
                              RbtBool function) throw(RbtError) {
@@ -157,7 +157,7 @@ void RbtGPPopulation::GAstep(RbtString selector, RbtDouble pcross,
   }
 }
 
-void RbtGPPopulation::EPstep(RbtString selector, RbtDouble pcross,
+void RbtGPPopulation::EPstep(std::string selector, RbtDouble pcross,
                              RbtDouble pmut, RbtDouble mean, RbtDouble variance,
                              RbtDouble hitlimit,
                              RbtBool function) throw(RbtError) {

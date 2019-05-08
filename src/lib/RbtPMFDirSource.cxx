@@ -17,7 +17,7 @@
 using std::cout;
 using std::endl;
 
-RbtPMFDirSource::RbtPMFDirSource(const RbtString &aDir) throw(RbtError)
+RbtPMFDirSource::RbtPMFDirSource(const std::string &aDir) throw(RbtError)
     : RbtDirectorySource(aDir) {
 #ifdef _DEBUG
   cout << _CT << " RbtPMFDirSource constructor" << endl;
@@ -25,20 +25,20 @@ RbtPMFDirSource::RbtPMFDirSource(const RbtString &aDir) throw(RbtError)
 }
 
 void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
-                                vector<string> *aNameVect,
+                                vector<std::string> *aNameVect,
                                 vector<RbtPMFValue> *aSlopeVect) {
   cout << "Reading " << fNum << " PMF files..." << endl;
-  RbtString theFileName;             // will be the filename with full path
-  RbtString theLine;                 // one line from the file
-  vector<string> theStrData;         // data represented as strings in vector
+  std::string theFileName;           // will be the filename with full path
+  std::string theLine;               // one line from the file
+  vector<std::string> theStrData;    // data represented as strings in vector
   RbtPMFValue theDummy = {0.0, 0.0}; // dummy initial value for plateau
 
   while (fNum--) {
     theFileName += thePath + "/";
     //		cout << "Does not work with Solaris" <<endl;
     //		exit(1);
-    RbtString theFileStr(fNameList[fNum]->d_name); // copy from C-string
-    //		RbtString theFileStr("junk");
+    std::string theFileStr(fNameList[fNum]->d_name); // copy from C-string
+    // std::string theFileStr("junk");
     if (theFileName.size() + theFileStr.size() >
         PATH_SIZE) // check size (though should be ok)
     {
@@ -48,11 +48,11 @@ void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
     } else
       theFileName += theFileStr; // concatenate to get final size
     // get dot index in extension
-    string::size_type theExtIdx = theFileName.find_last_of(".pmf");
+    std::string::size_type theExtIdx = theFileName.find_last_of(".pmf");
     // this is for storing values from one file
     vector<RbtPMFValue> theValues;
     // when file has no .pmf extension, skip. Also check for existence and perm
-    if (string::npos != theExtIdx && !stat(theFileName.c_str(), &fStat) &&
+    if (std::string::npos != theExtIdx && !stat(theFileName.c_str(), &fStat) &&
         S_ISREG(fStat.st_mode)) {
 #ifdef _DEBUG
       cout << _CT << " Processing: " << theFileStr << endl;
@@ -98,7 +98,7 @@ void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
   cout << " done." << endl;
 }
 
-void RbtPMFDirSource::ParseLines(vector<RbtString> anStrVect,
+void RbtPMFDirSource::ParseLines(vector<std::string> anStrVect,
                                  vector<RbtPMFValue> *aValueVect) {
   RbtPMFValue theActualValue;
 

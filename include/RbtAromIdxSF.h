@@ -25,18 +25,18 @@ class RbtAromIdxSF : public RbtBaseInterSF,
                      public RbtAnnotationHandler {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _INCR;
-  static RbtString _R12;
-  static RbtString _DR12MIN;
-  static RbtString _DR12MAX;
-  static RbtString _DAMIN;
-  static RbtString _DAMAX;
+  static std::string _INCR;
+  static std::string _R12;
+  static std::string _DR12MIN;
+  static std::string _DR12MAX;
+  static std::string _DAMIN;
+  static std::string _DAMAX;
   // DM 12 Jun 2002 - score threshold used for counting aromatic interactions
-  static RbtString _THRESHOLD;
+  static std::string _THRESHOLD;
 
-  RbtAromIdxSF(const RbtString &strName = "AROM");
+  RbtAromIdxSF(const std::string &strName = "AROM");
   virtual ~RbtAromIdxSF();
 
   // Override RbtBaseSF::ScoreMap to provide additional raw descriptors
@@ -55,7 +55,7 @@ protected:
 
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   //////////////////////////////////////////////////////////

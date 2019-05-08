@@ -21,12 +21,12 @@
 class RbtVdwGridSF : public RbtBaseInterSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _GRID;     // Suffix for grid filename
-  static RbtString _SMOOTHED; // Controls whether to smooth the grid values
+  static std::string _GRID;     // Suffix for grid filename
+  static std::string _SMOOTHED; // Controls whether to smooth the grid values
 
-  RbtVdwGridSF(const RbtString &strName = "VDW");
+  RbtVdwGridSF(const std::string &strName = "VDW");
   virtual ~RbtVdwGridSF();
 
 protected:
@@ -37,7 +37,7 @@ protected:
   virtual RbtDouble RawScore() const;
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   // Read grids from input stream

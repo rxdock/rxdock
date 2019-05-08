@@ -29,7 +29,7 @@ RbtUInt RbtParamHandler::GetNumParameters() const {
 }
 
 // Get a named parameter, throws error if name not found
-RbtVariant RbtParamHandler::GetParameter(const RbtString &strName) const
+RbtVariant RbtParamHandler::GetParameter(const std::string &strName) const
     throw(RbtBadArgument) {
   RbtStringVariantMapConstIter iter = m_parameters.find(strName);
   if (iter == m_parameters.end()) {
@@ -39,7 +39,7 @@ RbtVariant RbtParamHandler::GetParameter(const RbtString &strName) const
 }
 
 // Check if named parameter is present
-RbtBool RbtParamHandler::isParameterValid(const RbtString &strName) const {
+RbtBool RbtParamHandler::isParameterValid(const std::string &strName) const {
   return m_parameters.find(strName) != m_parameters.end();
 }
 
@@ -60,7 +60,8 @@ RbtStringVariantMap RbtParamHandler::GetParameters() const {
 
 // Set named parameter to new value, throws error if name not found
 void RbtParamHandler::SetParameter(
-    const RbtString &strName, const RbtVariant &vValue) throw(RbtBadArgument) {
+    const std::string &strName,
+    const RbtVariant &vValue) throw(RbtBadArgument) {
   if (!isParameterValid(strName)) {
     throw RbtBadArgument(_WHERE_, "Undefined parameter " + strName);
   } else {
@@ -74,7 +75,7 @@ void RbtParamHandler::SetParameter(
 // Protected methods
 ///////////////////
 // Only derived classes can mess with the parameter list
-void RbtParamHandler::AddParameter(const RbtString &strName,
+void RbtParamHandler::AddParameter(const std::string &strName,
                                    const RbtVariant &vValue) {
   m_parameters[strName] = vValue;
   // DM 25 Oct 2000 - notify derived class that parameter has changed
@@ -85,7 +86,7 @@ void RbtParamHandler::AddParameter(const RbtString &strName,
   // ParameterUpdated(strName);
 }
 
-void RbtParamHandler::DeleteParameter(const RbtString &strName) {
+void RbtParamHandler::DeleteParameter(const std::string &strName) {
   m_parameters.erase(strName);
 }
 

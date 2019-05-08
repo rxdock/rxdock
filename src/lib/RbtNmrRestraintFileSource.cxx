@@ -15,7 +15,8 @@
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtNmrRestraintFileSource::RbtNmrRestraintFileSource(const RbtString &fileName)
+RbtNmrRestraintFileSource::RbtNmrRestraintFileSource(
+    const std::string &fileName)
     : RbtBaseFileSource(fileName) {
   _RBTOBJECTCOUNTER_CONSTR_("RbtNmrRestraintFileSource");
 }
@@ -60,7 +61,7 @@ RbtStdRestraintNamesList RbtNmrRestraintFileSource::GetStdRestraintList() {
 
 // Pure virtual in RbtBaseFileSource - needs to be defined here
 void RbtNmrRestraintFileSource::Parse() throw(RbtError) {
-  const RbtString strDelimiter(","); // DM 23 Sept 1999
+  const std::string strDelimiter(","); // DM 23 Sept 1999
 
   // Only parse if we haven't already done so
   if (!m_bParsedOK) {
@@ -75,8 +76,8 @@ void RbtNmrRestraintFileSource::Parse() throw(RbtError) {
           continue;
         }
         // Read the restraint
-        RbtString strAtomNames1;
-        RbtString strAtomNames2;
+        std::string strAtomNames1;
+        std::string strAtomNames2;
         RbtDouble maxDist(0.0);
         istringstream istr(*fileIter);
         istr >> strAtomNames1 >> strAtomNames2 >> maxDist;
@@ -149,27 +150,27 @@ void RbtNmrRestraintFileSource::ClearRestraintCache() {
 // Returns NOE restraint type and modifies the atom name string accordingly
 // Returns UNDEFINED if the atom name string has bad syntax
 Rbt::eNoeType
-RbtNmrRestraintFileSource::NoeRestraintType(RbtString &strAtomNames) {
+RbtNmrRestraintFileSource::NoeRestraintType(std::string &strAtomNames) {
   Rbt::eNoeType restraintType(Rbt::NOE_UNDEFINED);
 
   // Restraint type: NOE_MEAN
   // Syntax: (at1,at2,at3...)
   // Check if atom names are bracketed correctly, if so change type to MEAN, and
   // remove the brackets
-  RbtString::size_type ob = strAtomNames.find("(");
-  RbtString::size_type cb = strAtomNames.find(")");
-  RbtString::size_type iLast = strAtomNames.length() - 1;
+  std::string::size_type ob = strAtomNames.find("(");
+  std::string::size_type cb = strAtomNames.find(")");
+  std::string::size_type iLast = strAtomNames.length() - 1;
   if ((ob == 0) && (cb == iLast)) {
     strAtomNames.erase(iLast, 1);
     strAtomNames.erase(0, 1);
     restraintType = Rbt::NOE_MEAN;
-  } else if ((ob == RbtString::npos) && (cb == RbtString::npos)) {
+  } else if ((ob == std::string::npos) && (cb == std::string::npos)) {
     // Restraint type: NOE_AND
     // Syntax: [at1,at2,at3...]
     // Check if atom names are bracketed correctly, if so change type to AND,
     // and remove the brackets
-    RbtString::size_type osqb = strAtomNames.find("[");
-    RbtString::size_type csqb = strAtomNames.find("]");
+    std::string::size_type osqb = strAtomNames.find("[");
+    std::string::size_type csqb = strAtomNames.find("]");
     if ((osqb == 0) && (csqb == iLast)) {
       strAtomNames.erase(iLast, 1);
       strAtomNames.erase(0, 1);
@@ -178,7 +179,7 @@ RbtNmrRestraintFileSource::NoeRestraintType(RbtString &strAtomNames) {
     // Restraint type: NOE_OR
     // Syntax: at1,at2,at3...
     // Check for no brackets present
-    else if ((osqb == RbtString::npos) && (csqb == RbtString::npos)) {
+    else if ((osqb == std::string::npos) && (csqb == std::string::npos)) {
       restraintType = Rbt::NOE_OR;
     }
   }

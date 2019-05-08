@@ -30,12 +30,12 @@ void main(int argc, char *argv[]) {
     ifstream desc("descnames", ios::in);
     RbtContextPtr contextp(new RbtCellContext(desc));
     RbtGPFitnessFunctionPtr ff = new RbtGPFFCHK1(contextp);
-    RbtString strTrainingFile = argv[1];
+    std::string strTrainingFile = argv[1];
     strTrainingFile += "_training.dat";
     fstream trainingFile(strTrainingFile.c_str(), ios::in);
     if (!trainingFile)
       throw RbtError(_WHERE_, "can't open " + strTrainingFile);
-    RbtString strTestFile = argv[1];
+    std::string strTestFile = argv[1];
     strTestFile += "_testing.dat";
     fstream testFile(strTestFile.c_str(), ios::in);
     if (!testFile)

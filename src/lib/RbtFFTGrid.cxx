@@ -19,7 +19,7 @@
 #include "RbtFileError.h"
 
 // Static data members
-RbtString RbtFFTGrid::_CT("RbtFFTGrid");
+std::string RbtFFTGrid::_CT("RbtFFTGrid");
 
 ////////////////////////////////////////
 // Constructors/destructors

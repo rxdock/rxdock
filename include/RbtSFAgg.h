@@ -30,11 +30,11 @@ const RbtBool SFAGG_CHECK = true;
 class RbtSFAgg : public RbtBaseSF {
 public:
   // Static data member for class type (i.e. "RbtSFAgg")
-  static RbtString _CT;
+  static std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtSFAgg(const RbtString &strName = "SCORE");
+  RbtSFAgg(const std::string &strName = "SCORE");
   virtual ~RbtSFAgg();
 
   ////////////////////////////////////////

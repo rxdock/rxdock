@@ -17,10 +17,10 @@ CPPUNIT_TEST_SUITE_REGISTRATION(SearchTest);
 void SearchTest::setUp() {
   try {
     // Create the docking site, receptor, ligand and solvent objects
-    const RbtString &wsName = "1YET";
-    RbtString prmFileName = Rbt::GetRbtFileName("", wsName + ".prm");
-    RbtString ligFileName = Rbt::GetRbtFileName("", wsName + "_c.sd");
-    RbtString asFileName = Rbt::GetRbtFileName("", wsName + ".as");
+    const std::string &wsName = "1YET";
+    std::string prmFileName = Rbt::GetRbtFileName("", wsName + ".prm");
+    std::string ligFileName = Rbt::GetRbtFileName("", wsName + "_c.sd");
+    std::string asFileName = Rbt::GetRbtFileName("", wsName + ".as");
     RbtParameterFileSourcePtr spPrmSource(
         new RbtParameterFileSource(prmFileName));
     RbtMolecularFileSourcePtr spMdlFileSource(
@@ -173,7 +173,7 @@ void SearchTest::testRestart() {
     m_workSpace->Save();
     finalScore = m_workSpace->GetSF()->Score();
     // Reload the receptor, minimised ligand and solvent
-    RbtString prmFileName = Rbt::GetRbtFileName("", "1YET.prm");
+    std::string prmFileName = Rbt::GetRbtFileName("", "1YET.prm");
     RbtParameterFileSourcePtr spPrmSource(
         new RbtParameterFileSource(prmFileName));
     RbtMolecularFileSourcePtr spMdlFileSource(

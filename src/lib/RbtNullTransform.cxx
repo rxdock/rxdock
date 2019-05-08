@@ -15,11 +15,11 @@
 #include "RbtWorkSpace.h"
 
 // Static data member for class type
-RbtString RbtNullTransform::_CT("RbtNullTransform");
+std::string RbtNullTransform::_CT("RbtNullTransform");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtNullTransform::RbtNullTransform(const RbtString &strName)
+RbtNullTransform::RbtNullTransform(const std::string &strName)
     : RbtBaseTransform(_CT, strName) {
 #ifdef _DEBUG
   cout << _CT << " parameterised constructor" << endl;

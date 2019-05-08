@@ -17,7 +17,7 @@
 #include <sstream>
 using std::ostringstream;
 
-RbtString RbtGPParser::_CT("RbtGPParser");
+std::string RbtGPParser::_CT("RbtGPParser");
 RbtInt RbtCommand::ntabs = 0;
 RbtBool RbtCommand::inside = false;
 
@@ -97,10 +97,10 @@ RbtReturnTypeList RbtGPParser::Parse(RbtGPChromosomePtr chrom,
   return outputs;
 }
 
-RbtString RbtGPParser::PrintEval(RbtGPChromosomePtr chrom, RbtInt n,
-                                 RbtBool numbers, RbtBool ins) {
+std::string RbtGPParser::PrintEval(RbtGPChromosomePtr chrom, RbtInt n,
+                                   RbtBool numbers, RbtBool ins) {
   if (!(chrom->Cells(n)->Named())) {
-    RbtString o(PrintParse1Output(chrom, n, numbers, ins));
+    std::string o(PrintParse1Output(chrom, n, numbers, ins));
     ostringstream nm;
     if (numbers) {
       nm << "(";
@@ -114,9 +114,9 @@ RbtString RbtGPParser::PrintEval(RbtGPChromosomePtr chrom, RbtInt n,
     return chrom->Cells(n)->GetName();
 }
 
-RbtString RbtGPParser::PrintParse1Output(RbtGPChromosomePtr chrom,
-                                         RbtInt output, RbtBool numbers,
-                                         RbtBool ins) {
+std::string RbtGPParser::PrintParse1Output(RbtGPChromosomePtr chrom,
+                                           RbtInt output, RbtBool numbers,
+                                           RbtBool ins) {
   RbtInt startCell = (nFunctionsInputs + 1) * (output - nProgramInputs);
   RbtInt ncomm = (*chrom)[startCell + nFunctionsInputs];
   if (ncomm == IF)
@@ -132,7 +132,7 @@ RbtString RbtGPParser::PrintParse1Output(RbtGPChromosomePtr chrom,
       fs[i] = PrintEval(chrom, (*chrom)[startCell + i], numbers, ins);
   for (RbtInt i = 0; i < commands[ncomm]->GetNArgs(); i++)
     commands[ncomm]->SetNameArg(i, fs[i]);
-  RbtString c;
+  std::string c;
   RbtCommand::inside = ins;
   if (ncomm == IF) {
     c = commands[ncomm]->GetName();
@@ -142,10 +142,10 @@ RbtString RbtGPParser::PrintParse1Output(RbtGPChromosomePtr chrom,
   return (c);
 }
 
-RbtString RbtGPParser::PrintParse(istream &istr, RbtGPChromosomePtr chrom,
-                                  RbtBool numbers, RbtBool ins) {
+std::string RbtGPParser::PrintParse(istream &istr, RbtGPChromosomePtr chrom,
+                                    RbtBool numbers, RbtBool ins) {
   // Give the names of the inputs to the corresponding cells
-  RbtString name;
+  std::string name;
   RbtInt node;
   while (istr >> node) {
     istr.get();
@@ -156,7 +156,7 @@ RbtString RbtGPParser::PrintParse(istream &istr, RbtGPChromosomePtr chrom,
   // from, and parse it
   RbtInt size = chrom->size();
   RbtReturnTypeList outputs;
-  RbtString f;
+  std::string f;
   for (RbtInt i = 0; i < nProgramOutputs; i++)
     f += PrintEval(chrom, (*chrom)[size - nProgramOutputs + i], numbers, ins) +
          "\n";

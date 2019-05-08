@@ -17,20 +17,20 @@
 using std::cout;
 using std::endl;
 
-RbtString RbtDirectorySource::_CT("RbtDirectorySource");
+std::string RbtDirectorySource::_CT("RbtDirectorySource");
 
 /**
  * Constructor checks wether the directory exists and gives
  * $RBT_ROOT to the path if required
  */
-RbtDirectorySource::RbtDirectorySource(const RbtString &aDirectory) throw(
+RbtDirectorySource::RbtDirectorySource(const std::string &aDirectory) throw(
     RbtError) {
-  //	RbtString theFileStr;
-  //// filename without path after scandir() 	RbtString theLine;
+  // std::string theFileStr;
+  //// filename without path after scandir() std::string theLine;
   //// line read
 
-  thePath = (RbtString)getenv("RBT_ROOT"); // path string to the dir
-  if (thePath.empty())                     // $RBT_ROOT not defined ...
+  thePath = (std::string)getenv("RBT_ROOT"); // path string to the dir
+  if (thePath.empty())                       // $RBT_ROOT not defined ...
     throw RbtEnvNotDefined(_WHERE_, "$RBT_ROOT ");
   else if (aDirectory.size() > PATH_SIZE) // or string is too long
     throw RbtStringTooLong(_WHERE_, " ");
@@ -51,7 +51,7 @@ RbtDirectorySource::RbtDirectorySource(const RbtString &aDirectory) throw(
   CheckDirectory(thePath); // throws exceptions if something messy
 }
 
-void RbtDirectorySource::CheckDirectory(RbtString &aDir) {
+void RbtDirectorySource::CheckDirectory(std::string &aDir) {
   //#ifdef COMENT
   if (!S_ISDIR(fStat.st_mode))
     throw RbtDirIsNotAccessible(_WHERE_, aDir + " : Not a directory. ");

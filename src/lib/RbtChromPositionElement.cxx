@@ -12,7 +12,7 @@
 
 #include "RbtChromPositionElement.h"
 
-RbtString RbtChromPositionElement::_CT = "RbtChromPositionElement";
+std::string RbtChromPositionElement::_CT = "RbtChromPositionElement";
 
 RbtChromPositionElement::RbtChromPositionElement(
     const RbtModel *pModel, const RbtDockingSite *pDockSite,

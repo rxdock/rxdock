@@ -17,7 +17,7 @@
 #include <fstream>
 #include <sstream>
 
-RbtString RbtGPFitnessFunction::_CT("RbtGPFitnessFunction");
+std::string RbtGPFitnessFunction::_CT("RbtGPFitnessFunction");
 
 // Constructors
 RbtGPFitnessFunction::RbtGPFitnessFunction()

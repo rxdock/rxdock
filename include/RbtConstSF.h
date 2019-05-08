@@ -22,10 +22,10 @@
 class RbtConstSF : public RbtBaseInterSF {
 public:
   // Static data member for class type (i.e. "RbtConstSF")
-  static RbtString _CT;
-  static RbtString _SOLVENT_PENALTY;
+  static std::string _CT;
+  static std::string _SOLVENT_PENALTY;
 
-  RbtConstSF(const RbtString &strName = "CONST");
+  RbtConstSF(const std::string &strName = "CONST");
   virtual ~RbtConstSF();
 
   virtual void ScoreMap(RbtStringVariantMap &scoreMap) const;
@@ -35,7 +35,7 @@ protected:
   virtual void SetupLigand() {}
   virtual void SetupScore() {}
   virtual RbtDouble RawScore() const;
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   // The original constant score for ligand binding

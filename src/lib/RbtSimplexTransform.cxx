@@ -20,18 +20,18 @@ using std::setw;
 #include "RbtWorkSpace.h"
 
 // Static data member for class type
-RbtString RbtSimplexTransform::_CT("RbtSimplexTransform");
+std::string RbtSimplexTransform::_CT("RbtSimplexTransform");
 // Parameter names
-RbtString RbtSimplexTransform::_MAX_CALLS("MAX_CALLS");
-RbtString RbtSimplexTransform::_NCYCLES("NCYCLES");
-RbtString RbtSimplexTransform::_STOPPING_STEP_LENGTH("STOPPING_STEP_LENGTH");
-RbtString RbtSimplexTransform::_PARTITION_DIST("PARTITION_DIST");
-RbtString RbtSimplexTransform::_STEP_SIZE("STEP_SIZE");
-RbtString RbtSimplexTransform::_CONVERGENCE("CONVERGENCE");
+std::string RbtSimplexTransform::_MAX_CALLS("MAX_CALLS");
+std::string RbtSimplexTransform::_NCYCLES("NCYCLES");
+std::string RbtSimplexTransform::_STOPPING_STEP_LENGTH("STOPPING_STEP_LENGTH");
+std::string RbtSimplexTransform::_PARTITION_DIST("PARTITION_DIST");
+std::string RbtSimplexTransform::_STEP_SIZE("STEP_SIZE");
+std::string RbtSimplexTransform::_CONVERGENCE("CONVERGENCE");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtSimplexTransform::RbtSimplexTransform(const RbtString &strName)
+RbtSimplexTransform::RbtSimplexTransform(const std::string &strName)
     : RbtBaseBiMolTransform(_CT, strName) {
   AddParameter(_MAX_CALLS, 200);
   AddParameter(_NCYCLES, 5);

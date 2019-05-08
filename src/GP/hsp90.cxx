@@ -27,7 +27,7 @@ void main(int argc, char *argv[]) {
       theRand.SeedFromClock();
     cout << "Seed: " << theRand.GetSeed() << endl;
     cout << "Output taken from: \n";
-    RbtString strInputFile;
+    std::string strInputFile;
     cin >> strInputFile;
     ifstream inputFile(strInputFile.c_str(), ios::in);
     if (!inputFile)
@@ -40,9 +40,9 @@ void main(int argc, char *argv[]) {
     RbtInt nInputSets;
     cin >> nInputSets;
     RbtInt nTestSets = nInputSets / 3;
-    RbtString strTrainingFile = "/tmp/beatriz/" + strInputFile + ".training";
+    std::string strTrainingFile = "/tmp/beatriz/" + strInputFile + ".training";
     fstream trainingFile(strTrainingFile.c_str(), ios::in | ios::out);
-    RbtString strTestFile = "/tmp/beatriz/" + strInputFile + ".test";
+    std::string strTestFile = "/tmp/beatriz/" + strInputFile + ".test";
     fstream testFile(strTestFile.c_str(), ios::in | ios::out);
     RbtUIntSet randomList;
     cout << nTestSets << endl;
@@ -57,7 +57,7 @@ void main(int argc, char *argv[]) {
     for (iter = randomList.begin(); iter != randomList.end(); iter++)
       cout << *iter << "\t";
     cout << endl;
-    RbtString line;
+    std::string line;
     getline(inputFile, line);
     testFile << line << endl;
     trainingFile << line << endl;

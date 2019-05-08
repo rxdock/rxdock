@@ -14,7 +14,7 @@
 #include "RbtAtomFuncs.h"
 #include "RbtModel.h"
 
-RbtString RbtChromDihedralRefData::_CT = "RbtChromDihedralRefData";
+std::string RbtChromDihedralRefData::_CT = "RbtChromDihedralRefData";
 
 RbtChromDihedralRefData::RbtChromDihedralRefData(RbtBondPtr spBond,
                                                  RbtAtomList tetheredAtoms,

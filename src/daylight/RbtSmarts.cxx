@@ -10,8 +10,8 @@
 
 void print_atoms_in_path(dt_Handle path);
 
-RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const RbtString &strSmart,
-                               RbtString &strSmiles) {
+RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
+                               std::string &strSmiles) {
   Rbt::isAtomicNo_eq isO(8);
   Rbt::isAtomicNo_eq isH(1);
   RbtAtomList atomList = spModel->GetAtomList();
@@ -115,11 +115,11 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const RbtString &strSmart,
   char *smart;
   if (strSmart.empty()) {
     smart = new char[strSmiles.length() + 1];
-    strSmiles.copy(smart, RbtString::npos);
+    strSmiles.copy(smart, std::string::npos);
     smart[strSmiles.length()] = 0;
   } else {
     smart = new char[strSmart.length() + 1];
-    strSmart.copy(smart, RbtString::npos);
+    strSmart.copy(smart, std::string::npos);
     smart[strSmart.length()] = 0;
   }
 

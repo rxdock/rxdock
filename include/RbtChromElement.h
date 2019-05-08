@@ -34,7 +34,7 @@ typedef RbtXOverList::const_iterator RbtXOverListConstIter;
 class RbtChromElement {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Threshold used to assess equality of two chromosome elements
   static RbtDouble _THRESHOLD;
 
@@ -44,8 +44,8 @@ public:
   enum eMode { FIXED = 0, TETHERED = 1, FREE = 2 };
   // Static methods to convert from mode enum to string and vice versa
   static eMode
-  StrToMode(const RbtString &modeStr) throw(RbtError); // case insensitive
-  static RbtString
+  StrToMode(const std::string &modeStr) throw(RbtError); // case insensitive
+  static std::string
   ModeToStr(eMode mode); // returns "FIXED", "TETHERED" or "FREE"ss
 
   virtual ~RbtChromElement();

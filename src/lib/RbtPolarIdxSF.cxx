@@ -15,15 +15,15 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtPolarIdxSF::_CT("RbtPolarIdxSF");
-RbtString RbtPolarIdxSF::_INCR("INCR");
-RbtString RbtPolarIdxSF::_ATTR("ATTR");
-RbtString RbtPolarIdxSF::_THRESHOLD_POS("THRESHOLD_POS");
-RbtString RbtPolarIdxSF::_THRESHOLD_NEG("THRESHOLD_NEG");
+std::string RbtPolarIdxSF::_CT("RbtPolarIdxSF");
+std::string RbtPolarIdxSF::_INCR("INCR");
+std::string RbtPolarIdxSF::_ATTR("ATTR");
+std::string RbtPolarIdxSF::_THRESHOLD_POS("THRESHOLD_POS");
+std::string RbtPolarIdxSF::_THRESHOLD_NEG("THRESHOLD_NEG");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
-RbtPolarIdxSF::RbtPolarIdxSF(const RbtString &strName)
+RbtPolarIdxSF::RbtPolarIdxSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_bAttr(true), m_bFlexRec(false),
       m_bSolvent(false), m_nPos(0), m_nNeg(0), m_posThreshold(0.25),
       m_negThreshold(0.25) {
@@ -65,7 +65,7 @@ void RbtPolarIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
 
     // First deal with the inter score which is stored in its natural location
     // in the map
-    RbtString name = GetFullName();
+    std::string name = GetFullName();
     scoreMap[name] = rs;
     AddToParentMapEntry(scoreMap, rs);
 
@@ -74,7 +74,7 @@ void RbtPolarIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     RbtDouble system_rs =
         ReceptorScore() + SolventScore() + ReceptorSolventScore();
     if (system_rs != 0.0) {
-      RbtString systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
+      std::string systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
       scoreMap[systemName] = system_rs;
       // increment the parent SCORE.SYSTEM total with the weighted score
       RbtDouble parentScore = scoreMap[RbtBaseSF::_SYSTEM_SF];
@@ -317,7 +317,7 @@ void RbtPolarIdxSF::DeleteList(RbtInteractionCenterList &icList) {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtPolarIdxSF::ParameterUpdated(const RbtString &strName) {
+void RbtPolarIdxSF::ParameterUpdated(const std::string &strName) {
   // DM 25 Oct 2000 - heavily used params
   if (strName == _ATTR) {
     m_bAttr = GetParameter(_ATTR);

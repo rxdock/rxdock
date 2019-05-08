@@ -12,7 +12,7 @@
 
 #include "RbtChrom.h"
 
-RbtString RbtChrom::_CT = "RbtChrom";
+std::string RbtChrom::_CT = "RbtChrom";
 
 RbtChrom::RbtChrom() : RbtChromElement() { _RBTOBJECTCOUNTER_CONSTR_(_CT); }
 

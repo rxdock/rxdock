@@ -15,7 +15,7 @@
 #include "RbtDockingError.h"
 #include <algorithm>
 
-RbtString RbtPopulation::_CT("RbtPopulation");
+std::string RbtPopulation::_CT("RbtPopulation");
 
 RbtPopulation::RbtPopulation(RbtChromElement *pChr, RbtInt size,
                              RbtBaseSF *pSF) throw(RbtError)

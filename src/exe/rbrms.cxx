@@ -172,9 +172,9 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  RbtString strRefSDFile(argv[1]);
-  RbtString strInputSDFile(argv[2]);
-  RbtString strOutputSDFile;
+  std::string strRefSDFile(argv[1]);
+  std::string strInputSDFile(argv[2]);
+  std::string strOutputSDFile;
   RbtBool bOutput(false);
   if (argc > 3) {
     strOutputSDFile = argv[3];

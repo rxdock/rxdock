@@ -19,13 +19,13 @@
 
 class RbtRandPopTransform : public RbtBaseBiMolTransform {
 public:
-  static RbtString _CT;
-  static RbtString _POP_SIZE;
-  static RbtString _SCALE_CHROM_LENGTH;
+  static std::string _CT;
+  static std::string _POP_SIZE;
+  static std::string _SCALE_CHROM_LENGTH;
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtRandPopTransform(const RbtString &strName = "RANDPOP");
+  RbtRandPopTransform(const std::string &strName = "RANDPOP");
   virtual ~RbtRandPopTransform();
 
   ////////////////////////////////////////

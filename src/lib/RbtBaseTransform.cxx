@@ -15,12 +15,12 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtBaseTransform::_CT("RbtBaseTransform");
+std::string RbtBaseTransform::_CT("RbtBaseTransform");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtBaseTransform::RbtBaseTransform(const RbtString &strClass,
-                                   const RbtString &strName)
+RbtBaseTransform::RbtBaseTransform(const std::string &strClass,
+                                   const std::string &strName)
     : RbtBaseObject(strClass, strName), m_parent(NULL) {
 #ifdef _DEBUG
   cout << _CT << " parameterised constructor" << endl;
@@ -41,7 +41,7 @@ RbtBaseTransform::~RbtBaseTransform() {
 ////////////////
 
 // Fully qualified name, prefixed by all ancestors
-RbtString RbtBaseTransform::GetFullName() const {
+std::string RbtBaseTransform::GetFullName() const {
   // If we have a parent, prefix our short name with our parents full name,
   // else full name is just our short name
   return (m_parent) ? m_parent->GetFullName() + "." + GetName() : GetName();

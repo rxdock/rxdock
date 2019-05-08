@@ -24,7 +24,7 @@
 
 class RbtGPFFCrossDock : public RbtGPFitnessFunction {
 public:
-  static RbtString _CT;
+  static std::string _CT;
 
   void ReadTables(istream &, RbtReturnTypeArray &, RbtReturnTypeArray &);
   RbtDouble CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,

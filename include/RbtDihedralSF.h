@@ -79,10 +79,10 @@ typedef RbtDihedralList::const_iterator RbtDihedralListConstIter;
 class RbtDihedralSF : public virtual RbtBaseSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _IMPL_H_CORR; // DM 6 Aug 2002 - option to correct barrier
-                                 // heights for implicit H's
+  static std::string _IMPL_H_CORR; // DM 6 Aug 2002 - option to correct barrier
+                                   // heights for implicit H's
 
   virtual ~RbtDihedralSF();
 

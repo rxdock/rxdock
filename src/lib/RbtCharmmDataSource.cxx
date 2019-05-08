@@ -24,7 +24,7 @@ using std::ostringstream;
 
 // DM 30 Apr 1999 - pass in masses.rtf file name as parameter
 // (default=GetRbtFileName("data","masses.rtf"))
-RbtCharmmDataSource::RbtCharmmDataSource(const RbtString &strMassesFile) {
+RbtCharmmDataSource::RbtCharmmDataSource(const std::string &strMassesFile) {
   // Need element data source to convert element names to atomic numbers
   RbtElementFileSourcePtr spElementData(
       new RbtElementFileSource(Rbt::GetRbtFileName("data", "RbtElements.dat")));
@@ -72,7 +72,7 @@ RbtCharmmDataSource::~RbtCharmmDataSource() {
 ////////////////////////////////////////
 // Public methods
 ////////////////
-RbtString
+std::string
 RbtCharmmDataSource::AtomTypeString(RbtInt nAtomType) throw(RbtError) {
   RbtIntStringMapIter iter = m_atomTypes.find(nAtomType);
   if (iter != m_atomTypes.end())
@@ -81,14 +81,14 @@ RbtCharmmDataSource::AtomTypeString(RbtInt nAtomType) throw(RbtError) {
     ostringstream ostr;
     ostr << "CHARMm atom type #" << nAtomType
          << " not found in CharmmDataSource" << ends;
-    RbtString strError(ostr.str());
+    std::string strError(ostr.str());
     // delete ostr.str();
     throw RbtFileMissingParameter(_WHERE_, strError);
   }
 }
 
-RbtInt RbtCharmmDataSource::ImplicitHydrogens(const RbtString &strFFType) throw(
-    RbtError) {
+RbtInt RbtCharmmDataSource::ImplicitHydrogens(
+    const std::string &strFFType) throw(RbtError) {
   RbtStringIntMapIter iter = m_implicitHydrogens.find(strFFType);
   if (iter != m_implicitHydrogens.end())
     return (*iter).second;
@@ -96,8 +96,8 @@ RbtInt RbtCharmmDataSource::ImplicitHydrogens(const RbtString &strFFType) throw(
     return 0;
 }
 
-RbtInt
-RbtCharmmDataSource::AtomicNumber(const RbtString &strFFType) throw(RbtError) {
+RbtInt RbtCharmmDataSource::AtomicNumber(const std::string &strFFType) throw(
+    RbtError) {
   RbtStringIntMapIter iter = m_atomicNumber.find(strFFType);
   if (iter != m_atomicNumber.end())
     return (*iter).second;
@@ -107,8 +107,8 @@ RbtCharmmDataSource::AtomicNumber(const RbtString &strFFType) throw(RbtError) {
                                       " not found in CharmmDataSource");
 }
 
-RbtInt
-RbtCharmmDataSource::FormalCharge(const RbtString &strFFType) throw(RbtError) {
+RbtInt RbtCharmmDataSource::FormalCharge(const std::string &strFFType) throw(
+    RbtError) {
   RbtStringIntMapIter iter = m_formalCharge.find(strFFType);
   if (iter != m_formalCharge.end()) {
     return (*iter).second;
@@ -118,7 +118,7 @@ RbtCharmmDataSource::FormalCharge(const RbtString &strFFType) throw(RbtError) {
 
 // DM 8 Dec 1998
 RbtAtom::eHybridState
-RbtCharmmDataSource::HybridState(const RbtString &strFFType) throw(RbtError) {
+RbtCharmmDataSource::HybridState(const std::string &strFFType) throw(RbtError) {
   RbtStringHybridStateMapIter iter = m_hybridState.find(strFFType);
   if (iter != m_hybridState.end())
     return (*iter).second;
@@ -137,16 +137,16 @@ RbtCharmmDataSource::HybridState(const RbtString &strFFType) throw(RbtError) {
 // strings are (RBT::SP), (RBT::SP2), (RBT::SP3), (RBT::AROM), (RBT::TRI)
 //(brackets are important)
 RbtAtom::eHybridState RbtCharmmDataSource::ConvertCommentStringToHybridState(
-    const RbtString &strComment) {
-  if (strComment.find("(RBT::SP)") != RbtString::npos)
+    const std::string &strComment) {
+  if (strComment.find("(RBT::SP)") != std::string::npos)
     return RbtAtom::SP;
-  else if (strComment.find("(RBT::SP2)") != RbtString::npos)
+  else if (strComment.find("(RBT::SP2)") != std::string::npos)
     return RbtAtom::SP2;
-  else if (strComment.find("(RBT::SP3)") != RbtString::npos)
+  else if (strComment.find("(RBT::SP3)") != std::string::npos)
     return RbtAtom::SP3;
-  else if (strComment.find("(RBT::AROM)") != RbtString::npos)
+  else if (strComment.find("(RBT::AROM)") != std::string::npos)
     return RbtAtom::AROM;
-  else if (strComment.find("(RBT::TRI)") != RbtString::npos)
+  else if (strComment.find("(RBT::TRI)") != std::string::npos)
     return RbtAtom::TRI;
   else
     return RbtAtom::UNDEFINED;

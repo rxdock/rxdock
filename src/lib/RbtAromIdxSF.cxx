@@ -14,16 +14,16 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtAromIdxSF::_CT("RbtAromIdxSF");
-RbtString RbtAromIdxSF::_INCR("INCR");
-RbtString RbtAromIdxSF::_R12("R12");
-RbtString RbtAromIdxSF::_DR12MIN("DR12MIN");
-RbtString RbtAromIdxSF::_DR12MAX("DR12MAX");
-RbtString RbtAromIdxSF::_DAMIN("DAMIN");
-RbtString RbtAromIdxSF::_DAMAX("DAMAX");
-RbtString RbtAromIdxSF::_THRESHOLD("THRESHOLD");
+std::string RbtAromIdxSF::_CT("RbtAromIdxSF");
+std::string RbtAromIdxSF::_INCR("INCR");
+std::string RbtAromIdxSF::_R12("R12");
+std::string RbtAromIdxSF::_DR12MIN("DR12MIN");
+std::string RbtAromIdxSF::_DR12MAX("DR12MAX");
+std::string RbtAromIdxSF::_DAMIN("DAMIN");
+std::string RbtAromIdxSF::_DAMAX("DAMAX");
+std::string RbtAromIdxSF::_THRESHOLD("THRESHOLD");
 
-RbtAromIdxSF::RbtAromIdxSF(const RbtString &strName)
+RbtAromIdxSF::RbtAromIdxSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_R12(3.5), m_DR12Min(0.25), m_DR12Max(0.6),
       m_DAMin(20.0), m_DAMax(30.0), m_nArom(0), m_nGuan(0), m_threshold(0.25) {
   // Add parameters
@@ -58,7 +58,7 @@ RbtAromIdxSF::~RbtAromIdxSF() {
     EnableAnnotations(false);
 
     RbtDouble w = GetWeight();
-    RbtString name = GetFullName();
+    std::string name = GetFullName();
     RbtDouble s = w * rs;
     //DM 31 Mar 2003
     //New convention - report the raw scores and the weight in the SD file
@@ -305,7 +305,7 @@ void RbtAromIdxSF::ClearLigand() {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtAromIdxSF::ParameterUpdated(const RbtString &strName) {
+void RbtAromIdxSF::ParameterUpdated(const std::string &strName) {
   if (strName == _R12) {
     m_R12 = GetParameter(_R12);
   } else if (strName == _DR12MIN) {

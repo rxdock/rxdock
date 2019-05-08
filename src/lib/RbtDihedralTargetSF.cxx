@@ -13,9 +13,9 @@
 #include "RbtDihedralTargetSF.h"
 
 // Static data members
-RbtString RbtDihedralTargetSF::_CT("RbtDihedralTargetSF");
+std::string RbtDihedralTargetSF::_CT("RbtDihedralTargetSF");
 
-RbtDihedralTargetSF::RbtDihedralTargetSF(const RbtString &strName)
+RbtDihedralTargetSF::RbtDihedralTargetSF(const std::string &strName)
     : RbtBaseSF(_CT, strName) {
 #ifdef _DEBUG
   cout << _CT << " parameterised constructor" << endl;

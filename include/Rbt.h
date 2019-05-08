@@ -23,22 +23,22 @@ namespace Rbt {
 // RESOURCE HANDLING FUNCTIONS
 //
 // GetRbtRoot - returns value of RBT_ROOT env variable
-RbtString GetRbtRoot();
+std::string GetRbtRoot();
 // GetRbtHome - returns value of RBT_HOME env variable
 //(or HOME if RBT_HOME is undefined)
-RbtString GetRbtHome();
+std::string GetRbtHome();
 // GetCopyright - returns legalese statement
-RbtString GetCopyright();
+std::string GetCopyright();
 // GetVersion - returns current library version
-RbtString GetVersion();
+std::string GetVersion();
 // GetBuildNum - returns current library build number
-RbtString GetBuild();
+std::string GetBuild();
 // GetProduct - returns library product name
-RbtString GetProduct();
+std::string GetProduct();
 // GetTime - returns current time and date as an RbtString
-RbtString GetTime();
+std::string GetTime();
 // GetCurrentDirectory - returns current working directory
-RbtString GetCurrentDirectory();
+std::string GetCurrentDirectory();
 //
 ////////////////////////////////////////////////////////////////
 
@@ -54,25 +54,26 @@ RbtString GetCurrentDirectory();
 // If RBT_ROOT is not set, then GetRbtDirName returns ./ irrespective of the
 // subdirectory asked for. Thus the fall-back position is that parameter files
 // are read from the current directory if RBT_ROOT is not defined.
-RbtString GetRbtDirName(const RbtString &strSubdir = "");
+std::string GetRbtDirName(const std::string &strSubdir = "");
 
 // GetRbtFileName
 // As GetRbtDirName but returns the full path to a file in the rDock directory
 // structure
-RbtString GetRbtFileName(const RbtString &strSubdir, const RbtString &strFile);
+std::string GetRbtFileName(const std::string &strSubdir,
+                           const std::string &strFile);
 
 // GetFileType
 // Returns the string following the last "." in the file name.
 // e.g. GetFileType("receptor.psf") would return "psf"
-RbtString GetFileType(const RbtString &strFile);
+std::string GetFileType(const std::string &strFile);
 
 // GetDirList
 // Returns a list of files in a directory (strDir) whose names begin with
 // strFilePrefix (optional) and whose type is strFileType (optional, as returned
 // by GetFileType)
-RbtStringList GetDirList(const RbtString &strDir,
-                         const RbtString &strFilePrefix = "",
-                         const RbtString &strFileType = "");
+RbtStringList GetDirList(const std::string &strDir,
+                         const std::string &strFilePrefix = "",
+                         const std::string &strFileType = "");
 //
 ////////////////////////////////////////////////////////////////
 
@@ -80,11 +81,11 @@ RbtStringList GetDirList(const RbtString &strDir,
 // CONVERSION ROUTINES
 //
 // Converts (comma)-delimited string of segment names to segment map
-RbtSegmentMap ConvertStringToSegmentMap(const RbtString &strSegments,
-                                        const RbtString &strDelimiter = ",");
+RbtSegmentMap ConvertStringToSegmentMap(const std::string &strSegments,
+                                        const std::string &strDelimiter = ",");
 // Converts segment map to (comma)-delimited string of segment names
-RbtString ConvertSegmentMapToString(const RbtSegmentMap &segmentMap,
-                                    const RbtString &strDelimiter = ",");
+std::string ConvertSegmentMapToString(const RbtSegmentMap &segmentMap,
+                                      const std::string &strDelimiter = ",");
 
 // Returns a segment map containing the members of map1 which are not in map2
 // I know, should really be a template so as to be more universal...one day
@@ -95,11 +96,12 @@ RbtSegmentMap SegmentDiffMap(const RbtSegmentMap &map1,
 // DM 30 Mar 1999
 // Converts (comma)-delimited string to string list (similar to
 // ConvertStringToSegmentMap, but returns list not map)
-RbtStringList ConvertDelimitedStringToList(const RbtString &strValues,
-                                           const RbtString &strDelimiter = ",");
+RbtStringList
+ConvertDelimitedStringToList(const std::string &strValues,
+                             const std::string &strDelimiter = ",");
 // Converts string list to (comma)-delimited string (inverse of above)
-RbtString ConvertListToDelimitedString(const RbtStringList &listOfValues,
-                                       const RbtString &strDelimiter = ",");
+std::string ConvertListToDelimitedString(const RbtStringList &listOfValues,
+                                         const std::string &strDelimiter = ",");
 
 //
 ////////////////////////////////////////////////////////////////
@@ -112,7 +114,7 @@ RbtString ConvertListToDelimitedString(const RbtStringList &listOfValues,
 // Contains copyright info, library version, date, time etc
 // DM 19 Feb 1999 - include executable information
 std::ostream &PrintStdHeader(std::ostream &s,
-                             const RbtString &strExecutable = "");
+                             const std::string &strExecutable = "");
 
 // Helper functions to read/write chars from iostreams
 // Throws error if stream state is not Good() before and after the read/write

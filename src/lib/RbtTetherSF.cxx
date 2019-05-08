@@ -17,12 +17,12 @@
 using std::istringstream;
 
 // Static data members
-RbtString RbtTetherSF::_CT("RbtTetherSF");
-RbtString RbtTetherSF::_REFERENCE_FILE("REFERENCE_FILE");
+std::string RbtTetherSF::_CT("RbtTetherSF");
+std::string RbtTetherSF::_REFERENCE_FILE("REFERENCE_FILE");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
-RbtTetherSF::RbtTetherSF(const RbtString &strName) : RbtBaseSF(_CT, strName) {
+RbtTetherSF::RbtTetherSF(const std::string &strName) : RbtBaseSF(_CT, strName) {
   // Add parameters It gets the right name in SetupReceptor
   AddParameter(_REFERENCE_FILE, "_reference.sd");
 #ifdef _DEBUG
@@ -40,7 +40,7 @@ RbtTetherSF::~RbtTetherSF() {
 
 RbtIntList RbtTetherSF::ReadTetherAtoms(RbtStringList &strAtoms) {
   RbtIntList tetherAtoms;
-  RbtString strTetherAtoms = Rbt::ConvertListToDelimitedString(strAtoms);
+  std::string strTetherAtoms = Rbt::ConvertListToDelimitedString(strAtoms);
   istringstream ist(strTetherAtoms.c_str());
   RbtInt i;
   char sep[2];
@@ -55,9 +55,9 @@ RbtIntList RbtTetherSF::ReadTetherAtoms(RbtStringList &strAtoms) {
 void RbtTetherSF::SetupReceptor() {
   if (GetReceptor().Null())
     return;
-  RbtString strWSName = GetWorkSpace()->GetName();
-  RbtString refExt = GetParameter(_REFERENCE_FILE);
-  RbtString refFile = Rbt::GetRbtFileName("", strWSName + refExt);
+  std::string strWSName = GetWorkSpace()->GetName();
+  std::string refExt = GetParameter(_REFERENCE_FILE);
+  std::string refFile = Rbt::GetRbtFileName("", strWSName + refExt);
   RbtMolecularFileSourcePtr spReferenceSD(
       new RbtMdlFileSource(refFile, false, false, true));
   RbtModelPtr spReferenceMdl(new RbtModel(spReferenceSD));
@@ -104,6 +104,6 @@ RbtDouble RbtTetherSF::RawScore() const {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtTetherSF::ParameterUpdated(const RbtString &strName) {
+void RbtTetherSF::ParameterUpdated(const std::string &strName) {
   RbtBaseSF::ParameterUpdated(strName);
 }

@@ -35,7 +35,7 @@ void RbtChromFactory::VisitReceptorFlexData(RbtReceptorFlexData *pFlexData) {
     // Trap the combination of flexible OH/NH3 AND multiple receptor
     // conformations We do not support both of these simultaneously
     if (pModel->GetNumSavedCoords() > 1) {
-      RbtString message(
+      std::string message(
           "The combination of flexible OH/NH3 groups AND multiple receptor "
           "conformations is not supported currently");
       throw RbtInvalidRequest(_WHERE_, message);
@@ -83,11 +83,11 @@ void RbtChromFactory::VisitLigandFlexData(RbtLigandFlexData *pFlexData) {
         pFlexData->GetParameter(RbtLigandFlexData::_ROT_STEP);
     RbtDouble dihedralStepSize =
         pFlexData->GetParameter(RbtLigandFlexData::_DIHEDRAL_STEP);
-    RbtString transModeStr =
+    std::string transModeStr =
         pFlexData->GetParameter(RbtLigandFlexData::_TRANS_MODE);
-    RbtString rotModeStr =
+    std::string rotModeStr =
         pFlexData->GetParameter(RbtLigandFlexData::_ROT_MODE);
-    RbtString dihedralModeStr =
+    std::string dihedralModeStr =
         pFlexData->GetParameter(RbtLigandFlexData::_DIHEDRAL_MODE);
     RbtDouble maxTrans = pFlexData->GetParameter(RbtLigandFlexData::_MAX_TRANS);
     RbtDouble maxRot = pFlexData->GetParameter(RbtLigandFlexData::_MAX_ROT);

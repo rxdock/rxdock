@@ -49,8 +49,8 @@ public:
     }
   }
   RbtReturnType GetResult() const { return result; }
-  RbtString GetName() const { return name; }
-  void SetName(RbtString s) { name = s; }
+  std::string GetName() const { return name; }
+  void SetName(std::string s) { name = s; }
   void SetResult(RbtReturnType r) {
     result = r;
     evaluated = true;
@@ -72,7 +72,7 @@ public:
 
 private:
   RbtBool evaluated, constant;
-  RbtString name;
+  std::string name;
   RbtReturnType result;
   //    friend ostream& operator<<(ostream& s, const RbtCell &p);
 };

@@ -23,7 +23,7 @@
 #include <fstream>
 #include <sstream>
 
-RbtString RbtGPFFCHK1::_CT("RbtGPFFCHK1");
+std::string RbtGPFFCHK1::_CT("RbtGPFFCHK1");
 
 void RbtGPFFCHK1::ReadTables(istream &in, RbtReturnTypeArray &it,
                              RbtReturnTypeArray &sft) {

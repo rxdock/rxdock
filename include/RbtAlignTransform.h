@@ -22,14 +22,14 @@
 class RbtAlignTransform : public RbtBaseBiMolTransform {
 public:
   // Static data member for class type
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _COM;
-  static RbtString _AXES;
+  static std::string _COM;
+  static std::string _AXES;
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtAlignTransform(const RbtString &strName = "ALIGN");
+  RbtAlignTransform(const std::string &strName = "ALIGN");
   virtual ~RbtAlignTransform();
 
   ////////////////////////////////////////

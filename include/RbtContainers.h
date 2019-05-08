@@ -71,7 +71,7 @@ typedef RbtUIntList::iterator RbtUIntListIter;
 typedef RbtUIntList::const_iterator RbtUIntListConstIter;
 
 // string
-typedef vector<RbtString> RbtStringList;
+typedef vector<std::string> RbtStringList;
 typedef RbtStringList::iterator RbtStringListIter;
 typedef RbtStringList::const_iterator RbtStringListConstIter;
 
@@ -84,28 +84,29 @@ typedef RbtBoolVec::const_iterator RbtBoolVecConstIter;
 // For now, a segment is defined as just an RbtString
 // RbtSegmentMap holds a map of (key=unique segment name, value=number of atoms
 // in segment)
+typedef std::string RbtSegment;
 typedef map<RbtSegment, RbtUInt> RbtSegmentMap;
 typedef RbtSegmentMap::iterator RbtSegmentMapIter;
 typedef RbtSegmentMap::const_iterator RbtSegmentMapConstIter;
 
 // Map of (key=string, value=integer)
-typedef map<RbtString, RbtInt> RbtStringIntMap;
+typedef map<std::string, RbtInt> RbtStringIntMap;
 typedef RbtStringIntMap::iterator RbtStringIntMapIter;
 typedef RbtStringIntMap::const_iterator RbtStringIntMapConstIter;
 
 // Map of (key=string, value=double)
-typedef map<RbtString, RbtDouble> RbtStringDoubleMap;
+typedef map<std::string, RbtDouble> RbtStringDoubleMap;
 typedef RbtStringDoubleMap::iterator RbtStringDoubleMapIter;
 typedef RbtStringDoubleMap::const_iterator RbtStringDoubleMapConstIter;
 
 // Added by DM, 3 Dec 1998
 // Map of (key=string, value=bool)
-typedef map<RbtString, RbtBool> RbtStringBoolMap;
+typedef map<std::string, RbtBool> RbtStringBoolMap;
 typedef RbtStringBoolMap::iterator RbtStringBoolMapIter;
 typedef RbtStringBoolMap::const_iterator RbtStringBoolMapConstIter;
 
 // Map of (key=int, value=string)
-typedef map<RbtInt, RbtString> RbtIntStringMap;
+typedef map<RbtInt, std::string> RbtIntStringMap;
 typedef RbtIntStringMap::iterator RbtIntStringMapIter;
 typedef RbtIntStringMap::const_iterator RbtIntStringMapConstIter;
 

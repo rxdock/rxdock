@@ -20,20 +20,20 @@
 class RbtSimplexTransform : public RbtBaseBiMolTransform {
 public:
   // Static data member for class type
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _MAX_CALLS;
-  static RbtString _NCYCLES;
-  static RbtString _STOPPING_STEP_LENGTH;
-  static RbtString _PARTITION_DIST;
-  static RbtString _STEP_SIZE;
+  static std::string _MAX_CALLS;
+  static std::string _NCYCLES;
+  static std::string _STOPPING_STEP_LENGTH;
+  static std::string _PARTITION_DIST;
+  static std::string _STEP_SIZE;
   // Stop once score improves by less than convergence value
   // between cycles
-  static RbtString _CONVERGENCE;
+  static std::string _CONVERGENCE;
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtSimplexTransform(const RbtString &strName = "SIMPLEX");
+  RbtSimplexTransform(const std::string &strName = "SIMPLEX");
   virtual ~RbtSimplexTransform();
 
   ////////////////////////////////////////

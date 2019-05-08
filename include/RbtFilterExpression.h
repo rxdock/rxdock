@@ -25,7 +25,7 @@ class RbtFilterExpressionVisitor;
 
 class RbtFilterExpression {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   virtual void Print() = 0;
   virtual void Accept(RbtFilterExpressionVisitor &) = 0;
   virtual RbtInt GetNOps() = 0;

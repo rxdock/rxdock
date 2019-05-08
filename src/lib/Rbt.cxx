@@ -26,10 +26,10 @@
 using std::istream;
 
 // GetRbtRoot - returns value of RBT_ROOT env variable
-RbtString Rbt::GetRbtRoot() {
+std::string Rbt::GetRbtRoot() {
   char *szRbtRoot = getenv("RBT_ROOT");
   if (szRbtRoot != (char *)NULL) {
-    return RbtString(szRbtRoot);
+    return std::string(szRbtRoot);
   } else {
     return GetCurrentDirectory();
   }
@@ -39,14 +39,14 @@ RbtString Rbt::GetRbtRoot() {
 // GetRbtHome - returns value of RBT_HOME env variable
 // or HOME if RBT_HOME is not defined
 // If HOME is undefined, returns current working directory
-RbtString Rbt::GetRbtHome() {
+std::string Rbt::GetRbtHome() {
   char *szRbtHome = getenv("RBT_HOME");
   if (szRbtHome != (char *)NULL) {
-    return RbtString(szRbtHome);
+    return std::string(szRbtHome);
   } else {
     szRbtHome = getenv("HOME");
     if (szRbtHome != (char *)NULL) {
-      return RbtString(szRbtHome);
+      return std::string(szRbtHome);
     } else {
       return GetCurrentDirectory();
     }
@@ -54,22 +54,22 @@ RbtString Rbt::GetRbtHome() {
 }
 
 // Rbt::GetCopyright - returns legalese statement
-RbtString Rbt::GetCopyright() { return IDS_COPYRIGHT; }
+std::string Rbt::GetCopyright() { return IDS_COPYRIGHT; }
 // Rbt::GetVersion - returns current library version
-RbtString Rbt::GetVersion() { return IDS_VERSION; }
+std::string Rbt::GetVersion() { return IDS_VERSION; }
 // GetBuildNum - returns current library build number
-RbtString Rbt::GetBuild() { return IDS_BUILDNUM; }
+std::string Rbt::GetBuild() { return IDS_BUILDNUM; }
 // GetProduct - returns library product name
-RbtString Rbt::GetProduct() { return IDS_PRODUCT; }
+std::string Rbt::GetProduct() { return IDS_PRODUCT; }
 // GetTime - returns current time as an RbtString
-RbtString Rbt::GetTime() {
-  time_t t = ::time(NULL);                 // Get time in seconds since 1970
-  tm *pLocalTime = ::localtime(&t);        // Convert to local time struct
-  return RbtString(::asctime(pLocalTime)); // Convert to ascii string
+std::string Rbt::GetTime() {
+  time_t t = ::time(NULL);                   // Get time in seconds since 1970
+  tm *pLocalTime = ::localtime(&t);          // Convert to local time struct
+  return std::string(::asctime(pLocalTime)); // Convert to ascii string
 }
 // GetCurrentDirectory - returns current working directory
-RbtString Rbt::GetCurrentDirectory() {
-  RbtString strCwd(".");
+std::string Rbt::GetCurrentDirectory() {
+  std::string strCwd(".");
   char *szCwd = new char[PATH_MAX + 1]; // Allocate a temp char* array
   if (::getcwd(szCwd, PATH_MAX) != (char *)NULL) { // Get the cwd
     strCwd = szCwd;
@@ -85,8 +85,8 @@ RbtString Rbt::GetCurrentDirectory() {
 // For example, if RBT_ROOT environment variable is ~dave/ribodev/molmod/ribodev
 // then GetRbtDirName("data") would return ~dave/ribodev/molmod/ribodev/data/
 //
-RbtString Rbt::GetRbtDirName(const RbtString &strSubDir) {
-  RbtString strRbtDir = GetRbtRoot();
+std::string Rbt::GetRbtDirName(const std::string &strSubDir) {
+  std::string strRbtDir = GetRbtRoot();
   if (strSubDir.size() > 0) {
     strRbtDir += "/";
     strRbtDir += strSubDir;
@@ -100,10 +100,10 @@ RbtString Rbt::GetRbtDirName(const RbtString &strSubDir) {
 // Next check RBT_HOME directory, if so return this path
 // Finally, return the path to the file in the rDock directory structure
 //(without checking if the file is actually present)
-RbtString Rbt::GetRbtFileName(const RbtString &strSubdir,
-                              const RbtString &strFile) {
+std::string Rbt::GetRbtFileName(const std::string &strSubdir,
+                                const std::string &strFile) {
   // First see if the file exists in the current directory
-  RbtString strFullPathToFile(strFile);
+  std::string strFullPathToFile(strFile);
   // Just open it, don't try and parse it (after all, we don't know what format
   // the file is)
   std::ifstream fileIn(strFullPathToFile.c_str(), std::ios_base::in);
@@ -130,7 +130,7 @@ RbtString Rbt::GetRbtFileName(const RbtString &strSubdir,
 // Returns the string following the last "." in the file name.
 // e.g. GetFileType("receptor.psf") would return "psf"
 // If no "." is present, returns the whole file name
-RbtString Rbt::GetFileType(const RbtString &strFile) {
+std::string Rbt::GetFileType(const std::string &strFile) {
   return strFile.substr(strFile.rfind(".") + 1);
 }
 
@@ -138,9 +138,9 @@ RbtString Rbt::GetFileType(const RbtString &strFile) {
 // Returns a list of files in a directory (strDir) whose names begin with
 // strFilePrefix (optional) and whose type is strFileType (optional, as returned
 // by GetFileType)
-RbtStringList Rbt::GetDirList(const RbtString &strDir,
-                              const RbtString &strFilePrefix,
-                              const RbtString &strFileType) {
+RbtStringList Rbt::GetDirList(const std::string &strDir,
+                              const std::string &strFilePrefix,
+                              const std::string &strFileType) {
   RbtStringList dirList;
   RbtBool bMatchPrefix =
       (strFilePrefix.size() > 0); // Check if we need to match on file prefix
@@ -159,7 +159,7 @@ RbtStringList Rbt::GetDirList(const RbtString &strDir,
 #endif
 
     while ((pEntry = readdir(pDir)) != NULL) { // Read each entry
-      RbtString strFile = pEntry->d_name;
+      std::string strFile = pEntry->d_name;
       if ((strFile == ".") || (strFile == ".."))
         continue; // Don't need to consider . and ..
       RbtBool bMatch = true;
@@ -183,20 +183,21 @@ RbtStringList Rbt::GetDirList(const RbtString &strDir,
 }
 
 // Converts (comma)-delimited string of segment names to segment map
-RbtSegmentMap Rbt::ConvertStringToSegmentMap(const RbtString &strSegments,
-                                             const RbtString &strDelimiter) {
+RbtSegmentMap Rbt::ConvertStringToSegmentMap(const std::string &strSegments,
+                                             const std::string &strDelimiter) {
 #ifdef _DEBUG
   // cout << "ConvertStringToSegmentMap: " << strSegments << " delimiter=" <<
   // strDelimiter << endl;
 #endif //_DEBUG
 
-  RbtString::size_type nDelimiterSize = strDelimiter.size();
+  std::string::size_type nDelimiterSize = strDelimiter.size();
   RbtSegmentMap segmentMap;
 
   // Check for null string or null delimiter
   if ((strSegments.size() > 0) && (nDelimiterSize > 0)) {
-    RbtString::size_type iBegin = 0; // indicies into string (sort-of iterators)
-    RbtString::size_type iEnd;
+    std::string::size_type iBegin =
+        0; // indicies into string (sort-of iterators)
+    std::string::size_type iEnd;
     // Not often a do..while loop is used, but in this case it's what we want
     // Even if no delimiter is present, we still need to extract the whole
     // string
@@ -208,16 +209,16 @@ RbtSegmentMap Rbt::ConvertStringToSegmentMap(const RbtString &strSegments,
       segmentMap[strSegments.substr(iBegin, iEnd - iBegin)] = 0;
       iBegin = iEnd + nDelimiterSize;
     } while (iEnd !=
-             RbtString::npos); // This is the check for delimiter not found
+             std::string::npos); // This is the check for delimiter not found
   }
 
   return segmentMap;
 }
 
 // Converts segment map to (comma)-delimited string of segment names
-RbtString Rbt::ConvertSegmentMapToString(const RbtSegmentMap &segmentMap,
-                                         const RbtString &strDelimiter) {
-  RbtString strSegments;
+std::string Rbt::ConvertSegmentMapToString(const RbtSegmentMap &segmentMap,
+                                           const std::string &strDelimiter) {
+  std::string strSegments;
 
   // Check for empty segment map
   if (segmentMap.size() > 0) {
@@ -246,33 +247,35 @@ RbtSegmentMap Rbt::SegmentDiffMap(const RbtSegmentMap &map1,
 // DM 30 Mar 1999
 // Converts (comma)-delimited string to string list (similar to
 // ConvertStringToSegmentMap, but returns list not map)
-RbtStringList Rbt::ConvertDelimitedStringToList(const RbtString &strValues,
-                                                const RbtString &strDelimiter) {
-  RbtString::size_type nDelimiterSize = strDelimiter.size();
+RbtStringList
+Rbt::ConvertDelimitedStringToList(const std::string &strValues,
+                                  const std::string &strDelimiter) {
+  std::string::size_type nDelimiterSize = strDelimiter.size();
   RbtStringList listOfValues;
 
   // Check for null string or null delimiter
   if ((strValues.size() > 0) && (nDelimiterSize > 0)) {
-    RbtString::size_type iBegin = 0; // indicies into string (sort-of iterators)
-    RbtString::size_type iEnd;
+    std::string::size_type iBegin =
+        0; // indicies into string (sort-of iterators)
+    std::string::size_type iEnd;
     // Not often a do..while loop is used, but in this case it's what we want
     // Even if no delimiter is present, we still need to extract the whole
     // string
     do {
       iEnd = strValues.find(strDelimiter, iBegin);
-      RbtString strValue = strValues.substr(iBegin, iEnd - iBegin);
+      std::string strValue = strValues.substr(iBegin, iEnd - iBegin);
       listOfValues.push_back(strValue);
       iBegin = iEnd + nDelimiterSize;
     } while (iEnd !=
-             RbtString::npos); // This is the check for delimiter not found
+             std::string::npos); // This is the check for delimiter not found
   }
   return listOfValues;
 }
 
 // Converts string list to (comma)-delimited string (inverse of above)
-RbtString Rbt::ConvertListToDelimitedString(const RbtStringList &listOfValues,
-                                            const RbtString &strDelimiter) {
-  RbtString strValues;
+std::string Rbt::ConvertListToDelimitedString(const RbtStringList &listOfValues,
+                                              const std::string &strDelimiter) {
+  std::string strValues;
 
   // Check for empty string list
   if (!listOfValues.empty()) {
@@ -295,7 +298,7 @@ RbtString Rbt::ConvertListToDelimitedString(const RbtStringList &listOfValues,
 // Contains copyright info, library version, date, time etc
 // DM 19 Feb 1999 - include executable information
 std::ostream &Rbt::PrintStdHeader(std::ostream &s,
-                                  const RbtString &strExecutable) {
+                                  const std::string &strExecutable) {
   s << "***********************************************" << std::endl;
   s << GetCopyright() << std::endl;
   if (!strExecutable.empty())

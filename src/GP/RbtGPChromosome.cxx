@@ -16,7 +16,7 @@
 
 #include <fstream>
 
-RbtString RbtGPChromosome::_CT("RbtGPChromosome");
+std::string RbtGPChromosome::_CT("RbtGPChromosome");
 
 // Constructors
 RbtGPChromosome::RbtGPChromosome(RbtInt npi, RbtInt nfi, RbtInt nn, RbtInt no,

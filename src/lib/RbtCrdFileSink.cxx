@@ -25,7 +25,7 @@ using std::setw;
 //  files _RBTOBJECTCOUNTER_CONSTR_("RbtCrdFileSink");
 //}
 
-RbtCrdFileSink::RbtCrdFileSink(const RbtString &fileName, RbtModelPtr spModel)
+RbtCrdFileSink::RbtCrdFileSink(const std::string &fileName, RbtModelPtr spModel)
     : RbtBaseMolecularFileSink(fileName, spModel) // Call base class constructor
 {
   SetMultiConf(
@@ -82,8 +82,8 @@ void RbtCrdFileSink::Render() throw(RbtError) {
 
     // In multiconf mode, we need to keep track of the current subunit and
     // segment IDs so we can detect when they change
-    RbtString strLastSubunitId("UNLIKELY_TO_MATCH_THIS_BY_CHANCE");
-    RbtString strLastSegmentName("UNLIKELY_TO_MATCH_THIS_BY_CHANCE");
+    std::string strLastSubunitId("UNLIKELY_TO_MATCH_THIS_BY_CHANCE");
+    std::string strLastSegmentName("UNLIKELY_TO_MATCH_THIS_BY_CHANCE");
 
     // 3. Write the atom list
     RbtAtomList atomList(spModel->GetAtomList());

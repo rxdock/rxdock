@@ -68,9 +68,9 @@ public:
   RbtAtom();
 
   // Constructor supplying all 2-D parameters
-  RbtAtom(RbtInt nAtomId, RbtInt nAtomicNo = 6, RbtString strAtomName = "C",
-          RbtString strSubunitId = "1", RbtString strSubunitName = "RES",
-          RbtString strSegmentName = "SEG1",
+  RbtAtom(RbtInt nAtomId, RbtInt nAtomicNo = 6, std::string strAtomName = "C",
+          std::string strSubunitId = "1", std::string strSubunitName = "RES",
+          std::string strSegmentName = "SEG1",
           eHybridState eState =
               UNDEFINED, // DM 8 Dec 1998 Changed from SP3 to UNDEFINED
           RbtUInt nHydrogens = 0, RbtInt nFormalCharge = 0);
@@ -116,26 +116,28 @@ public:
   void SetAtomicNo(const RbtInt nAtomicNo) { m_nAtomicNo = nAtomicNo; }
 
   // AtomName
-  RbtString GetAtomName() const { return m_strAtomName; }
-  void SetAtomName(const RbtString strAtomName) { m_strAtomName = strAtomName; }
-  RbtString GetFullAtomName() const; // Returns composite of segment name,
-                                     // subunit id and name, and atom name
+  std::string GetAtomName() const { return m_strAtomName; }
+  void SetAtomName(const std::string strAtomName) {
+    m_strAtomName = strAtomName;
+  }
+  std::string GetFullAtomName() const; // Returns composite of segment name,
+                                       // subunit id and name, and atom name
 
   // SubunitId
-  RbtString GetSubunitId() const { return m_strSubunitId; }
-  void SetSubunitId(const RbtString strSubunitId) {
+  std::string GetSubunitId() const { return m_strSubunitId; }
+  void SetSubunitId(const std::string strSubunitId) {
     m_strSubunitId = strSubunitId;
   }
 
   // SubunitName
-  RbtString GetSubunitName() const { return m_strSubunitName; }
-  void SetSubunitName(const RbtString strSubunitName) {
+  std::string GetSubunitName() const { return m_strSubunitName; }
+  void SetSubunitName(const std::string strSubunitName) {
     m_strSubunitName = strSubunitName;
   }
 
   // SegmentName
-  RbtString GetSegmentName() const { return m_strSegmentName; }
-  void SetSegmentName(const RbtString strSegmentName) {
+  std::string GetSegmentName() const { return m_strSegmentName; }
+  void SetSegmentName(const std::string strSegmentName) {
     m_strSegmentName = strSegmentName;
   }
 
@@ -251,8 +253,8 @@ public:
   void SetVdwRadius(const RbtDouble dVdwRadius) { m_dVdwRadius = dVdwRadius; }
 
   // AtomType
-  RbtString GetFFType() const { return m_strFFType; }
-  void SetFFType(const RbtString &strFFType) { m_strFFType = strFFType; }
+  std::string GetFFType() const { return m_strFFType; }
+  void SetFFType(const std::string &strFFType) { m_strFFType = strFFType; }
   RbtPMFType GetPMFType() const { return m_nPMFType; }
   void SetPMFType(RbtPMFType aType) { m_nPMFType = aType; }
   RbtTriposAtomType::eType GetTriposType() const { return m_triposType; }
@@ -295,7 +297,7 @@ public:
   RbtUInt GetCoordinationNumber(RbtInt nAtomicNo) const;
   // This version returns the number of coordinated atoms of a given force field
   // type
-  RbtUInt GetCoordinationNumber(const RbtString &strFFType) const;
+  RbtUInt GetCoordinationNumber(const std::string &strFFType) const;
   // This version returns the number of coordinated atoms of a given
   // hybridisation state
   RbtUInt GetCoordinationNumber(eHybridState e) const;
@@ -312,14 +314,14 @@ private:
 
   // These can be considered as 2-D params (i.e. define the chemistry and
   // topology)
-  RbtInt m_nAtomicNo;         // Atomic number
-  RbtInt m_nAtomId;           // Atom ID
-  RbtString m_strAtomName;    // Atom name
-  RbtString m_strSubunitId;   // Subunit(residue) ID (note: string not int)
-  RbtString m_strSubunitName; // Subunit(residue) name
-  RbtString m_strSegmentName; // Segment(molecule) name
-  eHybridState m_eState;      // Hybridisation state
-  RbtUInt m_nHydrogens;       // Number of attached (implicit) hydrogens
+  RbtInt m_nAtomicNo;           // Atomic number
+  RbtInt m_nAtomId;             // Atom ID
+  std::string m_strAtomName;    // Atom name
+  std::string m_strSubunitId;   // Subunit(residue) ID (note: string not int)
+  std::string m_strSubunitName; // Subunit(residue) name
+  std::string m_strSegmentName; // Segment(molecule) name
+  eHybridState m_eState;        // Hybridisation state
+  RbtUInt m_nHydrogens;         // Number of attached (implicit) hydrogens
   RbtInt m_nFormalCharge; // Formal charge (DM 24 Mar 1999 - changed from double
                           // to int)
   RbtModel *m_pModel;     // Regular pointer to parent model
@@ -340,7 +342,7 @@ private:
   RbtDouble m_dGroupCharge;   // interaction group charge (added DM 24 Mar 1999)
   RbtDouble m_dAtomicMass;    // atomic mass
   RbtDouble m_dVdwRadius;     // atomic mass
-  RbtString m_strFFType;      // force field atom type
+  std::string m_strFFType;    // force field atom type
   //  RbtDouble m_dReweight; // XB reweighting factor
 
   RbtUIntCoordMap m_savedCoords; // DM 08 Feb 1999 - now store all saved coords
@@ -406,9 +408,9 @@ inline RbtDouble BondDihedral(RbtAtom *pAtom1, RbtAtom *pAtom2, RbtAtom *pAtom3,
 ///////////////////////
 
 // Converts hybridisation state enum to a string
-RbtString ConvertHybridStateToString(RbtAtom::eHybridState eState);
+std::string ConvertHybridStateToString(RbtAtom::eHybridState eState);
 // Convert formal charge to a string (e.g. +, -, +2, -2 etc)
-RbtString ConvertFormalChargeToString(RbtInt nCharge);
+std::string ConvertFormalChargeToString(RbtInt nCharge);
 
 ////////////////////////////////////////////
 // Predicates (for use by STL algorithms)
@@ -535,10 +537,10 @@ public:
 
 // Is Force field type equal to s ?
 class isFFType_eq : public std::unary_function<RbtAtom *, RbtBool> {
-  RbtString s;
+  std::string s;
 
 public:
-  explicit isFFType_eq(const RbtString &ss) : s(ss) {}
+  explicit isFFType_eq(const std::string &ss) : s(ss) {}
   RbtBool operator()(const RbtAtom *pAtom) const {
     return pAtom->GetFFType() == s;
   }
@@ -546,10 +548,10 @@ public:
 
 // Is Atom name equal to s ?
 class isAtomName_eq : public std::unary_function<RbtAtom *, RbtBool> {
-  RbtString s;
+  std::string s;
 
 public:
-  explicit isAtomName_eq(const RbtString &ss) : s(ss) {}
+  explicit isAtomName_eq(const std::string &ss) : s(ss) {}
   RbtBool operator()(const RbtAtom *pAtom) const {
     return pAtom->GetAtomName() == s;
   }
@@ -557,10 +559,10 @@ public:
 
 // Is Subunit name equal to s ?
 class isSubunitName_eq : public std::unary_function<RbtAtom *, RbtBool> {
-  RbtString s;
+  std::string s;
 
 public:
-  explicit isSubunitName_eq(const RbtString &ss) : s(ss) {}
+  explicit isSubunitName_eq(const std::string &ss) : s(ss) {}
   RbtBool operator()(const RbtAtom *pAtom) const {
     return pAtom->GetSubunitName() == s;
   }
@@ -568,10 +570,10 @@ public:
 
 // Is Subunit ID equal to s ?
 class isSubunitId_eq : public std::unary_function<RbtAtom *, RbtBool> {
-  RbtString s;
+  std::string s;
 
 public:
-  explicit isSubunitId_eq(const RbtString &ss) : s(ss) {}
+  explicit isSubunitId_eq(const std::string &ss) : s(ss) {}
   RbtBool operator()(const RbtAtom *pAtom) const {
     return pAtom->GetSubunitId() == s;
   }
@@ -579,10 +581,10 @@ public:
 
 // Is Segment name equal to s ?
 class isSegmentName_eq : public std::unary_function<RbtAtom *, RbtBool> {
-  RbtString s;
+  std::string s;
 
 public:
-  explicit isSegmentName_eq(const RbtString &ss) : s(ss) {}
+  explicit isSegmentName_eq(const std::string &ss) : s(ss) {}
   RbtBool operator()(const RbtAtom *pAtom) const {
     return pAtom->GetSegmentName() == s;
   }
@@ -831,7 +833,7 @@ class isCoordinationNumber_eq : public std::unary_function<RbtAtom *, RbtBool> {
   } eCNType; // Type of coordination number to check
   RbtInt n;  // Coordination number value to check
   RbtInt atNo;
-  RbtString ffType;
+  std::string ffType;
   RbtAtom::eHybridState hybrid;
 
 public:
@@ -844,7 +846,7 @@ public:
       : n(nn), eCNType(ATNO), atNo(nAt), ffType(""),
         hybrid(RbtAtom::UNDEFINED) {}
   // Force field type coordination number
-  explicit isCoordinationNumber_eq(RbtInt nn, const RbtString &strType)
+  explicit isCoordinationNumber_eq(RbtInt nn, const std::string &strType)
       : n(nn), eCNType(FFTYPE), atNo(0), ffType(strType),
         hybrid(RbtAtom::UNDEFINED) {}
   // Hybridisation state coordination number
@@ -1150,21 +1152,21 @@ inline RbtAtomList GetAtomListWithAtomicNo_eq(const RbtAtomList &atomList,
 
 // Atoms with FFType = strFFType
 inline RbtUInt GetNumAtomsWithFFType_eq(const RbtAtomList &atomList,
-                                        RbtString strFFType) {
+                                        std::string strFFType) {
   return Rbt::GetNumAtoms(atomList, Rbt::isFFType_eq(strFFType));
 }
 inline RbtAtomList GetAtomListWithFFType_eq(const RbtAtomList &atomList,
-                                            RbtString strFFType) {
+                                            std::string strFFType) {
   return Rbt::GetAtomList(atomList, Rbt::isFFType_eq(strFFType));
 }
 
 // Atoms with AtomName = strAtomName
 inline RbtUInt GetNumAtomsWithAtomName_eq(const RbtAtomList &atomList,
-                                          RbtString strAtomName) {
+                                          std::string strAtomName) {
   return Rbt::GetNumAtoms(atomList, Rbt::isAtomName_eq(strAtomName));
 }
 inline RbtAtomList GetAtomListWithAtomName_eq(const RbtAtomList &atomList,
-                                              RbtString strAtomName) {
+                                              std::string strAtomName) {
   return Rbt::GetAtomList(atomList, Rbt::isAtomName_eq(strAtomName));
 }
 
@@ -1193,9 +1195,9 @@ RbtAtomList GetMatchingAtomList(const RbtAtomList &atomList1,
 // atoms in
 // subunit ID=23 in all segments
 RbtUInt GetNumMatchingAtoms(const RbtAtomList &atomList,
-                            const RbtString &strFullName);
+                            const std::string &strFullName);
 RbtAtomList GetMatchingAtomList(const RbtAtomList &atomList,
-                                const RbtString &strFullName);
+                                const std::string &strFullName);
 
 // DM 15 Apr 1999 - as above, but match against a list of full atom name
 // specifiers Returns total list (i.e. all matches OR'd). Does not remove

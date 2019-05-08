@@ -21,7 +21,7 @@ class RbtCrdFileSource : public RbtBaseMolecularFileSource {
 public:
   // Constructors
   RbtCrdFileSource(const char *fileName);
-  RbtCrdFileSource(const RbtString fileName);
+  RbtCrdFileSource(const std::string fileName);
 
   // Default destructor
   virtual ~RbtCrdFileSource();

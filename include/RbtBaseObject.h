@@ -28,12 +28,12 @@ class RbtBaseObject : public RbtParamHandler,
                       public RbtRequestHandler {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _CLASS;
-  static RbtString _NAME;
-  static RbtString _ENABLED;
-  static RbtString _TRACE; // DM 1 Mar 2002 - move from RbtBaseTransform
+  static std::string _CLASS;
+  static std::string _NAME;
+  static std::string _ENABLED;
+  static std::string _TRACE; // DM 1 Mar 2002 - move from RbtBaseTransform
 
   ////////////////////////////////////////
   // Constructors/destructors
@@ -43,13 +43,13 @@ public:
   // Public methods
   ////////////////
   // Class name (e.g. RbtConstSF)
-  RbtString GetClass() const;
+  std::string GetClass() const;
   // Short name (e.g. HBOND)
-  RbtString GetName() const;
-  void SetName(const RbtString &);
+  std::string GetName() const;
+  void SetName(const std::string &);
   // Fully qualified name (should be overridden by subclasses which can be
   // aggregated to prefix the name with the parent's name)
-  virtual RbtString GetFullName() const;
+  virtual std::string GetFullName() const;
   void Enable();
   void Disable();
   RbtBool isEnabled() const;
@@ -84,12 +84,12 @@ protected:
   ////////////////////////////////////////
   // Protected methods
   ///////////////////
-  RbtBaseObject(const RbtString &strClass, const RbtString &strName);
+  RbtBaseObject(const std::string &strClass, const std::string &strName);
   RbtBaseObject();
 
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   ////////////////////////////////////////

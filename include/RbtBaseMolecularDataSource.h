@@ -28,14 +28,16 @@ public:
   // Parameterised constructor
   // strName is a descriptive text label for the type of data source
   // Derived classes should use this constructor to set a suitable name
-  RbtBaseMolecularDataSource(RbtString strName) : m_strName(strName) {}
+  RbtBaseMolecularDataSource(std::string strName) : m_strName(strName) {}
 
   virtual ~RbtBaseMolecularDataSource() {} // Default destructor
 
   ////////////////////////////////////////
   // Public methods
   ////////////////
-  RbtString GetName() { return m_strName; } // Returns source identifier string
+  std::string GetName() {
+    return m_strName;
+  } // Returns source identifier string
 
   virtual RbtBool isTitleListSupported() { return false; }
   virtual RbtBool isAtomListSupported() { return false; }
@@ -69,10 +71,10 @@ public:
   // string list)
   virtual RbtStringVariantMap GetDataMap() throw(RbtError) = 0;
   // Query as to whether a particular data field name is present
-  virtual RbtBool isDataFieldPresent(const RbtString &strDataField) = 0;
+  virtual RbtBool isDataFieldPresent(const std::string &strDataField) = 0;
   // Get a particular data value
   virtual RbtVariant
-  GetDataValue(const RbtString &strDataField) throw(RbtError) = 0;
+  GetDataValue(const std::string &strDataField) throw(RbtError) = 0;
 
 private:
   ////////////////////////////////////////
@@ -89,7 +91,7 @@ private:
   ////////////////////////////////////////
   // Private data
   //////////////
-  RbtString m_strName; // Source identifier string
+  std::string m_strName; // Source identifier string
 };
 
 #endif //_RBTBASEMOLECULARDATASOURCE_H_

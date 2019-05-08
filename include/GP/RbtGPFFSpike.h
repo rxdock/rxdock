@@ -25,7 +25,7 @@
 
 class RbtGPFFSpike : public RbtGPFitnessFunction {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   RbtGPFFSpike(RbtContextPtr c) : contextp(c) {
     _RBTOBJECTCOUNTER_CONSTR_(_CT);
   }

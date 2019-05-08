@@ -104,23 +104,23 @@ typedef vector<RbtMOEGridPoint> RbtMOEGridData;
 class RbtMOEGrid {
   RbtMOEGridShape myShape;
   RbtMOEGridData myData;
-  RbtString stream_name; // filename
-  RbtCoord min, max;     // common extent min and max coords
-  RbtCoord c_min, c_max; // current extent min and max coords
+  std::string stream_name; // filename
+  RbtCoord min, max;       // common extent min and max coords
+  RbtCoord c_min, c_max;   // current extent min and max coords
 public:
   // default ctor
   RbtMOEGrid();
   // parameterised ctor for a single grid
   // pass shape, data and outfilename
-  RbtMOEGrid(RbtMOEGridShape &, RbtMOEGridData &, RbtString);
+  RbtMOEGrid(RbtMOEGridShape &, RbtMOEGridData &, std::string);
   // or pass parameters using these functions (when it is about
   // to save multiple grids into a single file)
   void SetShape(RbtMOEGridShape &a_shape) { myShape = a_shape; }
   void SetData(RbtMOEGridData &a_data) { myData = a_data; }
-  void SetOutputFileName(RbtString &a_filename) { stream_name = a_filename; }
+  void SetOutputFileName(std::string &a_filename) { stream_name = a_filename; }
   // methods to calculate grid extents
-  void CalculateCommonExtents(vector<RbtString> strPrmFiles); // for all
-  void GetDockingSiteExtents(RbtString &a_strPrmFile);        // for a single
+  void CalculateCommonExtents(vector<std::string> strPrmFiles); // for all
+  void GetDockingSiteExtents(std::string &a_strPrmFile);        // for a single
   // get methods
   RbtCoord GetMinExtents() { return min; }
   RbtCoord GetMaxExtents() { return max; }

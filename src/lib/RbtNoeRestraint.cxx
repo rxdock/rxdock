@@ -13,7 +13,7 @@
 #include "RbtNoeRestraint.h"
 
 // Returns a string representing the NOE restraint type
-RbtString Rbt::ConvertNoeRestraintTypeToString(const eNoeType type) {
+std::string Rbt::ConvertNoeRestraintTypeToString(const eNoeType type) {
   switch (type) {
   case Rbt::NOE_OR:
     return "OR";

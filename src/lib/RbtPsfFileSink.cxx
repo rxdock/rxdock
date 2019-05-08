@@ -20,7 +20,7 @@ using std::setw;
 ////////////////////////////////////////
 // Constructors/destructors
 
-RbtPsfFileSink::RbtPsfFileSink(const RbtString &fileName, RbtModelPtr spModel)
+RbtPsfFileSink::RbtPsfFileSink(const std::string &fileName, RbtModelPtr spModel)
     : RbtBaseMolecularFileSink(fileName, spModel) // Call base class constructor
 {
   SetMultiConf(
@@ -40,10 +40,10 @@ RbtPsfFileSink::~RbtPsfFileSink() {
 // Override public methods from RbtBaseFileSink
 void RbtPsfFileSink::Render() throw(RbtError) {
   // String constants in PSF files
-  const RbtString strPsfKey("PSF");
-  const RbtString strTitleKey("!NTITLE");
-  const RbtString strAtomKey("!NATOM");
-  const RbtString strBondKey("!NBOND:");
+  const std::string strPsfKey("PSF");
+  const std::string strTitleKey("!NTITLE");
+  const std::string strAtomKey("!NATOM");
+  const std::string strBondKey("!NBOND:");
 
   // Reset() has the intelligence to only reset the counters when required
   // so we can simply call it each time here

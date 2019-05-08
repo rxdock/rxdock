@@ -44,7 +44,7 @@ public:
 
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
 
   RbtDockingSite(const RbtCavityList &cavList, RbtDouble border);
   RbtDockingSite(istream &istr);

@@ -22,13 +22,13 @@
 class RbtNmrSF : public RbtBaseInterSF, public RbtBaseIdxSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _FILENAME; // Nmr restraint file name
-  static RbtString
+  static std::string _FILENAME; // Nmr restraint file name
+  static std::string
       _QUADRATIC; // True = quadratic penalty function; false = linear
 
-  RbtNmrSF(const RbtString &strName = "NMR");
+  RbtNmrSF(const std::string &strName = "NMR");
   virtual ~RbtNmrSF();
 
 protected:
@@ -36,7 +36,7 @@ protected:
   virtual void SetupLigand();
   virtual void SetupScore();
   virtual RbtDouble RawScore() const;
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   RbtDouble NoeDistance(const RbtNoeRestraintAtoms &noe) const;

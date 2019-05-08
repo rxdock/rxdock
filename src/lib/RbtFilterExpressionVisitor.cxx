@@ -16,7 +16,7 @@
 #include <limits.h>
 
 void PrintVisitor::VisitVbleExp(FilterVbleExp *fe) {
-  RbtString name = fe->GetVble().GetName();
+  std::string name = fe->GetVble().GetName();
   if (name[0] == 'c') // constant
     cout << fe->GetVble().GetValue() << " ";
   else

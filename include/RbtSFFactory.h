@@ -22,7 +22,7 @@
 
 class RbtSFFactory {
   // Parameter name which identifies a scoring function definition
-  static RbtString _SF;
+  static std::string _SF;
 
 public:
   ////////////////////////////////////////
@@ -38,8 +38,8 @@ public:
 
   // Creates a single scoring function object of type strSFClass, and name
   // strName e.g. strSFClass = RbtHBondIntnSF
-  virtual RbtBaseSF *Create(const RbtString &strSFClass,
-                            const RbtString &strName) throw(RbtError);
+  virtual RbtBaseSF *Create(const std::string &strSFClass,
+                            const std::string &strName) throw(RbtError);
 
   // Creates an aggregate scoring function from a parameter file source
   // Each component SF is in a named section, which should minimally contain a
@@ -49,8 +49,8 @@ public:
   // scanned for valid scoring function definitions SF parameters are set from
   // the list of parameters in each named section
   virtual RbtSFAgg *CreateAggFromFile(
-      RbtParameterFileSourcePtr spPrmSource, const RbtString &strName,
-      const RbtString &strSFClasses = RbtString()) throw(RbtError);
+      RbtParameterFileSourcePtr spPrmSource, const std::string &strName,
+      const std::string &strSFClasses = std::string()) throw(RbtError);
 
 protected:
   ////////////////////////////////////////

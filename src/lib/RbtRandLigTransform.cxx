@@ -13,13 +13,13 @@
 #include "RbtRandLigTransform.h"
 
 // Static data member for class type
-RbtString RbtRandLigTransform::_CT("RbtRandLigTransform");
+std::string RbtRandLigTransform::_CT("RbtRandLigTransform");
 // Parameter names
-RbtString RbtRandLigTransform::_TORS_STEP("TORS_STEP");
+std::string RbtRandLigTransform::_TORS_STEP("TORS_STEP");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtRandLigTransform::RbtRandLigTransform(const RbtString &strName)
+RbtRandLigTransform::RbtRandLigTransform(const std::string &strName)
     : RbtBaseUniMolTransform(_CT, strName), m_rand(Rbt::GetRbtRand()) {
   // Add parameters
   AddParameter(_TORS_STEP, 180);

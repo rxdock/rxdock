@@ -22,7 +22,7 @@ class RbtBaseSF;
 
 class RbtGenome {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   // Sole constructor accepting an existing chromosome.
   // A clone of the existing chromosome is stored,
   // and is deleted in the RbtGenome destructor

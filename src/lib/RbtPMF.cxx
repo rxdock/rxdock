@@ -12,126 +12,126 @@
 
 #include "RbtPMF.h"
 
-RbtString Rbt::PMFType2Str(RbtPMFType aType) {
+std::string Rbt::PMFType2Str(RbtPMFType aType) {
   switch (aType) {
   case CF:
-    return RbtString("CF");
+    return std::string("CF");
     break;
   case CP:
-    return RbtString("CP");
+    return std::string("CP");
     break;
   case cF:
-    return RbtString("cF");
+    return std::string("cF");
     break;
   case cP:
-    return RbtString("cP");
+    return std::string("cP");
     break;
   case C3:
-    return RbtString("C3");
+    return std::string("C3");
     break;
   case CW:
-    return RbtString("CW");
+    return std::string("CW");
     break;
   case CO:
-    return RbtString("CO");
+    return std::string("CO");
     break;
   case CN:
-    return RbtString("CN");
+    return std::string("CN");
     break;
   case C0:
-    return RbtString("C0");
+    return std::string("C0");
     break;
   case NC:
-    return RbtString("NC");
+    return std::string("NC");
     break;
   case NP:
-    return RbtString("NP");
+    return std::string("NP");
     break;
   case NA:
-    return RbtString("NA");
+    return std::string("NA");
     break;
   case ND:
-    return RbtString("ND");
+    return std::string("ND");
     break;
   case NR:
-    return RbtString("NR");
+    return std::string("NR");
     break;
   case N0:
-    return RbtString("N0");
+    return std::string("N0");
     break;
   case NS:
-    return RbtString("NS");
+    return std::string("NS");
     break;
   case OC:
-    return RbtString("OC");
+    return std::string("OC");
     break;
   case OA:
-    return RbtString("OA");
+    return std::string("OA");
     break;
   case OE:
-    return RbtString("OE");
+    return std::string("OE");
     break;
   case OR:
-    return RbtString("OR");
+    return std::string("OR");
     break;
   case OS:
-    return RbtString("OS");
+    return std::string("OS");
     break;
   case OD:
-    return RbtString("OD");
+    return std::string("OD");
     break;
   case OW:
-    return RbtString("OW");
+    return std::string("OW");
     break;
   case P:
-    return RbtString("P");
+    return std::string("P");
     break;
   case SA:
-    return RbtString("SA");
+    return std::string("SA");
     break;
   case SD:
-    return RbtString("SD");
+    return std::string("SD");
     break;
   case HL:
-    return RbtString("HL");
+    return std::string("HL");
     break;
   case HH:
-    return RbtString("HH");
+    return std::string("HH");
     break;
   case Zn:
-    return RbtString("Zn");
+    return std::string("Zn");
     break;
   case CL:
-    return RbtString("CL");
+    return std::string("CL");
     break;
   case Mn:
-    return RbtString("Mn");
+    return std::string("Mn");
     break;
   case Mg:
-    return RbtString("Mg");
+    return std::string("Mg");
     break;
   case F:
-    return RbtString("F");
+    return std::string("F");
     break;
   case Fe:
-    return RbtString("Fe");
+    return std::string("Fe");
     break;
   case Br:
-    return RbtString("Br");
+    return std::string("Br");
     break;
   case V:
-    return RbtString("V");
+    return std::string("V");
     break;
   case PMF_UNDEFINED:
-    return RbtString("PMF_UNDEFINED");
+    return std::string("PMF_UNDEFINED");
     break;
   default:
-    return RbtString("NO SUCH TYPE");
+    return std::string("NO SUCH TYPE");
     break;
   }
 }
 
-RbtPMFType Rbt::PMFStr2Type(RbtString aStr) {
+RbtPMFType Rbt::PMFStr2Type(std::string aStr) {
   if (!aStr.compare("CF"))
     return CF;
   else if (!aStr.compare("CP"))

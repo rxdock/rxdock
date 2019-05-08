@@ -12,9 +12,9 @@
 
 #include "RbtSetupPMFSF.h"
 
-RbtString RbtSetupPMFSF::_CT("RbtSetupPMFSF");
+std::string RbtSetupPMFSF::_CT("RbtSetupPMFSF");
 
-RbtSetupPMFSF::RbtSetupPMFSF(const RbtString &strName)
+RbtSetupPMFSF::RbtSetupPMFSF(const std::string &strName)
     : RbtBaseSF(_CT, strName) {
   cout << _CT << " parameterised constructor" << endl;
   Disable();
@@ -158,7 +158,7 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rS(RbtAtomPtr anAtom) {
   cout << _CT << " " << anAtom->GetFullAtomName()
        << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState) << endl;
 #endif //_DEBUG1
-  if (string::npos != anAtom->GetFullAtomName().find("MET"))
+  if (std::string::npos != anAtom->GetFullAtomName().find("MET"))
     return SA; // metionin H-bond acceptor
   else
     return SD; // cystein H-bond donor

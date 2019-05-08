@@ -23,7 +23,7 @@
 
 class RbtTransformFactory {
   // Parameter name which identifies a scoring function definition
-  static RbtString _TRANSFORM;
+  static std::string _TRANSFORM;
 
 public:
   ////////////////////////////////////////
@@ -39,8 +39,8 @@ public:
 
   // Creates a single transform object of type strTransformClass, and name
   // strName e.g. strTransformClass = RbtSimAnnTransform
-  virtual RbtBaseTransform *Create(const RbtString &strTransformClass,
-                                   const RbtString &strName) throw(RbtError);
+  virtual RbtBaseTransform *Create(const std::string &strTransformClass,
+                                   const std::string &strName) throw(RbtError);
 
   // Creates an aggregate transform from a parameter file source
   // Each component transform is in a named section, which should minimally
@@ -51,8 +51,8 @@ public:
   // parameters and scoring function requests are set from the list of
   // parameters in each named section
   virtual RbtTransformAgg *CreateAggFromFile(
-      RbtParameterFileSourcePtr spPrmSource, const RbtString &strName,
-      const RbtString &strTransformClasses = RbtString()) throw(RbtError);
+      RbtParameterFileSourcePtr spPrmSource, const std::string &strName,
+      const std::string &strTransformClasses = std::string()) throw(RbtError);
 
 protected:
   ////////////////////////////////////////

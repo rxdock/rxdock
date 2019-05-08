@@ -44,10 +44,10 @@ RbtAtom::RbtAtom()
 // Constructor supplying all 2-D parameters
 // Initialise 3-D attributes to zero/null
 RbtAtom::RbtAtom(RbtInt nAtomId, RbtInt nAtomicNo /*= 6*/,
-                 RbtString strAtomName /*= "C"*/,
-                 RbtString strSubunitId /*= "1"*/,
-                 RbtString strSubunitName /*= "RES"*/,
-                 RbtString strSegmentName /*= "SEG1"*/,
+                 std::string strAtomName /*= "C"*/,
+                 std::string strSubunitId /*= "1"*/,
+                 std::string strSubunitName /*= "RES"*/,
+                 std::string strSegmentName /*= "SEG1"*/,
                  eHybridState eState /*= UNDEFINED*/,
                  RbtUInt nHydrogens /*= 0*/, RbtInt nFormalCharge /*= 0.0*/
                  )
@@ -149,7 +149,7 @@ ostream &operator<<(ostream &s, const RbtAtom &atom) { return atom.Print(s); }
 // Derived classes (e.g. pseudoatom) can override if required
 ostream &RbtAtom::Print(ostream &s) const {
   // Get owning model name (if any)
-  RbtString strModelName = "Orphan";
+  std::string strModelName = "Orphan";
   if (m_pModel != NULL)
     strModelName = m_pModel->GetName();
 
@@ -177,7 +177,7 @@ RbtBool RbtAtom::GetEnabled() const {
 }
 
 // Returns composite of segment name, subunit id and name, and atom name
-RbtString RbtAtom::GetFullAtomName() const {
+std::string RbtAtom::GetFullAtomName() const {
   return m_strSegmentName + ":" + m_strSubunitName + "_" + m_strSubunitId +
          ":" + m_strAtomName;
 }
@@ -290,7 +290,7 @@ RbtUInt RbtAtom::GetCoordinationNumber(RbtInt nAtomicNo) const {
 
 // This version returns the number of coordinated atoms of a given force field
 // type
-RbtUInt RbtAtom::GetCoordinationNumber(const RbtString &strFFType) const {
+RbtUInt RbtAtom::GetCoordinationNumber(const std::string &strFFType) const {
   return Rbt::GetNumAtoms(Rbt::GetBondedAtomList(m_bondMap),
                           Rbt::isFFType_eq(strFFType));
 }
@@ -318,7 +318,7 @@ RbtBool Rbt::RbtBondPCmp_BondId::operator()(RbtBond *pBond1,
 ///////////////////////
 
 // Converts hybridisation state enum to a string
-RbtString Rbt::ConvertHybridStateToString(RbtAtom::eHybridState eState) {
+std::string Rbt::ConvertHybridStateToString(RbtAtom::eHybridState eState) {
   switch (eState) {
   case RbtAtom::SP:
     return "SP";
@@ -336,7 +336,7 @@ RbtString Rbt::ConvertHybridStateToString(RbtAtom::eHybridState eState) {
 }
 
 // Convert formal charge to a string (e.g. +, -, ++, --, +3, -3 etc)
-RbtString Rbt::ConvertFormalChargeToString(RbtInt nCharge) {
+std::string Rbt::ConvertFormalChargeToString(RbtInt nCharge) {
   switch (nCharge) {
   case 0:
     return "";
@@ -353,7 +353,7 @@ RbtString Rbt::ConvertFormalChargeToString(RbtInt nCharge) {
     ostringstream ostr;
     ostr.setf(ios_base::showpos);
     ostr << nCharge;
-    RbtString strCharge(ostr.str());
+    std::string strCharge(ostr.str());
     return strCharge;
   }
 }
@@ -499,7 +499,7 @@ RbtBool Rbt::isAtom_13Connected::operator()(RbtAtom *pAtom2) const {
 // Note: strictly speaking these are used for DNA, not RNA, but they often crop
 // up in RNA
 RbtBool Rbt::isAtomRNA::operator()(const RbtAtom *pAtom) const {
-  RbtString strSubunitName = pAtom->GetSubunitName();
+  std::string strSubunitName = pAtom->GetSubunitName();
   return ((strSubunitName == "A") || (strSubunitName == "ADE") ||
           (strSubunitName == "G") || (strSubunitName == "GUA") ||
           (strSubunitName == "C") || (strSubunitName == "CYT") ||
@@ -678,12 +678,12 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList1,
 // atoms in
 // subunit ID=23 in all segments
 RbtUInt Rbt::GetNumMatchingAtoms(const RbtAtomList &atomList,
-                                 const RbtString &strFullName) {
+                                 const std::string &strFullName) {
   return Rbt::GetMatchingAtomList(atomList, strFullName).size();
 }
 
 RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
-                                     const RbtString &strFullName) {
+                                     const std::string &strFullName) {
   RbtAtomList matchingAtoms = atomList;
 
   // Split the name into it's constituent subunit and atom names

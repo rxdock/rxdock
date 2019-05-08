@@ -21,19 +21,19 @@
 class RbtMOL2Substructure {
 public:
   RbtMOL2Substructure() : root_atom(0), chain("UNK"), sub_type("UNK") {}
-  RbtMOL2Substructure(const RbtString &name, RbtInt rr, const RbtString &cc,
-                      const RbtString &ss)
+  RbtMOL2Substructure(const std::string &name, RbtInt rr, const std::string &cc,
+                      const std::string &ss)
       : subst_name(name), root_atom(rr), chain(cc), sub_type(ss) {}
-  RbtString GetName() const { return subst_name; };
+  std::string GetName() const { return subst_name; };
   RbtInt GetRoot() const { return root_atom; };
-  RbtString GetChain() const { return chain; };
-  RbtString GetType() const { return sub_type; };
+  std::string GetChain() const { return chain; };
+  std::string GetType() const { return sub_type; };
 
 private:
-  RbtString subst_name;
+  std::string subst_name;
   RbtInt root_atom;
-  RbtString chain;
-  RbtString sub_type;
+  std::string chain;
+  std::string sub_type;
 };
 
 // A MOL2SubstructureMap stores MOL2Substructures keyed by SUBSTRUCTURE ID
@@ -44,13 +44,13 @@ typedef RbtMOL2SubstructureMap::const_iterator RbtMOL2SubstructureMapConstIter;
 
 class RbtMOL2FileSource : public RbtBaseMolecularFileSource {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   // record delimiter strings
-  static RbtString _TRIPOS_DELIM;
+  static std::string _TRIPOS_DELIM;
   static RbtInt _TRIPOS_DELIM_SIZE;
-  static RbtString _IDS_MOL2_RECDELIM;
+  static std::string _IDS_MOL2_RECDELIM;
 
-  RbtMOL2FileSource(const RbtString &fileName, RbtBool bImplHydrogens = true);
+  RbtMOL2FileSource(const std::string &fileName, RbtBool bImplHydrogens = true);
   ~RbtMOL2FileSource();
   RbtBool isTitleListSupported() { return true; }
   RbtBool isAtomListSupported() { return true; }
@@ -75,20 +75,20 @@ private:
   void RemoveNonPolarHydrogens();
 
   // Splits subst_name into ID and name components (e.g. ALA27 => ALA and 27)
-  void GetSSIDandName(const RbtString &subst_name, RbtInt subst_id,
-                      RbtString &sID, RbtString &sName);
+  void GetSSIDandName(const std::string &subst_name, RbtInt subst_id,
+                      std::string &sID, std::string &sName);
 
   // parser functions (switched by pointers)
-  void ParseRecordMOLECULE(const RbtString &aLine);
-  void ParseRecordATOM(const RbtString &aLine);
-  void ParseRecordBOND(const RbtString &aLine);
-  void ParseRecordSUBSTRUCTURE(const RbtString &aLine);
-  void ParseRecordUNSUPPORTED(const RbtString &aLine);
+  void ParseRecordMOLECULE(const std::string &aLine);
+  void ParseRecordATOM(const std::string &aLine);
+  void ParseRecordBOND(const std::string &aLine);
+  void ParseRecordSUBSTRUCTURE(const std::string &aLine);
+  void ParseRecordUNSUPPORTED(const std::string &aLine);
   // get delimiter tag
-  RbtString GetMOL2Tag(const RbtString &aLine);
+  std::string GetMOL2Tag(const std::string &aLine);
   // parse/tokenize second line (number of  atoms, bonds etc) in MOLECULE
-  void ParseCountFields(const RbtString &aLine);
-  void Tokenize(const RbtString &aString, RbtStringList &aTokensBuf);
+  void ParseCountFields(const std::string &aLine);
+  void Tokenize(const std::string &aString, RbtStringList &aTokensBuf);
 
   int m_NL; // No. of lines
   // data fields in MOLECULE
@@ -115,6 +115,6 @@ private:
 // usual smart pointer
 typedef SmartPtr<RbtMOL2FileSource> RbtMOL2FileSourcePtr;
 // function pointer (callback) for Parse()
-typedef void (RbtMOL2FileSource::*fcPtr)(const RbtString &);
+typedef void (RbtMOL2FileSource::*fcPtr)(const std::string &);
 
 #endif // _RBTMOL2FILESOURCE_H_

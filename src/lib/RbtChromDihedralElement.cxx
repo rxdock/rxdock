@@ -12,7 +12,7 @@
 
 #include "RbtChromDihedralElement.h"
 
-RbtString RbtChromDihedralElement::_CT = "RbtChromDihedralElement";
+std::string RbtChromDihedralElement::_CT = "RbtChromDihedralElement";
 
 RbtChromDihedralElement::RbtChromDihedralElement(RbtBondPtr spBond,
                                                  RbtAtomList tetheredAtoms,

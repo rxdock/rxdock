@@ -24,7 +24,7 @@
 
 class RbtGPParser {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////
@@ -40,7 +40,7 @@ public:
   ostream &Print(ostream &) const;
   friend ostream &operator<<(ostream &s, const RbtGPParser &p);
   RbtReturnTypeList Parse(RbtGPChromosomePtr, RbtReturnTypeList &);
-  RbtString PrintParse(istream &, RbtGPChromosomePtr, RbtBool, RbtBool);
+  std::string PrintParse(istream &, RbtGPChromosomePtr, RbtBool, RbtBool);
   RbtBool IsConstantInt(RbtInt i) { return (i == CINT); }
   RbtBool IsConstantFloat(RbtInt i) { return (i == CFLOAT); }
 
@@ -50,8 +50,8 @@ private:
   /////////////////////
   RbtReturnType Eval(RbtGPChromosomePtr, RbtInt);
   RbtReturnType Parse1Output(RbtGPChromosomePtr, RbtInt);
-  RbtString PrintEval(RbtGPChromosomePtr, RbtInt, RbtBool, RbtBool);
-  RbtString PrintParse1Output(RbtGPChromosomePtr, RbtInt, RbtBool, RbtBool);
+  std::string PrintEval(RbtGPChromosomePtr, RbtInt, RbtBool, RbtBool);
+  std::string PrintParse1Output(RbtGPChromosomePtr, RbtInt, RbtBool, RbtBool);
   // RbtGPChromosomePtr chrom;
   // RbtCellList cells;
   RbtCommandList commands;

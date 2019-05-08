@@ -23,7 +23,7 @@
 #include <fstream>
 #include <sstream>
 
-RbtString RbtGPFFSpike::_CT("RbtGPFFSpike");
+std::string RbtGPFFSpike::_CT("RbtGPFFSpike");
 void RbtGPFFSpike::ReadTables(istream &in, RbtReturnTypeArray &it,
                               RbtReturnTypeArray &sft) {
   RbtReturnType value;

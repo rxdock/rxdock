@@ -18,13 +18,13 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtCavityGridSF::_CT("RbtCavityGridSF");
-RbtString RbtCavityGridSF::_RMAX("RMAX");
-RbtString RbtCavityGridSF::_QUADRATIC("QUADRATIC");
+std::string RbtCavityGridSF::_CT("RbtCavityGridSF");
+std::string RbtCavityGridSF::_RMAX("RMAX");
+std::string RbtCavityGridSF::_QUADRATIC("QUADRATIC");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
-RbtCavityGridSF::RbtCavityGridSF(const RbtString &strName)
+RbtCavityGridSF::RbtCavityGridSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_maxDist(0.0), m_rMax(0.1),
       m_bQuadratic(false) {
   // Add parameters
@@ -109,7 +109,7 @@ RbtDouble RbtCavityGridSF::RawScore() const {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtCavityGridSF::ParameterUpdated(const RbtString &strName) {
+void RbtCavityGridSF::ParameterUpdated(const std::string &strName) {
   if (strName == _RMAX) {
     m_rMax = GetParameter(_RMAX);
   } else if (strName == _QUADRATIC) {
@@ -150,7 +150,7 @@ void RbtCavityGridSF::HeavyAtomFactory::VisitSolventFlexData(
   // Extract all non-hydrogen atoms from solvent but only if the solvent can
   // translate. As there are no dihedrals to worry about, the water oxygens are
   // fixed in position for orientation-only flexibility.
-  RbtString transModeStr =
+  std::string transModeStr =
       pFlexData->GetParameter(RbtLigandFlexData::_TRANS_MODE);
   RbtDouble maxTrans = pFlexData->GetParameter(RbtLigandFlexData::_MAX_TRANS);
   RbtChromElement::eMode eTransMode = RbtChromElement::StrToMode(transModeStr);

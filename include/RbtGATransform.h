@@ -20,34 +20,34 @@
 
 class RbtGATransform : public RbtBaseBiMolTransform {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   // New individuals to create each cycle, as fraction of population size
-  static RbtString _NEW_FRACTION;
+  static std::string _NEW_FRACTION;
   // Probability of crossover (1-probability of mutation)
-  static RbtString _PCROSSOVER;
+  static std::string _PCROSSOVER;
   // If true, perform Cauchy mutation after each crossover
-  static RbtString _XOVERMUT;
+  static std::string _XOVERMUT;
   // If true, mutations are from Cauchy distribution; if false, from rect.
   // distribution
-  static RbtString _CMUTATE;
+  static std::string _CMUTATE;
   // Relative step size for mutations (relative to absolute step sizes defined
   // for each chromosome element)
-  static RbtString _STEP_SIZE;
+  static std::string _STEP_SIZE;
   // Two genomes are considered equal if the maximum relative difference
   // between chromosome elements is less than _EQUALITY_THRESHOLD
-  static RbtString _EQUALITY_THRESHOLD;
+  static std::string _EQUALITY_THRESHOLD;
   // Maximum number of cycles
-  static RbtString _NCYCLES;
+  static std::string _NCYCLES;
   // Terminate if the best score does not improve over _NCONVERGENCE
   // consecutive cycles
-  static RbtString _NCONVERGENCE;
+  static std::string _NCONVERGENCE;
   // Output the best pose every _HISTORY_FREQ cycles.
-  static RbtString _HISTORY_FREQ;
+  static std::string _HISTORY_FREQ;
 
   ////////////////////////////////////////
   // Constructors/destructors
   ////////////////////////////////////////
-  RbtGATransform(const RbtString &strName = "GAGENRW");
+  RbtGATransform(const std::string &strName = "GAGENRW");
   virtual ~RbtGATransform();
 
 protected:

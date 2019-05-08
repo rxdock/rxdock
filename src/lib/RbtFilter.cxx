@@ -24,7 +24,7 @@ const int CONT = -1;
 const int NEXT = 1;
 
 // Static data members
-RbtString RbtFilter::_CT("RbtFilter");
+std::string RbtFilter::_CT("RbtFilter");
 ////////////////////////////////////////
 // Constructors/destructors
 
@@ -32,12 +32,12 @@ RbtString RbtFilter::_CT("RbtFilter");
 // filter (filter = true) or if strfilter is the name of a file
 // that contains the filter (filter = false) This is the most
 // common, so filter's value by default is false
-RbtFilter::RbtFilter(RbtString strfilter, RbtBool filter)
+RbtFilter::RbtFilter(std::string strfilter, RbtBool filter)
     : RbtBaseObject(_CT, "Filter") {
 #ifdef _DEBUG
   cout << _CT << " default constructor" << endl;
 #endif //_DEBUG
-       //  RbtString filterfilen = GetParameter("_FILTER_FILE");
+       //  std::string filterfilen = GetParameter("_FILTER_FILE");
   SmartPtr<istream> filterfile;
   if (filter) // filterfilen is the filter
     filterfile = new istringstream(strfilter);
@@ -50,7 +50,7 @@ RbtFilter::RbtFilter(RbtString strfilter, RbtBool filter)
   RbtParser p;
   for (RbtInt i = 0; i < nTermFilters; i++) {
     cout << "\n------------- Terminate filter " << i << "------------" << endl;
-    RbtString s;
+    std::string s;
     getline(*filterfile, s, ',');
     SmartPtr<istream> istrp(new istringstream(s));
     RbtTokenIterPtr ti(new RbtStringTokenIter(istrp, contextp));
@@ -62,7 +62,7 @@ RbtFilter::RbtFilter(RbtString strfilter, RbtBool filter)
   (*filterfile) >> nWriteFilters;
   for (RbtInt i = 0; i < nWriteFilters; i++) {
     cout << "\n------------- Write filter -----------------" << endl;
-    RbtString s;
+    std::string s;
     getline(*filterfile, s, ',');
     SmartPtr<istream> istrp(new istringstream(s));
     RbtTokenIterPtr ti(new RbtStringTokenIter(istrp, contextp));

@@ -19,19 +19,19 @@
 
 #include "RbtError.h"
 
-const RbtString IDS_LIGAND_ERROR = "RBT_LIGAND_ERROR";
+const std::string IDS_LIGAND_ERROR = "RBT_LIGAND_ERROR";
 
 // Unspecified ligand error
 class RbtLigandError : public RbtError {
 public:
-  RbtLigandError(const RbtString &strFile, RbtInt nLine,
-                 const RbtString &strMessage = "")
+  RbtLigandError(const std::string &strFile, RbtInt nLine,
+                 const std::string &strMessage = "")
       : RbtError(IDS_LIGAND_ERROR, strFile, nLine, strMessage) {}
   // Protected constructor to allow derived ligand error classes to set error
   // name
 protected:
-  RbtLigandError(const RbtString &strName, const RbtString &strFile,
-                 RbtInt nLine, const RbtString &strMessage = "")
+  RbtLigandError(const std::string &strName, const std::string &strFile,
+                 RbtInt nLine, const std::string &strMessage = "")
       : RbtError(strName, strFile, nLine, strMessage) {}
 };
 

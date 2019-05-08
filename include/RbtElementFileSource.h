@@ -25,7 +25,7 @@ public:
       : atomicNo(0), element(""), minVal(0), maxVal(0), commonVal(0), mass(0.0),
         vdwRadius(0.0) {}
   RbtInt atomicNo;
-  RbtString element;
+  std::string element;
   RbtInt minVal;
   RbtInt maxVal;
   RbtInt commonVal;
@@ -34,7 +34,7 @@ public:
 };
 
 // Map with element data indexed by element name
-typedef map<RbtString, RbtElementData> RbtStringElementDataMap;
+typedef map<std::string, RbtElementData> RbtStringElementDataMap;
 typedef RbtStringElementDataMap::iterator RbtStringElementDataMapIter;
 typedef RbtStringElementDataMap::const_iterator
     RbtStringElementDataMapConstIter;
@@ -47,25 +47,25 @@ class RbtElementFileSource : public RbtBaseFileSource {
 public:
   // Constructors
   // RbtElementFileSource(const char* fileName);
-  RbtElementFileSource(const RbtString &fileName);
+  RbtElementFileSource(const std::string &fileName);
 
   // Destructor
   virtual ~RbtElementFileSource();
 
   ////////////////////////////////////////
   // Public methods
-  RbtString GetTitle();
-  RbtString GetVersion();
+  std::string GetTitle();
+  std::string GetVersion();
   RbtUInt GetNumElements();
   RbtStringList GetElementNameList(); // List of element names
   RbtIntList GetAtomicNumberList();   // List of atomic numbers
   // Get element data for a given element name, throws error if not found
   RbtElementData
-  GetElementData(const RbtString &strElementName) throw(RbtError);
+  GetElementData(const std::string &strElementName) throw(RbtError);
   // Get element data for a given atomic number, throws error if not found
   RbtElementData GetElementData(RbtInt nAtomicNumber) throw(RbtError);
   // Check if given element name is present
-  RbtBool isElementNamePresent(const RbtString &strElementName);
+  RbtBool isElementNamePresent(const std::string &strElementName);
   // Check if given atomic number is present
   RbtBool isAtomicNumberPresent(RbtInt nAtomicNumber);
 
@@ -94,8 +94,8 @@ protected:
 
 private:
   // Private data
-  RbtString m_strTitle;
-  RbtString m_strVersion;
+  std::string m_strTitle;
+  std::string m_strVersion;
   RbtDouble m_dHBondRadiusIncr; // Increment to add to vdW radius for H-bonding
                                 // hydrogens
   RbtDouble m_dImplicitRadiusIncr; // Increment to add to vdW radius for atoms

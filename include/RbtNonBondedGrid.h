@@ -33,7 +33,7 @@ typedef RbtAtomListMap::const_iterator RbtAtomListMapConstIter;
 class RbtNonBondedGrid : public RbtBaseGrid {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   ////////////////////////////////////////
   // Constructors/destructors
   // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution

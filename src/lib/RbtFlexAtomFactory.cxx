@@ -78,9 +78,10 @@ void RbtFlexAtomFactory::VisitLigandFlexData(RbtLigandFlexData *pFlexData) {
   RbtModel *pModel = pFlexData->GetModel();
   RbtAtomList atomList = pModel->GetAtomList();
   pModel->SetAtomUser2Values(0.0);
-  RbtString transModeStr =
+  std::string transModeStr =
       pFlexData->GetParameter(RbtLigandFlexData::_TRANS_MODE);
-  RbtString rotModeStr = pFlexData->GetParameter(RbtLigandFlexData::_ROT_MODE);
+  std::string rotModeStr =
+      pFlexData->GetParameter(RbtLigandFlexData::_ROT_MODE);
   RbtChromElement::eMode eTransMode = RbtChromElement::StrToMode(transModeStr);
   RbtChromElement::eMode eRotMode = RbtChromElement::StrToMode(rotModeStr);
   // Internally flexible ligand, or free translation

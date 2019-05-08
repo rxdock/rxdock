@@ -15,6 +15,8 @@
 
 // #include <vector>		// STL vector
 #include "RbtTypes.h"
+#include <string>
+
 /**
  * Basic data type to represent distance-value pairs of the PMF function
  */
@@ -66,8 +68,8 @@ typedef enum {
 typedef RbtPMFType PMFType;
 
 namespace Rbt {
-RbtString PMFType2Str(RbtPMFType aType);
-RbtPMFType PMFStr2Type(RbtString anStr);
+std::string PMFType2Str(RbtPMFType aType);
+RbtPMFType PMFStr2Type(std::string anStr);
 } // namespace Rbt
 
 #endif // _RBTPMF_H_

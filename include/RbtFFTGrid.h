@@ -44,7 +44,7 @@ typedef RbtFFTPeakMap::const_reverse_iterator RbtFFTPeakMapConstRIter;
 class RbtFFTGrid : public RbtRealGrid {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors

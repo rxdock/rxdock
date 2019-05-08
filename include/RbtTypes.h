@@ -15,18 +15,11 @@
 #ifndef _RBTTYPES_H_
 #define _RBTTYPES_H_
 
-#include <string>
-using std::string;
-
 // Typedefs (to aid portability to other platforms)
 
 typedef double RbtDouble;
 typedef int RbtInt;
 typedef unsigned int RbtUInt;
-typedef string RbtString;
 typedef bool RbtBool;
-// Segment is a named part of an RbtModel (usually an intact molecule)
-// For now, a segment is defined as just an RbtString
-typedef RbtString RbtSegment;
 
 #endif //_RBTTYPES_H_

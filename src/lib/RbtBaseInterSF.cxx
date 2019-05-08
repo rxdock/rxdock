@@ -14,7 +14,7 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtBaseInterSF::_CT("RbtBaseInterSF");
+std::string RbtBaseInterSF::_CT("RbtBaseInterSF");
 
 ////////////////////////////////////////
 // Constructors/destructors

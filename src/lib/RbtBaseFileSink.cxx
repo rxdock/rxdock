@@ -24,7 +24,7 @@ using std::ios;
 //  _RBTOBJECTCOUNTER_CONSTR_("RbtBaseFileSink");
 //}
 
-RbtBaseFileSink::RbtBaseFileSink(const RbtString &fileName)
+RbtBaseFileSink::RbtBaseFileSink(const std::string &fileName)
     : m_strFileName(fileName), m_bAppend(false) {
   _RBTOBJECTCOUNTER_CONSTR_("RbtBaseFileSink");
 }
@@ -37,7 +37,7 @@ RbtBaseFileSink::~RbtBaseFileSink() {
 ////////////////////////////////////////
 // Public methods
 ////////////////
-void RbtBaseFileSink::SetFileName(const RbtString &fileName) {
+void RbtBaseFileSink::SetFileName(const std::string &fileName) {
   Write(); // Just in case there is anything in the cache
   m_strFileName = fileName;
 }
@@ -77,7 +77,7 @@ void RbtBaseFileSink::Write(RbtBool bClearCache) throw(RbtError) {
       // for some reason the << overload is screwed up in some sstream
       // implementations so it is worth to pay this "pointless" price in
       // conversion
-      string delimited((*iter).c_str());
+      std::string delimited((*iter).c_str());
       m_fileOut << delimited << endl;
       // m_fileOut << *iter << endl;
     }
@@ -96,12 +96,12 @@ void RbtBaseFileSink::Write(RbtBool bClearCache) throw(RbtError) {
 }
 
 // Add a complete line to the cache
-void RbtBaseFileSink::AddLine(const RbtString &fileRec) {
+void RbtBaseFileSink::AddLine(const std::string &fileRec) {
   m_lineRecs.push_back(fileRec);
 }
 
 // Replace a complete line in the cache
-void RbtBaseFileSink::ReplaceLine(const RbtString &fileRec, RbtUInt nRec) {
+void RbtBaseFileSink::ReplaceLine(const std::string &fileRec, RbtUInt nRec) {
   if (nRec < m_lineRecs.size())
     m_lineRecs[nRec] = fileRec;
 }

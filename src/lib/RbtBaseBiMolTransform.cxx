@@ -14,12 +14,12 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtBaseBiMolTransform::_CT("RbtBaseBiMolTransform");
+std::string RbtBaseBiMolTransform::_CT("RbtBaseBiMolTransform");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtBaseBiMolTransform::RbtBaseBiMolTransform(const RbtString &strClass,
-                                             const RbtString &strName)
+RbtBaseBiMolTransform::RbtBaseBiMolTransform(const std::string &strClass,
+                                             const std::string &strName)
     : RbtBaseTransform(strClass, strName) {
 #ifdef _DEBUG
   cout << _CT << " parameterised constructor" << endl;

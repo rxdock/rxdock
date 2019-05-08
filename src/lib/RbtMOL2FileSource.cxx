@@ -20,15 +20,15 @@ using std::stringstream;
 #include "RbtMOL2FileSource.h"
 #include "RbtModelError.h"
 
-RbtString RbtMOL2FileSource::_CT("RbtMOL2FileSource");
+std::string RbtMOL2FileSource::_CT("RbtMOL2FileSource");
 // record delimiter strings
-RbtString RbtMOL2FileSource::_TRIPOS_DELIM("@<TRIPOS>");
+std::string RbtMOL2FileSource::_TRIPOS_DELIM("@<TRIPOS>");
 RbtInt RbtMOL2FileSource::_TRIPOS_DELIM_SIZE(
     RbtMOL2FileSource::_TRIPOS_DELIM.size());
-RbtString RbtMOL2FileSource::_IDS_MOL2_RECDELIM("@<TRIPOS>MOLECULE");
+std::string RbtMOL2FileSource::_IDS_MOL2_RECDELIM("@<TRIPOS>MOLECULE");
 
 // straightforward ctor
-RbtMOL2FileSource::RbtMOL2FileSource(const RbtString &fileName,
+RbtMOL2FileSource::RbtMOL2FileSource(const std::string &fileName,
                                      RbtBool bImplHydrogens)
     : RbtBaseMolecularFileSource(fileName, _IDS_MOL2_RECDELIM,
                                  "MOL2_FILE_SOURCE"),
@@ -60,7 +60,7 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
     // create a switchboard map - each member is a pointer to a function
     // (a sort of functor, but I prefer to call using a meaningful string
     // instead a number)
-    map<RbtString, fcPtr> theSwitchBoard;
+    map<std::string, fcPtr> theSwitchBoard;
     theSwitchBoard["MOLECULE"] = &RbtMOL2FileSource::ParseRecordMOLECULE;
     theSwitchBoard["ATOM"] = &RbtMOL2FileSource::ParseRecordATOM;
     theSwitchBoard["BOND"] = &RbtMOL2FileSource::ParseRecordBOND;
@@ -73,7 +73,7 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
       // but the patterns are rather simple so it is not that bad
       // --------------------------------------------------------
       // declare the callback switched parser
-      void (RbtMOL2FileSource::*theCurrentParser)(const RbtString &);
+      void (RbtMOL2FileSource::*theCurrentParser)(const std::string &);
       // first assume the parser function is that that handles the MOLECULE
       // record
       theCurrentParser = &RbtMOL2FileSource::ParseRecordMOLECULE;
@@ -87,10 +87,10 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
         }
         // check wether is it a record field delimiter (tag like:
         // @<TRIPOS>BLAHBLAH )line
-        RbtString theNewTag = GetMOL2Tag((*lineIter));
+        std::string theNewTag = GetMOL2Tag((*lineIter));
         if (!theNewTag.empty()) {
           // check key existence
-          map<RbtString, fcPtr>::const_iterator i =
+          map<std::string, fcPtr>::const_iterator i =
               theSwitchBoard.find(theNewTag);
           if (i == theSwitchBoard.end()) {
             // cout << "INFO Skipping unsupported record: " << theNewTag <<
@@ -120,15 +120,15 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
         RbtMOL2SubstructureMapConstIter ssIter = m_ssInfo.find(subst_id);
         if (ssIter != m_ssInfo.end()) {
           RbtMOL2Substructure ss = ssIter->second;
-          RbtString subst_name = ss.GetName();
-          RbtString chain = ss.GetChain();
-          RbtString sub_type = ss.GetType();
-          RbtString sID, sName;
+          std::string subst_name = ss.GetName();
+          std::string chain = ss.GetChain();
+          std::string sub_type = ss.GetType();
+          std::string sID, sName;
           GetSSIDandName(subst_name, subst_id, sID, sName);
           for (RbtAtomListIter aIter = ssAtomList.begin();
                aIter != ssAtomList.end(); aIter++) {
-            RbtString atom_sID = (*aIter)->GetSubunitId();
-            RbtString atom_sName = (*aIter)->GetSubunitName();
+            std::string atom_sID = (*aIter)->GetSubunitId();
+            std::string atom_sName = (*aIter)->GetSubunitName();
             if ((sID != atom_sID) || (sName != atom_sName)) {
               cout << _CT << ": WARNING Mismatch between SUBSTRUCTURE ("
                    << sName << sID << ") and ATOM (" << atom_sName << atom_sID
@@ -218,7 +218,7 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
 //
 // it is the m_titleList that is set up here only
 //
-void RbtMOL2FileSource::ParseRecordMOLECULE(const RbtString &aLine) {
+void RbtMOL2FileSource::ParseRecordMOLECULE(const std::string &aLine) {
 #ifdef _DEBUG_
   cout << "MOLECULE " << aLine << "   " << m_NL << endl;
 #endif // _DEBUG_
@@ -237,7 +237,7 @@ void RbtMOL2FileSource::ParseRecordMOLECULE(const RbtString &aLine) {
   }
 }
 
-void RbtMOL2FileSource::ParseRecordATOM(const RbtString &aLine) {
+void RbtMOL2FileSource::ParseRecordATOM(const std::string &aLine) {
   RbtStringList tokens;
   Tokenize(aLine, tokens);
   // there must be at least 6 fields, rest is optional
@@ -247,17 +247,17 @@ void RbtMOL2FileSource::ParseRecordATOM(const RbtString &aLine) {
 
   // Compulsory fields
   RbtInt atom_id = atoi(tokens[0].c_str());
-  RbtString atom_name = tokens[1];
+  std::string atom_name = tokens[1];
   RbtCoord atom_coord;
   atom_coord.x = atof(tokens[2].c_str());
   atom_coord.y = atof(tokens[3].c_str());
   atom_coord.z = atof(tokens[4].c_str());
-  RbtString atom_type = tokens[5];
+  std::string atom_type = tokens[5];
 
   // Optional fields.
   RbtInt subst_id = (tokens.size() > 6) ? atoi(tokens[6].c_str()) : 1;
-  RbtString subst_name = (tokens.size() > 7) ? tokens[7] : "****";
-  RbtString sID, sName;
+  std::string subst_name = (tokens.size() > 7) ? tokens[7] : "****";
+  std::string sID, sName;
   GetSSIDandName(subst_name, subst_id, sID, sName);
   RbtDouble charge = (tokens.size() > 8) ? atof(tokens[8].c_str()) : 0.0;
   // XB reweighting parameters
@@ -278,7 +278,7 @@ void RbtMOL2FileSource::ParseRecordATOM(const RbtString &aLine) {
   // We should add Tripos types for these metals, but the most important thing
   // is to pick up the atomic number (can do this from the atom type string)
   if (tt == RbtTriposAtomType::UNDEFINED) {
-    RbtString el = atom_type.substr(0, 2);
+    std::string el = atom_type.substr(0, 2);
     cout << _CT
          << ": INFO Attempting to identify element by 1st 2 chars of FFType "
             "string: "
@@ -312,7 +312,7 @@ void RbtMOL2FileSource::ParseRecordATOM(const RbtString &aLine) {
   // cout << "ParseRecordATOM: " << *newAtom << endl;
 }
 
-void RbtMOL2FileSource::ParseRecordBOND(const RbtString &aLine) {
+void RbtMOL2FileSource::ParseRecordBOND(const std::string &aLine) {
   RbtStringList tokens;
   Tokenize(aLine, tokens);
   // there must be at least 4 fields, rest is optional
@@ -324,7 +324,7 @@ void RbtMOL2FileSource::ParseRecordBOND(const RbtString &aLine) {
   RbtInt bond_id = atoi(tokens[0].c_str());
   RbtInt origin_bond_id = atoi(tokens[1].c_str());
   RbtInt target_bond_id = atoi(tokens[2].c_str());
-  RbtString bond_type = tokens[3];
+  std::string bond_type = tokens[3];
 
   // In rDock we only have integer bond order
   // Aromatics should be defined as alternate double/single bonds as in MDL mol
@@ -349,7 +349,7 @@ void RbtMOL2FileSource::ParseRecordBOND(const RbtString &aLine) {
   // cout << "ParseRecordBOND: " << *spBond << endl;
 }
 
-void RbtMOL2FileSource::ParseRecordSUBSTRUCTURE(const RbtString &aLine) {
+void RbtMOL2FileSource::ParseRecordSUBSTRUCTURE(const std::string &aLine) {
   RbtStringList tokens;
   Tokenize(aLine, tokens);
   // there must be at least 3 fields, rest is optional
@@ -359,13 +359,13 @@ void RbtMOL2FileSource::ParseRecordSUBSTRUCTURE(const RbtString &aLine) {
 
   // Compulsory fields
   RbtInt subst_id = atoi(tokens[0].c_str());
-  RbtString subst_name = tokens[1];
+  std::string subst_name = tokens[1];
   RbtInt root_atom = atoi(tokens[2].c_str());
 
   // Optional fields
-  RbtString chain =
+  std::string chain =
       ((tokens.size() > 5) && (tokens[5] != "****")) ? tokens[5] : "UNK";
-  RbtString sub_type =
+  std::string sub_type =
       ((tokens.size() > 6) && (tokens[6] != "****")) ? tokens[6] : "UNK";
 
   RbtMOL2Substructure ss(subst_name, root_atom, chain, sub_type);
@@ -375,15 +375,15 @@ void RbtMOL2FileSource::ParseRecordSUBSTRUCTURE(const RbtString &aLine) {
   //     << chain << "," << sub_type << endl;
 }
 
-void RbtMOL2FileSource::ParseRecordUNSUPPORTED(const RbtString &aLine) {
+void RbtMOL2FileSource::ParseRecordUNSUPPORTED(const std::string &aLine) {
   //	do nothing...
 }
 
-RbtString RbtMOL2FileSource::GetMOL2Tag(const RbtString &aLine) {
+std::string RbtMOL2FileSource::GetMOL2Tag(const std::string &aLine) {
   // template based tokenizer is at boost.org, but we have to wait until
   // they are ready to provide Makefile instead of the crap jam they have
   // so, look for a line starting with "@<TRIPOS>"
-  if (aLine.find(_TRIPOS_DELIM) != string::npos) {
+  if (aLine.find(_TRIPOS_DELIM) != std::string::npos) {
     // tokenize remainder line in case of garbage at the rest of line
     RbtStringList tokens;
     Tokenize(aLine, tokens);
@@ -402,7 +402,7 @@ RbtString RbtMOL2FileSource::GetMOL2Tag(const RbtString &aLine) {
     return "";
 }
 
-void RbtMOL2FileSource::ParseCountFields(const RbtString &aLine) {
+void RbtMOL2FileSource::ParseCountFields(const std::string &aLine) {
   RbtStringList tokens;
   Tokenize(aLine, tokens);
   if (tokens.size() < 1)
@@ -644,15 +644,15 @@ void RbtMOL2FileSource::SetupVdWRadii() {
 // Splits the Tripos MOL2 subst_name field into appropriate residue name (sName)
 // and residue ID (sID) components If subst_name is **** or in the style <148>,
 // then substitutes default name (UNK) and default ID (subst_id)
-void RbtMOL2FileSource::GetSSIDandName(const RbtString &subst_name,
-                                       RbtInt subst_id, RbtString &sID,
-                                       RbtString &sName) {
+void RbtMOL2FileSource::GetSSIDandName(const std::string &subst_name,
+                                       RbtInt subst_id, std::string &sID,
+                                       std::string &sName) {
   // subst_names beginning with * or < do not follow the normal pattern of ALA99
   // etc
-  const RbtString nonstandard("*<");
-  const RbtString numeric("0123456789");
-  const RbtString defaultName("UNK");
-  const RbtString defaultID =
+  const std::string nonstandard("*<");
+  const std::string numeric("0123456789");
+  const std::string defaultName("UNK");
+  const std::string defaultID =
       RbtVariant(subst_id); // Quick way to convert from int to string
 
   if (subst_name.empty() || (subst_name.find_first_of(nonstandard) == 0)) {
@@ -661,20 +661,20 @@ void RbtMOL2FileSource::GetSSIDandName(const RbtString &subst_name,
     return;
   }
   // Find first numeric char
-  RbtString::size_type nFirst = subst_name.find_first_of(numeric);
+  std::string::size_type nFirst = subst_name.find_first_of(numeric);
   // Split into name and ID:
   // Name is up to the beginning of 1st numeric char
   // ID is from the first numeric char onwards (may have non-numeric suffix as
   // well e.g 100B)
-  sID = (nFirst != RbtString::npos) ? subst_name.substr(nFirst) : defaultID;
+  sID = (nFirst != std::string::npos) ? subst_name.substr(nFirst) : defaultID;
   sName = (nFirst > 0) ? subst_name.substr(0, nFirst) : defaultName;
   return;
 }
 
 // simple tokenizer that splits at whitspace
-void RbtMOL2FileSource::Tokenize(const RbtString &aString,
+void RbtMOL2FileSource::Tokenize(const std::string &aString,
                                  RbtStringList &aTokensBuf) {
-  RbtString buf;
+  std::string buf;
   stringstream ss(aString);
   while (ss >> buf)
     aTokensBuf.push_back(buf);

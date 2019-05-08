@@ -21,7 +21,7 @@
 
 class RbtSiteMapperFactory {
   // Parameter name which identifies a site mapper definition
-  static RbtString _MAPPER;
+  static std::string _MAPPER;
 
 public:
   ////////////////////////////////////////
@@ -35,8 +35,8 @@ public:
   ////////////////
 
   // Creates a single site mapper object of named class
-  virtual RbtSiteMapper *Create(const RbtString &strMapperClass,
-                                const RbtString &strName) throw(RbtError);
+  virtual RbtSiteMapper *Create(const std::string &strMapperClass,
+                                const std::string &strName) throw(RbtError);
 
   // Creates a single site mapper object whose class is defined
   // as the value of the SITE_MAPPER parameter in the strName section of the
@@ -45,7 +45,7 @@ public:
   // section is restored to its original value upon exit
   virtual RbtSiteMapper *
   CreateFromFile(RbtParameterFileSourcePtr spPrmSource,
-                 const RbtString &strName) throw(RbtError);
+                 const std::string &strName) throw(RbtError);
 
 protected:
   ////////////////////////////////////////

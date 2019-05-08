@@ -22,13 +22,13 @@
 
 class RbtGPGenome {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////
   RbtGPGenome();
   RbtGPGenome(const RbtGPGenome &);
-  RbtGPGenome(RbtString);
+  RbtGPGenome(std::string);
   RbtGPGenome(istream &);
 
   RbtGPGenome &operator=(const RbtGPGenome &);

@@ -26,7 +26,7 @@ using std::setw;
 #include "RbtPsfFileSink.h"
 #include "RbtSiteMapperFactory.h"
 
-const RbtString EXEVERSION =
+const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbcavity.cxx#3 $)";
 
 void PrintUsage(void) {
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 
   // Handle obsolete arguments, if any
   for (int i = 0; i < argc; i++) {
-    RbtString opt = argv[i];
+    std::string opt = argv[i];
     if (opt == "-was" || opt == "-ras") {
       cout << "Options -was and -ras are no longer supported; use -W and -R "
               "(respectively) instead."
@@ -81,16 +81,16 @@ int main(int argc, char *argv[]) {
   }
 
   // Strip off the path to the executable, leaving just the file name
-  RbtString strExeName(argv[0]);
-  RbtString::size_type i = strExeName.rfind("/");
-  if (i != RbtString::npos)
+  std::string strExeName(argv[0]);
+  std::string::size_type i = strExeName.rfind("/");
+  if (i != std::string::npos)
     strExeName.erase(0, i + 1);
 
   // Print a standard header
   Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
 
   // Command line arguments and default values
-  RbtString strReceptorPrmFile;
+  std::string strReceptorPrmFile;
   RbtBool bReadAS(false);  // If true, read Active Site from file
   RbtBool bWriteAS(false); // If true, write Active Site to file
   RbtBool bDump(false);    // If true, dump cavity grids in Insight format
@@ -183,7 +183,7 @@ int main(int argc, char *argv[]) {
     // Set the workspace name to the root of the receptor .prm filename
     RbtStringList componentList =
         Rbt::ConvertDelimitedStringToList(strReceptorPrmFile, ".");
-    RbtString wsName = componentList.front();
+    std::string wsName = componentList.front();
     spWS->SetName(wsName);
 
     // Read the protocol parameter file
@@ -196,11 +196,11 @@ int main(int argc, char *argv[]) {
     RbtModelPtr spReceptor = prmFactory.CreateReceptor();
 
     RbtDockingSitePtr spDockSite;
-    RbtString strASFile = wsName + ".as";
+    std::string strASFile = wsName + ".as";
 
     // Either read the docking site from the .as file
     if (bReadAS) {
-      RbtString strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
+      std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
 #if defined(__sgi) && !defined(__GNUC__)
       ifstream istr(strInputFile.c_str(), ios_base::in);
 #else

@@ -22,9 +22,9 @@
 class RbtCavityFillSF : public RbtBaseInterSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  RbtCavityFillSF(const RbtString &strName = "CAVFILL");
+  RbtCavityFillSF(const std::string &strName = "CAVFILL");
   virtual ~RbtCavityFillSF();
 
 protected:
@@ -32,7 +32,7 @@ protected:
   virtual void SetupLigand();
   virtual void SetupScore();
   virtual RbtDouble RawScore() const;
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   RbtFFTGridPtr m_spGrid;

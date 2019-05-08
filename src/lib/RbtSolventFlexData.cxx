@@ -12,8 +12,8 @@
 
 #include "RbtSolventFlexData.h"
 
-const RbtString &RbtSolventFlexData::_OCCUPANCY = "OCCUPANCY";
-const RbtString &RbtSolventFlexData::_OCCUPANCY_STEP = "OCCUPANCY_STEP";
+const std::string &RbtSolventFlexData::_OCCUPANCY = "OCCUPANCY";
+const std::string &RbtSolventFlexData::_OCCUPANCY_STEP = "OCCUPANCY_STEP";
 
 RbtSolventFlexData::RbtSolventFlexData(RbtDockingSite *pDockSite)
     : RbtLigandFlexData(pDockSite) {

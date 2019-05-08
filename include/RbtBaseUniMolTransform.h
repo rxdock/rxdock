@@ -21,7 +21,7 @@
 class RbtBaseUniMolTransform : public RbtBaseTransform {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~RbtBaseUniMolTransform();
@@ -40,7 +40,8 @@ protected:
   ////////////////////////////////////////
   // Protected methods
   ///////////////////
-  RbtBaseUniMolTransform(const RbtString &strClass, const RbtString &strName);
+  RbtBaseUniMolTransform(const std::string &strClass,
+                         const std::string &strName);
 
   // PURE VIRTUAL - Derived classes must override
   virtual void SetupTransform() = 0; // Called by Update when model has changed

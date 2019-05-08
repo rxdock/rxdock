@@ -54,7 +54,7 @@
 #include "RbtFileError.h"
 
 // Parameter name which identifies a scoring function definition
-RbtString RbtSFFactory::_SF("SCORING_FUNCTION");
+std::string RbtSFFactory::_SF("SCORING_FUNCTION");
 
 ////////////////////////////////////////
 // Constructors/destructors
@@ -65,8 +65,8 @@ RbtSFFactory::~RbtSFFactory() {}
 ////////////////////////////////////////
 // Public methods
 ////////////////
-RbtBaseSF *RbtSFFactory::Create(const RbtString &strSFClass,
-                                const RbtString &strName) throw(RbtError) {
+RbtBaseSF *RbtSFFactory::Create(const std::string &strSFClass,
+                                const std::string &strName) throw(RbtError) {
   // Precalculated-grid scoring functions
   if (strSFClass == RbtVdwGridSF::_CT)
     return new RbtVdwGridSF(strName);
@@ -145,10 +145,9 @@ RbtBaseSF *RbtSFFactory::Create(const RbtString &strSFClass,
 // If strSFClasses is empty, all named sections in spPrmSource are scanned for
 // valid scoring function definitions SF parameters are set from the list of
 // parameters in each named section
-RbtSFAgg *
-RbtSFFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
-                                const RbtString &strName,
-                                const RbtString &strSFClasses) throw(RbtError) {
+RbtSFAgg *RbtSFFactory::CreateAggFromFile(
+    RbtParameterFileSourcePtr spPrmSource, const std::string &strName,
+    const std::string &strSFClasses) throw(RbtError) {
   // Get list of scoring function objects to create
   RbtStringList sfList = Rbt::ConvertDelimitedStringToList(strSFClasses);
   // If strSFClasses is empty, then default to reading all sections of the
@@ -169,7 +168,7 @@ RbtSFFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
     spPrmSource->SetSection(*sfIter);
     // Check if this section is a valid scoring function definition
     if (spPrmSource->isParameterPresent(_SF)) {
-      RbtString strSFClass(spPrmSource->GetParameterValueAsString(_SF));
+      std::string strSFClass(spPrmSource->GetParameterValueAsString(_SF));
       // Create new scoring function according to the string value of _SF
       // parameter
       RbtBaseSF *pSF = Create(strSFClass, *sfIter);

@@ -20,7 +20,7 @@ RbtPdbFileSource::RbtPdbFileSource(const char *fileName)
   _RBTOBJECTCOUNTER_CONSTR_("RbtPdbFileSource");
 }
 
-RbtPdbFileSource::RbtPdbFileSource(const RbtString fileName)
+RbtPdbFileSource::RbtPdbFileSource(const std::string fileName)
     : RbtBaseMolecularFileSource(
           fileName, "PDB_FILE_SOURCE") // Call base class constructor
 {
@@ -34,10 +34,10 @@ RbtPdbFileSource::~RbtPdbFileSource() {
 
 void RbtPdbFileSource::Parse() throw(RbtError) {
   // Expected string constants in PDB files
-  const RbtString strTitleKey("REMARK ");
-  const RbtString strAtomKey("ATOM ");
-  const RbtString strHetAtmKey("HETATM ");
-  // const RbtString strEndKey("END");
+  const std::string strTitleKey("REMARK ");
+  const std::string strAtomKey("ATOM ");
+  const std::string strHetAtmKey("HETATM ");
+  // const std::string strEndKey("END");
 
   // Only parse if we haven't already done so
   if (!m_bParsedOK) {
@@ -53,20 +53,20 @@ void RbtPdbFileSource::Parse() throw(RbtError) {
         }
         // Check for Title record
         else if ((*fileIter).find(strTitleKey) == 0) {
-          RbtString strTitle = *fileIter;
+          std::string strTitle = *fileIter;
           strTitle.erase(0, strTitleKey.length());
           m_titleList.push_back(strTitle);
         }
         // Check for Atom or HetAtm records
         else if (((*fileIter).find(strAtomKey) == 0) ||
                  ((*fileIter).find(strHetAtmKey) == 0)) {
-          RbtString strDummy;
-          RbtInt nAtomId(1);        // atom number
-          RbtString strAtomName;    // atom name
-          RbtString strSegmentName; // segment name (chain identifier)
-          RbtString strSubunitName; // subunit(residue) name
-          RbtString strSubunitId;   // subunit(residue) ID
-          RbtCoord coord;           // X,Y,Z coords
+          std::string strDummy;
+          RbtInt nAtomId(1);          // atom number
+          std::string strAtomName;    // atom name
+          std::string strSegmentName; // segment name (chain identifier)
+          std::string strSubunitName; // subunit(residue) name
+          std::string strSubunitId;   // subunit(residue) ID
+          RbtCoord coord;             // X,Y,Z coords
           // DM 15 June 2006 - change default occupancy to 1
           // to avoid disabling solvent if pdb file does not contain
           // occupancy field

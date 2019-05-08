@@ -24,7 +24,7 @@ public:
 
   // Constructor supplying atom list of constituent atoms
   RbtPseudoAtom(const RbtAtomList &atomList, RbtInt nAtomId = -1,
-                RbtString strAtomName = "PSEUDO") throw(RbtError);
+                std::string strAtomName = "PSEUDO") throw(RbtError);
 
   // Default destructor
   virtual ~RbtPseudoAtom();

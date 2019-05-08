@@ -22,14 +22,14 @@
 class RbtPharmaSF : public RbtBaseInterSF {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
-  static RbtString _CONSTRAINTS_FILE;
-  static RbtString _OPTIONAL_FILE;
-  static RbtString _NOPT;
-  static RbtString _WRITE_ERRORS;
+  static std::string _CONSTRAINTS_FILE;
+  static std::string _OPTIONAL_FILE;
+  static std::string _NOPT;
+  static std::string _WRITE_ERRORS;
 
-  RbtPharmaSF(const RbtString &strName = "PHARMA");
+  RbtPharmaSF(const std::string &strName = "PHARMA");
   virtual ~RbtPharmaSF();
   // Override RbtBaseSF::ScoreMap to provide additional raw descriptors
   virtual void ScoreMap(RbtStringVariantMap &scoreMap) const;
@@ -41,7 +41,7 @@ protected:
   virtual RbtDouble RawScore() const;
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-  void ParameterUpdated(const RbtString &strName);
+  void ParameterUpdated(const std::string &strName);
 
 private:
   RbtConstraintList m_constrList;

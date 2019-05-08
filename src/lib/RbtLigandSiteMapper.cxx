@@ -16,16 +16,16 @@
 #include "RbtWorkSpace.h"
 
 // Static data member for class type
-RbtString RbtLigandSiteMapper::_CT("RbtLigandSiteMapper");
-RbtString RbtLigandSiteMapper::_REF_MOL("REF_MOL");
-RbtString RbtLigandSiteMapper::_VOL_INCR("VOL_INCR");
-RbtString RbtLigandSiteMapper::_SMALL_SPHERE("SMALL_SPHERE");
-RbtString RbtLigandSiteMapper::_GRIDSTEP("GRIDSTEP");
-RbtString RbtLigandSiteMapper::_RADIUS("RADIUS");
-RbtString RbtLigandSiteMapper::_MIN_VOLUME("MIN_VOLUME");
-RbtString RbtLigandSiteMapper::_MAX_CAVITIES("MAX_CAVITIES");
+std::string RbtLigandSiteMapper::_CT("RbtLigandSiteMapper");
+std::string RbtLigandSiteMapper::_REF_MOL("REF_MOL");
+std::string RbtLigandSiteMapper::_VOL_INCR("VOL_INCR");
+std::string RbtLigandSiteMapper::_SMALL_SPHERE("SMALL_SPHERE");
+std::string RbtLigandSiteMapper::_GRIDSTEP("GRIDSTEP");
+std::string RbtLigandSiteMapper::_RADIUS("RADIUS");
+std::string RbtLigandSiteMapper::_MIN_VOLUME("MIN_VOLUME");
+std::string RbtLigandSiteMapper::_MAX_CAVITIES("MAX_CAVITIES");
 
-RbtLigandSiteMapper::RbtLigandSiteMapper(const RbtString &strName)
+RbtLigandSiteMapper::RbtLigandSiteMapper(const std::string &strName)
     : RbtSiteMapper(_CT, strName) {
   // Add parameters
   AddParameter(_REF_MOL, "ref.sd");
@@ -54,7 +54,7 @@ RbtCavityList RbtLigandSiteMapper::operator()() {
   if (spReceptor.Null())
     return cavityList;
 
-  RbtString strRef = GetParameter(_REF_MOL);
+  std::string strRef = GetParameter(_REF_MOL);
   RbtDouble rVolIncr = GetParameter(_VOL_INCR);
   RbtDouble smallR = GetParameter(_SMALL_SPHERE);
   RbtDouble step = GetParameter(_GRIDSTEP);
@@ -74,7 +74,7 @@ RbtCavityList RbtLigandSiteMapper::operator()() {
   // Simple extension would be to read all the records from the SD file
   // to construct a docking site from the superimposition of all the reference
   // ligands
-  RbtString strMolFile = Rbt::GetRbtFileName("data/ligands", strRef);
+  std::string strMolFile = Rbt::GetRbtFileName("data/ligands", strRef);
   RbtMolecularFileSourcePtr spMdlFileSource(
       new RbtMdlFileSource(strMolFile, false, false, true));
   // Only include non-H reference atoms in the mapping

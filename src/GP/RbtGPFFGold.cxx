@@ -17,7 +17,7 @@
 #include <fstream>
 #include <sstream>
 
-RbtString RbtGPFFGold::_CT("RbtGPFFGold");
+std::string RbtGPFFGold::_CT("RbtGPFFGold");
 
 void RbtGPFFGold::ReadTables(istream &in) {
   RbtReturnType value;
@@ -25,7 +25,7 @@ void RbtGPFFGold::ReadTables(istream &in) {
   in >> value;
   inputTable.clear();
   SFTable.clear();
-  RbtString name;
+  std::string name;
   while (!in.eof()) {
     RbtReturnTypeList ivalues;
     ivalues.push_back(new RbtReturnType(value));

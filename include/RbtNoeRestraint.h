@@ -31,7 +31,7 @@ namespace Rbt {
 enum eNoeType { NOE_UNDEFINED, NOE_OR, NOE_MEAN, NOE_AND };
 
 // Returns a string representing the NOE restraint type
-RbtString ConvertNoeRestraintTypeToString(const eNoeType type);
+std::string ConvertNoeRestraintTypeToString(const eNoeType type);
 } // namespace Rbt
 
 ///////////////////////////////////////////////////////////////////////

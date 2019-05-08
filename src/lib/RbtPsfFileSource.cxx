@@ -22,8 +22,8 @@
 //  _RBTOBJECTCOUNTER_CONSTR_("RbtPsfFileSource");
 //}
 
-RbtPsfFileSource::RbtPsfFileSource(const RbtString &fileName,
-                                   const RbtString &strMassesFile,
+RbtPsfFileSource::RbtPsfFileSource(const std::string &fileName,
+                                   const std::string &strMassesFile,
                                    RbtBool bImplHydrogens)
     : RbtBaseMolecularFileSource(
           fileName, "PSF_FILE_SOURCE"), // Call base class constructor
@@ -48,14 +48,14 @@ RbtPsfFileSource::~RbtPsfFileSource() {
 
 void RbtPsfFileSource::Parse() throw(RbtError) {
   // Expected string constants in PSF files
-  const RbtString strPsfKey("PSF");
-  const RbtString strTitleKey("!NTITLE");
-  const RbtString strAtomKey("!NATOM");
+  const std::string strPsfKey("PSF");
+  const std::string strTitleKey("!NTITLE");
+  const std::string strAtomKey("!NATOM");
   // DM 19 Feb 2002 - InsightII writes PSF files with !NBONDS: string rather
   // than !NBOND: so need to cope with either
-  const RbtString strBondKey("!NBOND:");
-  // const RbtString strBondKey("!NBOND");
-  RbtString strKey;
+  const std::string strBondKey("!NBOND:");
+  // const std::string strBondKey("!NBOND");
+  std::string strKey;
 
   // Only parse if we haven't already done so
   if (!m_bParsedOK) {
@@ -106,12 +106,12 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
       fileIter++;
       m_atomList.reserve(nAtomRec); // Allocate enough memory for the vector
 
-      RbtInt nAtomId;           // original atom number in PSF file
-      RbtString strSegmentName; // segment name in PSF file
-      RbtString strSubunitId;   // subunit(residue) ID in PSF file
-      RbtString strSubunitName; // subunit(residue) name in PSF file
-      RbtString strAtomName;    // atom name from PSF file
-      RbtString strFFType;      // force field type from PSF file
+      RbtInt nAtomId;             // original atom number in PSF file
+      std::string strSegmentName; // segment name in PSF file
+      std::string strSubunitId;   // subunit(residue) ID in PSF file
+      std::string strSubunitName; // subunit(residue) name in PSF file
+      std::string strAtomName;    // atom name from PSF file
+      std::string strFFType;      // force field type from PSF file
       // RbtInt nFFType; //force field type from PSF file (integer)
       RbtDouble dPartialCharge; // partial charge
       RbtDouble dAtomicMass;    // atomic mass from PSF file

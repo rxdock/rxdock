@@ -14,7 +14,7 @@
 #include "RbtBaseSF.h"
 #include "RbtChromElement.h"
 
-RbtString RbtGenome::_CT("RbtGenome");
+std::string RbtGenome::_CT("RbtGenome");
 
 RbtGenome::RbtGenome(RbtChromElement *pChr)
     : m_chrom(pChr->clone()), m_score(0.0), m_RWFitness(0.0) {

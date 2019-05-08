@@ -21,11 +21,11 @@ RbtDouble RbtChromTest::TINY = 1E-4;
 void RbtChromTest::setUp() {
   try {
     // Create a receptor model, ligand model, and docking site
-    const RbtString &wsName = "1koc";
-    RbtString prmFileName =
+    const std::string &wsName = "1koc";
+    std::string prmFileName =
         Rbt::GetRbtFileName("data/receptors", wsName + ".prm");
-    RbtString ligFileName = Rbt::GetRbtFileName("", wsName + "_c.sd");
-    RbtString asFileName = Rbt::GetRbtFileName("data/grids", wsName + ".as");
+    std::string ligFileName = Rbt::GetRbtFileName("", wsName + "_c.sd");
+    std::string asFileName = Rbt::GetRbtFileName("data/grids", wsName + ".as");
     RbtParameterFileSourcePtr spPrmSource(
         new RbtParameterFileSource(prmFileName));
     RbtMolecularFileSourcePtr spMdlFileSource(

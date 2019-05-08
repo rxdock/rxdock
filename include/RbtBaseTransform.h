@@ -23,7 +23,7 @@ class RbtTransformAgg; // forward declaration
 class RbtBaseTransform : public RbtBaseObject {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Parameter names
 
   ////////////////////////////////////////
@@ -37,7 +37,7 @@ public:
   // Public methods
   ////////////////
   // Fully qualified name, prefixed by all ancestors
-  RbtString GetFullName() const;
+  std::string GetFullName() const;
 
   // Main public method - actually apply the transform
   // Not virtual. Base class method checks if transform is enabled,
@@ -65,7 +65,7 @@ protected:
   ////////////////////////////////////////
   // Protected methods
   ///////////////////
-  RbtBaseTransform(const RbtString &strClass, const RbtString &strName);
+  RbtBaseTransform(const std::string &strClass, const std::string &strName);
 
 private:
   ////////////////////////////////////////

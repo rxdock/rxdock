@@ -26,7 +26,7 @@
 typedef SmartPtr<istream> istreamPtr;
 class RbtStringTokenIter : public RbtTokenIter {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////
@@ -54,11 +54,11 @@ public:
 
 private:
   RbtStringTokenIter(); // Default constructor disabled
-  RbtTokenPtr translate(RbtString);
+  RbtTokenPtr translate(std::string);
 
   istreamPtr filep;
   RbtTokenPtr current;
-  RbtString strtok;
+  std::string strtok;
   RbtContextPtr contextp;
 };
 

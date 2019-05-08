@@ -24,7 +24,7 @@
 #include "RbtSFRequest.h"
 
 // Parameter name which identifies a scoring function definition
-RbtString RbtTransformFactory::_TRANSFORM("TRANSFORM");
+std::string RbtTransformFactory::_TRANSFORM("TRANSFORM");
 
 ////////////////////////////////////////
 // Constructors/destructors
@@ -38,8 +38,8 @@ RbtTransformFactory::~RbtTransformFactory() {}
 // Creates a single transform object of type strTransformClass, and name strName
 // e.g. strTransformClass = RbtSimAnnTransform
 RbtBaseTransform *
-RbtTransformFactory::Create(const RbtString &strTransformClass,
-                            const RbtString &strName) throw(RbtError) {
+RbtTransformFactory::Create(const std::string &strTransformClass,
+                            const std::string &strName) throw(RbtError) {
   // Component transforms
   if (strTransformClass == RbtSimAnnTransform::_CT)
     return new RbtSimAnnTransform(strName);
@@ -71,8 +71,8 @@ RbtTransformFactory::Create(const RbtString &strTransformClass,
 // and scoring function requests are set from the list of parameters in each
 // named section
 RbtTransformAgg *RbtTransformFactory::CreateAggFromFile(
-    RbtParameterFileSourcePtr spPrmSource, const RbtString &strName,
-    const RbtString &strTransformClasses) throw(RbtError) {
+    RbtParameterFileSourcePtr spPrmSource, const std::string &strName,
+    const std::string &strTransformClasses) throw(RbtError) {
   // Get list of transform objects to create
   RbtStringList transformList =
       Rbt::ConvertDelimitedStringToList(strTransformClasses);
@@ -94,7 +94,7 @@ RbtTransformAgg *RbtTransformFactory::CreateAggFromFile(
     spPrmSource->SetSection(*tIter);
     // Check if this section is a valid scoring function definition
     if (spPrmSource->isParameterPresent(_TRANSFORM)) {
-      RbtString strTransformClass(
+      std::string strTransformClass(
           spPrmSource->GetParameterValueAsString(_TRANSFORM));
       // Create new transform according to the string value of _TRANSFORM
       // parameter

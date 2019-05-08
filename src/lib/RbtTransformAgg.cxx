@@ -13,11 +13,11 @@
 #include "RbtTransformAgg.h"
 
 // Static data member for class type
-RbtString RbtTransformAgg::_CT("RbtTransformAgg");
+std::string RbtTransformAgg::_CT("RbtTransformAgg");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtTransformAgg::RbtTransformAgg(const RbtString &strName)
+RbtTransformAgg::RbtTransformAgg(const std::string &strName)
     : RbtBaseTransform(_CT, strName) {
 #ifdef _DEBUG
   cout << _CT << " parameterised constructor" << endl;

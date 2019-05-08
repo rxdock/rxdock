@@ -14,10 +14,10 @@
 #include "RbtDebug.h"
 #include <cstring>
 
-RbtString RbtContext::_CT("RbtContext");
-// RbtString RbtStringContext::_CT("RbtStringContext");
-// RbtString RbtCellContext::_CT("RbtCellContext");
-RbtString RbtVble::_CT("RbtVble");
+std::string RbtContext::_CT("RbtContext");
+// std::string RbtStringContext::_CT("RbtStringContext");
+// std::string RbtCellContext::_CT("RbtCellContext");
+std::string RbtVble::_CT("RbtVble");
 
 RbtContext::RbtContext() {
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
@@ -46,7 +46,7 @@ RbtStringContext::~RbtStringContext() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 RbtStringContext::RbtStringContext(SmartPtr<ifstream> ifile) {
   /*    RbtInt nvbles, nctes;
       (*ifile) >> nvbles >> nctes;
-      RbtString name;
+      std::string name;
       RbtInt i = 0;
       for (; i < nvbles ; i++)
       {
@@ -74,7 +74,7 @@ RbtCellContext::RbtCellContext(ifstream &ifile) {
   RbtInt nvbles, nctes;
   ifile >> nvbles >> nctes;
   ninputs = nvbles + nctes;
-  RbtString name;
+  std::string name;
   RbtInt i = 0, key;
   for (; i < nvbles; i++) {
     ifile >> key >> name;
@@ -101,7 +101,7 @@ void RbtCellContext::Clear()
     }
 }*/
 
-RbtDouble RbtStringContext::Get(RbtModelPtr lig, RbtString name) {
+RbtDouble RbtStringContext::Get(RbtModelPtr lig, std::string name) {
   if (name == "LIG_MW")
     return lig->GetTotalAtomicMass();
   if (name == "LIG_NATOMS")
@@ -184,7 +184,8 @@ RbtDouble RbtStringContext::Get(RbtModelPtr lig, RbtString name) {
 }
 
 RbtDouble RbtStringContext::Get(RbtModelPtr spReceptor,
-                                RbtDockingSitePtr spDockSite, RbtString name) {
+                                RbtDockingSitePtr spDockSite,
+                                std::string name) {
   if (name == "SITE_VOL")
     return spDockSite->GetVolume();
   RbtDouble cavDist = 4.0;
@@ -266,7 +267,7 @@ RbtDouble RbtStringContext::Get(RbtModelPtr spReceptor,
     return (posChg + negChg);
 }
 
-RbtDouble RbtStringContext::Get(RbtBaseSF *spSF, RbtString name,
+RbtDouble RbtStringContext::Get(RbtBaseSF *spSF, std::string name,
                                 RbtModelPtr lig) {
   RbtStringVariantMap scoreMap;
   spSF->ScoreMap(scoreMap);

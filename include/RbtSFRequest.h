@@ -26,7 +26,7 @@ const RbtRequestID ID_REQ_SF_SETPARAM = 4;
 class RbtSFEnableRequest : public RbtRequest {
 public:
   // Request to enable a particular named scoring function
-  RbtSFEnableRequest(const RbtString &sfName) : RbtRequest(ID_REQ_SF_ENABLE) {
+  RbtSFEnableRequest(const std::string &sfName) : RbtRequest(ID_REQ_SF_ENABLE) {
     AddParameter(sfName);
   }
 };
@@ -34,7 +34,8 @@ public:
 class RbtSFDisableRequest : public RbtRequest {
 public:
   // Request to disable a particular named scoring function
-  RbtSFDisableRequest(const RbtString &sfName) : RbtRequest(ID_REQ_SF_DISABLE) {
+  RbtSFDisableRequest(const std::string &sfName)
+      : RbtRequest(ID_REQ_SF_DISABLE) {
     AddParameter(sfName);
   }
 };
@@ -47,7 +48,7 @@ public:
   }
   // Request to partition a particular named scoring function to a particular
   // distance
-  RbtSFPartitionRequest(const RbtString &sfName, RbtDouble dist)
+  RbtSFPartitionRequest(const std::string &sfName, RbtDouble dist)
       : RbtRequest(ID_REQ_SF_PARTITION) {
     AddParameter(sfName);
     AddParameter(dist);
@@ -58,13 +59,14 @@ class RbtSFSetParamRequest : public RbtRequest {
 public:
   // Request to set a named parameter of all scoring functions to a new value
   // (e.g. TRACE)
-  RbtSFSetParamRequest(const RbtString &paramName, const RbtVariant &paramValue)
+  RbtSFSetParamRequest(const std::string &paramName,
+                       const RbtVariant &paramValue)
       : RbtRequest(ID_REQ_SF_SETPARAM) {
     AddParameter(paramName);
     AddParameter(paramValue);
   }
   // Request to set a named parameter of a named scoring function to a new value
-  RbtSFSetParamRequest(const RbtString &sfName, const RbtString &paramName,
+  RbtSFSetParamRequest(const std::string &sfName, const std::string &paramName,
                        const RbtVariant &paramValue)
       : RbtRequest(ID_REQ_SF_SETPARAM) {
     AddParameter(sfName);

@@ -18,10 +18,10 @@ RbtDouble OccupancyTest::TINY = 1E-4;
 void OccupancyTest::setUp() {
   try {
     // Create the docking site, receptor, and ligand objects
-    const RbtString &wsName = "1YET";
-    RbtString prmFileName = Rbt::GetRbtFileName("", wsName + ".prm");
-    RbtString ligFileName = Rbt::GetRbtFileName("", wsName + "_c.sd");
-    RbtString asFileName = Rbt::GetRbtFileName("", wsName + ".as");
+    const std::string &wsName = "1YET";
+    std::string prmFileName = Rbt::GetRbtFileName("", wsName + ".prm");
+    std::string ligFileName = Rbt::GetRbtFileName("", wsName + "_c.sd");
+    std::string asFileName = Rbt::GetRbtFileName("", wsName + ".as");
     RbtParameterFileSourcePtr spPrmSource(
         new RbtParameterFileSource(prmFileName));
     RbtMolecularFileSourcePtr spMdlFileSource(
@@ -194,8 +194,8 @@ RbtBool OccupancyTest::testFlexAtomFactory(RbtModel *pModel,
     for (RbtInt mode = 0; mode < 9; ++mode) {
       RbtChromElement::eMode eTransMode = (RbtChromElement::eMode)(mode / 3);
       RbtChromElement::eMode eRotMode = (RbtChromElement::eMode)(mode % 3);
-      RbtString strTransMode = RbtChromElement::ModeToStr(eTransMode);
-      RbtString strRotMode = RbtChromElement::ModeToStr(eRotMode);
+      std::string strTransMode = RbtChromElement::ModeToStr(eTransMode);
+      std::string strRotMode = RbtChromElement::ModeToStr(eRotMode);
       pFlexData->SetParameter(RbtLigandFlexData::_TRANS_MODE, strTransMode);
       pFlexData->SetParameter(RbtLigandFlexData::_ROT_MODE, strRotMode);
       pModel->SetFlexData(pFlexData);
@@ -235,8 +235,8 @@ RbtDouble OccupancyTest::CompareScoresForSolventModes() {
     for (RbtInt mode = 0; mode < 9; ++mode) {
       RbtChromElement::eMode eTransMode = (RbtChromElement::eMode)(mode / 3);
       RbtChromElement::eMode eRotMode = (RbtChromElement::eMode)(mode % 3);
-      RbtString strTransMode = RbtChromElement::ModeToStr(eTransMode);
-      RbtString strRotMode = RbtChromElement::ModeToStr(eRotMode);
+      std::string strTransMode = RbtChromElement::ModeToStr(eTransMode);
+      std::string strRotMode = RbtChromElement::ModeToStr(eRotMode);
       // Change the modes of all except the first solvent model, to ensure a mix
       // of tethered / free solvent
       for (RbtModelListIter iter = solventList.begin() + 1;

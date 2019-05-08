@@ -19,8 +19,8 @@
 #include "RbtModel.h"
 
 namespace DT {
-RbtAtomListList QueryModel(RbtModelPtr spModel, const RbtString &strSmart,
-                           RbtString &strSmiles);
+RbtAtomListList QueryModel(RbtModelPtr spModel, const std::string &strSmart,
+                           std::string &strSmiles);
 }
 
 // Map of (key=integer, value=integer)

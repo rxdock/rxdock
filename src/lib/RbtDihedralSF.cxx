@@ -41,8 +41,8 @@ RbtDouble RbtDihedral::operator()() const {
 }
 
 // Static data members
-RbtString RbtDihedralSF::_CT("RbtDihedralSF");
-RbtString RbtDihedralSF::_IMPL_H_CORR("IMPL_H_CORR");
+std::string RbtDihedralSF::_CT("RbtDihedralSF");
+std::string RbtDihedralSF::_IMPL_H_CORR("IMPL_H_CORR");
 
 RbtDihedralSF::RbtDihedralSF() {
 #ifdef _DEBUG
@@ -163,11 +163,11 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
     RbtTriposAtomType::eType t1, RbtTriposAtomType::eType t2,
     RbtTriposAtomType::eType t3, RbtTriposAtomType::eType t4) {
 
-  RbtString str1 = m_triposType.Type2Str(t1);
-  RbtString str2 = m_triposType.Type2Str(t2);
-  RbtString str3 = m_triposType.Type2Str(t3);
-  RbtString str4 = m_triposType.Type2Str(t4);
-  RbtString wild = RbtString("*");
+  std::string str1 = m_triposType.Type2Str(t1);
+  std::string str2 = m_triposType.Type2Str(t2);
+  std::string str3 = m_triposType.Type2Str(t3);
+  std::string str4 = m_triposType.Type2Str(t4);
+  std::string wild = std::string("*");
   RbtInt iTrace = GetTrace();
   if (iTrace > 2) {
     cout << endl
@@ -175,17 +175,17 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
          << "," << str4 << endl;
   }
 
-  RbtString strParams;
+  std::string strParams;
 
-  RbtString str23 = str2 + "_" + str3;
-  RbtString str32 = str3 + "_" + str2;
+  std::string str23 = str2 + "_" + str3;
+  std::string str32 = str3 + "_" + str2;
   if (std::find(m_centralPairs.begin(), m_centralPairs.end(), str23) !=
       m_centralPairs.end()) {
     m_spDihedralSource->SetSection(str23);
-    RbtString str14 = str1 + "_" + str4;
-    RbtString str1w = str1 + "_" + wild;
-    RbtString strw4 = wild + "_" + str4;
-    RbtString strww = wild + "_" + wild;
+    std::string str14 = str1 + "_" + str4;
+    std::string str1w = str1 + "_" + wild;
+    std::string strw4 = wild + "_" + str4;
+    std::string strww = wild + "_" + wild;
     if (iTrace > 2) {
       cout << "Matched " << str23 << " central pair" << endl;
     }
@@ -213,10 +213,10 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
   } else if (std::find(m_centralPairs.begin(), m_centralPairs.end(), str32) !=
              m_centralPairs.end()) {
     m_spDihedralSource->SetSection(str32);
-    RbtString str41 = str4 + "_" + str1;
-    RbtString str4w = str4 + "_" + wild;
-    RbtString strw1 = wild + "_" + str1;
-    RbtString strww = wild + "_" + wild;
+    std::string str41 = str4 + "_" + str1;
+    std::string str4w = str4 + "_" + wild;
+    std::string strw1 = wild + "_" + str1;
+    std::string strww = wild + "_" + wild;
     if (iTrace > 2) {
       cout << "Matched " << str32 << " central pair" << endl;
     }

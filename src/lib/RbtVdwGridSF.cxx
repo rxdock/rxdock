@@ -15,13 +15,13 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtVdwGridSF::_CT("RbtVdwGridSF");
-RbtString RbtVdwGridSF::_GRID("GRID");
-RbtString RbtVdwGridSF::_SMOOTHED("SMOOTHED");
+std::string RbtVdwGridSF::_CT("RbtVdwGridSF");
+std::string RbtVdwGridSF::_GRID("GRID");
+std::string RbtVdwGridSF::_SMOOTHED("SMOOTHED");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
-RbtVdwGridSF::RbtVdwGridSF(const RbtString &strName)
+RbtVdwGridSF::RbtVdwGridSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_bSmoothed(true) {
   // Add parameters
   AddParameter(_GRID, ".grd");
@@ -49,8 +49,8 @@ void RbtVdwGridSF::SetupReceptor() {
   RbtBool bEnsemble = (GetReceptor()->GetNumSavedCoords() > 1);
   RbtBool bFlexRec = GetReceptor()->isFlexible();
   if (bEnsemble || bFlexRec) {
-    RbtString message("Vdw grid scoring function does not support multiple "
-                      "receptor conformations\n");
+    std::string message("Vdw grid scoring function does not support multiple "
+                        "receptor conformations\n");
     message += "or flexible OH/NH3 groups yet";
     throw RbtInvalidRequest(_WHERE_, message);
   }
@@ -59,10 +59,11 @@ void RbtVdwGridSF::SetupReceptor() {
   // File names are composed of workspace name + grid suffix
   // Reasonably safe to assume that GetWorkSpace is not NULL,
   // as otherwise SetupReceptor would not have been called
-  RbtString strWSName = GetWorkSpace()->GetName();
+  std::string strWSName = GetWorkSpace()->GetName();
 
-  RbtString strSuffix = GetParameter(_GRID);
-  RbtString strFile = Rbt::GetRbtFileName("data/grids", strWSName + strSuffix);
+  std::string strSuffix = GetParameter(_GRID);
+  std::string strFile =
+      Rbt::GetRbtFileName("data/grids", strWSName + strSuffix);
   // DM 26 Sep 2000 - ios_base::binary qualifier doesn't appear to be valid
   // with IRIX CC
 #ifdef __sgi
@@ -88,7 +89,7 @@ void RbtVdwGridSF::SetupLigand() {
 void RbtVdwGridSF::SetupSolvent() {
   RbtModelList solvent = GetSolvent();
   if (!solvent.empty()) {
-    RbtString message(
+    std::string message(
         "Vdw grid scoring function does not support explicit solvent yet\n");
     throw RbtInvalidRequest(_WHERE_, message);
   }
@@ -130,9 +131,9 @@ void RbtVdwGridSF::SetupScore() {
     // If there is no grid for this atom type, revert to using the UNDEFINED
     // grid if available else throw an error
     if (m_grids[aType].Null()) {
-      RbtString strError = "No vdw grid available for " +
-                           (*iter)->GetFullAtomName() + " (type " +
-                           triposType.Type2Str(aType) + ")";
+      std::string strError = "No vdw grid available for " +
+                             (*iter)->GetFullAtomName() + " (type " +
+                             triposType.Type2Str(aType) + ")";
       if (iTrace > 1) {
         cout << strError << endl;
       }
@@ -217,7 +218,7 @@ void RbtVdwGridSF::ReadGrids(istream &istr) throw(RbtError) {
     Rbt::ReadWithThrow(istr, szType, length);
     // Add null character to end of string
     szType[length] = '\0';
-    RbtString strType(szType);
+    std::string strType(szType);
     delete[] szType;
     RbtTriposAtomType triposType;
     RbtTriposAtomType::eType aType = triposType.Str2Type(strType);
@@ -233,7 +234,7 @@ void RbtVdwGridSF::ReadGrids(istream &istr) throw(RbtError) {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtVdwGridSF::ParameterUpdated(const RbtString &strName) {
+void RbtVdwGridSF::ParameterUpdated(const std::string &strName) {
   // DM 25 Oct 2000 - heavily used params
   if (strName == _SMOOTHED) {
     m_bSmoothed = GetParameter(_SMOOTHED);

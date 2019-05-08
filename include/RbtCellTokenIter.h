@@ -26,7 +26,7 @@ using std::stack;
 
 class RbtCellTokenIter : public RbtTokenIter {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////

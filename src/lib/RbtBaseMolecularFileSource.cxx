@@ -23,15 +23,15 @@
 
 // Single-record version
 RbtBaseMolecularFileSource::RbtBaseMolecularFileSource(
-    const RbtString &fileName, const RbtString &sourceName)
+    const std::string &fileName, const std::string &sourceName)
     : RbtBaseFileSource(fileName), RbtBaseMolecularDataSource(sourceName) {
   _RBTOBJECTCOUNTER_CONSTR_("RbtBaseMolecularFileSource");
 }
 
 // Multi-record version, with record delimiter passed as an argument
 RbtBaseMolecularFileSource::RbtBaseMolecularFileSource(
-    const RbtString &fileName, const RbtString &strRecDelim,
-    const RbtString &sourceName)
+    const std::string &fileName, const std::string &strRecDelim,
+    const std::string &sourceName)
     : RbtBaseFileSource(fileName, strRecDelim),
       RbtBaseMolecularDataSource(sourceName) {
   _RBTOBJECTCOUNTER_CONSTR_("RbtBaseMolecularFileSource");
@@ -165,8 +165,8 @@ RbtStringVariantMap RbtBaseMolecularFileSource::GetDataMap() throw(RbtError) {
 }
 
 // Query as to whether a particular data field name is present
-RbtBool
-RbtBaseMolecularFileSource::isDataFieldPresent(const RbtString &strDataField) {
+RbtBool RbtBaseMolecularFileSource::isDataFieldPresent(
+    const std::string &strDataField) {
   if (isDataSupported()) {
     Parse();
     return m_dataMap.find(strDataField) != m_dataMap.end();
@@ -177,7 +177,7 @@ RbtBaseMolecularFileSource::isDataFieldPresent(const RbtString &strDataField) {
 
 // Get a particular data value
 RbtVariant RbtBaseMolecularFileSource::GetDataValue(
-    const RbtString &strDataField) throw(RbtError) {
+    const std::string &strDataField) throw(RbtError) {
   if (isDataSupported()) {
     Parse();
     RbtStringVariantMapConstIter iter = m_dataMap.find(strDataField);
@@ -363,16 +363,16 @@ RbtBondList RbtBaseMolecularFileSource::GetBondListWithFilter() {
 // and Forbidden atoms in spParamSource
 void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     RbtAtomList &atoms, RbtParameterFileSourcePtr spParamSource) {
-  const RbtString _MANDATORY("MANDATORY");
-  const RbtString _FORBIDDEN("FORBIDDEN");
+  const std::string _MANDATORY("MANDATORY");
+  const std::string _FORBIDDEN("FORBIDDEN");
   if (atoms.empty()) {
     cout << "WARNING SetupPartialIonicGroups: Empty atom list" << endl;
     return;
   }
   RbtAtomPtr leadAtom = atoms.front();
-  RbtString subunitName = leadAtom->GetSubunitName();
-  RbtString match = leadAtom->GetSegmentName() + ":" + subunitName + "_" +
-                    leadAtom->GetSubunitId() + ":";
+  std::string subunitName = leadAtom->GetSubunitName();
+  std::string match = leadAtom->GetSegmentName() + ":" + subunitName + "_" +
+                      leadAtom->GetSubunitId() + ":";
   if (Rbt::GetNumMatchingAtoms(atoms, match) != atoms.size()) {
     cout << "WARNING SetupPartialIonicGroups: Inconsistent subunit names in "
             "atom list headed by "
@@ -389,7 +389,8 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
   spParamSource->SetSection(subunitName);
   RbtStringList atList = spParamSource->GetParameterList();
   if (std::find(atList.begin(), atList.end(), _MANDATORY) != atList.end()) {
-    RbtString mandatory = spParamSource->GetParameterValueAsString(_MANDATORY);
+    std::string mandatory =
+        spParamSource->GetParameterValueAsString(_MANDATORY);
     RbtStringList mandAtoms = Rbt::ConvertDelimitedStringToList(mandatory);
     RbtInt nPresent = Rbt::GetNumMatchingAtoms(atoms, mandAtoms);
     if (nPresent != mandAtoms.size()) {
@@ -404,7 +405,8 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     std::remove(atList.begin(), atList.end(), _MANDATORY);
   }
   if (std::find(atList.begin(), atList.end(), _FORBIDDEN) != atList.end()) {
-    RbtString forbidden = spParamSource->GetParameterValueAsString(_FORBIDDEN);
+    std::string forbidden =
+        spParamSource->GetParameterValueAsString(_FORBIDDEN);
     RbtStringList forbAtoms = Rbt::ConvertDelimitedStringToList(forbidden);
     RbtInt nPresent = Rbt::GetNumMatchingAtoms(atoms, forbAtoms);
     if (nPresent > 0) {

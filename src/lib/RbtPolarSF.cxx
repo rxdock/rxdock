@@ -15,29 +15,29 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtPolarSF::_CT("RbtPolarSF");
-RbtString RbtPolarSF::_R12FACTOR("R12FACTOR");
-RbtString RbtPolarSF::_R12INCR("R12INCR");
-RbtString RbtPolarSF::_DR12MIN("DR12MIN");
-RbtString RbtPolarSF::_DR12MAX("DR12MAX");
-RbtString RbtPolarSF::_A1("A1");
-RbtString RbtPolarSF::_DA1MIN("DA1MIN");
-RbtString RbtPolarSF::_DA1MAX("DA1MAX");
-RbtString RbtPolarSF::_A2("A2");
-RbtString RbtPolarSF::_DA2MIN("DA2MIN");
-RbtString RbtPolarSF::_DA2MAX("DA2MAX");
-RbtString RbtPolarSF::_INCMETAL("INCMETAL");
-RbtString RbtPolarSF::_INCHBD("INCHBD");
-RbtString RbtPolarSF::_INCHBA("INCHBA");
-RbtString RbtPolarSF::_INCGUAN("INCGUAN");
-RbtString RbtPolarSF::_GUAN_PLANE("GUAN_PLANE");
-RbtString RbtPolarSF::_ABS_DR12("ABS_DR12");
-RbtString RbtPolarSF::_LP_OSP2("LP_OSP2");
-RbtString RbtPolarSF::_LP_PHI("LP_PHI");
-RbtString RbtPolarSF::_LP_DPHIMIN("LP_DPHIMIN");
-RbtString RbtPolarSF::_LP_DPHIMAX("LP_DPHIMAX");
-RbtString RbtPolarSF::_LP_DTHETAMIN("LP_DTHETAMIN");
-RbtString RbtPolarSF::_LP_DTHETAMAX("LP_DTHETAMAX");
+std::string RbtPolarSF::_CT("RbtPolarSF");
+std::string RbtPolarSF::_R12FACTOR("R12FACTOR");
+std::string RbtPolarSF::_R12INCR("R12INCR");
+std::string RbtPolarSF::_DR12MIN("DR12MIN");
+std::string RbtPolarSF::_DR12MAX("DR12MAX");
+std::string RbtPolarSF::_A1("A1");
+std::string RbtPolarSF::_DA1MIN("DA1MIN");
+std::string RbtPolarSF::_DA1MAX("DA1MAX");
+std::string RbtPolarSF::_A2("A2");
+std::string RbtPolarSF::_DA2MIN("DA2MIN");
+std::string RbtPolarSF::_DA2MAX("DA2MAX");
+std::string RbtPolarSF::_INCMETAL("INCMETAL");
+std::string RbtPolarSF::_INCHBD("INCHBD");
+std::string RbtPolarSF::_INCHBA("INCHBA");
+std::string RbtPolarSF::_INCGUAN("INCGUAN");
+std::string RbtPolarSF::_GUAN_PLANE("GUAN_PLANE");
+std::string RbtPolarSF::_ABS_DR12("ABS_DR12");
+std::string RbtPolarSF::_LP_OSP2("LP_OSP2");
+std::string RbtPolarSF::_LP_PHI("LP_PHI");
+std::string RbtPolarSF::_LP_DPHIMIN("LP_DPHIMIN");
+std::string RbtPolarSF::_LP_DPHIMAX("LP_DPHIMAX");
+std::string RbtPolarSF::_LP_DTHETAMIN("LP_DTHETAMIN");
+std::string RbtPolarSF::_LP_DTHETAMAX("LP_DTHETAMAX");
 
 RbtPolarSF::RbtPolarSF()
     : m_R12Factor(1.0), m_R12Incr(0.6), m_DR12Min(0.25), m_DR12Max(0.6),
@@ -411,7 +411,7 @@ RbtDouble RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
 
   RbtCoord nullCoord;
   RbtBool bAnnotate = isAnnotationEnabled();
-  // RbtString strName = GetName();
+  // std::string strName = GetName();
 
   RbtAtom *pAtom1_1 = pIC1->GetAtom1Ptr();
   // DM 7 June 2006 - check for disabled interaction centre 1
@@ -569,7 +569,7 @@ RbtDouble RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
 // As this has a virtual base class we need a separate OwnParameterUpdated
 // which can be called by concrete subclass ParameterUpdated methods
 // See Stroustrup C++ 3rd edition, p395, on programming virtual base classes
-void RbtPolarSF::OwnParameterUpdated(const RbtString &strName) {
+void RbtPolarSF::OwnParameterUpdated(const std::string &strName) {
   // DM 25 Oct 2000 - heavily used params
   if (strName == _R12FACTOR) {
     m_R12Factor = GetParameter(_R12FACTOR);

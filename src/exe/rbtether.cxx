@@ -22,7 +22,7 @@
 #include "RbtPRMFactory.h"
 #include "RbtParameterFileSource.h"
 #include "RbtSmarts.h"
-const RbtString EXEVERSION =
+const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbtether.cxx#5 $)";
 
 void print_atoms(RbtAtomList &atoms, ostringstream &ost);
@@ -34,20 +34,20 @@ int main(int argc, char *argv[]) {
   cout.setf(ios_base::left, ios_base::adjustfield);
 
   // Strip off the path to the executable, leaving just the file name
-  RbtString strExeName(argv[0]);
-  RbtString::size_type i = strExeName.rfind("/");
-  if (i != RbtString::npos)
+  std::string strExeName(argv[0]);
+  std::string::size_type i = strExeName.rfind("/");
+  if (i != std::string::npos)
     strExeName.erase(0, i + 1);
 
   // Print a standard header
   Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
 
   // Command line arguments and default values
-  RbtString strLigandMdlFile;
+  std::string strLigandMdlFile;
   RbtBool bOutput(false);
-  RbtString strRunName;
-  RbtString strReferenceSDFile; // Receptor param file
-  RbtString strQuery;           // Smarts query
+  std::string strRunName;
+  std::string strReferenceSDFile; // Receptor param file
+  std::string strQuery;           // Smarts query
   RbtBool bPosIonise(false);
   RbtBool bNegIonise(false);
   RbtBool bImplH(true);
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
   cout << endl << "Command line args:" << endl;
   for (RbtInt iarg = 1; iarg < argc; iarg++) {
     cout << argv[iarg];
-    RbtString strArg(argv[iarg]);
+    std::string strArg(argv[iarg]);
     if (strArg.find("-i") == 0)
       strLigandMdlFile = strArg.substr(2);
     else if (strArg.find("-o") == 0) {
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
     RbtMolecularFileSourcePtr spReferenceSD(new RbtMdlFileSource(
         strReferenceSDFile, bPosIonise, bNegIonise, bImplH));
     RbtModelPtr spReferenceMdl(new RbtModel(spReferenceSD));
-    RbtString strSmiles;
+    std::string strSmiles;
     RbtAtomListList tetherAtoms =
         DT::QueryModel(spReferenceMdl, strQuery, strSmiles);
     cout << endl << "REFERENCE SD FILE: " << strReferenceSDFile << endl;
@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
 
       // Create the ligand model
       RbtModelPtr spLigand(new RbtModel(spMdlFileSource));
-      RbtString strMolName = spLigand->GetName();
+      std::string strMolName = spLigand->GetName();
 
       tetherAtoms = DT::QueryModel(spLigand, strQuery, strSmiles);
       cout << "SMILES: " << strSmiles << endl;

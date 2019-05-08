@@ -15,11 +15,11 @@
 #include "RbtPopulation.h"
 #include "RbtWorkSpace.h"
 
-RbtString RbtRandPopTransform::_CT("RbtRandPopTransform");
-RbtString RbtRandPopTransform::_POP_SIZE("POP_SIZE");
-RbtString RbtRandPopTransform::_SCALE_CHROM_LENGTH("SCALE_CHROM_LENGTH");
+std::string RbtRandPopTransform::_CT("RbtRandPopTransform");
+std::string RbtRandPopTransform::_POP_SIZE("POP_SIZE");
+std::string RbtRandPopTransform::_SCALE_CHROM_LENGTH("SCALE_CHROM_LENGTH");
 
-RbtRandPopTransform::RbtRandPopTransform(const RbtString &strName)
+RbtRandPopTransform::RbtRandPopTransform(const std::string &strName)
     : RbtBaseBiMolTransform(_CT, strName) {
   AddParameter(_POP_SIZE, 50);
   AddParameter(_SCALE_CHROM_LENGTH, true);

@@ -26,7 +26,7 @@
 class RbtChromPositionRefData {
 public:
   // Class type string
-  static RbtString _CT;
+  static std::string _CT;
   // Reference Cartesian axes
   static const RbtPrincipalAxes CARTESIAN_AXES;
   RbtChromPositionRefData(

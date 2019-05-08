@@ -21,13 +21,13 @@
 #include "RbtSFFactory.h"
 #include "RbtTriposAtomType.h"
 
-const RbtString EXEVERSION =
+const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbmoegrid.cxx#4 $)";
-const RbtString _ROOT_SF = "SCORE";
+const std::string _ROOT_SF = "SCORE";
 
 // Creates list of probe models
 // NOTE: MUST BE IN ORDER OF ASCENDING RADII
-RbtModelList CreateProbes(RbtString anAtomTypeStr) {
+RbtModelList CreateProbes(std::string anAtomTypeStr) {
   RbtModelList probes;
   RbtTriposAtomTypeList atomTypes;
   RbtTriposAtomType tAtomType;
@@ -77,22 +77,22 @@ int main(int argc, char *argv[]) {
   cout.setf(ios_base::left, ios_base::adjustfield);
 
   // Strip off the path to the executable, leaving just the file name
-  RbtString strExeName(argv[0]);
-  RbtString::size_type i = strExeName.rfind("/");
-  if (i != RbtString::npos)
+  std::string strExeName(argv[0]);
+  std::string::size_type i = strExeName.rfind("/");
+  if (i != std::string::npos)
     strExeName.erase(0, i + 1);
 
   // Print a standard header
   Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
 
   // Command line arguments and default values
-  RbtString strSuffix(".grd");      // file out suffix
-  RbtString strOutfName("moegrid"); // default output filename
-  vector<RbtString>
+  std::string strSuffix(".grd");      // file out suffix
+  std::string strOutfName("moegrid"); // default output filename
+  vector<std::string>
       strReceptorPrmFiles; // Receptor param files (you can have more!)
-  RbtString strSFFile("calcgrid_vdw.prm"); // Scoring function file
-  RbtDouble gs(0.5);                       // grid step
-  RbtDouble border(1.0);                   // grid border around docking site
+  std::string strSFFile("calcgrid_vdw.prm"); // Scoring function file
+  RbtDouble gs(0.5);                         // grid step
+  RbtDouble border(1.0);                     // grid border around docking site
 
   // Brief help message
   if (argc == 1) {
@@ -102,10 +102,10 @@ int main(int argc, char *argv[]) {
   // parsing command-line options
   opterr = 0;
   int c;
-  string optStr("");
-  RbtString strGridStep; // due to switch scope better to declare here
-  RbtString strBorder;
-  RbtString strAtomType("C.3");
+  std::string optStr("");
+  std::string strGridStep; // due to switch scope better to declare here
+  std::string strBorder;
+  std::string strAtomType("C.3");
   while ((c = getopt(argc, argv, "o:r:p:g:b:t:")) != -1) {
     switch (c) {
     case 'o':
@@ -151,7 +151,7 @@ int main(int argc, char *argv[]) {
   // start processing receptors
   try {
     // generate output file name
-    RbtString strOutputFile(strOutfName + strSuffix);
+    std::string strOutputFile(strOutfName + strSuffix);
     RbtMOEGrid theMOEGrid;
     theMOEGrid.SetOutputFileName(strOutputFile);
     // read each receptors one-by-one to get a common set of grid extents and
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
     RbtUInt nZ = int(recepExtent.z / gridStep.z) + 1;
     cout << "Constructing grid of size " << nX << " x " << nY << " x " << nZ
          << endl;
-    vector<RbtString>::iterator strReceptorPrmFilesIter;
+    vector<std::string>::iterator strReceptorPrmFilesIter;
     for (strReceptorPrmFilesIter = strReceptorPrmFiles.begin();
          strReceptorPrmFilesIter != strReceptorPrmFiles.end();
          ++strReceptorPrmFilesIter) {
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
       // Set the workspace name to the root of the receptor .prm filename
       RbtStringList componentList =
           Rbt::ConvertDelimitedStringToList((*strReceptorPrmFilesIter), ".");
-      RbtString wsName = componentList.front();
+      std::string wsName = componentList.front();
       spWS->SetName(wsName);
 
       // Read the receptor parameter file
@@ -206,8 +206,8 @@ int main(int argc, char *argv[]) {
       RbtModelPtr spReceptor = prmFactory.CreateReceptor();
 
       // Read docking site from file and register with workspace
-      RbtString strASFile = spWS->GetName() + ".as";
-      RbtString strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
+      std::string strASFile = spWS->GetName() + ".as";
+      std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
       // DM 26 Sep 2000 - ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
       ifstream istr(strInputFile.c_str(), ios_base::in);
@@ -267,7 +267,7 @@ int main(int argc, char *argv[]) {
         RbtModelPtr spLigand(*mIter);
         RbtAtom *pAtom = spLigand->GetAtomList().front();
         RbtTriposAtomType::eType atomType = pAtom->GetTriposType();
-        RbtString strType = triposType.Type2Str(atomType);
+        std::string strType = triposType.Type2Str(atomType);
         cout << "Atom type=" << strType << endl;
         // Register ligand with workspace
         spWS->SetLigand(spLigand);

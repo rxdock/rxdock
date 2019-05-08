@@ -18,7 +18,7 @@
 #include "RbtModelError.h"
 #include "RbtPlane.h"
 
-RbtMdlFileSource::RbtMdlFileSource(const RbtString &fileName,
+RbtMdlFileSource::RbtMdlFileSource(const std::string &fileName,
                                    RbtBool bPosIonisable, RbtBool bNegIonisable,
                                    RbtBool bImplHydrogens)
     : RbtBaseMolecularFileSource(
@@ -92,14 +92,15 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
       m_atomList.reserve(nAtomRec); // Allocate enough memory for the vector
 
       RbtInt nAtomId(0);
-      RbtCoord coord;           // X,Y,Z coords
-      RbtString strElementName; // element name
-      RbtInt nMassDiff;         // mass difference
+      RbtCoord coord;             // X,Y,Z coords
+      std::string strElementName; // element name
+      RbtInt nMassDiff;           // mass difference
       RbtInt
           nFormalCharge; // formal charge (MDL stores in a funny way, see below)
-      RbtString strSegmentName("H"); // constant (i.e. one segment, one residue)
-      RbtString strSubunitId("1");   // constant
-      RbtString strSubunitName("MOL"); // constant
+      std::string strSegmentName(
+          "H");                      // constant (i.e. one segment, one residue)
+      std::string strSubunitId("1"); // constant
+      std::string strSubunitName("MOL"); // constant
 
       while ((m_atomList.size() < nAtomRec) && (fileIter != fileEnd)) {
         istringstream istr(*fileIter++);
@@ -120,7 +121,7 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
         nAtomId++;
         ostringstream ostr;
         ostr << strElementName << nAtomId;
-        RbtString strAtomName(ostr.str());
+        std::string strAtomName(ostr.str());
 
         // Construct a new atom (constructor only accepts the 2D params)
         RbtAtomPtr spAtom(
@@ -193,11 +194,12 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
       // DM 12 May 1999 - read data records (if any)
       for (; fileIter != fileEnd; fileIter++) {
         if ((*fileIter).find(">") == 0) { // Found a data record
-          RbtString::size_type ob = (*fileIter).find("<"); // First open bracket
-          RbtString::size_type cb =
+          std::string::size_type ob =
+              (*fileIter).find("<"); // First open bracket
+          std::string::size_type cb =
               (*fileIter).rfind(">"); // Last closed bracket
-          if ((ob != RbtString::npos) && (cb != RbtString::npos)) {
-            RbtString fieldName =
+          if ((ob != std::string::npos) && (cb != std::string::npos)) {
+            std::string fieldName =
                 (*fileIter).substr(ob + 1, cb - ob - 1); // Data field name
             RbtStringList sl; // String list for storing data value
             while ((++fileIter != fileEnd) && !(*fileIter).empty()) {
@@ -451,7 +453,7 @@ void RbtMdlFileSource::SetupTheRest() throw(RbtError) {
     (*iter)->SetVdwRadius(vdwRadius);
 
     // Now set a nominal "force-field" type of the style OSP3- etc
-    RbtString strFFType = elData.element;
+    std::string strFFType = elData.element;
     strFFType += "_";
     strFFType += Rbt::ConvertHybridStateToString((*iter)->GetHybridState());
     strFFType += Rbt::ConvertFormalChargeToString((*iter)->GetFormalCharge());
@@ -813,7 +815,7 @@ void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) throw(RbtError) {
   RbtInt nAtomId = m_atomList.size() + 1;
   ostringstream ostr;
   ostr << "H" << nAtomId;
-  RbtString strAtomName(ostr.str());
+  std::string strAtomName(ostr.str());
   RbtAtomPtr spHAtom(new RbtAtom(nAtomId,
                                  1, // nAtomicNo,
                                  strAtomName,
@@ -1052,8 +1054,8 @@ void RbtMdlFileSource::SetupOTRIMinus() {
 // Segment names are initially H1,H2,H3...
 // except that the largest segment is renamed back to H
 void RbtMdlFileSource::SetupSegmentNames() {
-  RbtString strLargestSegName; // Name of the largest segment
-  RbtInt nMaxSize(0);          // Size of the largest segment
+  std::string strLargestSegName; // Name of the largest segment
+  RbtInt nMaxSize(0);            // Size of the largest segment
   RbtInt nSeg;
   RbtAtomListIter seed;
   for (nSeg = 1, seed = m_atomList.begin(); seed != m_atomList.end();
@@ -1061,7 +1063,7 @@ void RbtMdlFileSource::SetupSegmentNames() {
     // New segment name (H1, H2 etc)
     ostringstream ostr;
     ostr << "H" << nSeg;
-    RbtString strSegName(ostr.str());
+    std::string strSegName(ostr.str());
     // Temporary atom list containing atoms to be processed
     // Note: this is a true list (not a vector) as we will be making numerous
     // insertions and deletions

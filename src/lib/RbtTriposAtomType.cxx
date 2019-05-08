@@ -207,7 +207,7 @@ RbtTriposAtomType::operator()(RbtAtom *pAtom, RbtBool useExtendedTypes) const {
 }
 
 // Converts Tripos type to string
-RbtString RbtTriposAtomType::Type2Str(RbtTriposAtomType::eType aType) const {
+std::string RbtTriposAtomType::Type2Str(RbtTriposAtomType::eType aType) const {
   return m_typeInfo[aType].name;
 }
 // Get hybridisation from Tripos type
@@ -221,7 +221,7 @@ RbtInt RbtTriposAtomType::Type2AtomicNo(RbtTriposAtomType::eType aType) const {
 
 // Converts string to Tripos type
 RbtTriposAtomType::eType
-RbtTriposAtomType::Str2Type(const RbtString &strType) const {
+RbtTriposAtomType::Str2Type(const std::string &strType) const {
   for (RbtTriposInfoListConstIter iter = m_typeInfo.begin();
        iter != m_typeInfo.end(); iter++) {
     if (strType == (*iter).name) {

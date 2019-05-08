@@ -15,16 +15,16 @@ using std::setw;
 #include "RbtSetupPolarSF.h"
 
 // Static data members
-RbtString RbtSetupPolarSF::_CT("RbtSetupPolarSF");
-RbtString RbtSetupPolarSF::_RADIUS("RADIUS");
-RbtString RbtSetupPolarSF::_NORM("NORM");
-RbtString RbtSetupPolarSF::_POWER("POWER");
-RbtString RbtSetupPolarSF::_CHGFACTOR("CHGFACTOR");
-RbtString RbtSetupPolarSF::_GUANFACTOR("GUANFACTOR");
+std::string RbtSetupPolarSF::_CT("RbtSetupPolarSF");
+std::string RbtSetupPolarSF::_RADIUS("RADIUS");
+std::string RbtSetupPolarSF::_NORM("NORM");
+std::string RbtSetupPolarSF::_POWER("POWER");
+std::string RbtSetupPolarSF::_CHGFACTOR("CHGFACTOR");
+std::string RbtSetupPolarSF::_GUANFACTOR("GUANFACTOR");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
-RbtSetupPolarSF::RbtSetupPolarSF(const RbtString &strName)
+RbtSetupPolarSF::RbtSetupPolarSF(const std::string &strName)
     : RbtBaseSF(_CT, strName) {
   // Add parameters
   AddParameter(_RADIUS, 5.0);

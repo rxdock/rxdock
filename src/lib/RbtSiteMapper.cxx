@@ -14,12 +14,12 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtSiteMapper::_CT("RbtSiteMapper");
+std::string RbtSiteMapper::_CT("RbtSiteMapper");
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtSiteMapper::RbtSiteMapper(const RbtString &strClass,
-                             const RbtString &strName)
+RbtSiteMapper::RbtSiteMapper(const std::string &strClass,
+                             const std::string &strName)
     : RbtBaseObject(strClass, strName) {
 #ifdef _DEBUG
   cout << _CT << " parameterised constructor" << endl;

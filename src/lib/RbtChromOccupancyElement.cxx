@@ -12,7 +12,7 @@
 
 #include "RbtChromOccupancyElement.h"
 
-RbtString RbtChromOccupancyElement::_CT = "RbtChromOccupancyElement";
+std::string RbtChromOccupancyElement::_CT = "RbtChromOccupancyElement";
 
 RbtChromOccupancyElement::RbtChromOccupancyElement(RbtModel *pModel,
                                                    RbtDouble stepSize,

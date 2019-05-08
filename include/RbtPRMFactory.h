@@ -25,26 +25,26 @@ class RbtDockingSite;
 
 class RbtPRMFactory {
 public:
-  static const RbtString &_CT;
+  static const std::string &_CT;
   // Receptor parameters
-  static const RbtString &_REC_SECTION;
-  static const RbtString &_REC_FILE;
-  static const RbtString &_REC_TOPOL_FILE;
-  static const RbtString &_REC_COORD_FILE;
-  static const RbtString &_REC_NUM_COORD_FILES;
-  static const RbtString &_REC_FLEX_DISTANCE;
-  static const RbtString &_REC_DIHEDRAL_STEP;
+  static const std::string &_REC_SECTION;
+  static const std::string &_REC_FILE;
+  static const std::string &_REC_TOPOL_FILE;
+  static const std::string &_REC_COORD_FILE;
+  static const std::string &_REC_NUM_COORD_FILES;
+  static const std::string &_REC_FLEX_DISTANCE;
+  static const std::string &_REC_DIHEDRAL_STEP;
 
   // Ligand parameters
-  static const RbtString &_LIG_SECTION;
+  static const std::string &_LIG_SECTION;
   // Ligand file is not read here, so no need for _LIG_FILE
   // No need to specify ligand flexibility parameter names explicitly
   // as we assume that all parameters in SECTION LIGAND
   // are flexibility params.
 
   // Solvent parameters
-  static const RbtString &_SOLV_SECTION;
-  static const RbtString &_SOLV_FILE;
+  static const std::string &_SOLV_SECTION;
+  static const std::string &_SOLV_FILE;
   // No need to specify solvent flexibility parameter names explicitly
   // as we assume that all parameters in SECTION SOLVENT
   // are flexibility params (except for _SOLV_FILE)
@@ -64,7 +64,7 @@ public:
 private:
   // Creates the appropriate source according to the file extension
   RbtMolecularFileSourcePtr
-  CreateMolFileSource(const RbtString &fileName) throw(RbtError);
+  CreateMolFileSource(const std::string &fileName) throw(RbtError);
   void AttachReceptorFlexData(RbtModel *pReceptor);
   void AttachLigandFlexData(RbtModel *pLigand);
   void AttachSolventFlexData(RbtModel *pSolvent);

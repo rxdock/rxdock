@@ -15,16 +15,16 @@
 #include "RbtWorkSpace.h"
 
 // Static data members
-RbtString RbtVdwIdxSF::_CT("RbtVdwIdxSF");
-RbtString RbtVdwIdxSF::_THRESHOLD_ATTR("THRESHOLD_ATTR");
-RbtString RbtVdwIdxSF::_THRESHOLD_REP("THRESHOLD_REP");
-RbtString RbtVdwIdxSF::_ANNOTATION_LIPO("ANNOTATION_LIPO");
-RbtString RbtVdwIdxSF::_ANNOTATE("ANNOTATE");
-RbtString RbtVdwIdxSF::_FAST_SOLVENT("FAST_SOLVENT");
+std::string RbtVdwIdxSF::_CT("RbtVdwIdxSF");
+std::string RbtVdwIdxSF::_THRESHOLD_ATTR("THRESHOLD_ATTR");
+std::string RbtVdwIdxSF::_THRESHOLD_REP("THRESHOLD_REP");
+std::string RbtVdwIdxSF::_ANNOTATION_LIPO("ANNOTATION_LIPO");
+std::string RbtVdwIdxSF::_ANNOTATE("ANNOTATE");
+std::string RbtVdwIdxSF::_FAST_SOLVENT("FAST_SOLVENT");
 
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
-RbtVdwIdxSF::RbtVdwIdxSF(const RbtString &strName)
+RbtVdwIdxSF::RbtVdwIdxSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_nAttr(0), m_nRep(0), m_attrThreshold(-0.5),
       m_repThreshold(0.5), m_lipoAnnot(-0.1), m_bAnnotate(true),
       m_bFlexRec(false), m_bFastSolvent(true) {
@@ -69,7 +69,7 @@ void RbtVdwIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
 
     // First deal with the inter score which is stored in its natural location
     // in the map
-    RbtString name = GetFullName();
+    std::string name = GetFullName();
     scoreMap[name] = rs;
     AddToParentMapEntry(scoreMap, rs);
 
@@ -78,7 +78,7 @@ void RbtVdwIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     RbtDouble system_rs =
         ReceptorScore() + SolventScore() + ReceptorSolventScore();
     if (system_rs != 0.0) {
-      RbtString systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
+      std::string systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
       scoreMap[systemName] = system_rs;
       // increment the SCORE.SYSTEM total
       RbtDouble parentScore = scoreMap[RbtBaseSF::_SYSTEM_SF];
@@ -337,7 +337,7 @@ RbtDouble RbtVdwIdxSF::RawScore() const {
 
 // DM 25 Oct 2000 - track changes to parameter values in local data members
 // ParameterUpdated is invoked by RbtParamHandler::SetParameter
-void RbtVdwIdxSF::ParameterUpdated(const RbtString &strName) {
+void RbtVdwIdxSF::ParameterUpdated(const std::string &strName) {
   if (strName == _THRESHOLD_ATTR) {
     m_attrThreshold = GetParameter(_THRESHOLD_ATTR);
   } else if (strName == _THRESHOLD_REP) {
@@ -363,19 +363,19 @@ void RbtVdwIdxSF::ParameterUpdated(const RbtString &strName) {
 // pair-wise vdW interactions between apolar C/H atoms
 //           with scores better (more -ve) than ANNOTATION_LIPO parameter
 void RbtVdwIdxSF::RenderAnnotationsByResidue(RbtStringList &retVal) const {
-  RbtString strSum = GetName() + "_SUM";
-  RbtString strLipo = GetName() + "_LIPO";
-  RbtString strRepul = GetName() + "_REP";
+  std::string strSum = GetName() + "_SUM";
+  std::string strLipo = GetName() + "_LIPO";
+  std::string strRepul = GetName() + "_REP";
 
   RbtAnnotationList annList = GetAnnotationList();
   std::sort(annList.begin(), annList.end(), Rbt::RbtAnn_Cmp_AtomId2());
 
-  RbtString oldResName("UNLIKELY_TO_MATCH_BY_CHANCE");
+  std::string oldResName("UNLIKELY_TO_MATCH_BY_CHANCE");
   RbtAnnotationPtr spAnn;
 
   for (RbtAnnotationListConstIter aIter = annList.begin();
        aIter != annList.end(); ++aIter) {
-    RbtString resName = (*aIter)->GetFQResName();
+    std::string resName = (*aIter)->GetFQResName();
     // New residue encountered
     if (resName != oldResName) {
       // Render the previous residue annotation (unless this is the first time

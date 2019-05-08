@@ -19,9 +19,9 @@
 class RbtSolventFlexData : public RbtLigandFlexData {
 public:
   // Probability of solvent being visible
-  static const RbtString &_OCCUPANCY;
+  static const std::string &_OCCUPANCY;
   // Nominal step size for mutating the occupancy variable
-  static const RbtString &_OCCUPANCY_STEP;
+  static const std::string &_OCCUPANCY_STEP;
   RbtSolventFlexData(RbtDockingSite *pDockSite);
   virtual void Accept(RbtFlexDataVisitor &v) { v.VisitSolventFlexData(this); }
 

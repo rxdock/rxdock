@@ -48,18 +48,18 @@ class RbtPMFIdxSF : public RbtBaseInterSF,
 
 public:
   RbtPMFIdxSF(
-      const RbtString &strName = "PMF"); /**< The only one constructor */
-  virtual ~RbtPMFIdxSF();                /**< The virtual destructor */
+      const std::string &strName = "PMF"); /**< The only one constructor */
+  virtual ~RbtPMFIdxSF();                  /**< The virtual destructor */
 
   /**
    * This string serves as a name for the weight factor
    * of the PMF score. Should be read from the .prm
    * file.
    */
-  static RbtString _CT;
-  static RbtString _PMFDIR; /**< String pointing to the dir with PMF tables*/
-  static RbtString _CC_CUTOFF;
-  static RbtString _SLOPE;
+  static std::string _CT;
+  static std::string _PMFDIR; /**< String pointing to the dir with PMF tables*/
+  static std::string _CC_CUTOFF;
+  static std::string _SLOPE;
   /**
    *  Observer functionalities pure virtual, so it must be
    *  overloaded.

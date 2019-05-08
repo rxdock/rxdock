@@ -24,7 +24,7 @@
 
 class RbtGPFFHSP90 : public RbtGPFitnessFunction {
 public:
-  static RbtString _CT;
+  static std::string _CT;
   RbtGPFFHSP90(RbtContextPtr c) : contextp(c) {
     _RBTOBJECTCOUNTER_CONSTR_(_CT);
   }
