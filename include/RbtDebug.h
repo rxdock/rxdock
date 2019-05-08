@@ -18,7 +18,6 @@
 
 #ifdef _RBTOBJECTCOUNTER
 
-#include "RbtTypes.h"
 #include <iostream.h>
 #include <map>
 

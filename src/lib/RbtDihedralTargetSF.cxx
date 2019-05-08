@@ -42,8 +42,8 @@ void RbtDihedralTargetSF::SetupReceptor() {
 void RbtDihedralTargetSF::SetupLigand() {}
 void RbtDihedralTargetSF::SetupScore() {}
 
-RbtDouble RbtDihedralTargetSF::RawScore() const {
-  RbtDouble score = 0.0; // Total score
+double RbtDihedralTargetSF::RawScore() const {
+  double score = 0.0; // Total score
   for (RbtDihedralListConstIter iter = m_dihList.begin();
        iter != m_dihList.end(); iter++) {
     score += (**iter)();

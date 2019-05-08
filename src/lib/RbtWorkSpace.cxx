@@ -22,7 +22,7 @@ std::string RbtWorkSpace::_NAME("NAME");
 // Constructors/destructors
 
 // Create an empty model container of the right size
-RbtWorkSpace::RbtWorkSpace(RbtUInt nModels)
+RbtWorkSpace::RbtWorkSpace(unsigned int nModels)
     : m_models(nModels), m_SF(NULL), m_transform(NULL) {
   AddParameter(_NAME, _CT);
 #ifdef _DEBUG
@@ -47,14 +47,14 @@ void RbtWorkSpace::SetName(const std::string &strName) {
 // Model handling
 
 // Returns number of models in workspace
-RbtUInt RbtWorkSpace::GetNumModels() const { return m_models.size(); }
+unsigned int RbtWorkSpace::GetNumModels() const { return m_models.size(); }
 
 // Returns vector of all models in workspace
 RbtModelList RbtWorkSpace::GetModels() const { return m_models; }
 
 // Returns a specific (numbered) model
 // Throws RbtBadArgument if iModel out of range
-RbtModelPtr RbtWorkSpace::GetModel(RbtUInt iModel) const throw(RbtError) {
+RbtModelPtr RbtWorkSpace::GetModel(unsigned int iModel) const throw(RbtError) {
   if (iModel >= m_models.size()) {
     throw RbtBadArgument(_WHERE_, "iModel out of range");
   }
@@ -63,7 +63,7 @@ RbtModelPtr RbtWorkSpace::GetModel(RbtUInt iModel) const throw(RbtError) {
 
 // Replace an existing model, notify all observers
 // Throws RbtBadArgument if iModel out of range
-void RbtWorkSpace::SetModel(RbtUInt iModel,
+void RbtWorkSpace::SetModel(unsigned int iModel,
                             RbtModelPtr spModel) throw(RbtError) {
   if (iModel >= m_models.size()) {
     throw RbtBadArgument(_WHERE_, "iModel out of range");
@@ -73,7 +73,8 @@ void RbtWorkSpace::SetModel(RbtUInt iModel,
 }
 
 // Returns vector of models, starting from index iModel
-RbtModelList RbtWorkSpace::GetModels(RbtUInt iModel) const throw(RbtError) {
+RbtModelList RbtWorkSpace::GetModels(unsigned int iModel) const
+    throw(RbtError) {
   RbtModelList retVal;
   if (iModel >= m_models.size()) {
     throw RbtBadArgument(_WHERE_, "iModel out of range");
@@ -93,7 +94,7 @@ void RbtWorkSpace::AddModels(RbtModelList modelList) {
 // Replace a number of existing models
 // iModel is the index of the first model to replace
 // Throws RbtBadArgument if iModel out of range or modelList too large
-void RbtWorkSpace::SetModels(RbtUInt iModel,
+void RbtWorkSpace::SetModels(unsigned int iModel,
                              RbtModelList modelList) throw(RbtError) {
   if (iModel > (m_models.size() - modelList.size())) {
     throw RbtBadArgument(_WHERE_, "iModel out of range");
@@ -106,7 +107,7 @@ void RbtWorkSpace::SetModels(RbtUInt iModel,
 
 // Removes a number of models from the workspace
 // Removes from index iModel to end of model list
-void RbtWorkSpace::RemoveModels(RbtUInt iModel) throw(RbtError) {
+void RbtWorkSpace::RemoveModels(unsigned int iModel) throw(RbtError) {
   if (iModel >= m_models.size()) {
     throw RbtBadArgument(_WHERE_, "iModel out of range");
   }
@@ -124,7 +125,7 @@ void RbtWorkSpace::SetSink(RbtMolecularFileSinkPtr spSink) {
 // Saves models to file sink
 // Base workspace does nothing
 // It is up to subclasses to decide what action to take
-void RbtWorkSpace::Save(RbtBool bSaveScores) {}
+void RbtWorkSpace::Save(bool bSaveScores) {}
 
 // Get/set the history file sink
 RbtMolecularFileSinkPtr RbtWorkSpace::GetHistorySink() const {
@@ -136,7 +137,7 @@ void RbtWorkSpace::SetHistorySink(RbtMolecularFileSinkPtr spHisSink) {
 // Saves models to file sink
 // Base workspace does nothing
 // It is up to subclasses to decide what action to take
-void RbtWorkSpace::SaveHistory(RbtBool bSaveScores) {}
+void RbtWorkSpace::SaveHistory(bool bSaveScores) {}
 
 // Scoring function handling
 // SetSF automatically registers the scoring function with the workspace

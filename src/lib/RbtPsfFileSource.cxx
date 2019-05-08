@@ -24,7 +24,7 @@
 
 RbtPsfFileSource::RbtPsfFileSource(const std::string &fileName,
                                    const std::string &strMassesFile,
-                                   RbtBool bImplHydrogens)
+                                   bool bImplHydrogens)
     : RbtBaseMolecularFileSource(
           fileName, "PSF_FILE_SOURCE"), // Call base class constructor
       m_bImplHydrogens(bImplHydrogens) {
@@ -74,7 +74,7 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
 
       //////////////////////////////////////////////////////////
       // 2a Read number of title lines and check for correct title key...
-      RbtInt nTitleRec;
+      int nTitleRec;
       fileIter += 2;
       istringstream(*fileIter) >> nTitleRec >> strKey;
       if (strKey != strTitleKey)
@@ -95,7 +95,7 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
 
       //////////////////////////////////////////////////////////
       // 3a. Read number of atoms and check for correct atom key...
-      RbtInt nAtomRec;
+      int nAtomRec;
       fileIter++;
       istringstream(*fileIter) >> nAtomRec >> strKey;
       if (strKey != strAtomKey)
@@ -106,15 +106,15 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
       fileIter++;
       m_atomList.reserve(nAtomRec); // Allocate enough memory for the vector
 
-      RbtInt nAtomId;             // original atom number in PSF file
+      int nAtomId;                // original atom number in PSF file
       std::string strSegmentName; // segment name in PSF file
       std::string strSubunitId;   // subunit(residue) ID in PSF file
       std::string strSubunitName; // subunit(residue) name in PSF file
       std::string strAtomName;    // atom name from PSF file
       std::string strFFType;      // force field type from PSF file
       // RbtInt nFFType; //force field type from PSF file (integer)
-      RbtDouble dPartialCharge; // partial charge
-      RbtDouble dAtomicMass;    // atomic mass from PSF file
+      double dPartialCharge; // partial charge
+      double dAtomicMass;    // atomic mass from PSF file
 
       while ((m_atomList.size() < nAtomRec) && (fileIter != fileEnd)) {
         istringstream istr(*fileIter++);
@@ -132,7 +132,7 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
         //
         // DM 4 Jan 1999 - check if force field type is numeric (parm22) or
         // string (parm19)
-        RbtInt nFFType = atoi(strFFType.c_str());
+        int nFFType = atoi(strFFType.c_str());
         if (nFFType > 0)
           strFFType = m_spCharmmData->AtomTypeString(
               nFFType); // Convert atom type from int to string
@@ -160,12 +160,12 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
 
       //////////////////////////////////////////////////////////
       // 4a. Read number of bonds and check for correct bond key...
-      RbtInt nBondRec;
+      int nBondRec;
       fileIter++;
       istringstream(*fileIter) >> nBondRec >> strKey;
       // cout << "strKey "<<strKey << " strBondKey " << strBondKey << endl;
       // if(strBondKey.compare(strKey,0,6)) {// 6 for "!NBOND" old style API
-      RbtInt iCmp = strBondKey.compare(0, 5, strKey);
+      int iCmp = strBondKey.compare(0, 5, strKey);
       // cout << "iCmp = " << iCmp << endl;
       if (iCmp > 0) { // 6 for "!NBOND" new API
         throw RbtFileParseError(_WHERE_, "Missing " + strBondKey +
@@ -176,9 +176,9 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
       fileIter++;
       m_bondList.reserve(nBondRec); // Allocate enough memory for the vector
 
-      RbtInt nBondId(0);
-      RbtUInt idxAtom1;
-      RbtUInt idxAtom2;
+      int nBondId(0);
+      unsigned int idxAtom1;
+      unsigned int idxAtom2;
       while ((m_bondList.size() < nBondRec) && (fileIter != fileEnd)) {
         istringstream istr(*fileIter++);
 
@@ -262,18 +262,18 @@ void RbtPsfFileSource::SetupVdWRadii() throw(RbtError) {
   Rbt::isHybridState_eq bIsTri(RbtAtom::TRI);
   Rbt::isCoordinationNumber_eq bTwoBonds(2);
 
-  RbtDouble dImplRadIncr = m_spElementData->GetImplicitRadiusIncr();
+  double dImplRadIncr = m_spElementData->GetImplicitRadiusIncr();
   // Element data for hydrogen
   RbtElementData elHData = m_spElementData->GetElementData(1);
   // Radius increment and predicate for H-bonding hydrogens
   Rbt::isAtomHBondDonor bIsHBondDonor;
-  RbtDouble dHBondRadius =
+  double dHBondRadius =
       elHData.vdwRadius + m_spElementData->GetHBondRadiusIncr();
 
   for (RbtAtomListIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter++) {
     // Get the element data for this atom
-    RbtInt nAtomicNo = (*iter)->GetAtomicNo();
+    int nAtomicNo = (*iter)->GetAtomicNo();
     // DM 04 Dec 2003 - correction to hybrid state for Ntri
     // Problem is Charmm type 34 is used ambiguously for "Nitrogen in 5-membered
     // ring" Some should be Ntri (3 bonds), others should Nsp2 (2 bonds)
@@ -284,8 +284,8 @@ void RbtPsfFileSource::SetupVdWRadii() throw(RbtError) {
       // endl;
     }
     RbtElementData elData = m_spElementData->GetElementData(nAtomicNo);
-    RbtDouble vdwRadius = elData.vdwRadius;
-    RbtInt nImplH = (*iter)->GetNumImplicitHydrogens();
+    double vdwRadius = elData.vdwRadius;
+    int nImplH = (*iter)->GetNumImplicitHydrogens();
     // Adjust atomic mass and vdw radius for atoms with implicit hydrogens
     if (nImplH > 0) {
       (*iter)->SetAtomicMass(elData.mass +
@@ -345,7 +345,7 @@ void RbtPsfFileSource::RemoveNonPolarHydrogens() {
     // Get list of all bonded hydrogens
     RbtAtomList hList =
         Rbt::GetAtomList(Rbt::GetBondedAtomList(*cIter), Rbt::isAtomicNo_eq(1));
-    RbtInt nImplH = hList.size();
+    int nImplH = hList.size();
     if (nImplH > 0) {
       for (RbtAtomListIter hIter = hList.begin(); hIter != hList.end();
            hIter++) {

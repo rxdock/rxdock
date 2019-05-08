@@ -55,10 +55,10 @@ void RbtRandPopTransform::Execute() {
   if (pSF == NULL) {
     return;
   }
-  RbtInt popSize = GetParameter(_POP_SIZE);
-  RbtBool bScale = GetParameter(_SCALE_CHROM_LENGTH);
+  int popSize = GetParameter(_POP_SIZE);
+  bool bScale = GetParameter(_SCALE_CHROM_LENGTH);
   if (bScale) {
-    RbtInt chromLength = m_chrom->GetLength();
+    int chromLength = m_chrom->GetLength();
     popSize *= chromLength;
   }
   if (GetTrace() > 3) {

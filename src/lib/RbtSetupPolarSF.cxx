@@ -52,7 +52,7 @@ void RbtSetupPolarSF::SetupReceptor() {
   RbtAtomList atomList = GetReceptor()->GetAtomList();
   RbtAtomList heavyAtomList =
       Rbt::GetAtomList(atomList, std::not1(Rbt::isAtomicNo_eq(1)));
-  RbtInt traceTriggerLevel = 1;
+  int traceTriggerLevel = 1;
   SetupAtomList(atomList, heavyAtomList, traceTriggerLevel);
 }
 
@@ -61,7 +61,7 @@ void RbtSetupPolarSF::SetupLigand() {
     return;
   RbtAtomList atomList = GetLigand()->GetAtomList();
   RbtAtomList emptyList;
-  RbtInt traceTriggerLevel = 2;
+  int traceTriggerLevel = 2;
   SetupAtomList(atomList, emptyList, traceTriggerLevel);
 }
 
@@ -78,7 +78,7 @@ void RbtSetupPolarSF::SetupSolvent() {
               std::back_inserter(solventAtomList));
   }
   RbtAtomList emptyList;
-  RbtInt traceTriggerLevel = 1;
+  int traceTriggerLevel = 1;
   SetupAtomList(solventAtomList, emptyList, traceTriggerLevel);
 }
 
@@ -86,17 +86,17 @@ void RbtSetupPolarSF::SetupSolvent() {
 // If neigbourList is empty, then do not include the neighbour density factor
 void RbtSetupPolarSF::SetupAtomList(RbtAtomList &atomList,
                                     const RbtAtomList &neighbourList,
-                                    RbtInt traceTriggerLevel) {
+                                    int traceTriggerLevel) {
   if (atomList.empty())
     return;
 
-  RbtInt iTrace = GetTrace();
-  RbtBool bCalcNeighbourDensity = !neighbourList.empty();
-  RbtDouble radius = GetParameter(_RADIUS);
-  RbtDouble norm = GetParameter(_NORM);
-  RbtDouble power = GetParameter(_POWER);
-  RbtDouble chgFactor = GetParameter(_CHGFACTOR);
-  RbtDouble guanFactor = GetParameter(_GUANFACTOR);
+  int iTrace = GetTrace();
+  bool bCalcNeighbourDensity = !neighbourList.empty();
+  double radius = GetParameter(_RADIUS);
+  double norm = GetParameter(_NORM);
+  double power = GetParameter(_POWER);
+  double chgFactor = GetParameter(_CHGFACTOR);
+  double guanFactor = GetParameter(_GUANFACTOR);
 
   Rbt::isAtomHBondAcceptor bIsHBA;
   Rbt::isAtomHBondDonor bIsHBD;
@@ -115,20 +115,20 @@ void RbtSetupPolarSF::SetupAtomList(RbtAtomList &atomList,
 
   for (RbtAtomListIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
-    RbtDouble fNeighb = 1.0;
+    double fNeighb = 1.0;
     if (bCalcNeighbourDensity) {
       // Neighbour density function
-      RbtInt nNeighb = Rbt::GetNumAtoms(
+      int nNeighb = Rbt::GetNumAtoms(
           neighbourList, Rbt::isAtomInsideSphere((*iter)->GetCoords(), radius));
       nNeighb--; // Don't count the atom itself!
       fNeighb = pow(nNeighb / norm, power);
     }
     // Charge factor (always >= 1, sign reflects whether charge is positive or
     // negative)
-    RbtDouble charge = (*iter)->GetGroupCharge();
+    double charge = (*iter)->GetGroupCharge();
     // DM 18 Jan 2001 - need to check for neutral HBond acceptors and set sign
     // to -1
-    RbtDouble sign = ((charge < 0.0) || (bIsHBA(*iter))) ? -1.0 : 1.0;
+    double sign = ((charge < 0.0) || (bIsHBA(*iter))) ? -1.0 : 1.0;
     charge = sign * (1.0 + (fabs(charge) * chgFactor));
     if (bIsGuan(*iter)) {
       charge *= guanFactor; // Adjustable weight for "IONIC" interactions with
@@ -159,4 +159,4 @@ void RbtSetupPolarSF::SetupScore() {
   // No further setup required
 }
 
-RbtDouble RbtSetupPolarSF::RawScore() const { return 0.0; }
+double RbtSetupPolarSF::RawScore() const { return 0.0; }

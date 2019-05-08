@@ -24,7 +24,8 @@ std::string RbtBaseGrid::_CT("RbtBaseGrid");
 // Constructors/destructors
 // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution
 RbtBaseGrid::RbtBaseGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
-                         RbtUInt NX, RbtUInt NY, RbtUInt NZ, RbtUInt NPad)
+                         unsigned int NX, unsigned int NY, unsigned int NZ,
+                         unsigned int NPad)
     : m_step(gridStep), m_NX(NX), m_NY(NY), m_NZ(NZ), m_N(NX * NY * NZ),
       m_SX(NY * NZ), m_SY(NZ), m_SZ(1), m_NPad(NPad) {
   // Set the logical (real-world) dimensions of the grid
@@ -128,7 +129,7 @@ void RbtBaseGrid::SetGridStep(const RbtVector &gridStep) {
 
 // Set a pad region (cuboid inside the grid which defines the valid coords)
 // Coords outside the cuboid are deemed invalid
-void RbtBaseGrid::SetPad(RbtUInt NPad) {
+void RbtBaseGrid::SetPad(unsigned int NPad) {
   m_NPad = NPad;
   m_padMin = m_min + m_step * m_NPad;
   m_padMax = m_max - m_step * m_NPad;
@@ -147,7 +148,7 @@ RbtCoordList RbtBaseGrid::GetCoordList(const RbtUIntSet &iXYZSet) const {
 // DM 17 May 1999 - returns the set of valid grid points within a sphere of a
 // given center and radius DM 17 Jul 2000 - use vector<RbtUInt> and return by
 // reference, for performance boost
-void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, RbtDouble radius,
+void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, double radius,
                                    RbtUIntList &sIndices) const {
   sIndices.clear(); // Clear the return list
 
@@ -159,37 +160,37 @@ void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, RbtDouble radius,
   // Convert to array indices
   // DM 16 Apr 1999 - check again for indices out of range
   // If cubeMax == m_padMax, iMaxX,Y,Z would be one too high
-  RbtUInt iMinX = std::max(GetIX(cubeMin), m_NPad + 1);
-  RbtUInt iMinY = std::max(GetIY(cubeMin), m_NPad + 1);
-  RbtUInt iMinZ = std::max(GetIZ(cubeMin), m_NPad + 1);
-  RbtUInt iMaxX = std::min(GetIX(cubeMax), m_NX - m_NPad);
-  RbtUInt iMaxY = std::min(GetIY(cubeMax), m_NY - m_NPad);
-  RbtUInt iMaxZ = std::min(GetIZ(cubeMax), m_NZ - m_NPad);
+  unsigned int iMinX = std::max(GetIX(cubeMin), m_NPad + 1);
+  unsigned int iMinY = std::max(GetIY(cubeMin), m_NPad + 1);
+  unsigned int iMinZ = std::max(GetIZ(cubeMin), m_NPad + 1);
+  unsigned int iMaxX = std::min(GetIX(cubeMax), m_NX - m_NPad);
+  unsigned int iMaxY = std::min(GetIY(cubeMax), m_NY - m_NPad);
+  unsigned int iMaxZ = std::min(GetIZ(cubeMax), m_NZ - m_NPad);
 
   // Determine if points are inside sphere by checking x^2 + y^2 + z^2 <= rad^2
-  RbtDouble rad2 = radius * radius;
+  double rad2 = radius * radius;
 
-  RbtDouble rX; // X-distance to sphere center
-  RbtUInt iX;
+  double rX; // X-distance to sphere center
+  unsigned int iX;
   for (iX = iMinX, rX = GetXCoord(iMinX) - c.x; iX <= iMaxX;
        iX++, rX += m_step.x) {
-    RbtDouble rX2 = rX * rX;
+    double rX2 = rX * rX;
     // Only bother with the Y loop if we haven't already exceeded rad2
     if (rX2 <= rad2) {
-      RbtDouble rY; // Y-distance to sphere center
-      RbtUInt iY;
+      double rY; // Y-distance to sphere center
+      unsigned int iY;
       for (iY = iMinY, rY = GetYCoord(iMinY) - c.y; iY <= iMaxY;
            iY++, rY += m_step.y) {
-        RbtDouble rXY2 = rX2 + rY * rY;
+        double rXY2 = rX2 + rY * rY;
         // Only bother with the Z loop if we haven't already exceeded rad2
         if (rXY2 <= rad2) {
-          RbtDouble rZ;
-          RbtUInt iZ;
-          RbtUInt iXYZ;
+          double rZ;
+          unsigned int iZ;
+          unsigned int iXYZ;
           for (iZ = iMinZ, iXYZ = GetIXYZ(iX, iY, iMinZ),
               rZ = GetZCoord(iMinZ) - c.z;
                iZ <= iMaxZ; iZ++, iXYZ++, rZ += m_step.z) {
-            RbtDouble rXYZ2 = rXY2 + rZ * rZ;
+            double rXYZ2 = rXY2 + rZ * rZ;
             if (rXYZ2 <= rad2) {
               sIndices.push_back(iXYZ);
             }
@@ -226,7 +227,7 @@ void RbtBaseGrid::OwnWrite(ostream &ostr) const {
   // Write the class name as a title so we can check the authenticity of streams
   // on read
   const char *const gridTitle = _CT.c_str();
-  RbtInt length = strlen(gridTitle);
+  int length = strlen(gridTitle);
   Rbt::WriteWithThrow(ostr, (const char *)&length, sizeof(length));
   Rbt::WriteWithThrow(ostr, gridTitle, length);
 
@@ -257,14 +258,14 @@ void RbtBaseGrid::OwnWrite(ostream &ostr) const {
 // Protected method for reading data members for this class from binary stream
 void RbtBaseGrid::OwnRead(istream &istr) throw(RbtError) {
   // Read title
-  RbtInt length;
+  int length;
   Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *gridTitle = new char[length + 1];
   Rbt::ReadWithThrow(istr, gridTitle, length);
   // Add null character to end of string
   gridTitle[length] = '\0';
   // Compare title with class name
-  RbtBool match = (_CT == gridTitle);
+  bool match = (_CT == gridTitle);
   delete[] gridTitle;
   if (!match) {
     throw RbtFileParseError(_WHERE_,

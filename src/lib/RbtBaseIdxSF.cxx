@@ -30,17 +30,13 @@ RbtBaseIdxSF::RbtBaseIdxSF() : m_gridStep(0.5), m_border(1.0) {
 
 RbtBaseIdxSF::~RbtBaseIdxSF() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
-RbtDouble RbtBaseIdxSF::GetGridStep() const { return m_gridStep; }
+double RbtBaseIdxSF::GetGridStep() const { return m_gridStep; }
 
-void RbtBaseIdxSF::SetGridStep(RbtDouble step) {
-  SetParameter(_GRIDSTEP, step);
-}
+void RbtBaseIdxSF::SetGridStep(double step) { SetParameter(_GRIDSTEP, step); }
 
-RbtDouble RbtBaseIdxSF::GetBorder() const { return m_border; }
+double RbtBaseIdxSF::GetBorder() const { return m_border; }
 
-void RbtBaseIdxSF::SetBorder(RbtDouble border) {
-  SetParameter(_BORDER, border);
-}
+void RbtBaseIdxSF::SetBorder(double border) { SetParameter(_BORDER, border); }
 
 // DM 10 Apr 2002
 // I know, I know, grids should be templated to avoid the need for two different
@@ -57,9 +53,9 @@ RbtInteractionGridPtr RbtBaseIdxSF::CreateInteractionGrid() const {
   RbtCoord maxCoord = spDS->GetMaxCoord() + m_border;
   RbtVector recepExtent = maxCoord - minCoord;
   RbtVector gridStep(m_gridStep, m_gridStep, m_gridStep);
-  RbtUInt nX = int(recepExtent.x / gridStep.x) + 1;
-  RbtUInt nY = int(recepExtent.y / gridStep.y) + 1;
-  RbtUInt nZ = int(recepExtent.z / gridStep.z) + 1;
+  unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
+  unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
+  unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
   return RbtInteractionGridPtr(
       new RbtInteractionGrid(minCoord, gridStep, nX, nY, nZ));
 }
@@ -76,9 +72,9 @@ RbtNonBondedGridPtr RbtBaseIdxSF::CreateNonBondedGrid() const {
   RbtCoord maxCoord = spDS->GetMaxCoord() + m_border;
   RbtVector recepExtent = maxCoord - minCoord;
   RbtVector gridStep(m_gridStep, m_gridStep, m_gridStep);
-  RbtUInt nX = int(recepExtent.x / gridStep.x) + 1;
-  RbtUInt nY = int(recepExtent.y / gridStep.y) + 1;
-  RbtUInt nZ = int(recepExtent.z / gridStep.z) + 1;
+  unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
+  unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
+  unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
   return RbtNonBondedGridPtr(
       new RbtNonBondedGrid(minCoord, gridStep, nX, nY, nZ));
 }
@@ -95,14 +91,14 @@ RbtNonBondedHHSGridPtr RbtBaseIdxSF::CreateNonBondedHHSGrid() const {
   RbtCoord maxCoord = spDS->GetMaxCoord() + m_border;
   RbtVector recepExtent = maxCoord - minCoord;
   RbtVector gridStep(m_gridStep, m_gridStep, m_gridStep);
-  RbtUInt nX = int(recepExtent.x / gridStep.x) + 1;
-  RbtUInt nY = int(recepExtent.y / gridStep.y) + 1;
-  RbtUInt nZ = int(recepExtent.z / gridStep.z) + 1;
+  unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
+  unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
+  unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
   return RbtNonBondedHHSGridPtr(
       new RbtNonBondedHHSGrid(minCoord, gridStep, nX, nY, nZ));
 }
 
-RbtDouble RbtBaseIdxSF::GetMaxError() const {
+double RbtBaseIdxSF::GetMaxError() const {
   // maxError is half a grid diagonal. This is the tolerance we have to allow
   // when indexing the receptor atoms on the grid When retrieving the nearest
   // neighbours to a ligand atom, we do the lookup on the nearest grid point to
@@ -117,7 +113,7 @@ RbtDouble RbtBaseIdxSF::GetMaxError() const {
 // corrected for max grid error, and grid border around docking site
 // This should be used by subclasses for selecting the receptor atoms to index
 // GetCorrectedRange() = GetRange() + GetMaxError() + GetBorder()
-RbtDouble RbtBaseIdxSF::GetCorrectedRange() const {
+double RbtBaseIdxSF::GetCorrectedRange() const {
   return GetRange() + GetMaxError() + m_border;
 }
 

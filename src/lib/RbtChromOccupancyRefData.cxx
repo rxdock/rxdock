@@ -16,8 +16,8 @@
 std::string RbtChromOccupancyRefData::_CT = "RbtChromOccupancyRefData";
 
 RbtChromOccupancyRefData::RbtChromOccupancyRefData(RbtModel *pModel,
-                                                   RbtDouble stepSize,
-                                                   RbtDouble threshold)
+                                                   double stepSize,
+                                                   double threshold)
     : m_pModel(pModel), m_stepSize(stepSize), m_threshold(threshold) {
   m_initialValue = GetModelValue();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
@@ -27,11 +27,11 @@ RbtChromOccupancyRefData::~RbtChromOccupancyRefData() {
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
-RbtDouble RbtChromOccupancyRefData::GetModelValue() const {
+double RbtChromOccupancyRefData::GetModelValue() const {
   return (m_pModel) ? m_pModel->GetOccupancy() : 0.0;
 }
 
-void RbtChromOccupancyRefData::SetModelValue(RbtDouble occupancy) {
+void RbtChromOccupancyRefData::SetModelValue(double occupancy) {
   if (m_pModel) {
     m_pModel->SetOccupancy(occupancy, m_threshold);
   }

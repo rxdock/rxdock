@@ -47,7 +47,7 @@ RbtModelList RbtBaseBiMolTransform::GetSolvent() const { return m_solventList; }
 void RbtBaseBiMolTransform::Update(RbtSubject *theChangedSubject) {
   RbtWorkSpace *pWorkSpace = GetWorkSpace();
   if (theChangedSubject == pWorkSpace) {
-    RbtInt numModels = pWorkSpace->GetNumModels();
+    int numModels = pWorkSpace->GetNumModels();
     // Check if receptor has been updated (model #0)
     if (numModels >= 1) {
       RbtModelPtr spReceptor = pWorkSpace->GetModel(0);

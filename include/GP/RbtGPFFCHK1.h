@@ -30,13 +30,13 @@ public:
   virtual ~RbtGPFFCHK1() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
   void ReadTables(istream &, RbtReturnTypeArray &, RbtReturnTypeArray &);
-  RbtDouble CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
-                             RbtReturnTypeArray &, RbtDouble, RbtBool);
-  RbtDouble CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
-                             RbtReturnTypeArray &, RbtBool);
+  double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
+                          RbtReturnTypeArray &, double, bool);
+  double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
+                          RbtReturnTypeArray &, bool);
 
 private:
-  void CreateRandomCtes(RbtInt);
+  void CreateRandomCtes(int);
   RbtDoubleList ctes;
   RbtCellContextPtr contextp;
   RbtGPFFCHK1(); // default constructor disabled

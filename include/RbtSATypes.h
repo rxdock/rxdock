@@ -107,26 +107,26 @@ typedef RbtHHSTypeList::const_iterator RbtHHSTypeListConstIter;
 class HHS_Solvation {
 public:
   // Constants from the HHS paper
-  static const RbtDouble r_s;    // solvent probe radius
-  static const RbtDouble d_s;    // solvent probe diameter
-  static const RbtDouble Pij_12; // correction factor for 1-2 connections
-  static const RbtDouble Pij_13; // ditto for 1-3
-  static const RbtDouble Pij_14; // and for 1-4+
+  static const double r_s;    // solvent probe radius
+  static const double d_s;    // solvent probe diameter
+  static const double Pij_12; // correction factor for 1-2 connections
+  static const double Pij_13; // ditto for 1-3
+  static const double Pij_14; // and for 1-4+
 
   // Default p_i, r_i, and sigma values
-  HHS_Solvation(RbtHHSType::eType t, RbtAtom *a, RbtDouble p = 1.0,
-                RbtDouble r = 1.0, RbtDouble s = 0.0);
+  HHS_Solvation(RbtHHSType::eType t, RbtAtom *a, double p = 1.0, double r = 1.0,
+                double s = 0.0);
 
   // Get properties
-  RbtDouble GetA_i(void) const { return A_i; }
-  RbtDouble GetS_i(void) const { return S_i; }
-  RbtDouble GetP_i(void) const { return p_i; }
-  RbtDouble GetR_i(void) const { return r_i; }
-  RbtDouble GetSigma(void) const { return sigma; }
+  double GetA_i(void) const { return A_i; }
+  double GetS_i(void) const { return S_i; }
+  double GetP_i(void) const { return p_i; }
+  double GetR_i(void) const { return r_i; }
+  double GetSigma(void) const { return sigma; }
   RbtHHSType::eType GetHHSType() const { return hhsType; }
   RbtAtom *GetAtom() const { return atom; }
-  inline RbtDouble GetArea() const { return S_i * A_i; }   // Exposed area
-  inline RbtDouble GetEnergy() const { return E_i * A_i; } // Surface energy
+  inline double GetArea() const { return S_i * A_i; }   // Exposed area
+  inline double GetEnergy() const { return E_i * A_i; } // Surface energy
 
   // Actions
   // Initialise all calculated parameters to an isolated atom (no overlap)
@@ -142,11 +142,11 @@ public:
   // Calculate overlap between this center and another (h)
   // Updates the exposed fractions (A_i) for both centers
   // p_ij is the correction factor for 1-2, 1-3, and 1-4+ connected atoms
-  void Overlap(HHS_Solvation *h, RbtDouble p_ij);
+  void Overlap(HHS_Solvation *h, double p_ij);
   // Get a list of all the current (partitioned) variable-distance interactions
   // to this center
   const vector<HHS_Solvation *> &GetVariable() const { return m_prt; }
-  RbtInt GetNumVariable() const { return m_prt.size(); }
+  int GetNumVariable() const { return m_prt.size(); }
   // Add a variable-distance interaction
   void AddVariable(HHS_Solvation *anAtom);
   // Helper function to calculate the overlap for all the variable interactions
@@ -157,19 +157,18 @@ public:
   // Partition the list of variable interactions
   // Copy those that are closer than distance d to the partitioned list
   // d=0 => clear the partition
-  void Partition(RbtDouble d = 0.0);
+  void Partition(double d = 0.0);
 
 private:
-  RbtDouble p_i; // atom-type dependent correction
-  RbtDouble r_i; // quasi vdW radius
-  RbtDouble S_i; // Surface area of isolated atom (constant)
-  RbtDouble A_i; // Fraction of atom surface currently exposed
-  RbtDouble
-      A_inv; // invariant part of atom surface (memory, used by Save/Restore)
-  RbtDouble sigma;           // atomic solvation parameter
-  RbtDouble E_i;             // energy of isolated atom (S_i * sigma)
-  RbtDouble PI_r_i_plus_r_s; // PI*(r_i+r_s)
-  RbtDouble p_i_over_S_i;    // p_i / S_i
+  double p_i;   // atom-type dependent correction
+  double r_i;   // quasi vdW radius
+  double S_i;   // Surface area of isolated atom (constant)
+  double A_i;   // Fraction of atom surface currently exposed
+  double A_inv; // invariant part of atom surface (memory, used by Save/Restore)
+  double sigma; // atomic solvation parameter
+  double E_i;   // energy of isolated atom (S_i * sigma)
+  double PI_r_i_plus_r_s; // PI*(r_i+r_s)
+  double p_i_over_S_i;    // p_i / S_i
 
   RbtHHSType::eType hhsType;     // solvation atom type
   RbtAtom *atom;                 // the RbtAtom itself
@@ -210,10 +209,10 @@ public:
   void operator()(HHS_Solvation *pHHS) { pHHS->Restore(); }
 };
 class PartitionHHS {
-  RbtDouble d;
+  double d;
 
 public:
-  explicit PartitionHHS(RbtDouble dd) : d(dd) {}
+  explicit PartitionHHS(double dd) : d(dd) {}
   void operator()(HHS_Solvation *pHHS) { pHHS->Partition(d); }
 };
 class OverlapVariableHHS {
@@ -223,33 +222,32 @@ public:
 };
 class OverlapHHS {
   HHS_Solvation *pHHSi;
-  RbtDouble p_ij;
+  double p_ij;
 
 public:
-  explicit OverlapHHS(HHS_Solvation *pHHS, RbtDouble p)
-      : pHHSi(pHHS), p_ij(p) {}
+  explicit OverlapHHS(HHS_Solvation *pHHS, double p) : pHHSi(pHHS), p_ij(p) {}
   void operator()(HHS_Solvation *pHHSj) { pHHSi->Overlap(pHHSj, p_ij); }
 };
 
 // Is HHS type equal to t ?
-class isHHSType_eq : public std::unary_function<HHS_Solvation *, RbtBool> {
+class isHHSType_eq : public std::unary_function<HHS_Solvation *, bool> {
   RbtHHSType::eType t;
 
 public:
   explicit isHHSType_eq(RbtHHSType::eType tt) : t(tt) {}
-  RbtBool operator()(const HHS_Solvation *pHHS) const {
+  bool operator()(const HHS_Solvation *pHHS) const {
     return pHHS->GetHHSType() == t;
   }
 };
 
 // Is HHS_Solvation selected ?
-class isHHSSelected : public std::unary_function<HHS_Solvation *, RbtBool> {
+class isHHSSelected : public std::unary_function<HHS_Solvation *, bool> {
 public:
   explicit isHHSSelected() {}
-  RbtBool operator()(const HHS_Solvation *pHHS) const;
+  bool operator()(const HHS_Solvation *pHHS) const;
 };
 
-inline RbtDouble AccumHHSEnergy(RbtDouble val, const HHS_Solvation *pHHS) {
+inline double AccumHHSEnergy(double val, const HHS_Solvation *pHHS) {
   return val + pHHS->GetEnergy();
 }
 } // namespace Rbt

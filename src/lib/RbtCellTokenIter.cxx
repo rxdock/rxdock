@@ -20,19 +20,19 @@ std::string RbtCellTokenIter::_CT("RbtCellTokenIter");
 RbtCellTokenIter::RbtCellTokenIter(const RbtGPChromosomePtr c,
                                    RbtContextPtr contextp)
     : chrom(c) {
-  RbtInt startCell = chrom->GetStartingCell();
+  int startCell = chrom->GetStartingCell();
   if (chrom->IsProgramInput(startCell)) {
     current = new RbtToken(contextp->GetVble(startCell));
   } else {
     RbtCommands comm = chrom->GetCommand(startCell);
     if (comm.IsRCte()) {
-      RbtDouble val = chrom->GetRCte(startCell);
+      double val = chrom->GetRCte(startCell);
       contextp->Assign(startCell, val);
       current = new RbtToken(contextp->GetVble(startCell));
     } else {
       current = new RbtToken(comm);
-      RbtInt nargs = comm.GetNArgs();
-      for (RbtInt i = nargs - 1; i >= 0; i--)
+      int nargs = comm.GetNArgs();
+      for (int i = nargs - 1; i >= 0; i--)
         cells.push(chrom->GetArgument(startCell, i));
     }
   }
@@ -48,20 +48,20 @@ RbtCellTokenIter::~RbtCellTokenIter() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
 void RbtCellTokenIter::Next(RbtContextPtr contextp) {
   if (cells.size() > 0) {
-    RbtInt cell = cells.top();
+    int cell = cells.top();
     cells.pop();
     if (chrom->IsProgramInput(cell)) {
       current = new RbtToken(contextp->GetVble(cell));
     } else {
       RbtCommands comm = chrom->GetCommand(cell);
       if (comm.IsRCte()) {
-        RbtDouble val = chrom->GetRCte(cell);
+        double val = chrom->GetRCte(cell);
         contextp->Assign(cell, val);
         current = new RbtToken(contextp->GetVble(cell));
       } else {
         current = new RbtToken(comm);
-        RbtInt nargs = comm.GetNArgs();
-        for (RbtInt i = nargs - 1; i >= 0; i--)
+        int nargs = comm.GetNArgs();
+        for (int i = nargs - 1; i >= 0; i--)
           cells.push(chrom->GetArgument(cell, i));
       }
     }

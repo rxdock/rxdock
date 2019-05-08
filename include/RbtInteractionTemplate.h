@@ -51,8 +51,8 @@ public:
   static std::string _CT;
 
   RbtInteractionGridTemplate(const RbtCoord &gridMin, const RbtCoord &gridStep,
-                             RbtUInt NX, RbtUInt NY, RbtUInt NZ,
-                             RbtUInt NPad = 0) {
+                             unsigned int NX, unsigned int NY, unsigned int NZ,
+                             unsigned int NPad = 0) {
     _CT = "RbtInteractionGridTemplate";
     CreateMap();
     _RBTOBJECTCOUNTER_CONSTR_("RbtInteractionGridTemplate");
@@ -119,7 +119,7 @@ public:
     OwnRead(istr);
   }
 
-  const RbtInteractionNodeList<T> &GetInteractionList(RbtUInt iXYZ) const {
+  const RbtInteractionNodeList<T> &GetInteractionList(unsigned int iXYZ) const {
     if (isValid(iXYZ)) {
       return m_intnMap[iXYZ];
     } else {
@@ -136,7 +136,7 @@ public:
     }
   }
 
-  void SetInteractionLists(T *pIntn, RbtDouble radius) {
+  void SetInteractionLists(T *pIntn, double radius) {
     RbtAtom *pAtom = pIntn->GetProperty().atom;
     if (NULL == pAtom)
       return;

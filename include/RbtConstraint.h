@@ -19,7 +19,6 @@
 #include "RbtCoord.h"
 #include "RbtError.h"
 #include "RbtModel.h"
-#include "RbtTypes.h"
 
 class RbtConstraint {
 public:
@@ -27,7 +26,7 @@ public:
   ///////////////////
   // Constructors
   ///////////////////
-  RbtConstraint(RbtCoord, RbtDouble);
+  RbtConstraint(RbtCoord, double);
   RbtConstraint(const RbtConstraint &);
   RbtConstraint();
 
@@ -41,16 +40,16 @@ public:
   friend ostream &operator<<(ostream &, const RbtConstraint &);
 
   RbtCoord GetCoords() const { return coord; }
-  RbtDouble GetTolerance() const { return tolerance; }
-  virtual void AddAtomList(RbtModelPtr, RbtBool bCheck = true) = 0;
-  RbtDouble Score() const;
+  double GetTolerance() const { return tolerance; }
+  virtual void AddAtomList(RbtModelPtr, bool bCheck = true) = 0;
+  double Score() const;
 
   ////////////////////
   // Private methods
   ////////////////////
 protected:
   RbtCoord coord;
-  RbtDouble tolerance;
+  double tolerance;
   RbtAtomList m_atomList;
 
 private:
@@ -66,15 +65,14 @@ typedef RbtConstraintList::iterator RbtConstraintListIter;
 typedef RbtConstraintList::const_iterator RbtConstraintListConstIter;
 
 namespace Rbt {
-RbtConstraintPtr CreateConstraint(RbtCoord &c, RbtDouble &t, std::string &n,
-                                  RbtBool bCount = true);
+RbtConstraintPtr CreateConstraint(RbtCoord &c, double &t, std::string &n,
+                                  bool bCount = true);
 void ZeroCounters();
-void ReadConstraint(istream &ifile, RbtConstraintPtr &cnt,
-                    RbtBool bCount = true);
+void ReadConstraint(istream &ifile, RbtConstraintPtr &cnt, bool bCount = true);
 void ReadConstraintFromMoe(istream &ifile, RbtConstraintPtr &cnt,
-                           RbtBool bCount = true);
+                           bool bCount = true);
 void ReadStartMoe(istream &ifile);
-void ReadConstraints(istream &ii, RbtConstraintList &cl, RbtBool bCount = true);
+void ReadConstraints(istream &ii, RbtConstraintList &cl, bool bCount = true);
 } // namespace Rbt
 
 // 7 Feb 2005 (DM, Enspiral Discovery)
@@ -83,65 +81,65 @@ void ReadConstraints(istream &ii, RbtConstraintList &cl, RbtBool bCount = true);
 // of being simple to code and run
 class RbtHeavyConstraint : public RbtConstraint {
 public:
-  RbtHeavyConstraint(RbtCoord c, RbtDouble t) : RbtConstraint(c, t) {}
-  void AddAtomList(RbtModelPtr, RbtBool bCheck = true) throw(RbtError);
-  static RbtInt counter;
+  RbtHeavyConstraint(RbtCoord c, double t) : RbtConstraint(c, t) {}
+  void AddAtomList(RbtModelPtr, bool bCheck = true) throw(RbtError);
+  static int counter;
 };
 
 class RbtHBAConstraint : public RbtConstraint {
 public:
-  RbtHBAConstraint(RbtCoord c, RbtDouble t) : RbtConstraint(c, t) {}
-  void AddAtomList(RbtModelPtr, RbtBool bCheck = true) throw(RbtError);
-  static RbtInt counter;
+  RbtHBAConstraint(RbtCoord c, double t) : RbtConstraint(c, t) {}
+  void AddAtomList(RbtModelPtr, bool bCheck = true) throw(RbtError);
+  static int counter;
 };
 
 class RbtHBDConstraint : public RbtConstraint {
 public:
-  RbtHBDConstraint(RbtCoord c, RbtDouble t) : RbtConstraint(c, t) {}
-  void AddAtomList(RbtModelPtr, RbtBool bCheck = true) throw(RbtError);
-  static RbtInt counter;
+  RbtHBDConstraint(RbtCoord c, double t) : RbtConstraint(c, t) {}
+  void AddAtomList(RbtModelPtr, bool bCheck = true) throw(RbtError);
+  static int counter;
 };
 
 class RbtHydroConstraint : public RbtConstraint {
 public:
-  RbtHydroConstraint(RbtCoord c, RbtDouble t) : RbtConstraint(c, t) {}
-  void AddAtomList(RbtModelPtr, RbtBool bCheck = true) throw(RbtError);
-  static RbtInt counter;
+  RbtHydroConstraint(RbtCoord c, double t) : RbtConstraint(c, t) {}
+  void AddAtomList(RbtModelPtr, bool bCheck = true) throw(RbtError);
+  static int counter;
 };
 
 class RbtHydroAliphaticConstraint : public RbtConstraint {
 public:
-  RbtHydroAliphaticConstraint(RbtCoord c, RbtDouble t) : RbtConstraint(c, t) {}
-  void AddAtomList(RbtModelPtr, RbtBool bCheck = true) throw(RbtError);
-  static RbtInt counter;
+  RbtHydroAliphaticConstraint(RbtCoord c, double t) : RbtConstraint(c, t) {}
+  void AddAtomList(RbtModelPtr, bool bCheck = true) throw(RbtError);
+  static int counter;
 };
 
 class RbtHydroAromaticConstraint : public RbtConstraint {
 public:
-  RbtHydroAromaticConstraint(RbtCoord c, RbtDouble t) : RbtConstraint(c, t) {}
-  void AddAtomList(RbtModelPtr, RbtBool bCheck = true) throw(RbtError);
-  static RbtInt counter;
+  RbtHydroAromaticConstraint(RbtCoord c, double t) : RbtConstraint(c, t) {}
+  void AddAtomList(RbtModelPtr, bool bCheck = true) throw(RbtError);
+  static int counter;
 };
 
 class RbtNegChargeConstraint : public RbtConstraint {
 public:
-  RbtNegChargeConstraint(RbtCoord c, RbtDouble t) : RbtConstraint(c, t) {}
-  void AddAtomList(RbtModelPtr, RbtBool bCheck = true) throw(RbtError);
-  static RbtInt counter;
+  RbtNegChargeConstraint(RbtCoord c, double t) : RbtConstraint(c, t) {}
+  void AddAtomList(RbtModelPtr, bool bCheck = true) throw(RbtError);
+  static int counter;
 };
 
 class RbtPosChargeConstraint : public RbtConstraint {
 public:
-  RbtPosChargeConstraint(RbtCoord c, RbtDouble t) : RbtConstraint(c, t) {}
-  void AddAtomList(RbtModelPtr, RbtBool bCheck = true) throw(RbtError);
-  static RbtInt counter;
+  RbtPosChargeConstraint(RbtCoord c, double t) : RbtConstraint(c, t) {}
+  void AddAtomList(RbtModelPtr, bool bCheck = true) throw(RbtError);
+  static int counter;
 };
 
 class RbtRingAromaticConstraint : public RbtConstraint {
 public:
-  RbtRingAromaticConstraint(RbtCoord c, RbtDouble t) : RbtConstraint(c, t) {}
-  void AddAtomList(RbtModelPtr, RbtBool bCheck = true) throw(RbtError);
-  static RbtInt counter;
+  RbtRingAromaticConstraint(RbtCoord c, double t) : RbtConstraint(c, t) {}
+  void AddAtomList(RbtModelPtr, bool bCheck = true) throw(RbtError);
+  static int counter;
 };
 
 #endif //_RbtConstraint_H_

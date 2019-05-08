@@ -70,7 +70,7 @@ RbtStringList RbtModel::GetDataFieldList() const {
 }
 
 // Query as to whether a particular data field name is present
-RbtBool RbtModel::isDataFieldPresent(const std::string &strDataField) const {
+bool RbtModel::isDataFieldPresent(const std::string &strDataField) const {
   return m_dataMap.find(strDataField) != m_dataMap.end();
 }
 
@@ -134,7 +134,7 @@ RbtPseudoAtomPtr RbtModel::AddPseudoAtom(const RbtAtomList &atomList) {
       // cout << "No match: Unequal number of atoms" << endl;
       continue;
     }
-    RbtBool bMatch = true;
+    bool bMatch = true;
     for (RbtAtomListConstIter aIter = atomList2.begin();
          aIter != atomList2.end() && bMatch; aIter++) {
       // cout << "Checking " << (*aIter)->GetFullAtomName() << endl;
@@ -146,7 +146,7 @@ RbtPseudoAtomPtr RbtModel::AddPseudoAtom(const RbtAtomList &atomList) {
       return (*pIter);
     }
   }
-  RbtInt nPseudoAtomId = -1 - m_pseudoAtomList.size();
+  int nPseudoAtomId = -1 - m_pseudoAtomList.size();
   RbtPseudoAtomPtr spPseudoAtom(new RbtPseudoAtom(atomList, nPseudoAtomId));
   m_pseudoAtomList.push_back(spPseudoAtom);
   // cout << "No match: creating new pseudo atom #" << nPseudoAtomId << endl;
@@ -163,13 +163,15 @@ void RbtModel::UpdatePseudoAtoms() {
   }
 }
 
-RbtUInt RbtModel::GetNumPseudoAtoms() const { return m_pseudoAtomList.size(); }
+unsigned int RbtModel::GetNumPseudoAtoms() const {
+  return m_pseudoAtomList.size();
+}
 RbtPseudoAtomList RbtModel::GetPseudoAtomList() const {
   return m_pseudoAtomList;
 }
 
 // DM 1 Jul 2002 - tethered atom handling
-RbtUInt RbtModel::GetNumTetheredAtoms() const throw(RbtError) {
+unsigned int RbtModel::GetNumTetheredAtoms() const throw(RbtError) {
   return GetTetheredAtomList().size();
 }
 
@@ -187,7 +189,7 @@ RbtAtomList RbtModel::GetTetheredAtomList() const throw(RbtError) {
     for (RbtStringListConstIter iter2 = strTetheredAtoms.begin();
          iter2 != strTetheredAtoms.end(); iter2++) {
       // Remember to subtract 1 from atom ID to convert to atom list index
-      RbtInt i = atoi((*iter2).c_str()) - 1;
+      int i = atoi((*iter2).c_str()) - 1;
       if ((i >= 0) && (i < m_atomList.size())) {
         tetheredAtomList.push_back(m_atomList[i]);
       } else {
@@ -199,7 +201,7 @@ RbtAtomList RbtModel::GetTetheredAtomList() const throw(RbtError) {
   return tetheredAtomList;
 }
 
-void RbtModel::SetOccupancy(RbtDouble occupancy, RbtDouble threshold) {
+void RbtModel::SetOccupancy(double occupancy, double threshold) {
   m_occupancy = occupancy;
   m_enabled = occupancy >= threshold;
 }
@@ -228,7 +230,7 @@ void RbtModel::UpdateCoords(RbtBaseMolecularFileSource *pMolSource) throw(
     // DM 30/11/98 Recompute the segment map in case the segment names in the
     // CRD file are different
     m_segmentMap.clear();
-    RbtInt nUpdated(0);
+    int nUpdated(0);
     while (modelIter != m_atomList.end()) {
       // DM 31 Oct 2000 - hunt for next matching atom in CRD file
       // cout << "Comparing (CRD) " << (*crdIter)->GetFullAtomName() << " with
@@ -284,7 +286,7 @@ void RbtModel::Translate(const RbtVector &vector) {
 
 // Rotate molecule around the given axis (through the center of mass) by theta
 // degrees DM 09 Feb 1999 - Rotate now calls generic Rotate method
-void RbtModel::Rotate(const RbtVector &axis, RbtDouble thetaDeg) {
+void RbtModel::Rotate(const RbtVector &axis, double thetaDeg) {
   Rotate(axis, thetaDeg, GetCenterOfMass());
   UpdatePseudoAtoms(); // DM 11 Jul 2000 - need to update pseudoatom coords by
                        // hand
@@ -293,7 +295,7 @@ void RbtModel::Rotate(const RbtVector &axis, RbtDouble thetaDeg) {
 // DM 09 Feb 1999
 // Rotate molecule around the given axis (through the given coordinate) by theta
 // degrees
-void RbtModel::Rotate(const RbtVector &axis, RbtDouble thetaDeg,
+void RbtModel::Rotate(const RbtVector &axis, double thetaDeg,
                       const RbtCoord &center) {
   // Translate all atoms so that the center of rotation lies at the origin
   Rbt::TranslateAtoms(m_atomList, -center);
@@ -309,7 +311,7 @@ void RbtModel::Rotate(const RbtVector &axis, RbtDouble thetaDeg,
 
 // Rotate around a given bond by theta degrees, keeping the center of mass
 // invariant
-void RbtModel::RotateBond(RbtBondPtr spBond, RbtDouble thetaDeg) {
+void RbtModel::RotateBond(RbtBondPtr spBond, double thetaDeg) {
   RbtAtomPtr spAtom1 = spBond->GetAtom1Ptr();
   RbtAtomPtr spAtom2 = spBond->GetAtom2Ptr();
 
@@ -357,7 +359,7 @@ void RbtModel::RotateBond(RbtBondPtr spBond, RbtDouble thetaDeg) {
 
 // Rotate around a given bond by theta degrees, keeping the given atom fixed
 // (only spins the other end of the bond)
-void RbtModel::RotateBond(RbtBondPtr spBond, RbtDouble thetaDeg,
+void RbtModel::RotateBond(RbtBondPtr spBond, double thetaDeg,
                           RbtAtomPtr spFixedAtom) {
   RbtAtomPtr spAtom1 = spBond->GetAtom1Ptr();
   RbtAtomPtr spAtom2 = spBond->GetAtom2Ptr();
@@ -404,8 +406,7 @@ void RbtModel::RotateBond(RbtBondPtr spBond, RbtDouble thetaDeg,
 // DM 25 Feb 1999 - Rotate around a given bond by theta degrees, only spinning
 // one end of the bond If bSwap is false, spins the end bonded to atom2 in the
 // bond If bSwap is true, spins the end bonded to atom1 in the bond
-void RbtModel::RotateBond(RbtBondPtr spBond, RbtDouble thetaDeg,
-                          RbtBool bSwap) {
+void RbtModel::RotateBond(RbtBondPtr spBond, double thetaDeg, bool bSwap) {
   RbtAtomPtr spAtom1 = spBond->GetAtom1Ptr();
   RbtAtomPtr spAtom2 = spBond->GetAtom2Ptr();
 
@@ -456,7 +457,7 @@ void RbtModel::SaveCoords(const std::string &coordName) {
     m_currentCoord = (*iter).second;
   } else {
     // Add a new index to the map and save the coords using this index
-    RbtUInt newIdx = m_coordNames.size();
+    unsigned int newIdx = m_coordNames.size();
     m_coordNames[coordName] = newIdx;
     // cout << "Saving coords under name=" << coordName << ",new index=" <<
     // newIdx << endl;
@@ -486,7 +487,7 @@ void RbtModel::RevertCoords(const std::string &coordName) throw(RbtError) {
   }
 }
 
-void RbtModel::RevertCoords(RbtInt i) {
+void RbtModel::RevertCoords(int i) {
   if (i != m_currentCoord) {
     // cout << "Model: Reverting to coords #" << i << endl;
     Rbt::RevertAtomCoords(m_atomList, i);
@@ -502,7 +503,7 @@ RbtCoord RbtModel::GetCenterOfMass() const {
 
 // DM 9 Nov 1999
 // Returns total atomic mass (molecular weight) for the model
-RbtDouble RbtModel::GetTotalAtomicMass() const {
+double RbtModel::GetTotalAtomicMass() const {
   return Rbt::GetTotalAtomicMass(m_atomList);
 }
 
@@ -517,7 +518,7 @@ RbtPrincipalAxes RbtModel::GetPrincipalAxes() const {
 // alignAxes.com Default is to align with X,Y,Z Cartesian axes centered at
 // origin
 void RbtModel::AlignPrincipalAxes(const RbtPrincipalAxes &alignAxes,
-                                  RbtBool bAlignCOM) {
+                                  bool bAlignCOM) {
   Rbt::AlignPrincipalAxes(m_atomList, alignAxes, bAlignCOM);
   UpdatePseudoAtoms(); // DM 11 Jul 2000 - need to update pseudoatom coords by
                        // hand
@@ -555,7 +556,7 @@ RbtChromElement *RbtModel::GetChrom() const {
   return (m_pChrom) ? m_pChrom->clone() : NULL;
 }
 
-RbtBool RbtModel::isFlexible() const { return !m_spMutator.Null(); }
+bool RbtModel::isFlexible() const { return !m_spMutator.Null(); }
 
 const RbtAtomRList &RbtModel::GetFlexIntns(RbtAtom *pAtom) const
     throw(RbtError) {
@@ -567,7 +568,7 @@ const RbtAtomRList &RbtModel::GetFlexIntns(RbtAtom *pAtom) const
                                " is not in model " + GetName());
     }
     const RbtAtomRListList &flexIntns(m_spMutator->GetFlexIntns());
-    RbtInt id = pAtom->GetAtomId() - 1;
+    int id = pAtom->GetAtomId() - 1;
     // Assertion - check id is within range
     Assert<RbtAssert>(!MUT_CHECK || (id >= 0 && id < flexIntns.size()));
     RbtAtomRListListConstIter lIter = flexIntns.begin() + id;
@@ -595,7 +596,7 @@ void RbtModel::SelectFlexAtoms(RbtAtom *pAtom) {
       return;
     }
     const RbtAtomRListList &flexIntns(m_spMutator->GetFlexIntns());
-    RbtInt id = pAtom->GetAtomId() - 1;
+    int id = pAtom->GetAtomId() - 1;
     // Assertion - check id is within range
     Assert<RbtAssert>(!MUT_CHECK || (id >= 0 && id < flexIntns.size()));
     RbtAtomRListListConstIter lIter = flexIntns.begin() + id;
@@ -644,11 +645,11 @@ void RbtModel::SelectFlexAtoms() {
 //}
 
 // Selected atoms
-void RbtModel::SetAtomSelectionFlags(RbtBool bSelected) {
+void RbtModel::SetAtomSelectionFlags(bool bSelected) {
   Rbt::SetAtomSelectionFlags(m_atomList, bSelected);
 }
 
-RbtUInt RbtModel::GetNumSelectedAtoms() {
+unsigned int RbtModel::GetNumSelectedAtoms() {
   return Rbt::GetNumSelectedAtoms(m_atomList);
 }
 
@@ -657,11 +658,11 @@ RbtAtomList RbtModel::GetSelectedAtomList() {
 }
 
 // Cyclic atoms
-void RbtModel::SetAtomCyclicFlags(RbtBool bCyclic) {
+void RbtModel::SetAtomCyclicFlags(bool bCyclic) {
   Rbt::SetAtomCyclicFlags(m_atomList, bCyclic);
 }
 
-RbtUInt RbtModel::GetNumCyclicAtoms() {
+unsigned int RbtModel::GetNumCyclicAtoms() {
   return Rbt::GetNumCyclicAtoms(m_atomList);
 }
 
@@ -670,28 +671,28 @@ RbtAtomList RbtModel::GetCyclicAtomList() {
 }
 
 // DM 21 Jul 1999 User1 flag
-void RbtModel::SetAtomUser1Flags(RbtBool bUser1) {
+void RbtModel::SetAtomUser1Flags(bool bUser1) {
   for (RbtAtomListIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter++)
     (*iter)->SetUser1Flag(bUser1);
 }
 
 // DM 29 Jan 2000 User1 value
-void RbtModel::SetAtomUser1Values(RbtDouble dUser1) {
+void RbtModel::SetAtomUser1Values(double dUser1) {
   for (RbtAtomListIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter++)
     (*iter)->SetUser1Value(dUser1);
 }
 
 // DM 27 Jul 2000 User2 value
-void RbtModel::SetAtomUser2Values(RbtDouble dUser2) {
+void RbtModel::SetAtomUser2Values(double dUser2) {
   for (RbtAtomListIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter++)
     (*iter)->SetUser2Value(dUser2);
 }
 
 // Hydrogen bond acceptor atoms
-RbtUInt RbtModel::GetNumHBondAcceptorAtoms() {
+unsigned int RbtModel::GetNumHBondAcceptorAtoms() {
   return Rbt::GetNumHBondAcceptorAtoms(m_atomList);
 }
 
@@ -700,7 +701,7 @@ RbtAtomList RbtModel::GetHBondAcceptorAtomList() {
 }
 
 // Hydrogen bond donor atoms
-RbtUInt RbtModel::GetNumHBondDonorAtoms() {
+unsigned int RbtModel::GetNumHBondDonorAtoms() {
   return Rbt::GetNumHBondDonorAtoms(m_atomList);
 }
 
@@ -709,7 +710,7 @@ RbtAtomList RbtModel::GetHBondDonorAtomList() {
 }
 
 //(Formally) charged atoms
-RbtUInt RbtModel::GetNumChargedAtoms() {
+unsigned int RbtModel::GetNumChargedAtoms() {
   return Rbt::GetNumChargedAtoms(m_atomList);
 }
 
@@ -718,7 +719,7 @@ RbtAtomList RbtModel::GetChargedAtomList() {
 }
 
 // Planar atoms
-RbtUInt RbtModel::GetNumPlanarAtoms() {
+unsigned int RbtModel::GetNumPlanarAtoms() {
   return Rbt::GetNumPlanarAtoms(m_atomList);
 }
 
@@ -729,16 +730,16 @@ RbtAtomList RbtModel::GetPlanarAtomList() {
 // Binary
 
 // Atoms with atomic no = nAtomicNo
-RbtUInt RbtModel::GetNumAtomsWithAtomicNo_eq(RbtInt nAtomicNo) {
+unsigned int RbtModel::GetNumAtomsWithAtomicNo_eq(int nAtomicNo) {
   return Rbt::GetNumAtomsWithAtomicNo_eq(m_atomList, nAtomicNo);
 }
 
-RbtAtomList RbtModel::GetAtomListWithAtomicNo_eq(RbtInt nAtomicNo) {
+RbtAtomList RbtModel::GetAtomListWithAtomicNo_eq(int nAtomicNo) {
   return Rbt::GetAtomListWithAtomicNo_eq(m_atomList, nAtomicNo);
 }
 
 // Atoms with FFType = strFFType
-RbtUInt RbtModel::GetNumAtomsWithFFType_eq(std::string strFFType) {
+unsigned int RbtModel::GetNumAtomsWithFFType_eq(std::string strFFType) {
   return Rbt::GetNumAtomsWithFFType_eq(m_atomList, strFFType);
 }
 
@@ -758,7 +759,7 @@ RbtAtomList RbtModel::GetAtomListWithFFType_eq(std::string strFFType) {
 
 // Generic template version of GetNumBonds, passing in your own predicate
 template <class Predicate>
-RbtUInt RbtModel::GetNumBonds(const Predicate &pred) {
+unsigned int RbtModel::GetNumBonds(const Predicate &pred) {
   return Rbt::GetNumBonds(m_bondList, pred);
 }
 // Generic template version of GetBondList, passing in your own predicate
@@ -768,11 +769,11 @@ RbtBondList RbtModel::GetBondList(const Predicate &pred) {
 }
 
 // Selected bonds
-void RbtModel::SetBondSelectionFlags(RbtBool bSelected) {
+void RbtModel::SetBondSelectionFlags(bool bSelected) {
   Rbt::SetBondSelectionFlags(m_bondList, bSelected);
 }
 
-RbtUInt RbtModel::GetNumSelectedBonds() {
+unsigned int RbtModel::GetNumSelectedBonds() {
   return Rbt::GetNumSelectedBonds(m_bondList);
 }
 
@@ -781,11 +782,11 @@ RbtBondList RbtModel::GetSelectedBondList() {
 }
 
 // Cyclic bonds
-void RbtModel::SetBondCyclicFlags(RbtBool bCyclic) {
+void RbtModel::SetBondCyclicFlags(bool bCyclic) {
   Rbt::SetBondCyclicFlags(m_bondList, bCyclic);
 }
 
-RbtUInt RbtModel::GetNumCyclicBonds() {
+unsigned int RbtModel::GetNumCyclicBonds() {
   return Rbt::GetNumCyclicBonds(m_bondList);
 }
 
@@ -822,7 +823,7 @@ RbtBondList RbtModel::GetCyclicBondList() {
 // Get min and max x,y,z coords
 // DM 28 Jul 1999 - use new RbtCoordList Min,Max functions. bInit is ignored
 void RbtModel::GetMinMaxCoords(RbtCoord &minCoord, RbtCoord &maxCoord,
-                               RbtBool bInit /*=true*/) {
+                               bool bInit /*=true*/) {
   RbtCoordList coordList = Rbt::GetCoordList(m_atomList);
   minCoord = Rbt::Min(coordList);
   maxCoord = Rbt::Max(coordList);
@@ -958,7 +959,7 @@ void RbtModel::Create(RbtBaseMolecularFileSource *pMolSource) throw(RbtError) {
         // AROM or TRI). Change all SP2 atoms to AROM. This will change C_SP2
         // and N_SP2 to AROM, but will not change N_TRI. Will work with thymine,
         // which under the previous definition was not changed to AROM.
-        RbtInt nPi = Rbt::GetNumAtoms(*rIter, Rbt::isPiAtom());
+        int nPi = Rbt::GetNumAtoms(*rIter, Rbt::isPiAtom());
         if ((nCy == 6) && (nCy == nPi)) {
           for (RbtAtomListIter aIter = (*rIter).begin();
                aIter != (*rIter).end(); aIter++) {

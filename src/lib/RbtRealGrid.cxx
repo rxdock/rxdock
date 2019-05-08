@@ -25,7 +25,8 @@ std::string RbtRealGrid::_CT("RbtRealGrid");
 // Constructors/destructors
 // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution
 RbtRealGrid::RbtRealGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
-                         RbtUInt NX, RbtUInt NY, RbtUInt NZ, RbtUInt NPad)
+                         unsigned int NX, unsigned int NY, unsigned int NZ,
+                         unsigned int NPad)
     : RbtBaseGrid(gridMin, gridStep, NX, NY, NZ, NPad), m_tol(0.001),
       m_grid(NULL), m_data(NULL) {
   CreateArrays();
@@ -136,18 +137,18 @@ void RbtRealGrid::Read(istream &istr) {
 
 // DM 20 Jul 2000 - get values smoothed by trilinear interpolation
 // D. Oberlin and H.A. Scheraga, J. Comp. Chem. (1998) 19, 71.
-RbtDouble RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
+double RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
   const RbtCoord &gridMin = GetGridMin();
   const RbtVector &gridStep = GetGridStep();
-  RbtDouble rx = 1.0 / gridStep.x; // reciprocal of grid step (x)
-  RbtDouble ry = 1.0 / gridStep.y; // reciprocal of grid step (y)
-  RbtDouble rz = 1.0 / gridStep.z; // reciprocal of grid step (z)
+  double rx = 1.0 / gridStep.x; // reciprocal of grid step (x)
+  double ry = 1.0 / gridStep.y; // reciprocal of grid step (y)
+  double rz = 1.0 / gridStep.z; // reciprocal of grid step (z)
   // Get lower left corner grid point
   //(not necessarily the nearest grid point as returned by GetIX() etc)
   // Need to shift the int(..) argument by half a grid step
-  RbtUInt iX = int(rx * (c.x - gridMin.x) - 0.5) + 1;
-  RbtUInt iY = int(ry * (c.y - gridMin.y) - 0.5) + 1;
-  RbtUInt iZ = int(rz * (c.z - gridMin.z) - 0.5) + 1;
+  unsigned int iX = int(rx * (c.x - gridMin.x) - 0.5) + 1;
+  unsigned int iY = int(ry * (c.y - gridMin.y) - 0.5) + 1;
+  unsigned int iZ = int(rz * (c.z - gridMin.z) - 0.5) + 1;
 #ifdef _DEBUG
   cout << "GetSmoothedValue" << c << "\tiX,iY,iZ=" << iX << "\t" << iY << "\t"
        << iZ << endl;
@@ -176,18 +177,18 @@ RbtDouble RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
   // bz[1] = rz * p.z;
   // bz[0] = 1.0 - bz[1];
 
-  RbtDouble val(0.0);
+  double val(0.0);
   // DM 3/5/2005 - fully unroll this loop
-  RbtDouble bx1 = rx * p.x;
-  RbtDouble bx0 = 1.0 - bx1;
-  RbtDouble by1 = ry * p.y;
-  RbtDouble by0 = 1.0 - by1;
-  RbtDouble bz1 = rz * p.z;
-  RbtDouble bz0 = 1.0 - bz1;
-  RbtDouble bx0by0 = bx0 * by0;
-  RbtDouble bx0by1 = bx0 * by1;
-  RbtDouble bx1by0 = bx1 * by0;
-  RbtDouble bx1by1 = bx1 * by1;
+  double bx1 = rx * p.x;
+  double bx0 = 1.0 - bx1;
+  double by1 = ry * p.y;
+  double by0 = 1.0 - by1;
+  double bz1 = rz * p.z;
+  double bz0 = 1.0 - bz1;
+  double bx0by0 = bx0 * by0;
+  double bx0by1 = bx0 * by1;
+  double bx1by0 = bx1 * by0;
+  double bx1by1 = bx1 * by1;
   val += m_grid[iX][iY][iZ] * bx0by0 * bz0;
   val += m_grid[iX][iY][iZ + 1] * bx0by0 * bz1;
   val += m_grid[iX][iY + 1][iZ] * bx0by1 * bz0;
@@ -207,16 +208,16 @@ RbtDouble RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
 }
 
 // Set all grid points to the given value
-void RbtRealGrid::SetAllValues(RbtDouble val) {
-  for (RbtUInt i = 0; i < GetN(); i++) {
+void RbtRealGrid::SetAllValues(double val) {
+  for (unsigned int i = 0; i < GetN(); i++) {
     m_data[i] = val;
   }
 }
 
 // Replaces all grid points between oldValMin and oldValMax with newVal
-void RbtRealGrid::ReplaceValueRange(RbtDouble oldValMin, RbtDouble oldValMax,
-                                    RbtDouble newVal) {
-  for (RbtUInt i = 0; i < GetN(); i++) {
+void RbtRealGrid::ReplaceValueRange(double oldValMin, double oldValMax,
+                                    double newVal) {
+  for (unsigned int i = 0; i < GetN(); i++) {
     float d = m_data[i];
     if ((d >= oldValMin) && (d < oldValMax))
       m_data[i] = newVal;
@@ -226,8 +227,8 @@ void RbtRealGrid::ReplaceValueRange(RbtDouble oldValMin, RbtDouble oldValMax,
 // Set all grid points within radius of coord to the given value
 // If bOverwrite is false, does not replace non-zero values
 // If bOverwrite is true, all grid points are set to the new value
-void RbtRealGrid::SetSphere(const RbtCoord &c, RbtDouble radius, RbtDouble val,
-                            RbtBool bOverwrite) {
+void RbtRealGrid::SetSphere(const RbtCoord &c, double radius, double val,
+                            bool bOverwrite) {
   RbtUIntList sphereIndices;
   GetSphereIndices(c, radius, sphereIndices);
   SetValues(sphereIndices, val, bOverwrite);
@@ -236,9 +237,8 @@ void RbtRealGrid::SetSphere(const RbtCoord &c, RbtDouble radius, RbtDouble val,
 // Set all grid points with radii between rad1 and rad2 from coord to the given
 // value If bOverwrite is false, does not replace non-zero values If bOverwrite
 // is true, all grid points are set the new value
-void RbtRealGrid::SetSurface(const RbtCoord &c, RbtDouble innerRad,
-                             RbtDouble outerRad, RbtDouble val,
-                             RbtBool bOverwrite) {
+void RbtRealGrid::SetSurface(const RbtCoord &c, double innerRad,
+                             double outerRad, double val, bool bOverwrite) {
   RbtUIntList oIndices; // List of sphere points for outer sphere
   RbtUIntList iIndices; // List of sphere points for outer sphere
   RbtUIntList sIndices; // List of points for surface region (points in outer
@@ -255,19 +255,18 @@ void RbtRealGrid::SetSurface(const RbtCoord &c, RbtDouble innerRad,
 // Sets all grid points with value=oldValue, which are adjacent to those with
 // value=adjacentValue, to value=newValue
 //+/- tolerance is applied to oldValue and adjacentValue
-void RbtRealGrid::CreateSurface(RbtDouble oldVal, RbtDouble adjVal,
-                                RbtDouble newVal) {
+void RbtRealGrid::CreateSurface(double oldVal, double adjVal, double newVal) {
   // Iterate over the cuboid defined by the pad coords
-  RbtUInt iMinX = GetPad() + 1;
-  RbtUInt iMinY = GetPad() + 1;
-  RbtUInt iMinZ = GetPad() + 1;
-  RbtUInt iMaxX = GetNX() - GetPad();
-  RbtUInt iMaxY = GetNY() - GetPad();
-  RbtUInt iMaxZ = GetNZ() - GetPad();
+  unsigned int iMinX = GetPad() + 1;
+  unsigned int iMinY = GetPad() + 1;
+  unsigned int iMinZ = GetPad() + 1;
+  unsigned int iMaxX = GetNX() - GetPad();
+  unsigned int iMaxY = GetNY() - GetPad();
+  unsigned int iMaxZ = GetNZ() - GetPad();
 
-  for (RbtUInt iX = iMinX; iX <= iMaxX; iX++) {
-    for (RbtUInt iY = iMinY; iY <= iMaxY; iY++) {
-      for (RbtUInt iZ = iMinZ; iZ <= iMaxZ; iZ++) {
+  for (unsigned int iX = iMinX; iX <= iMaxX; iX++) {
+    for (unsigned int iY = iMinY; iY <= iMaxY; iY++) {
+      for (unsigned int iZ = iMinZ; iZ <= iMaxZ; iZ++) {
         // We have a match with oldVal
         if (fabs(m_grid[iX][iY][iZ] - oldVal) < m_tol) {
           // Check the six adjacent points for a match with adjVal
@@ -292,8 +291,8 @@ void RbtRealGrid::CreateSurface(RbtDouble oldVal, RbtDouble adjVal,
 // DM 16 Apr 1999 - helper function for determining solvent accessible regions
 // Returns true if any of the grid points within a sphere around the central
 // coord have the specified value
-RbtBool RbtRealGrid::isValueWithinSphere(const RbtCoord &c, RbtDouble radius,
-                                         RbtDouble val) {
+bool RbtRealGrid::isValueWithinSphere(const RbtCoord &c, double radius,
+                                      double val) {
   RbtUIntList sphereIndices;
   GetSphereIndices(c, radius, sphereIndices);
   return isValueWithinList(sphereIndices, val);
@@ -302,28 +301,27 @@ RbtBool RbtRealGrid::isValueWithinSphere(const RbtCoord &c, RbtDouble radius,
 // Sets all grid points with value=oldValue, which have no grid points with
 // value=adjacentValue within a sphere of given radius, to value=newValue
 //+/- tolerance is applied to oldValue and adjacentValue
-void RbtRealGrid::SetAccessible(RbtDouble radius, RbtDouble oldVal,
-                                RbtDouble adjVal, RbtDouble newVal,
-                                RbtBool bCenterOnly) {
+void RbtRealGrid::SetAccessible(double radius, double oldVal, double adjVal,
+                                double newVal, bool bCenterOnly) {
   // Iterate over the cuboid defined by the pad coords
-  RbtUInt iMinX = GetPad() + 1;
-  RbtUInt iMinY = GetPad() + 1;
-  RbtUInt iMinZ = GetPad() + 1;
-  RbtUInt iMaxX = GetNX() - GetPad();
-  RbtUInt iMaxY = GetNY() - GetPad();
-  RbtUInt iMaxZ = GetNZ() - GetPad();
+  unsigned int iMinX = GetPad() + 1;
+  unsigned int iMinY = GetPad() + 1;
+  unsigned int iMinZ = GetPad() + 1;
+  unsigned int iMaxX = GetNX() - GetPad();
+  unsigned int iMaxY = GetNY() - GetPad();
+  unsigned int iMaxZ = GetNZ() - GetPad();
 
   // Work out the maximum no. of grid points in the sphere and reserve enough
   // space in the indices vector. Actually, this is a considerable overestimate
   // (no. of points in the enclosing cube)
   RbtUIntList sphereIndices;
-  RbtUInt nMax = (int(radius / GetGridStep().x) + 1) *
-                 (int(radius / GetGridStep().y) + 1) *
-                 (int(radius / GetGridStep().z) + 1);
+  unsigned int nMax = (int(radius / GetGridStep().x) + 1) *
+                      (int(radius / GetGridStep().y) + 1) *
+                      (int(radius / GetGridStep().z) + 1);
   sphereIndices.reserve(nMax);
-  for (RbtUInt iX = iMinX; iX <= iMaxX; iX++) {
-    for (RbtUInt iY = iMinY; iY <= iMaxY; iY++) {
-      for (RbtUInt iZ = iMinZ; iZ <= iMaxZ; iZ++) {
+  for (unsigned int iX = iMinX; iX <= iMaxX; iX++) {
+    for (unsigned int iY = iMinY; iY <= iMaxY; iY++) {
+      for (unsigned int iZ = iMinZ; iZ <= iMaxZ; iZ++) {
         // We have a match with oldVal
         if (fabs(m_grid[iX][iY][iZ] - oldVal) < m_tol) {
           RbtCoord c = GetCoord(iX, iY, iZ);
@@ -350,9 +348,9 @@ void RbtRealGrid::SetAccessible(RbtDouble radius, RbtDouble oldVal,
 /////////////////////////
 
 // Returns number of occurrences of a given value range
-RbtUInt RbtRealGrid::CountRange(RbtDouble valMin, RbtDouble valMax) const {
-  RbtUInt n(0);
-  for (RbtUInt i = 0; i < GetN(); i++) {
+unsigned int RbtRealGrid::CountRange(double valMin, double valMax) const {
+  unsigned int n(0);
+  for (unsigned int i = 0; i < GetN(); i++) {
     float d = m_data[i];
     if ((d >= valMin) && (d < valMax))
       n++;
@@ -361,18 +359,18 @@ RbtUInt RbtRealGrid::CountRange(RbtDouble valMin, RbtDouble valMax) const {
 }
 
 // Min/max values
-RbtDouble RbtRealGrid::MinValue() const {
+double RbtRealGrid::MinValue() const {
   float fMin = m_data[0];
-  for (RbtUInt i = 0; i < GetN(); i++) {
+  for (unsigned int i = 0; i < GetN(); i++) {
     if (m_data[i] < fMin)
       fMin = m_data[i];
   }
   return fMin;
 }
 
-RbtDouble RbtRealGrid::MaxValue() const {
+double RbtRealGrid::MaxValue() const {
   float fMax = m_data[0];
-  for (RbtUInt i = 0; i < GetN(); i++) {
+  for (unsigned int i = 0; i < GetN(); i++) {
     if (m_data[i] > fMax)
       fMax = m_data[i];
   }
@@ -380,9 +378,9 @@ RbtDouble RbtRealGrid::MaxValue() const {
 }
 
 // iXYZ index of grid point with minimum value
-RbtUInt RbtRealGrid::FindMinValue() const {
-  RbtUInt iMin = 0;
-  for (RbtUInt i = 0; i < GetN(); i++) {
+unsigned int RbtRealGrid::FindMinValue() const {
+  unsigned int iMin = 0;
+  for (unsigned int i = 0; i < GetN(); i++) {
     if (m_data[i] < m_data[iMin])
       iMin = i;
   }
@@ -390,9 +388,9 @@ RbtUInt RbtRealGrid::FindMinValue() const {
 }
 
 // iXYZ index of grid point with maximum value
-RbtUInt RbtRealGrid::FindMaxValue() const {
-  RbtUInt iMax = 0;
-  for (RbtUInt i = 0; i < GetN(); i++) {
+unsigned int RbtRealGrid::FindMaxValue() const {
+  unsigned int iMax = 0;
+  for (unsigned int i = 0; i < GetN(); i++) {
     if (m_data[i] > m_data[iMax])
       iMax = i;
   }
@@ -424,9 +422,9 @@ void RbtRealGrid::PrintInsightGrid(ostream &s) const {
   // s.setf(ios_base::fixed,ios_base::floatfield);
   // s.setf(ios_base::right,ios_base::adjustfield);
   // Insight expects data in [1][1][1],[2][1][1]..[NX][1][1] order
-  for (RbtUInt iZ = 1; iZ <= GetNZ(); iZ++) {
-    for (RbtUInt iY = 1; iY <= GetNY(); iY++) {
-      for (RbtUInt iX = 1; iX <= GetNX(); iX++) {
+  for (unsigned int iZ = 1; iZ <= GetNZ(); iZ++) {
+    for (unsigned int iY = 1; iY <= GetNY(); iY++) {
+      for (unsigned int iX = 1; iX <= GetNX(); iX++) {
         s << setw(15) << m_grid[iX][iY][iZ] << endl;
       }
     }
@@ -441,10 +439,10 @@ void RbtRealGrid::OwnPrint(ostream &ostr) const {
   ostr << "Class\t" << _CT << endl;
   // Iterate over all grid points
   float tol = GetTolerance();
-  for (RbtUInt iX = 1; iX <= GetNX(); iX++) {
+  for (unsigned int iX = 1; iX <= GetNX(); iX++) {
     ostr << endl << endl << "Plane iX=" << iX << endl;
-    for (RbtUInt iY = 1; iY <= GetNY(); iY++) {
-      for (RbtUInt iZ = 1; iZ <= GetNZ(); iZ++) {
+    for (unsigned int iY = 1; iY <= GetNY(); iY++) {
+      for (unsigned int iZ = 1; iZ <= GetNZ(); iZ++) {
         float f = m_grid[iX][iY][iZ];
         ostr << ((f < -tol) ? '-' : (f > tol) ? '+' : '.');
       }
@@ -459,13 +457,13 @@ void RbtRealGrid::OwnWrite(ostream &ostr) const {
   // Write the class name as a title so we can check the authenticity of streams
   // on read
   const char *const gridTitle = _CT.c_str();
-  RbtInt length = strlen(gridTitle);
+  int length = strlen(gridTitle);
   Rbt::WriteWithThrow(ostr, (const char *)&length, sizeof(length));
   Rbt::WriteWithThrow(ostr, gridTitle, length);
 
   // Write all the data members
   Rbt::WriteWithThrow(ostr, (const char *)&m_tol, sizeof(m_tol));
-  for (RbtUInt i = 0; i < GetN(); i++) {
+  for (unsigned int i = 0; i < GetN(); i++) {
     Rbt::WriteWithThrow(ostr, (const char *)&m_data[i], sizeof(m_data[i]));
   }
 }
@@ -475,14 +473,14 @@ void RbtRealGrid::OwnWrite(ostream &ostr) const {
 // and is of the correct size
 void RbtRealGrid::OwnRead(istream &istr) throw(RbtError) {
   // Read title
-  RbtInt length;
+  int length;
   Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *gridTitle = new char[length + 1];
   Rbt::ReadWithThrow(istr, gridTitle, length);
   // Add null character to end of string
   gridTitle[length] = '\0';
   // Compare title with class name
-  RbtBool match = (_CT == gridTitle);
+  bool match = (_CT == gridTitle);
   delete[] gridTitle;
   if (!match) {
     throw RbtFileParseError(_WHERE_,
@@ -491,7 +489,7 @@ void RbtRealGrid::OwnRead(istream &istr) throw(RbtError) {
 
   // Read all the data members
   Rbt::ReadWithThrow(istr, (char *)&m_tol, sizeof(m_tol));
-  for (RbtUInt i = 0; i < GetN(); i++) {
+  for (unsigned int i = 0; i < GetN(); i++) {
     Rbt::ReadWithThrow(istr, (char *)&m_data[i], sizeof(m_data[i]));
   }
 }
@@ -502,8 +500,7 @@ void RbtRealGrid::OwnRead(istream &istr) throw(RbtError) {
 // DM 17 Jul 2000 - analogous to isValueWithinSphere but iterates over arbitrary
 // set of IXYZ indices. Private method as there is no error checking on iXYZ
 // values out of bounds
-RbtBool RbtRealGrid::isValueWithinList(const RbtUIntList &iXYZList,
-                                       RbtDouble val) {
+bool RbtRealGrid::isValueWithinList(const RbtUIntList &iXYZList, double val) {
   for (RbtUIntListConstIter iter = iXYZList.begin(); iter != iXYZList.end();
        iter++) {
     if (fabs(m_data[*iter] - val) < m_tol) {
@@ -517,8 +514,8 @@ RbtBool RbtRealGrid::isValueWithinList(const RbtUIntList &iXYZList,
 // of IXYZ indices. Private method as there is no error checking on iXYZ values
 // out of bounds If bOverwrite is false, does not replace non-zero values If
 // bOverwrite is true, all grid points are set the new value
-void RbtRealGrid::SetValues(const RbtUIntList &iXYZList, RbtDouble val,
-                            RbtBool bOverwrite) {
+void RbtRealGrid::SetValues(const RbtUIntList &iXYZList, double val,
+                            bool bOverwrite) {
   for (RbtUIntListConstIter iter = iXYZList.begin(); iter != iXYZList.end();
        iter++) {
     if (bOverwrite || (fabs(m_data[*iter]) < m_tol)) {
@@ -565,7 +562,7 @@ void RbtRealGrid::ClearArrays() {
 void RbtRealGrid::CopyGrid(const RbtRealGrid &grid) {
   m_tol = grid.m_tol;
   float *gridData = grid.GetGridData();
-  for (RbtUInt i = 0; i < GetN(); i++) {
+  for (unsigned int i = 0; i < GetN(); i++) {
     m_data[i] = gridData[i];
   }
 }

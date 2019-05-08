@@ -34,15 +34,15 @@ protected:
   virtual void SetupReceptor() {}
   virtual void SetupLigand() {}
   virtual void SetupScore() {}
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
   void ParameterUpdated(const std::string &strName);
 
 private:
   // The original constant score for ligand binding
-  RbtDouble InterScore() const;
+  double InterScore() const;
   // The solvent binding penalty
-  RbtDouble SystemScore() const;
-  RbtDouble m_solventPenalty;
+  double SystemScore() const;
+  double m_solventPenalty;
 };
 
 #endif //_RBTCONSTSF_H_

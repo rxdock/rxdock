@@ -31,7 +31,7 @@ protected:
   virtual void SetupReceptor();
   virtual void SetupLigand();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
   void ParameterUpdated(const std::string &strName);

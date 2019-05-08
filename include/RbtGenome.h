@@ -44,7 +44,7 @@ public:
   // set.
   void SetScore(RbtBaseSF *pSF);
   // Gets the stored raw score (without re-evaluation of the scoring function).
-  RbtDouble GetScore() const { return m_score; }
+  double GetScore() const { return m_score; }
 
   // ROULETTE WHEEL SELECTION METHODS
   // The following three methods should be used only in the context of
@@ -56,17 +56,17 @@ public:
   //(Goldberg page 124)
   // partialSum is the partial sum of all previous fitness values in the sorted
   // genome list.
-  RbtDouble SetRWFitness(RbtDouble sigmaOffset, RbtDouble partialSum);
+  double SetRWFitness(double sigmaOffset, double partialSum);
   // Normalises the roulette wheel fitness values to lie between 0 and 1
   // total is the total sum of absolute fitness values returned by the last call
   // to SetRWFitness
-  void NormaliseRWFitness(RbtDouble total);
+  void NormaliseRWFitness(double total);
   // Gets the fitness value for roulette wheel selection
-  RbtDouble GetRWFitness() const { return m_RWFitness; }
+  double GetRWFitness() const { return m_RWFitness; }
 
   // Tests equality based on chromosome element values.
   // Does not take score into account.
-  RbtBool Equals(const RbtGenome &g, RbtDouble threshold) const {
+  bool Equals(const RbtGenome &g, double threshold) const {
     return m_chrom->Equals(*(g.m_chrom), threshold);
   }
   friend bool operator==(const RbtGenome &g1, const RbtGenome &g2) {
@@ -84,9 +84,9 @@ private:
   // Private data
   /////////////////////
   RbtChromElement *m_chrom;
-  RbtDouble m_score;     // raw value of the scoring function
-  RbtDouble m_RWFitness; // scaled value of the raw score suitable for use
-                         // with roulette wheel selection
+  double m_score;     // raw value of the scoring function
+  double m_RWFitness; // scaled value of the raw score suitable for use
+                      // with roulette wheel selection
 };
 
 // Useful typedefs
@@ -111,12 +111,12 @@ public:
 // Does not take score into account.
 // Uses operator== which ultimately calls RbtChromElement::Equals()
 class isGenome_eq
-    : public std::binary_function<RbtGenome *, RbtGenome *, RbtBool> {
+    : public std::binary_function<RbtGenome *, RbtGenome *, bool> {
 private:
-  RbtDouble m_threshold; // equality threshold
+  double m_threshold; // equality threshold
 public:
-  explicit isGenome_eq(RbtDouble threshold) : m_threshold(threshold) {}
-  RbtBool operator()(const RbtGenome *pG1, const RbtGenome *pG2) const {
+  explicit isGenome_eq(double threshold) : m_threshold(threshold) {}
+  bool operator()(const RbtGenome *pG1, const RbtGenome *pG2) const {
     return pG1->Equals(*pG2, m_threshold);
   }
 };

@@ -21,7 +21,7 @@ std::string RbtGPFFGold::_CT("RbtGPFFGold");
 
 void RbtGPFFGold::ReadTables(istream &in) {
   RbtReturnType value;
-  RbtInt i = 0, j;
+  int i = 0, j;
   in >> value;
   inputTable.clear();
   SFTable.clear();
@@ -50,29 +50,27 @@ void RbtGPFFGold::ReadTables(istream &in) {
   }
 }
 
-RbtDouble RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g,
-                                        RbtReturnTypeArray &it,
-                                        RbtReturnTypeArray &sft,
-                                        RbtBool function) {
+double RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
+                                     RbtReturnTypeArray &sft, bool function) {
   RbtGPParser p(RbtGPGenome::GetNIP(), RbtGPGenome::GetNIF(),
                 RbtGPGenome::GetNN(), RbtGPGenome::GetNO());
   RbtReturnTypeList o;
-  RbtDouble tot = 0.0;
-  RbtDouble range = 10.0;
-  RbtDouble good = 0.0;
-  RbtDouble bad = 0.0;
-  RbtDouble hitlimit = 2.0;
-  for (RbtInt i = 0; i < it.size(); i++) {
+  double tot = 0.0;
+  double range = 10.0;
+  double good = 0.0;
+  double bad = 0.0;
+  double hitlimit = 2.0;
+  for (int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
     RbtReturnTypeList SFValues = sft[i];
-    RbtDouble scoreM = *(SFValues[0]);
-    RbtDouble rmsd = *(SFValues[1]);
+    double scoreM = *(SFValues[0]);
+    double rmsd = *(SFValues[1]);
     RbtGPChromosomePtr c(g->GetChrom());
     o = p.Parse(c, inputs);
     //        cout << *(o[0]) << endl;
-    for (RbtInt j = 0; j < RbtGPGenome::GetNO(); j++)
+    for (int j = 0; j < RbtGPGenome::GetNO(); j++)
       if (function) {
-        RbtDouble d = 2.5 * rmsd + scoreM - *(o[j]);
+        double d = 2.5 * rmsd + scoreM - *(o[j]);
         tot += d * d; // abs(d); // * d;
         // if (abs(2.5 * rmsd + scoreM - *(o[j])) < range)
         //     tot++;
@@ -102,21 +100,20 @@ RbtDouble RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g,
   return fitness;
 }
 
-RbtDouble RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g,
-                                        RbtReturnTypeArray &it,
-                                        RbtReturnTypeArray &sft,
-                                        RbtDouble hitlimit, RbtBool function) {
+double RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
+                                     RbtReturnTypeArray &sft, double hitlimit,
+                                     bool function) {
   RbtGPParser p(g->GetNIP(), g->GetNIF(), g->GetNN(), g->GetNO());
   RbtReturnTypeList o;
-  RbtDouble truehits = 0.0;
-  RbtDouble falsehits = 0.0;
-  RbtDouble truemisses = 0.0;
-  RbtDouble falsemisses = 0.0;
-  for (RbtInt i = 0; i < it.size(); i++) {
+  double truehits = 0.0;
+  double falsehits = 0.0;
+  double truemisses = 0.0;
+  double falsemisses = 0.0;
+  for (int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs = it[i];
     RbtReturnTypeList SFValues = sft[i];
-    RbtDouble scoreM = *(SFValues[0]);
-    RbtDouble rmsd = *(SFValues[1]);
+    double scoreM = *(SFValues[0]);
+    double rmsd = *(SFValues[1]);
     /*        cout << "input  : ";
             for (RbtInt j = 0 ; j < inputs.size() ; j++)
                 cout << *(inputs[j]) << " ";
@@ -124,8 +121,8 @@ RbtDouble RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g,
     RbtGPChromosomePtr c = g->GetChrom();
     o = p.Parse(c, inputs);
     //        cout << *(o[0]) << endl;
-    RbtDouble limit = function ? scoreM + 5 : 0.0;
-    for (RbtInt j = 0; j < RbtGPGenome::GetNO(); j++) {
+    double limit = function ? scoreM + 5 : 0.0;
+    for (int j = 0; j < RbtGPGenome::GetNO(); j++) {
       if (rmsd < hitlimit)
         if (*(o[j]) < limit)
           // true hit

@@ -24,13 +24,13 @@ public:
   RbtElementData()
       : atomicNo(0), element(""), minVal(0), maxVal(0), commonVal(0), mass(0.0),
         vdwRadius(0.0) {}
-  RbtInt atomicNo;
+  int atomicNo;
   std::string element;
-  RbtInt minVal;
-  RbtInt maxVal;
-  RbtInt commonVal;
-  RbtDouble mass;
-  RbtDouble vdwRadius; // Regular vdW radius
+  int minVal;
+  int maxVal;
+  int commonVal;
+  double mass;
+  double vdwRadius; // Regular vdW radius
 };
 
 // Map with element data indexed by element name
@@ -39,7 +39,7 @@ typedef RbtStringElementDataMap::iterator RbtStringElementDataMapIter;
 typedef RbtStringElementDataMap::const_iterator
     RbtStringElementDataMapConstIter;
 // Map with element data indexed by atomic number
-typedef map<RbtInt, RbtElementData> RbtIntElementDataMap;
+typedef map<int, RbtElementData> RbtIntElementDataMap;
 typedef RbtIntElementDataMap::iterator RbtIntElementDataMapIter;
 typedef RbtIntElementDataMap::const_iterator RbtIntElementDataMapConstIter;
 
@@ -56,23 +56,23 @@ public:
   // Public methods
   std::string GetTitle();
   std::string GetVersion();
-  RbtUInt GetNumElements();
+  unsigned int GetNumElements();
   RbtStringList GetElementNameList(); // List of element names
   RbtIntList GetAtomicNumberList();   // List of atomic numbers
   // Get element data for a given element name, throws error if not found
   RbtElementData
   GetElementData(const std::string &strElementName) throw(RbtError);
   // Get element data for a given atomic number, throws error if not found
-  RbtElementData GetElementData(RbtInt nAtomicNumber) throw(RbtError);
+  RbtElementData GetElementData(int nAtomicNumber) throw(RbtError);
   // Check if given element name is present
-  RbtBool isElementNamePresent(const std::string &strElementName);
+  bool isElementNamePresent(const std::string &strElementName);
   // Check if given atomic number is present
-  RbtBool isAtomicNumberPresent(RbtInt nAtomicNumber);
+  bool isAtomicNumberPresent(int nAtomicNumber);
 
   // Get vdw radius increment for hydrogen-bonding donors
-  RbtDouble GetHBondRadiusIncr();
+  double GetHBondRadiusIncr();
   // Get vdw radius increment for atoms with implicit hydrogens
-  RbtDouble GetImplicitRadiusIncr();
+  double GetImplicitRadiusIncr();
 
 protected:
   // Protected methods
@@ -96,10 +96,10 @@ private:
   // Private data
   std::string m_strTitle;
   std::string m_strVersion;
-  RbtDouble m_dHBondRadiusIncr; // Increment to add to vdW radius for H-bonding
+  double m_dHBondRadiusIncr;    // Increment to add to vdW radius for H-bonding
                                 // hydrogens
-  RbtDouble m_dImplicitRadiusIncr; // Increment to add to vdW radius for atoms
-                                   // with implicit hydrogens
+  double m_dImplicitRadiusIncr; // Increment to add to vdW radius for atoms
+                                // with implicit hydrogens
   RbtStringElementDataMap m_elementNameMap;
   RbtIntElementDataMap m_atomicNumberMap;
 };

@@ -108,7 +108,7 @@ void RbtMdlFileSink::RenderAtomList(const RbtAtomList &atomList) {
     RbtAtomPtr spAtom(*aIter);
     // DM 19 June 2006. Check if this atom has been rendered previously.
     if (m_atomIdMap.find(spAtom) == m_atomIdMap.end()) {
-      RbtUInt nextAtomId = m_atomIdMap.size() + 1;
+      unsigned int nextAtomId = m_atomIdMap.size() + 1;
       // cout << "RenderAtom " << spAtom->GetFullAtomName() << " (actual ID=" <<
       // spAtom->GetAtomId()
       //	 << "); file ID=" << nextAtomId << endl;
@@ -120,7 +120,7 @@ void RbtMdlFileSink::RenderAtomList(const RbtAtomList &atomList) {
     }
     RbtElementData elData =
         m_spElementData->GetElementData(spAtom->GetAtomicNo());
-    RbtInt nFormalCharge = spAtom->GetFormalCharge();
+    int nFormalCharge = spAtom->GetFormalCharge();
     if (nFormalCharge != 0)
       nFormalCharge = 4 - nFormalCharge;
     ostringstream ostr;
@@ -154,8 +154,8 @@ void RbtMdlFileSink::RenderBondList(const RbtBondList &bondList) {
     RbtAtomIdMap::const_iterator aIter2 =
         m_atomIdMap.find(spBond->GetAtom2Ptr());
     if ((aIter1 != m_atomIdMap.end()) && (aIter2 != m_atomIdMap.end())) {
-      RbtUInt id1 = (*aIter1).second;
-      RbtUInt id2 = (*aIter2).second;
+      unsigned int id1 = (*aIter1).second;
+      unsigned int id2 = (*aIter2).second;
       // cout << "RenderBond " << spBond->GetAtom1Ptr()->GetFullAtomName()
       //	 << spBond->GetAtom2Ptr()->GetFullAtomName()
       //	 << "; file ID1=" << id1

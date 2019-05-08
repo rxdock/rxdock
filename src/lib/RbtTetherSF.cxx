@@ -42,7 +42,7 @@ RbtIntList RbtTetherSF::ReadTetherAtoms(RbtStringList &strAtoms) {
   RbtIntList tetherAtoms;
   std::string strTetherAtoms = Rbt::ConvertListToDelimitedString(strAtoms);
   istringstream ist(strTetherAtoms.c_str());
-  RbtInt i;
+  int i;
   char sep[2];
   while (ist >> i) {
     tetherAtoms.push_back(i - 1);
@@ -93,9 +93,9 @@ void RbtTetherSF::SetupScore() {
   // No further setup required
 }
 
-RbtDouble RbtTetherSF::RawScore() const {
-  RbtDouble score(0.0);
-  RbtInt i = 0;
+double RbtTetherSF::RawScore() const {
+  double score(0.0);
+  int i = 0;
   for (RbtIntListConstIter iter = m_tetherAtomList.begin();
        iter < m_tetherAtomList.end(); iter++, i++)
     score += Rbt::Length2(m_ligAtomList[*iter]->GetCoords(), m_tetherCoords[i]);

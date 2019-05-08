@@ -19,15 +19,15 @@ using std::ifstream;
 using std::ios_base;
 
 std::string RbtGPGenome::_CT("RbtGPGenome");
-RbtInt RbtGPGenome::npi;
-RbtInt RbtGPGenome::nfi;
-RbtInt RbtGPGenome::nsfi;
-RbtInt RbtGPGenome::no;
-RbtInt RbtGPGenome::nn;
-RbtInt RbtGPGenome::nf;
-RbtInt RbtGPGenome::nr;
-RbtInt RbtGPGenome::nc;
-RbtInt RbtGPGenome::l;
+int RbtGPGenome::npi;
+int RbtGPGenome::nfi;
+int RbtGPGenome::nsfi;
+int RbtGPGenome::no;
+int RbtGPGenome::nn;
+int RbtGPGenome::nf;
+int RbtGPGenome::nr;
+int RbtGPGenome::nc;
+int RbtGPGenome::l;
 
 // Constructors
 RbtGPGenome::RbtGPGenome() : m_rand(Rbt::GetRbtRand()) {
@@ -77,9 +77,8 @@ RbtGPGenome &RbtGPGenome::operator=(const RbtGPGenome &g) {
 //////////////////
 RbtGPGenome::~RbtGPGenome() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
-void RbtGPGenome::SetStructure(RbtInt inpi, RbtInt infi, RbtInt insfi,
-                               RbtInt ino, RbtInt inf, RbtInt inr, RbtInt inc,
-                               RbtInt il) {
+void RbtGPGenome::SetStructure(int inpi, int infi, int insfi, int ino, int inf,
+                               int inr, int inc, int il) {
   npi = inpi;   // number of program inputs
   nfi = infi;   // number of inputs per function
   nsfi = insfi; // number of inputs needed to calculate the SF
@@ -95,11 +94,11 @@ void RbtGPGenome::SetStructure(RbtInt inpi, RbtInt infi, RbtInt insfi,
 }
 
 void RbtGPGenome::Initialise() {
-  RbtInt s = chrom->size();
-  RbtInt g = 0, max, min;
-  for (RbtInt i = 0; i < nc; i++) {
-    for (RbtInt j = 0; j < nr; j++) {
-      for (RbtInt k = 0; k < nfi; k++) {
+  int s = chrom->size();
+  int g = 0, max, min;
+  for (int i = 0; i < nc; i++) {
+    for (int j = 0; j < nr; j++) {
+      for (int k = 0; k < nfi; k++) {
         max = npi + i * nr;
         if (i < l)
           (*chrom)[g++] = m_rand.GetRandomInt(max);
@@ -109,14 +108,13 @@ void RbtGPGenome::Initialise() {
         }
       }
       // node's function
-      RbtInt f = m_rand.GetRandomInt(nf + 1);
+      int f = m_rand.GetRandomInt(nf + 1);
       if (f == nf) // constant Int
       {
-        RbtInt a, b;
+        int a, b;
         a = m_rand.GetRandomInt(200) - 100;
         b = m_rand.GetRandomInt(10) - 5;
-        RbtDouble r =
-            (a / 10.0) * pow(10.0, b); // m_rand.GetRandom01() * 20 - 10;
+        double r = (a / 10.0) * pow(10.0, b); // m_rand.GetRandom01() * 20 - 10;
         chrom->SetConstant(r, g);
       }
       (*chrom)[g++] = f;
@@ -125,13 +123,13 @@ void RbtGPGenome::Initialise() {
   // outputs of program
   min = npi + (nc - l) * nr;
   max = npi + nc * nr;
-  for (RbtInt i = 0; i < no; i++)
+  for (int i = 0; i < no; i++)
     (*chrom)[g++] = m_rand.GetRandomInt(max - min) + min;
   fitness = 0.0;
 }
 
-void RbtGPGenome::MutateGene(RbtInt i) {
-  RbtInt min, max, column;
+void RbtGPGenome::MutateGene(int i) {
+  int min, max, column;
   // is it part of the nodes?
   if (i < (nr * nc * (nfi + 1))) {
     // is it an input of a function?
@@ -146,14 +144,13 @@ void RbtGPGenome::MutateGene(RbtInt i) {
       }
     } else // it is a function
     {
-      RbtInt f = m_rand.GetRandomInt(nf + 1); // m_rand.GetRandomInt(nf);
-      if (f == nf)                            // constant Int
+      int f = m_rand.GetRandomInt(nf + 1); // m_rand.GetRandomInt(nf);
+      if (f == nf)                         // constant Int
       {
-        RbtInt a, b;
+        int a, b;
         a = m_rand.GetRandomInt(200) - 100;
         b = m_rand.GetRandomInt(10) - 5;
-        RbtDouble r =
-            (a / 10.0) * pow(10.0, b); // m_rand.GetRandom01() * 20 - 10;
+        double r = (a / 10.0) * pow(10.0, b); // m_rand.GetRandom01() * 20 - 10;
         chrom->SetConstant(r, i);
       } else if ((*chrom)[i] == nf) {
         chrom->ResetConstant(i);
@@ -168,8 +165,8 @@ void RbtGPGenome::MutateGene(RbtInt i) {
   }
 }
 
-void RbtGPGenome::Mutate(RbtDouble mutRate) {
-  for (RbtInt i = 0; i < chrom->size(); i++)
+void RbtGPGenome::Mutate(double mutRate) {
+  for (int i = 0; i < chrom->size(); i++)
     if (m_rand.GetRandom01() < mutRate) {
       MutateGene(i);
     }
@@ -177,8 +174,8 @@ void RbtGPGenome::Mutate(RbtDouble mutRate) {
 
 void RbtGPGenome::UniformCrossover(const RbtGPGenome &mom,
                                    const RbtGPGenome &dad) {
-  RbtInt coin;
-  for (RbtInt i = 0; i < mom.chrom->size(); i++) {
+  int coin;
+  for (int i = 0; i < mom.chrom->size(); i++) {
     coin = m_rand.GetRandomInt(2);
     if (coin == 0)
       (*chrom)[i] = (*mom.chrom)[i];
@@ -190,7 +187,7 @@ void RbtGPGenome::UniformCrossover(const RbtGPGenome &mom,
 void RbtGPGenome::Crossover(RbtGPGenome &) {}
 
 ostream &RbtGPGenome::Print(ostream &s) const {
-  RbtInt g = 0;
+  int g = 0;
   // Print structure
   s << npi << " " << nfi << " " << nsfi << " " << no << " " << nf << " " << nr
     << " " << nc << " " << l << endl;

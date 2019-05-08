@@ -26,7 +26,7 @@
 using std::ifstream;
 
 typedef map<std::string, RbtVblePtr> RbtStringVbleMap; // Map of Vbles
-typedef map<RbtInt, RbtVblePtr> RbtIntVbleMap;         // Map of Vbles
+typedef map<int, RbtVblePtr> RbtIntVbleMap;            // Map of Vbles
 typedef RbtStringVbleMap::iterator RbtStringVbleMapIter;
 typedef RbtIntVbleMap::iterator RbtIntVbleMapIter;
 
@@ -43,10 +43,10 @@ public:
                 ///////////////////
   virtual ~RbtContext();
   virtual void Assign(std::string, RbtReturnType) = 0;
-  virtual void Assign(RbtInt, RbtReturnType) = 0;
-  virtual const RbtVble &GetVble(RbtInt) = 0;
+  virtual void Assign(int, RbtReturnType) = 0;
+  virtual const RbtVble &GetVble(int) = 0;
   virtual const RbtVble &GetVble(std::string) = 0;
-  virtual void SetVble(RbtInt key, const RbtVble &v) = 0;
+  virtual void SetVble(int key, const RbtVble &v) = 0;
   //    virtual RbtString GetName(RbtInt)=0;
   //    virtual RbtReturnType GetValue(RbtInt)=0;
   //    virtual RbtString GetName(RbtString)=0;
@@ -60,7 +60,7 @@ public:
   RbtCellContext();
   RbtCellContext(const RbtCellContext &c);
   virtual ~RbtCellContext();
-  void Assign(RbtInt key, RbtReturnType val) {
+  void Assign(int key, RbtReturnType val) {
     RbtIntVbleMapIter it = vm.find(key);
     if (it != vm.end())
       vm[key]->SetValue(val);
@@ -75,8 +75,8 @@ public:
   //    RbtReturnType GetValue(RbtInt key) {return vm[key].GetValue();}
   //    RbtString GetName(RbtString){return "";}
   //    RbtReturnType GetValue(RbtString){return 0.0;}
-  const RbtVble &GetVble(RbtInt key) { return *(vm[key]); }
-  void SetVble(RbtInt key, const RbtVble &v) { *(vm[key]) = v; }
+  const RbtVble &GetVble(int key) { return *(vm[key]); }
+  void SetVble(int key, const RbtVble &v) { *(vm[key]) = v; }
   const RbtVble &GetVble(std::string key) {
     throw RbtError(_WHERE_, "This is not a string context");
   }
@@ -84,7 +84,7 @@ public:
 
 private:
   RbtIntVbleMap vm;
-  RbtInt ninputs;
+  int ninputs;
 };
 
 class RbtStringContext : public RbtContext {
@@ -102,7 +102,7 @@ public:
       vm[key] = new RbtVble(key, val);
     }
   }
-  void Assign(RbtInt i, RbtReturnType val) {
+  void Assign(int i, RbtReturnType val) {
     throw RbtError(_WHERE_, "This is not a cell context");
   }
 
@@ -110,14 +110,14 @@ public:
   //    RbtReturnType GetValue(RbtInt){return 0.0;}
   //    RbtString GetName(RbtString key) { return vm[key].GetName();}
   //    RbtReturnType GetValue(RbtString key) {return vm[key].GetValue();}
-  RbtDouble Get(RbtModelPtr lig, std::string name);
-  RbtDouble Get(RbtModelPtr rec, RbtDockingSitePtr site, std::string name);
-  RbtDouble Get(RbtBaseSF *spSF, std::string name, RbtModelPtr lig);
+  double Get(RbtModelPtr lig, std::string name);
+  double Get(RbtModelPtr rec, RbtDockingSitePtr site, std::string name);
+  double Get(RbtBaseSF *spSF, std::string name, RbtModelPtr lig);
   const RbtVble &GetVble(std::string key) { return *(vm[key]); }
-  const RbtVble &GetVble(RbtInt key) {
+  const RbtVble &GetVble(int key) {
     throw RbtError(_WHERE_, "This is not a cell context");
   }
-  void SetVble(RbtInt key, const RbtVble &v) { *(vm[""]) = v; }
+  void SetVble(int key, const RbtVble &v) { *(vm[""]) = v; }
   void UpdateLigs(RbtModelPtr lig);
   void UpdateSite(RbtModelPtr rec, RbtDockingSitePtr site);
   void UpdateScores(RbtBaseSF *spSF, RbtModelPtr lig);

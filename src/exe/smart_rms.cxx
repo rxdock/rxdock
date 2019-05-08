@@ -29,13 +29,13 @@ typedef RbtCoordListList::iterator RbtCoordListListIter;
 typedef RbtCoordListList::const_iterator RbtCoordListListConstIter;
 
 // RMSD calculation between two coordinate lists
-RbtDouble rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
-  RbtInt nCoords = rc.size();
+double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
+  int nCoords = rc.size();
   if (c.size() != nCoords) {
     return 0.0;
   } else {
-    RbtDouble rms(0.0);
-    for (RbtInt i = 0; i < nCoords; i++) {
+    double rms(0.0);
+    for (int i = 0; i < nCoords; i++) {
       rms += Rbt::Length2(rc[i], c[i]);
     }
     rms = sqrt(rms / float(nCoords));
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
   std::string strRefSDFile(argv[1]);
   std::string strInputSDFile(argv[2]);
   std::string strOutputSDFile;
-  RbtBool bOutput(false);
+  bool bOutput(false);
   if (argc > 3) {
     strOutputSDFile = argv[3];
     bOutput = true;
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
       Rbt::GetCoordList(*iter, coords);
       cll.push_back(coords);
     }
-    RbtInt nCoords = cll.front().size();
+    int nCoords = cll.front().size();
 
     cout << "molv_	rms rms	rmc rmc"
          << endl; // Dummy header line to be like do_anal
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
     if (bOutput) {
       spMdlFileSink = new RbtMdlFileSink(strOutputSDFile, RbtModelPtr());
     }
-    for (RbtInt nRec = 1; spMdlFileSource->FileStatusOK();
+    for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
       RbtError molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
@@ -146,17 +146,17 @@ int main(int argc, char *argv[]) {
 
       if (coords.size() ==
           nCoords) { // Only calculate RMSD if atom count is same as reference
-        RbtDouble rms(9999.9);
+        double rms(9999.9);
         for (RbtCoordListListConstIter cIter = cll.begin(); cIter != cll.end();
              cIter++) {
-          RbtDouble rms1 = rmsd(*cIter, coords);
+          double rms1 = rmsd(*cIter, coords);
           // cout << "\tRMSD = " << rms1 << endl;
           rms = std::min(rms, rms1);
         }
         spModel->SetDataValue("RMSD", rms);
-        RbtDouble score = spModel->GetDataValue("SCORE");
-        RbtDouble scoreInter = spModel->GetDataValue("SCORE.INTER");
-        RbtDouble scoreIntra = spModel->GetDataValue("SCORE.INTRA");
+        double score = spModel->GetDataValue("SCORE");
+        double scoreInter = spModel->GetDataValue("SCORE.INTER");
+        double scoreIntra = spModel->GetDataValue("SCORE.INTRA");
         scoreVec.push_back(score);
         rmsVec.push_back(rms);
 
@@ -172,15 +172,15 @@ int main(int argc, char *argv[]) {
     ////////////////////////////////////////////////////
     RbtDoubleListConstIter sIter = scoreVec.begin();
     RbtDoubleListConstIter rIter = rmsVec.begin();
-    RbtDouble minScore = *std::min_element(scoreVec.begin(), scoreVec.end());
-    RbtDouble zGood(0.0);
-    RbtDouble zPartial(0.0);
-    RbtDouble zBad(0.0);
+    double minScore = *std::min_element(scoreVec.begin(), scoreVec.end());
+    double zGood(0.0);
+    double zPartial(0.0);
+    double zBad(0.0);
     for (; (sIter != scoreVec.end()) && (rIter != rmsVec.end());
          sIter++, rIter++) {
-      RbtDouble de = (*sIter) - minScore;
-      RbtDouble z = exp(-de / (8.314e-3 * 298.0));
-      RbtDouble r = (*rIter);
+      double de = (*sIter) - minScore;
+      double z = exp(-de / (8.314e-3 * 298.0));
+      double r = (*rIter);
       if (r < 2.05)
         zGood += z;
       else if (r < 3.05)

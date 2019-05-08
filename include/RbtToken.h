@@ -38,15 +38,15 @@ public:
   //  void SetVbleNumber(RbtInt);
 
   //  void copy(const RbtToken &);
-  RbtBool IsVble();
-  RbtBool IsLog();
-  RbtBool IsExp();
-  RbtBool IsAdd();
-  RbtBool IsSub();
-  RbtBool IsMul();
-  RbtBool IsDiv();
-  RbtBool IsAnd();
-  RbtBool IsIf();
+  bool IsVble();
+  bool IsLog();
+  bool IsExp();
+  bool IsAdd();
+  bool IsSub();
+  bool IsMul();
+  bool IsDiv();
+  bool IsAnd();
+  bool IsIf();
 
   //  RbtBool operator==(const RbtToken&) const;
   //  ostream& Print(ostream&) const;
@@ -60,7 +60,7 @@ private:
   RbtToken(); // Default constructor disabled
   RbtCommands comm;
   const RbtVble &vble;
-  RbtBool isvble;
+  bool isvble;
 };
 
 // Useful typedefs

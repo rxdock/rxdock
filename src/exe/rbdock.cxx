@@ -107,31 +107,31 @@ int main(int argc, char *argv[]) {
 
   // Command line arguments and default values
   std::string strLigandMdlFile;
-  RbtBool bOutput(false);
+  bool bOutput(false);
   std::string strRunName;
   std::string strReceptorPrmFile; // Receptor param file
   std::string strParamFile;       // Docking run param file
   std::string strFilterFile;      // Filter file
-  RbtInt nDockingRuns(
+  int nDockingRuns(
       0); // Init to zero, so can detect later whether user explictly typed -n
 
   // Params for target score
-  RbtBool bTarget(false);
-  RbtBool bStop(true); // DM 25 May 2001 - if true, stop once target is met
-  RbtBool bDockingRuns(false); // is argument -n present?
-  RbtDouble dTargetScore(0.0);
-  RbtBool bFilter(false);
+  bool bTarget(false);
+  bool bStop(true);         // DM 25 May 2001 - if true, stop once target is met
+  bool bDockingRuns(false); // is argument -n present?
+  double dTargetScore(0.0);
+  bool bFilter(false);
 
-  RbtBool bPosIonise(false);
-  RbtBool bNegIonise(false);
-  RbtBool bImplH(true); // if true, read only polar hydrogens from SD file, else
-                        // read all H's present
-  RbtBool bSeed(false); // Random number seed (default = from system clock)
-  RbtInt nSeed(0);
-  RbtBool bTrace(false);
-  RbtInt iTrace(0); // Trace level, for debugging
+  bool bPosIonise(false);
+  bool bNegIonise(false);
+  bool bImplH(true); // if true, read only polar hydrogens from SD file, else
+                     // read all H's present
+  bool bSeed(false); // Random number seed (default = from system clock)
+  int nSeed(0);
+  bool bTrace(false);
+  int iTrace(0); // Trace level, for debugging
 
-  RbtDouble val(0.0);
+  double val(0.0);
   char c;
   while ((c = getopt(argc, argv, "i:o:r:p:n:PDHtCT:s:")) != -1) {
     switch (c) {
@@ -418,7 +418,7 @@ int main(int argc, char *argv[]) {
     RbtModelList solventList = prmFactory.CreateSolvent();
     spWS->SetSolvent(solventList);
     if (spWS->hasSolvent()) {
-      RbtInt nSolvent = spWS->GetSolvent().size();
+      int nSolvent = spWS->GetSolvent().size();
       cout << endl << nSolvent << " solvent molecules registered" << endl;
     } else {
       cout << endl << "No solvent" << endl;
@@ -456,7 +456,7 @@ int main(int argc, char *argv[]) {
     // MdlFileSource constructor
     RbtMolecularFileSourcePtr spMdlFileSource(
         new RbtMdlFileSource(strLigandMdlFile, bPosIonise, bNegIonise, bImplH));
-    for (RbtInt nRec = 1; spMdlFileSource->FileStatusOK();
+    for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
       cout.setf(ios_base::left, ios_base::adjustfield);
       cout << endl
@@ -502,13 +502,13 @@ int main(int argc, char *argv[]) {
 
         // DM 10 Dec 1999 - if in target mode, loop until target score is
         // reached
-        RbtBool bTargetMet = false;
+        bool bTargetMet = false;
 
         ////////////////////////////////////////////////////
         // MAIN LOOP OVER EACH SIMULATED ANNEALING RUN
         // Create a history file sink, just in case it's needed by any
         // of the transforms
-        RbtInt iRun = 1;
+        int iRun = 1;
         // need to check this here. The termination
         // filter is only run once at least
         // one docking run has been done.
@@ -526,8 +526,8 @@ int main(int argc, char *argv[]) {
               spWS->SetHistorySink(spHistoryFileSink);
             }
             spWS->Run(); // Dock!
-            RbtBool bterm = spfilter->Terminate();
-            RbtBool bwrite = spfilter->Write();
+            bool bterm = spfilter->Terminate();
+            bool bwrite = spfilter->Write();
             if (bterm)
               bTargetMet = true;
             if (bOutput && bwrite) {

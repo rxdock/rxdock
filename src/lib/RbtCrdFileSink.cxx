@@ -57,7 +57,7 @@ void RbtCrdFileSink::Render() throw(RbtError) {
       RbtStringList titleList(spModel->GetTitleList());
       // DM 8 June 1999 - limit number of title lines output to a maximum of 1
       RbtStringListConstIter iter;
-      RbtInt nLines;
+      int nLines;
       for (iter = titleList.begin(), nLines = 0;
            (iter != titleList.end()) && (nLines < 1); iter++, nLines++) {
         // Add an initial star if the title does not already commence with a

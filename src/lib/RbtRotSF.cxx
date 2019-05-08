@@ -57,7 +57,7 @@ void RbtRotSF::SetupLigand() {
 
 void RbtRotSF::SetupScore() {}
 
-RbtDouble RbtRotSF::RawScore() const { return RbtDouble(nRot); }
+double RbtRotSF::RawScore() const { return double(nRot); }
 
 void RbtRotSF::ParameterUpdated(const std::string &strName) {
   if (strName == _INCNH3) {

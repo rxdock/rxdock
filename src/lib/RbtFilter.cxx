@@ -32,7 +32,7 @@ std::string RbtFilter::_CT("RbtFilter");
 // filter (filter = true) or if strfilter is the name of a file
 // that contains the filter (filter = false) This is the most
 // common, so filter's value by default is false
-RbtFilter::RbtFilter(std::string strfilter, RbtBool filter)
+RbtFilter::RbtFilter(std::string strfilter, bool filter)
     : RbtBaseObject(_CT, "Filter") {
 #ifdef _DEBUG
   cout << _CT << " default constructor" << endl;
@@ -48,7 +48,7 @@ RbtFilter::RbtFilter(std::string strfilter, RbtBool filter)
   filteridx = 0;
   contextp = RbtContextPtr(new RbtStringContext(filterfile));
   RbtParser p;
-  for (RbtInt i = 0; i < nTermFilters; i++) {
+  for (int i = 0; i < nTermFilters; i++) {
     cout << "\n------------- Terminate filter " << i << "------------" << endl;
     std::string s;
     getline(*filterfile, s, ',');
@@ -60,7 +60,7 @@ RbtFilter::RbtFilter(std::string strfilter, RbtBool filter)
     terminationFilters.push_back(filter);
   }
   (*filterfile) >> nWriteFilters;
-  for (RbtInt i = 0; i < nWriteFilters; i++) {
+  for (int i = 0; i < nWriteFilters; i++) {
     cout << "\n------------- Write filter -----------------" << endl;
     std::string s;
     getline(*filterfile, s, ',');
@@ -145,16 +145,16 @@ void RbtFilter::SetupScore() {
 }
 
 // Finished with ligand?
-RbtBool RbtFilter::Terminate() {
+bool RbtFilter::Terminate() {
   SetupScore();
-  RbtBool bTerm;
+  bool bTerm;
   if (nTermFilters > 0) {
     EvaluateVisitor visitor2(contextp);
     terminationFilters[filteridx]->Accept(visitor2);
     //    cout << filteridx << "\t"
     //         << terminationFilters[filteridx]->GetValue()
     //         << "\tnruns: " << nruns << endl;
-    RbtDouble val = terminationFilters[filteridx]->GetValue();
+    double val = terminationFilters[filteridx]->GetValue();
     if (val == STOP) {
       if (GetTrace() > 1) {
         cout << "Terminate with this ligand\n";
@@ -215,14 +215,14 @@ RbtBool RbtFilter::Terminate() {
 }
 
 // Output conformation?
-RbtBool RbtFilter::Write() {
+bool RbtFilter::Write() {
 
-  RbtBool bWrite = true;
-  for (RbtInt i = 0; i < nWriteFilters; i++) {
+  bool bWrite = true;
+  for (int i = 0; i < nWriteFilters; i++) {
     EvaluateVisitor visitor2(contextp);
     writtingFilter[i]->Accept(visitor2);
     //    cout << writtingFilter[i]->GetValue() << endl;
-    RbtDouble val = writtingFilter[i]->GetValue();
+    double val = writtingFilter[i]->GetValue();
     if (val >= 0.0) {
       bWrite = false;
       break;

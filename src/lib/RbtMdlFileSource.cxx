@@ -19,8 +19,8 @@
 #include "RbtPlane.h"
 
 RbtMdlFileSource::RbtMdlFileSource(const std::string &fileName,
-                                   RbtBool bPosIonisable, RbtBool bNegIonisable,
-                                   RbtBool bImplHydrogens)
+                                   bool bPosIonisable, bool bNegIonisable,
+                                   bool bImplHydrogens)
     : RbtBaseMolecularFileSource(
           fileName, IDS_MDL_RECDELIM,
           "MDL_FILE_SOURCE"), // Call base class constructor
@@ -49,7 +49,7 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
 
       //////////////////////////////////////////////////////////
       // 1a. Store title lines (first 3)..
-      RbtInt nTitleRec = 3;
+      int nTitleRec = 3;
       m_titleList.reserve(nTitleRec); // Allocate enough memory for the vector
       while ((m_titleList.size() < nTitleRec) && (fileIter != fileEnd)) {
         m_titleList.push_back(*fileIter++);
@@ -70,8 +70,8 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
 
       //////////////////////////////////////////////////////////
       // 2. Read number of atoms and bonds
-      RbtInt nAtomRec;
-      RbtInt nBondRec;
+      int nAtomRec;
+      int nBondRec;
       if (fileIter != fileEnd) {
         // The SD file format only uses a field width of 3 to store nAtoms,
         // nBonds so for values over 99 the two fields coalesce. Workaround is
@@ -91,12 +91,11 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
       // 3a. Create and store atoms
       m_atomList.reserve(nAtomRec); // Allocate enough memory for the vector
 
-      RbtInt nAtomId(0);
+      int nAtomId(0);
       RbtCoord coord;             // X,Y,Z coords
       std::string strElementName; // element name
-      RbtInt nMassDiff;           // mass difference
-      RbtInt
-          nFormalCharge; // formal charge (MDL stores in a funny way, see below)
+      int nMassDiff;              // mass difference
+      int nFormalCharge; // formal charge (MDL stores in a funny way, see below)
       std::string strSegmentName(
           "H");                      // constant (i.e. one segment, one residue)
       std::string strSubunitId("1"); // constant
@@ -109,7 +108,7 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
 
         // Look up the element data
         RbtElementData elData = m_spElementData->GetElementData(strElementName);
-        RbtInt nAtomicNo = elData.atomicNo;
+        int nAtomicNo = elData.atomicNo;
 
         // Correct the formal charge (for non-zero charges, MDL stores as
         // 4-charge) i.e. -3 is stored as 7, -2 as 6, -1 as 5, 0 as 0 or 4 +1 as
@@ -152,10 +151,10 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
       // 4a. Create and store bonds
       m_bondList.reserve(nBondRec); // Allocate enough memory for the vector
 
-      RbtInt nBondId(0);
-      RbtUInt idxAtom1;
-      RbtUInt idxAtom2;
-      RbtInt nBondOrder;
+      int nBondId(0);
+      unsigned int idxAtom1;
+      unsigned int idxAtom2;
+      int nBondOrder;
 
       while ((m_bondList.size() < nBondRec) && (fileIter != fileEnd)) {
         // The SD file format only uses a field width of 3 to store atom1,atom2
@@ -353,7 +352,7 @@ void RbtMdlFileSource::SetupHybridState() throw(RbtError) {
           RbtPlane p = RbtPlane(c0 + v1.Unit(), c0 + v2.Unit(),
                                 c0 + v3.Unit()); // Plane of three substs
           // This is the signed distance from the atom to the plane
-          RbtDouble dist = fabs(Rbt::DistanceFromPointToPlane(c0, p));
+          double dist = fabs(Rbt::DistanceFromPointToPlane(c0, p));
 #ifdef _DEBUG
           cout << "Distance from " << (*iter)->GetAtomName()
                << " to plane of substituents=" << dist << endl;
@@ -387,9 +386,9 @@ void RbtMdlFileSource::SetupTheRest() throw(RbtError) {
   // DM 22 Jul 1999 - only increase the radius for sp3 atoms with implicit
   // hydrogens For sp2 and aromatic, leave as is
   Rbt::isHybridState_eq bIsSP3(RbtAtom::SP3);
-  RbtDouble dImplRadIncr = m_spElementData->GetImplicitRadiusIncr();
+  double dImplRadIncr = m_spElementData->GetImplicitRadiusIncr();
   // Radius increment and predicate for H-bonding hydrogens
-  RbtDouble dHBondRadIncr = m_spElementData->GetHBondRadiusIncr();
+  double dHBondRadIncr = m_spElementData->GetHBondRadiusIncr();
   Rbt::isAtomHBondDonor bIsHBondDonor;
   // Element data for hydrogen
   RbtElementData elHData = m_spElementData->GetElementData(1);
@@ -397,16 +396,16 @@ void RbtMdlFileSource::SetupTheRest() throw(RbtError) {
   for (RbtAtomListIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter++) {
     // Get the element data for this atom
-    RbtInt nAtomicNo = (*iter)->GetAtomicNo();
+    int nAtomicNo = (*iter)->GetAtomicNo();
     RbtElementData elData = m_spElementData->GetElementData(nAtomicNo);
-    RbtDouble vdwRadius = elData.vdwRadius;
+    double vdwRadius = elData.vdwRadius;
     // Determine valency
-    RbtInt nFormalCharge = (*iter)->GetFormalCharge();
-    RbtInt nTotalFormalBondOrder = (*iter)->GetTotalFormalBondOrder();
-    RbtInt nValency = nTotalFormalBondOrder - nFormalCharge;
+    int nFormalCharge = (*iter)->GetFormalCharge();
+    int nTotalFormalBondOrder = (*iter)->GetTotalFormalBondOrder();
+    int nValency = nTotalFormalBondOrder - nFormalCharge;
     // Is it within range ?
-    RbtInt nMinVal = elData.minVal;
-    RbtInt nMaxVal = elData.maxVal;
+    int nMinVal = elData.minVal;
+    int nMaxVal = elData.maxVal;
     // If it is too low, then add implicit hydrogens but only for C,N,or S
     if (nValency < nMinVal) {
       switch (nAtomicNo) {
@@ -735,11 +734,11 @@ void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) throw(RbtError) {
   // Element data for hydrogen
   RbtElementData elHData = m_spElementData->GetElementData(1);
   // Radius increment for H-bonding hydrogens
-  RbtDouble dHBondRadIncr = m_spElementData->GetHBondRadiusIncr();
+  double dHBondRadIncr = m_spElementData->GetHBondRadiusIncr();
 
   // Attributes for new atom (to be defined)
-  RbtCoord hCoord;   // New coord
-  RbtDouble hRadius; // Vdw radius
+  RbtCoord hCoord; // New coord
+  double hRadius;  // Vdw radius
 
   // Attributes for heavy atom
   const RbtCoord &c0 = spAtom->GetCoords();
@@ -758,7 +757,7 @@ void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) throw(RbtError) {
     if (bondedAtomList.size() != 3)
       throw RbtModelError(_WHERE_, spAtom->GetAtomName() +
                                        " has inconsistent atom type");
-    RbtDouble dNHLength = 1.00;                         // N-H bond length
+    double dNHLength = 1.00;                            // N-H bond length
     RbtVector v1 = bondedAtomList[0]->GetCoords() - c0; // Vector to subst 1
     RbtVector v2 = bondedAtomList[1]->GetCoords() - c0; // Vector to subst 2
     RbtVector v3 = bondedAtomList[2]->GetCoords() - c0; // Vector to subst 3
@@ -767,9 +766,9 @@ void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) throw(RbtError) {
     RbtPlane p = RbtPlane(c0 + v1.Unit(), c0 + v2.Unit(),
                           c0 + v3.Unit()); // Plane of three substs
     // This is the signed distance from the nitrogen to the plane
-    RbtDouble dist = Rbt::DistanceFromPointToPlane(c0, p);
+    double dist = Rbt::DistanceFromPointToPlane(c0, p);
     // Take sign so we go in the opposite direction to the other substituents
-    RbtInt iSign = (dist > 0) ? 1 : -1;
+    int iSign = (dist > 0) ? 1 : -1;
     hCoord = c0 + (iSign * dNHLength * p.VNorm()); // New H coordinate
     hRadius = elHData.vdwRadius + dHBondRadIncr;   // New H vdw radius
     // Adjust the attributes on the Nitrogen
@@ -791,7 +790,7 @@ void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) throw(RbtError) {
     if (bondedAtomList.size() != 2)
       throw RbtModelError(_WHERE_, spAtom->GetAtomName() +
                                        " has inconsistent atom type");
-    RbtDouble dNHLength = 1.00;                         // N-H bond length
+    double dNHLength = 1.00;                            // N-H bond length
     RbtVector v1 = bondedAtomList[0]->GetCoords() - c0; // Vector to subst 1
     RbtVector v2 = bondedAtomList[1]->GetCoords() - c0; // Vector to subst 2
     // Take unit vectors along each bond vector to eliminate the effect of
@@ -812,7 +811,7 @@ void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) throw(RbtError) {
     return;
 
   // Construct the new hydrogen atom (constructor only accepts the 2D params)
-  RbtInt nAtomId = m_atomList.size() + 1;
+  int nAtomId = m_atomList.size() + 1;
   ostringstream ostr;
   ostr << "H" << nAtomId;
   std::string strAtomName(ostr.str());
@@ -836,7 +835,7 @@ void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) throw(RbtError) {
   m_atomList.push_back(spHAtom);
 
   // Construct a new bond to the hydrogen
-  RbtInt nBondId = m_bondList.size() + 1;
+  int nBondId = m_bondList.size() + 1;
   RbtBondPtr spBond(new RbtBond(nBondId, spAtom, spHAtom, 1)); // Bond order = 1
   m_bondList.push_back(spBond);
 }
@@ -872,9 +871,9 @@ void RbtMdlFileSource::SetupNSP3Plus() {
     // Get the list of hydrogens
     RbtAtomList hbdAtomList =
         Rbt::GetAtomList(Rbt::GetBondedAtomList(*iter), bIsH);
-    RbtDouble nCharge = (*iter)->GetGroupCharge();      // Total charge
-    RbtDouble pCharge = nCharge / (hbdAtomList.size()); // Partial charge
-    (*iter)->SetGroupCharge(0.0); // Neutralise the nitrogen
+    double nCharge = (*iter)->GetGroupCharge();      // Total charge
+    double pCharge = nCharge / (hbdAtomList.size()); // Partial charge
+    (*iter)->SetGroupCharge(0.0);                    // Neutralise the nitrogen
     for (RbtAtomListIter hIter = hbdAtomList.begin();
          hIter != hbdAtomList.end(); hIter++) {
       (*hIter)->SetGroupCharge(pCharge); // Charge up the hydrogens
@@ -974,12 +973,12 @@ void RbtMdlFileSource::SetupNSP2Plus() {
     }
 
     // Divide up the charge
-    RbtInt nH = hbdAtomList.size();
+    int nH = hbdAtomList.size();
     // DM 23 Nov 2000 - only transfer the charge if there is at least one
     // attached H
     if (nH > 0) {
-      RbtDouble nCharge = (*iter)->GetGroupCharge();
-      RbtDouble pCharge = nCharge / nH;
+      double nCharge = (*iter)->GetGroupCharge();
+      double pCharge = nCharge / nH;
       (*iter)->SetGroupCharge(0.0); // N_SP2+
       for (RbtAtomListIter hIter = hbdAtomList.begin();
            hIter != hbdAtomList.end(); hIter++) {
@@ -1033,9 +1032,9 @@ void RbtMdlFileSource::SetupOTRIMinus() {
       oAtomList.insert(oAtomList.end(), otrimAtomList.begin(),
                        otrimAtomList.end());
       // Total charge is the number of O_TRI-
-      RbtDouble nCharge = otrimAtomList.size(); // Total charge
+      double nCharge = otrimAtomList.size(); // Total charge
       // Partial charge is total / divided by number of oxygens (O_SP2 + O_TRI-)
-      RbtDouble pCharge = -nCharge / (oAtomList.size()); // Partial charge
+      double pCharge = -nCharge / (oAtomList.size()); // Partial charge
       for (RbtAtomListIter oIter = oAtomList.begin(); oIter != oAtomList.end();
            oIter++) {
         (*oIter)->SetGroupCharge(pCharge); // Charge up the oxygens
@@ -1055,8 +1054,8 @@ void RbtMdlFileSource::SetupOTRIMinus() {
 // except that the largest segment is renamed back to H
 void RbtMdlFileSource::SetupSegmentNames() {
   std::string strLargestSegName; // Name of the largest segment
-  RbtInt nMaxSize(0);            // Size of the largest segment
-  RbtInt nSeg;
+  int nMaxSize(0);               // Size of the largest segment
+  int nSeg;
   RbtAtomListIter seed;
   for (nSeg = 1, seed = m_atomList.begin(); seed != m_atomList.end();
        nSeg++, seed = Rbt::FindAtom(m_atomList, Rbt::isSegmentName_eq("H"))) {
@@ -1072,7 +1071,7 @@ void RbtMdlFileSource::SetupSegmentNames() {
     pendingAtomList.push_back(*seed);
     // While we still have atoms to process
     // DM 12 May 2000 - correct nSize for ANSI scoping
-    RbtInt nSize(0);
+    int nSize(0);
     for (nSize = 0; !pendingAtomList.empty(); nSize++) {
       // Take the last atom from the list and remove it
       RbtAtomPtr spAtom = pendingAtomList.back();

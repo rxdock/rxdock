@@ -83,15 +83,15 @@ void RbtSimplexTransform::Execute() {
   RbtBaseSF *pSF = pWorkSpace->GetSF();
   if (pSF == NULL) // Return if workspace does not have a scoring function
     return;
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
   pWorkSpace->ClearPopulation();
-  RbtInt maxcalls = GetParameter(_MAX_CALLS);
-  RbtInt ncycles = GetParameter(_NCYCLES);
-  RbtDouble stopping = GetParameter(_STOPPING_STEP_LENGTH);
-  RbtDouble convergence = GetParameter(_CONVERGENCE);
-  RbtDouble stepSize = GetParameter(_STEP_SIZE);
-  RbtDouble partDist = GetParameter(_PARTITION_DIST);
+  int maxcalls = GetParameter(_MAX_CALLS);
+  int ncycles = GetParameter(_NCYCLES);
+  double stopping = GetParameter(_STOPPING_STEP_LENGTH);
+  double convergence = GetParameter(_CONVERGENCE);
+  double stepSize = GetParameter(_STEP_SIZE);
+  double partDist = GetParameter(_PARTITION_DIST);
   RbtRequestPtr spPartReq(new RbtSFPartitionRequest(partDist));
   RbtRequestPtr spClearPartReq(new RbtSFPartitionRequest(0.0));
   pSF->HandleRequest(spPartReq);
@@ -101,9 +101,9 @@ void RbtSimplexTransform::Execute() {
   // we have to compile a vector of variable step sizes for the NMSearch
   RbtDoubleList sv;
   m_chrom->GetStepVector(sv);
-  RbtInt nsv = sv.size();
-  RbtDouble *steps = new RbtDouble[nsv];
-  for (RbtInt i = 0; i < nsv; ++i) {
+  int nsv = sv.size();
+  double *steps = new double[nsv];
+  for (int i = 0; i < nsv; ++i) {
     steps[i] = sv[i] * stepSize;
   }
 
@@ -111,14 +111,14 @@ void RbtSimplexTransform::Execute() {
   NMSearch *ssearch;
   NMSearch::SetMaxCalls(maxcalls);
   NMSearch::SetStoppingLength(stopping);
-  RbtInt calls = 0;
-  RbtDouble initScore = pSF->Score(); // Current score
-  RbtDouble min = initScore;
+  int calls = 0;
+  double initScore = pSF->Score(); // Current score
+  double min = initScore;
   RbtDoubleList vc; // Vector representation of chromosome
-  RbtInt N = ncycles;
+  int N = ncycles;
   // Energy change between cycles - initialise so as not to terminate loop
   // immediately
-  RbtDouble delta = -convergence - 1.0;
+  double delta = -convergence - 1.0;
 
   if (iTrace > 0) {
     cout.precision(3);
@@ -138,7 +138,7 @@ void RbtSimplexTransform::Execute() {
     }
   }
 
-  for (RbtInt i = 0; (i < N) && (delta < -convergence); i++) {
+  for (int i = 0; (i < N) && (delta < -convergence); i++) {
     if (partDist > 0.0) {
       pSF->HandleRequest(spPartReq);
     }
@@ -152,7 +152,7 @@ void RbtSimplexTransform::Execute() {
     }
     // Do the simplex search and retrieve the minimum
     ssearch->ExploratoryMoves();
-    RbtDouble newmin = ssearch->GetMinVal();
+    double newmin = ssearch->GetMinVal();
     delta = newmin - min;
     calls += ssearch->GetFunctionCalls();
     m_chrom->SetVector(ssearch->GetMinPoint());

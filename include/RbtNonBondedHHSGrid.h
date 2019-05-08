@@ -24,7 +24,8 @@ class RbtNonBondedHHSGrid : public RbtBaseGrid {
 public:
   static std::string _CT;
   RbtNonBondedHHSGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
-                      RbtUInt NX, RbtUInt NY, RbtUInt NZ, RbtUInt NPad = 0);
+                      unsigned int NX, unsigned int NY, unsigned int NZ,
+                      unsigned int NPad = 0);
   RbtNonBondedHHSGrid(istream &istr);
   ~RbtNonBondedHHSGrid();
 
@@ -37,10 +38,10 @@ public:
   virtual void Write(ostream &ostr) const;
   virtual void Read(istream &istr);
 
-  const HHS_SolvationRList &GetHHSList(RbtUInt iXYZ) const;
+  const HHS_SolvationRList &GetHHSList(unsigned int iXYZ) const;
   const HHS_SolvationRList &GetHHSList(const RbtCoord &c) const;
 
-  void SetHHSLists(HHS_Solvation *pHHS, RbtDouble radius);
+  void SetHHSLists(HHS_Solvation *pHHS, double radius);
   void ClearHHSLists(void);
 
 protected:

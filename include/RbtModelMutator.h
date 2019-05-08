@@ -27,7 +27,7 @@ class RbtModel; // forward declaration
 #ifdef _NDEBUG
 const RbtBool MUT_CHECK = true;
 #else
-const RbtBool MUT_CHECK = true;
+const bool MUT_CHECK = true;
 #endif //_NDEBUG
 
 class RbtModelMutator {

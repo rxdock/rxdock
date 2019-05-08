@@ -20,7 +20,7 @@ std::string RbtGPPopulation::_CT("RbtGPPopulation");
 
 // Constructor
 
-RbtGPPopulation::RbtGPPopulation(RbtInt s, RbtInt nr, RbtGPFitnessFunctionPtr f,
+RbtGPPopulation::RbtGPPopulation(int s, int nr, RbtGPFitnessFunctionPtr f,
                                  RbtReturnTypeArray &it,
                                  RbtReturnTypeArray &sft)
     : m_rand(Rbt::GetRbtRand()) {
@@ -37,7 +37,7 @@ RbtGPPopulation::RbtGPPopulation(RbtInt s, RbtInt nr, RbtGPFitnessFunctionPtr f,
   newpop = RbtGPGenomeList(nrepl);
   for (RbtGPGenomeListIter iter = newpop.begin(); iter != newpop.end(); iter++)
     *iter = RbtGPGenomePtr(new RbtGPGenome());
-  psum = new RbtDouble[popsize];
+  psum = new double[popsize];
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
@@ -53,12 +53,12 @@ RbtGPPopulation::RbtGPPopulation(const RbtGPPopulation &p)
   sfttrain = p.sfttrain;
   c = 2.0; // default value for the sigma truncation multiplier
   pop = RbtGPGenomeList(popsize);
-  for (RbtInt i = 0; i < p.popsize; i++)
+  for (int i = 0; i < p.popsize; i++)
     pop[i] = p.pop[i];
   newpop = RbtGPGenomeList(p.newpop.size());
-  for (RbtInt i = 0; i < p.newpop.size(); i++)
+  for (int i = 0; i < p.newpop.size(); i++)
     newpop[i] = p.newpop[i];
-  psum = new RbtDouble[popsize];
+  psum = new double[popsize];
   _RBTOBJECTCOUNTER_COPYCONSTR_(_CT);
 }
 
@@ -66,14 +66,14 @@ RbtGPPopulation::RbtGPPopulation(const RbtGPPopulation &p)
 
 RbtGPPopulation::~RbtGPPopulation() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
-RbtInt RbtGPPopulation::GetSize() { return popsize; }
+int RbtGPPopulation::GetSize() { return popsize; }
 
-RbtInt RbtGPPopulation::GetNrepl() { return nrepl; }
+int RbtGPPopulation::GetNrepl() { return nrepl; }
 
 // Initialises the population by calling the initializer for each genome
-void RbtGPPopulation::Initialise(RbtDouble hitlimit, RbtBool function) {
-  RbtDouble bestFitness = -FLT_MAX, fit;
-  for (RbtInt i = 0; i < popsize; i++) {
+void RbtGPPopulation::Initialise(double hitlimit, bool function) {
+  double bestFitness = -FLT_MAX, fit;
+  for (int i = 0; i < popsize; i++) {
     pop[i]->Initialise();
     fit = ff->CalculateFitness(pop[i], ittrain, sfttrain, function);
     cout << "init: " << ittrain.size() << endl;
@@ -88,21 +88,21 @@ void RbtGPPopulation::Initialise(RbtDouble hitlimit, RbtBool function) {
 // indidivual is created. But we need to make a call to this function when the
 // slope is changed, to make sure all the individuals get the new value for
 // their scoring function before continuing with the GA
-void RbtGPPopulation::Eval(RbtDouble hitlimit, RbtBool function) {
-  for (RbtInt i = 0; i < popsize; i++)
+void RbtGPPopulation::Eval(double hitlimit, bool function) {
+  for (int i = 0; i < popsize; i++)
     ff->CalculateFitness(pop[i], ittrain, sfttrain, function);
 }
 
 // Size 2 probabilistic tournament selection, where the winner of the
 // tournament is accepted with a probability of tp. Otherwise the
 // loser is accepted.
-RbtGPGenomePtr RbtGPPopulation::TSelect(RbtDouble tp) const {
-  RbtInt ind1, ind2;
+RbtGPGenomePtr RbtGPPopulation::TSelect(double tp) const {
+  int ind1, ind2;
   ind1 = m_rand.GetRandomInt(popsize);
   do {
     ind2 = m_rand.GetRandomInt(popsize);
   } while (ind1 == ind2);
-  RbtDouble r = m_rand.GetRandom01();
+  double r = m_rand.GetRandom01();
   if (pop[ind1]->GetFitness() > pop[ind2]->GetFitness())
     // winner is ind1
     if (r < tp)
@@ -121,15 +121,14 @@ RbtGPGenomePtr RbtGPPopulation::Select(std::string selector) const {
   return TSelect(0.7);
 }
 
-void RbtGPPopulation::GAstep(std::string selector, RbtDouble pcross,
-                             RbtDouble pmut, RbtDouble mean, RbtDouble variance,
-                             RbtDouble hitlimit,
-                             RbtBool function) throw(RbtError) {
+void RbtGPPopulation::GAstep(std::string selector, double pcross, double pmut,
+                             double mean, double variance, double hitlimit,
+                             bool function) throw(RbtError) {
   RbtGPGenomePtr mother, father;
-  for (RbtInt i = 0; i < nrepl - 1; i++) {
+  for (int i = 0; i < nrepl - 1; i++) {
     mother = Select(selector);
     father = Select(selector);
-    RbtInt j = 0;
+    int j = 0;
     while (father == mother) {
       father = Select(selector);
       if (j > 100)
@@ -146,8 +145,8 @@ void RbtGPPopulation::GAstep(std::string selector, RbtDouble pcross,
 
   // calculate the objective values and
   // sort newpop  newpop = RbtGPGenomeList (p.newpop.size());
-  RbtDouble bestFitness = -FLT_MAX, fit;
-  for (RbtInt i = 0; i < newpop.size(); i++) {
+  double bestFitness = -FLT_MAX, fit;
+  for (int i = 0; i < newpop.size(); i++) {
     *(pop[i]) = *(newpop[i]);
     fit = ff->CalculateFitness(pop[i], ittrain, sfttrain, function);
     if (fit > bestFitness) {
@@ -157,20 +156,19 @@ void RbtGPPopulation::GAstep(std::string selector, RbtDouble pcross,
   }
 }
 
-void RbtGPPopulation::EPstep(std::string selector, RbtDouble pcross,
-                             RbtDouble pmut, RbtDouble mean, RbtDouble variance,
-                             RbtDouble hitlimit,
-                             RbtBool function) throw(RbtError) {
+void RbtGPPopulation::EPstep(std::string selector, double pcross, double pmut,
+                             double mean, double variance, double hitlimit,
+                             bool function) throw(RbtError) {
   *(newpop[0]) = *(pop[bestInd]);
-  for (RbtInt i = 1; i < popsize; i++) {
+  for (int i = 1; i < popsize; i++) {
     *(newpop[i]) = *(pop[bestInd]);
     //        cout << "new ind\n";
     newpop[i]->Mutate(pmut);
   }
   // calculate the objective values and
   // sort newpop  newpop = RbtGPGenomeList (p.newpop.size());
-  RbtDouble bestFitness = -FLT_MAX, fit;
-  for (RbtInt i = 0; i < newpop.size(); i++) {
+  double bestFitness = -FLT_MAX, fit;
+  for (int i = 0; i < newpop.size(); i++) {
     *(pop[i]) = *(newpop[i]);
     fit = ff->CalculateFitness(pop[i], ittrain, sfttrain, function);
     if (fit >= bestFitness) {
@@ -184,7 +182,7 @@ void RbtGPPopulation::EPstep(std::string selector, RbtDouble pcross,
 RbtGPGenomePtr RbtGPPopulation::Best() const { return (pop[bestInd]); }
 
 ostream &RbtGPPopulation::Print(ostream &s) const {
-  for (RbtInt i = 0; i < pop.size(); i++) {
+  for (int i = 0; i < pop.size(); i++) {
     pop[i]->Print(s);
     s << pop[i]->GetFitness() << endl;
   }
@@ -205,7 +203,7 @@ void RbtGPPopulation::ScaleFitness() {
   }
   ave = total / popsize;
   // calculate variance
-  RbtDouble ss = 0.0;
+  double ss = 0.0;
   for (int i = 0; i < popsize; i++) {
     ss += (pop[i]->GetFitness() - ave) * (pop[i]->GetFitness() - ave);
   }
@@ -214,7 +212,7 @@ void RbtGPPopulation::ScaleFitness() {
   // calculate scaled values using sigma truncation
   // Goldberg page 124
   for (int i = 0; i < popsize; i++) {
-    RbtDouble f = pop[i]->GetFitness() - (ave - c * stdev);
+    double f = pop[i]->GetFitness() - (ave - c * stdev);
     if (f < 0.0)
       f = 0.0;
     pop[i]->SetFitness(f);
@@ -222,8 +220,8 @@ void RbtGPPopulation::ScaleFitness() {
 }
 
 RbtGPGenomePtr RbtGPPopulation::RwSelect() const {
-  RbtDouble cutoff;
-  RbtInt i, upper, lower;
+  double cutoff;
+  int i, upper, lower;
 
   cutoff = m_rand.GetRandom01();
   lower = 0;
@@ -241,8 +239,8 @@ RbtGPGenomePtr RbtGPPopulation::RwSelect() const {
   return (pop[lower]);
 }
 
-void RbtGPPopulation::Swap(RbtGPPopulationPtr p, RbtInt nmigr) {
-  for (RbtInt i = 0; i < nmigr; i++) {
+void RbtGPPopulation::Swap(RbtGPPopulationPtr p, int nmigr) {
+  for (int i = 0; i < nmigr; i++) {
     RbtGPGenomeListIter where = find(pop.begin(), pop.end(), p->pop[i]);
     // if (!where)
     if (where == pop.end())
@@ -252,9 +250,9 @@ void RbtGPPopulation::Swap(RbtGPPopulationPtr p, RbtInt nmigr) {
 }
 
 RbtGPGenomePtr RbtGPPopulation::RkSelect() const {
-  RbtDouble bias = 1.9;
-  RbtDouble index;
-  RbtInt max = popsize; // index will be between 0 and popsize - 1
+  double bias = 1.9;
+  double index;
+  int max = popsize; // index will be between 0 and popsize - 1
   index = max *
           (bias - sqrt(bias * bias - 4.0 * (bias - 1) * m_rand.GetRandom01())) /
           2.0 / (bias - 1);
@@ -263,7 +261,7 @@ RbtGPGenomePtr RbtGPPopulation::RkSelect() const {
     index = 0.0;
   }
   // DM 25/04/05 - avoid compiler warning by explicitly converting double to int
-  RbtInt intIndex = (int)floor(index);
+  int intIndex = (int)floor(index);
   return (pop[intIndex]);
 }
 

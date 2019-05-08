@@ -58,7 +58,7 @@ void RbtPolarIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // We can only annotate the ligand-receptor interactions
     // as the rDock Viewer annotation format is hardwired to expect
     // ligand-receptor atom indices
-    RbtDouble rs = InterScore();
+    double rs = InterScore();
     // XB uncommented next line
     //    EnableAnnotations(false);
     rs += LigandSolventScore();
@@ -71,13 +71,13 @@ void RbtPolarIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
 
     // Now deal with the system raw scores which need to be stored in
     // SCORE.INTER.POLAR
-    RbtDouble system_rs =
+    double system_rs =
         ReceptorScore() + SolventScore() + ReceptorSolventScore();
     if (system_rs != 0.0) {
       std::string systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
       scoreMap[systemName] = system_rs;
       // increment the parent SCORE.SYSTEM total with the weighted score
-      RbtDouble parentScore = scoreMap[RbtBaseSF::_SYSTEM_SF];
+      double parentScore = scoreMap[RbtBaseSF::_SYSTEM_SF];
       parentScore += system_rs * GetWeight();
       scoreMap[RbtBaseSF::_SYSTEM_SF] = parentScore;
     }
@@ -97,35 +97,35 @@ void RbtPolarIdxSF::SetupReceptor() {
   if (GetReceptor().Null())
     return;
   m_bFlexRec = GetReceptor()->isFlexible();
-  RbtDouble idxIncr = GetParameter(_INCR);
-  RbtDouble maxError = GetMaxError();
+  double idxIncr = GetParameter(_INCR);
+  double maxError = GetMaxError();
   idxIncr += maxError;
-  RbtDouble flexDist =
+  double flexDist =
       2.0; // Additional indexing increment for flexibile OH and NH3
   RbtDockingSitePtr spDS = GetWorkSpace()->GetDockingSite();
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
-  RbtInt nCoords = GetReceptor()->GetNumSavedCoords() - 1;
+  int nCoords = GetReceptor()->GetNumSavedCoords() - 1;
   if (nCoords > 0) {
     RbtAtomList atomList = GetReceptor()->GetAtomList();
     m_spPosGrid = CreateInteractionGrid();
     m_recepPosList = CreateDonorInteractionCenters(atomList);
     m_spNegGrid = CreateInteractionGrid();
     m_recepNegList = CreateAcceptorInteractionCenters(atomList);
-    for (RbtInt i = 1; i <= nCoords; i++) {
+    for (int i = 1; i <= nCoords; i++) {
       if (iTrace > 0) {
         cout << _CT << ": Indexing receptor coords # " << i << endl;
       }
       GetReceptor()->RevertCoords(i);
       for (RbtInteractionCenterListConstIter iter = m_recepPosList.begin();
            iter != m_recepPosList.end(); iter++) {
-        RbtDouble rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
+        double rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
         m_spPosGrid->SetInteractionLists(*iter, rvdw + idxIncr);
       }
       m_spPosGrid->UniqueInteractionLists();
       for (RbtInteractionCenterListConstIter iter = m_recepNegList.begin();
            iter != m_recepNegList.end(); iter++) {
-        RbtDouble rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
+        double rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
         m_spNegGrid->SetInteractionLists(*iter, rvdw + idxIncr);
       }
       m_spNegGrid->UniqueInteractionLists();
@@ -159,7 +159,7 @@ void RbtPolarIdxSF::SetupReceptor() {
 
       // Build map of intra-protein interactions (similar to intra-ligand)
       // Include flexible-flexible and flexible-rigid
-      RbtInt nAtoms = GetReceptor()->GetNumAtoms();
+      int nAtoms = GetReceptor()->GetNumAtoms();
       m_flexRecIntns =
           RbtInteractionListMap(nAtoms, RbtInteractionCenterList());
       m_flexRecPrtIntns =
@@ -184,7 +184,7 @@ void RbtPolarIdxSF::SetupReceptor() {
       // We can get away with partitioning the variable interactions just at the
       // beginning. For grosser receptor flexibility we would have to partition
       // periodically during docking
-      RbtDouble partitionDist = GetRange() + flexDist;
+      double partitionDist = GetRange() + flexDist;
       Partition(m_flexRecPosList, m_flexRecNegList, m_flexRecIntns,
                 m_flexRecPrtIntns, partitionDist);
       // Index the flexible interaction centers over a larger radius
@@ -193,16 +193,16 @@ void RbtPolarIdxSF::SetupReceptor() {
       // approach
       for (RbtInteractionCenterListConstIter iter = m_flexRecPosList.begin();
            iter != m_flexRecPosList.end(); iter++) {
-        RbtDouble rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
+        double rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
         m_spPosGrid->SetInteractionLists(*iter, rvdw + idxIncr + flexDist);
       }
       for (RbtInteractionCenterListConstIter iter = m_flexRecNegList.begin();
            iter != m_flexRecNegList.end(); iter++) {
-        RbtDouble rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
+        double rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
         m_spNegGrid->SetInteractionLists(*iter, rvdw + idxIncr + flexDist);
       }
       if (iTrace > 0) {
-        RbtDouble score = ReceptorScore();
+        double score = ReceptorScore();
         cout << GetWorkSpace()->GetName() << " " << GetFullName()
              << ": Intra-receptor score = " << score << endl;
       }
@@ -211,12 +211,12 @@ void RbtPolarIdxSF::SetupReceptor() {
     // Index the rigid interaction centers as usual
     for (RbtInteractionCenterListConstIter iter = m_recepPosList.begin();
          iter != m_recepPosList.end(); iter++) {
-      RbtDouble rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
+      double rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
       m_spPosGrid->SetInteractionLists(*iter, rvdw + idxIncr);
     }
     for (RbtInteractionCenterListConstIter iter = m_recepNegList.begin();
          iter != m_recepNegList.end(); iter++) {
-      RbtDouble rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
+      double rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
       m_spNegGrid->SetInteractionLists(*iter, rvdw + idxIncr);
     }
   }
@@ -274,7 +274,7 @@ void RbtPolarIdxSF::SetupScore() {
 // intra-receptor
 // intra-solvent
 // receptor-solvent
-RbtDouble RbtPolarIdxSF::RawScore() const {
+double RbtPolarIdxSF::RawScore() const {
   return InterScore() + LigandSolventScore() + ReceptorScore() +
          SolventScore() + ReceptorSolventScore();
 }
@@ -333,33 +333,33 @@ void RbtPolarIdxSF::ParameterUpdated(const std::string &strName) {
 }
 
 // Intra-receptor
-RbtDouble RbtPolarIdxSF::ReceptorScore() const {
+double RbtPolarIdxSF::ReceptorScore() const {
   return (m_bFlexRec) ? IntraScore(m_flexRecPosList, m_flexRecNegList,
                                    m_flexRecPrtIntns, m_bAttr)
                       : 0.0;
 }
 
 // Intra-solvent
-RbtDouble RbtPolarIdxSF::SolventScore() const {
+double RbtPolarIdxSF::SolventScore() const {
   return (m_bSolvent) ? IntraScore(m_solventPosList, m_solventNegList,
                                    m_solventIntns, m_bAttr)
                       : 0.0;
 }
 
 // Ligand-receptor
-RbtDouble RbtPolarIdxSF::InterScore() const {
+double RbtPolarIdxSF::InterScore() const {
   return InterScore(m_ligPosList, m_ligNegList, true);
 }
 
 // Receptor-solvent
-RbtDouble RbtPolarIdxSF::ReceptorSolventScore() const {
+double RbtPolarIdxSF::ReceptorSolventScore() const {
   return (m_bSolvent) ? InterScore(m_solventPosList, m_solventNegList, false)
                       : 0.0;
 }
 
 // Ligand-solvent score: very inefficient
-RbtDouble RbtPolarIdxSF::LigandSolventScore() const {
-  RbtDouble score = 0.0;
+double RbtPolarIdxSF::LigandSolventScore() const {
+  double score = 0.0;
   if (!m_bSolvent)
     return score;
   RbtPolarSF::f1prms Rprms = GetRprms();   // Distance params
@@ -397,10 +397,10 @@ RbtDouble RbtPolarIdxSF::LigandSolventScore() const {
 
 // Reusable method for receptor-ligand and receptor-solvent scores
 // bCount controls whether to count the positive and negative interaction scores
-RbtDouble RbtPolarIdxSF::InterScore(const RbtInteractionCenterList &posList,
-                                    const RbtInteractionCenterList &negList,
-                                    RbtBool bCount) const {
-  RbtDouble score = 0.0; // Total score
+double RbtPolarIdxSF::InterScore(const RbtInteractionCenterList &posList,
+                                 const RbtInteractionCenterList &negList,
+                                 bool bCount) const {
+  double score = 0.0; // Total score
   if (bCount) {
     m_nPos = 0;
     m_nNeg = 0;
@@ -414,7 +414,7 @@ RbtDouble RbtPolarIdxSF::InterScore(const RbtInteractionCenterList &posList,
   RbtPolarSF::f1prms A1prms = GetA1prms(); // Donor angle params
   RbtPolarSF::f1prms A2prms = GetA2prms(); // Acceptor angle params
 
-  RbtDouble s(0.0); // Partial scores
+  double s(0.0); // Partial scores
   // Ligand HBA
   for (RbtInteractionCenterListConstIter lIter = negList.begin();
        lIter != negList.end(); lIter++) {

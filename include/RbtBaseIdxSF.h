@@ -36,10 +36,10 @@ public:
   ////////////////////////////////////////
   // Public methods
   ////////////////
-  RbtDouble GetGridStep() const;
-  void SetGridStep(RbtDouble step);
-  RbtDouble GetBorder() const;
-  void SetBorder(RbtDouble border);
+  double GetGridStep() const;
+  void SetGridStep(double step);
+  double GetBorder() const;
+  void SetBorder(double border);
 
 protected:
   ////////////////////////////////////////
@@ -50,13 +50,13 @@ protected:
   RbtInteractionGridPtr CreateInteractionGrid() const;
   RbtNonBondedGridPtr CreateNonBondedGrid() const;
   RbtNonBondedHHSGridPtr CreateNonBondedHHSGrid() const;
-  RbtDouble GetMaxError() const;
+  double GetMaxError() const;
   // DM 12 Apr 2002
   // Returns the maximum range of the scoring function,
   // corrected for max grid error, and grid border around docking site
   // This should be used by subclasses for selecting the receptor atoms to index
   // GetCorrectedRange() = GetRange() + GetMaxError() + GetBorder()
-  RbtDouble GetCorrectedRange() const;
+  double GetCorrectedRange() const;
 
   // As this has a virtual base class we need a separate OwnParameterUpdated
   // which can be called by concrete subclass ParameterUpdated methods
@@ -77,8 +77,8 @@ private:
   ////////////////////////////////////////
   // Private data
   //////////////
-  RbtDouble m_gridStep;
-  RbtDouble m_border;
+  double m_gridStep;
+  double m_border;
 };
 
 #endif //_RBTBASEIDXSF_H_

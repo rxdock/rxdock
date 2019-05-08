@@ -71,9 +71,9 @@ void RbtVdwSF::OwnParameterUpdated(const std::string &strName) {
 
 // Used by subclasses to calculate vdW potential between pAtom and all atoms in
 // atomList
-RbtDouble RbtVdwSF::VdwScore(const RbtAtom *pAtom,
-                             const RbtAtomRList &atomList) const {
-  RbtDouble score = 0.0;
+double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
+                          const RbtAtomRList &atomList) const {
+  double score = 0.0;
   if (atomList.empty()) {
     return score;
   }
@@ -89,11 +89,11 @@ RbtDouble RbtVdwSF::VdwScore(const RbtAtom *pAtom,
     for (RbtAtomRListConstIter iter = atomList.begin(); iter != atomList.end();
          iter++) {
       const RbtCoord &c2 = (*iter)->GetCoords();
-      RbtDouble R_sq = Rbt::Length2(c1, c2); // Distance squared
+      double R_sq = Rbt::Length2(c1, c2); // Distance squared
       RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
       // iter2 points to the vdw params for this atom type pair
       RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
-      RbtDouble s = f4_8(R_sq, *iter2);
+      double s = f4_8(R_sq, *iter2);
       // XB NOTE: Apply weight here
       //   RbtDouble wxb = (*iter)->GetReweight();
       // cout << "4-8vdw " << (*iter)->GetAtomName() << " weight: " << wxb << "
@@ -109,11 +109,11 @@ RbtDouble RbtVdwSF::VdwScore(const RbtAtom *pAtom,
     for (RbtAtomRListConstIter iter = atomList.begin(); iter != atomList.end();
          iter++) {
       const RbtCoord &c2 = (*iter)->GetCoords();
-      RbtDouble R_sq = Rbt::Length2(c1, c2); // Distance squared
+      double R_sq = Rbt::Length2(c1, c2); // Distance squared
       RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
       // iter2 points to the vdw params for this atom type pair
       RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
-      RbtDouble s = f6_12(R_sq, *iter2);
+      double s = f6_12(R_sq, *iter2);
       // XB NOTE: Apply weight here
       // RbtDouble wxb = (*iter)->GetReweight();
       //   cout << "6-12vdw " << (*iter)->GetAtomName() << " weight: " << wxb <<
@@ -134,11 +134,11 @@ RbtDouble RbtVdwSF::VdwScore(const RbtAtom *pAtom,
     for (RbtAtomRListConstIter iter = atomList.begin(); iter != atomList.end();
          iter++) {
       const RbtCoord &c2 = (*iter)->GetCoords();
-      RbtDouble R_sq = Rbt::Length2(c1, c2); // Distance squared
+      double R_sq = Rbt::Length2(c1, c2); // Distance squared
       RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
       // iter2 points to the vdw params for this atom type pair
       RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
-      RbtDouble s = f6_12(R_sq, *iter2);
+      double s = f6_12(R_sq, *iter2);
       // XB NOTE: Apply weight here
       //   RbtDouble wxb = (*iter)->GetReweight();
       //   cout << "6-12vdw " << (*iter)->GetAtomName() << " weight: " << wxb <<
@@ -151,9 +151,9 @@ RbtDouble RbtVdwSF::VdwScore(const RbtAtom *pAtom,
 }
 
 // As above, but score is calculated only between enabled atoms
-RbtDouble RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
-                                        const RbtAtomRList &atomList) const {
-  RbtDouble score = 0.0;
+double RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
+                                     const RbtAtomRList &atomList) const {
+  double score = 0.0;
   if (!pAtom->GetEnabled() || atomList.empty()) {
     return score;
   }
@@ -170,11 +170,11 @@ RbtDouble RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
          iter++) {
       if ((*iter)->GetEnabled()) {
         const RbtCoord &c2 = (*iter)->GetCoords();
-        RbtDouble R_sq = Rbt::Length2(c1, c2); // Distance squared
+        double R_sq = Rbt::Length2(c1, c2); // Distance squared
         RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
         // iter2 points to the vdw params for this atom type pair
         RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
-        RbtDouble s = f4_8(R_sq, *iter2);
+        double s = f4_8(R_sq, *iter2);
         score += s;
       }
     }
@@ -185,11 +185,11 @@ RbtDouble RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
          iter++) {
       if ((*iter)->GetEnabled()) {
         const RbtCoord &c2 = (*iter)->GetCoords();
-        RbtDouble R_sq = Rbt::Length2(c1, c2); // Distance squared
+        double R_sq = Rbt::Length2(c1, c2); // Distance squared
         RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
         // iter2 points to the vdw params for this atom type pair
         RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
-        RbtDouble s = f6_12(R_sq, *iter2);
+        double s = f6_12(R_sq, *iter2);
         if (s != 0.0) {
           score += s;
           RbtAnnotationPtr spAnnotation(
@@ -205,11 +205,11 @@ RbtDouble RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
          iter++) {
       if ((*iter)->GetEnabled()) {
         const RbtCoord &c2 = (*iter)->GetCoords();
-        RbtDouble R_sq = Rbt::Length2(c1, c2); // Distance squared
+        double R_sq = Rbt::Length2(c1, c2); // Distance squared
         RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
         // iter2 points to the vdw params for this atom type pair
         RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
-        RbtDouble s = f6_12(R_sq, *iter2);
+        double s = f6_12(R_sq, *iter2);
         score += s;
       }
     }
@@ -275,18 +275,18 @@ RbtDouble RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
 //  }
 //  return score;
 //}
-RbtDouble RbtVdwSF::MaxVdwRange(const RbtAtom *pAtom) const {
+double RbtVdwSF::MaxVdwRange(const RbtAtom *pAtom) const {
   return m_maxRange[pAtom->GetTriposType()];
 }
 
-RbtDouble RbtVdwSF::MaxVdwRange(RbtTriposAtomType::eType t) const {
+double RbtVdwSF::MaxVdwRange(RbtTriposAtomType::eType t) const {
   return m_maxRange[t];
 }
 
 // Initialise m_vdwTable with appropriate params for each atom type pair
 void RbtVdwSF::Setup() {
   RbtTriposAtomType triposType;
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   if (iTrace > 3) {
     cout << endl << _CT << "::Setup()" << endl;
     cout << "TYPE1,TYPE2,A,B,RMIN,KIJ,RMAX" << endl;
@@ -303,35 +303,34 @@ void RbtVdwSF::Setup() {
   m_vdwTable = RbtVdwTable(RbtTriposAtomType::MAXTYPES,
                            RbtVdwRow(RbtTriposAtomType::MAXTYPES));
   m_maxRange = RbtDoubleList(RbtTriposAtomType::MAXTYPES, 0.0);
-  for (RbtInt i = RbtTriposAtomType::UNDEFINED; i < RbtTriposAtomType::MAXTYPES;
+  for (int i = RbtTriposAtomType::UNDEFINED; i < RbtTriposAtomType::MAXTYPES;
        i++) {
     // Read the params for atom type i
     std::string stri = triposType.Type2Str(RbtTriposAtomType::eType(i));
     m_spVdwSource->SetSection(stri);
-    RbtDouble Ri = m_spVdwSource->GetParameterValue(_R); // vdw radius
-    RbtDouble Ki = m_spVdwSource->GetParameterValue(_K); // Tripos 5.2 well
-                                                         // depth
-    RbtBool hasIPi = m_spVdwSource->isParameterPresent(_IP);
-    RbtBool isHBDi = m_spVdwSource->isParameterPresent(_ISHBD);
-    RbtBool isHBAi = m_spVdwSource->isParameterPresent(_ISHBA);
-    RbtDouble Ii, alphai;
+    double Ri = m_spVdwSource->GetParameterValue(_R); // vdw radius
+    double Ki = m_spVdwSource->GetParameterValue(_K); // Tripos 5.2 well
+                                                      // depth
+    bool hasIPi = m_spVdwSource->isParameterPresent(_IP);
+    bool isHBDi = m_spVdwSource->isParameterPresent(_ISHBD);
+    bool isHBAi = m_spVdwSource->isParameterPresent(_ISHBA);
+    double Ii, alphai;
     if (hasIPi) {
       Ii = m_spVdwSource->GetParameterValue(_IP); // Ionisation potential, I
       alphai = m_spVdwSource->GetParameterValue(_POL); // Polarisability, alpha
     }
     // Symmetric matrix, so only need to generate one half (i.e.
     // m_vdwTable[i][j] = m_vdwTable[j][i])
-    for (RbtInt j = i; j < RbtTriposAtomType::MAXTYPES; j++) {
+    for (int j = i; j < RbtTriposAtomType::MAXTYPES; j++) {
       // Read the params for atom type j
       std::string strj = triposType.Type2Str(RbtTriposAtomType::eType(j));
       m_spVdwSource->SetSection(strj);
-      RbtDouble Rj = m_spVdwSource->GetParameterValue(_R); // vdw radius
-      RbtDouble Kj =
-          m_spVdwSource->GetParameterValue(_K); // Tripos 5.2 well depth
-      RbtBool hasIPj = m_spVdwSource->isParameterPresent(_IP);
-      RbtBool isHBDj = m_spVdwSource->isParameterPresent(_ISHBD);
-      RbtBool isHBAj = m_spVdwSource->isParameterPresent(_ISHBA);
-      RbtDouble Ij, alphaj;
+      double Rj = m_spVdwSource->GetParameterValue(_R); // vdw radius
+      double Kj = m_spVdwSource->GetParameterValue(_K); // Tripos 5.2 well depth
+      bool hasIPj = m_spVdwSource->isParameterPresent(_IP);
+      bool isHBDj = m_spVdwSource->isParameterPresent(_ISHBD);
+      bool isHBAj = m_spVdwSource->isParameterPresent(_ISHBA);
+      double Ij, alphaj;
       if (hasIPj) {
         Ij = m_spVdwSource->GetParameterValue(_IP); // Ionisation potential, I
         alphaj = m_spVdwSource->GetParameterValue(_POL); // Polarisability,
@@ -341,7 +340,7 @@ void RbtVdwSF::Setup() {
       // Create the vdw params for this atom type pair
       vdwprms prms;
       prms.rmin = Ri + Rj; // rmin is the sum of Ri and Rj
-      RbtDouble rmax = prms.rmin * m_rmax;
+      double rmax = prms.rmin * m_rmax;
       m_maxRange[i] = std::max(m_maxRange[i],
                                rmax); // Keep track of max range for atom type i
       m_maxRange[j] = std::max(m_maxRange[j],
@@ -358,13 +357,13 @@ void RbtVdwSF::Setup() {
       }
       // OR, use GOLD rules based on ionisation potential and polarisability
       else {
-        RbtDouble D = 0.345 * Ii * Ij * alphai * alphaj / (Ii + Ij);
-        RbtDouble C = 0.5 * D * pow(prms.rmin, 6);
+        double D = 0.345 * Ii * Ij * alphai * alphaj / (Ii + Ij);
+        double C = 0.5 * D * pow(prms.rmin, 6);
         prms.kij = D * D / (4.0 * C);
       }
       // Having got the well depth, we can now generate A and B for either 4-8
       // or 6-12
-      RbtDouble rmin_pwr = (m_use_4_8) ? pow(prms.rmin, 4) : pow(prms.rmin, 6);
+      double rmin_pwr = (m_use_4_8) ? pow(prms.rmin, 4) : pow(prms.rmin, 6);
       prms.A = prms.kij * rmin_pwr * rmin_pwr;
       prms.B = 2.0 * prms.kij * rmin_pwr;
       m_vdwTable[i][j] = prms;
@@ -380,7 +379,7 @@ void RbtVdwSF::Setup() {
   // Now we can regenerate the close range params
   SetupCloseRange();
   // Set the overall range automatically from the max range for each atom type
-  RbtDouble range = *(std::max_element(m_maxRange.begin(), m_maxRange.end()));
+  double range = *(std::max_element(m_maxRange.begin(), m_maxRange.end()));
   SetRange(range);
   if (iTrace > 1) {
     cout << "Overall max range for scoring function = " << range << endl;
@@ -390,14 +389,14 @@ void RbtVdwSF::Setup() {
 // Regenerate the short-range params only (called more frequently)
 void RbtVdwSF::SetupCloseRange() {
   RbtTriposAtomType triposType;
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   if (iTrace > 3) {
     cout << endl << _CT << "::SetupCloseRange()" << endl;
     cout << "TYPE1,TYPE2,RCUT,ECUT,SLOPE,E0" << endl;
   }
-  RbtDouble x = 1.0 + sqrt(1.0 + m_ecut);
-  RbtDouble p = (m_use_4_8) ? pow(x, 1.0 / 4.0) : pow(x, 1.0 / 6.0);
-  RbtDouble c = 1.0 / p;
+  double x = 1.0 + sqrt(1.0 + m_ecut);
+  double p = (m_use_4_8) ? pow(x, 1.0 / 4.0) : pow(x, 1.0 / 6.0);
+  double c = 1.0 / p;
   for (RbtVdwTableIter iter1 = m_vdwTable.begin(); iter1 != m_vdwTable.end();
        iter1++) {
     for (RbtVdwRowIter iter2 = (*iter1).begin(); iter2 != (*iter1).end();
@@ -428,14 +427,14 @@ void RbtVdwSF::BuildIntraMap(const RbtAtomRList &atomList1,
                              RbtAtomRListList &intns) const {
   Rbt::SelectAtom selectAtom(true);
   Rbt::isAtomSelected isSelected;
-  RbtBool bSingleList = atomList2.empty(); // If true, then index the flexible
-                                           // interactions within atomList1
+  bool bSingleList = atomList2.empty(); // If true, then index the flexible
+                                        // interactions within atomList1
   for (RbtAtomRListConstIter iter = atomList1.begin(); iter != atomList1.end();
        iter++) {
     // 1. First select all atoms in the list
     std::for_each(atomList1.begin(), atomList1.end(), selectAtom);
     RbtAtom *pAtom = (*iter);
-    RbtInt id = pAtom->GetAtomId() - 1;
+    int id = pAtom->GetAtomId() - 1;
     Assert<RbtAssert>(id >= 0 && id < intns.size());
     RbtModel *pModel = pAtom->GetModelPtr();
     // 2. Now deselect all atoms in the same model as the current atom
@@ -473,8 +472,8 @@ void RbtVdwSF::BuildIntraMap(const RbtAtomRList &atomList,
 
 void RbtVdwSF::Partition(const RbtAtomRList &atomList,
                          const RbtAtomRListList &intns,
-                         RbtAtomRListList &prtIntns, RbtDouble dist) const {
-  RbtInt iTrace = GetTrace();
+                         RbtAtomRListList &prtIntns, double dist) const {
+  int iTrace = GetTrace();
 
   // Clear the existing partitioned lists
   for (RbtAtomRListListIter iter = prtIntns.begin(); iter != prtIntns.end();
@@ -486,7 +485,7 @@ void RbtVdwSF::Partition(const RbtAtomRList &atomList,
 
   for (RbtAtomRListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
-    RbtInt id = (*iter)->GetAtomId() - 1;
+    int id = (*iter)->GetAtomId() - 1;
     if (dist > 0.0) {
       isD_lt bInRange(*iter, dist);
       // This copies all interactions which are within dist A of atom

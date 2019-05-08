@@ -30,9 +30,9 @@ public:
   RbtVector axis1;
   RbtVector axis2;
   RbtVector axis3;
-  RbtDouble moment1;
-  RbtDouble moment2;
-  RbtDouble moment3;
+  double moment1;
+  double moment2;
+  double moment3;
 };
 
 typedef vector<RbtPrincipalAxes> RbtPrincipalAxesList;
@@ -53,7 +53,7 @@ RbtPrincipalAxes GetSolventPrincipalAxes(const RbtAtomPtr &oAtom,
 RbtQuat
 AlignPrincipalAxes(RbtAtomList &atomList,
                    const RbtPrincipalAxes &alignAxes = RbtPrincipalAxes(),
-                   RbtBool bAlignCOM = true) throw(RbtError);
+                   bool bAlignCOM = true) throw(RbtError);
 // Returns the quaternion required to align principal axes with reference axes
 RbtQuat GetQuatFromAlignAxes(const RbtPrincipalAxes &prAxes,
                              const RbtPrincipalAxes &refAxes) throw(RbtError);

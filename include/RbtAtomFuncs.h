@@ -21,8 +21,8 @@
 namespace Rbt {
 // DM 31 Oct 2000
 // Given a bond, determines if it is in a ring (cutdown version of ToSpin)
-RbtBool FindCyclic(RbtBondPtr spBond, RbtAtomList &atomList,
-                   RbtBondList &bondList);
+bool FindCyclic(RbtBondPtr spBond, RbtAtomList &atomList,
+                RbtBondList &bondList);
 
 // DM 4 Dec 1998
 // Given a bond, set the selection flags for all atoms which are connected to
@@ -30,7 +30,7 @@ RbtBool FindCyclic(RbtBondPtr spBond, RbtAtomList &atomList,
 // gets set also) DM 8 Feb 2000 - standalone version (formerly only available as
 // RbtModel method) WARNING - no check that spBond is actually present in
 // bondList, or that atom and bond lists are consistent
-RbtBool ToSpin(RbtBondPtr spBond, RbtAtomList &atomList, RbtBondList &bondList);
+bool ToSpin(RbtBondPtr spBond, RbtAtomList &atomList, RbtBondList &bondList);
 
 // DM 7 Dec 1998
 // Set the atom and bond cyclic flags for all atoms and bonds in the model

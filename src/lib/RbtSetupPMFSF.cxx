@@ -42,7 +42,7 @@ void RbtSetupPMFSF::SetupReceptor() {
 
 void RbtSetupPMFSF::SetupScore() {}
 
-RbtDouble RbtSetupPMFSF::RawScore() const { return 0.0; }
+double RbtSetupPMFSF::RawScore() const { return 0.0; }
 
 void RbtSetupPMFSF::SetupLigand() {
   theLigandList.clear();
@@ -204,7 +204,7 @@ void RbtSetupPMFSF::SetupReceptorPMFTypes(void) throw(RbtError) {
   }
 }
 
-RbtBool RbtSetupPMFSF::IsChargedNitrogen(RbtAtomPtr anAtom) {
+bool RbtSetupPMFSF::IsChargedNitrogen(RbtAtomPtr anAtom) {
   // cout << _CT << " AMINO ACID " << anAtom->GetSubunitName() << endl;
   Rbt::isAtomicNo_eq bIsN(7);
   if (!bIsN(anAtom)) // is it N at all?

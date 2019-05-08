@@ -71,18 +71,18 @@ RbtCellContext::RbtCellContext(const RbtCellContext &c) : vm(c.vm) {
 RbtCellContext::~RbtCellContext() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
 RbtCellContext::RbtCellContext(ifstream &ifile) {
-  RbtInt nvbles, nctes;
+  int nvbles, nctes;
   ifile >> nvbles >> nctes;
   ninputs = nvbles + nctes;
   std::string name;
-  RbtInt i = 0, key;
+  int i = 0, key;
   for (; i < nvbles; i++) {
     ifile >> key >> name;
     vm[key] = new RbtVble(name);
   }
   for (; i < nctes + nvbles; i++) {
     ifile >> key >> name;
-    RbtDouble val = atof(name.c_str());
+    double val = atof(name.c_str());
     vm[key] = new RbtVble(name, val);
   }
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
@@ -101,14 +101,14 @@ void RbtCellContext::Clear()
     }
 }*/
 
-RbtDouble RbtStringContext::Get(RbtModelPtr lig, std::string name) {
+double RbtStringContext::Get(RbtModelPtr lig, std::string name) {
   if (name == "LIG_MW")
     return lig->GetTotalAtomicMass();
   if (name == "LIG_NATOMS")
     return lig->GetNumAtoms();
-  RbtInt nAtoms = lig->GetNumAtoms();
-  RbtInt nBonds = lig->GetNumBonds();
-  RbtInt nSegs = lig->GetNumSegments();
+  int nAtoms = lig->GetNumAtoms();
+  int nBonds = lig->GetNumBonds();
+  int nSegs = lig->GetNumSegments();
   RbtAtomList atomList = lig->GetAtomList();
   RbtBondList bondList = lig->GetBondList();
   if (name == "LIG_NLIPOC")
@@ -132,32 +132,32 @@ RbtDouble RbtStringContext::Get(RbtModelPtr lig, std::string name) {
     return rotatableBondList.size();
   }
   if (name == "LIG_PERC_LIPOC") {
-    RbtInt n = Rbt::GetNumAtoms(atomList, Rbt::isAtomLipophilic());
+    int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomLipophilic());
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_PERC_AROMATOMS") {
-    RbtInt n = Rbt::GetNumAtoms(atomList, bIsArom);
+    int n = Rbt::GetNumAtoms(atomList, bIsArom);
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_PERC_HBD") {
-    RbtInt n = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondDonor());
+    int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondDonor());
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_PERC_METAL") {
-    RbtInt n = Rbt::GetNumAtoms(atomList, Rbt::isAtomMetal());
+    int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomMetal());
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_PERC_GUAN") {
-    RbtInt n = Rbt::GetNumAtoms(atomList, Rbt::isAtomGuanidiniumCarbon());
+    int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomGuanidiniumCarbon());
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_PERC_HBA") {
-    RbtInt n = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondAcceptor());
+    int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondAcceptor());
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_NAROMRINGS") {
     RbtAtomListList ringLists = lig->GetRingAtomLists();
-    RbtInt nAromRings(0); //# aromatic rings
+    int nAromRings(0); //# aromatic rings
     for (RbtAtomListListIter rIter = ringLists.begin();
          rIter != ringLists.end(); rIter++) {
       if (Rbt::GetNumAtoms(*rIter, Rbt::isPiAtom()) == (*rIter).size())
@@ -165,11 +165,11 @@ RbtDouble RbtStringContext::Get(RbtModelPtr lig, std::string name) {
     }
     return nAromRings;
   }
-  RbtDouble posChg(0.0);
-  RbtDouble negChg(0.0);
+  double posChg(0.0);
+  double negChg(0.0);
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
-    RbtDouble chg = (*iter)->GetGroupCharge();
+    double chg = (*iter)->GetGroupCharge();
     if (chg > 0.0)
       posChg += chg;
     else if (chg < 0.0)
@@ -183,16 +183,15 @@ RbtDouble RbtStringContext::Get(RbtModelPtr lig, std::string name) {
     return (posChg + negChg);
 }
 
-RbtDouble RbtStringContext::Get(RbtModelPtr spReceptor,
-                                RbtDockingSitePtr spDockSite,
-                                std::string name) {
+double RbtStringContext::Get(RbtModelPtr spReceptor,
+                             RbtDockingSitePtr spDockSite, std::string name) {
   if (name == "SITE_VOL")
     return spDockSite->GetVolume();
-  RbtDouble cavDist = 4.0;
+  double cavDist = 4.0;
   // Use a fixed definition of cavity atoms -
   // all those within 4A of docking volume
-  RbtDouble neighbR = 4.0; // Sphere radius for counting nearest neighbours
-  RbtDouble threshold = 15;
+  double neighbR = 4.0; // Sphere radius for counting nearest neighbours
+  double threshold = 15;
   // Definition of solvent exposed: neighbours < threshold
   RbtAtomList recepAtomList = spReceptor->GetAtomList();
   RbtAtomList cavAtomList =
@@ -200,7 +199,7 @@ RbtDouble RbtStringContext::Get(RbtModelPtr spReceptor,
   RbtAtomList exposedAtomList; // The list of exposed cavity atoms
   for (RbtAtomListConstIter iter = cavAtomList.begin();
        iter != cavAtomList.end(); iter++) {
-    RbtInt nNeighb = Rbt::GetNumAtoms(
+    int nNeighb = Rbt::GetNumAtoms(
         recepAtomList, Rbt::isAtomInsideSphere((*iter)->GetCoords(), neighbR));
     nNeighb--;
     if (nNeighb < threshold) {
@@ -208,7 +207,7 @@ RbtDouble RbtStringContext::Get(RbtModelPtr spReceptor,
       exposedAtomList.push_back(*iter);
     }
   }
-  RbtInt nAtoms = exposedAtomList.size();
+  int nAtoms = exposedAtomList.size();
   if (name == "SITE_NATOMS")
     return nAtoms;
   if (name == "SITE_NLIPOC")
@@ -225,35 +224,34 @@ RbtDouble RbtStringContext::Get(RbtModelPtr spReceptor,
   if (name == "SITE_NHBA")
     return Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondAcceptor());
   if (name == "SITE_PERC_LIPOC") {
-    RbtInt n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomLipophilic());
+    int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomLipophilic());
     return (100.0 * n / nAtoms);
   }
   if (name == "SITE_PERC_AROMATOMS") {
-    RbtInt n = Rbt::GetNumAtoms(exposedAtomList, bIsArom);
+    int n = Rbt::GetNumAtoms(exposedAtomList, bIsArom);
     return (100.0 * n / nAtoms);
   }
   if (name == "SITE_PERC_HBD") {
-    RbtInt n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondDonor());
+    int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondDonor());
     return (100.0 * n / nAtoms);
   }
   if (name == "SITE_PERC_METAL") {
-    RbtInt n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomMetal());
+    int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomMetal());
     return (100.0 * n / nAtoms);
   }
   if (name == "SITE_PERC_GUAN") {
-    RbtInt n =
-        Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomGuanidiniumCarbon());
+    int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomGuanidiniumCarbon());
     return (100.0 * n / nAtoms);
   }
   if (name == "SITE_PERC_HBA") {
-    RbtInt n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondAcceptor());
+    int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondAcceptor());
     return (100.0 * n / nAtoms);
   }
-  RbtDouble posChg(0.0);
-  RbtDouble negChg(0.0);
+  double posChg(0.0);
+  double negChg(0.0);
   for (RbtAtomListConstIter iter = exposedAtomList.begin();
        iter != exposedAtomList.end(); iter++) {
-    RbtDouble chg = (*iter)->GetGroupCharge();
+    double chg = (*iter)->GetGroupCharge();
     if (chg > 0.0)
       posChg += chg;
     else if (chg < 0.0)
@@ -267,8 +265,8 @@ RbtDouble RbtStringContext::Get(RbtModelPtr spReceptor,
     return (posChg + negChg);
 }
 
-RbtDouble RbtStringContext::Get(RbtBaseSF *spSF, std::string name,
-                                RbtModelPtr lig) {
+double RbtStringContext::Get(RbtBaseSF *spSF, std::string name,
+                             RbtModelPtr lig) {
   RbtStringVariantMap scoreMap;
   spSF->ScoreMap(scoreMap);
   if (scoreMap[name].isEmpty())
@@ -298,7 +296,7 @@ void RbtStringContext::UpdateScores(RbtBaseSF *spSF, RbtModelPtr lig) {
     if ((*it).second->IsScore()) {
       RbtVariant v = scoreMap[(*it).first];
       if (!v.isEmpty()) {
-        (*it).second->SetValue(RbtDouble(v));
+        (*it).second->SetValue(double(v));
       }
     }
   }

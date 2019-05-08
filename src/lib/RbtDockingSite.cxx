@@ -17,7 +17,7 @@
 // Less than operator for sorting coords
 class RbtCoordCmp {
 public:
-  RbtBool operator()(const RbtCoord &c1, const RbtCoord &c2) const {
+  bool operator()(const RbtCoord &c1, const RbtCoord &c2) const {
     if (c1.x < c2.x)
       return true;
     else if (c1.x == c2.x) {
@@ -37,18 +37,18 @@ std::string RbtDockingSite::_CT("RbtDockingSite");
 
 // STL predicate for selecting atoms within a defined distance range from
 // nearest cavity coords Uses precalculated distance grid
-RbtBool RbtDockingSite::isAtomInRange::operator()(RbtAtom *pAtom) const {
+bool RbtDockingSite::isAtomInRange::operator()(RbtAtom *pAtom) const {
   const RbtCoord &c = pAtom->GetCoords();
   if (!m_pGrid->isValid(c)) {
     return false;
   }
-  RbtDouble dist = m_pGrid->GetSmoothedValue(c);
+  double dist = m_pGrid->GetSmoothedValue(c);
   return (dist >= m_minDist && dist <= m_maxDist);
 }
 
 ////////////////////////////////////////
 // Constructors/destructors
-RbtDockingSite::RbtDockingSite(const RbtCavityList &cavList, RbtDouble border)
+RbtDockingSite::RbtDockingSite(const RbtCavityList &cavList, double border)
     : m_cavityList(cavList), m_border(border) {
   if (!m_cavityList.empty()) {
     RbtCoordList minCoords;
@@ -80,7 +80,7 @@ ostream &operator<<(ostream &s, const RbtDockingSite &site) {
 // Derived classes can override if required
 void RbtDockingSite::Print(ostream &s) const {
   s << "Total volume " << GetVolume() << " A^3" << endl;
-  for (RbtInt i = 0; i < m_cavityList.size(); i++) {
+  for (int i = 0; i < m_cavityList.size(); i++) {
     s << "Cavity #" << i + 1 << "\t" << *(m_cavityList[i]) << endl;
   }
 }
@@ -94,7 +94,7 @@ void RbtDockingSite::Write(ostream &ostr) {
   // Write the class name as a title so we can check the authenticity of streams
   // on read
   const char *const header = _CT.c_str();
-  RbtInt length = strlen(header);
+  int length = strlen(header);
   Rbt::WriteWithThrow(ostr, (const char *)&length, sizeof(length));
   Rbt::WriteWithThrow(ostr, header, length);
 
@@ -104,7 +104,7 @@ void RbtDockingSite::Write(ostream &ostr) {
   Rbt::WriteWithThrow(ostr, (const char *)&m_border, sizeof(m_border));
 
   // Write the number of cavities
-  RbtInt nCav = m_cavityList.size();
+  int nCav = m_cavityList.size();
   Rbt::WriteWithThrow(ostr, (const char *)&nCav, sizeof(nCav));
 
   // Write each cavity
@@ -127,14 +127,14 @@ void RbtDockingSite::Read(istream &istr) {
   m_border = 0.0;
 
   // Read title
-  RbtInt length;
+  int length;
   Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *header = new char[length + 1];
   Rbt::ReadWithThrow(istr, header, length);
   // Add null character to end of string
   header[length] = '\0';
   // Compare title with class name
-  RbtBool match = (_CT == header);
+  bool match = (_CT == header);
   delete[] header;
   if (!match) {
     throw RbtFileParseError(_WHERE_,
@@ -147,11 +147,11 @@ void RbtDockingSite::Read(istream &istr) {
   Rbt::ReadWithThrow(istr, (char *)&m_border, sizeof(m_border));
 
   // Read the number of cavities
-  RbtInt nCav;
+  int nCav;
   Rbt::ReadWithThrow(istr, (char *)&nCav, sizeof(nCav));
   m_cavityList.reserve(nCav);
   // Read each cavity
-  for (RbtInt i = 0; i < nCav; i++) {
+  for (int i = 0; i < nCav; i++) {
     RbtCavityPtr spCavity = RbtCavityPtr(new RbtCavity(istr));
     m_cavityList.push_back(spCavity);
   }
@@ -171,8 +171,8 @@ RbtRealGridPtr RbtDockingSite::GetGrid() {
 }
 
 // returns total volume of all cavities in A^3
-RbtDouble RbtDockingSite::GetVolume() const {
-  RbtDouble vol(0.0);
+double RbtDockingSite::GetVolume() const {
+  double vol(0.0);
   for (RbtCavityListConstIter iter = m_cavityList.begin();
        iter != m_cavityList.end(); iter++) {
     vol += (*iter)->GetVolume();
@@ -200,8 +200,8 @@ void RbtDockingSite::GetCoordList(RbtCoordList &retVal) const {
 // Filters an atom list according to distance from the cavity coords
 // Only returns atoms within minDist and maxDist from cavity
 RbtAtomList RbtDockingSite::GetAtomList(const RbtAtomList &atomList,
-                                        RbtDouble minDist,
-                                        RbtDouble maxDist) throw(RbtError) {
+                                        double minDist,
+                                        double maxDist) throw(RbtError) {
   if (maxDist > m_border) {
     throw RbtBadArgument(
         _WHERE_, "maxDist is greater than grid border; recalculate grid");
@@ -222,7 +222,7 @@ RbtAtomList RbtDockingSite::GetAtomList(const RbtAtomList &atomList,
 // Only returns atoms within maxDist from cavity
 // This version does not require the cavity grid
 RbtAtomList RbtDockingSite::GetAtomList(const RbtAtomList &atomList,
-                                        RbtDouble maxDist) throw(RbtError) {
+                                        double maxDist) throw(RbtError) {
   RbtAtomList newAtomList;
   RbtCoordList allCoords;
   GetCoordList(allCoords);
@@ -233,9 +233,9 @@ RbtAtomList RbtDockingSite::GetAtomList(const RbtAtomList &atomList,
 }
 
 // Returns the count of atoms within minDist and maxDist from cavity
-RbtUInt RbtDockingSite::GetNumAtoms(const RbtAtomList &atomList,
-                                    RbtDouble minDist,
-                                    RbtDouble maxDist) throw(RbtError) {
+unsigned int RbtDockingSite::GetNumAtoms(const RbtAtomList &atomList,
+                                         double minDist,
+                                         double maxDist) throw(RbtError) {
   if (maxDist > m_border) {
     throw RbtBadArgument(
         _WHERE_, "maxDist is greater than grid border; recalculate grid");
@@ -260,9 +260,9 @@ void RbtDockingSite::CreateGrid() {
   RbtCoord minCoord = m_minCoord - m_border;
   RbtCoord maxCoord = m_maxCoord + m_border;
   RbtVector extent = maxCoord - minCoord;
-  RbtUInt nX = int(extent.x / gridStep.x) + 1;
-  RbtUInt nY = int(extent.y / gridStep.y) + 1;
-  RbtUInt nZ = int(extent.z / gridStep.z) + 1;
+  unsigned int nX = int(extent.x / gridStep.x) + 1;
+  unsigned int nY = int(extent.y / gridStep.y) + 1;
+  unsigned int nZ = int(extent.z / gridStep.z) + 1;
   m_spGrid = RbtRealGridPtr(new RbtRealGrid(minCoord, gridStep, nX, nY, nZ));
   m_spGrid->SetAllValues(999999.9);
 
@@ -282,8 +282,9 @@ void RbtDockingSite::CreateGrid() {
     // may not lie directly on a grid point.
     for (RbtCoordListConstIter cIter = cavCoords.begin();
          cIter != cavCoords.end(); cIter++) {
-      RbtUInt i = m_spGrid->GetIXYZ(*cIter); // Grid index of nearest grid point
-      RbtDouble dist2 = Rbt::Length2(*cIter, m_spGrid->GetCoord(i));
+      unsigned int i =
+          m_spGrid->GetIXYZ(*cIter); // Grid index of nearest grid point
+      double dist2 = Rbt::Length2(*cIter, m_spGrid->GetCoord(i));
       m_spGrid->SetValue(i, dist2);
     }
     // Sort the coords so we can remove any dups
@@ -298,14 +299,14 @@ void RbtDockingSite::CreateGrid() {
   // Loop over all grid points in the distance grid
   // Can terminate when distance^2 is less than or equal to mindist^2 (shortest
   // length of grid interval)
-  RbtDouble mindist2 = std::min(gridStep.x, gridStep.y);
+  double mindist2 = std::min(gridStep.x, gridStep.y);
   mindist2 = std::min(mindist2, gridStep.z);
   mindist2 *= mindist2;
-  for (RbtUInt i = 0; i < m_spGrid->GetN(); i++) {
+  for (unsigned int i = 0; i < m_spGrid->GetN(); i++) {
     const RbtCoord &c = m_spGrid->GetCoord(i);
     // Initialise dist^2 from initial grid value (999999.9 or 0.0 for cavity
     // coords)
-    RbtDouble dist2 = m_spGrid->GetValue(i);
+    double dist2 = m_spGrid->GetValue(i);
     // Determine min distance to any of the cavity coords
     for (RbtCoordListConstIter iter = allCoords.begin();
          iter != allCoords.end() && dist2 > mindist2; iter++) {

@@ -16,7 +16,6 @@
 
 #include "RbtContainers.h"
 #include "RbtError.h"
-#include "RbtTypes.h"
 
 namespace Rbt {
 ////////////////////////////////////////////////////////////////

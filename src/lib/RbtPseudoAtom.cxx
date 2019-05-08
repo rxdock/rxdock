@@ -19,7 +19,7 @@
 // Note: the base RbtAtom constructor sets up default attributes for the
 // pseudoatom only (the constituent atoms are already constructed so we don't
 // need to worry about them) Use Atomic No = -1 to signify a pseudoatom
-RbtPseudoAtom::RbtPseudoAtom(const RbtAtomList &atomList, RbtInt nAtomId,
+RbtPseudoAtom::RbtPseudoAtom(const RbtAtomList &atomList, int nAtomId,
                              std::string strAtomName) throw(RbtError)
     : RbtAtom(nAtomId, -1, strAtomName) {
   // Check atom list isn't empty (should be an assert)
@@ -74,7 +74,7 @@ ostream &RbtPseudoAtom::Print(ostream &s) const {
 // each time the underlying atoms are moved
 void RbtPseudoAtom::UpdateCoords() {
   RbtCoord coord;
-  RbtUInt nSize = m_atomList.size();
+  unsigned int nSize = m_atomList.size();
   if (nSize > 0) {
     for (RbtAtomListConstIter iter = m_atomList.begin();
          iter != m_atomList.end(); iter++) {

@@ -33,10 +33,10 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
       // cout << "Atom: " << (*at)->GetAtomName() << "; ignored" << endl;
       continue;
     }
-    RbtInt rID = at - atomList.begin(); // The rDock atom numbering (sequence in
-                                        // atomList vector, from zero)
-    RbtInt dID = atoms.size(); // The Daylight numbering (sequence in atoms
-                               // vector, from zero)
+    int rID = at - atomList.begin(); // The rDock atom numbering (sequence in
+                                     // atomList vector, from zero)
+    int dID = atoms.size(); // The Daylight numbering (sequence in atoms
+                            // vector, from zero)
     r2d[rID] = dID;
     d2r[dID] = rID;
     atoms.push_back(dt_addatom(m, (*at)->GetAtomicNo(),
@@ -79,13 +79,13 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
                      std::bind2nd(Rbt::isAtomPtr_eq(), at2));
     Assert<RbtAssert>((iter1 != atomList.end()) && (iter2 != atomList.end()));
     // rDock numbering
-    RbtInt rID1 = iter1 - atomList.begin();
-    RbtInt rID2 = iter2 - atomList.begin();
+    int rID1 = iter1 - atomList.begin();
+    int rID2 = iter2 - atomList.begin();
     Assert<RbtAssert>((r2d.find(rID1) != r2d.end()) &&
                       (r2d.find(rID2) != r2d.end()));
     // Use lookup to get the Daylight numbering
-    RbtInt dID1 = r2d[rID1];
-    RbtInt dID2 = r2d[rID2];
+    int dID1 = r2d[rID1];
+    int dID2 = r2d[rID2];
     // cout << "Bond: " << at1->GetAtomName() << "-" << at2->GetAtomName()
     //	 << "; rID = " << rID1 << "-" << rID2 << "; dID = " << dID1 << "-" <<
     // dID2 << endl; Finally create the Daylight bond Define formal bond order
@@ -104,7 +104,7 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
 
   // Determine SMILES string for molecule
   char *arbsmi;
-  RbtInt len;
+  int len;
   arbsmi = dt_arbsmiles(&len, m, 0);
   strSmiles = arbsmi; // strSmiles is returned by reference
 
@@ -138,9 +138,9 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
       RbtAtomList atL;
       dt_Handle atom;
       while (NULL_OB != (atom = dt_next(atoms_in_path))) {
-        RbtInt dID = dt_arborder(atom);
+        int dID = dt_arborder(atom);
         Assert<RbtAssert>((d2r.find(dID) != d2r.end()));
-        RbtInt rID = d2r[dID];
+        int rID = d2r[dID];
         atL.push_back(atomList[rID]);
       }
       atLL.push_back(atL);

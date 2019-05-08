@@ -25,17 +25,17 @@ public:
   RbtFFTPeak() : index(0), coord(0.0, 0.0, 0.0), volume(0), height(0.0) {}
 
   // Data attributes - public to avoid need for accessor functions
-  RbtUInt index;     // Location of peak maximum - iXYZ index into grid
-  RbtCoord coord;    // Location of peak maximum - real world vector/coord
-                     // corresponding to displacement
-  RbtDouble height;  // Maximum value of peak
-  RbtUInt volume;    // Number of grid points in peak (=points.size())
-  RbtUIntSet points; // Set of iXYZ peak indices
+  unsigned int index;  // Location of peak maximum - iXYZ index into grid
+  RbtCoord coord;      // Location of peak maximum - real world vector/coord
+                       // corresponding to displacement
+  double height;       // Maximum value of peak
+  unsigned int volume; // Number of grid points in peak (=points.size())
+  RbtUIntSet points;   // Set of iXYZ peak indices
 };
 
 typedef SmartPtr<RbtFFTPeak> RbtFFTPeakPtr; // Smart pointer
 // Multi-map of key=peak height,value=FFTPeakPtr
-typedef multimap<RbtDouble, RbtFFTPeakPtr> RbtFFTPeakMap;
+typedef multimap<double, RbtFFTPeakPtr> RbtFFTPeakMap;
 typedef RbtFFTPeakMap::iterator RbtFFTPeakMapIter;
 typedef RbtFFTPeakMap::reverse_iterator RbtFFTPeakMapRIter;
 typedef RbtFFTPeakMap::const_iterator RbtFFTPeakMapConstIter;
@@ -49,8 +49,8 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution
-  RbtFFTGrid(const RbtCoord &gridMin, const RbtCoord &gridStep, RbtUInt NX,
-             RbtUInt NY, RbtUInt NZ, RbtUInt NPad = 0);
+  RbtFFTGrid(const RbtCoord &gridMin, const RbtCoord &gridStep, unsigned int NX,
+             unsigned int NY, unsigned int NZ, unsigned int NPad = 0);
 
   // Constructor reading all params from binary stream
   RbtFFTGrid(istream &istr);
@@ -84,7 +84,7 @@ public:
   // Find the coords of all (separate) peaks above the threshold value
   // whose volumes are not less than minVol
   // Returns a map of RbtFFTPeaks
-  RbtFFTPeakMap FindPeaks(RbtDouble threshold, RbtUInt minVol = 1) const;
+  RbtFFTPeakMap FindPeaks(double threshold, unsigned int minVol = 1) const;
   // Returns the grid point with the maximum value in RbtFFTPeak format
   // Just a wrapper around FindMaxValue() (see below)
   RbtFFTPeak FindMaxPeak() const;

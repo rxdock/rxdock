@@ -57,10 +57,10 @@ void RbtRandLigTransform::Execute() {
   RbtModelPtr spLigand = GetLigand();
   if (spLigand.Null())
     return;
-  RbtDouble torsStep = GetParameter(_TORS_STEP);
+  double torsStep = GetParameter(_TORS_STEP);
   for (RbtBondListIter iter = m_rotableBonds.begin();
        iter != m_rotableBonds.end(); iter++) {
-    RbtDouble thetaDeg = 2.0 * torsStep * m_rand.GetRandom01() - torsStep;
+    double thetaDeg = 2.0 * torsStep * m_rand.GetRandom01() - torsStep;
     spLigand->RotateBond(*iter, thetaDeg, false);
   }
 }

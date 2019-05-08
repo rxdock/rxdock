@@ -69,8 +69,8 @@ void RbtCavityGridSF::SetupScore() {
   }
 }
 
-RbtDouble RbtCavityGridSF::RawScore() const {
-  RbtDouble score(0.0);
+double RbtCavityGridSF::RawScore() const {
+  double score(0.0);
 
   // Check grid is defined
   if (m_spGrid.Null())
@@ -82,9 +82,9 @@ RbtDouble RbtCavityGridSF::RawScore() const {
          iter != m_atomList.end(); iter++) {
       const RbtCoord &c = (*iter)->GetCoords();
       // Check if atom is off grid, if so default to max grid value
-      RbtDouble r =
+      double r =
           m_spGrid->isValid(c) ? m_spGrid->GetSmoothedValue(c) : m_maxDist;
-      RbtDouble dr = r - m_rMax;
+      double dr = r - m_rMax;
       if (dr > 0.0) {
         score += dr * dr;
       }
@@ -96,9 +96,9 @@ RbtDouble RbtCavityGridSF::RawScore() const {
          iter != m_atomList.end(); iter++) {
       const RbtCoord &c = (*iter)->GetCoords();
       // Check if atom is off grid, if so default to max grid value
-      RbtDouble r =
+      double r =
           m_spGrid->isValid(c) ? m_spGrid->GetSmoothedValue(c) : m_maxDist;
-      RbtDouble dr = r - m_rMax;
+      double dr = r - m_rMax;
       if (dr > 0.0) {
         score += dr;
       }
@@ -152,7 +152,7 @@ void RbtCavityGridSF::HeavyAtomFactory::VisitSolventFlexData(
   // fixed in position for orientation-only flexibility.
   std::string transModeStr =
       pFlexData->GetParameter(RbtLigandFlexData::_TRANS_MODE);
-  RbtDouble maxTrans = pFlexData->GetParameter(RbtLigandFlexData::_MAX_TRANS);
+  double maxTrans = pFlexData->GetParameter(RbtLigandFlexData::_MAX_TRANS);
   RbtChromElement::eMode eTransMode = RbtChromElement::StrToMode(transModeStr);
   if ((eTransMode == RbtChromElement::FREE) ||
       ((eTransMode == RbtChromElement::TETHERED) && (maxTrans > 0.0))) {

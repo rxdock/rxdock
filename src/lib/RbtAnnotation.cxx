@@ -16,7 +16,7 @@
 ////////////////////////////////////////
 // Constructors/destructors
 RbtAnnotation::RbtAnnotation(const RbtAtom *pAtom1, const RbtAtom *pAtom2,
-                             RbtDouble dist, RbtDouble score)
+                             double dist, double score)
     : m_pAtom1(pAtom1), m_pAtom2(pAtom2), m_dist(dist), m_score(score) {}
 
 RbtAnnotation::~RbtAnnotation() {}
@@ -27,8 +27,8 @@ RbtAnnotation::~RbtAnnotation() {}
 // Get
 const RbtAtom *RbtAnnotation::GetAtom1Ptr() const { return m_pAtom1; }
 const RbtAtom *RbtAnnotation::GetAtom2Ptr() const { return m_pAtom2; }
-RbtDouble RbtAnnotation::GetDistance() const { return m_dist; }
-RbtDouble RbtAnnotation::GetScore() const { return m_score; }
+double RbtAnnotation::GetDistance() const { return m_dist; }
+double RbtAnnotation::GetScore() const { return m_score; }
 
 // Get the fully qualified (FQ) residue name for atom 2 (target atom)
 std::string RbtAnnotation::GetFQResName() const {
@@ -39,8 +39,8 @@ std::string RbtAnnotation::GetFQResName() const {
 // Set
 void RbtAnnotation::SetAtom1Ptr(const RbtAtom *pAt1) { m_pAtom1 = pAt1; }
 void RbtAnnotation::SetAtom2Ptr(const RbtAtom *pAt2) { m_pAtom2 = pAt2; }
-void RbtAnnotation::SetDistance(RbtDouble d) { m_dist = d; }
-void RbtAnnotation::SetScore(RbtDouble s) { m_score = s; }
+void RbtAnnotation::SetDistance(double d) { m_dist = d; }
+void RbtAnnotation::SetScore(double s) { m_score = s; }
 
 // Render annotation into string in rDock Viewer format
 // Note: string does not contain the first field (annotation name)

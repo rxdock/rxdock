@@ -14,7 +14,7 @@
 #include "RbtRand.h"
 
 std::string RbtChromElement::_CT = "RbtChromElement";
-RbtDouble RbtChromElement::_THRESHOLD = 1E-4;
+double RbtChromElement::_THRESHOLD = 1E-4;
 
 RbtChromElement::eMode
 RbtChromElement::StrToMode(const std::string &modeStr) throw(RbtError) {
@@ -66,53 +66,52 @@ void RbtChromElement::Add(RbtChromElement *pChromElement) throw(RbtError) {
       "Add(RbtChromElement*) invalid for non-aggregate chromosome element");
 }
 
-RbtBool RbtChromElement::VectorOK(const RbtDoubleList &v, RbtInt i) const {
-  RbtInt length = GetLength();
+bool RbtChromElement::VectorOK(const RbtDoubleList &v, int i) const {
+  int length = GetLength();
   // if the element is empty then any vector is valid
   return (length == 0) ||
          ((i >= 0) && (i < v.size()) && (length <= (v.size() - i)));
 }
 
-RbtBool RbtChromElement::VectorOK(const RbtXOverList &v, RbtInt i) const {
-  RbtInt length = GetXOverLength();
+bool RbtChromElement::VectorOK(const RbtXOverList &v, int i) const {
+  int length = GetXOverLength();
   // if the element is empty then any vector is valid
   return (length == 0) ||
          ((i >= 0) && (i < v.size()) && (length <= (v.size() - i)));
 }
 
-void RbtChromElement::CauchyMutate(RbtDouble mean, RbtDouble variance) {
+void RbtChromElement::CauchyMutate(double mean, double variance) {
   // Need to convert the Cauchy random variable to a positive number
   // and use this as the relative step size for mutation
-  RbtDouble relStepSize = fabs(m_rand.GetCauchyRandom(mean, variance));
+  double relStepSize = fabs(m_rand.GetCauchyRandom(mean, variance));
   Mutate(relStepSize);
 }
 
-RbtDouble RbtChromElement::Compare(const RbtChromElement &c) const {
-  RbtDouble retVal(0.0);
+double RbtChromElement::Compare(const RbtChromElement &c) const {
+  double retVal(0.0);
   if (GetLength() != c.GetLength()) {
     retVal = -1.0;
   } else {
     RbtDoubleList v;
-    RbtInt i(0);
+    int i(0);
     c.GetVector(v);
     retVal = CompareVector(v, i);
   }
   return retVal;
 }
 
-RbtBool RbtChromElement::Equals(const RbtChromElement &c,
-                                RbtDouble threshold) const {
-  RbtDouble cmp = Compare(c);
+bool RbtChromElement::Equals(const RbtChromElement &c, double threshold) const {
+  double cmp = Compare(c);
   return ((cmp >= 0.0) && (cmp < threshold));
 }
 
 void RbtChromElement::SetVector(const RbtDoubleList &v) {
-  RbtInt i(0);
+  int i(0);
   SetVector(v, i);
 }
 
 void RbtChromElement::SetVector(const RbtXOverList &v) {
-  RbtInt i(0);
+  int i(0);
   SetVector(v, i);
 }
 
@@ -133,7 +132,7 @@ void Rbt::Crossover(RbtChromElement *pChr1, RbtChromElement *pChr2,
                     RbtChromElement *pChr3,
                     RbtChromElement *pChr4) throw(RbtError) {
   // Check all chromosomes have the same crossover length
-  RbtInt length1 = pChr1->GetXOverLength();
+  int length1 = pChr1->GetXOverLength();
   if ((length1 != pChr2->GetXOverLength()) ||
       (length1 != pChr3->GetXOverLength()) ||
       (length1 != pChr4->GetXOverLength())) {
@@ -147,11 +146,11 @@ void Rbt::Crossover(RbtChromElement *pChr1, RbtChromElement *pChr2,
   // In the spirit of STL, ixbegin is the first gene to crossover, ixend is one
   // after the last gene to crossover
   RbtRand &rand = pChr1->GetRand();
-  RbtInt ixbegin = rand.GetRandomInt(length1);
+  int ixbegin = rand.GetRandomInt(length1);
   // if ixbegin is 0, we need to avoid selecting the whole chromosome
-  RbtInt ixend = (ixbegin == 0)
-                     ? rand.GetRandomInt(length1 - 1) + 1
-                     : rand.GetRandomInt(length1 - ixbegin) + ixbegin + 1;
+  int ixend = (ixbegin == 0)
+                  ? rand.GetRandomInt(length1 - 1) + 1
+                  : rand.GetRandomInt(length1 - ixbegin) + ixbegin + 1;
 
   // cout << "XOVER: ixbegin = " << ixbegin << ", ixend = " << ixend << endl;
   std::swap_ranges(v1.begin() + ixbegin, v1.begin() + ixend,

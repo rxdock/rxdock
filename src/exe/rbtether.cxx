@@ -44,13 +44,13 @@ int main(int argc, char *argv[]) {
 
   // Command line arguments and default values
   std::string strLigandMdlFile;
-  RbtBool bOutput(false);
+  bool bOutput(false);
   std::string strRunName;
   std::string strReferenceSDFile; // Receptor param file
   std::string strQuery;           // Smarts query
-  RbtBool bPosIonise(false);
-  RbtBool bNegIonise(false);
-  RbtBool bImplH(true);
+  bool bPosIonise(false);
+  bool bNegIonise(false);
+  bool bImplH(true);
 
   // Brief help message
   if (argc == 1) {
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
 
   // Check command line arguments
   cout << endl << "Command line args:" << endl;
-  for (RbtInt iarg = 1; iarg < argc; iarg++) {
+  for (int iarg = 1; iarg < argc; iarg++) {
     cout << argv[iarg];
     std::string strArg(argv[iarg]);
     if (strArg.find("-i") == 0)
@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
         new RbtMdlFileSink(strRunName + ".sd", RbtModelPtr()));
     RbtMolecularFileSourcePtr spMdlFileSource(
         new RbtMdlFileSource(strLigandMdlFile, bPosIonise, bNegIonise, bImplH));
-    for (RbtInt nRec = 1; spMdlFileSource->FileStatusOK();
+    for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
       cout.setf(ios_base::left, ios_base::adjustfield);
       cout << endl
@@ -285,7 +285,7 @@ int main(int argc, char *argv[]) {
 
 void print_atoms(RbtAtomList &atoms, ostringstream &ost) {
   ost.clear();
-  for (RbtInt iter = 0; iter < atoms.size(); iter++) {
+  for (int iter = 0; iter < atoms.size(); iter++) {
     ost << atoms[iter]->GetAtomId();
     //    if ((((iter + 1) % 35) == 0) || (iter == (atoms.size() - 1)))
     if (iter == (atoms.size() - 1))

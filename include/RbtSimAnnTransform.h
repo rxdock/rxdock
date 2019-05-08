@@ -22,24 +22,24 @@
 class RbtMCStats {
 public:
   RbtMCStats();
-  void Init(RbtDouble score);
-  void InitBlock(RbtDouble score);
-  void Accumulate(RbtDouble score, RbtBool bAccepted);
-  RbtDouble Mean() const;
-  RbtDouble Variance() const;
-  RbtDouble AccRate() const;
-  RbtDouble _total;
-  RbtDouble _total2;
-  RbtDouble _blockInitial;
-  RbtDouble _blockFinal;
-  RbtDouble _blockMin;
-  RbtDouble _blockMax;
-  RbtDouble _initial;
-  RbtDouble _final;
-  RbtDouble _min;
-  RbtDouble _max;
-  RbtInt _steps;
-  RbtInt _accepted;
+  void Init(double score);
+  void InitBlock(double score);
+  void Accumulate(double score, bool bAccepted);
+  double Mean() const;
+  double Variance() const;
+  double AccRate() const;
+  double _total;
+  double _total2;
+  double _blockInitial;
+  double _blockFinal;
+  double _blockMin;
+  double _blockMax;
+  double _initial;
+  double _final;
+  double _min;
+  double _max;
+  int _steps;
+  int _accepted;
 };
 typedef SmartPtr<RbtMCStats> RbtMCStatsPtr; // Smart pointer
 
@@ -76,7 +76,7 @@ protected:
   virtual void SetupLigand();   // Called by Update when ligand is changed
   virtual void
   SetupTransform(); // Called by Update when either model has changed
-  void MC(RbtDouble t, RbtInt blockLen, RbtDouble stepSize);
+  void MC(double t, int blockLen, double stepSize);
   virtual void Execute();
 
 private:

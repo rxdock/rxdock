@@ -17,9 +17,8 @@ const RbtPrincipalAxes RbtChromPositionRefData::CARTESIAN_AXES;
 
 RbtChromPositionRefData::RbtChromPositionRefData(
     const RbtModel *pModel, const RbtDockingSite *pDockSite,
-    RbtDouble transStepSize, RbtDouble rotStepSize,
-    RbtChromElement::eMode transMode, RbtChromElement::eMode rotMode,
-    RbtDouble maxTrans, RbtDouble maxRot)
+    double transStepSize, double rotStepSize, RbtChromElement::eMode transMode,
+    RbtChromElement::eMode rotMode, double maxTrans, double maxRot)
     : m_transStepSize(transStepSize), m_rotStepSize(rotStepSize),
       m_transMode(transMode), m_rotMode(rotMode), m_length(6), m_xOverLength(2),
       m_maxTrans(maxTrans), m_maxRot(maxRot) {

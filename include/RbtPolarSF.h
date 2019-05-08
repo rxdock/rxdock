@@ -69,19 +69,18 @@ protected:
   void BuildIntraMap(const RbtInteractionCenterList &ICList,
                      RbtInteractionListMap &intns) const;
 
-  RbtDouble IntraScore(const RbtInteractionCenterList &posList,
-                       const RbtInteractionCenterList &negList,
-                       const RbtInteractionListMap &prtIntns,
-                       RbtBool attr) const;
+  double IntraScore(const RbtInteractionCenterList &posList,
+                    const RbtInteractionCenterList &negList,
+                    const RbtInteractionListMap &prtIntns, bool attr) const;
   void Partition(const RbtInteractionCenterList &posList,
                  const RbtInteractionCenterList &negList,
                  const RbtInteractionListMap &intns,
-                 RbtInteractionListMap &prtIntns, RbtDouble dist = 0.0) const;
+                 RbtInteractionListMap &prtIntns, double dist = 0.0) const;
 
   // Generic scoring function params
   struct f1prms {
-    RbtDouble R0, DRMin, DRMax, slope;
-    f1prms(RbtDouble R, RbtDouble DMin, RbtDouble DMax)
+    double R0, DRMin, DRMax, slope;
+    f1prms(double R, double DMin, double DMax)
         : R0(R), DRMin(DMin), DRMax(DMax), slope(1.0 / (DMax - DMin)) {}
   };
 
@@ -89,10 +88,10 @@ protected:
   inline f1prms GetA1prms() const { return f1prms(m_A1, m_DA1Min, m_DA1Max); }
   inline f1prms GetA2prms() const { return f1prms(m_A2, m_DA2Min, m_DA2Max); }
 
-  RbtDouble PolarScore(const RbtInteractionCenter *intn,
-                       const RbtInteractionCenterList &intnList,
-                       const f1prms &Rprms, const f1prms &A1prms,
-                       const f1prms &A2prms) const;
+  double PolarScore(const RbtInteractionCenter *intn,
+                    const RbtInteractionCenterList &intnList,
+                    const f1prms &Rprms, const f1prms &A1prms,
+                    const f1prms &A2prms) const;
 
   // As this has a virtual base class we need a separate OwnParameterUpdated
   // which can be called by concrete subclass ParameterUpdated methods
@@ -101,7 +100,7 @@ protected:
 
 private:
   // Generic scoring function primitive
-  inline RbtDouble f1(RbtDouble DR, const f1prms &prms) const {
+  inline double f1(double DR, const f1prms &prms) const {
     return (DR > prms.DRMax)
                ? 0.0
                : (DR > prms.DRMin) ? 1.0 - prms.slope * (DR - prms.DRMin) : 1.0;
@@ -110,22 +109,22 @@ private:
   void UpdateLPprms();
 
   // DM 25 Oct 2000 - heavily used params
-  RbtDouble m_R12Factor;
-  RbtDouble m_R12Incr;
-  RbtDouble m_DR12Min;
-  RbtDouble m_DR12Max;
-  RbtDouble m_A1;
-  RbtDouble m_DA1Min;
-  RbtDouble m_DA1Max;
-  RbtDouble m_A2;
-  RbtDouble m_DA2Min;
-  RbtDouble m_DA2Max;
-  RbtBool m_bAbsDR12;
-  RbtDouble m_LP_PHI;
-  RbtDouble m_LP_DPHIMin;
-  RbtDouble m_LP_DPHIMax;
-  RbtDouble m_LP_DTHETAMin;
-  RbtDouble m_LP_DTHETAMax;
+  double m_R12Factor;
+  double m_R12Incr;
+  double m_DR12Min;
+  double m_DR12Max;
+  double m_A1;
+  double m_DA1Min;
+  double m_DA1Max;
+  double m_A2;
+  double m_DA2Min;
+  double m_DA2Max;
+  bool m_bAbsDR12;
+  double m_LP_PHI;
+  double m_LP_DPHIMin;
+  double m_LP_DPHIMax;
+  double m_LP_DTHETAMin;
+  double m_LP_DTHETAMax;
   f1prms m_PHI_lp_prms;
   f1prms m_PHI_plane_prms;
   f1prms m_THETAprms;

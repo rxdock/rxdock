@@ -46,16 +46,16 @@ protected:
 
   // Used by subclasses to calculate vdW potential between pAtom and all atoms
   // in atomList
-  RbtDouble VdwScore(const RbtAtom *pAtom, const RbtAtomRList &atomList) const;
+  double VdwScore(const RbtAtom *pAtom, const RbtAtomRList &atomList) const;
   // As above, but with additional checks for enabled state of each atom
-  RbtDouble VdwScoreEnabledOnly(const RbtAtom *pAtom,
-                                const RbtAtomRList &atomList) const;
+  double VdwScoreEnabledOnly(const RbtAtom *pAtom,
+                             const RbtAtomRList &atomList) const;
   // XB Same as above, used to calcutate intra terms without the reweighting
   // factors RbtDouble VdwScoreIntra(const RbtAtom* pAtom, const RbtAtomRList&
   // atomList) const; Looks up the maximum range (rmax_sq) for any interaction
   // i.e. from across a row of m_vdwTable
-  RbtDouble MaxVdwRange(const RbtAtom *pAtom) const;
-  RbtDouble MaxVdwRange(RbtTriposAtomType::eType t) const;
+  double MaxVdwRange(const RbtAtom *pAtom) const;
+  double MaxVdwRange(RbtTriposAtomType::eType t) const;
 
   // Index the intramolecular interactions
   void BuildIntraMap(const RbtAtomRList &atomList,
@@ -64,21 +64,21 @@ protected:
                      const RbtAtomRList &atomList2,
                      RbtAtomRListList &intns) const;
   void Partition(const RbtAtomRList &atomList, const RbtAtomRListList &intns,
-                 RbtAtomRListList &prtIntns, RbtDouble dist = 0.0) const;
+                 RbtAtomRListList &prtIntns, double dist = 0.0) const;
 
 private:
   // vdW scoring function params
   struct vdwprms {
-    RbtDouble A, B;       // 6-12 or 4-8 params
-    RbtDouble rmin;       // Sum of vdw radii
-    RbtDouble kij;        // Well depth
-    RbtDouble rmax_sq;    // Max distance**2 over which the vdw score should be
-                          // calculated
-    RbtDouble rcutoff_sq; // Distance**2 at which the short-range quadratic
-                          // potential kicks in
-    RbtDouble ecutoff;    // Energy at the cutoff point
-    RbtDouble slope;      // Slope of the short-range quadratic potential
-    RbtDouble e0;         // Energy at zero distance
+    double A, B;       // 6-12 or 4-8 params
+    double rmin;       // Sum of vdw radii
+    double kij;        // Well depth
+    double rmax_sq;    // Max distance**2 over which the vdw score should be
+                       // calculated
+    double rcutoff_sq; // Distance**2 at which the short-range quadratic
+                       // potential kicks in
+    double ecutoff;    // Energy at the cutoff point
+    double slope;      // Slope of the short-range quadratic potential
+    double e0;         // Energy at zero distance
   };
 
   typedef vector<RbtVdwSF::vdwprms> RbtVdwRow;
@@ -89,7 +89,7 @@ private:
   typedef RbtVdwTable::const_iterator RbtVdwTableConstIter;
 
   // Generic scoring function primitive for 6-12
-  inline RbtDouble f6_12(RbtDouble R_sq, const vdwprms &prms) const {
+  inline double f6_12(double R_sq, const vdwprms &prms) const {
     // Zero well depth or long range: return zero
     if ((prms.kij == 0.0) || (R_sq > prms.rmax_sq)) {
       return 0.0;
@@ -100,13 +100,13 @@ private:
     }
     // Everywhere else is 6-12
     else {
-      RbtDouble rr6 = 1.0 / (R_sq * R_sq * R_sq);
+      double rr6 = 1.0 / (R_sq * R_sq * R_sq);
       return rr6 * (rr6 * prms.A - prms.B);
     }
   }
 
   // Generic scoring function primitive for 4-8
-  inline RbtDouble f4_8(RbtDouble R_sq, const vdwprms &prms) const {
+  inline double f4_8(double R_sq, const vdwprms &prms) const {
     // Zero well depth or long range: return zero
     if ((prms.kij == 0.0) || (R_sq > prms.rmax_sq)) {
       return 0.0;
@@ -117,7 +117,7 @@ private:
     }
     // Everywhere else is 4-8
     else {
-      RbtDouble rr4 = 1.0 / (R_sq * R_sq);
+      double rr4 = 1.0 / (R_sq * R_sq);
       return rr4 * (rr4 * prms.A - prms.B);
     }
   }
@@ -130,23 +130,23 @@ private:
   // Private predicate
   // Is the distance between atoms less than a given value ?
   // Function checks d**2 to save performing a sqrt
-  class isD_lt : public std::unary_function<RbtAtom *, RbtBool> {
-    RbtDouble d_sq;
+  class isD_lt : public std::unary_function<RbtAtom *, bool> {
+    double d_sq;
     RbtAtom *a;
 
   public:
-    explicit isD_lt(RbtAtom *aa, RbtDouble dd) : d_sq(dd * dd), a(aa) {}
-    RbtBool operator()(RbtAtom *aa) const {
+    explicit isD_lt(RbtAtom *aa, double dd) : d_sq(dd * dd), a(aa) {}
+    bool operator()(RbtAtom *aa) const {
       return Rbt::Length2(aa->GetCoords(), a->GetCoords()) < d_sq;
     }
   };
 
   // Private data members
-  RbtBool m_use_4_8;
-  RbtBool m_use_tripos;
-  RbtDouble m_rmax;
-  RbtDouble m_ecut;
-  RbtDouble m_e0;
+  bool m_use_4_8;
+  bool m_use_tripos;
+  double m_rmax;
+  double m_ecut;
+  double m_e0;
   RbtParameterFileSourcePtr m_spVdwSource; // File source for vdw params
   RbtVdwTable m_vdwTable; // Lookup table for all vdW params (indexed by Tripos
                           // atom type)

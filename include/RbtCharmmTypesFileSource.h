@@ -23,9 +23,9 @@ class CharmmType {
 public:
   CharmmType()
       : nAtomType(0), strAtomType(""), mass(0.0), element(""), comment("") {}
-  RbtInt nAtomType;
+  int nAtomType;
   std::string strAtomType;
-  RbtDouble mass;
+  double mass;
   std::string element;
   std::string comment;
 };
@@ -44,7 +44,7 @@ public:
 
   ////////////////////////////////////////
   // Public methods
-  RbtInt GetNumTypes();
+  int GetNumTypes();
   RbtCharmmTypeList GetTypeList();
 
 protected:

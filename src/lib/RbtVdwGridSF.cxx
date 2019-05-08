@@ -46,8 +46,8 @@ void RbtVdwGridSF::SetupReceptor() {
 
   // Trap multiple receptor conformations and flexible OH/NH3 here: this SF does
   // not support them yet
-  RbtBool bEnsemble = (GetReceptor()->GetNumSavedCoords() > 1);
-  RbtBool bFlexRec = GetReceptor()->isFlexible();
+  bool bEnsemble = (GetReceptor()->GetNumSavedCoords() > 1);
+  bool bFlexRec = GetReceptor()->isFlexible();
   if (bEnsemble || bFlexRec) {
     std::string message("Vdw grid scoring function does not support multiple "
                         "receptor conformations\n");
@@ -103,13 +103,13 @@ void RbtVdwGridSF::SetupScore() {
   if (m_ligAtomList.empty())
     return;
 
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   m_ligAtomTypes.reserve(m_ligAtomList.size());
   // Check if we have a grid for the UNDEFINED type:
   // If so, we can use it if a particular atom type grid is missing
   // If not, then we have to throw an error if a particular atom type grid is
   // missing
-  RbtBool bHasUndefined = !m_grids[RbtTriposAtomType::UNDEFINED].Null();
+  bool bHasUndefined = !m_grids[RbtTriposAtomType::UNDEFINED].Null();
   RbtTriposAtomType triposType;
 
   if (iTrace > 1) {
@@ -152,8 +152,8 @@ void RbtVdwGridSF::SetupScore() {
   }
 }
 
-RbtDouble RbtVdwGridSF::RawScore() const {
-  RbtDouble score = 0.0;
+double RbtVdwGridSF::RawScore() const {
+  double score = 0.0;
 
   // Check grids are defined
   if (m_grids.empty())
@@ -178,17 +178,17 @@ RbtDouble RbtVdwGridSF::RawScore() const {
 // RbtVdwGridSF
 void RbtVdwGridSF::ReadGrids(istream &istr) throw(RbtError) {
   m_grids.clear();
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
   // Read header string
-  RbtInt length;
+  int length;
   Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *header = new char[length + 1];
   Rbt::ReadWithThrow(istr, header, length);
   // Add null character to end of string
   header[length] = '\0';
   // Compare title with
-  RbtBool match = (_CT == header);
+  bool match = (_CT == header);
   delete[] header;
   if (!match) {
     throw RbtFileParseError(_WHERE_,
@@ -196,7 +196,7 @@ void RbtVdwGridSF::ReadGrids(istream &istr) throw(RbtError) {
   }
 
   // Now read number of grids
-  RbtInt nGrids;
+  int nGrids;
   Rbt::ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
   if (iTrace > 0) {
     cout << _CT << ": reading " << nGrids << " grids..." << endl;
@@ -211,7 +211,7 @@ void RbtVdwGridSF::ReadGrids(istream &istr) throw(RbtError) {
   // the same) It also means we do not have to have a grid for each and every
   // atom type if we don't want to
   m_grids = RbtRealGridList(RbtTriposAtomType::MAXTYPES);
-  for (RbtInt i = 0; i < nGrids; i++) {
+  for (int i = 0; i < nGrids; i++) {
     // Read the atom type string
     Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
     char *szType = new char[length + 1];

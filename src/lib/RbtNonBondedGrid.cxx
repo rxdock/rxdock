@@ -20,8 +20,9 @@ std::string RbtNonBondedGrid::_CT("RbtNonBondedGrid");
 // Constructors/destructors
 // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution
 RbtNonBondedGrid::RbtNonBondedGrid(const RbtCoord &gridMin,
-                                   const RbtCoord &gridStep, RbtUInt NX,
-                                   RbtUInt NY, RbtUInt NZ, RbtUInt NPad)
+                                   const RbtCoord &gridStep, unsigned int NX,
+                                   unsigned int NY, unsigned int NZ,
+                                   unsigned int NPad)
     : RbtBaseGrid(gridMin, gridStep, NX, NY, NZ, NPad) {
   CreateMap();
   _RBTOBJECTCOUNTER_CONSTR_("RbtNonBondedGrid");
@@ -111,7 +112,7 @@ void RbtNonBondedGrid::Read(istream &istr) {
 // Get attribute functions
 /////////////////////////
 
-const RbtAtomRList &RbtNonBondedGrid::GetAtomList(RbtUInt iXYZ) const {
+const RbtAtomRList &RbtNonBondedGrid::GetAtomList(unsigned int iXYZ) const {
   // RbtAtomListMapConstIter iter = m_atomMap.find(iXYZ);
   // if (iter != m_atomMap.end())
   //  return iter->second;
@@ -143,7 +144,7 @@ const RbtAtomRList &RbtNonBondedGrid::GetAtomList(const RbtCoord &c) const {
 /////////////////////////
 // Set attribute functions
 /////////////////////////
-void RbtNonBondedGrid::SetAtomLists(RbtAtom *pAtom, RbtDouble radius) {
+void RbtNonBondedGrid::SetAtomLists(RbtAtom *pAtom, double radius) {
   const RbtCoord &c = pAtom->GetCoords();
   RbtUIntList sphereIndices;
   GetSphereIndices(c, radius, sphereIndices);

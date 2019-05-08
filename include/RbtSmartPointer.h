@@ -33,7 +33,6 @@
 #ifndef _RBTSMARTPOINTER_H_
 #define _RBTSMARTPOINTER_H_
 
-//#include "RbtTypes.h"
 //#include "RbtError.h"
 
 // Only check smart pointer assertions in debug build
@@ -53,7 +52,7 @@ public:
 
   // Parameterised constructor
   // Create new counter, initialise to 1
-  SmartPtr(T *pT) : m_pT(pT), m_pCount(new RbtUInt(1)) {}
+  SmartPtr(T *pT) : m_pT(pT), m_pCount(new unsigned int(1)) {}
 
   // Copy constructor - copy both pointers, increment counter
   SmartPtr(const SmartPtr<T> &sp) : m_pT(sp.m_pT), m_pCount(sp.m_pCount) {

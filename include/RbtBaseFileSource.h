@@ -46,15 +46,15 @@ public:
   void SetFileName(const std::string &fileName);
 
   // Status and StatusOK parse the file to check for errors
-  RbtBool StatusOK();
+  bool StatusOK();
   RbtError Status();
 
   // FileStatus and FileStatusOK just try and read the file
-  RbtBool FileStatusOK();
+  bool FileStatusOK();
   RbtError FileStatus();
 
   // Multi-record methods
-  RbtBool isMultiRecordSupported() { return m_bMultiRec; }
+  bool isMultiRecordSupported() { return m_bMultiRec; }
   void NextRecord();
   void Rewind();
 
@@ -64,12 +64,12 @@ protected:
   // PURE VIRTUAL - MUST BE OVERRIDDEN IN DERIVED CLASSES
   virtual void Parse() throw(RbtError) = 0;
   // chance to give false when record delimiter at the beginning
-  void Read(RbtBool aDelimiterAtEnd = true) throw(RbtError);
+  void Read(bool aDelimiterAtEnd = true) throw(RbtError);
   //////////////////////////////////////////////////////
 
   // Protected data
 protected:
-  RbtBool m_bParsedOK;       // For use by Parse
+  bool m_bParsedOK;          // For use by Parse
   RbtFileRecList m_lineRecs; // Allow direct access to cache from derived
                              // classes
 
@@ -87,11 +87,11 @@ private:
   // Private data
 private:
   std::string m_strFileName;
-  RbtBool m_bReadOK; // For use by Read
+  bool m_bReadOK; // For use by Read
   ifstream m_fileIn;
-  char *m_szBuf;       // Line buffer
-  RbtBool m_bFileOpen; // Keep track of whether we've opened the file or not
-  RbtBool m_bMultiRec; // Is file multi-record ?
+  char *m_szBuf;    // Line buffer
+  bool m_bFileOpen; // Keep track of whether we've opened the file or not
+  bool m_bMultiRec; // Is file multi-record ?
   std::string m_strRecDelim; // Record delimiter
 };
 

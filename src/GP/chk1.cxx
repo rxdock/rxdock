@@ -46,11 +46,11 @@ void main(int argc, char *argv[]) {
     //      throw RbtError(_WHERE_, "can't open" + strTestFile);
     ff->ReadTables(testFile, ittest, sfttest);
 
-    RbtDouble hitlimit = 0.0;
+    double hitlimit = 0.0;
     RbtGPPopulation p(5, 5, ff, ittrain, sfttrain);
     p.Initialise(hitlimit, false);
-    RbtDouble b = 0.0, currentBest = 0.0;
-    RbtInt i = 0, count;
+    double b = 0.0, currentBest = 0.0;
+    int i = 0, count;
     while ((b < 0.9) && (i < 50000)) {
       p.EPstep("", 1.0, 0.08, 0.0, 0.0, hitlimit, false);
       if ((i % 500) == 0) {

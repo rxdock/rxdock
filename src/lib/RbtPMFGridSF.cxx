@@ -64,24 +64,24 @@ void RbtPMFGridSF::SetupLigand() {
 #endif //_DEBUG
 }
 
-RbtDouble RbtPMFGridSF::RawScore() const {
-  RbtDouble theScore = 0.0;
+double RbtPMFGridSF::RawScore() const {
+  double theScore = 0.0;
   if (theGrids.empty()) // if no grids defined
     return theScore;
 
   // Loop over all ligand atoms
   RbtAtomListConstIter iter = theLigandList.begin();
   if (m_bSmoothed) {
-    for (RbtUInt i = 0; iter != theLigandList.end(); iter++, i++) {
-      RbtUInt theType = GetCorrectedType((*iter)->GetPMFType());
-      RbtDouble score =
+    for (unsigned int i = 0; iter != theLigandList.end(); iter++, i++) {
+      unsigned int theType = GetCorrectedType((*iter)->GetPMFType());
+      double score =
           theGrids[theType - 1]->GetSmoothedValue((*iter)->GetCoords());
       theScore += score;
     }
   } else {
-    for (RbtUInt i = 0; iter != theLigandList.end(); iter++, i++) {
-      RbtUInt theType = GetCorrectedType((*iter)->GetPMFType());
-      RbtDouble score = theGrids[theType - 1]->GetValue((*iter)->GetCoords());
+    for (unsigned int i = 0; iter != theLigandList.end(); iter++, i++) {
+      unsigned int theType = GetCorrectedType((*iter)->GetPMFType());
+      double score = theGrids[theType - 1]->GetValue((*iter)->GetCoords());
       theScore += score;
     }
   }
@@ -98,14 +98,14 @@ void RbtPMFGridSF::ReadGrids(istream &istr) throw(RbtError) {
   theGrids.clear();
 
   // Read header string
-  RbtInt length;
+  int length;
   Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *header = new char[length + 1];
   Rbt::ReadWithThrow(istr, header, length);
   // Add null character to end of string
   header[length] = '\0';
   // Compare title with
-  RbtBool match = (_CT == header);
+  bool match = (_CT == header);
   delete[] header;
   if (!match) {
     throw RbtFileParseError(_WHERE_,
@@ -113,11 +113,11 @@ void RbtPMFGridSF::ReadGrids(istream &istr) throw(RbtError) {
   }
 
   // Now read number of grids
-  RbtInt nGrids;
+  int nGrids;
   Rbt::ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
   cout << "Reading " << nGrids << " grids..." << endl;
   theGrids.reserve(nGrids);
-  for (RbtInt i = CF; i <= nGrids; i++) {
+  for (int i = CF; i <= nGrids; i++) {
     cout << "Grid# " << i << " ";
     // Read type
     RbtPMFType theType;
@@ -131,14 +131,15 @@ void RbtPMFGridSF::ReadGrids(istream &istr) throw(RbtError) {
 }
 
 // since there is no  HH,HL,Fe,V,Mn grid, we have to correct
-RbtUInt RbtPMFGridSF::GetCorrectedType(RbtPMFType aType) const {
+unsigned int RbtPMFGridSF::GetCorrectedType(RbtPMFType aType) const {
   if (aType < HL)
-    return (RbtUInt)aType;
+    return (unsigned int)aType;
   else if (aType < Mn)
-    return (RbtUInt)aType -
+    return (unsigned int)aType -
            1; // HL and HH but list starts at 0 still PMFType starts at 1
   else if (aType < Fe)
-    return (RbtUInt)aType - 2; // HL,HH,Mn (3-1)
+    return (unsigned int)aType - 2; // HL,HH,Mn (3-1)
   else
-    return (RbtUInt)aType - 3; // HL,HH,Mn,Fe - V is the very last in the list
+    return (unsigned int)aType -
+           3; // HL,HH,Mn,Fe - V is the very last in the list
 }

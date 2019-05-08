@@ -42,18 +42,18 @@ public:
   RbtModelPtr GetReceptor() const;
   RbtModelPtr GetLigand() const;
   RbtModelList GetSolvent() const;
-  RbtBool hasSolvent() const;
+  bool hasSolvent() const;
   void SetReceptor(RbtModelPtr spReceptor);
   void SetLigand(RbtModelPtr spLigand);
   void SetSolvent(RbtModelList solventList);
   void RemoveSolvent();
   void UpdateModelCoordsFromChromRecords(RbtBaseMolecularFileSource *pSource,
-                                         RbtInt iTrace);
+                                         int iTrace);
 
   // Model I/O
   // Saves ligand to file sink
-  virtual void Save(RbtBool bSaveScores = true);
-  virtual void SaveHistory(RbtBool bSaveScores = true);
+  virtual void Save(bool bSaveScores = true);
+  virtual void SaveHistory(bool bSaveScores = true);
 
 protected:
   ////////////////////////////////////////
@@ -69,7 +69,7 @@ private:
       const RbtBiMolWorkSpace &); // Copy constructor disabled by default
   RbtBiMolWorkSpace &
   operator=(const RbtBiMolWorkSpace &); // Copy assignment disabled by default
-  void SaveLigand(RbtMolecularFileSinkPtr spSink, RbtBool bSaveScores = true);
+  void SaveLigand(RbtMolecularFileSinkPtr spSink, bool bSaveScores = true);
 
 protected:
   ////////////////////////////////////////

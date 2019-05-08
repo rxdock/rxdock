@@ -22,14 +22,14 @@ const std::string IDS_MODEL_ERROR = "RBT_MODEL_ERROR";
 // Unspecified model error
 class RbtModelError : public RbtError {
 public:
-  RbtModelError(const std::string &strFile, RbtInt nLine,
+  RbtModelError(const std::string &strFile, int nLine,
                 const std::string &strMessage = "")
       : RbtError(IDS_MODEL_ERROR, strFile, nLine, strMessage) {}
   // Protected constructor to allow derived model error classes to set error
   // name
 protected:
   RbtModelError(const std::string &strName, const std::string &strFile,
-                RbtInt nLine, const std::string &strMessage = "")
+                int nLine, const std::string &strMessage = "")
       : RbtError(strName, strFile, nLine, strMessage) {}
 };
 

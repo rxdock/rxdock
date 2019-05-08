@@ -28,13 +28,13 @@ RbtAnnotationHandler::~RbtAnnotationHandler() {
 ////////////////////////////////////////
 // Public methods
 ////////////////
-RbtBool RbtAnnotationHandler::isAnnotationEnabled() const { return m_bEnabled; }
+bool RbtAnnotationHandler::isAnnotationEnabled() const { return m_bEnabled; }
 
 const RbtAnnotationList &RbtAnnotationHandler::GetAnnotationList() const {
   return m_annotationList;
 }
 
-RbtInt RbtAnnotationHandler::GetNumAnnotations() const {
+int RbtAnnotationHandler::GetNumAnnotations() const {
   return m_annotationList.size();
 }
 
@@ -61,6 +61,6 @@ void RbtAnnotationHandler::ClearAnnotationList() const {
   m_annotationList.clear();
 }
 
-void RbtAnnotationHandler::EnableAnnotations(RbtBool bEnabled) const {
+void RbtAnnotationHandler::EnableAnnotations(bool bEnabled) const {
   m_bEnabled = bEnabled;
 }

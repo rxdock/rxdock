@@ -44,26 +44,26 @@ protected:
   virtual void SetupLigand();
   virtual void SetupSolvent();
   virtual void SetupScore();
-  virtual RbtDouble RawScore(void) const;
+  virtual double RawScore(void) const;
 
   // clear indexed grids
   void ClearReceptor(void);
   void ClearLigand(void);
   void ClearSolvent(void);
 
-  RbtDouble GetASP(RbtHHSType::eType, RbtDouble) const;
-  RbtDouble GetP_i(RbtHHSType::eType) const;
-  RbtDouble GetR_i(RbtHHSType::eType) const;
+  double GetASP(RbtHHSType::eType, double) const;
+  double GetP_i(RbtHHSType::eType) const;
+  double GetR_i(RbtHHSType::eType) const;
   void PrintWeightMatrix() const;
 
 private:
   struct solvprms {
-    solvprms(RbtDouble r0, RbtDouble p0, RbtDouble asp0, RbtBool b)
+    solvprms(double r0, double p0, double asp0, bool b)
         : r(r0), p(p0), asp(asp0), chg_scaling(b) {}
-    RbtDouble r;
-    RbtDouble p;
-    RbtDouble asp;
-    RbtBool chg_scaling;
+    double r;
+    double p;
+    double asp;
+    bool chg_scaling;
   };
 
   typedef vector<RbtSAIdxSF::solvprms> RbtSolvTable;
@@ -76,8 +76,8 @@ private:
 
   // Sum the surface energies (ASP*area) for the list of solvation interaction
   // centers
-  RbtDouble TotalEnergy(const HHS_SolvationRList &intnCenters) const;
-  void Partition(HHS_SolvationRList &intnCenters, RbtDouble dist = 0.0);
+  double TotalEnergy(const HHS_SolvationRList &intnCenters) const;
+  void Partition(HHS_SolvationRList &intnCenters, double dist = 0.0);
 
   HHS_SolvationRList theLSPList; // All ligand solvation interaction centers
   HHS_SolvationRList
@@ -96,27 +96,27 @@ private:
   RbtNonBondedHHSGridPtr theIdxGrid;
   RbtSolvTable m_solvTable;
   RbtParameterFileSourcePtr m_spSolvSource; // File source for solvation params
-  RbtDouble m_maxR;   // Maximum radius of any atom type, used to adjust Range()
-                      // dynamically
-  RbtBool m_bFlexRec; // Is receptor flexible?
-  mutable RbtDouble
+  double m_maxR;   // Maximum radius of any atom type, used to adjust Range()
+                   // dynamically
+  bool m_bFlexRec; // Is receptor flexible?
+  mutable double
       m_lig_0; // Solvation energy of the free ligand (initial conformation)
-  mutable RbtDouble
+  mutable double
       m_lig_free; // Solvation energy of the free ligand (current conformation)
-  mutable RbtDouble m_lig_bound;  // Solvation energy of the bound ligand
+  mutable double m_lig_bound;     // Solvation energy of the bound ligand
                                   // (current conformation)
-  mutable RbtDouble m_site_0;     // Solvation energy of the free docking site
+  mutable double m_site_0;        // Solvation energy of the free docking site
                                   // (initial conformation)
-  mutable RbtDouble m_site_free;  // Solvation energy of the free docking site
+  mutable double m_site_free;     // Solvation energy of the free docking site
                                   // (current conformation)
-  mutable RbtDouble m_site_bound; // Solvation energy of the bound docking site
+  mutable double m_site_bound;    // Solvation energy of the bound docking site
                                   // (current conformation)
-  mutable RbtDouble m_solvent_0;  // Solvation energy of the free explicit
+  mutable double m_solvent_0;     // Solvation energy of the free explicit
                                   // solvent (initial conformation)
-  mutable RbtDouble m_solvent_free;  // Solvation energy of the free explicit
-                                     // solvent (current conformation)
-  mutable RbtDouble m_solvent_bound; // Solvation energy of the bound explicit
-                                     // solvent (current conformation)
+  mutable double m_solvent_free;  // Solvation energy of the free explicit
+                                  // solvent (current conformation)
+  mutable double m_solvent_bound; // Solvation energy of the bound explicit
+                                  // solvent (current conformation)
 };
 
 #endif // _RBTSAIDXSF_H_

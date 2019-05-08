@@ -27,20 +27,20 @@ public:
   // Sole constructor
   RbtChromOccupancyRefData(
       RbtModel *pModel,
-      RbtDouble stepSize,   // mutation step size
-      RbtDouble threshold); // threshold for enabling/disabling atoms
+      double stepSize,   // mutation step size
+      double threshold); // threshold for enabling/disabling atoms
   virtual ~RbtChromOccupancyRefData();
 
-  RbtDouble GetStepSize() const { return m_stepSize; }
-  RbtDouble GetModelValue() const;
-  void SetModelValue(RbtDouble occupancy);
-  RbtDouble GetInitialValue() const { return m_initialValue; }
+  double GetStepSize() const { return m_stepSize; }
+  double GetModelValue() const;
+  void SetModelValue(double occupancy);
+  double GetInitialValue() const { return m_initialValue; }
 
 private:
   RbtModel *m_pModel;
-  RbtDouble m_stepSize;
-  RbtDouble m_threshold;
-  RbtDouble m_initialValue;
+  double m_stepSize;
+  double m_threshold;
+  double m_initialValue;
 };
 
 typedef SmartPtr<RbtChromOccupancyRefData>

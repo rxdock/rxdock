@@ -23,14 +23,14 @@ const std::string IDS_DOCKING_ERROR = "RBT_DOCKING_ERROR";
 // Unspecified model error
 class RbtDockingError : public RbtError {
 public:
-  RbtDockingError(const std::string &strFile, RbtInt nLine,
+  RbtDockingError(const std::string &strFile, int nLine,
                   const std::string &strMessage = "")
       : RbtError(IDS_DOCKING_ERROR, strFile, nLine, strMessage) {}
   // Protected constructor to allow derived docking error classes
   // to set error name
 protected:
   RbtDockingError(const std::string &strName, const std::string &strFile,
-                  RbtInt nLine, const std::string &strMessage = "")
+                  int nLine, const std::string &strMessage = "")
       : RbtError(strName, strFile, nLine, strMessage) {}
 };
 

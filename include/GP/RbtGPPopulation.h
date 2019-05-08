@@ -27,7 +27,7 @@ public:
   ///////////////////
   // Constructors
   ///////////////////
-  RbtGPPopulation(RbtInt, RbtInt, RbtGPFitnessFunctionPtr, RbtReturnTypeArray &,
+  RbtGPPopulation(int, int, RbtGPFitnessFunctionPtr, RbtReturnTypeArray &,
                   RbtReturnTypeArray &);
   void SetTrainingSets(RbtReturnTypeArray &it, RbtReturnTypeArray sf) {
     ittrain = it;
@@ -39,46 +39,46 @@ public:
   ///////////////////
   RbtGPPopulation(const RbtGPPopulation &);
   virtual ~RbtGPPopulation();
-  void Initialise(RbtDouble, RbtBool);
+  void Initialise(double, bool);
   void ScaleFitness();
-  void Eval(RbtDouble, RbtBool);
+  void Eval(double, bool);
   RbtGPGenomePtr Select(std::string) const;
 
   void SelectionUpdate(std::string);
 
-  void GAstep(std::string, RbtDouble, RbtDouble, RbtDouble, RbtDouble,
-              RbtDouble, RbtBool) throw(RbtError);
-  void EPstep(std::string, RbtDouble, RbtDouble, RbtDouble, RbtDouble,
-              RbtDouble, RbtBool) throw(RbtError);
+  void GAstep(std::string, double, double, double, double, double,
+              bool) throw(RbtError);
+  void EPstep(std::string, double, double, double, double, double,
+              bool) throw(RbtError);
   RbtGPGenomePtr Best() const;
   ostream &Print(ostream &) const;
   friend ostream &operator<<(ostream &, const RbtGPPopulation &);
-  void Swap(SmartPtr<RbtGPPopulation>, RbtInt);
+  void Swap(SmartPtr<RbtGPPopulation>, int);
   void QSort(RbtGPGenomeList &);
   void QSort();
   void MergePops();
   static bool Gen_eq(RbtGPGenome *, RbtGPGenome *);
-  RbtInt GetSize();
-  RbtInt GetNrepl();
+  int GetSize();
+  int GetNrepl();
 
 private:
   RbtGPGenomePtr RwSelect() const;
   RbtGPGenomePtr RkSelect() const;
-  RbtGPGenomePtr TSelect(RbtDouble) const;
+  RbtGPGenomePtr TSelect(double) const;
   RbtGPGenomeList pop;    // population: array to pointers of RbtGPGenomes
   RbtGPGenomeList newpop; // array where the new individuals created are stored
-  RbtInt popsize;         // size of population
-  RbtInt nrepl;           // Number of new individuals that get
+  int popsize;            // size of population
+  int nrepl;              // Number of new individuals that get
                           // created at each generation
-  RbtDouble total;        // total addition of the score values
-  RbtDouble ave;          // average
-  RbtDouble stdev;        // standard deviation
-  RbtDouble c;            // Sigma Truncation Multiplier
-  RbtDouble *psum;        // stores the partial sums of the fitness values. Used
+  double total;           // total addition of the score values
+  double ave;             // average
+  double stdev;           // standard deviation
+  double c;               // Sigma Truncation Multiplier
+  double *psum;           // stores the partial sums of the fitness values. Used
                           // when selecting individuals from the population
   RbtRand &m_rand;        // keep a reference to the singleton
                           // random number generator
-  RbtInt bestInd;         // keeps the index of the best individual
+  int bestInd;            // keeps the index of the best individual
   RbtGPFitnessFunctionPtr ff;
   RbtReturnTypeArray ittrain, sfttrain;
 };

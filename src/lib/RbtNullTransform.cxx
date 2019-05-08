@@ -43,12 +43,12 @@ void RbtNullTransform::Update(RbtSubject *theChangedSubject) {}
 // Private methods
 ////////////////
 void RbtNullTransform::Execute() {
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   // Trace level 1 = just output the current conformation (presumed to be the
   // best from the previous transform) to the history file
   if (iTrace == 5) {
     GetWorkSpace()->SaveHistory(true);
-    RbtDouble s = GetWorkSpace()->GetSF()->Score();
+    double s = GetWorkSpace()->GetSF()->Score();
     cout << "SCORE = " << s << endl;
   }
   // Trace level 2 = output entire GA population to history file, unless pop

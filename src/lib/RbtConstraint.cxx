@@ -19,17 +19,17 @@ using std::ostringstream;
 
 // initialization of the static data of RbtConstraint
 std::string RbtConstraint::_CT("RbtConstraint");
-RbtInt RbtHeavyConstraint::counter = 0; // 7 Feb 2005 (DM) new constraint type
-RbtInt RbtHBAConstraint::counter = 0;
-RbtInt RbtHBDConstraint::counter = 0;
-RbtInt RbtHydroConstraint::counter = 0;
-RbtInt RbtHydroAliphaticConstraint::counter = 0;
-RbtInt RbtHydroAromaticConstraint::counter = 0;
-RbtInt RbtNegChargeConstraint::counter = 0;
-RbtInt RbtPosChargeConstraint::counter = 0;
-RbtInt RbtRingAromaticConstraint::counter = 0;
+int RbtHeavyConstraint::counter = 0; // 7 Feb 2005 (DM) new constraint type
+int RbtHBAConstraint::counter = 0;
+int RbtHBDConstraint::counter = 0;
+int RbtHydroConstraint::counter = 0;
+int RbtHydroAliphaticConstraint::counter = 0;
+int RbtHydroAromaticConstraint::counter = 0;
+int RbtNegChargeConstraint::counter = 0;
+int RbtPosChargeConstraint::counter = 0;
+int RbtRingAromaticConstraint::counter = 0;
 
-RbtConstraint::RbtConstraint(RbtCoord c, RbtDouble t) {
+RbtConstraint::RbtConstraint(RbtCoord c, double t) {
   m_atomList.clear();
   coord = c;
   tolerance = t;
@@ -64,7 +64,7 @@ ostream &operator<<(ostream &s, const RbtConstraint &c) { return (c.Print(s)); }
 
 // DM 17 Oct 2003 - rewrite to avoid step increase in score at the tolerance
 // distance Allow for fact that atomlist may be empty
-RbtDouble RbtConstraint::Score() const {
+double RbtConstraint::Score() const {
   if (m_atomList.empty()) {
     // Return artifically high score if the ligand has none of the desired
     // features This will only apply to the optional constraints (mandatory
@@ -79,14 +79,14 @@ RbtDouble RbtConstraint::Score() const {
     d2list.push_back(Rbt::Length2((*iter)->GetCoords(), coord));
   }
   // Min distance**2
-  RbtDouble d2min = *(std::min_element(d2list.begin(), d2list.end()));
+  double d2min = *(std::min_element(d2list.begin(), d2list.end()));
   // Score is zero up to the tolerance range, then quadratic beyond.
-  RbtDouble dr = sqrt(d2min) - tolerance;
+  double dr = sqrt(d2min) - tolerance;
   return (dr > 0.0) ? dr * dr : 0.0;
 }
 
-RbtConstraintPtr Rbt::CreateConstraint(RbtCoord &c, RbtDouble &t,
-                                       std::string &n, RbtBool bCount) {
+RbtConstraintPtr Rbt::CreateConstraint(RbtCoord &c, double &t, std::string &n,
+                                       bool bCount) {
   if (n == "Any") {
     if (bCount)
       RbtHeavyConstraint::counter++;
@@ -139,11 +139,10 @@ void Rbt::ZeroCounters() {
   RbtRingAromaticConstraint::counter = 0;
 }
 
-void Rbt::ReadConstraint(istream &ifile, RbtConstraintPtr &cnt,
-                         RbtBool bCount) {
+void Rbt::ReadConstraint(istream &ifile, RbtConstraintPtr &cnt, bool bCount) {
   std::string n;
   RbtCoord c;
-  RbtDouble t;
+  double t;
   ifile >> c;
   ifile >> t;
   ifile >> n;
@@ -154,9 +153,9 @@ void Rbt::ReadConstraint(istream &ifile, RbtConstraintPtr &cnt,
 }
 
 void Rbt::ReadConstraintFromMoe(istream &ifile, RbtConstraintPtr &cnt,
-                                RbtBool bCount) {
+                                bool bCount) {
   std::string n, extra;
-  RbtDouble x, y, z, t;
+  double x, y, z, t;
   ifile >> n;
   cout << n << endl;
   ifile >> extra;
@@ -189,10 +188,9 @@ void Rbt::ReadStartMoe(istream &ifile) {
   ifile.getline(line, MAXLINELENGTH); // next comment line
 }
 
-void Rbt::ReadConstraints(istream &ifile, RbtConstraintList &cl,
-                          RbtBool bCount) {
+void Rbt::ReadConstraints(istream &ifile, RbtConstraintList &cl, bool bCount) {
   char ch;
-  RbtBool moe = false;
+  bool moe = false;
   cl.clear();
   RbtConstraintPtr cons;
   ch = ifile.peek();
@@ -221,7 +219,7 @@ void Rbt::ReadConstraints(istream &ifile, RbtConstraintList &cl,
 
 // 07 Feb 2005 (DM) - new constraint type, any heavy atom
 void RbtHeavyConstraint::AddAtomList(RbtModelPtr lig,
-                                     RbtBool bCheck) throw(RbtError) {
+                                     bool bCheck) throw(RbtError) {
   m_atomList =
       Rbt::GetAtomList(lig->GetAtomList(), std::not1(Rbt::isAtomicNo_eq(1)));
   if (bCheck && (m_atomList.size() < counter)) {
@@ -234,7 +232,7 @@ void RbtHeavyConstraint::AddAtomList(RbtModelPtr lig,
 
 // 16 May 2003 (DM) - limit to neutral H-bond donor hydrogens
 void RbtHBDConstraint::AddAtomList(RbtModelPtr lig,
-                                   RbtBool bCheck) throw(RbtError) {
+                                   bool bCheck) throw(RbtError) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomHBondDonor());
   m_atomList = Rbt::GetAtomList(m_atomList, std::not1(Rbt::isAtomCationic()));
   if (bCheck && (m_atomList.size() < counter)) {
@@ -248,7 +246,7 @@ void RbtHBDConstraint::AddAtomList(RbtModelPtr lig,
 
 // 16 May 2003 (DM) - limit to neutral H-bond acceptors
 void RbtHBAConstraint::AddAtomList(RbtModelPtr lig,
-                                   RbtBool bCheck) throw(RbtError) {
+                                   bool bCheck) throw(RbtError) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomHBondAcceptor());
   m_atomList = Rbt::GetAtomList(m_atomList, std::not1(Rbt::isAtomAnionic()));
   if (bCheck && (m_atomList.size() < counter)) {
@@ -260,7 +258,7 @@ void RbtHBAConstraint::AddAtomList(RbtModelPtr lig,
 }
 
 void RbtHydroConstraint::AddAtomList(RbtModelPtr lig,
-                                     RbtBool bCheck) throw(RbtError) {
+                                     bool bCheck) throw(RbtError) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomLipophilic());
   if (bCheck && (m_atomList.size() < counter)) {
     ostringstream ostr;
@@ -271,7 +269,7 @@ void RbtHydroConstraint::AddAtomList(RbtModelPtr lig,
 }
 
 void RbtHydroAliphaticConstraint::AddAtomList(RbtModelPtr lig,
-                                              RbtBool bCheck) throw(RbtError) {
+                                              bool bCheck) throw(RbtError) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomLipophilic());
   m_atomList =
       Rbt::GetAtomList(m_atomList, Rbt::isHybridState_eq(RbtAtom::SP3));
@@ -285,7 +283,7 @@ void RbtHydroAliphaticConstraint::AddAtomList(RbtModelPtr lig,
 }
 
 void RbtHydroAromaticConstraint::AddAtomList(RbtModelPtr lig,
-                                             RbtBool bCheck) throw(RbtError) {
+                                             bool bCheck) throw(RbtError) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomLipophilic());
   m_atomList =
       Rbt::GetAtomList(m_atomList, Rbt::isHybridState_eq(RbtAtom::AROM));
@@ -299,7 +297,7 @@ void RbtHydroAromaticConstraint::AddAtomList(RbtModelPtr lig,
 }
 
 void RbtNegChargeConstraint::AddAtomList(RbtModelPtr lig,
-                                         RbtBool bCheck) throw(RbtError) {
+                                         bool bCheck) throw(RbtError) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomAnionic());
   if (bCheck && (m_atomList.size() < counter)) {
     ostringstream ostr;
@@ -310,7 +308,7 @@ void RbtNegChargeConstraint::AddAtomList(RbtModelPtr lig,
 }
 
 void RbtPosChargeConstraint::AddAtomList(RbtModelPtr lig,
-                                         RbtBool bCheck) throw(RbtError) {
+                                         bool bCheck) throw(RbtError) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomCationic());
   if (bCheck && (m_atomList.size() < counter)) {
     ostringstream ostr;
@@ -321,7 +319,7 @@ void RbtPosChargeConstraint::AddAtomList(RbtModelPtr lig,
 }
 
 void RbtRingAromaticConstraint::AddAtomList(RbtModelPtr lig,
-                                            RbtBool bCheck) throw(RbtError) {
+                                            bool bCheck) throw(RbtError) {
   m_atomList.clear();
   RbtAtomList at = lig->GetAtomList();
   RbtAtomListList ligRingLists = lig->GetRingAtomLists();

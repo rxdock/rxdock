@@ -54,26 +54,26 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   if (spReceptor.Null())
     return cavityList;
 
-  RbtDouble rVolIncr = GetParameter(_VOL_INCR);
-  RbtDouble smallR = GetParameter(_SMALL_SPHERE);
-  RbtDouble largeR = GetParameter(_LARGE_SPHERE);
-  RbtDouble step = GetParameter(_GRIDSTEP);
+  double rVolIncr = GetParameter(_VOL_INCR);
+  double smallR = GetParameter(_SMALL_SPHERE);
+  double largeR = GetParameter(_LARGE_SPHERE);
+  double step = GetParameter(_GRIDSTEP);
   RbtCoord center = GetParameter(_CENTER);
-  RbtDouble radius = GetParameter(_RADIUS);
-  RbtDouble minVol = GetParameter(_MIN_VOLUME);
-  RbtInt maxCavities = GetParameter(_MAX_CAVITIES);
-  RbtInt iTrace = GetTrace();
+  double radius = GetParameter(_RADIUS);
+  double minVol = GetParameter(_MIN_VOLUME);
+  int maxCavities = GetParameter(_MAX_CAVITIES);
+  int iTrace = GetTrace();
 
   // Grid values
-  const RbtDouble recVal = -1.0;  // Receptor volume
-  const RbtDouble larVal = -0.75; // Accessible to large sphere
-  const RbtDouble excVal = -0.5;  // Excluded from calculation
-  const RbtDouble borVal =
+  const double recVal = -1.0;  // Receptor volume
+  const double larVal = -0.75; // Accessible to large sphere
+  const double excVal = -0.5;  // Excluded from calculation
+  const double borVal =
       -0.25; // Border region (used for mapping large sphere only)
-  const RbtDouble cavVal = 1.0; // Cavities
+  const double cavVal = 1.0; // Cavities
 
   // Convert from min volume (in A^3) to min size (number of grid points)
-  RbtDouble minSize = minVol / (step * step * step);
+  double minSize = minVol / (step * step * step);
   RbtFFTGridPtr spReceptorGrid;
   // Only include non-H receptor atoms in the mapping
   RbtAtomList atomList = Rbt::GetAtomList(spReceptor->GetAtomList(),
@@ -84,13 +84,13 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   // the cavity mapping
   RbtCoord minCoord = center - radius;
   RbtCoord maxCoord = center + radius;
-  RbtDouble border = 2.0 * (largeR + step);
+  double border = 2.0 * (largeR + step);
   minCoord -= border;
   maxCoord += border;
   RbtVector recepExtent = maxCoord - minCoord;
-  RbtUInt nX = int(recepExtent.x / gridStep.x) + 1;
-  RbtUInt nY = int(recepExtent.y / gridStep.y) + 1;
-  RbtUInt nZ = int(recepExtent.z / gridStep.z) + 1;
+  unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
+  unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
+  unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
   spReceptorGrid =
       RbtFFTGridPtr(new RbtFFTGrid(minCoord, gridStep, nX, nY, nZ));
   center = spReceptorGrid->GetGridCenter();
@@ -117,7 +117,7 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   // region.
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
-    RbtDouble r = (**iter).GetVdwRadius();
+    double r = (**iter).GetVdwRadius();
     spReceptorGrid->SetSphere((**iter).GetCoords(), r + rVolIncr, recVal, true);
   }
 

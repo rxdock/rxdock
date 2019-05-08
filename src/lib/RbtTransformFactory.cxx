@@ -80,7 +80,7 @@ RbtTransformAgg *RbtTransformFactory::CreateAggFromFile(
   // the parameter file for valid transform definitions In this case we do not
   // throw an error if a particular section is not a transform, we simply skip
   // it
-  RbtBool bThrowError(true);
+  bool bThrowError(true);
   if (transformList.empty()) {
     transformList = spPrmSource->GetSectionList();
     bThrowError = false;

@@ -29,10 +29,6 @@ using std::istringstream;
 using std::ostream;
 using std::ostringstream;
 
-#ifndef _RBTTYPES_H_
-#include "RbtTypes.h"
-#endif //_RBTTYPES_H_
-
 #ifndef _RBTSMARTPOINTER_H_
 #include "RbtSmartPointer.h"
 #endif //_RBTSMARTPOINTER_H_

@@ -23,15 +23,15 @@ RbtBond::RbtBond()
 }
 
 // Parameterised constructor
-RbtBond::RbtBond(RbtInt nBondId, RbtAtomPtr &spAtom1, RbtAtomPtr &spAtom2,
-                 RbtInt nFormalBondOrder)
+RbtBond::RbtBond(int nBondId, RbtAtomPtr &spAtom1, RbtAtomPtr &spAtom2,
+                 int nFormalBondOrder)
     : m_nBondId(nBondId), m_spAtom1(spAtom1), m_spAtom2(spAtom2),
       m_nFormalBondOrder(nFormalBondOrder),
       m_dPartialBondOrder(nFormalBondOrder), m_bCyclic(false),
       m_bSelected(false) {
   // DM 04 Dec 1998  Register the bond back with the constituent atoms
-  RbtBool bOK1 = m_spAtom1->AddBond(this);
-  RbtBool bOK2 = m_spAtom2->AddBond(this);
+  bool bOK1 = m_spAtom1->AddBond(this);
+  bool bOK2 = m_spAtom2->AddBond(this);
 #ifdef _DEBUG
   if (!bOK1)
     cout << "FAILED to add bond " << m_nBondId << " to atom "
@@ -47,8 +47,8 @@ RbtBond::RbtBond(RbtInt nBondId, RbtAtomPtr &spAtom1, RbtAtomPtr &spAtom2,
 // Default destructor
 RbtBond::~RbtBond() {
   // DM 04 Dec 1998  Unregister the bond with the constituent atoms
-  RbtBool bOK1 = m_spAtom1->RemoveBond(this);
-  RbtBool bOK2 = m_spAtom2->RemoveBond(this);
+  bool bOK1 = m_spAtom1->RemoveBond(this);
+  bool bOK2 = m_spAtom2->RemoveBond(this);
 #ifdef _DEBUG
   if (!bOK1)
     cout << "FAILED to remove bond " << m_nBondId << " from atom "
@@ -115,16 +115,14 @@ ostream &operator<<(ostream &s, const RbtBond &bond) {
 ////////////////
 
 // Returns bond length
-RbtDouble RbtBond::Length() const {
-  return Rbt::BondLength(m_spAtom1, m_spAtom2);
-}
+double RbtBond::Length() const { return Rbt::BondLength(m_spAtom1, m_spAtom2); }
 
 //////////////////////////////////////////
 // Non-member functions (in Rbt namespace)
 //////////////////////////////////////////
 
 // Is bond rotatable ?
-RbtBool Rbt::isBondRotatable::operator()(RbtBond *pBond) const {
+bool Rbt::isBondRotatable::operator()(RbtBond *pBond) const {
   // Useful predicates
   Rbt::isFFType_eq bIsC_SP2("C_SP2");
   Rbt::isFFType_eq bIsC_SP("C_SP");
@@ -210,7 +208,7 @@ RbtBool Rbt::isBondRotatable::operator()(RbtBond *pBond) const {
 // DM 24 Sep 2001
 // Is bond to a terminal NH3+ group?
 // Use to filter rotable bond list for scoring function purposes
-RbtBool Rbt::isBondToNH3::operator()(RbtBond *pBond) const {
+bool Rbt::isBondToNH3::operator()(RbtBond *pBond) const {
   RbtAtomPtr spAtom1(pBond->GetAtom1Ptr());
   RbtAtomPtr spAtom2(pBond->GetAtom2Ptr());
   if (((spAtom1->GetAtomicNo() == 7) &&
@@ -227,7 +225,7 @@ RbtBool Rbt::isBondToNH3::operator()(RbtBond *pBond) const {
 }
 
 // Is bond to a terminal OH group?
-RbtBool Rbt::isBondToOH::operator()(RbtBond *pBond) const {
+bool Rbt::isBondToOH::operator()(RbtBond *pBond) const {
   RbtAtomPtr spAtom1(pBond->GetAtom1Ptr());
   RbtAtomPtr spAtom2(pBond->GetAtom2Ptr());
   if (((spAtom1->GetAtomicNo() == 8) &&
@@ -245,7 +243,7 @@ RbtBool Rbt::isBondToOH::operator()(RbtBond *pBond) const {
 
 // DM 7 June 1999
 // Is bond an amide bond?
-RbtBool Rbt::isBondAmide::operator()(RbtBond *pBond) const {
+bool Rbt::isBondAmide::operator()(RbtBond *pBond) const {
   // Useful predicates
   // Rbt::isFFType_eq bIsC_SP2("C_SP2");
   // Rbt::isFFType_eq bIsN_TRI("N_TRI");
@@ -266,7 +264,7 @@ RbtBool Rbt::isBondAmide::operator()(RbtBond *pBond) const {
   if (isC(spAtom1) && isSP2(spAtom1) && isN(spAtom2) && isTRI(spAtom2)) {
     RbtAtomList oxygens =
         Rbt::GetAtomList(Rbt::GetBondedAtomList(spAtom1), isO);
-    RbtInt nOSP2 = Rbt::GetNumAtoms(oxygens, isSP2);
+    int nOSP2 = Rbt::GetNumAtoms(oxygens, isSP2);
     // cout << "Amide check on " << spAtom1->GetFullAtomName() << " - " <<
     // spAtom2->GetFullAtomName()
     //	 << " #OSP2 = " << nOSP2 << endl;
@@ -274,7 +272,7 @@ RbtBool Rbt::isBondAmide::operator()(RbtBond *pBond) const {
   } else if (isC(spAtom2) && isSP2(spAtom2) && isN(spAtom1) && isTRI(spAtom1)) {
     RbtAtomList oxygens =
         Rbt::GetAtomList(Rbt::GetBondedAtomList(spAtom2), isO);
-    RbtInt nOSP2 = Rbt::GetNumAtoms(oxygens, isSP2);
+    int nOSP2 = Rbt::GetNumAtoms(oxygens, isSP2);
     // cout << "Amide check on " << spAtom2->GetFullAtomName() << " - " <<
     // spAtom1->GetFullAtomName()
     //	 << " #OSP2 = " << nOSP2 << endl;
@@ -288,13 +286,13 @@ RbtBool Rbt::isBondAmide::operator()(RbtBond *pBond) const {
 ////////////////////////////////////////////
 
 // Selected bonds
-void Rbt::SetBondSelectionFlags(RbtBondList &bondList, RbtBool bSelected) {
+void Rbt::SetBondSelectionFlags(RbtBondList &bondList, bool bSelected) {
   for (RbtBondListIter iter = bondList.begin(); iter != bondList.end(); iter++)
     (*iter)->SetSelectionFlag(bSelected);
 }
 
 // Cyclic bonds
-void Rbt::SetBondCyclicFlags(RbtBondList &bondList, RbtBool bCyclic) {
+void Rbt::SetBondCyclicFlags(RbtBondList &bondList, bool bCyclic) {
   for (RbtBondListIter iter = bondList.begin(); iter != bondList.end(); iter++)
     (*iter)->SetCyclicFlag(bCyclic);
 }

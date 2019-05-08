@@ -17,7 +17,7 @@
 
 std::string RbtPopulation::_CT("RbtPopulation");
 
-RbtPopulation::RbtPopulation(RbtChromElement *pChr, RbtInt size,
+RbtPopulation::RbtPopulation(RbtChromElement *pChr, int size,
                              RbtBaseSF *pSF) throw(RbtError)
     : m_size(size), m_c(2.0), m_pSF(pSF), m_rand(Rbt::GetRbtRand()),
       m_scoreMean(0.0), m_scoreVariance(0.0) {
@@ -30,7 +30,7 @@ RbtPopulation::RbtPopulation(RbtChromElement *pChr, RbtInt size,
   }
   // Create a random population
   m_pop.reserve(m_size);
-  for (RbtInt i = 0; i < m_size; ++i) {
+  for (int i = 0; i < m_size; ++i) {
     // The RbtGenome constructor clones the chromosome to create an independent
     // copy
     RbtGenomePtr genome = new RbtGenome(pChr);
@@ -57,22 +57,22 @@ void RbtPopulation::SetSF(RbtBaseSF *pSF) throw(RbtError) {
   EvaluateRWFitness();
 }
 
-void RbtPopulation::GAstep(RbtInt nReplicates, RbtDouble relStepSize,
-                           RbtDouble equalityThreshold, RbtDouble pcross,
-                           RbtBool xovermut, RbtBool cmutate) throw(RbtError) {
+void RbtPopulation::GAstep(int nReplicates, double relStepSize,
+                           double equalityThreshold, double pcross,
+                           bool xovermut, bool cmutate) throw(RbtError) {
   if (nReplicates <= 0) {
     throw RbtBadArgument(_WHERE_, "nReplicates must be positive (non-zero)");
   }
   RbtGenomeList newPop;
   newPop.reserve(nReplicates);
-  for (RbtInt i = 0; i < nReplicates / 2; i++) {
+  for (int i = 0; i < nReplicates / 2; i++) {
     RbtGenomePtr mother = RouletteWheelSelect();
     RbtGenomePtr father = RouletteWheelSelect();
     // Check that mother and father are not the same genome
     // The check is on the pointers, not that the chromosomes are near-equal
     // If we repeatedly get the same genomes selected, this must mean
     // the population lacks diversity
-    RbtInt j = 0;
+    int j = 0;
     while (father == mother) {
       father = RouletteWheelSelect();
       if (j > 100)
@@ -137,12 +137,12 @@ ostream &operator<<(ostream &s, const RbtPopulation &p) {
 }
 
 RbtGenomePtr RbtPopulation::RouletteWheelSelect() const {
-  RbtDouble cutoff = m_rand.GetRandom01();
-  RbtInt size = m_pop.size();
-  RbtInt lower = 0;
-  RbtInt upper = size - 1;
+  double cutoff = m_rand.GetRandom01();
+  int size = m_pop.size();
+  int lower = 0;
+  int upper = size - 1;
   while (upper >= lower) {
-    RbtInt i = lower + (upper - lower) / 2;
+    int i = lower + (upper - lower) / 2;
     if (m_pop[i]->GetRWFitness() > cutoff)
       upper = i - 1;
     else
@@ -155,7 +155,7 @@ RbtGenomePtr RbtPopulation::RouletteWheelSelect() const {
 }
 
 void RbtPopulation::MergeNewPop(RbtGenomeList &newPop,
-                                RbtDouble equalityThreshold) {
+                                double equalityThreshold) {
   // Assume newPop needs scoring and sorting
   for (RbtGenomeListIter iter = newPop.begin(); iter != newPop.end(); ++iter) {
     (*iter)->SetScore(m_pSF);
@@ -179,22 +179,22 @@ void RbtPopulation::MergeNewPop(RbtGenomeList &newPop,
 
 void RbtPopulation::EvaluateRWFitness() {
   // Determine mean and variance of true scores
-  RbtDouble sum(0.0);
-  RbtDouble sumSq(0.0);
+  double sum(0.0);
+  double sumSq(0.0);
   for (RbtGenomeListConstIter iter = m_pop.begin(); iter != m_pop.end();
        ++iter) {
-    RbtDouble score = (*iter)->GetScore();
+    double score = (*iter)->GetScore();
     sum += score;
     sumSq += score * score;
   }
-  RbtDouble popSize = m_pop.size();
+  double popSize = m_pop.size();
   m_scoreMean = sum / popSize;
   m_scoreVariance = (sumSq / popSize) - (m_scoreMean * m_scoreMean);
-  RbtDouble sigma = sqrt(m_scoreVariance);
+  double sigma = sqrt(m_scoreVariance);
   // calculate scaled fitness values using sigma truncation
   // Goldberg page 124
-  RbtDouble offset = m_scoreMean - m_c * sigma;
-  RbtDouble partialSum = 0.0;
+  double offset = m_scoreMean - m_c * sigma;
+  double partialSum = 0.0;
   // First set the unnormalised fitness values
   for (RbtGenomeListIter iter = m_pop.begin(); iter != m_pop.end(); ++iter) {
     partialSum = (*iter)->SetRWFitness(offset, partialSum);

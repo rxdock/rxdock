@@ -99,8 +99,8 @@ int main(int argc, char *argv[]) {
   std::string strSuffix(".grd");
   std::string strReceptorPrmFile;             // Receptor param file
   std::string strSFFile("calcgrid_attr.prm"); // Scoring function file
-  RbtDouble gs(0.5);                          // grid step
-  RbtDouble border(1.0);                      // grid border around docking site
+  double gs(0.5);                             // grid step
+  double border(1.0);                         // grid border around docking site
 
   // Brief help message
   if (argc == 1) {
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
 
   // Check command line arguments
   cout << endl << "Command line args:" << endl;
-  for (RbtInt iarg = 1; iarg < argc; iarg++) {
+  for (int iarg = 1; iarg < argc; iarg++) {
     cout << argv[iarg];
     std::string strArg(argv[iarg]);
     if (strArg.find("-o") == 0)
@@ -188,7 +188,7 @@ int main(int argc, char *argv[]) {
     RbtModelPtr spReceptor = prmFactory.CreateReceptor();
     // Trap multiple receptor conformations here: this SF does not support them
     // yet
-    RbtBool bEnsemble = (spReceptor->GetNumSavedCoords() > 1);
+    bool bEnsemble = (spReceptor->GetNumSavedCoords() > 1);
     if (bEnsemble) {
       std::string message(
           "rbcalcgrid does not support multiple receptor conformations yet");
@@ -217,9 +217,9 @@ int main(int argc, char *argv[]) {
     RbtCoord maxCoord = spDS->GetMaxCoord() + border;
     RbtVector recepExtent = maxCoord - minCoord;
     RbtVector gridStep(gs, gs, gs);
-    RbtUInt nX = int(recepExtent.x / gridStep.x) + 1;
-    RbtUInt nY = int(recepExtent.y / gridStep.y) + 1;
-    RbtUInt nZ = int(recepExtent.z / gridStep.z) + 1;
+    unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
+    unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
+    unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
     cout << "Constructing grid of size " << nX << " x " << nY << " x " << nZ
          << endl;
     RbtRealGridPtr spGrid(new RbtRealGrid(minCoord, gridStep, nX, nY, nZ));
@@ -238,11 +238,11 @@ int main(int argc, char *argv[]) {
 #endif
     // Write header string (RbtVdwGridSF)
     const char *const header = "RbtVdwGridSF";
-    RbtInt length = strlen(header);
+    int length = strlen(header);
     Rbt::WriteWithThrow(ostr, (const char *)&length, sizeof(length));
     Rbt::WriteWithThrow(ostr, header, length);
     // Write number of grids
-    RbtInt nGrids = probes.size();
+    int nGrids = probes.size();
     Rbt::WriteWithThrow(ostr, (const char *)&nGrids, sizeof(nGrids));
 
     // Store regular pointers to avoid smart pointer dereferencing overheads
@@ -261,13 +261,13 @@ int main(int argc, char *argv[]) {
       spWS->SetLigand(spLigand);
       pGrid->SetAllValues(0.0);
       // Loop over all grid coords and calculate the score at each position
-      for (RbtUInt i = 0; i < spGrid->GetN(); i++) {
+      for (unsigned int i = 0; i < spGrid->GetN(); i++) {
         pAtom->SetCoords(pGrid->GetCoord(i));
         gridData[i] = pSF->Score();
       }
       // Write the atom type string to the grid file, before the grid itself
       const char *const szType = strType.c_str();
-      RbtInt l = strlen(szType);
+      int l = strlen(szType);
       Rbt::WriteWithThrow(ostr, (const char *)&l, sizeof(l));
       Rbt::WriteWithThrow(ostr, szType, l);
       pGrid->Write(ostr);

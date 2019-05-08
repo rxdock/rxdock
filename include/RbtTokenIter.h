@@ -18,7 +18,6 @@
 
 #include "RbtContext.h"
 #include "RbtToken.h"
-#include "RbtTypes.h"
 
 class RbtTokenIter {
 public:

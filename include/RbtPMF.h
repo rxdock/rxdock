@@ -14,7 +14,6 @@
 #define _RBTPMF_H_
 
 // #include <vector>		// STL vector
-#include "RbtTypes.h"
 #include <string>
 
 /**

@@ -32,7 +32,7 @@ public:
 
 protected:
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
 
   // Request Handling method
   // Handles the Partition request
@@ -51,7 +51,7 @@ private:
   RbtInteractionCenterList m_negList;
   RbtInteractionListMap m_intns;
   RbtInteractionListMap m_prtIntns;
-  RbtBool m_bAttr;
+  bool m_bAttr;
 };
 
 #endif //_RBTPOLARINTRASF_H_

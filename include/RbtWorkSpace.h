@@ -43,7 +43,7 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
 
-  RbtWorkSpace(RbtUInt nModels = 2);
+  RbtWorkSpace(unsigned int nModels = 2);
   virtual ~RbtWorkSpace();
 
   ////////////////////////////////////////
@@ -57,29 +57,29 @@ public:
   // Model handling
 
   // Returns number of models in workspace
-  RbtUInt GetNumModels() const;
+  unsigned int GetNumModels() const;
   // Returns vector of all models in workspace
   RbtModelList GetModels() const;
   // Returns a specific (numbered) model
   // Throws RbtBadArgument if iModel out of range
-  RbtModelPtr GetModel(RbtUInt iModel) const throw(RbtError);
+  RbtModelPtr GetModel(unsigned int iModel) const throw(RbtError);
 
   // Replace an existing model
   // Throws RbtBadArgument if iModel out of range
-  void SetModel(RbtUInt iModel, RbtModelPtr spModel) throw(RbtError);
+  void SetModel(unsigned int iModel, RbtModelPtr spModel) throw(RbtError);
 
   // Returns vector of models, starting from index iModel
-  RbtModelList GetModels(RbtUInt iModel) const throw(RbtError);
+  RbtModelList GetModels(unsigned int iModel) const throw(RbtError);
   // Append a number of models to the workspace, increasing the total number of
   // models
   void AddModels(RbtModelList modelList);
   // Replace a number of existing models
   // iModel is the index of the first model to replace
   // Throws RbtBadArgument if iModel out of range or modelList too large
-  void SetModels(RbtUInt iModel, RbtModelList modelList) throw(RbtError);
+  void SetModels(unsigned int iModel, RbtModelList modelList) throw(RbtError);
   // Removes a number of models from the workspace
   // Removes from index iModel to end of model list
-  void RemoveModels(RbtUInt iModel) throw(RbtError);
+  void RemoveModels(unsigned int iModel) throw(RbtError);
 
   // Model I/O
   // Get/set the molecular file sink (for outputting ligands)
@@ -89,7 +89,7 @@ public:
   // If bSaveScores is true, write component scores also
   // Base workspace does nothing
   // It is up to subclasses to decide what action to take
-  virtual void Save(RbtBool bSaveScores = true);
+  virtual void Save(bool bSaveScores = true);
   // Get/set the history file sink
   RbtMolecularFileSinkPtr GetHistorySink() const;
   void SetHistorySink(RbtMolecularFileSinkPtr);
@@ -97,7 +97,7 @@ public:
   // If bSaveScores is true, write component scores also
   // Base workspace does nothing
   // It is up to subclasses to decide what action to take
-  virtual void SaveHistory(RbtBool bSaveScores = true);
+  virtual void SaveHistory(bool bSaveScores = true);
 
   // Get/Set the scoring function
   // SetSF automatically registers the scoring function with the workspace

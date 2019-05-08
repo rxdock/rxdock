@@ -52,7 +52,7 @@ private:
   RbtCellTokenIter(); // Default constructor disabled
   RbtGPChromosomePtr chrom;
   RbtTokenPtr current;
-  stack<RbtInt> cells;
+  stack<int> cells;
   RbtContextPtr contextp;
 };
 

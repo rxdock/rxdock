@@ -31,12 +31,12 @@ public:
   // Public methods
   ////////////////
   // Get number of stored parameters
-  RbtUInt GetNumParameters() const;
+  unsigned int GetNumParameters() const;
   // Get a named parameter, throws error if name not found
   RbtVariant GetParameter(const std::string &strName) const
       throw(RbtBadArgument);
   // Check if named parameter is present
-  RbtBool isParameterValid(const std::string &strName) const;
+  bool isParameterValid(const std::string &strName) const;
   // Get list of all parameter names
   RbtStringList GetParameterNames() const;
   // Get list of all parameter

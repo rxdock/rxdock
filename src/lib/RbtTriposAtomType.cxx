@@ -29,10 +29,10 @@ RbtTriposAtomType::~RbtTriposAtomType() {}
 // If useExtendedTypes is true, pseudo types for extended carbons and polar Hs
 // are used
 RbtTriposAtomType::eType
-RbtTriposAtomType::operator()(RbtAtom *pAtom, RbtBool useExtendedTypes) const {
-  RbtInt nAtomicNo = pAtom->GetAtomicNo();
+RbtTriposAtomType::operator()(RbtAtom *pAtom, bool useExtendedTypes) const {
+  int nAtomicNo = pAtom->GetAtomicNo();
   RbtAtom::eHybridState eState = pAtom->GetHybridState();
-  RbtInt nImplH = pAtom->GetNumImplicitHydrogens();
+  int nImplH = pAtom->GetNumImplicitHydrogens();
   RbtBondMap bondMap;
   Rbt::isBondAmide bIsAmide;
   Rbt::isAtomHBondDonor bIsDonor;
@@ -215,7 +215,7 @@ int RbtTriposAtomType::Type2Hybrid(RbtTriposAtomType::eType aType) const {
   return m_typeInfo[aType].hybrid;
 }
 // Get atomic number from Tripos type
-RbtInt RbtTriposAtomType::Type2AtomicNo(RbtTriposAtomType::eType aType) const {
+int RbtTriposAtomType::Type2AtomicNo(RbtTriposAtomType::eType aType) const {
   return m_typeInfo[aType].atomicNo;
 }
 

@@ -32,17 +32,17 @@ public:
   // Destructor
   //////////////////
   virtual ~RbtCommand() {}
-  static RbtInt ntabs;
-  static RbtBool inside;
+  static int ntabs;
+  static bool inside;
 
 protected:
   ///////////////////
   // Constructors
   ///////////////////
   RbtCommand() {} // Default constructor disabled
-  std::string tabs(RbtInt n) {
+  std::string tabs(int n) {
     std::string st = "";
-    for (RbtInt i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
       st += "  ";
     return st;
   }

@@ -45,7 +45,7 @@ std::string RbtParameterFileSource::GetVersion() {
 }
 
 // DM 06 June 2000 - limit #parameters to those in current section
-RbtUInt RbtParameterFileSource::GetNumParameters() {
+unsigned int RbtParameterFileSource::GetNumParameters() {
   Parse();
   return GetParameterList().size();
 }
@@ -55,7 +55,7 @@ RbtStringList RbtParameterFileSource::GetParameterList() {
   Parse();
   RbtStringList paramList;
   std::string prmPrefix(GetSection() + "::");
-  RbtInt prmPrefixLen = prmPrefix.size();
+  int prmPrefixLen = prmPrefix.size();
   for (RbtStringVariantMapConstIter iter = m_paramsMap.begin();
        iter != m_paramsMap.end(); iter++) {
     if (((*iter).first).find(prmPrefix) == 0) {
@@ -66,7 +66,7 @@ RbtStringList RbtParameterFileSource::GetParameterList() {
 }
 
 // DM 4 Feb 1999 Get a particular named parameter value as a double
-RbtDouble RbtParameterFileSource::GetParameterValue(
+double RbtParameterFileSource::GetParameterValue(
     const std::string &strParamName) throw(RbtError) {
   Parse();
   if (!strParamName.empty()) {
@@ -100,8 +100,8 @@ std::string RbtParameterFileSource::GetParameterValueAsString(
 }
 
 // DM 11 Feb 1999 Check if parameter is present
-RbtBool
-RbtParameterFileSource::isParameterPresent(const std::string &strParamName) {
+bool RbtParameterFileSource::isParameterPresent(
+    const std::string &strParamName) {
   Parse();
   std::string strFullParamName = GetFullParameterName(strParamName);
   return m_paramsMap.find(strFullParamName) != m_paramsMap.end();
@@ -116,7 +116,7 @@ RbtParameterFileSource::isParameterPresent(const std::string &strParamName) {
 // minimisation phase and need the same parameters to appear in each
 
 // Number of named sections
-RbtInt RbtParameterFileSource::GetNumSections() {
+int RbtParameterFileSource::GetNumSections() {
   Parse();
   return m_sectionNames.size();
 }

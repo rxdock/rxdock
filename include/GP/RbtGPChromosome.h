@@ -26,7 +26,7 @@ public:
   ///////////////////
   // Constructors
   ///////////////////
-  RbtGPChromosome(RbtInt, RbtInt, RbtInt, RbtInt, RbtInt, RbtInt);
+  RbtGPChromosome(int, int, int, int, int, int);
   RbtGPChromosome(const RbtGPChromosome &);
 
   ///////////////////
@@ -41,25 +41,25 @@ public:
   const int &operator[](int idx) const { return chrom[idx]; }
   int &operator[](int idx) { return chrom[idx]; }
   RbtGPChromosome &operator=(const RbtGPChromosome &c);
-  RbtInt size() const { return chrom.size(); }
-  RbtCellPtr Cells(RbtInt idx) const { return (cells[idx]); }
-  void SetConstant(RbtReturnType, RbtInt);
-  void ResetConstant(RbtInt);
-  RbtInt GetStartingCell() { return (chrom[chrom.size() - 1]); }
-  RbtReturnType GetRCte(RbtInt ncell) { return cells[ncell]->GetResult(); }
-  RbtCommands GetCommand(RbtInt ncell) {
+  int size() const { return chrom.size(); }
+  RbtCellPtr Cells(int idx) const { return (cells[idx]); }
+  void SetConstant(RbtReturnType, int);
+  void ResetConstant(int);
+  int GetStartingCell() { return (chrom[chrom.size() - 1]); }
+  RbtReturnType GetRCte(int ncell) { return cells[ncell]->GetResult(); }
+  RbtCommands GetCommand(int ncell) {
     if (ncell < nProgramInputs)
       throw RbtError(_WHERE_, "This cell does not have a command");
     RbtCommands comm(chrom[(nFunctionsInputs + 1) * (ncell - nProgramInputs) +
                            nFunctionsInputs]);
     return comm;
   }
-  RbtInt GetArgument(RbtInt ncell, RbtInt narg) {
+  int GetArgument(int ncell, int narg) {
     if (ncell < nProgramInputs)
       throw RbtError(_WHERE_, "This cell does not have arguments");
     return (chrom[(nFunctionsInputs + 1) * (ncell - nProgramInputs) + narg]);
   }
-  RbtBool IsProgramInput(RbtInt ncell) { return (ncell < nProgramInputs); }
+  bool IsProgramInput(int ncell) { return (ncell < nProgramInputs); }
 
 private:
   /////////////////////
@@ -67,7 +67,7 @@ private:
   /////////////////////
   RbtIntList chrom;
   RbtCellList cells;
-  RbtInt nProgramInputs, nFunctionsInputs, nProgramOutputs, nRows, nColumns;
+  int nProgramInputs, nFunctionsInputs, nProgramOutputs, nRows, nColumns;
 };
 
 // Useful typedefs

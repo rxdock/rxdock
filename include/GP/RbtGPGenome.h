@@ -37,20 +37,19 @@ public:
   // Destructor
   //////////////////
   virtual ~RbtGPGenome();
-  static void SetStructure(RbtInt, RbtInt, RbtInt, RbtInt, RbtInt, RbtInt,
-                           RbtInt, RbtInt);
-  static RbtInt GetNIP() { return npi; }
-  static void SetNIP(RbtInt n) { npi = n; }
-  static RbtInt GetNIF() { return nfi; }
-  static RbtInt GetNN() { return nn; }
-  static RbtInt GetNO() { return no; }
-  static RbtInt GetNSFI() { return nsfi; }
-  static void SetNSFI(RbtInt n) { nsfi = n; }
+  static void SetStructure(int, int, int, int, int, int, int, int);
+  static int GetNIP() { return npi; }
+  static void SetNIP(int n) { npi = n; }
+  static int GetNIF() { return nfi; }
+  static int GetNN() { return nn; }
+  static int GetNO() { return no; }
+  static int GetNSFI() { return nsfi; }
+  static void SetNSFI(int n) { nsfi = n; }
   RbtGPChromosomePtr GetChrom() const { return (new RbtGPChromosome(*chrom)); }
   void Initialise();
-  void Mutate(RbtDouble);
-  void SetFitness(RbtDouble f) { fitness = f; }
-  RbtDouble GetFitness() const { return fitness; }
+  void Mutate(double);
+  void SetFitness(double f) { fitness = f; }
+  double GetFitness() const { return fitness; }
   void UniformCrossover(const RbtGPGenome &, const RbtGPGenome &);
   void Crossover(RbtGPGenome &);
   friend ostream &operator<<(ostream &s, const RbtGPGenome &p);
@@ -58,12 +57,12 @@ public:
 
 protected:
 private:
-  void MutateGene(RbtInt);
+  void MutateGene(int);
 
-  static RbtInt npi, nfi, nsfi, no, nn, nf, nr, nc, l;
+  static int npi, nfi, nsfi, no, nn, nf, nr, nc, l;
   // defines structures and constraints of each genome
   RbtRand &m_rand;
-  RbtDouble fitness;        // scaled score. For now same than score
+  double fitness;           // scaled score. For now same than score
   RbtGPChromosomePtr chrom; // list of integers that represent a chrom
 };
 

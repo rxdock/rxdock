@@ -31,7 +31,7 @@ class OccupancyTest : public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE_END();
 
 public:
-  static RbtDouble TINY;
+  static double TINY;
   // TextFixture methods
   void setUp();
   void tearDown();
@@ -55,9 +55,9 @@ public:
 
 private:
   // Helper functions
-  RbtDouble CompareScoresForDisabledAndNoSolvent();
-  RbtDouble CompareScoresForSolventModes();
-  RbtBool testFlexAtomFactory(RbtModel *pModel, RbtInt expected[9][3]);
+  double CompareScoresForDisabledAndNoSolvent();
+  double CompareScoresForSolventModes();
+  bool testFlexAtomFactory(RbtModel *pModel, int expected[9][3]);
   RbtBiMolWorkSpacePtr m_workSpace;
   RbtModelList m_solventList;
 };

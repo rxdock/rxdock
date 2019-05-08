@@ -30,10 +30,10 @@ public:
   ////////////////////////////////////////
   // Public methods
   ////////////////
-  RbtBool isAnnotationEnabled() const;
+  bool isAnnotationEnabled() const;
   // Get a const ref to the annotation list (read-only)
   const RbtAnnotationList &GetAnnotationList() const;
-  RbtInt GetNumAnnotations() const;
+  int GetNumAnnotations() const;
   void RenderAnnotationList(const std::string &strName,
                             RbtStringList &retVal) const;
 
@@ -44,7 +44,7 @@ protected:
   RbtAnnotationHandler();
   void AddAnnotation(RbtAnnotationPtr spAnnotation) const;
   void ClearAnnotationList() const;
-  void EnableAnnotations(RbtBool bEnabled) const;
+  void EnableAnnotations(bool bEnabled) const;
 
 private:
   ////////////////////////////////////////
@@ -64,7 +64,7 @@ private:
   ////////////////////////////////////////
   // Private data
   //////////////
-  mutable RbtBool m_bEnabled;
+  mutable bool m_bEnabled;
   mutable RbtAnnotationList m_annotationList;
 };
 

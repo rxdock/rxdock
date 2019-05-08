@@ -47,7 +47,7 @@ void RbtPolarIntraSF::SetupScore() {
   m_posList = CreateDonorInteractionCenters(atomList);
   m_negList = CreateAcceptorInteractionCenters(atomList);
 
-  RbtInt nAtoms = atomList.size();
+  int nAtoms = atomList.size();
   m_intns = RbtInteractionListMap(nAtoms, RbtInteractionCenterList());
   m_prtIntns = RbtInteractionListMap(nAtoms, RbtInteractionCenterList());
   if (m_bAttr) {
@@ -61,7 +61,7 @@ void RbtPolarIntraSF::SetupScore() {
   Partition(m_posList, m_negList, m_intns, m_prtIntns, 0.0);
 }
 
-RbtDouble RbtPolarIntraSF::RawScore() const {
+double RbtPolarIntraSF::RawScore() const {
   return IntraScore(m_posList, m_negList, m_prtIntns, m_bAttr);
 }
 
@@ -107,7 +107,7 @@ void RbtPolarIntraSF::ParameterUpdated(const std::string &strName) {
 // Handles the Partition request
 void RbtPolarIntraSF::HandleRequest(RbtRequestPtr spRequest) {
   RbtVariantList params = spRequest->GetParameters();
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
   switch (spRequest->GetID()) {
     // ID_REQ_SF_PARTITION requests come in two forms:

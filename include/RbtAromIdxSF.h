@@ -46,7 +46,7 @@ protected:
   virtual void SetupReceptor();
   virtual void SetupLigand();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
 
   // Clear the receptor and ligand grids and lists respectively
   // As we are not using smart pointers, there is some memory management to do
@@ -69,8 +69,8 @@ private:
 
   // Generic scoring function params
   struct f1prms {
-    RbtDouble R0, DRMin, DRMax, slope;
-    f1prms(RbtDouble R, RbtDouble DMin, RbtDouble DMax)
+    double R0, DRMin, DRMax, slope;
+    f1prms(double R, double DMin, double DMax)
         : R0(R), DRMin(DMin), DRMax(DMax), slope(1.0 / (DMax - DMin)) {}
   };
 
@@ -78,7 +78,7 @@ private:
   inline f1prms GetAprms() const { return f1prms(0.0, m_DAMin, m_DAMax); }
 
   // Generic scoring function primitive (deviation from ideal geometry)
-  inline RbtDouble f1(RbtDouble DR, const f1prms &prms) const {
+  inline double f1(double DR, const f1prms &prms) const {
     return (DR > prms.DRMax)
                ? 0.0
                : (DR > prms.DRMin) ? 1.0 - prms.slope * (DR - prms.DRMin) : 1.0;
@@ -86,11 +86,11 @@ private:
 
   // The actual aromatic score, between a given interaction center and a list of
   // near neighbour centers
-  RbtDouble AromScore(const RbtInteractionCenter *pIC1,
-                      const RbtInteractionCenterList &IC2List,
-                      const f1prms &Rprms, const f1prms &Aprms) const;
-  RbtDouble PiScore(const RbtInteractionCenter *pIC1,
-                    const RbtInteractionCenterList &IC2List) const;
+  double AromScore(const RbtInteractionCenter *pIC1,
+                   const RbtInteractionCenterList &IC2List, const f1prms &Rprms,
+                   const f1prms &Aprms) const;
+  double PiScore(const RbtInteractionCenter *pIC1,
+                 const RbtInteractionCenterList &IC2List) const;
   // End of section that should ultimately be moved to RbtAromSF base class
   //////////////////////////////////////////////////////////
 
@@ -102,20 +102,20 @@ private:
   RbtInteractionCenterList m_ligGuanList;
 
   // DM 25 Oct 2000 - local copies of params
-  RbtDouble m_R12;
-  RbtDouble m_DR12Min;
-  RbtDouble m_DR12Max;
-  RbtDouble m_DAMin;
-  RbtDouble m_DAMax;
+  double m_R12;
+  double m_DR12Min;
+  double m_DR12Max;
+  double m_DAMin;
+  double m_DAMax;
 
   // DM 12 Jun 2002 - keep track of number of ligand rings and guan carbons
   // involved in non-zero arom interactions
-  mutable RbtInt m_nArom;
-  mutable RbtInt m_nGuan;
-  mutable RbtDouble m_ss; // Sigma-sigma score
-  mutable RbtDouble m_sp; // Sigma-pi score
-  mutable RbtDouble m_pp; // pi-pi score
-  RbtDouble m_threshold;
+  mutable int m_nArom;
+  mutable int m_nGuan;
+  mutable double m_ss; // Sigma-sigma score
+  mutable double m_sp; // Sigma-pi score
+  mutable double m_pp; // pi-pi score
+  double m_threshold;
 };
 
 #endif //_RBTAROMIDXSF_H_

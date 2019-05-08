@@ -71,10 +71,10 @@ std::string RbtBaseObject::GetFullName() const { return GetName(); }
 
 void RbtBaseObject::Enable() { SetParameter(_ENABLED, true); }
 void RbtBaseObject::Disable() { SetParameter(_ENABLED, false); }
-RbtBool RbtBaseObject::isEnabled() const { return m_enabled; }
+bool RbtBaseObject::isEnabled() const { return m_enabled; }
 
-RbtInt RbtBaseObject::GetTrace() const { return m_trace; }
-void RbtBaseObject::SetTrace(RbtInt trace) { SetParameter(_TRACE, trace); }
+int RbtBaseObject::GetTrace() const { return m_trace; }
+void RbtBaseObject::SetTrace(int trace) { SetParameter(_TRACE, trace); }
 
 // WorkSpace handling methods
 // Register scoring function with a workspace

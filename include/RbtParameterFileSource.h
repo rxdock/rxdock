@@ -32,19 +32,19 @@ public:
   std::string GetTitle();
   std::string GetVersion();
   // DM 06 June 2000 - limit #parameters to those in current section
-  RbtUInt GetNumParameters();
+  unsigned int GetNumParameters();
   // DM 4 Feb 1999 Renamed from GetParameters()
   // RbtStringDoubleMap GetParameterMap();
   // DM 12 Feb 1999 - only return the list of parameter names, not their values
   // DM 06 Jun 2000 - limits params to those in named section
   RbtStringList GetParameterList();
   // DM 4 Feb 1999 Get a particular named parameter value as a double
-  RbtDouble GetParameterValue(const std::string &strParamName) throw(RbtError);
+  double GetParameterValue(const std::string &strParamName) throw(RbtError);
   // DM 12 Feb 1999 Get a particular named parameter value as a string
   std::string
   GetParameterValueAsString(const std::string &strParamName) throw(RbtError);
   // DM 11 Feb 1999 Check if parameter is present
-  RbtBool isParameterPresent(const std::string &strParamName);
+  bool isParameterPresent(const std::string &strParamName);
 
   // DM 11 Feb 1999 - section handling
   // Parameters can be grouped into named sections
@@ -53,7 +53,7 @@ public:
   // Main use is for simulation protocols which may need to define a variable
   // number of phases - e.g. high temperature sampling, cooling phase,
   // minimisation phase and need the same parameters to appear in each
-  RbtInt GetNumSections();        // Number of named sections
+  int GetNumSections();           // Number of named sections
   RbtStringList GetSectionList(); // List of section names
   std::string GetSection() const; // Get current section name
   void

@@ -25,7 +25,8 @@ std::string RbtFFTGrid::_CT("RbtFFTGrid");
 // Constructors/destructors
 // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution
 RbtFFTGrid::RbtFFTGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
-                       RbtUInt NX, RbtUInt NY, RbtUInt NZ, RbtUInt NPad)
+                       unsigned int NX, unsigned int NY, unsigned int NZ,
+                       unsigned int NPad)
     : RbtRealGrid(gridMin, gridStep, NX, NY, NZ, NPad) {
   _RBTOBJECTCOUNTER_CONSTR_("RbtFFTGrid");
 }
@@ -105,7 +106,8 @@ void RbtFFTGrid::Read(istream &istr) {
 // Find the coords of all (separate) peaks above the threshold value
 // whose volumes are not less than minVol
 // Returns a map of RbtFFTPeaks
-RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
+RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
+                                    unsigned int minVol) const {
   RbtFFTPeakMap peakMap; // Initialise the return set
 
   // First compile a list of all points higher than the threshold
@@ -115,7 +117,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
   // DM 21 Jan 2000 - take account of tolerance when assessing threshold
   threshold -= GetTolerance();
 
-  for (RbtUInt i = 0; i < GetN(); i++) {
+  for (unsigned int i = 0; i < GetN(); i++) {
     if (nrData[i] > threshold)
       stillToProcess.insert(i);
   }
@@ -131,12 +133,12 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
     // Start a new peak set
     RbtUIntSet currentPeak;
     // Queue of points to be added to current peak
-    std::queue<RbtUInt> toAddToPeak;
+    std::queue<unsigned int> toAddToPeak;
 
     // Seed the queue with the first unprocessed data point
     RbtUIntSetIter iter = stillToProcess.begin();
-    RbtUInt iXYZ0 = *iter;
-    RbtUInt peakPos = iXYZ0;
+    unsigned int iXYZ0 = *iter;
+    unsigned int peakPos = iXYZ0;
     float peakHeight = nrData[peakPos];
     toAddToPeak.push(iXYZ0);
     stillToProcess.erase(iter);
@@ -148,10 +150,10 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
     // Repeat while the peak keeps growing
     while (!toAddToPeak.empty()) {
       // Take a new point from the front of the pending queue
-      RbtUInt iXYZ0 = toAddToPeak.front();
-      RbtUInt iX0 = GetIX(iXYZ0);
-      RbtUInt iY0 = GetIY(iXYZ0);
-      RbtUInt iZ0 = GetIZ(iXYZ0);
+      unsigned int iXYZ0 = toAddToPeak.front();
+      unsigned int iX0 = GetIX(iXYZ0);
+      unsigned int iY0 = GetIY(iXYZ0);
+      unsigned int iZ0 = GetIZ(iXYZ0);
       toAddToPeak.pop();
       // Check if new point is higher than the current maximum
       float f = nrData[iXYZ0];
@@ -169,7 +171,8 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
 
       // Is X+1 within range ?
       if (iX0 < GetNX()) {
-        RbtUInt iXYZ1 = iXYZ0 + GetStrideX(); // Add stride(X) to get to X+1
+        unsigned int iXYZ1 =
+            iXYZ0 + GetStrideX(); // Add stride(X) to get to X+1
         // Is X+1 in the "still to process" set
         RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
@@ -182,7 +185,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
       }
       // Is X-1 within range ?
       if (iX0 > 1) {
-        RbtUInt iXYZ1 = iXYZ0 - GetStrideX();
+        unsigned int iXYZ1 = iXYZ0 - GetStrideX();
         // Is X-1 in the "still to process" set
         RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
@@ -195,7 +198,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
       }
       // Is Y+1 within range ?
       if (iY0 < GetNY()) {
-        RbtUInt iXYZ1 = iXYZ0 + GetStrideY();
+        unsigned int iXYZ1 = iXYZ0 + GetStrideY();
         // Is Y+1 in the "still to process" set
         RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
@@ -208,7 +211,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
       }
       // Is Y-1 within range ?
       if (iY0 > 1) {
-        RbtUInt iXYZ1 = iXYZ0 - GetStrideY();
+        unsigned int iXYZ1 = iXYZ0 - GetStrideY();
         // Is Y-1 in the "still to process" set
         RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
@@ -221,7 +224,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
       }
       // Is Z+1 within range ?
       if (iZ0 < GetNZ()) {
-        RbtUInt iXYZ1 = iXYZ0 + GetStrideZ();
+        unsigned int iXYZ1 = iXYZ0 + GetStrideZ();
         // Is Z+1 in the "still to process" set
         RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
@@ -234,7 +237,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
       }
       // Is Z-1 within range ?
       if (iZ0 > 1) {
-        RbtUInt iXYZ1 = iXYZ0 - GetStrideZ();
+        unsigned int iXYZ1 = iXYZ0 - GetStrideZ();
         // Is Z-1 in the "still to process" set
         RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
@@ -255,7 +258,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
       spPeak->coord = GetCoord(peakPos);
       spPeak->volume = currentPeak.size();
       spPeak->points = currentPeak;
-      peakMap.insert(std::pair<RbtDouble, RbtFFTPeakPtr>(peakHeight, spPeak));
+      peakMap.insert(std::pair<double, RbtFFTPeakPtr>(peakHeight, spPeak));
 #ifdef _DEBUG
       cout.precision(3);
       cout.setf(ios_base::fixed, ios_base::floatfield);
@@ -273,7 +276,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(RbtDouble threshold, RbtUInt minVol) const {
 // Just a wrapper around FindMaxValue() (see below)
 RbtFFTPeak RbtFFTGrid::FindMaxPeak() const {
   RbtFFTPeak maxPeak;
-  RbtUInt peakPos = FindMaxValue();
+  unsigned int peakPos = FindMaxValue();
   maxPeak.index = peakPos;
   maxPeak.height = GetValue(peakPos);
   maxPeak.coord = GetCoord(peakPos);
@@ -296,7 +299,7 @@ void RbtFFTGrid::OwnWrite(ostream &ostr) const {
   // Write the class name as a title so we can check the authenticity of streams
   // on read
   const char *const gridTitle = _CT.c_str();
-  RbtInt length = strlen(gridTitle);
+  int length = strlen(gridTitle);
   Rbt::WriteWithThrow(ostr, (const char *)&length, sizeof(length));
   Rbt::WriteWithThrow(ostr, gridTitle, length);
 }
@@ -304,14 +307,14 @@ void RbtFFTGrid::OwnWrite(ostream &ostr) const {
 // Protected method for reading data members for this class from binary stream
 void RbtFFTGrid::OwnRead(istream &istr) throw(RbtError) {
   // Read title
-  RbtInt length;
+  int length;
   Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *gridTitle = new char[length + 1];
   Rbt::ReadWithThrow(istr, gridTitle, length);
   // Add null character to end of string
   gridTitle[length] = '\0';
   // Compare title with class name
-  RbtBool match = (_CT == gridTitle);
+  bool match = (_CT == gridTitle);
   delete[] gridTitle;
   if (!match) {
     throw RbtFileParseError(_WHERE_,

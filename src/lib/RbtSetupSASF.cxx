@@ -60,4 +60,4 @@ void RbtSetupSASF::SetupLigand() {
 #endif //_DEBUG
 }
 
-RbtDouble RbtSetupSASF::RawScore() const { return 0.0; }
+double RbtSetupSASF::RawScore() const { return 0.0; }

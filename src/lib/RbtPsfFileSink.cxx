@@ -123,10 +123,10 @@ void RbtPsfFileSink::Render() throw(RbtError) {
 
     // 5. Write the bond list
     RbtBondList bondList(spModel->GetBondList());
-    RbtInt nDiv = bondList.size() / 4;
-    RbtInt nRem = bondList.size() % 4;
+    int nDiv = bondList.size() / 4;
+    int nRem = bondList.size() % 4;
     RbtBondListConstIter bIter = bondList.begin();
-    for (RbtInt i = 0; i < nDiv; i++) {
+    for (int i = 0; i < nDiv; i++) {
       ostringstream ostr;
       ostr << setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId() << setw(8)
            << (*bIter)->GetAtom2Ptr()->GetAtomId();
@@ -147,7 +147,7 @@ void RbtPsfFileSink::Render() throw(RbtError) {
     // Remaining bonds on final incomplete line
     if (nRem > 0) {
       ostringstream ostr;
-      for (RbtInt i = 0; i < nRem; i++, bIter++) {
+      for (int i = 0; i < nRem; i++, bIter++) {
         ostr << setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId() << setw(8)
              << (*bIter)->GetAtom2Ptr()->GetAtomId();
       }

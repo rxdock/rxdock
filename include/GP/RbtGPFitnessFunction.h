@@ -39,19 +39,18 @@ public:
   virtual ~RbtGPFitnessFunction();
   virtual void ReadTables(istream &, RbtReturnTypeArray &,
                           RbtReturnTypeArray &) = 0;
-  RbtDouble GetObjective() const;
-  RbtDouble GetFitness() const;
-  void SetFitness(RbtDouble);
-  virtual RbtDouble CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
-                                     RbtReturnTypeArray &, RbtDouble,
-                                     RbtBool) = 0;
-  virtual RbtDouble CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
-                                     RbtReturnTypeArray &, RbtBool) = 0;
+  double GetObjective() const;
+  double GetFitness() const;
+  void SetFitness(double);
+  virtual double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
+                                  RbtReturnTypeArray &, double, bool) = 0;
+  virtual double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
+                                  RbtReturnTypeArray &, bool) = 0;
 
 protected:
   RbtRand &m_rand;
-  RbtDouble objective; // raw score
-  RbtDouble fitness;   // scaled score
+  double objective; // raw score
+  double fitness;   // scaled score
   RbtReturnTypeArray inputTable, SFTable;
 
 private:

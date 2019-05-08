@@ -35,14 +35,14 @@ protected:
   virtual void SetupReceptor();
   virtual void SetupLigand();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
   void ParameterUpdated(const std::string &strName);
 
 private:
-  RbtDouble NoeDistance(const RbtNoeRestraintAtoms &noe) const;
-  RbtDouble StdDistance(const RbtStdRestraintAtoms &std) const;
+  double NoeDistance(const RbtNoeRestraintAtoms &noe) const;
+  double StdDistance(const RbtStdRestraintAtoms &std) const;
 
-  RbtBool m_bQuadratic; // synchronised with QUADRATIC named parameter
+  bool m_bQuadratic; // synchronised with QUADRATIC named parameter
   RbtNonBondedGridPtr m_spGrid;
   RbtAtomList m_ligAtomList;          // All ligand atoms
   RbtNoeRestraintAtomsList m_noeList; // List of all NOE interactions

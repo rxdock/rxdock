@@ -21,7 +21,7 @@
 #ifdef _NDEBUG
 const RbtBool TRANSFORMAGG_CHECK = false;
 #else
-const RbtBool TRANSFORMAGG_CHECK = true;
+const bool TRANSFORMAGG_CHECK = true;
 #endif //_NDEBUG
 
 // Useful typedefs
@@ -43,9 +43,9 @@ public:
   // Aggregate handling methods
   virtual void Add(RbtBaseTransform *) throw(RbtError);
   virtual void Remove(RbtBaseTransform *) throw(RbtError);
-  virtual RbtBool isAgg() const;
-  virtual RbtUInt GetNumTransforms() const;
-  virtual RbtBaseTransform *GetTransform(RbtUInt iTransform) const
+  virtual bool isAgg() const;
+  virtual unsigned int GetNumTransforms() const;
+  virtual RbtBaseTransform *GetTransform(unsigned int iTransform) const
       throw(RbtError);
 
   // WorkSpace handling methods

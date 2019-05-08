@@ -28,9 +28,9 @@ void RbtChromFactory::VisitReceptorFlexData(RbtReceptorFlexData *pFlexData) {
   RbtModel *pModel = pFlexData->GetModel();
   RbtDockingSite *pDockSite = pFlexData->GetDockingSite();
   if (pModel && pDockSite) {
-    RbtDouble flexDistance =
+    double flexDistance =
         pFlexData->GetParameter(RbtReceptorFlexData::_FLEX_DISTANCE);
-    RbtDouble dihedralStepSize =
+    double dihedralStepSize =
         pFlexData->GetParameter(RbtReceptorFlexData::_DIHEDRAL_STEP);
     // Trap the combination of flexible OH/NH3 AND multiple receptor
     // conformations We do not support both of these simultaneously
@@ -77,11 +77,10 @@ void RbtChromFactory::VisitLigandFlexData(RbtLigandFlexData *pFlexData) {
   RbtModel *pModel = pFlexData->GetModel();
   RbtDockingSite *pDockSite = pFlexData->GetDockingSite();
   if (pModel && pDockSite) {
-    RbtDouble transStepSize =
+    double transStepSize =
         pFlexData->GetParameter(RbtLigandFlexData::_TRANS_STEP);
-    RbtDouble rotStepSize =
-        pFlexData->GetParameter(RbtLigandFlexData::_ROT_STEP);
-    RbtDouble dihedralStepSize =
+    double rotStepSize = pFlexData->GetParameter(RbtLigandFlexData::_ROT_STEP);
+    double dihedralStepSize =
         pFlexData->GetParameter(RbtLigandFlexData::_DIHEDRAL_STEP);
     std::string transModeStr =
         pFlexData->GetParameter(RbtLigandFlexData::_TRANS_MODE);
@@ -89,9 +88,9 @@ void RbtChromFactory::VisitLigandFlexData(RbtLigandFlexData *pFlexData) {
         pFlexData->GetParameter(RbtLigandFlexData::_ROT_MODE);
     std::string dihedralModeStr =
         pFlexData->GetParameter(RbtLigandFlexData::_DIHEDRAL_MODE);
-    RbtDouble maxTrans = pFlexData->GetParameter(RbtLigandFlexData::_MAX_TRANS);
-    RbtDouble maxRot = pFlexData->GetParameter(RbtLigandFlexData::_MAX_ROT);
-    RbtDouble maxDihedral =
+    double maxTrans = pFlexData->GetParameter(RbtLigandFlexData::_MAX_TRANS);
+    double maxRot = pFlexData->GetParameter(RbtLigandFlexData::_MAX_ROT);
+    double maxDihedral =
         pFlexData->GetParameter(RbtLigandFlexData::_MAX_DIHEDRAL);
 
     // Convert from sampling mode strings to enum values
@@ -157,14 +156,14 @@ void RbtChromFactory::VisitSolventFlexData(RbtSolventFlexData *pFlexData) {
   RbtModel *pModel = pFlexData->GetModel();
   RbtDockingSite *pDockSite = pFlexData->GetDockingSite();
   if (pModel && pDockSite) {
-    RbtDouble occupancyProb =
+    double occupancyProb =
         pFlexData->GetParameter(RbtSolventFlexData::_OCCUPANCY);
-    RbtDouble stepSize =
+    double stepSize =
         pFlexData->GetParameter(RbtSolventFlexData::_OCCUPANCY_STEP);
     // If occupancy prob is non-zero, and less than one, then add
     // an occupancy element to the chromosome
     if ((occupancyProb > 0.0) && (occupancyProb < 1.0)) {
-      RbtDouble threshold = 1.0 - occupancyProb;
+      double threshold = 1.0 - occupancyProb;
       m_pChrom->Add(new RbtChromOccupancyElement(pModel, stepSize, threshold));
       // cout << "INFO Solvent model " << pModel->GetName() << " has variable
       // occupancy" << endl;

@@ -23,8 +23,8 @@ class RbtAnnotation {
 public:
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtAnnotation(const RbtAtom *pAtom1, const RbtAtom *pAtom2, RbtDouble dist,
-                RbtDouble score);
+  RbtAnnotation(const RbtAtom *pAtom1, const RbtAtom *pAtom2, double dist,
+                double score);
   virtual ~RbtAnnotation();
 
   ////////////////////////////////////////
@@ -33,16 +33,16 @@ public:
   // Get
   const RbtAtom *GetAtom1Ptr() const;
   const RbtAtom *GetAtom2Ptr() const;
-  RbtDouble GetDistance() const;
-  RbtDouble GetScore() const;
+  double GetDistance() const;
+  double GetScore() const;
   // Get the fully qualified (FQ) residue name for atom 2 (target atom)
   std::string GetFQResName() const;
 
   // Set
   void SetAtom1Ptr(const RbtAtom *pAt1);
   void SetAtom2Ptr(const RbtAtom *pAt2);
-  void SetDistance(RbtDouble d);
-  void SetScore(RbtDouble s);
+  void SetDistance(double d);
+  void SetScore(double s);
 
   // Render annotation into string in rDock Viewer format
   std::string Render() const;
@@ -76,8 +76,8 @@ private:
   //////////////
   const RbtAtom *m_pAtom1;
   const RbtAtom *m_pAtom2;
-  RbtDouble m_dist;
-  RbtDouble m_score;
+  double m_dist;
+  double m_score;
 };
 
 // Useful typedefs
@@ -99,7 +99,7 @@ namespace Rbt {
 // (target)
 class RbtAnn_Cmp_AtomId2 {
 public:
-  RbtBool operator()(RbtAnnotation *pAnn1, RbtAnnotation *pAnn2) const {
+  bool operator()(RbtAnnotation *pAnn1, RbtAnnotation *pAnn2) const {
     return pAnn1->GetAtom2Ptr()->GetAtomId() <
            pAnn2->GetAtom2Ptr()->GetAtomId();
   }

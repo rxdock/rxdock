@@ -24,20 +24,20 @@ class RbtMdlFileSource : public RbtBaseMolecularFileSource {
 public:
   // Constructors
   // RbtMdlFileSource(const char* fileName);
-  RbtMdlFileSource(const std::string &fileName, RbtBool bPosIonisable = true,
-                   RbtBool bNegIonisable = true, RbtBool bImplHydrogens = true);
+  RbtMdlFileSource(const std::string &fileName, bool bPosIonisable = true,
+                   bool bNegIonisable = true, bool bImplHydrogens = true);
 
   // Default destructor
   virtual ~RbtMdlFileSource();
 
   ////////////////////////////////////////
   // Override public methods from RbtBaseMolecularDataSource
-  virtual RbtBool isTitleListSupported() { return true; }
-  virtual RbtBool isAtomListSupported() { return true; }
-  virtual RbtBool isCoordinatesSupported() { return true; }
-  virtual RbtBool isBondListSupported() { return true; }
+  virtual bool isTitleListSupported() { return true; }
+  virtual bool isAtomListSupported() { return true; }
+  virtual bool isCoordinatesSupported() { return true; }
+  virtual bool isBondListSupported() { return true; }
   // DM 12 May 1999 - support for data records
-  virtual RbtBool isDataSupported() { return true; }
+  virtual bool isDataSupported() { return true; }
 
 protected:
   // Pure virtual in RbtBaseFileSource - needs to be defined here
@@ -102,12 +102,11 @@ private:
 
   // Private data
   RbtElementFileSourcePtr
-      m_spElementData;     // Elemental data source for vdW radii etc
-  RbtBool m_bPosIonisable; // If true, protonate Nsp3, and Nsp2 in imidazole and
-                           // guanidinium
-  RbtBool m_bNegIonisable; // If true, deprotonate Otri-Hsp3
-  RbtBool
-      m_bImplHydrogens; // If true, non-hydrogen bonding hydrogens are removed
+      m_spElementData;   // Elemental data source for vdW radii etc
+  bool m_bPosIonisable;  // If true, protonate Nsp3, and Nsp2 in imidazole and
+                         // guanidinium
+  bool m_bNegIonisable;  // If true, deprotonate Otri-Hsp3
+  bool m_bImplHydrogens; // If true, non-hydrogen bonding hydrogens are removed
 };
 
 // useful typedefs

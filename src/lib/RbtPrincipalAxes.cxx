@@ -79,7 +79,7 @@ RbtPrincipalAxes Rbt::GetSolventPrincipalAxes(const RbtAtomPtr &oAtom,
 // Principal axes are eigenvectors of I, principal moments are eigenvalues of I
 //
 RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
-  const RbtUInt N = 3; // Array size
+  const unsigned int N = 3; // Array size
 
   RbtPrincipalAxes principalAxes; // Return parameter
   if (atomList.empty()) {
@@ -98,27 +98,27 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
   principalAxes.com = Rbt::GetCenterOfMass(atomList); // Store center of mass
 
   // Construct the moment of inertia tensor
-  TNT::Array2D<RbtDouble> inertiaTensor(N, N, 0.0);
+  TNT::Array2D<double> inertiaTensor(N, N, 0.0);
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
     RbtVector r = (*iter)->GetCoords() -
-                  principalAxes.com; // Vector from center of mass to atom
-    RbtDouble m = (*iter)->GetAtomicMass(); // Atomic mass
-    RbtDouble rx2 = r.x * r.x;
-    RbtDouble ry2 = r.y * r.y;
-    RbtDouble rz2 = r.z * r.z;
+                  principalAxes.com;     // Vector from center of mass to atom
+    double m = (*iter)->GetAtomicMass(); // Atomic mass
+    double rx2 = r.x * r.x;
+    double ry2 = r.y * r.y;
+    double rz2 = r.z * r.z;
     // Diagonal elements (moments of inertia)
-    RbtDouble dIxx = m * (ry2 + rz2); //=r^2 - x^2
-    RbtDouble dIyy = m * (rx2 + rz2); //=r^2 - y^2
-    RbtDouble dIzz = m * (rx2 + ry2); //=r^2 - z^2
+    double dIxx = m * (ry2 + rz2); //=r^2 - x^2
+    double dIyy = m * (rx2 + rz2); //=r^2 - y^2
+    double dIzz = m * (rx2 + ry2); //=r^2 - z^2
     inertiaTensor[0][0] += dIxx;
     inertiaTensor[1][1] += dIyy;
     inertiaTensor[2][2] += dIzz;
 
     // Off-diagonal elements (products of inertia) - symmetric matrix
-    RbtDouble dIxy = m * r.x * r.y;
-    RbtDouble dIxz = m * r.x * r.z;
-    RbtDouble dIyz = m * r.y * r.z;
+    double dIxy = m * r.x * r.y;
+    double dIxz = m * r.x * r.z;
+    double dIyz = m * r.y * r.z;
     inertiaTensor[0][1] -= dIxy;
     inertiaTensor[1][0] -= dIxy;
     inertiaTensor[0][2] -= dIxz;
@@ -127,9 +127,9 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
     inertiaTensor[2][1] -= dIyz;
   }
 
-  JAMA::Eigenvalue<RbtDouble> eigenSolver(inertiaTensor);
-  TNT::Array1D<RbtDouble> eigenValues(N);
-  TNT::Array2D<RbtDouble> eigenVectors(N, N);
+  JAMA::Eigenvalue<double> eigenSolver(inertiaTensor);
+  TNT::Array1D<double> eigenValues(N);
+  TNT::Array2D<double> eigenVectors(N, N);
   eigenSolver.getRealEigenvalues(eigenValues);
   eigenSolver.getV(eigenVectors);
 
@@ -137,9 +137,9 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
   // We need to sort these so that axis1 is the first principal axis, axis2 the
   // second, axis3 the third. With only three elements to sort, this is probably
   // as good a way as any:
-  RbtUInt idx1 = 0;
-  RbtUInt idx2 = 1;
-  RbtUInt idx3 = 2;
+  unsigned int idx1 = 0;
+  unsigned int idx2 = 1;
+  unsigned int idx3 = 2;
   if (eigenValues[idx1] > eigenValues[idx2])
     std::swap(idx1, idx2);
   if (eigenValues[idx1] > eigenValues[idx3])
@@ -168,8 +168,8 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
   // LIMITATION: If atom 1 lies exactly on PA#1 or PA#2 this check will fail.
   // Ideally we would like to test an atom on the periphery of the molecule.
   RbtCoord c0 = (atomList.front())->GetCoords() - principalAxes.com;
-  RbtDouble d1 = c0.Dot(principalAxes.axis1);
-  RbtDouble d2 = c0.Dot(principalAxes.axis2);
+  double d1 = c0.Dot(principalAxes.axis1);
+  double d2 = c0.Dot(principalAxes.axis2);
   // RbtDouble d3 = c0.Dot(principalAxes.axis3);
   // cout << "Before: d1,d2,d3=" << d1 << "\t" << d2 << "\t" << d3 << endl;
   if (d1 < 0.0)
@@ -193,32 +193,32 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
 // Calculates principal axes and center of mass for the coords in the coord list
 // (assumes all masses=1)
 RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
-  const RbtUInt N = 3; // Array size
+  const unsigned int N = 3; // Array size
 
   RbtPrincipalAxes principalAxes;                      // Return parameter
   principalAxes.com = Rbt::GetCenterOfMass(coordList); // Store center of mass
 
   // Construct the moment of inertia tensor
-  TNT::Array2D<RbtDouble> inertiaTensor(N, N, 0.0);
+  TNT::Array2D<double> inertiaTensor(N, N, 0.0);
   for (RbtCoordListConstIter iter = coordList.begin(); iter != coordList.end();
        iter++) {
     RbtVector r =
         (*iter) - principalAxes.com; // Vector from center of mass to coord
-    RbtDouble rx2 = r.x * r.x;
-    RbtDouble ry2 = r.y * r.y;
-    RbtDouble rz2 = r.z * r.z;
+    double rx2 = r.x * r.x;
+    double ry2 = r.y * r.y;
+    double rz2 = r.z * r.z;
     // Diagonal elements (moments of inertia)
-    RbtDouble dIxx = ry2 + rz2; //=r^2 - x^2
-    RbtDouble dIyy = rx2 + rz2; //=r^2 - y^2
-    RbtDouble dIzz = rx2 + ry2; //=r^2 - z^2
+    double dIxx = ry2 + rz2; //=r^2 - x^2
+    double dIyy = rx2 + rz2; //=r^2 - y^2
+    double dIzz = rx2 + ry2; //=r^2 - z^2
     inertiaTensor[0][0] += dIxx;
     inertiaTensor[1][1] += dIyy;
     inertiaTensor[2][2] += dIzz;
 
     // Off-diagonal elements (products of inertia) - symmetric matrix
-    RbtDouble dIxy = r.x * r.y;
-    RbtDouble dIxz = r.x * r.z;
-    RbtDouble dIyz = r.y * r.z;
+    double dIxy = r.x * r.y;
+    double dIxz = r.x * r.z;
+    double dIyz = r.y * r.z;
     inertiaTensor[0][1] -= dIxy;
     inertiaTensor[1][0] -= dIxy;
     inertiaTensor[0][2] -= dIxz;
@@ -227,9 +227,9 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
     inertiaTensor[2][1] -= dIyz;
   }
 
-  JAMA::Eigenvalue<RbtDouble> eigenSolver(inertiaTensor);
-  TNT::Array1D<RbtDouble> eigenValues(N);
-  TNT::Array2D<RbtDouble> eigenVectors(N, N);
+  JAMA::Eigenvalue<double> eigenSolver(inertiaTensor);
+  TNT::Array1D<double> eigenValues(N);
+  TNT::Array2D<double> eigenVectors(N, N);
   eigenSolver.getRealEigenvalues(eigenValues);
   eigenSolver.getV(eigenVectors);
 
@@ -237,9 +237,9 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
   // We need to sort these so that axis1 is the first principal axis, axis2 the
   // second, axis3 the third. With only three elements to sort, this is probably
   // as good a way as any:
-  RbtUInt idx1 = 0;
-  RbtUInt idx2 = 1;
-  RbtUInt idx3 = 2;
+  unsigned int idx1 = 0;
+  unsigned int idx2 = 1;
+  unsigned int idx3 = 2;
   if (eigenValues[idx1] > eigenValues[idx2])
     std::swap(idx1, idx2);
   if (eigenValues[idx1] > eigenValues[idx3])
@@ -265,7 +265,7 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
 // LIMITATION: does not check for non-orthogonal alignAxes
 RbtQuat Rbt::AlignPrincipalAxes(RbtAtomList &atomList,
                                 const RbtPrincipalAxes &refAxes,
-                                RbtBool bAlignCOM) throw(RbtError) {
+                                bool bAlignCOM) throw(RbtError) {
   RbtPrincipalAxes prAxes = Rbt::GetPrincipalAxes(atomList);
   RbtQuat q = Rbt::GetQuatFromAlignAxes(prAxes, refAxes);
 
@@ -299,8 +299,8 @@ RbtQuat Rbt::GetQuatFromAlignVectors(const RbtVector &v,
                                      const RbtVector &ref) throw(RbtError) {
   RbtQuat retVal;
   // Unitise the two vectors
-  RbtDouble len = Rbt::Length(v);
-  RbtDouble refLen = Rbt::Length(ref);
+  double len = Rbt::Length(v);
+  double refLen = Rbt::Length(ref);
   if ((len < 0.001) || (refLen < 0.001)) {
     throw RbtBadArgument(_WHERE_, "zero length vector (v or ref)");
   }
@@ -310,9 +310,9 @@ RbtQuat Rbt::GetQuatFromAlignVectors(const RbtVector &v,
   RbtVector axis = Rbt::Cross(vUnit, refUnit);
   // DM 15 March 2006: check for zero-length rotation axis
   // This indicates the vectors are already aligned
-  RbtDouble axisLen = Rbt::Length(axis);
+  double axisLen = Rbt::Length(axis);
   if (axisLen > 0.001) {
-    RbtDouble cosPhi = Rbt::Dot(vUnit, refUnit);
+    double cosPhi = Rbt::Dot(vUnit, refUnit);
     if (cosPhi < -1.0) {
       cosPhi = -1.0;
     } else if (cosPhi > 1.0) {
@@ -320,7 +320,7 @@ RbtQuat Rbt::GetQuatFromAlignVectors(const RbtVector &v,
     }
     errno = 0;
     // Convert rotation axis and angle to a quaternion
-    RbtDouble halfPhi = 0.5 * acos(cosPhi);
+    double halfPhi = 0.5 * acos(cosPhi);
     if ((halfPhi > 0.001) && (errno != EDOM)) {
       RbtVector axisUnit = axis / axisLen;
       retVal = RbtQuat(cos(halfPhi), sin(halfPhi) * axisUnit);

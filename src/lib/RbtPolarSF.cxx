@@ -85,10 +85,10 @@ RbtPolarSF::~RbtPolarSF() {
 
 RbtInteractionCenterList
 RbtPolarSF::CreateDonorInteractionCenters(const RbtAtomList &atomList) const {
-  const RbtBool bIncHBD = GetParameter(_INCHBD);
-  const RbtBool bIncMetal = GetParameter(_INCMETAL);
-  const RbtBool bIncGuan = GetParameter(_INCGUAN);
-  const RbtBool bGuanPlane = GetParameter(_GUAN_PLANE);
+  const bool bIncHBD = GetParameter(_INCHBD);
+  const bool bIncMetal = GetParameter(_INCMETAL);
+  const bool bIncGuan = GetParameter(_INCGUAN);
+  const bool bGuanPlane = GetParameter(_GUAN_PLANE);
 
   RbtInteractionCenterList intnList;
 
@@ -143,8 +143,8 @@ RbtPolarSF::CreateDonorInteractionCenters(const RbtAtomList &atomList) const {
 
 RbtInteractionCenterList RbtPolarSF::CreateAcceptorInteractionCenters(
     const RbtAtomList &atomList) const {
-  const RbtBool bIncHBA = GetParameter(_INCHBA);
-  const RbtBool bLP = GetParameter(_LP_OSP2);
+  const bool bIncHBA = GetParameter(_INCHBA);
+  const bool bLP = GetParameter(_LP_OSP2);
 
   RbtInteractionCenterList intnList;
   Rbt::isAtomicNo_eq bIsC(6);
@@ -224,8 +224,8 @@ void RbtPolarSF::BuildIntraMap(const RbtInteractionCenterList &ICList1,
                                RbtInteractionListMap &intns) const {
   Rbt::SelectInteractionCenter selectIC(true);
   Rbt::isInteractionCenterSelected isSelected;
-  RbtBool bSingleList = ICList2.empty(); // If true, then index the flexible
-                                         // interactions within ICList1
+  bool bSingleList = ICList2.empty(); // If true, then index the flexible
+                                      // interactions within ICList1
   for (RbtInteractionCenterListConstIter iter = ICList1.begin();
        iter != ICList1.end(); iter++) {
     // 1. First select all atoms of all the interaction centers in the list
@@ -238,7 +238,7 @@ void RbtPolarSF::BuildIntraMap(const RbtInteractionCenterList &ICList1,
     // interactions have an angular dependence: the primary distance may be
     // rigid, but the angular dependence may not be
     RbtAtom *pAtom = (*iter)->GetAtom1Ptr();
-    RbtInt id = pAtom->GetAtomId() - 1;
+    int id = pAtom->GetAtomId() - 1;
     Assert<RbtAssert>(id >= 0 && id < intns.size());
     // 2. Deselect all atoms in the same model as the current atom
     pAtom->GetModelPtr()->SetAtomSelectionFlags(false);
@@ -274,24 +274,24 @@ void RbtPolarSF::BuildIntraMap(const RbtInteractionCenterList &ICList,
   BuildIntraMap(ICList, emptyList, intns);
 }
 
-RbtDouble RbtPolarSF::IntraScore(const RbtInteractionCenterList &posList,
-                                 const RbtInteractionCenterList &negList,
-                                 const RbtInteractionListMap &intns,
-                                 RbtBool attr) const {
-  RbtDouble score = 0.0; // Total score
+double RbtPolarSF::IntraScore(const RbtInteractionCenterList &posList,
+                              const RbtInteractionCenterList &negList,
+                              const RbtInteractionListMap &intns,
+                              bool attr) const {
+  double score = 0.0; // Total score
 
   RbtPolarSF::f1prms Rprms = GetRprms();   // Distance params
   RbtPolarSF::f1prms A1prms = GetA1prms(); // Donor angle params
   RbtPolarSF::f1prms A2prms = GetA2prms(); // Acceptor angle params
 
-  RbtDouble s(0.0); // Partial scores
+  double s(0.0); // Partial scores
 
   if (attr) {
     // Pos-neg
     for (RbtInteractionCenterListConstIter iter = posList.begin();
          iter != posList.end(); iter++) {
       RbtAtom *pAtom = (*iter)->GetAtom1Ptr();
-      RbtInt id = pAtom->GetAtomId() - 1;
+      int id = pAtom->GetAtomId() - 1;
       // NO CHECK ON ID IN RANGE
       s = PolarScore(*iter, intns[id], Rprms, A1prms, A2prms);
       // if (fabs(s) > 0) {
@@ -304,7 +304,7 @@ RbtDouble RbtPolarSF::IntraScore(const RbtInteractionCenterList &posList,
     for (RbtInteractionCenterListConstIter iter = negList.begin();
          iter != negList.end(); iter++) {
       RbtAtom *pAtom = (*iter)->GetAtom1Ptr();
-      RbtInt id = pAtom->GetAtomId() - 1;
+      int id = pAtom->GetAtomId() - 1;
       // NO CHECK ON ID IN RANGE
       s = PolarScore(*iter, intns[id], Rprms, A2prms, A1prms);
       // if (fabs(s) > 0) {
@@ -318,7 +318,7 @@ RbtDouble RbtPolarSF::IntraScore(const RbtInteractionCenterList &posList,
     for (RbtInteractionCenterListConstIter iter = posList.begin();
          iter != posList.end(); iter++) {
       RbtAtom *pAtom = (*iter)->GetAtom1Ptr();
-      RbtInt id = pAtom->GetAtomId() - 1;
+      int id = pAtom->GetAtomId() - 1;
       // NO CHECK ON ID IN RANGE
       s = PolarScore(*iter, intns[id], Rprms, A1prms, A1prms);
       // if (fabs(s) > 0) {
@@ -331,7 +331,7 @@ RbtDouble RbtPolarSF::IntraScore(const RbtInteractionCenterList &posList,
     for (RbtInteractionCenterListConstIter iter = negList.begin();
          iter != negList.end(); iter++) {
       RbtAtom *pAtom = (*iter)->GetAtom1Ptr();
-      RbtInt id = pAtom->GetAtomId() - 1;
+      int id = pAtom->GetAtomId() - 1;
       // NO CHECK ON ID IN RANGE
       s = PolarScore(*iter, intns[id], Rprms, A2prms, A2prms);
       // if (fabs(s) > 0) {
@@ -347,9 +347,8 @@ RbtDouble RbtPolarSF::IntraScore(const RbtInteractionCenterList &posList,
 void RbtPolarSF::Partition(const RbtInteractionCenterList &posList,
                            const RbtInteractionCenterList &negList,
                            const RbtInteractionListMap &intns,
-                           RbtInteractionListMap &prtIntns,
-                           RbtDouble dist) const {
-  RbtInt iTrace = GetTrace();
+                           RbtInteractionListMap &prtIntns, double dist) const {
+  int iTrace = GetTrace();
 
   // Clear the existing partitioned lists
   for (RbtInteractionListMapIter iter = prtIntns.begin();
@@ -362,7 +361,7 @@ void RbtPolarSF::Partition(const RbtInteractionCenterList &posList,
   for (RbtInteractionCenterListConstIter iter = posList.begin();
        iter != posList.end(); iter++) {
     RbtAtom *pAtom = (*iter)->GetAtom1Ptr();
-    RbtInt id = pAtom->GetAtomId() - 1;
+    int id = pAtom->GetAtomId() - 1;
     if (dist > 0.0) {
       Rbt::isInteractionD_lt bInRange(*iter, dist);
       // This copies all interactions which are within dist A of atom
@@ -382,7 +381,7 @@ void RbtPolarSF::Partition(const RbtInteractionCenterList &posList,
   for (RbtInteractionCenterListConstIter iter = negList.begin();
        iter != negList.end(); iter++) {
     RbtAtom *pAtom = (*iter)->GetAtom1Ptr();
-    RbtInt id = pAtom->GetAtomId() - 1;
+    int id = pAtom->GetAtomId() - 1;
     if (dist > 0.0) {
       Rbt::isInteractionD_lt bInRange(*iter, dist);
       // This copies all interactions which are within dist A of atom
@@ -400,17 +399,17 @@ void RbtPolarSF::Partition(const RbtInteractionCenterList &posList,
   }
 }
 
-RbtDouble RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
-                                 const RbtInteractionCenterList &IC2List,
-                                 const f1prms &Rprms, const f1prms &A1prms,
-                                 const f1prms &A2prms) const {
-  RbtDouble s(0.0);
+double RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
+                              const RbtInteractionCenterList &IC2List,
+                              const f1prms &Rprms, const f1prms &A1prms,
+                              const f1prms &A2prms) const {
+  double s(0.0);
   if (IC2List.empty()) {
     return s;
   }
 
   RbtCoord nullCoord;
-  RbtBool bAnnotate = isAnnotationEnabled();
+  bool bAnnotate = isAnnotationEnabled();
   // std::string strName = GetName();
 
   RbtAtom *pAtom1_1 = pIC1->GetAtom1Ptr();
@@ -422,15 +421,15 @@ RbtDouble RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
   RbtAtom *pAtom1_2 = pIC1->GetAtom2Ptr();
   RbtAtom *pAtom1_3 = pIC1->GetAtom3Ptr();
   RbtInteractionCenter::eLP eLP1 = pIC1->LP();
-  RbtBool bAngle1 = ((pAtom1_2 != NULL) && (pAtom1_3 == NULL)) ? true : false;
-  RbtBool bPlane1 = ((pAtom1_2 != NULL) && (pAtom1_3 != NULL) &&
-                     (eLP1 == RbtInteractionCenter::NONE))
-                        ? true
-                        : false;
-  RbtBool bLP1 = ((pAtom1_2 != NULL) && (pAtom1_3 != NULL) &&
-                  (eLP1 != RbtInteractionCenter::NONE))
+  bool bAngle1 = ((pAtom1_2 != NULL) && (pAtom1_3 == NULL)) ? true : false;
+  bool bPlane1 = ((pAtom1_2 != NULL) && (pAtom1_3 != NULL) &&
+                  (eLP1 == RbtInteractionCenter::NONE))
                      ? true
                      : false;
+  bool bLP1 = ((pAtom1_2 != NULL) && (pAtom1_3 != NULL) &&
+               (eLP1 != RbtInteractionCenter::NONE))
+                  ? true
+                  : false;
   const f1prms &PHI1prms = (eLP1 == RbtInteractionCenter::LONEPAIR)
                                ? m_PHI_lp_prms
                                : m_PHI_plane_prms;
@@ -440,7 +439,7 @@ RbtDouble RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
       (bPlane1 || bLP1) ? pAtom1_3->GetCoords() : nullCoord;
   RbtPlane pl1 =
       (bPlane1 || bLP1) ? RbtPlane(cAtom1_1, cAtom1_2, cAtom1_3) : RbtPlane();
-  RbtDouble radius1 = pAtom1_1->GetVdwRadius();
+  double radius1 = pAtom1_1->GetVdwRadius();
 
   for (RbtInteractionCenterListConstIter IC2Iter = IC2List.begin();
        IC2Iter != IC2List.end(); IC2Iter++) {
@@ -452,21 +451,21 @@ RbtDouble RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
     RbtAtom *pAtom2_2 = (*IC2Iter)->GetAtom2Ptr();
     RbtAtom *pAtom2_3 = (*IC2Iter)->GetAtom3Ptr();
     RbtInteractionCenter::eLP eLP2 = (*IC2Iter)->LP();
-    RbtBool bAngle2 = ((pAtom2_2 != NULL) && (pAtom2_3 == NULL)) ? true : false;
-    RbtBool bPlane2 = ((pAtom2_2 != NULL) && (pAtom2_3 != NULL) &&
-                       (eLP2 == RbtInteractionCenter::NONE))
-                          ? true
-                          : false;
-    RbtBool bLP2 = ((pAtom2_2 != NULL) && (pAtom2_3 != NULL) &&
-                    (eLP2 != RbtInteractionCenter::NONE))
+    bool bAngle2 = ((pAtom2_2 != NULL) && (pAtom2_3 == NULL)) ? true : false;
+    bool bPlane2 = ((pAtom2_2 != NULL) && (pAtom2_3 != NULL) &&
+                    (eLP2 == RbtInteractionCenter::NONE))
                        ? true
                        : false;
-    RbtDouble radius2 = pAtom2_1->GetVdwRadius();
-    RbtDouble R12 = m_R12Factor * (radius1 + radius2) + m_R12Incr;
+    bool bLP2 = ((pAtom2_2 != NULL) && (pAtom2_3 != NULL) &&
+                 (eLP2 != RbtInteractionCenter::NONE))
+                    ? true
+                    : false;
+    double radius2 = pAtom2_1->GetVdwRadius();
+    double R12 = m_R12Factor * (radius1 + radius2) + m_R12Incr;
     RbtVector v12 = cAtom1_1 - cAtom2_1;
-    RbtDouble R = v12.Length();
-    RbtDouble DR = R - R12;
-    RbtDouble f = m_bAbsDR12 ? f1(fabs(DR), Rprms) : f1(DR, Rprms);
+    double R = v12.Length();
+    double DR = R - R12;
+    double f = m_bAbsDR12 ? f1(fabs(DR), Rprms) : f1(DR, Rprms);
     if (f > 0.0) {
       // cout << endl << "R12:\t" << pAtom1_1->GetFullAtomName() << "," <<
       // pAtom2_1->GetFullAtomName() << "," << R12
@@ -474,30 +473,30 @@ RbtDouble RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
       // For guanidinium bPlane2 interacting with C=O lone pair bLP1, we want to
       // use the regular angular dependence
       if (bAngle1 || (bPlane2 && bLP1)) {
-        RbtDouble DA1 = Rbt::Angle(cAtom1_2, cAtom1_1, cAtom2_1) - A1prms.R0;
+        double DA1 = Rbt::Angle(cAtom1_2, cAtom1_1, cAtom2_1) - A1prms.R0;
         f *= f1(fabs(DA1), A1prms);
         // cout << "A1:\t" << A1prms.R0 << "," << DA1 << ", f=" << f << endl;
       } else if (bPlane1) {
-        RbtDouble A =
+        double A =
             acos(-fabs(Rbt::Dot(v12.Unit(), pl1.VNorm()))) * 180.0 / M_PI;
-        RbtDouble DA1 = A - A1prms.R0;
+        double DA1 = A - A1prms.R0;
         f *= f1(fabs(DA1), A1prms);
         // cout << "Pl1:\t" << A1prms.R0 << "," << DA1 << ", f=" << f << endl;
       }
       // Lone pair geometry dependence around Osp2
       else if (bLP1) {
         // Perpendicular distance from donor H to plane of lone pairs
-        RbtDouble dPerp = Rbt::DistanceFromPointToPlane(cAtom2_1, pl1);
+        double dPerp = Rbt::DistanceFromPointToPlane(cAtom2_1, pl1);
         // Coordinate of donor H projected into plane of lone pairs
         RbtCoord cPerp = cAtom2_1 - dPerp * pl1.VNorm();
         // cout << "dPerp = " << dPerp << " check cPerp = " <<
         // Rbt::DistanceFromPointToPlane(cPerp, pl1) << endl; Can calculate
         // sin(theta) directly from the two distances we have already
-        RbtDouble theta = asin(dPerp / R) * 180.0 / M_PI;
+        double theta = asin(dPerp / R) * 180.0 / M_PI;
         f *= f1(fabs(theta), m_THETAprms);
         if (f > 0.0) {
-          RbtDouble phi = 180.0 - Rbt::Angle(cPerp, cAtom1_1, cAtom1_2);
-          RbtDouble Dphi = phi - PHI1prms.R0;
+          double phi = 180.0 - Rbt::Angle(cPerp, cAtom1_1, cAtom1_2);
+          double Dphi = phi - PHI1prms.R0;
           f *= f1(fabs(Dphi), PHI1prms);
           // cout << "LP1:\t" << theta << "," << PHI1prms.R0 << "," << Dphi <<
           // ", f=" << f << endl;
@@ -508,16 +507,16 @@ RbtDouble RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
         // to use the regular angular dependence
         if (bAngle2 || (bPlane1 && bLP2)) {
           const RbtCoord &cAtom2_2 = pAtom2_2->GetCoords();
-          RbtDouble DA2 = Rbt::Angle(cAtom1_1, cAtom2_1, cAtom2_2) - A2prms.R0;
+          double DA2 = Rbt::Angle(cAtom1_1, cAtom2_1, cAtom2_2) - A2prms.R0;
           f *= f1(fabs(DA2), A2prms);
           // cout << "A2:\t" << A2prms.R0 << "," << DA2 << ", f=" << f << endl;
         } else if (bPlane2) {
           const RbtCoord &cAtom2_2 = pAtom2_2->GetCoords();
           const RbtCoord &cAtom2_3 = pAtom2_3->GetCoords();
           RbtPlane pl2 = RbtPlane(cAtom2_1, cAtom2_2, cAtom2_3);
-          RbtDouble A =
+          double A =
               acos(-fabs(Rbt::Dot(v12.Unit(), pl2.VNorm()))) * 180.0 / M_PI;
-          RbtDouble DA2 = A - A2prms.R0;
+          double DA2 = A - A2prms.R0;
           f *= f1(fabs(DA2), A2prms);
           // cout << "Pl2:\t" << A2prms.R0 << "," << DA2 << ", f=" << f << endl;
         } else if (bLP2) {
@@ -527,15 +526,15 @@ RbtDouble RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
                                        ? m_PHI_lp_prms
                                        : m_PHI_plane_prms;
           RbtPlane pl2 = RbtPlane(cAtom2_1, cAtom2_2, cAtom2_3);
-          RbtDouble dPerp = Rbt::DistanceFromPointToPlane(cAtom1_1, pl2);
+          double dPerp = Rbt::DistanceFromPointToPlane(cAtom1_1, pl2);
           RbtCoord cPerp = cAtom1_1 - dPerp * pl2.VNorm();
           // cout << "dPerp = " << dPerp << " check cPerp = " <<
           // Rbt::DistanceFromPointToPlane(cPerp, pl2) << endl;
-          RbtDouble theta = asin(dPerp / R) * 180.0 / M_PI;
+          double theta = asin(dPerp / R) * 180.0 / M_PI;
           f *= f1(fabs(theta), m_THETAprms);
           if (f > 0.0) {
-            RbtDouble phi = 180.0 - Rbt::Angle(cPerp, cAtom2_1, cAtom2_2);
-            RbtDouble Dphi = phi - PHI2prms.R0;
+            double phi = 180.0 - Rbt::Angle(cPerp, cAtom2_1, cAtom2_2);
+            double Dphi = phi - PHI2prms.R0;
             f *= f1(fabs(Dphi), PHI2prms);
             // cout << "LP2:\t" << theta << "," << PHI2prms.R0 << "," << Dphi <<
             // ", f=" << f << endl;

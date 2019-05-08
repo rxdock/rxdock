@@ -35,13 +35,13 @@ protected:
   virtual void SetupReceptor();
   virtual void SetupLigand();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
   void ParameterUpdated(const std::string &strName);
 
 private:
-  RbtInt nRot;
-  RbtBool bIncNH3;
-  RbtBool bIncOH;
+  int nRot;
+  bool bIncNH3;
+  bool bIncOH;
 };
 
 #endif //_RBTROTSF_H_

@@ -52,8 +52,8 @@ public:
   RbtPRMFactory(RbtParameterFileSource *pParamSource);
   RbtPRMFactory(RbtParameterFileSource *pParamSource, RbtDockingSite *pDS);
 
-  RbtInt GetTrace() const { return m_iTrace; }
-  void SetTrace(RbtInt iTrace) { m_iTrace = iTrace; }
+  int GetTrace() const { return m_iTrace; }
+  void SetTrace(int iTrace) { m_iTrace = iTrace; }
   RbtDockingSite *GetDockingSite() const { return m_pDS; }
   void SetDockingSite(RbtDockingSite *pDS) { m_pDS = pDS; }
 
@@ -70,6 +70,6 @@ private:
   void AttachSolventFlexData(RbtModel *pSolvent);
   RbtParameterFileSource *m_pParamSource;
   RbtDockingSite *m_pDS;
-  RbtInt m_iTrace;
+  int m_iTrace;
 };
 #endif /*RBTPRMFACTORY_H_*/

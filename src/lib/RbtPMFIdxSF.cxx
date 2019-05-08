@@ -16,18 +16,19 @@
 #include "RbtWorkSpace.h"
 
 // the PMFs are defined only in this range in the Muegge database
-const RbtDouble cPMFStart = 0.2; // closest PMF distance
-const RbtDouble cPMFRes = 0.2;   // PMF resolution
-const RbtDouble cPMFEnd = 12.0;  // farest point in PMFs
-const RbtUInt cPlStart = 1; // index value to get where the PMF plateau starts
-const RbtUInt cPlVal = 2;   // index value to get the PMF plateau value
+const double cPMFStart = 0.2; // closest PMF distance
+const double cPMFRes = 0.2;   // PMF resolution
+const double cPMFEnd = 12.0;  // farest point in PMFs
+const unsigned int cPlStart =
+    1; // index value to get where the PMF plateau starts
+const unsigned int cPlVal = 2; // index value to get the PMF plateau value
 
 std::string RbtPMFIdxSF::_CT("RbtPMFIdxSF");
 std::string RbtPMFIdxSF::_PMFDIR("PMFDIR");
 std::string RbtPMFIdxSF::_CC_CUTOFF("CC_CUTOFF");
 std::string RbtPMFIdxSF::_SLOPE("SLOPE");
 
-RbtDouble delta; // used for linear interpolation
+double delta; // used for linear interpolation
 
 RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
   // see PMF-related .prm files for explanation
@@ -37,12 +38,11 @@ RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
   delta = cPMFRes /
           2.0; // half of the PMF grid resoluton: delta for linear interpolation
   // create the PMF pseudogrid
-  RbtInt nTypes = 37; // must be changed when we are defining new types :(
+  int nTypes = 37; // must be changed when we are defining new types :(
   RbtCoord thePMFGridMin(cPMFStart, 0.0, 0.0);
   RbtCoord thePMFGridStep(cPMFRes, 1.0, 1.0);
-  thePMFGrid = RbtRealGridPtr(new RbtRealGrid(thePMFGridMin, thePMFGridStep,
-                                              (RbtInt)(cPMFEnd / cPMFRes),
-                                              nTypes, nTypes));
+  thePMFGrid = RbtRealGridPtr(new RbtRealGrid(
+      thePMFGridMin, thePMFGridStep, (int)(cPMFEnd / cPMFRes), nTypes, nTypes));
   // we are building a grid for slopes, so we can get the plateau
   // info similarly like the PMF values
   RbtCoord theSlopeGridCoords(1.0, 1.0, 1.0);
@@ -78,7 +78,7 @@ RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
       RbtPMFType lType =
           Rbt::PMFStr2Type(theFileNames[i].substr(2, 2)); // ligand type
       thePMFGrid->SetValue(
-          thePMFGrid->GetIX((RbtDouble)thePMF[i][j].distance), // distance
+          thePMFGrid->GetIX((double)thePMF[i][j].distance), // distance
           rType, lType,
           thePMF[i][j].density // the density value
       );
@@ -178,7 +178,7 @@ void RbtPMFIdxSF::SetupReceptor() {
   } else { // load PMFs from table files
     theSurround = CreateNonBondedGrid();
     RbtDockingSitePtr spDS = GetWorkSpace()->GetDockingSite();
-    RbtDouble range = GetRange() + GetMaxError();
+    double range = GetRange() + GetMaxError();
     RbtAtomList atomList = spDS->GetAtomList(GetReceptor()->GetAtomList(), 0.0,
                                              GetCorrectedRange());
     theReceptorList =
@@ -219,12 +219,12 @@ void RbtPMFIdxSF::SetupScore() {
 #endif //_DEBUG
 }
 
-RbtDouble RbtPMFIdxSF::RawScore() const {
+double RbtPMFIdxSF::RawScore() const {
   //	return 0.0;
 #ifdef _DEBUG
   cout << _CT << " PMF RawScore " << endl;
 #endif //_DEBUG
-  RbtDouble theScore = 0.0;
+  double theScore = 0.0;
 
   // check for existence of  atom list grid
   if (theSurround.Null()) {
@@ -232,7 +232,7 @@ RbtDouble RbtPMFIdxSF::RawScore() const {
     return theScore;
   }
   // enable/disable annotations
-  RbtBool bAnnotate = isAnnotationEnabled();
+  bool bAnnotate = isAnnotationEnabled();
 
   // for all ligand atoms:
   for (RbtAtomRListConstIter lIter = theLigandRList.begin();
@@ -247,8 +247,8 @@ RbtDouble RbtPMFIdxSF::RawScore() const {
     for (RbtAtomRListConstIter rIter = rAtomList.begin();
          rIter != rAtomList.end(); rIter++) {
       // get distance of the atom
-      RbtDouble theDist = Rbt::Length((*rIter)->GetCoords(), ligCoord);
-      RbtDouble i_score; // interpolated score
+      double theDist = Rbt::Length((*rIter)->GetCoords(), ligCoord);
+      double i_score; // interpolated score
 
       if (theDist > GetRange()) // skip distances out of a given distance
         continue;
@@ -261,7 +261,7 @@ RbtDouble RbtPMFIdxSF::RawScore() const {
       // optimal distance for C-C interactions is
       // under 6A. Note NC is the next item in RbtPMFType
       // after the carbon types
-      if (theDist > (RbtDouble)GetParameter(_CC_CUTOFF) && rType < NC &&
+      if (theDist > (double)GetParameter(_CC_CUTOFF) && rType < NC &&
           lType < NC)
         continue;
       // if we are in the plateau region
@@ -283,13 +283,13 @@ RbtDouble RbtPMFIdxSF::RawScore() const {
         // lType
         // ); theScore += score;
         // make a linear interpolation
-        RbtUInt inf_idx = thePMFGrid->GetIX(theDist - delta);
-        RbtDouble inf_score = thePMFGrid->GetValue(inf_idx, rType, lType);
-        RbtUInt sup_idx = thePMFGrid->GetIX(theDist + delta);
-        RbtDouble sup_score = thePMFGrid->GetValue(sup_idx, rType, lType);
+        unsigned int inf_idx = thePMFGrid->GetIX(theDist - delta);
+        double inf_score = thePMFGrid->GetValue(inf_idx, rType, lType);
+        unsigned int sup_idx = thePMFGrid->GetIX(theDist + delta);
+        double sup_score = thePMFGrid->GetValue(sup_idx, rType, lType);
         // now calculate the distances from the gridpoints
-        RbtDouble inf_d = (theDist - thePMFGrid->GetXCoord(inf_idx)) / cPMFRes;
-        RbtDouble sup_d = 1.0 - inf_d;
+        double inf_d = (theDist - thePMFGrid->GetXCoord(inf_idx)) / cPMFRes;
+        double sup_d = 1.0 - inf_d;
         // weight the score with the distances from gridpoints
         i_score = inf_score * sup_d + sup_score * inf_d;
       }
@@ -329,13 +329,11 @@ RbtDouble RbtPMFIdxSF::RawScore() const {
   return theScore;
 }
 
-RbtDouble RbtPMFIdxSF::GetLinearCloseRangeValue(RbtDouble aDist,
-                                                RbtPMFType aRecType,
-                                                RbtPMFType aLigType) const {
-  RbtDouble thePlateauStart =
-      theSlopeGrid->GetValue(cPlStart, aRecType, aLigType);
-  RbtDouble thePlateauVal = theSlopeGrid->GetValue(cPlVal, aRecType, aLigType);
-  RbtDouble theSlope = (RbtDouble)GetParameter(_SLOPE);
+double RbtPMFIdxSF::GetLinearCloseRangeValue(double aDist, RbtPMFType aRecType,
+                                             RbtPMFType aLigType) const {
+  double thePlateauStart = theSlopeGrid->GetValue(cPlStart, aRecType, aLigType);
+  double thePlateauVal = theSlopeGrid->GetValue(cPlVal, aRecType, aLigType);
+  double theSlope = (double)GetParameter(_SLOPE);
 
   return theSlope * aDist - theSlope * thePlateauStart + thePlateauVal;
 }

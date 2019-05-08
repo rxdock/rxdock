@@ -16,9 +16,8 @@ std::string RbtChromPositionElement::_CT = "RbtChromPositionElement";
 
 RbtChromPositionElement::RbtChromPositionElement(
     const RbtModel *pModel, const RbtDockingSite *pDockSite,
-    RbtDouble transStepSize, RbtDouble rotStepSize,
-    RbtChromElement::eMode transMode, RbtChromElement::eMode rotMode,
-    RbtDouble maxTrans, RbtDouble maxRot) {
+    double transStepSize, double rotStepSize, RbtChromElement::eMode transMode,
+    RbtChromElement::eMode rotMode, double maxTrans, double maxRot) {
   m_spRefData =
       new RbtChromPositionRefData(pModel, pDockSite, transStepSize, rotStepSize,
                                   transMode, rotMode, maxTrans, maxRot);
@@ -48,10 +47,10 @@ void RbtChromPositionElement::Randomise() {
 }
 
 void RbtChromPositionElement::RandomiseCOM() {
-  RbtDouble dist;
+  double dist;
   RbtVector axis;
-  RbtInt numStartCoords;
-  RbtInt iCoord;
+  int numStartCoords;
+  int iCoord;
   switch (m_spRefData->GetTransMode()) {
     // TETHERED: Perform a single mutation from the initial COM
     // up to the maximum permitted
@@ -74,9 +73,9 @@ void RbtChromPositionElement::RandomiseCOM() {
 }
 
 void RbtChromPositionElement::RandomiseOrientation() {
-  RbtDouble theta;
+  double theta;
   RbtVector axis;
-  RbtDouble heading, attitude, bank;
+  double heading, attitude, bank;
   switch (m_spRefData->GetRotMode()) {
     // TETHERED: Perform a single mutation from the initial orientation
     // up to the maximum permitted
@@ -100,14 +99,14 @@ void RbtChromPositionElement::RandomiseOrientation() {
   }
 }
 
-void RbtChromPositionElement::Mutate(RbtDouble relStepSize) {
+void RbtChromPositionElement::Mutate(double relStepSize) {
   MutateCOM(relStepSize);
   MutateOrientation(relStepSize);
 }
 
-void RbtChromPositionElement::MutateCOM(RbtDouble relStepSize) {
-  RbtDouble absTransStepSize;
-  RbtDouble dist;
+void RbtChromPositionElement::MutateCOM(double relStepSize) {
+  double absTransStepSize;
+  double dist;
   RbtVector axis;
   switch (m_spRefData->GetTransMode()) {
   case RbtChromElement::TETHERED:
@@ -133,9 +132,9 @@ void RbtChromPositionElement::MutateCOM(RbtDouble relStepSize) {
   }
 }
 
-void RbtChromPositionElement::MutateOrientation(RbtDouble relStepSize) {
-  RbtDouble absRotStepSize;
-  RbtDouble theta;
+void RbtChromPositionElement::MutateOrientation(double relStepSize) {
+  double absRotStepSize;
+  double theta;
   RbtVector axis;
   switch (m_spRefData->GetRotMode()) {
   case RbtChromElement::TETHERED:
@@ -204,16 +203,16 @@ void RbtChromPositionElement::GetVector(RbtXOverList &v) const {
 }
 
 void RbtChromPositionElement::SetVector(const RbtDoubleList &v,
-                                        RbtInt &i) throw(RbtError) {
+                                        int &i) throw(RbtError) {
   if (VectorOK(v, i)) {
     if (!m_spRefData->IsTransFixed()) {
       // 2013Nov26 (DM) Bug fix to unsafe code.
       // We cannot assume that the multiple increments will be processed
       // left->right. This assumption is broken in g++ 4. Safer to break into
       // separate statements. m_com = RbtCoord(v[i++], v[i++], v[i++]);
-      RbtDouble x(v[i++]);
-      RbtDouble y(v[i++]);
-      RbtDouble z(v[i++]);
+      double x(v[i++]);
+      double y(v[i++]);
+      double z(v[i++]);
       m_com = RbtCoord(x, y, z);
     }
     if (!m_spRefData->IsRotFixed()) {
@@ -221,9 +220,9 @@ void RbtChromPositionElement::SetVector(const RbtDoubleList &v,
       // We cannot assume that the multiple increments will be processed
       // left->right. This assumption is broken in g++ 4. Safer to break into
       // separate statements. m_orientation = RbtEuler(v[i++], v[i++], v[i++]);
-      RbtDouble heading(v[i++]);
-      RbtDouble attitude(v[i++]);
-      RbtDouble bank(v[i++]);
+      double heading(v[i++]);
+      double attitude(v[i++]);
+      double bank(v[i++]);
       m_orientation = RbtEuler(heading, attitude, bank);
       m_orientation.Standardise();
     }
@@ -234,7 +233,7 @@ void RbtChromPositionElement::SetVector(const RbtDoubleList &v,
 }
 
 void RbtChromPositionElement::SetVector(const RbtXOverList &v,
-                                        RbtInt &i) throw(RbtError) {
+                                        int &i) throw(RbtError) {
   if (VectorOK(v, i)) {
     if (!m_spRefData->IsTransFixed()) {
       RbtXOverElement comElement(v[i++]);
@@ -267,22 +266,22 @@ void RbtChromPositionElement::SetVector(const RbtXOverList &v,
 
 void RbtChromPositionElement::GetStepVector(RbtDoubleList &v) const {
   if (!m_spRefData->IsTransFixed()) {
-    RbtDouble transStepSize = m_spRefData->GetTransStepSize();
-    for (RbtInt i = 0; i < 3; ++i) {
+    double transStepSize = m_spRefData->GetTransStepSize();
+    for (int i = 0; i < 3; ++i) {
       v.push_back(transStepSize);
     }
   }
   if (!m_spRefData->IsRotFixed()) {
-    RbtDouble rotStepSize = m_spRefData->GetRotStepSize();
-    for (RbtInt i = 0; i < 3; ++i) {
+    double rotStepSize = m_spRefData->GetRotStepSize();
+    for (int i = 0; i < 3; ++i) {
       v.push_back(rotStepSize);
     }
   }
 }
 
-RbtDouble RbtChromPositionElement::CompareVector(const RbtDoubleList &v,
-                                                 RbtInt &i) const {
-  RbtDouble retVal(0.0);
+double RbtChromPositionElement::CompareVector(const RbtDoubleList &v,
+                                              int &i) const {
+  double retVal(0.0);
   if (VectorOK(v, i)) {
     if (!m_spRefData->IsTransFixed()) {
       // 2013Nov26 (DM) Bug fix to unsafe code.
@@ -290,15 +289,15 @@ RbtDouble RbtChromPositionElement::CompareVector(const RbtDoubleList &v,
       // left->right. This assumption is broken in g++ 4. Safer to break into
       // separate statements. RbtCoord otherCom = RbtCoord(v[i++], v[i++],
       // v[i++]);
-      RbtDouble x(v[i++]);
-      RbtDouble y(v[i++]);
-      RbtDouble z(v[i++]);
+      double x(v[i++]);
+      double y(v[i++]);
+      double z(v[i++]);
       RbtCoord otherCom = RbtCoord(x, y, z);
-      RbtDouble transStepSize = m_spRefData->GetTransStepSize();
+      double transStepSize = m_spRefData->GetTransStepSize();
       // Compare distance between centres of mass
       if (transStepSize > 0.0) {
-        RbtDouble absDiff = Rbt::Length(m_com, otherCom);
-        RbtDouble relDiff = absDiff / transStepSize;
+        double absDiff = Rbt::Length(m_com, otherCom);
+        double relDiff = absDiff / transStepSize;
         retVal = std::max(retVal, relDiff);
       }
     }
@@ -308,11 +307,11 @@ RbtDouble RbtChromPositionElement::CompareVector(const RbtDoubleList &v,
       // left->right. This assumption is broken in g++ 4. Safer to break into
       // separate statements. RbtEuler otherOrientation = RbtEuler(v[i++],
       // v[i++], v[i++]);
-      RbtDouble heading(v[i++]);
-      RbtDouble attitude(v[i++]);
-      RbtDouble bank(v[i++]);
+      double heading(v[i++]);
+      double attitude(v[i++]);
+      double bank(v[i++]);
       RbtEuler otherOrientation = RbtEuler(heading, attitude, bank);
-      RbtDouble rotStepSize = m_spRefData->GetRotStepSize();
+      double rotStepSize = m_spRefData->GetRotStepSize();
       // Compare orientations
       if (rotStepSize > 0.0) {
         // Determine the difference between the two orientations
@@ -320,14 +319,14 @@ RbtDouble RbtChromPositionElement::CompareVector(const RbtDoubleList &v,
         // q.s = cos(phi / 2)
         RbtQuat qAlign =
             otherOrientation.ToQuat() * m_orientation.ToQuat().Conj();
-        RbtDouble cosHalfTheta = qAlign.s;
+        double cosHalfTheta = qAlign.s;
         if (cosHalfTheta < -1.0) {
           cosHalfTheta = -1.0;
         } else if (cosHalfTheta > 1.0) {
           cosHalfTheta = 1.0;
         }
-        RbtDouble absDiff = fabs(StandardisedValue(2.0 * acos(cosHalfTheta)));
-        RbtDouble relDiff = absDiff / rotStepSize;
+        double absDiff = fabs(StandardisedValue(2.0 * acos(cosHalfTheta)));
+        double relDiff = absDiff / rotStepSize;
         retVal = std::max(retVal, relDiff);
       }
     }
@@ -342,7 +341,7 @@ void RbtChromPositionElement::Print(ostream &s) const {
   s << "EULER " << m_orientation << endl;
 }
 
-RbtDouble RbtChromPositionElement::StandardisedValue(RbtDouble rotationAngle) {
+double RbtChromPositionElement::StandardisedValue(double rotationAngle) {
   while (rotationAngle >= M_PI) {
     rotationAngle -= 2.0 * M_PI;
   }
@@ -356,7 +355,7 @@ void RbtChromPositionElement::CorrectTetheredCOM() {
   // If we are out of bounds
   // revert to the initial COM and translate as far as we can
   // towards the new point until we hit the boundary
-  RbtDouble maxTrans = m_spRefData->GetMaxTrans();
+  double maxTrans = m_spRefData->GetMaxTrans();
   // vector from initial COM to new point
   RbtVector axis = m_com - m_spRefData->GetInitialCOM();
   // avoid square roots until necessary
@@ -368,17 +367,17 @@ void RbtChromPositionElement::CorrectTetheredCOM() {
 
 void RbtChromPositionElement::CorrectTetheredOrientation() {
   // Check for orientation out of bounds
-  RbtDouble maxRot = m_spRefData->GetMaxRot();
+  double maxRot = m_spRefData->GetMaxRot();
   RbtQuat qAlign =
       m_spRefData->GetInitialQuat() * m_orientation.ToQuat().Conj();
-  RbtDouble cosHalfTheta = qAlign.s;
+  double cosHalfTheta = qAlign.s;
   if (cosHalfTheta < -1.0) {
     cosHalfTheta = -1.0;
   } else if (cosHalfTheta > 1.0) {
     cosHalfTheta = 1.0;
   }
   // Theta is the rotation angle required to realign with reference
-  RbtDouble theta = StandardisedValue(2.0 * acos(cosHalfTheta));
+  double theta = StandardisedValue(2.0 * acos(cosHalfTheta));
   // Deal with pos and neg angles independently as we have to
   // invert the rotation axis for negative angles
   if (theta < -maxRot) {

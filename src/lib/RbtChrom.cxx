@@ -50,7 +50,7 @@ void RbtChrom::Randomise() {
   }
 }
 
-void RbtChrom::Mutate(RbtDouble relStepSize) {
+void RbtChrom::Mutate(double relStepSize) {
   for (RbtChromElementListIter iter = m_elementList.begin();
        iter != m_elementList.end(); ++iter) {
     (*iter)->Mutate(relStepSize);
@@ -91,8 +91,8 @@ void RbtChrom::Add(RbtChromElement *pChromElement) throw(RbtError) {
   }
 }
 
-RbtInt RbtChrom::GetLength() const {
-  RbtInt retVal(0);
+int RbtChrom::GetLength() const {
+  int retVal(0);
   for (RbtChromElementListConstIter iter = m_elementList.begin();
        iter != m_elementList.end(); ++iter) {
     retVal += (*iter)->GetLength();
@@ -100,8 +100,8 @@ RbtInt RbtChrom::GetLength() const {
   return retVal;
 }
 
-RbtInt RbtChrom::GetXOverLength() const {
-  RbtInt retVal(0);
+int RbtChrom::GetXOverLength() const {
+  int retVal(0);
   for (RbtChromElementListConstIter iter = m_elementList.begin();
        iter != m_elementList.end(); ++iter) {
     retVal += (*iter)->GetXOverLength();
@@ -123,7 +123,7 @@ void RbtChrom::GetVector(RbtXOverList &v) const {
   }
 }
 
-void RbtChrom::SetVector(const RbtDoubleList &v, RbtInt &i) throw(RbtError) {
+void RbtChrom::SetVector(const RbtDoubleList &v, int &i) throw(RbtError) {
   if (VectorOK(v, i)) {
     for (RbtChromElementListIter iter = m_elementList.begin();
          iter != m_elementList.end(); ++iter) {
@@ -135,7 +135,7 @@ void RbtChrom::SetVector(const RbtDoubleList &v, RbtInt &i) throw(RbtError) {
   }
 }
 
-void RbtChrom::SetVector(const RbtXOverList &v, RbtInt &i) throw(RbtError) {
+void RbtChrom::SetVector(const RbtXOverList &v, int &i) throw(RbtError) {
   if (VectorOK(v, i)) {
     for (RbtChromElementListIter iter = m_elementList.begin();
          iter != m_elementList.end(); ++iter) {
@@ -156,14 +156,14 @@ void RbtChrom::GetStepVector(RbtDoubleList &v) const {
 
 // Returns the maximum difference of any of the underlying chromosome elements
 // or -1 if there is a mismatch in vector sizes
-RbtDouble RbtChrom::CompareVector(const RbtDoubleList &v, RbtInt &i) const {
-  RbtDouble retVal(0.0);
+double RbtChrom::CompareVector(const RbtDoubleList &v, int &i) const {
+  double retVal(0.0);
   if (VectorOK(v, i)) {
     RbtChromElementListConstIter iter = m_elementList.begin();
     // Exit the while loop as soon as a negative value is returned
     while ((iter != m_elementList.end()) && (retVal >= 0.0)) {
       RbtChromElement *element = *(iter++);
-      RbtDouble cmp = element->CompareVector(v, i);
+      double cmp = element->CompareVector(v, i);
       retVal = (cmp < 0) ? cmp : std::max(retVal, cmp);
     }
   } else {
@@ -174,7 +174,7 @@ RbtDouble RbtChrom::CompareVector(const RbtDoubleList &v, RbtInt &i) const {
 
 void RbtChrom::Print(ostream &s) const {
   s << "CHROM" << endl;
-  RbtInt i(0);
+  int i(0);
   for (RbtChromElementListConstIter iter = m_elementList.begin();
        iter != m_elementList.end(); ++iter) {
     s << "ELEMENT " << (i++) << ": ";

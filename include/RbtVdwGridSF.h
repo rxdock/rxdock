@@ -34,7 +34,7 @@ protected:
   virtual void SetupLigand();
   virtual void SetupSolvent();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
   void ParameterUpdated(const std::string &strName);
@@ -46,7 +46,7 @@ private:
   RbtRealGridList m_grids;
   RbtAtomRList m_ligAtomList;
   RbtTriposAtomTypeList m_ligAtomTypes;
-  RbtBool m_bSmoothed;
+  bool m_bSmoothed;
 };
 
 #endif //_RBTVDWGRIDSF_H_

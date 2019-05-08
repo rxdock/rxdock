@@ -154,7 +154,7 @@ RbtSFAgg *RbtSFFactory::CreateAggFromFile(
   // parameter file for valid scoring function definitions
   // In this case we do not throw an error if a particular section
   // is not a scoring function, we simply skip it
-  RbtBool bThrowError(true);
+  bool bThrowError(true);
   if (sfList.empty()) {
     sfList = spPrmSource->GetSectionList();
     bThrowError = false;

@@ -32,42 +32,41 @@ public:
   RbtChromDihedralElement(
       RbtBondPtr spBond,         // Rotatable bond
       RbtAtomList tetheredAtoms, // Tethered atom list
-      RbtDouble stepSize,        // maximum mutation step size (degrees)
+      double stepSize,           // maximum mutation step size (degrees)
       RbtChromElement::eMode mode = RbtChromElement::FREE, // sampling mode
-      RbtDouble maxDihedral =
+      double maxDihedral =
           0.0); // max deviation from reference (tethered mode only)
 
   virtual ~RbtChromDihedralElement();
   virtual void Reset();
   virtual void Randomise();
-  virtual void Mutate(RbtDouble relStepSize);
+  virtual void Mutate(double relStepSize);
   virtual void SyncFromModel();
   virtual void SyncToModel();
   virtual RbtChromElement *clone() const;
-  virtual RbtInt GetLength() const { return 1; }
-  virtual RbtInt GetXOverLength() const { return 1; }
+  virtual int GetLength() const { return 1; }
+  virtual int GetXOverLength() const { return 1; }
   virtual void GetVector(RbtDoubleList &v) const;
   virtual void GetVector(RbtXOverList &v) const;
-  virtual void SetVector(const RbtDoubleList &v, RbtInt &i) throw(RbtError);
-  virtual void SetVector(const RbtXOverList &v, RbtInt &i) throw(RbtError);
+  virtual void SetVector(const RbtDoubleList &v, int &i) throw(RbtError);
+  virtual void SetVector(const RbtXOverList &v, int &i) throw(RbtError);
   virtual void GetStepVector(RbtDoubleList &v) const;
-  virtual RbtDouble CompareVector(const RbtDoubleList &v, RbtInt &i) const;
+  virtual double CompareVector(const RbtDoubleList &v, int &i) const;
   virtual void Print(ostream &s) const;
 
   // Returns a standardised dihedral angle in the range [-180, +180}
   // This function operates in degrees
-  static RbtDouble StandardisedValue(RbtDouble dihedralAngle);
+  static double StandardisedValue(double dihedralAngle);
 
 protected:
   // For use by clone()
-  RbtChromDihedralElement(RbtChromDihedralRefDataPtr spRefData,
-                          RbtDouble value);
+  RbtChromDihedralElement(RbtChromDihedralRefDataPtr spRefData, double value);
   RbtChromDihedralElement();
   void CorrectTetheredDihedral();
 
 private:
   RbtChromDihedralRefDataPtr m_spRefData; // Fixed reference data
-  RbtDouble m_value;                      // The genotype value
+  double m_value;                         // The genotype value
 };
 
 #endif /*RBTCHROMDIHEDRALELEMENT_H_*/

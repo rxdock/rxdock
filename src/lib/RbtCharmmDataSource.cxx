@@ -72,8 +72,7 @@ RbtCharmmDataSource::~RbtCharmmDataSource() {
 ////////////////////////////////////////
 // Public methods
 ////////////////
-std::string
-RbtCharmmDataSource::AtomTypeString(RbtInt nAtomType) throw(RbtError) {
+std::string RbtCharmmDataSource::AtomTypeString(int nAtomType) throw(RbtError) {
   RbtIntStringMapIter iter = m_atomTypes.find(nAtomType);
   if (iter != m_atomTypes.end())
     return (*iter).second;
@@ -87,8 +86,8 @@ RbtCharmmDataSource::AtomTypeString(RbtInt nAtomType) throw(RbtError) {
   }
 }
 
-RbtInt RbtCharmmDataSource::ImplicitHydrogens(
-    const std::string &strFFType) throw(RbtError) {
+int RbtCharmmDataSource::ImplicitHydrogens(const std::string &strFFType) throw(
+    RbtError) {
   RbtStringIntMapIter iter = m_implicitHydrogens.find(strFFType);
   if (iter != m_implicitHydrogens.end())
     return (*iter).second;
@@ -96,7 +95,7 @@ RbtInt RbtCharmmDataSource::ImplicitHydrogens(
     return 0;
 }
 
-RbtInt RbtCharmmDataSource::AtomicNumber(const std::string &strFFType) throw(
+int RbtCharmmDataSource::AtomicNumber(const std::string &strFFType) throw(
     RbtError) {
   RbtStringIntMapIter iter = m_atomicNumber.find(strFFType);
   if (iter != m_atomicNumber.end())
@@ -107,7 +106,7 @@ RbtInt RbtCharmmDataSource::AtomicNumber(const std::string &strFFType) throw(
                                       " not found in CharmmDataSource");
 }
 
-RbtInt RbtCharmmDataSource::FormalCharge(const std::string &strFFType) throw(
+int RbtCharmmDataSource::FormalCharge(const std::string &strFFType) throw(
     RbtError) {
   RbtStringIntMapIter iter = m_formalCharge.find(strFFType);
   if (iter != m_formalCharge.end()) {

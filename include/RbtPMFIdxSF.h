@@ -83,12 +83,12 @@ protected:
   /**
    * RawScore(void) returning with the actual PMF score
    */
-  virtual RbtDouble RawScore(void) const;
+  virtual double RawScore(void) const;
   /**
    * Estimate value for short distances instead of using plateau in PMFs
    */
-  RbtDouble GetLinearCloseRangeValue(RbtDouble aDist, RbtPMFType aRecType,
-                                     RbtPMFType aLigType) const;
+  double GetLinearCloseRangeValue(double aDist, RbtPMFType aRecType,
+                                  RbtPMFType aLigType) const;
 };
 
 #endif // _RBTPMFIDXSF_H_

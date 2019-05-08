@@ -22,7 +22,7 @@
 #ifdef _NDEBUG
 const RbtBool SFAGG_CHECK = false;
 #else
-const RbtBool SFAGG_CHECK = true;
+const bool SFAGG_CHECK = true;
 #endif //_NDEBUG
 
 // Useful typedefs
@@ -49,9 +49,9 @@ public:
   // Aggregate handling methods
   virtual void Add(RbtBaseSF *) throw(RbtError);
   virtual void Remove(RbtBaseSF *) throw(RbtError);
-  virtual RbtBool isAgg() const;
-  virtual RbtUInt GetNumSF() const;
-  virtual RbtBaseSF *GetSF(RbtUInt iSF) const throw(RbtError);
+  virtual bool isAgg() const;
+  virtual unsigned int GetNumSF() const;
+  virtual RbtBaseSF *GetSF(unsigned int iSF) const throw(RbtError);
 
   // WorkSpace handling methods
   // Register scoring function with a workspace
@@ -78,7 +78,7 @@ protected:
   ////////////////////////////////////////
   // Protected methods
   ///////////////////
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
 
 private:
   ////////////////////////////////////////
@@ -97,8 +97,7 @@ private:
   // Private data
   //////////////
   RbtBaseSFList m_sf;
-  RbtInt
-      m_nNonHLigandAtoms; // for normalised scores (score / non-H ligand atoms)
+  int m_nNonHLigandAtoms; // for normalised scores (score / non-H ligand atoms)
 };
 
 // Useful typedefs

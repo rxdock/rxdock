@@ -61,7 +61,7 @@ void RbtPdbFileSource::Parse() throw(RbtError) {
         else if (((*fileIter).find(strAtomKey) == 0) ||
                  ((*fileIter).find(strHetAtmKey) == 0)) {
           std::string strDummy;
-          RbtInt nAtomId(1);          // atom number
+          int nAtomId(1);             // atom number
           std::string strAtomName;    // atom name
           std::string strSegmentName; // segment name (chain identifier)
           std::string strSubunitName; // subunit(residue) name
@@ -70,8 +70,8 @@ void RbtPdbFileSource::Parse() throw(RbtError) {
           // DM 15 June 2006 - change default occupancy to 1
           // to avoid disabling solvent if pdb file does not contain
           // occupancy field
-          RbtDouble occupancy(1.0);
-          RbtDouble tempFactor(0.0);
+          double occupancy(1.0);
+          double tempFactor(0.0);
 
           RbtFileRec::size_type length = (*fileIter).size();
           if (length > 10) {

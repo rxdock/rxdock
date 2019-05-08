@@ -37,19 +37,19 @@ void main(int argc, char *argv[]) {
     RbtContextPtr contextp(new RbtCellContext(desc));
     RbtGPFitnessFunctionPtr ff = new RbtGPFFHSP90(contextp);
     cout << "Number of input sets: \n";
-    RbtInt nInputSets;
+    int nInputSets;
     cin >> nInputSets;
-    RbtInt nTestSets = nInputSets / 3;
+    int nTestSets = nInputSets / 3;
     std::string strTrainingFile = "/tmp/beatriz/" + strInputFile + ".training";
     fstream trainingFile(strTrainingFile.c_str(), ios::in | ios::out);
     std::string strTestFile = "/tmp/beatriz/" + strInputFile + ".test";
     fstream testFile(strTestFile.c_str(), ios::in | ios::out);
     RbtUIntSet randomList;
     cout << nTestSets << endl;
-    for (RbtInt i = 0; i < nTestSets; i++) {
-      RbtBool insertb;
+    for (int i = 0; i < nTestSets; i++) {
+      bool insertb;
       do {
-        RbtUInt ran = theRand.GetRandomInt(nInputSets);
+        unsigned int ran = theRand.GetRandomInt(nInputSets);
         insertb = (randomList.insert(ran)).second;
       } while (!insertb);
     }
@@ -61,7 +61,7 @@ void main(int argc, char *argv[]) {
     getline(inputFile, line);
     testFile << line << endl;
     trainingFile << line << endl;
-    for (RbtInt i = 0; i < nInputSets; i++) {
+    for (int i = 0; i < nInputSets; i++) {
       getline(inputFile, line);
       if (randomList.find(i) != randomList.end())
         // found it
@@ -79,11 +79,11 @@ void main(int argc, char *argv[]) {
     //      throw RbtError(_WHERE_, "can't open" + strTestFile);
     ff->ReadTables(testFile, ittest, sfttest);
 
-    RbtDouble hitlimit = 0.0;
+    double hitlimit = 0.0;
     RbtGPPopulation p(5, 5, ff, ittrain, sfttrain);
     p.Initialise(hitlimit, false);
-    RbtDouble b = 0.0;
-    RbtInt i = 0;
+    double b = 0.0;
+    int i = 0;
     while ((b < 0.9) && (i < 10000)) {
       p.EPstep("", 1.0, 0.08, 0.0, 0.0, hitlimit, false);
       b = ff->CalculateFitness(p.Best(), ittrain, sfttrain, false);

@@ -29,24 +29,23 @@ class RbtDockingSite {
 public:
   // STL predicate for selecting atoms within a defined distance range from
   // nearest cavity coords Uses precalculated distance grid
-  class isAtomInRange : public std::unary_function<RbtAtomPtr, RbtBool> {
+  class isAtomInRange : public std::unary_function<RbtAtomPtr, bool> {
   public:
-    explicit isAtomInRange(RbtRealGrid *pGrid, RbtDouble minDist,
-                           RbtDouble maxDist)
+    explicit isAtomInRange(RbtRealGrid *pGrid, double minDist, double maxDist)
         : m_pGrid(pGrid), m_minDist(minDist), m_maxDist(maxDist) {}
-    RbtBool operator()(RbtAtom *pAtom) const;
+    bool operator()(RbtAtom *pAtom) const;
 
   private:
     RbtRealGrid *m_pGrid;
-    RbtDouble m_minDist;
-    RbtDouble m_maxDist;
+    double m_minDist;
+    double m_maxDist;
   };
 
 public:
   // Class type string
   static std::string _CT;
 
-  RbtDockingSite(const RbtCavityList &cavList, RbtDouble border);
+  RbtDockingSite(const RbtCavityList &cavList, double border);
   RbtDockingSite(istream &istr);
 
   // Destructor
@@ -64,28 +63,28 @@ public:
   void Write(ostream &ostr); // Writes docking site to binary stream
 
   RbtRealGridPtr GetGrid();
-  RbtDouble GetBorder() const { return m_border; }
+  double GetBorder() const { return m_border; }
   RbtCoord GetMinCoord() const { return m_minCoord; }
   RbtCoord GetMaxCoord() const { return m_maxCoord; }
   RbtCavityList GetCavityList() const { return m_cavityList; }
-  RbtInt GetNumCavities() const { return m_cavityList.size(); }
-  RbtDouble GetVolume() const; // returns total volume of all cavities in A^3
+  int GetNumCavities() const { return m_cavityList.size(); }
+  double GetVolume() const; // returns total volume of all cavities in A^3
 
   // Returns the combined coord lists of all the cavities
   void GetCoordList(RbtCoordList &retVal) const;
 
   // Filters an atom list according to distance from the cavity coords
   // Only returns atoms within minDist and maxDist from cavity
-  RbtAtomList GetAtomList(const RbtAtomList &atomList, RbtDouble minDist,
-                          RbtDouble maxDist) throw(RbtError);
+  RbtAtomList GetAtomList(const RbtAtomList &atomList, double minDist,
+                          double maxDist) throw(RbtError);
   // Filters an atom list according to distance from the cavity coords
   // Only returns atoms within maxDist from cavity
   // This version does not require the cavity grid
   RbtAtomList GetAtomList(const RbtAtomList &atomList,
-                          RbtDouble maxDist) throw(RbtError);
+                          double maxDist) throw(RbtError);
   // Returns the count of atoms within minDist and maxDist from cavity
-  RbtUInt GetNumAtoms(const RbtAtomList &atomList, RbtDouble minDist,
-                      RbtDouble maxDist) throw(RbtError);
+  unsigned int GetNumAtoms(const RbtAtomList &atomList, double minDist,
+                           double maxDist) throw(RbtError);
 
   // private methods
 private:
@@ -103,7 +102,7 @@ private:
   RbtCoord m_minCoord;
   RbtCoord m_maxCoord;
   RbtRealGridPtr m_spGrid;
-  RbtDouble m_border;
+  double m_border;
 };
 
 // Useful typedefs

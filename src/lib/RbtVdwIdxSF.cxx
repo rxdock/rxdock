@@ -61,7 +61,7 @@ void RbtVdwIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // as the rDock Viewer annotation format is hardwired to expect
     // ligand-receptor atom indices
     // Divide the total raw score into "system" and "inter" components.
-    RbtDouble rs = InterScore();
+    double rs = InterScore();
     //    EnableAnnotations(false);
     // XB uncommented next line
     rs += LigandSolventScore(); // lig-solvent belongs with the receptor-ligand
@@ -75,13 +75,13 @@ void RbtVdwIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
 
     // Now deal with the system raw scores which need to be stored in
     // SCORE.INTER.VDW
-    RbtDouble system_rs =
+    double system_rs =
         ReceptorScore() + SolventScore() + ReceptorSolventScore();
     if (system_rs != 0.0) {
       std::string systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
       scoreMap[systemName] = system_rs;
       // increment the SCORE.SYSTEM total
-      RbtDouble parentScore = scoreMap[RbtBaseSF::_SYSTEM_SF];
+      double parentScore = scoreMap[RbtBaseSF::_SYSTEM_SF];
       parentScore += system_rs * GetWeight();
       scoreMap[RbtBaseSF::_SYSTEM_SF] = parentScore;
     }
@@ -112,14 +112,14 @@ void RbtVdwIdxSF::SetupReceptor() {
 
   m_recAtomList = GetReceptor()->GetAtomList();
   m_spGrid = CreateNonBondedGrid();
-  RbtDouble maxError = GetMaxError();
-  RbtDouble flexDist = 2.0;
+  double maxError = GetMaxError();
+  double flexDist = 2.0;
   RbtDockingSitePtr spDS = GetWorkSpace()->GetDockingSite();
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
-  RbtInt nCoords = GetReceptor()->GetNumSavedCoords() - 1;
+  int nCoords = GetReceptor()->GetNumSavedCoords() - 1;
   if (nCoords > 0) {
-    for (RbtInt i = 1; i <= nCoords; i++) {
+    for (int i = 1; i <= nCoords; i++) {
       if (iTrace > 0) {
         cout << _CT << ": Indexing receptor coords # " << i << endl;
       }
@@ -128,7 +128,7 @@ void RbtVdwIdxSF::SetupReceptor() {
           spDS->GetAtomList(m_recAtomList, 0.0, GetCorrectedRange());
       for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
            iter++) {
-        RbtDouble range = MaxVdwRange(*iter);
+        double range = MaxVdwRange(*iter);
         m_spGrid->SetAtomLists(*iter, range + maxError);
       }
       m_spGrid->UniqueAtomLists();
@@ -153,7 +153,7 @@ void RbtVdwIdxSF::SetupReceptor() {
 
       // Build map of intra-protein interactions (similar to intra-ligand)
       // Include flexible-flexible and flexible-rigid
-      RbtInt nAtoms = GetReceptor()->GetNumAtoms();
+      int nAtoms = GetReceptor()->GetNumAtoms();
       m_recFlexIntns = RbtAtomRListList(nAtoms, RbtAtomRList());
       m_recFlexPrtIntns = RbtAtomRListList(nAtoms, RbtAtomRList());
       BuildIntraMap(m_recFlexAtomList, m_recFlexIntns); // Flexible-flexible
@@ -162,7 +162,7 @@ void RbtVdwIdxSF::SetupReceptor() {
       // We can get away with partitioning the variable interactions just at the
       // beginning. For grosser receptor flexibility we would have to partition
       // periodically during docking
-      RbtDouble partitionDist =
+      double partitionDist =
           MaxVdwRange(RbtTriposAtomType::H_P) + (2.0 * flexDist);
       Partition(m_recFlexAtomList, m_recFlexIntns, m_recFlexPrtIntns,
                 partitionDist);
@@ -173,11 +173,11 @@ void RbtVdwIdxSF::SetupReceptor() {
       // approach
       for (RbtAtomRListConstIter iter = m_recFlexAtomList.begin();
            iter != m_recFlexAtomList.end(); iter++) {
-        RbtDouble range = MaxVdwRange(*iter);
+        double range = MaxVdwRange(*iter);
         m_spGrid->SetAtomLists(*iter, range + maxError + flexDist);
       }
       if (iTrace > 0) {
-        RbtDouble score = ReceptorScore();
+        double score = ReceptorScore();
         cout << GetWorkSpace()->GetName() << " " << GetFullName()
              << ": Intra-receptor score = " << score << endl;
       }
@@ -185,7 +185,7 @@ void RbtVdwIdxSF::SetupReceptor() {
     // Index the rigid atoms as usual
     for (RbtAtomRListConstIter iter = m_recRigidAtomList.begin();
          iter != m_recRigidAtomList.end(); iter++) {
-      RbtDouble range = MaxVdwRange(*iter);
+      double range = MaxVdwRange(*iter);
       m_spGrid->SetAtomLists(*iter, range + maxError);
     }
   }
@@ -273,12 +273,12 @@ void RbtVdwIdxSF::SetupSolvent() {
   // tethered atoms
   if (!m_solventFixTethAtomList.empty()) {
     m_spSolventGrid = CreateNonBondedGrid();
-    RbtDouble maxError = GetMaxError();
-    RbtDouble maxFlexDist = 0.0;
+    double maxError = GetMaxError();
+    double maxFlexDist = 0.0;
     for (RbtAtomRListConstIter iter = m_solventFixTethAtomList.begin();
          iter != m_solventFixTethAtomList.end(); iter++) {
-      RbtDouble range = MaxVdwRange(*iter);
-      RbtDouble flexDist = (*iter)->GetUser2Value();
+      double range = MaxVdwRange(*iter);
+      double flexDist = (*iter)->GetUser2Value();
       maxFlexDist = std::max(flexDist, maxFlexDist);
       m_spSolventGrid->SetAtomLists(*iter, range + maxError + flexDist);
     }
@@ -287,7 +287,7 @@ void RbtVdwIdxSF::SetupSolvent() {
     m_solventFixTethPrtIntns =
         RbtAtomRListList(m_solventAtomList.size(), RbtAtomRList());
     BuildIntraMap(m_solventFixTethAtomList, m_solventFixTethIntns);
-    RbtDouble partitionDist =
+    double partitionDist =
         MaxVdwRange(RbtTriposAtomType::O_3) + (2.0 * maxFlexDist);
     Partition(m_solventFixTethAtomList, m_solventFixTethIntns,
               m_solventFixTethPrtIntns, partitionDist);
@@ -330,7 +330,7 @@ void RbtVdwIdxSF::SetupScore() {
   // No further setup required
 }
 
-RbtDouble RbtVdwIdxSF::RawScore() const {
+double RbtVdwIdxSF::RawScore() const {
   return InterScore() + LigandSolventScore() + ReceptorScore() +
          SolventScore() + ReceptorSolventScore();
 }
@@ -425,7 +425,7 @@ void RbtVdwIdxSF::RenderAnnotationsByResidue(RbtStringList &retVal) const {
     // Output the raw atom-atom annotation if
     // a) it is repulsive (score > 0)
     // b) it is attractive and between two lipo atoms (C,H)
-    RbtDouble s((*aIter)->GetScore());
+    double s((*aIter)->GetScore());
     if (s > 0.0) {
       retVal.push_back(strRepul + "," + (*aIter)->Render());
     } else if ((s < m_lipoAnnot) && (*aIter)->GetAtom1Ptr()->GetUser1Flag() &&
@@ -444,8 +444,8 @@ void RbtVdwIdxSF::RenderAnnotationsByResidue(RbtStringList &retVal) const {
   }
 }
 
-RbtDouble RbtVdwIdxSF::InterScore() const {
-  RbtDouble score = 0.0;
+double RbtVdwIdxSF::InterScore() const {
+  double score = 0.0;
   m_nAttr = 0;
   m_nRep = 0;
 
@@ -458,7 +458,7 @@ RbtDouble RbtVdwIdxSF::InterScore() const {
        iter != m_ligAtomList.end(); iter++) {
     const RbtCoord &c = (*iter)->GetCoords();
     const RbtAtomRList &recepAtomList = m_spGrid->GetAtomList(c);
-    RbtDouble s = VdwScore(*iter, recepAtomList);
+    double s = VdwScore(*iter, recepAtomList);
     score += s;
     if (s > m_repThreshold) {
       m_nRep++;
@@ -470,31 +470,31 @@ RbtDouble RbtVdwIdxSF::InterScore() const {
 }
 
 // Intra-receptor
-RbtDouble RbtVdwIdxSF::ReceptorScore() const {
+double RbtVdwIdxSF::ReceptorScore() const {
   if (!m_bFlexRec)
     return 0.0;
-  RbtDouble score = 0.0; // Total score
+  double score = 0.0; // Total score
   // Loop over all flexible site atoms
   for (RbtAtomRListConstIter iter = m_recFlexAtomList.begin();
        iter != m_recFlexAtomList.end(); iter++) {
-    RbtInt id = (*iter)->GetAtomId() - 1;
+    int id = (*iter)->GetAtomId() - 1;
     // XB changed call from "VdwScore" to "VdwScoreIntra" and created new
     // function
     // in "RbtVdwSF.cxx" to avoid using reweighting terms for intra
     // RbtDouble s = VdwScoreIntra(*iter,m_recFlexPrtIntns[id]);
-    RbtDouble s = VdwScore(*iter, m_recFlexPrtIntns[id]);
+    double s = VdwScore(*iter, m_recFlexPrtIntns[id]);
     score += s;
   }
   return score;
 }
 
 // Intra-solvent
-RbtDouble RbtVdwIdxSF::SolventScore() const {
-  RbtDouble score = 0.0;
+double RbtVdwIdxSF::SolventScore() const {
+  double score = 0.0;
   // Use the partitioned intn map for fixed/tethered - fixed/tethered intns
   for (RbtAtomRListConstIter iter = m_solventFixTethAtomList.begin();
        iter != m_solventFixTethAtomList.end(); iter++) {
-    RbtInt id = (*iter)->GetAtomId() - 1;
+    int id = (*iter)->GetAtomId() - 1;
     score += VdwScoreEnabledOnly(*iter, m_solventFixTethPrtIntns[id]);
   }
   if (!m_spSolventGrid.Null()) {
@@ -510,15 +510,15 @@ RbtDouble RbtVdwIdxSF::SolventScore() const {
   // unlikely to be used in practice)
   for (RbtAtomRListConstIter iter = m_solventFreeAtomList.begin();
        iter != m_solventFreeAtomList.end(); iter++) {
-    RbtInt id = (*iter)->GetAtomId() - 1;
+    int id = (*iter)->GetAtomId() - 1;
     score += VdwScoreEnabledOnly(*iter, m_solventFreeIntns[id]);
   }
   return score;
 }
 
 // Receptor-solvent
-RbtDouble RbtVdwIdxSF::ReceptorSolventScore() const {
-  RbtDouble score = 0.0;
+double RbtVdwIdxSF::ReceptorSolventScore() const {
+  double score = 0.0;
   if (m_spGrid.Null())
     return score;
   for (RbtAtomRListConstIter iter = m_solventAtomList.begin();
@@ -538,8 +538,8 @@ RbtDouble RbtVdwIdxSF::ReceptorSolventScore() const {
 }
 
 // Ligand-solvent
-RbtDouble RbtVdwIdxSF::LigandSolventScore() const {
-  RbtDouble score = 0.0;
+double RbtVdwIdxSF::LigandSolventScore() const {
+  double score = 0.0;
   // Use the solvent indexing grid for ligand - fixed/tethered solvent intns
   if (!m_spSolventGrid.Null()) {
     for (RbtAtomRListConstIter iter = m_ligAtomList.begin();

@@ -37,7 +37,7 @@ RbtVdwIntraSF::~RbtVdwIntraSF() {
 // Handles the Partition request
 void RbtVdwIntraSF::HandleRequest(RbtRequestPtr spRequest) {
   RbtVariantList params = spRequest->GetParameters();
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
   switch (spRequest->GetID()) {
 
@@ -87,7 +87,7 @@ void RbtVdwIntraSF::SetupScore() {
   if (spModel.Null())
     return;
 
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   if (iTrace > 2) {
     cout << _CT << "::SetupScore()" << endl;
   }
@@ -105,17 +105,17 @@ void RbtVdwIntraSF::SetupScore() {
   Partition(m_ligAtomList, m_vdwIntns, m_prtIntns, 0.0);
 }
 
-RbtDouble RbtVdwIntraSF::RawScore() const {
-  RbtDouble score = 0.0; // Total score
+double RbtVdwIntraSF::RawScore() const {
+  double score = 0.0; // Total score
   // Loop over all ligand atoms
   for (RbtAtomRListConstIter iter = m_ligAtomList.begin();
        iter != m_ligAtomList.end(); iter++) {
-    RbtInt id = (*iter)->GetAtomId() - 1;
+    int id = (*iter)->GetAtomId() - 1;
     // XB changed call from "VdwScore" to "VdwScoreIntra" and created new
     // function
     // in "RbtVdwSF.cxx" to avoid using reweighting terms for intra
     // RbtDouble s = VdwScoreIntra(*iter,m_prtIntns[id]);
-    RbtDouble s = VdwScore(*iter, m_prtIntns[id]);
+    double s = VdwScore(*iter, m_prtIntns[id]);
     score += s;
   }
   return score;

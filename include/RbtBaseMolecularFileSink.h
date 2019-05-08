@@ -26,7 +26,7 @@ public:
   // Constructors/destructors
   // RbtBaseMolecularFileSink(const char* fileName, RbtModelPtr spModel);
   RbtBaseMolecularFileSink(const std::string &fileName, RbtModelPtr spModel,
-                           RbtBool bUseModelSegmentNames = true);
+                           bool bUseModelSegmentNames = true);
 
   virtual ~RbtBaseMolecularFileSink(); // Default destructor
 
@@ -37,18 +37,18 @@ public:
   // Derived classes should override
   // Controls whether file type can support the writing of multiple
   // conformations/models to a single file
-  virtual RbtBool isMultiConfSupported() { return false; }
+  virtual bool isMultiConfSupported() { return false; }
 
   // Get/set the RbtModel that is linked to the sink
   RbtModelPtr GetModel() const;
   // DM 21 Apr 1999 - if bUseModelSegmentNames is true, the model segment names
   // are rendered if bUseModelSegmentNames is false, incremental numeric segment
   // IDs are rendered
-  void SetModel(RbtModelPtr spModel, RbtBool bUseModelSegmentNames = false);
+  void SetModel(RbtModelPtr spModel, bool bUseModelSegmentNames = false);
 
   // DM 21 Apr 1999 - change the segment ID counter
   // Set to nSegmentId-1 as the counter gets incremented before each Render
-  void SetNextSegmentId(RbtInt nSegmentId) {
+  void SetNextSegmentId(int nSegmentId) {
     m_nSegmentId = nSegmentId - 1;
     m_bUseModelSegmentNames = false;
   }
@@ -58,8 +58,8 @@ public:
   // cache to the file With MultiConf = true, each call to Render should
   // continue to fill the cache with atom records The cache is only written by
   // an explicit call to WriteMultiConf, or by the base RbtFileSink destructor
-  RbtBool GetMultiConf() const;
-  void SetMultiConf(RbtBool bMultiConf);
+  bool GetMultiConf() const;
+  void SetMultiConf(bool bMultiConf);
   // Force writing the file following several multi-conf Renders
   void WriteMultiConf();
 
@@ -87,12 +87,12 @@ protected:
   ////////////////////////////////////////
   // Protected data
   ////////////////
-  RbtInt m_nAtomId;    // Next available atom number
-  RbtInt m_nSubunitId; // Next available subunit number
-  RbtInt m_nSegmentId; // Next available segment number
+  int m_nAtomId;    // Next available atom number
+  int m_nSubunitId; // Next available subunit number
+  int m_nSegmentId; // Next available segment number
   // DM 21 Apr 1999 - if true, output the atom segment names in the model
   // If false, output incremental segment IDs
-  RbtBool m_bUseModelSegmentNames;
+  bool m_bUseModelSegmentNames;
 
 private:
   ////////////////////////////////////////
@@ -100,7 +100,7 @@ private:
   //////////////
   RbtModelPtr m_spModel;
   RbtModelList m_solventList;
-  RbtBool m_bMultiConf;
+  bool m_bMultiConf;
 };
 
 // Useful typedefs

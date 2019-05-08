@@ -41,26 +41,26 @@ void RbtCavityFillSF::SetupReceptor() {
   if (spDS.Null())
     return;
 
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
   // Recreate the cavity grid
   RbtCavityList cavList = spDS->GetCavityList();
   if (cavList.empty())
     return;
   RbtVector gridStep = cavList.front()->GetGridStep();
-  RbtDouble border = 10.0;
+  double border = 10.0;
   RbtCoord minCoord = spDS->GetMinCoord() - border;
   RbtCoord maxCoord = spDS->GetMaxCoord() + border;
   RbtVector recepExtent = maxCoord - minCoord;
-  RbtUInt nX = int(recepExtent.x / gridStep.x) + 1;
-  RbtUInt nY = int(recepExtent.y / gridStep.y) + 1;
-  RbtUInt nZ = int(recepExtent.z / gridStep.z) + 1;
+  unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
+  unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
+  unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
   m_spGrid = new RbtFFTGrid(minCoord, gridStep, nX, nY, nZ);
 
   RbtAtomList atomList = GetReceptor()->GetAtomList();
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
-    RbtDouble r = (**iter).GetVdwRadius();
+    double r = (**iter).GetVdwRadius();
     m_spGrid->SetSphere((**iter).GetCoords(), r + 0.3, -1.0, true);
   }
 
@@ -107,17 +107,17 @@ void RbtCavityFillSF::SetupLigand() {
 
 void RbtCavityFillSF::SetupScore() {}
 
-RbtDouble RbtCavityFillSF::RawScore() const {
+double RbtCavityFillSF::RawScore() const {
   // Check grid is defined
   if (m_spGrid.Null())
     return 0.0;
 
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   RbtFFTGridPtr gridCopy = new RbtFFTGrid(*m_spGrid);
 
   for (RbtAtomListConstIter iter = m_ligAtomList.begin();
        iter != m_ligAtomList.end(); ++iter) {
-    RbtDouble r = (*iter)->GetVdwRadius();
+    double r = (*iter)->GetVdwRadius();
     gridCopy->SetSphere((*iter)->GetCoords(), r + 0.3, -1.0, true);
   }
 
@@ -147,7 +147,7 @@ RbtDouble RbtCavityFillSF::RawScore() const {
   dumpFile.close();
 
   // Find the contiguous regions of cavity grid points
-  RbtDouble minSize = 50;
+  double minSize = 50;
   RbtFFTPeakMap peakMap = gridCopy->FindPeaks(2.0, minSize);
 
   // Convert peaks to cavity format

@@ -24,14 +24,14 @@ const std::string IDS_LIGAND_ERROR = "RBT_LIGAND_ERROR";
 // Unspecified ligand error
 class RbtLigandError : public RbtError {
 public:
-  RbtLigandError(const std::string &strFile, RbtInt nLine,
+  RbtLigandError(const std::string &strFile, int nLine,
                  const std::string &strMessage = "")
       : RbtError(IDS_LIGAND_ERROR, strFile, nLine, strMessage) {}
   // Protected constructor to allow derived ligand error classes to set error
   // name
 protected:
   RbtLigandError(const std::string &strName, const std::string &strFile,
-                 RbtInt nLine, const std::string &strMessage = "")
+                 int nLine, const std::string &strMessage = "")
       : RbtError(strName, strFile, nLine, strMessage) {}
 };
 

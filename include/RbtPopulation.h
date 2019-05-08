@@ -36,20 +36,20 @@ public:
   // 5) Model coords are updated to match the fittest chromosome
   // An RbtBadArgument error is thrown if size is <=0, or if pChr or pSF is
   // null.
-  RbtPopulation(RbtChromElement *pChr, RbtInt size,
+  RbtPopulation(RbtChromElement *pChr, int size,
                 RbtBaseSF *pSF) throw(RbtError);
   virtual ~RbtPopulation();
 
   // Gets the maximum size of the population as defined in the constructor.
-  RbtInt GetMaxSize() const { return m_size; }
+  int GetMaxSize() const { return m_size; }
   // Gets the actual size of the population (may be < GetMaxSize())
-  RbtInt GetActualSize() const { return m_pop.size(); }
+  int GetActualSize() const { return m_pop.size(); }
   // Gets the best genome in the sorted population (element zero).
   RbtGenomePtr Best() const;
   // Gets the average raw score across entire population
-  RbtDouble GetScoreMean() const { return m_scoreMean; }
+  double GetScoreMean() const { return m_scoreMean; }
   // Gets the raw score variance across entire population
-  RbtDouble GetScoreVariance() const { return m_scoreVariance; }
+  double GetScoreVariance() const { return m_scoreVariance; }
   // Gets the vector of genomes in the population.
   const RbtGenomeList &GetGenomeList() const { return m_pop; }
 
@@ -63,14 +63,14 @@ public:
   void SetSF(RbtBaseSF *pSF) throw(RbtError);
 
   // Main method for performing a GA iteration
-  void GAstep(
-      RbtInt nReplicates,    // Number of new genomes to create in the iteration
-      RbtDouble relStepSize, // Relative step size for chromosome mutations
-      RbtDouble equalityThreshold, // Equality threshold for genomes
-      RbtDouble pcross,            // Probability of crossover
-      RbtBool xovermut, // if true, perform cauchy mutation following crossover
-      RbtBool cmutate   // true=cauchy mutations, false=regular mutations
-      ) throw(RbtError);
+  void
+  GAstep(int nReplicates,    // Number of new genomes to create in the iteration
+         double relStepSize, // Relative step size for chromosome mutations
+         double equalityThreshold, // Equality threshold for genomes
+         double pcross,            // Probability of crossover
+         bool xovermut, // if true, perform cauchy mutation following crossover
+         bool cmutate   // true=cauchy mutations, false=regular mutations
+         ) throw(RbtError);
   RbtGenomePtr RouletteWheelSelect() const;
 
   void Print(ostream &) const;
@@ -80,18 +80,18 @@ private:
   // Merges the new individuals created into the main population
   // Duplicate genomes are removed (based on equality of chromosome elements,
   // not scores)
-  void MergeNewPop(RbtGenomeList &newPop, RbtDouble equalityThreshold);
+  void MergeNewPop(RbtGenomeList &newPop, double equalityThreshold);
   void EvaluateRWFitness();
   RbtPopulation(const RbtPopulation &);            // Disable
   RbtPopulation &operator=(const RbtPopulation &); // Disable
 
-  RbtGenomeList m_pop;   // The population of genomes
-  RbtInt m_size;         // The maximum size of the population
-  RbtDouble m_c;         // Sigma Truncation Multiplier
-  RbtBaseSF *m_pSF;      // The scoring function
-  RbtRand &m_rand;       // reference to the singleton random number generator
-  RbtDouble m_scoreMean; // the average raw score across all genomes
-  RbtDouble m_scoreVariance; // the variance of raw scores across all genomes
+  RbtGenomeList m_pop;    // The population of genomes
+  int m_size;             // The maximum size of the population
+  double m_c;             // Sigma Truncation Multiplier
+  RbtBaseSF *m_pSF;       // The scoring function
+  RbtRand &m_rand;        // reference to the singleton random number generator
+  double m_scoreMean;     // the average raw score across all genomes
+  double m_scoreVariance; // the variance of raw scores across all genomes
 };
 
 typedef SmartPtr<RbtPopulation> RbtPopulationPtr;

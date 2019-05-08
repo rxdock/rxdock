@@ -30,20 +30,20 @@ const std::string IDS_STRINGTOOLONG = "RBT_SRINGTOOLONG";
 // Unspecified file error
 class RbtFileError : public RbtError {
 public:
-  RbtFileError(const std::string &strFile, RbtInt nLine,
+  RbtFileError(const std::string &strFile, int nLine,
                const std::string &strMessage = "")
       : RbtError(IDS_FILE_ERROR, strFile, nLine, strMessage) {}
   // Protected constructor to allow derived file error classes to set error name
 protected:
   RbtFileError(const std::string &strName, const std::string &strFile,
-               RbtInt nLine, const std::string &strMessage = "")
+               int nLine, const std::string &strMessage = "")
       : RbtError(strName, strFile, nLine, strMessage) {}
 };
 
 // File read error
 class RbtFileReadError : public RbtFileError {
 public:
-  RbtFileReadError(const std::string &strFile, RbtInt nLine,
+  RbtFileReadError(const std::string &strFile, int nLine,
                    const std::string &strMessage = "")
       : RbtFileError(IDS_FILE_READ_ERROR, strFile, nLine, strMessage) {}
 };
@@ -51,7 +51,7 @@ public:
 // File write error
 class RbtFileWriteError : public RbtFileError {
 public:
-  RbtFileWriteError(const std::string &strFile, RbtInt nLine,
+  RbtFileWriteError(const std::string &strFile, int nLine,
                     const std::string &strMessage = "")
       : RbtFileError(IDS_FILE_WRITE_ERROR, strFile, nLine, strMessage) {}
 };
@@ -59,7 +59,7 @@ public:
 // File parse error
 class RbtFileParseError : public RbtFileError {
 public:
-  RbtFileParseError(const std::string &strFile, RbtInt nLine,
+  RbtFileParseError(const std::string &strFile, int nLine,
                     const std::string &strMessage = "")
       : RbtFileError(IDS_FILE_PARSE_ERROR, strFile, nLine, strMessage) {}
 };
@@ -67,7 +67,7 @@ public:
 // Missing parameter error
 class RbtFileMissingParameter : public RbtFileError {
 public:
-  RbtFileMissingParameter(const std::string &strFile, RbtInt nLine,
+  RbtFileMissingParameter(const std::string &strFile, int nLine,
                           const std::string &strMessage = "")
       : RbtFileError(IDS_FILE_MISSING_PARAMETER, strFile, nLine, strMessage) {}
 };
@@ -77,7 +77,7 @@ public:
 // Directory access error
 class RbtDirIsNotAccessible : public RbtFileError {
 public:
-  RbtDirIsNotAccessible(const std::string &strFile, RbtInt nLine,
+  RbtDirIsNotAccessible(const std::string &strFile, int nLine,
                         const std::string &strMessage = "")
       : RbtFileError(IDS_DIR_NOACCESS, strFile, nLine, strMessage) {}
 };
@@ -85,7 +85,7 @@ public:
 // Directory contains no file with that extension
 class RbtNoFileInDir : public RbtFileError {
 public:
-  RbtNoFileInDir(const std::string &strFile, RbtInt nLine,
+  RbtNoFileInDir(const std::string &strFile, int nLine,
                  const std::string &strMessage = "")
       : RbtFileError(IDS_NO_FILEINDIR, strFile, nLine, strMessage) {}
 };
@@ -95,7 +95,7 @@ public:
 // If path is missing
 class RbtEnvNotDefined : public RbtFileError {
 public:
-  RbtEnvNotDefined(const std::string &strFile, RbtInt nLine,
+  RbtEnvNotDefined(const std::string &strFile, int nLine,
                    const std::string &strMessage = "")
       : RbtFileError(IDS_NOENV, strFile, nLine, strMessage) {}
 };
@@ -103,7 +103,7 @@ public:
 // If string is too long
 class RbtStringTooLong : public RbtFileError {
 public:
-  RbtStringTooLong(const std::string &strFile, RbtInt nLine,
+  RbtStringTooLong(const std::string &strFile, int nLine,
                    const std::string &strMessage = "")
       : RbtFileError(IDS_STRINGTOOLONG, strFile, nLine, strMessage) {}
 };

@@ -40,7 +40,7 @@ std::string ConvertNoeRestraintTypeToString(const eNoeType type);
 class RbtNoeEndNames {
 public:
   RbtNoeEndNames() {}
-  RbtBool isOK() const;
+  bool isOK() const;
   // Public data
   RbtStringList names;
   Rbt::eNoeType type;
@@ -57,7 +57,7 @@ public:
   RbtNoeEndAtoms() {}
   // Constructor accepting an RbtNoeEndNames and an atom list to match against
   RbtNoeEndAtoms(const RbtNoeEndNames &n, const RbtAtomList &atomList);
-  RbtBool isOK() const;
+  bool isOK() const;
   // Public data
   RbtAtomList atoms;
   Rbt::eNoeType type;
@@ -72,11 +72,11 @@ ostream &operator<<(ostream &s, const RbtNoeEndAtoms &n);
 class RbtNoeRestraintNames {
 public:
   RbtNoeRestraintNames() : maxDist(5.0) {}
-  RbtBool isOK() const;
+  bool isOK() const;
   // Public data
   RbtNoeEndNames from;
   RbtNoeEndNames to;
-  RbtDouble maxDist;
+  double maxDist;
 };
 
 // Insertion operator for the above
@@ -92,15 +92,15 @@ public:
   // against
   RbtNoeRestraintAtoms(const RbtNoeRestraintNames &n,
                        const RbtAtomList &atomList);
-  RbtBool isOK() const; // true if at least one atom at each end of the NOE and
-                        // NOE type is not undefined
-  RbtBool isSimple()
+  bool isOK() const; // true if at least one atom at each end of the NOE and
+                     // NOE type is not undefined
+  bool isSimple()
       const; // true if exactly one atom at each end of the NOE (unambiguous)
   // Public data
   RbtNoeEndAtoms from;
   RbtNoeEndAtoms to;
   // RbtDouble minDist;
-  RbtDouble maxDist;
+  double maxDist;
 };
 
 // Insertion operator for the above
@@ -112,10 +112,10 @@ ostream &operator<<(ostream &s, const RbtNoeRestraintAtoms &noe);
 class RbtStdRestraintNames {
 public:
   RbtStdRestraintNames() : maxDist(5.0) {}
-  RbtBool isOK() const;
+  bool isOK() const;
   // Public data
   RbtNoeEndNames from;
-  RbtDouble maxDist;
+  double maxDist;
 };
 
 // Insertion operator for the above
@@ -131,13 +131,13 @@ public:
   // against
   RbtStdRestraintAtoms(const RbtStdRestraintNames &n,
                        const RbtAtomList &atomList);
-  RbtBool isOK() const; // true if at least one atom in the definition and type
-                        // is not undefined
-  RbtBool isSimple()
+  bool isOK() const; // true if at least one atom in the definition and type
+                     // is not undefined
+  bool isSimple()
       const; // true if exactly one atom at in the STD definition (unambiguous)
   // Public data
   RbtNoeEndAtoms from;
-  RbtDouble maxDist;
+  double maxDist;
 };
 
 // Insertion operator for the above

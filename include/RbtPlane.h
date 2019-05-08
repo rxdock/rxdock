@@ -23,7 +23,7 @@ class RbtPlane {
   ///////////////
 private:
   RbtVector m_vnorm; // The vector normal to the plane (a,b,c)
-  RbtDouble m_d;     // Distance from plane to origin (in normal form)
+  double m_d;        // Distance from plane to origin (in normal form)
 
 public:
   ///////////////////////////////////////////////
@@ -34,7 +34,7 @@ public:
   inline RbtPlane() : m_vnorm(0.0, 0.0, 0.0), m_d(0.0) {}
 
   // Constructor with initial values
-  inline RbtPlane(const RbtVector &v, RbtDouble d) : m_vnorm(v), m_d(d) {
+  inline RbtPlane(const RbtVector &v, double d) : m_vnorm(v), m_d(d) {
     Normalise(); // Convert to normal form
   }
 
@@ -68,7 +68,7 @@ public:
   ///////////////////////////////////////////////
   // Public methods
   ////////////////
-  inline RbtDouble D() const { return m_d; }
+  inline double D() const { return m_d; }
   inline RbtVector VNorm() const { return m_vnorm; }
 
   ///////////////////////////////////////////////
@@ -79,8 +79,8 @@ public:
     // where sign is opposite the sign of d when d<>0,
     // same as sign of c (vnorm.z) when d==0 and c<>0,
     // and same as sign of b (vnorm.y) otherwise
-    RbtDouble l = m_vnorm.Length();
-    RbtInt iSign =
+    double l = m_vnorm.Length();
+    int iSign =
         (m_d < 0.0)
             ? 1
             : (m_d > 0.0)
@@ -104,19 +104,18 @@ namespace Rbt {
 // Since our planes are always in normal form, we don't need to divide
 // by the magnitude of the normal vector
 // DM 31 Mar 1999 - returned signed distance (not absolute value)
-inline RbtDouble DistanceFromPointToPlane(const RbtCoord &c0,
-                                          const RbtPlane &p) {
+inline double DistanceFromPointToPlane(const RbtCoord &c0, const RbtPlane &p) {
   // return fabs( c0.Dot(p.VNorm()) + p.D() );
   return c0.Dot(p.VNorm()) + p.D();
 }
 
 // Angle between planes is just the angle between the normal vectors
-inline RbtDouble AngleBetweenPlanes(const RbtPlane &p0, const RbtPlane &p1) {
+inline double AngleBetweenPlanes(const RbtPlane &p0, const RbtPlane &p1) {
   return Rbt::Angle(p0.VNorm(), p1.VNorm());
 }
 
 // Cos(Angle) between planes is just the dot product of the normal vectors
-inline RbtDouble CosAngleBetweenPlanes(const RbtPlane &p0, const RbtPlane &p1) {
+inline double CosAngleBetweenPlanes(const RbtPlane &p0, const RbtPlane &p1) {
   return Rbt::Dot(p0.VNorm(), p1.VNorm());
 }
 } // namespace Rbt

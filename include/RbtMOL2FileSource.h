@@ -21,24 +21,24 @@
 class RbtMOL2Substructure {
 public:
   RbtMOL2Substructure() : root_atom(0), chain("UNK"), sub_type("UNK") {}
-  RbtMOL2Substructure(const std::string &name, RbtInt rr, const std::string &cc,
+  RbtMOL2Substructure(const std::string &name, int rr, const std::string &cc,
                       const std::string &ss)
       : subst_name(name), root_atom(rr), chain(cc), sub_type(ss) {}
   std::string GetName() const { return subst_name; };
-  RbtInt GetRoot() const { return root_atom; };
+  int GetRoot() const { return root_atom; };
   std::string GetChain() const { return chain; };
   std::string GetType() const { return sub_type; };
 
 private:
   std::string subst_name;
-  RbtInt root_atom;
+  int root_atom;
   std::string chain;
   std::string sub_type;
 };
 
 // A MOL2SubstructureMap stores MOL2Substructures keyed by SUBSTRUCTURE ID
 // (subst_id)
-typedef map<RbtInt, RbtMOL2Substructure> RbtMOL2SubstructureMap;
+typedef map<int, RbtMOL2Substructure> RbtMOL2SubstructureMap;
 typedef RbtMOL2SubstructureMap::iterator RbtMOL2SubstructureMapIter;
 typedef RbtMOL2SubstructureMap::const_iterator RbtMOL2SubstructureMapConstIter;
 
@@ -47,16 +47,16 @@ public:
   static std::string _CT;
   // record delimiter strings
   static std::string _TRIPOS_DELIM;
-  static RbtInt _TRIPOS_DELIM_SIZE;
+  static int _TRIPOS_DELIM_SIZE;
   static std::string _IDS_MOL2_RECDELIM;
 
-  RbtMOL2FileSource(const std::string &fileName, RbtBool bImplHydrogens = true);
+  RbtMOL2FileSource(const std::string &fileName, bool bImplHydrogens = true);
   ~RbtMOL2FileSource();
-  RbtBool isTitleListSupported() { return true; }
-  RbtBool isAtomListSupported() { return true; }
-  RbtBool isCoordinatesSupported() { return true; }
-  RbtBool isBondListSupported() { return true; }
-  RbtBool isDataSupported() { return false; }
+  bool isTitleListSupported() { return true; }
+  bool isAtomListSupported() { return true; }
+  bool isCoordinatesSupported() { return true; }
+  bool isBondListSupported() { return true; }
+  bool isDataSupported() { return false; }
 
 protected:
   virtual void Parse() throw(RbtError);
@@ -75,7 +75,7 @@ private:
   void RemoveNonPolarHydrogens();
 
   // Splits subst_name into ID and name components (e.g. ALA27 => ALA and 27)
-  void GetSSIDandName(const std::string &subst_name, RbtInt subst_id,
+  void GetSSIDandName(const std::string &subst_name, int subst_id,
                       std::string &sID, std::string &sName);
 
   // parser functions (switched by pointers)
@@ -92,24 +92,24 @@ private:
 
   int m_NL; // No. of lines
   // data fields in MOLECULE
-  RbtInt nAtoms;         // number of atoms
-  RbtInt nBonds;         //           bonds
-  RbtInt nSubstructures; // substructures
-  RbtInt nFeatures;      // features
-  RbtInt nSets;          // sets
+  int nAtoms;         // number of atoms
+  int nBonds;         //           bonds
+  int nSubstructures; // substructures
+  int nFeatures;      // features
+  int nSets;          // sets
 
   // helper data structures used to lookup chain names for each substructure
   // and to sort atom list into a more sensible order (ordered by substructure
   // ID)
   RbtMOL2SubstructureMap m_ssInfo;
-  map<RbtInt, RbtAtomList> m_ssAtoms;
+  map<int, RbtAtomList> m_ssAtoms;
 
   RbtElementFileSourcePtr
       m_spElementData; // Elemental data source for vdW radii etc
   RbtParameterFileSourcePtr
       m_spParamSource;       // Parameter file source for partial charges etc
   RbtTriposAtomType m_typer; // Tripos atom typing object
-  RbtBool m_bImplHydrogens;
+  bool m_bImplHydrogens;
 };
 
 // usual smart pointer

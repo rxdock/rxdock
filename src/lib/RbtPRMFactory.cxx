@@ -45,7 +45,7 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
   RbtModelPtr retVal;
   m_pParamSource->SetSection(_REC_SECTION);
   // Detect if we have an ensemble of receptor coordinate files defined
-  RbtBool bEnsemble =
+  bool bEnsemble =
       m_pParamSource->isParameterPresent(_REC_NUM_COORD_FILES) &&
       (m_pParamSource->GetParameterValue(_REC_NUM_COORD_FILES) > 0);
 
@@ -59,9 +59,9 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
     }
     std::string strFile = m_pParamSource->GetParameterValueAsString(_REC_FILE);
     RbtMolecularFileSourcePtr theSource = CreateMolFileSource(strFile);
-    RbtBool isOK = theSource->isAtomListSupported() &&
-                   theSource->isBondListSupported() &&
-                   theSource->isCoordinatesSupported();
+    bool isOK = theSource->isAtomListSupported() &&
+                theSource->isBondListSupported() &&
+                theSource->isCoordinatesSupported();
     if (!isOK) {
       if (m_iTrace > 0) {
         cout << endl
@@ -93,8 +93,8 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
         m_pParamSource->GetParameterValueAsString(_REC_TOPOL_FILE);
     RbtMolecularFileSourcePtr theTopolSource =
         CreateMolFileSource(strTopolFile);
-    RbtBool isOK = theTopolSource->isAtomListSupported() &&
-                   theTopolSource->isBondListSupported();
+    bool isOK = theTopolSource->isAtomListSupported() &&
+                theTopolSource->isBondListSupported();
     if (!isOK) {
       if (m_iTrace > 0) {
         cout << endl
@@ -144,14 +144,14 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
 
   // Optional read of multiple receptor conformations (numbered from 1 thru N)
   if (bEnsemble) {
-    RbtInt n = m_pParamSource->GetParameterValue(_REC_NUM_COORD_FILES);
+    int n = m_pParamSource->GetParameterValue(_REC_NUM_COORD_FILES);
     if (m_iTrace > 0) {
       cout << endl
            << "Using ensemble of " << _REC_COORD_FILE
            << "'s as source of 3D coordinates (N=" << n << ")" << endl
            << endl;
     }
-    for (RbtInt i = 1; i <= n; i++) {
+    for (int i = 1; i <= n; i++) {
       ostringstream ostr;
       ostr << _REC_COORD_FILE << "_" << i;
       std::string paramName(ostr.str());
@@ -162,8 +162,8 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
       }
       RbtMolecularFileSourcePtr theCoordSource =
           CreateMolFileSource(strCoordFile);
-      RbtBool isOK = theCoordSource->isAtomListSupported() &&
-                     theCoordSource->isCoordinatesSupported();
+      bool isOK = theCoordSource->isAtomListSupported() &&
+                  theCoordSource->isCoordinatesSupported();
       if (!isOK) {
         if (m_iTrace > 0) {
           cout << endl
@@ -181,7 +181,7 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
       retVal->UpdateCoords(theCoordSource);
       retVal->SaveCoords(strCoordFile);
     }
-    RbtInt nCoords = retVal->GetNumSavedCoords() - 1;
+    int nCoords = retVal->GetNumSavedCoords() - 1;
     cout << "Total number of receptor conformations read = " << nCoords << endl;
   }
 
@@ -216,7 +216,7 @@ RbtModelList RbtPRMFactory::CreateSolvent() throw(RbtError) {
       cout << endl << "Reading solvent from " << strFile << endl << endl;
     }
     RbtMolecularFileSourcePtr theSource = CreateMolFileSource(strFile);
-    RbtBool isOK =
+    bool isOK =
         theSource->isAtomListSupported() && theSource->isCoordinatesSupported();
     if (!isOK) {
       if (m_iTrace > 0) {
@@ -238,8 +238,8 @@ RbtModelList RbtPRMFactory::CreateSolvent() throw(RbtError) {
     Rbt::isAtomName_eq bIsH2("H2");
     Rbt::isCoordinationNumber_eq bIsIsolated(0);
     RbtTriposAtomType triposType; // Tripos atom typer
-    RbtInt nAtomId(0);            // incremental counter of all atoms created
-    RbtInt nBondId(0);            // incremental counter of all bonds created
+    int nAtomId(0);               // incremental counter of all atoms created
+    int nBondId(0);               // incremental counter of all bonds created
     RbtAtomList oAtomList = Rbt::GetAtomList(theSource->GetAtomList(), bIsO);
     RbtAtomList h1AtomList = Rbt::GetAtomList(theSource->GetAtomList(), bIsH1);
     RbtAtomList h2AtomList = Rbt::GetAtomList(theSource->GetAtomList(), bIsH2);
@@ -316,7 +316,7 @@ void RbtPRMFactory::AttachReceptorFlexData(RbtModel *pReceptor) {
   // Check whether flexible receptor is requested (terminal OH/NH3)
   // Parameter value is the range from the docking volume to include
   if (m_pParamSource->isParameterPresent(_REC_FLEX_DISTANCE)) {
-    RbtDouble flexDist = m_pParamSource->GetParameterValue(_REC_FLEX_DISTANCE);
+    double flexDist = m_pParamSource->GetParameterValue(_REC_FLEX_DISTANCE);
     if (m_iTrace > 0) {
       cout << endl
            << "Target OH/NH3 groups within " << flexDist
@@ -325,7 +325,7 @@ void RbtPRMFactory::AttachReceptorFlexData(RbtModel *pReceptor) {
     RbtFlexData *pFlexData = new RbtReceptorFlexData(m_pDS);
     pFlexData->SetParameter(RbtReceptorFlexData::_FLEX_DISTANCE, flexDist);
     if (m_pParamSource->isParameterPresent(_REC_DIHEDRAL_STEP)) {
-      RbtDouble dihedralStepSize =
+      double dihedralStepSize =
           m_pParamSource->GetParameterValue(_REC_DIHEDRAL_STEP);
       pFlexData->SetParameter(RbtReceptorFlexData::_DIHEDRAL_STEP,
                               dihedralStepSize);
@@ -377,7 +377,7 @@ void RbtPRMFactory::AttachSolventFlexData(RbtModel *pSolvent) {
   // mode 7 => TRANS=FREE     ROT=TETHERED
   // mode 8 => TRANS=FREE     ROT=FREE
   RbtAtomList atomList = pSolvent->GetAtomList();
-  RbtDouble occupancy(1.0);
+  double occupancy(1.0);
   RbtChromElement::eMode transMode(RbtChromElement::FIXED);
   RbtChromElement::eMode rotMode(RbtChromElement::FIXED);
   if (!atomList.empty()) {
@@ -385,7 +385,7 @@ void RbtPRMFactory::AttachSolventFlexData(RbtModel *pSolvent) {
     occupancy = pFirstAtom->GetUser1Value();
     occupancy = std::min(1.0, occupancy);
     occupancy = std::max(0.0, occupancy);
-    RbtInt mode = (RbtInt)pFirstAtom->GetUser2Value();
+    int mode = (int)pFirstAtom->GetUser2Value();
     mode = std::min(8, mode);
     mode = std::max(0, mode);
     transMode = (RbtChromElement::eMode)(mode / 3);
@@ -428,7 +428,7 @@ RbtMolecularFileSourcePtr RbtPRMFactory::CreateMolFileSource(
     cout << _CT << ": Reading file from " << fullFileName << endl;
   }
 
-  RbtBool bImplH = true;
+  bool bImplH = true;
   if (m_pParamSource->isParameterPresent("RECEPTOR_ALL_H")) {
     RbtVariant vAllH(
         m_pParamSource->GetParameterValueAsString("RECEPTOR_ALL_H"));
@@ -484,7 +484,7 @@ RbtMolecularFileSourcePtr RbtPRMFactory::CreateMolFileSource(
   RbtError status = retVal->Status();
   if (!status.isOK())
     throw status;
-  RbtInt nAtoms = retVal->GetNumAtoms();
+  int nAtoms = retVal->GetNumAtoms();
   if (nAtoms == 0) {
     if (m_iTrace > 0) {
       cout << _CT << ": File source contains zero atoms!" << endl;

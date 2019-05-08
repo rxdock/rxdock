@@ -32,7 +32,7 @@ RbtNmrRestraintFileSource::~RbtNmrRestraintFileSource() {
 ////////////////
 
 // Number of NOE restraints in file
-RbtUInt RbtNmrRestraintFileSource::GetNumNoeRestraints() {
+unsigned int RbtNmrRestraintFileSource::GetNumNoeRestraints() {
   Parse();
   return m_noeRestraintList.size();
 }
@@ -44,7 +44,7 @@ RbtNoeRestraintNamesList RbtNmrRestraintFileSource::GetNoeRestraintList() {
 }
 
 // Number of STD restraints in file
-RbtUInt RbtNmrRestraintFileSource::GetNumStdRestraints() {
+unsigned int RbtNmrRestraintFileSource::GetNumStdRestraints() {
   Parse();
   return m_stdRestraintList.size();
 }
@@ -78,7 +78,7 @@ void RbtNmrRestraintFileSource::Parse() throw(RbtError) {
         // Read the restraint
         std::string strAtomNames1;
         std::string strAtomNames2;
-        RbtDouble maxDist(0.0);
+        double maxDist(0.0);
         istringstream istr(*fileIter);
         istr >> strAtomNames1 >> strAtomNames2 >> maxDist;
         // Check if we read all the fields OK

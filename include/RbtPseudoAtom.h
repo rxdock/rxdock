@@ -23,7 +23,7 @@ public:
   // Constructors / destructors
 
   // Constructor supplying atom list of constituent atoms
-  RbtPseudoAtom(const RbtAtomList &atomList, RbtInt nAtomId = -1,
+  RbtPseudoAtom(const RbtAtomList &atomList, int nAtomId = -1,
                 std::string strAtomName = "PSEUDO") throw(RbtError);
 
   // Default destructor
@@ -39,7 +39,7 @@ public:
   // 2-D attributes
 
   // Derived class methods for returning the constituent atom list
-  RbtUInt GetNumAtoms() const { return m_atomList.size(); }
+  unsigned int GetNumAtoms() const { return m_atomList.size(); }
   RbtAtomList GetAtomList() const { return m_atomList; }
 
   ///////////////////////////////////////////////

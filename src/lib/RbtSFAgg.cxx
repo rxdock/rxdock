@@ -67,7 +67,7 @@ void RbtSFAgg::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // as the child terms will have incremented the total as part of their
     // ScoreMap implementation
     std::string name = GetFullName();
-    RbtDouble rs = scoreMap[name];
+    double rs = scoreMap[name];
 
     // Cascade to the parent of this aggregate
     AddToParentMapEntry(scoreMap, rs);
@@ -75,7 +75,7 @@ void RbtSFAgg::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // 7 Feb 2005 (DM, Enspiral Discovery) - normalise the raw aggregate score
     // by the number of heavy (non-H) ligand atoms
     if (m_nNonHLigandAtoms > 0) {
-      RbtDouble norm_s = rs / m_nNonHLigandAtoms;
+      double norm_s = rs / m_nNonHLigandAtoms;
       scoreMap[name + ".norm"] = norm_s;
       // Only record the number of heavy atoms for the root aggregate (SCORE)
       // root = has no parent
@@ -117,9 +117,9 @@ void RbtSFAgg::Remove(RbtBaseSF *pSF) throw(RbtError) {
   }
 }
 
-RbtBool RbtSFAgg::isAgg() const { return true; }
-RbtUInt RbtSFAgg::GetNumSF() const { return m_sf.size(); }
-RbtBaseSF *RbtSFAgg::GetSF(RbtUInt iSF) const throw(RbtError) {
+bool RbtSFAgg::isAgg() const { return true; }
+unsigned int RbtSFAgg::GetNumSF() const { return m_sf.size(); }
+RbtBaseSF *RbtSFAgg::GetSF(unsigned int iSF) const throw(RbtError) {
   if (iSF >= m_sf.size()) {
     throw RbtBadArgument(_WHERE_, "GetSF(): iSF out of range");
   } else {
@@ -204,8 +204,8 @@ void RbtSFAgg::Print(ostream &s) const {
 // Private methods
 /////////////////
 // Raw score for an aggregate is the sum of the weighted scores of its children
-RbtDouble RbtSFAgg::RawScore() const {
-  RbtDouble score(0.0);
+double RbtSFAgg::RawScore() const {
+  double score(0.0);
   for (RbtBaseSFListConstIter iter = m_sf.begin(); iter != m_sf.end(); iter++) {
     score += (*iter)->Score();
   }

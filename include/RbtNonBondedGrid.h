@@ -38,7 +38,8 @@ public:
   // Constructors/destructors
   // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution
   RbtNonBondedGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
-                   RbtUInt NX, RbtUInt NY, RbtUInt NZ, RbtUInt NPad = 0);
+                   unsigned int NX, unsigned int NY, unsigned int NZ,
+                   unsigned int NPad = 0);
 
   // Constructor reading all params from binary stream
   RbtNonBondedGrid(istream &istr);
@@ -73,13 +74,13 @@ public:
   /////////////////////////
   // RbtAtomList GetAtomList(RbtUInt iXYZ) const;
   // RbtAtomList GetAtomList(const RbtCoord& c) const;
-  const RbtAtomRList &GetAtomList(RbtUInt iXYZ) const;
+  const RbtAtomRList &GetAtomList(unsigned int iXYZ) const;
   const RbtAtomRList &GetAtomList(const RbtCoord &c) const;
 
   /////////////////////////
   // Set attribute functions
   /////////////////////////
-  void SetAtomLists(RbtAtom *pAtom, RbtDouble radius);
+  void SetAtomLists(RbtAtom *pAtom, double radius);
   void ClearAtomLists();
   void UniqueAtomLists();
 

@@ -22,7 +22,7 @@ const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rblist.cxx#4 $)";
 
 namespace Rbt {
-class isAtomNitroN : public std::unary_function<RbtAtomPtr, RbtBool> {
+class isAtomNitroN : public std::unary_function<RbtAtomPtr, bool> {
   // Useful predicates
   Rbt::isFFType_eq bIsN_SP2P;
   Rbt::isFFType_eq bIsO_SP2;
@@ -32,7 +32,7 @@ class isAtomNitroN : public std::unary_function<RbtAtomPtr, RbtBool> {
 public:
   explicit isAtomNitroN()
       : bIsN_SP2P("N_SP2+"), bIsO_SP2("O_SP2"), bIsO_SP3M("O_SP3-") {}
-  RbtBool operator()(RbtAtomPtr spAtom) const {
+  bool operator()(RbtAtomPtr spAtom) const {
     if (!bIsN_SP2P(spAtom))
       return false;
     RbtAtomList bondedAtomList = Rbt::GetBondedAtomList(spAtom);
@@ -43,9 +43,9 @@ public:
 } // namespace Rbt
 
 void ListAtoms(const RbtAtomList &atomList, std::string strTitle,
-               RbtInt nMaxToPrint = 20) {
-  RbtInt nSize = atomList.size();
-  RbtInt nToPrint = std::min(nMaxToPrint, nSize);
+               int nMaxToPrint = 20) {
+  int nSize = atomList.size();
+  int nToPrint = std::min(nMaxToPrint, nSize);
   cout << endl
        << "1st " << nToPrint << " " << strTitle << " (out of " << nSize << ")"
        << endl;
@@ -56,9 +56,9 @@ void ListAtoms(const RbtAtomList &atomList, std::string strTitle,
 }
 
 void ListBonds(const RbtBondList &bondList, std::string strTitle,
-               RbtInt nMaxToPrint = 20) {
-  RbtInt nSize = bondList.size();
-  RbtInt nToPrint = std::min(nMaxToPrint, nSize);
+               int nMaxToPrint = 20) {
+  int nSize = bondList.size();
+  int nToPrint = std::min(nMaxToPrint, nSize);
   cout << endl
        << "1st " << nToPrint << " " << strTitle << " (out of " << nSize << ")"
        << endl;
@@ -81,7 +81,7 @@ void CheckAmideBonds(RbtModelPtr spModel) {
   // DM 9 Oct 2000 - remove cyclic bonds from list
   amideBondList =
       Rbt::GetBondList(amideBondList, std::not1(Rbt::isBondCyclic()));
-  RbtInt nAMIDE = amideBondList.size();
+  int nAMIDE = amideBondList.size();
   cout << nAMIDE << " amide bonds:" << endl;
   for (RbtBondListConstIter bIter = amideBondList.begin();
        bIter != amideBondList.end(); bIter++) {
@@ -101,13 +101,13 @@ void CheckAmideBonds(RbtModelPtr spModel) {
     if ((oIter != bondedAtomsC.end()) && (hIter != bondedAtomsN.end())) {
       RbtAtomPtr spH = (*hIter);
       RbtAtomPtr spO = (*oIter);
-      RbtDouble phi = Rbt::BondDihedral(spH, spN, spC, spO);
+      double phi = Rbt::BondDihedral(spH, spN, spC, spO);
       cout << spH->GetAtomName() << "(" << spH->GetFFType() << ") - "
            << spN->GetAtomName() << "(" << spN->GetFFType() << ") - "
            << spC->GetAtomName() << "(" << spC->GetFFType() << ") - "
            << spO->GetAtomName() << "(" << spO->GetFFType() << "): " << phi
            << " deg" << endl;
-      RbtDouble deltaPhi = 180.0 - phi;
+      double deltaPhi = 180.0 - phi;
       cout << "Rotating bond by " << deltaPhi << " deg" << endl;
       spModel->RotateBond(*bIter, deltaPhi);
       phi = Rbt::BondDihedral(spH, spN, spC, spO);
@@ -135,12 +135,12 @@ int main(int argc, char *argv[]) {
   // Default values for optional arguments
   std::string strInputSDFile;
   std::string strOutputSDFile;
-  RbtBool bPosIonise(false);
-  RbtBool bNegIonise(false);
-  RbtBool bImplH(true); // if true, read only polar hydrogens from SD file, else
-                        // read all H's present
-  RbtBool bCheckAmides(false); // if true, sets all 2ndry amide bonds to trans
-  RbtBool bList(false);
+  bool bPosIonise(false);
+  bool bNegIonise(false);
+  bool bImplH(true); // if true, read only polar hydrogens from SD file, else
+                     // read all H's present
+  bool bCheckAmides(false); // if true, sets all 2ndry amide bonds to trans
+  bool bList(false);
 
   // Display brief help message if no args
   if (argc == 1) {
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
 
   // Check command line arguments
   cout << endl << "Command line args:" << endl;
-  for (RbtInt iarg = 1; iarg < argc; iarg++) {
+  for (int iarg = 1; iarg < argc; iarg++) {
     cout << argv[iarg];
     std::string strArg(argv[iarg]);
     if (strArg.find("-i") == 0)
@@ -200,7 +200,7 @@ int main(int argc, char *argv[]) {
   }
   cout << endl;
 
-  RbtBool bWriteLigand = !strOutputSDFile.empty();
+  bool bWriteLigand = !strOutputSDFile.empty();
 
   if (!bList) {
     cout << setw(8) << "RECORD" << setw(30) << "NAME" << setw(8) << "#ATOMS"
@@ -225,7 +225,7 @@ int main(int argc, char *argv[]) {
     // DM 4 June 1999 - only read the largest segment
     // spMdlFileSource->SetSegmentFilterMap(Rbt::ConvertStringToSegmentMap("H"));
 
-    for (RbtInt nRec = 1; spMdlFileSource->FileStatusOK();
+    for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
       RbtError molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
@@ -252,32 +252,31 @@ int main(int argc, char *argv[]) {
       }
 
       // DM 11 Nov 1999
-      RbtDouble dMolWt = spModel->GetTotalAtomicMass();
+      double dMolWt = spModel->GetTotalAtomicMass();
 
       // Determine the interaction center counts
-      RbtInt nAtoms = spModel->GetNumAtoms();
+      int nAtoms = spModel->GetNumAtoms();
 
-      RbtInt nBonds = spModel->GetNumBonds();
-      RbtInt nSegs = spModel->GetNumSegments();
+      int nBonds = spModel->GetNumBonds();
+      int nSegs = spModel->GetNumSegments();
       RbtAtomList atomList = spModel->GetAtomList();
       RbtBondList bondList = spModel->GetBondList();
 
       Rbt::isHybridState_eq bIsArom(RbtAtom::AROM);
-      RbtInt nLipoC = Rbt::GetNumAtoms(atomList, Rbt::isAtomLipophilic());
-      RbtInt nAromAtoms =
-          Rbt::GetNumAtoms(atomList, bIsArom); //# aromatic atoms
-      RbtInt nNHBD = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondDonor());
-      RbtInt nMetal = Rbt::GetNumAtoms(atomList, Rbt::isAtomMetal());
-      RbtInt nGuan = Rbt::GetNumAtoms(atomList, Rbt::isAtomGuanidiniumCarbon());
-      RbtInt nNHBA = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondAcceptor());
+      int nLipoC = Rbt::GetNumAtoms(atomList, Rbt::isAtomLipophilic());
+      int nAromAtoms = Rbt::GetNumAtoms(atomList, bIsArom); //# aromatic atoms
+      int nNHBD = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondDonor());
+      int nMetal = Rbt::GetNumAtoms(atomList, Rbt::isAtomMetal());
+      int nGuan = Rbt::GetNumAtoms(atomList, Rbt::isAtomGuanidiniumCarbon());
+      int nNHBA = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondAcceptor());
 
       // Total +ve and -ve charges
-      RbtDouble posChg(0.0);
-      RbtDouble negChg(0.0);
+      double posChg(0.0);
+      double negChg(0.0);
 
       for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
            iter++) {
-        RbtDouble chg = (*iter)->GetGroupCharge();
+        double chg = (*iter)->GetGroupCharge();
         if (chg > 0.0) {
           posChg += chg;
         } else if (chg < 0.0) {
@@ -287,7 +286,7 @@ int main(int argc, char *argv[]) {
 
       // Count aromatic rings
       RbtAtomListList ringLists = spModel->GetRingAtomLists();
-      RbtInt nAromRings(0); //# aromatic rings
+      int nAromRings(0); //# aromatic rings
       for (RbtAtomListListIter rIter = ringLists.begin();
            rIter != ringLists.end(); rIter++) {
         if (Rbt::GetNumAtoms(*rIter, Rbt::isPiAtom()) == (*rIter).size())
@@ -302,7 +301,7 @@ int main(int argc, char *argv[]) {
       // DM 19 Sep 2002 - remove bonds to terminal OH
       rotatableBondList =
           Rbt::GetBondList(rotatableBondList, std::not1(Rbt::isBondToOH()));
-      RbtInt nROT = rotatableBondList.size();
+      int nROT = rotatableBondList.size();
 
       if (bList) {
         cout << nROT << " rotatable bonds:" << endl;

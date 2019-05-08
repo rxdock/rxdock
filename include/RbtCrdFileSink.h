@@ -33,7 +33,7 @@ public:
   // Derived classes should override
   // Controls whether file type can support the writing of multiple
   // conformations/models to a single file
-  virtual RbtBool isMultiConfSupported() { return true; }
+  virtual bool isMultiConfSupported() { return true; }
   //
   ////////////////////////////////////////
   // Override public methods from RbtBaseFileSink
@@ -64,7 +64,7 @@ private:
   ////////////////////////////////////////
   // Private data
   //////////////
-  RbtUInt m_numAtomsLineRec;
+  unsigned int m_numAtomsLineRec;
 };
 
 // Useful typedefs

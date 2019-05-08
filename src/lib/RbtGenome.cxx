@@ -53,7 +53,7 @@ void RbtGenome::SetScore(RbtBaseSF *pSF) {
   SetRWFitness(0.0, 0.0);
 }
 
-RbtDouble RbtGenome::SetRWFitness(RbtDouble sigmaOffset, RbtDouble partialSum) {
+double RbtGenome::SetRWFitness(double sigmaOffset, double partialSum) {
   // Apply sigma truncation to the raw score
   m_RWFitness = std::max(0.0, GetScore() - sigmaOffset);
   // The fitness value we store is the partial sum from previous RbtGenome
@@ -62,7 +62,7 @@ RbtDouble RbtGenome::SetRWFitness(RbtDouble sigmaOffset, RbtDouble partialSum) {
   return m_RWFitness;
 }
 
-void RbtGenome::NormaliseRWFitness(RbtDouble total) {
+void RbtGenome::NormaliseRWFitness(double total) {
   if (total > 0.0) {
     m_RWFitness /= total;
   }

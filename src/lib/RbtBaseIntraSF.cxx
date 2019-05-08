@@ -66,7 +66,7 @@ void RbtBaseIntraSF::Update(RbtSubject *theChangedSubject) {
 // Override RbtBaseSF::ScoreMap to provide additional raw descriptors
 void RbtBaseIntraSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
   if (isEnabled()) {
-    RbtDouble rs =
+    double rs =
         RawScore() -
         m_zero; // report the raw score relative to the zero-point offset
     std::string name = GetFullName();

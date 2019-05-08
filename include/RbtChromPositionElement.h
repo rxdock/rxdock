@@ -25,34 +25,32 @@ public:
 
   RbtChromPositionElement(
       const RbtModel *pModel, const RbtDockingSite *pDockSite,
-      RbtDouble transStepSize, // Angstroms
-      RbtDouble rotStepSize,   // Radians
+      double transStepSize, // Angstroms
+      double rotStepSize,   // Radians
       RbtChromElement::eMode transMode = RbtChromElement::FREE,
       RbtChromElement::eMode rotMode = RbtChromElement::FREE,
-      RbtDouble maxTrans = 0.0, // Angstroms
-      RbtDouble maxRot = 0.0);  // radians
+      double maxTrans = 0.0, // Angstroms
+      double maxRot = 0.0);  // radians
   virtual ~RbtChromPositionElement();
   virtual void Reset();
   virtual void Randomise();
-  virtual void Mutate(RbtDouble relStepSize);
+  virtual void Mutate(double relStepSize);
   virtual void SyncFromModel();
   virtual void SyncToModel();
   virtual RbtChromElement *clone() const;
-  virtual RbtInt GetLength() const { return m_spRefData->GetLength(); }
-  virtual RbtInt GetXOverLength() const {
-    return m_spRefData->GetXOverLength();
-  }
+  virtual int GetLength() const { return m_spRefData->GetLength(); }
+  virtual int GetXOverLength() const { return m_spRefData->GetXOverLength(); }
   virtual void GetVector(RbtDoubleList &v) const;
   virtual void GetVector(RbtXOverList &v) const;
-  virtual void SetVector(const RbtDoubleList &v, RbtInt &i) throw(RbtError);
-  virtual void SetVector(const RbtXOverList &v, RbtInt &i) throw(RbtError);
+  virtual void SetVector(const RbtDoubleList &v, int &i) throw(RbtError);
+  virtual void SetVector(const RbtXOverList &v, int &i) throw(RbtError);
   virtual void GetStepVector(RbtDoubleList &v) const;
-  virtual RbtDouble CompareVector(const RbtDoubleList &v, RbtInt &i) const;
+  virtual double CompareVector(const RbtDoubleList &v, int &i) const;
   virtual void Print(ostream &s) const;
 
   // Returns a standardised rotation angle in the range [-M_PI, +M_PI}
   // This function operates in radians
-  static RbtDouble StandardisedValue(RbtDouble rotationAngle);
+  static double StandardisedValue(double rotationAngle);
 
 protected:
   // For use by clone()
@@ -61,8 +59,8 @@ protected:
   RbtChromPositionElement();
   void RandomiseCOM();
   void RandomiseOrientation();
-  void MutateCOM(RbtDouble relStepSize);
-  void MutateOrientation(RbtDouble relStepSize);
+  void MutateCOM(double relStepSize);
+  void MutateOrientation(double relStepSize);
   void CorrectTetheredCOM();
   void CorrectTetheredOrientation();
 

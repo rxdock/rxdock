@@ -22,11 +22,11 @@ std::string RbtGPFFCrossDock::_CT("RbtGPFFCrossDock");
 void RbtGPFFCrossDock::ReadTables(istream &in, RbtReturnTypeArray &it,
                                   RbtReturnTypeArray &sft) {
   RbtReturnType value;
-  RbtInt nip, nsfi;
-  RbtInt i = 0, j, recordn;
+  int nip, nsfi;
+  int i = 0, j, recordn;
   in >> nip;
   in.get();
-  RbtInt nctes = 15;
+  int nctes = 15;
   RbtGPGenome::SetNIP(nip + nctes);
   in >> nsfi;
   RbtGPGenome::SetNSFI(nsfi);
@@ -65,25 +65,25 @@ void RbtGPFFCrossDock::ReadTables(istream &in, RbtReturnTypeArray &it,
   sft = SFTable;
 }
 
-RbtDouble RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
-                                             RbtReturnTypeArray &it,
-                                             RbtReturnTypeArray &sft,
-                                             RbtBool function) {
+double RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
+                                          RbtReturnTypeArray &it,
+                                          RbtReturnTypeArray &sft,
+                                          bool function) {
   if (function) {
     cout << "Error, no function possible with Cross Docking\n";
     exit(1);
   }
   RbtGPParser p(g->GetNIP(), g->GetNIF(), g->GetNN(), g->GetNO());
   RbtReturnTypeList o;
-  RbtDouble good = 0.0;
-  RbtDouble bad = 0.0;
-  RbtDouble neutral = 0.0;
-  RbtDouble hitlimit = 0.0;
-  RbtInt ntm, nm;
+  double good = 0.0;
+  double bad = 0.0;
+  double neutral = 0.0;
+  double hitlimit = 0.0;
+  int ntm, nm;
   RbtReturnTypeList inputs;
   RbtReturnTypeList SFValues;
-  RbtDouble hit;
-  RbtInt i = 0;
+  double hit;
+  int i = 0;
   while (i < it.size()) {
     inputs = it[i];
     SFValues = sft[i];
@@ -131,21 +131,20 @@ RbtDouble RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
   return fitness;
 }
 
-RbtDouble RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
-                                             RbtReturnTypeArray &it,
-                                             RbtReturnTypeArray &sft,
-                                             RbtDouble hitlimit,
-                                             RbtBool function) {
+double RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
+                                          RbtReturnTypeArray &it,
+                                          RbtReturnTypeArray &sft,
+                                          double hitlimit, bool function) {
   RbtGPParser p(g->GetNIP(), g->GetNIF(), g->GetNN(), g->GetNO());
   RbtReturnTypeList o;
-  RbtDouble good = 0.0;
-  RbtDouble bad = 0.0;
-  RbtDouble neutral = 0.0;
-  RbtInt ntm, nm;
+  double good = 0.0;
+  double bad = 0.0;
+  double neutral = 0.0;
+  int ntm, nm;
   RbtReturnTypeList inputs;
   RbtReturnTypeList SFValues;
-  RbtDouble hit;
-  RbtInt i = 0;
+  double hit;
+  int i = 0;
   while (i < it.size()) {
     inputs = it[i];
     SFValues = sft[i];
@@ -161,7 +160,7 @@ RbtDouble RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
       o = p.Parse(c, inputs);
       c->Clear();
       // cout << *(o[0]) << endl;
-      RbtDouble limit = 0.0;
+      double limit = 0.0;
       if (*(o[0]) >= limit)
         ntm++;
       nm++;
@@ -192,16 +191,16 @@ RbtDouble RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
   return fitness;
 }
 
-void RbtGPFFCrossDock::CreateRandomCtes(RbtInt nctes) {
+void RbtGPFFCrossDock::CreateRandomCtes(int nctes) {
   if (ctes.size() == 0) // it hasn't already been initialized
   {
-    RbtInt a, b;
-    RbtDouble c;
+    int a, b;
+    double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
     cout << "c0 \t0.0" << endl;
     cout << "c1 \t1.0" << endl;
-    for (RbtInt i = 0; i < (nctes - 2); i++) {
+    for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * pow(10, b);

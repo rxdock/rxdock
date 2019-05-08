@@ -20,15 +20,15 @@ RbtDihedral::RbtDihedral(RbtAtom *pAtom1, RbtAtom *pAtom2, RbtAtom *pAtom3,
 
 void RbtDihedral::AddTerm(const prms &dihprms) { m_prms.push_back(dihprms); }
 
-RbtDouble RbtDihedral::operator()() const {
+double RbtDihedral::operator()() const {
   // cout.precision(3);
   // cout.setf(ios_base::fixed,ios_base::floatfield);
   // cout.setf(ios_base::right,ios_base::adjustfield);
-  RbtDouble dih = Rbt::BondDihedral(m_pAtom1, m_pAtom2, m_pAtom3, m_pAtom4);
-  RbtDouble score(0.0);
-  for (RbtInt i = 0; i != m_prms.size(); ++i) {
+  double dih = Rbt::BondDihedral(m_pAtom1, m_pAtom2, m_pAtom3, m_pAtom4);
+  double score(0.0);
+  for (int i = 0; i != m_prms.size(); ++i) {
     // Subtract the implicit hydrogen offset from the actual dihedral angle
-    RbtDouble dih1 = dih - m_prms[i].offset;
+    double dih1 = dih - m_prms[i].offset;
     score += m_prms[i].k *
              (1.0 + m_prms[i].sign * cos(m_prms[i].s * dih1 * M_PI / 180.0));
     // cout << m_pAtom1->GetAtomName() << "," << m_pAtom2->GetAtomName() << ","
@@ -65,8 +65,8 @@ RbtDihedralSF::~RbtDihedralSF() {
 
 RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
   RbtDihedralList dihList;
-  RbtInt iTrace = GetTrace();
-  RbtBool bImplHCorr = GetParameter(_IMPL_H_CORR);
+  int iTrace = GetTrace();
+  bool bImplHCorr = GetParameter(_IMPL_H_CORR);
 
   // Loop over each rotable bond
   for (RbtBondListConstIter iter = bondList.begin(); iter != bondList.end();
@@ -97,7 +97,7 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
           // Add all the ghost dihedral combinations for implicit Hs on pAtom2
           // but only for the first time through the outer loop
           if (iter1 == bondedAtoms2.begin()) {
-            for (RbtInt i1 = 0; i1 != offset2.size(); i1++) {
+            for (int i1 = 0; i1 != offset2.size(); i1++) {
               dihprms = FindDihedralParams(RbtTriposAtomType::H, t2, t3, t4);
               dihprms.offset = offset2[i1];
               if (iTrace > 1) {
@@ -111,7 +111,7 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
               // pAtom2 AND on pAtom3 but only for the first time through the
               // outer loop AND inner loop
               if (iter4 == bondedAtoms3.begin()) {
-                for (RbtInt i4 = 0; i4 != offset3.size(); i4++) {
+                for (int i4 = 0; i4 != offset3.size(); i4++) {
                   dihprms = FindDihedralParams(RbtTriposAtomType::H, t2, t3,
                                                RbtTriposAtomType::H);
                   // Combined offset should be offset2 - offset3
@@ -136,7 +136,7 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
           // Add all the ghost dihedral combinations for implicit Hs on pAtom3
           // but only for the first time through the inner loop
           if (iter4 == bondedAtoms3.begin()) {
-            for (RbtInt i4 = 0; i4 != offset3.size(); i4++) {
+            for (int i4 = 0; i4 != offset3.size(); i4++) {
               dihprms = FindDihedralParams(t1, t2, t3, RbtTriposAtomType::H);
               // Offset should be -offset3
               // Remember offset3 was determined looking the other way along the
@@ -168,7 +168,7 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
   std::string str3 = m_triposType.Type2Str(t3);
   std::string str4 = m_triposType.Type2Str(t4);
   std::string wild = std::string("*");
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   if (iTrace > 2) {
     cout << endl
          << _CT << ": Searching for " << str1 << "," << str2 << "," << str3
@@ -252,8 +252,8 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
 
   RbtStringList paramList = Rbt::ConvertDelimitedStringToList(strParams);
   // Add checks on #params
-  RbtDouble k = atof(paramList[0].c_str());
-  RbtDouble s = atof(paramList[1].c_str());
+  double k = atof(paramList[0].c_str());
+  double s = atof(paramList[1].c_str());
   if (iTrace > 1) {
     cout << _CT << ": Assigned " << str1 << "," << str2 << "," << str3 << ","
          << str4 << "\tk=" << k << ", s=" << s << endl;
@@ -273,7 +273,7 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
                        std::not1(std::bind2nd(Rbt::isAtomPtr_eq(), pAtom2)));
   if (bondedAtoms.empty())
     return;
-  RbtInt nH = pAtom1->GetNumImplicitHydrogens();
+  int nH = pAtom1->GetNumImplicitHydrogens();
   if (nH == 0)
     return;
   if (GetTrace() > 2) {
@@ -286,9 +286,9 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
     // offset will be approx +/- 120 deg, determine the sign from the improper
     // dihedral already present
     if ((nH == 1) && (bondedAtoms.size() == 2)) {
-      RbtDouble improper =
+      double improper =
           Rbt::BondDihedral(bondedAtoms[0], pAtom1, pAtom2, bondedAtoms[1]);
-      RbtDouble offset = -improper;
+      double offset = -improper;
       if (GetTrace() > 2) {
         cout << _CT << ": offset for SP3 atom " << pAtom1->GetAtomName()
              << " = " << offset << endl;

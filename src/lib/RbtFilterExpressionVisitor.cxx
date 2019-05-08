@@ -34,7 +34,7 @@ void EvaluateVisitor::VisitVbleExp(FilterVbleExp *fe) {
 
 void PrintVisitor::VisitAddExp(FilterAddExp *fe) {
   cout << "+ ";
-  for (RbtInt i = 0; i < fe->GetNOps(); i++)
+  for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
@@ -56,7 +56,7 @@ void EvaluateVisitor::VisitAddExp(FilterAddExp *fe) {
 
 void PrintVisitor::VisitSubExp(FilterSubExp *fe) {
   cout << "- ";
-  for (RbtInt i = 0; i < fe->GetNOps(); i++)
+  for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
@@ -78,7 +78,7 @@ void EvaluateVisitor::VisitSubExp(FilterSubExp *fe) {
 
 void PrintVisitor::VisitMulExp(FilterMulExp *fe) {
   cout << "* ";
-  for (RbtInt i = 0; i < fe->GetNOps(); i++)
+  for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
@@ -100,7 +100,7 @@ void EvaluateVisitor::VisitMulExp(FilterMulExp *fe) {
 
 void PrintVisitor::VisitDivExp(FilterDivExp *fe) {
   cout << "/ ";
-  for (RbtInt i = 0; i < fe->GetNOps(); i++)
+  for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
@@ -126,7 +126,7 @@ void EvaluateVisitor::VisitDivExp(FilterDivExp *fe) {
 
 void PrintVisitor::VisitAndExp(FilterAndExp *fe) {
   cout << "and ";
-  for (RbtInt i = 0; i < fe->GetNOps(); i++)
+  for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
@@ -155,7 +155,7 @@ void EvaluateVisitor::VisitAndExp(FilterAndExp *fe) {
 
 void PrintVisitor::VisitLogExp(FilterLogExp *fe) {
   cout << "log ";
-  for (RbtInt i = 0; i < fe->GetNOps(); i++)
+  for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
@@ -177,7 +177,7 @@ void EvaluateVisitor::VisitLogExp(FilterLogExp *fe) {
 
 void PrintVisitor::VisitExpExp(FilterExpExp *fe) {
   cout << "exp ";
-  for (RbtInt i = 0; i < fe->GetNOps(); i++)
+  for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
@@ -206,7 +206,7 @@ void EvaluateVisitor::VisitExpExp(FilterExpExp *fe) {
 
 void PrintVisitor::VisitIfExp(FilterIfExp *fe) {
   cout << "if ";
-  for (RbtInt i = 0; i < fe->GetNOps(); i++)
+  for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 

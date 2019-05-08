@@ -91,19 +91,18 @@ int main(int argc, char *argv[]) {
 
   // Command line arguments and default values
   std::string strReceptorPrmFile;
-  RbtBool bReadAS(false);  // If true, read Active Site from file
-  RbtBool bWriteAS(false); // If true, write Active Site to file
-  RbtBool bDump(false);    // If true, dump cavity grids in Insight format
-  RbtBool bViewer(false);  // If true, dump PSF/CRD files for rDock Viewer
-  RbtBool bList(false);    // If true, list atoms within 'distance' of cavity
-  RbtBool bSite(
+  bool bReadAS(false);  // If true, read Active Site from file
+  bool bWriteAS(false); // If true, write Active Site to file
+  bool bDump(false);    // If true, dump cavity grids in Insight format
+  bool bViewer(false);  // If true, dump PSF/CRD files for rDock Viewer
+  bool bList(false);    // If true, list atoms within 'distance' of cavity
+  bool bSite(
       false); // If true, print out "SITE" descriptors (counts of exposed atoms)
-  RbtBool bMOEgrid(
-      false); // If true, create a MOE grid file for AS visualisation
-  RbtBool bBorderArg(false); // If true, border was specified in the command
-                             // line
-  RbtDouble border(8.0); // Border to allow around cavities for distance grid
-  RbtDouble dist(5.0);
+  bool bMOEgrid(false); // If true, create a MOE grid file for AS visualisation
+  bool bBorderArg(false); // If true, border was specified in the command
+                          // line
+  double border(8.0);     // Border to allow around cavities for distance grid
+  double dist(5.0);
 
   char c;
   while ((c = getopt(argc, argv, "r:b:RWdvl:ms")) != -1) {
@@ -218,13 +217,13 @@ int main(int argc, char *argv[]) {
       spWS->SetReceptor(spReceptor);
       cout << *spMapper << endl;
 
-      RbtInt nRI = spReceptor->GetNumSavedCoords() - 1;
+      int nRI = spReceptor->GetNumSavedCoords() - 1;
       if (nRI == 0) {
         spDockSite =
             RbtDockingSitePtr(new RbtDockingSite((*spMapper)(), border));
       } else {
         RbtCavityList allCavs;
-        for (RbtInt i = 1; i <= nRI; i++) {
+        for (int i = 1; i <= nRI; i++) {
           spReceptor->RevertCoords(i);
           RbtCavityList cavs((*spMapper)());
           std::copy(cavs.begin(), cavs.end(), std::back_inserter(allCavs));
@@ -261,7 +260,7 @@ int main(int argc, char *argv[]) {
     // Write an ASCII InsightII grid file for each defined cavity
     if (bDump) {
       RbtCavityList cavList = spDockSite->GetCavityList();
-      for (RbtInt i = 0; i < cavList.size(); i++) {
+      for (int i = 0; i < cavList.size(); i++) {
         ostringstream filename;
         filename << wsName << "_cav" << i + 1 << ".grd";
         ofstream dumpFile(filename.str());
@@ -296,10 +295,10 @@ int main(int argc, char *argv[]) {
     // each atom Use an empirical threshold to determine if atom is exposed or
     // not
     if (bSite) {
-      RbtDouble cavDist = 4.0; // Use a fixed definition of cavity atoms - all
-                               // those within 4A of docking volume
-      RbtDouble neighbR = 4.0; // Sphere radius for counting nearest neighbours
-      RbtDouble threshold =
+      double cavDist = 4.0; // Use a fixed definition of cavity atoms - all
+                            // those within 4A of docking volume
+      double neighbR = 4.0; // Sphere radius for counting nearest neighbours
+      double threshold =
           15; // Definition of solvent exposed: neighbours < threshold
       // RbtRealGridPtr spGrid = spDockSite->GetGrid();
       RbtAtomList recepAtomList = spReceptor->GetAtomList();
@@ -318,7 +317,7 @@ int main(int argc, char *argv[]) {
       // Get the list of solvent exposed cavity atoms
       for (RbtAtomListConstIter iter = cavAtomList.begin();
            iter != cavAtomList.end(); iter++) {
-        RbtInt nNeighb = Rbt::GetNumAtoms(
+        int nNeighb = Rbt::GetNumAtoms(
             recepAtomList,
             Rbt::isAtomInsideSphere((*iter)->GetCoords(), neighbR));
         nNeighb--;
@@ -329,11 +328,11 @@ int main(int argc, char *argv[]) {
       }
 
       // Total +ve and -ve charges
-      RbtDouble posChg(0.0);
-      RbtDouble negChg(0.0);
+      double posChg(0.0);
+      double negChg(0.0);
       for (RbtAtomListConstIter iter = exposedAtomList.begin();
            iter != exposedAtomList.end(); iter++) {
-        RbtDouble chg = (*iter)->GetGroupCharge();
+        double chg = (*iter)->GetGroupCharge();
         if (chg > 0.0) {
           posChg += chg;
         } else if (chg < 0.0) {
@@ -343,16 +342,14 @@ int main(int argc, char *argv[]) {
 
       // Atom type counts
       Rbt::isHybridState_eq bIsArom(RbtAtom::AROM);
-      RbtInt nAtoms = exposedAtomList.size();
-      RbtInt nLipoC =
-          Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomLipophilic());
-      RbtInt nArom = Rbt::GetNumAtoms(exposedAtomList, bIsArom);
-      RbtInt nNHBD = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondDonor());
-      RbtInt nMetal = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomMetal());
-      RbtInt nGuan =
+      int nAtoms = exposedAtomList.size();
+      int nLipoC = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomLipophilic());
+      int nArom = Rbt::GetNumAtoms(exposedAtomList, bIsArom);
+      int nNHBD = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondDonor());
+      int nMetal = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomMetal());
+      int nGuan =
           Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomGuanidiniumCarbon());
-      RbtInt nNHBA =
-          Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondAcceptor());
+      int nNHBA = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondAcceptor());
 
       // Cavity volume
       cout << endl << wsName << ",SITE_VOL," << spDockSite->GetVolume() << endl;

@@ -29,7 +29,7 @@ std::string Rbt::ConvertNoeRestraintTypeToString(const eNoeType type) {
 ///////////////////////////////////////////////////////////////////////
 // Simple struct for holding one end of an NOE restraint
 // Has an atom name string list and a restraint type
-RbtBool RbtNoeEndNames::isOK() const {
+bool RbtNoeEndNames::isOK() const {
   return (!names.empty() && (type != Rbt::NOE_UNDEFINED));
 }
 
@@ -57,7 +57,7 @@ RbtNoeEndAtoms::RbtNoeEndAtoms(const RbtNoeEndNames &n,
   atoms = Rbt::GetMatchingAtomList(atomList, n.names);
   type = n.type;
 }
-RbtBool RbtNoeEndAtoms::isOK() const {
+bool RbtNoeEndAtoms::isOK() const {
   return (!atoms.empty() && (type != Rbt::NOE_UNDEFINED));
 }
 
@@ -86,7 +86,7 @@ ostream &operator<<(ostream &s, const RbtNoeEndAtoms &n) {
 // Simple struct for holding a complete NOE restraint definition
 // Has two RbtNoeEndNames, and max distance
 
-RbtBool RbtNoeRestraintNames::isOK() const { return from.isOK() && to.isOK(); }
+bool RbtNoeRestraintNames::isOK() const { return from.isOK() && to.isOK(); }
 
 // Insertion operator for the above
 ostream &operator<<(ostream &s, const RbtNoeRestraintNames &noe) {
@@ -103,10 +103,10 @@ RbtNoeRestraintAtoms::RbtNoeRestraintAtoms(const RbtNoeRestraintNames &n,
                                            const RbtAtomList &atomList)
     : from(n.from, atomList), to(n.to, atomList), maxDist(n.maxDist) {}
 
-RbtBool RbtNoeRestraintAtoms::isOK() const { return from.isOK() && to.isOK(); }
+bool RbtNoeRestraintAtoms::isOK() const { return from.isOK() && to.isOK(); }
 
 // true if exactly one atom at each end of the NOE (unambiguous)
-RbtBool RbtNoeRestraintAtoms::isSimple() const {
+bool RbtNoeRestraintAtoms::isSimple() const {
   return (from.atoms.size() == 1) && (to.atoms.size() == 1);
 }
 
@@ -120,7 +120,7 @@ ostream &operator<<(ostream &s, const RbtNoeRestraintAtoms &noe) {
 // Simple struct for holding a complete STD restraint definition
 // Has one RbtNoeEndNames, and max distance from receptor
 
-RbtBool RbtStdRestraintNames::isOK() const { return from.isOK(); }
+bool RbtStdRestraintNames::isOK() const { return from.isOK(); }
 
 // Insertion operator for the above
 ostream &operator<<(ostream &s, const RbtStdRestraintNames &std) {
@@ -137,12 +137,10 @@ RbtStdRestraintAtoms::RbtStdRestraintAtoms(const RbtStdRestraintNames &s,
                                            const RbtAtomList &atomList)
     : from(s.from, atomList), maxDist(s.maxDist) {}
 
-RbtBool RbtStdRestraintAtoms::isOK() const { return from.isOK(); }
+bool RbtStdRestraintAtoms::isOK() const { return from.isOK(); }
 
 // true if exactly one atom at in the STD definition (unambiguous)
-RbtBool RbtStdRestraintAtoms::isSimple() const {
-  return (from.atoms.size() == 1);
-}
+bool RbtStdRestraintAtoms::isSimple() const { return (from.atoms.size() == 1); }
 
 // Insertion operator for the above
 ostream &operator<<(ostream &s, const RbtStdRestraintAtoms &std) {

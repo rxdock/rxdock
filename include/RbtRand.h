@@ -19,7 +19,6 @@
 
 #include "RandInt.h"
 #include "RbtCoord.h"
-#include "RbtTypes.h"
 
 class RbtRand {
   /////////////
@@ -34,19 +33,19 @@ public:
   // Public methods
 
   // Seed the random number generator
-  void Seed(RbtInt seed = 0);
+  void Seed(int seed = 0);
   // Seed the random number generator from the system clock
   void SeedFromClock();
   // Returns current seed
-  RbtInt GetSeed();
+  int GetSeed();
   // Get a random double between 0 and 1 (inlined)
-  RbtDouble GetRandom01() { return m_rand.fdraw(); }
+  double GetRandom01() { return m_rand.fdraw(); }
   // Get a random integer between 0 and nMax-1
-  RbtInt GetRandomInt(RbtInt nMax);
+  int GetRandomInt(int nMax);
   // Get a random unit vector distributed evenly over the surface of a sphere
   RbtVector GetRandomUnitVector();
-  RbtDouble GetGaussianRandom(RbtDouble, RbtDouble);
-  RbtDouble GetCauchyRandom(RbtDouble, RbtDouble);
+  double GetGaussianRandom(double, double);
+  double GetCauchyRandom(double, double);
 
 private:
   Randint m_rand; // Random number generator

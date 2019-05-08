@@ -25,16 +25,16 @@
 #include <sstream>
 
 std::string RbtGPFFHSP90::_CT("RbtGPFFHSP90");
-int nInversions(RbtInt idx, RbtReturnTypeArray &list);
+int nInversions(int idx, RbtReturnTypeArray &list);
 
 void RbtGPFFHSP90::ReadTables(istream &in, RbtReturnTypeArray &it,
                               RbtReturnTypeArray &sft) {
   RbtReturnType value;
-  RbtInt nip, nsfi;
-  RbtInt i = 0, j;
+  int nip, nsfi;
+  int i = 0, j;
   in >> nip;
   in.get();
-  RbtInt nctes = 15;
+  int nctes = 15;
   RbtGPGenome::SetNIP(nip + nctes);
   in >> nsfi;
   RbtGPGenome::SetNSFI(nsfi);
@@ -77,36 +77,36 @@ void RbtGPFFHSP90::ReadTables(istream &in, RbtReturnTypeArray &it,
   sft = SFTable;
 }
 
-RbtDouble RbtGPFFHSP90::CalculateFitness(
+double RbtGPFFHSP90::CalculateFitness(
     RbtGPGenomePtr g, RbtReturnTypeArray &it, RbtReturnTypeArray &sft,
     //                                         RbtDouble limit,
-    RbtBool function) {
+    bool function) {
   RbtReturnTypeArray o;
   //    o.push_back(new RbtReturnType(1.1));
   RbtReturnType oldo;
-  RbtDouble tot = 0.0;
-  RbtDouble good = 0.0;
-  RbtDouble bad = 0.0;
+  double tot = 0.0;
+  double good = 0.0;
+  double bad = 0.0;
   RbtGPChromosomePtr c(g->GetChrom());
   RbtParser p2;
   RbtCellTokenIterPtr ti(new RbtCellTokenIter(c, contextp));
   RbtFilterExpressionPtr fe(p2.Parse(ti, contextp));
-  RbtDouble meanReal = 0.0, meanPred = 0.0;
-  for (RbtInt i = 0; i < it.size(); i++) {
+  double meanReal = 0.0, meanPred = 0.0;
+  for (int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
     RbtReturnTypeList pred;
     pred.clear();
-    for (RbtInt j = 0; j < inputs.size(); j++)
+    for (int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
-    RbtDouble hit = *(SFValues[SFValues.size() - 1]);
+    double hit = *(SFValues[SFValues.size() - 1]);
     EvaluateVisitor visitor(contextp);
     fe->Accept(visitor);
     pred.push_back(new RbtReturnType(fe->GetValue()));
     o.push_back(pred);
     //        cout << *(SFValues[0]) << "\t" << *(o[i][0]) << endl;
   }
-  RbtInt ninv = nInversions(0, o);
+  int ninv = nInversions(0, o);
   //		cout << "n inversions " << ninv << endl;
   /*    RbtDouble sumDiff = 0.0,
                 sumSqrReal = 0.0, sumSqrPred = 0.0;
@@ -134,28 +134,27 @@ RbtDouble RbtGPFFHSP90::CalculateFitness(
   return fitness;
 }
 
-RbtDouble RbtGPFFHSP90::CalculateFitness(RbtGPGenomePtr g,
-                                         RbtReturnTypeArray &it,
-                                         RbtReturnTypeArray &sft,
-                                         RbtDouble limit, RbtBool function) {
+double RbtGPFFHSP90::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
+                                      RbtReturnTypeArray &sft, double limit,
+                                      bool function) {
   RbtReturnTypeArray o;
   RbtReturnType oldo;
-  RbtDouble tot = 0.0;
-  RbtDouble good = 0.0;
-  RbtDouble bad = 0.0;
+  double tot = 0.0;
+  double good = 0.0;
+  double bad = 0.0;
   RbtGPChromosomePtr c(g->GetChrom());
   RbtParser p2;
   RbtCellTokenIterPtr ti(new RbtCellTokenIter(c, contextp));
   RbtFilterExpressionPtr fe(p2.Parse(ti, contextp));
-  RbtDouble meanReal = 0.0, meanPred = 0.0;
-  for (RbtInt i = 0; i < it.size(); i++) {
+  double meanReal = 0.0, meanPred = 0.0;
+  for (int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
     RbtReturnTypeList pred;
     pred.clear();
-    for (RbtInt j = 0; j < inputs.size(); j++)
+    for (int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
-    RbtDouble hit = *(SFValues[SFValues.size() - 1]);
+    double hit = *(SFValues[SFValues.size() - 1]);
     EvaluateVisitor visitor(contextp);
     fe->Accept(visitor);
     pred.push_back(new RbtReturnType(fe->GetValue()));
@@ -164,14 +163,14 @@ RbtDouble RbtGPFFHSP90::CalculateFitness(RbtGPGenomePtr g,
     meanReal += *(SFValues[0]);
     cout << *(SFValues[0]) << "\t" << *(o[i][0]) << endl;
   }
-  RbtDouble sumDiff = 0.0, sumSqrReal = 0.0, sumSqrPred = 0.0;
+  double sumDiff = 0.0, sumSqrReal = 0.0, sumSqrPred = 0.0;
 
   meanReal = meanReal / it.size();
   meanPred = meanPred / it.size();
   //    cout << endl;
-  for (RbtInt i = 0; i < it.size(); i++) {
-    RbtDouble t1 = *sft[i][0] - meanReal;
-    RbtDouble t2 = *o[i][0] - meanPred;
+  for (int i = 0; i < it.size(); i++) {
+    double t1 = *sft[i][0] - meanReal;
+    double t2 = *o[i][0] - meanPred;
     sumDiff += t1 * t2;
     sumSqrReal += t1 * t1;
     sumSqrPred += t2 * t2;
@@ -185,16 +184,16 @@ RbtDouble RbtGPFFHSP90::CalculateFitness(RbtGPGenomePtr g,
   return fitness;
 }
 
-void RbtGPFFHSP90::CreateRandomCtes(RbtInt nctes) {
+void RbtGPFFHSP90::CreateRandomCtes(int nctes) {
   if (ctes.size() == 0) // it hasn't already been initialized
   {
-    RbtInt a, b;
-    RbtDouble c;
+    int a, b;
+    double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
     cout << "c0 \t0.0" << endl;
     cout << "c1 \t1.0" << endl;
-    for (RbtInt i = 0; i < (nctes - 2); i++) {
+    for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * pow(10, b);
@@ -204,12 +203,12 @@ void RbtGPFFHSP90::CreateRandomCtes(RbtInt nctes) {
   }
 }
 
-int nInversions(RbtInt idx, RbtReturnTypeArray &list) {
-  RbtInt count = 0;
-  RbtInt len = list.size();
+int nInversions(int idx, RbtReturnTypeArray &list) {
+  int count = 0;
+  int len = list.size();
   if (idx == (len - 1))
     return 0;
-  for (RbtInt i = idx + 1; i < len; i++) {
+  for (int i = idx + 1; i < len; i++) {
     if (*(list[idx][0]) >= *(list[i][0]))
       count++;
   }

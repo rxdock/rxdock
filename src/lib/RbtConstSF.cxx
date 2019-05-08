@@ -35,7 +35,7 @@ RbtConstSF::~RbtConstSF() {
 void RbtConstSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
   if (isEnabled()) {
     // Divide the total raw score into "system" and "inter" components.
-    RbtDouble rs = InterScore();
+    double rs = InterScore();
 
     // First deal with the inter score which is stored in its natural location
     // in the map
@@ -45,26 +45,26 @@ void RbtConstSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
 
     // Now deal with the system raw score which needs to be stored in
     // SCORE.SYSTEM.CONST
-    RbtDouble system_rs = SystemScore();
+    double system_rs = SystemScore();
     std::string systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
     scoreMap[systemName] = system_rs;
     // increment the SCORE.SYSTEM total
-    RbtDouble parentScore = scoreMap[RbtBaseSF::_SYSTEM_SF];
+    double parentScore = scoreMap[RbtBaseSF::_SYSTEM_SF];
     parentScore += system_rs * GetWeight();
     scoreMap[RbtBaseSF::_SYSTEM_SF] = parentScore;
   }
 }
 
-RbtDouble RbtConstSF::RawScore() const { return InterScore() + SystemScore(); }
+double RbtConstSF::RawScore() const { return InterScore() + SystemScore(); }
 
-RbtDouble RbtConstSF::InterScore() const {
+double RbtConstSF::InterScore() const {
   // With current protocols, ligand should always be enabled, so RawScore is 1
-  RbtDouble retVal = GetLigand()->GetEnabled() ? 1.0 : 0.0;
+  double retVal = GetLigand()->GetEnabled() ? 1.0 : 0.0;
   return retVal;
 }
 
-RbtDouble RbtConstSF::SystemScore() const {
-  RbtDouble retVal = 0.0;
+double RbtConstSF::SystemScore() const {
+  double retVal = 0.0;
   RbtModelList solventList = GetSolvent();
   for (RbtModelListConstIter iter = solventList.begin();
        iter != solventList.end(); ++iter) {

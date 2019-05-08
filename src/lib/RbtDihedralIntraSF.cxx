@@ -40,8 +40,8 @@ void RbtDihedralIntraSF::SetupScore() {
   }
 }
 
-RbtDouble RbtDihedralIntraSF::RawScore() const {
-  RbtDouble score = 0.0; // Total score
+double RbtDihedralIntraSF::RawScore() const {
+  double score = 0.0; // Total score
   for (RbtDihedralListConstIter iter = m_dihList.begin();
        iter != m_dihList.end(); iter++) {
     score += (**iter)();

@@ -44,8 +44,7 @@ public:
   // Constructor accepting values for heading, attitude and bank (radians).
   // NOTE: For performance reasons, no checks are made that the values
   // are within range
-  RbtEuler(RbtDouble heading = 0.0, RbtDouble attitude = 0.0,
-           RbtDouble bank = 0.0)
+  RbtEuler(double heading = 0.0, double attitude = 0.0, double bank = 0.0)
       : m_heading(heading), m_attitude(attitude), m_bank(bank) {}
   // Constructor accepting a quaternion.
   // Quaternion is converted to Euler angle representation
@@ -55,7 +54,7 @@ public:
 
   // Returns true if all three Euler angles are within their
   // standard ranges
-  RbtBool isStandardised() const {
+  bool isStandardised() const {
     return (m_heading >= -M_PI) && (m_heading <= M_PI) &&
            (m_attitude >= -M_PI / 2.0) && (m_attitude <= M_PI / 2.0) &&
            (m_bank >= -M_PI) && (m_bank <= M_PI);
@@ -67,11 +66,11 @@ public:
   }
 
   // Gets the current heading angle (radians)
-  RbtDouble GetHeading() const { return m_heading; }
+  double GetHeading() const { return m_heading; }
   // Gets the current attitude angle (radians)
-  RbtDouble GetAttitude() const { return m_attitude; }
+  double GetAttitude() const { return m_attitude; }
   // Gets the current bank angle (radians)
-  RbtDouble GetBank() const { return m_bank; }
+  double GetBank() const { return m_bank; }
   // Gets the equivalent quaternion representation
   // NOTE: For performance reasons, no checks are made that the current
   // Euler angles are within range prior to the conversion.
@@ -82,7 +81,7 @@ public:
   void FromQuat(const RbtQuat &q);
   // Convenience method to rotate orientation by a quaternion
   void Rotate(const RbtQuat &q) { FromQuat(q * ToQuat()); }
-  void Rotate(const RbtVector &axis, RbtDouble theta) {
+  void Rotate(const RbtVector &axis, double theta) {
     Rotate(RbtQuat(axis, theta));
   }
 
@@ -94,8 +93,8 @@ public:
   }
 
 private:
-  RbtDouble m_heading;  // heading angle (radians)
-  RbtDouble m_attitude; // attitude angle (radians)
-  RbtDouble m_bank;     // bank angle (radians)
+  double m_heading;  // heading angle (radians)
+  double m_attitude; // attitude angle (radians)
+  double m_bank;     // bank angle (radians)
 };
 #endif /*RBTEULER_H_*/

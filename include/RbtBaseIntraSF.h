@@ -67,7 +67,7 @@ private:
   // 26 Mar 2003 (DM) Remember the raw score for the initial ligand conformation
   // This becomes the zero point for all subsequent score reporting
   // i.e. all intramolecular scores are reported relative to the initial score
-  RbtDouble m_zero;
+  double m_zero;
 };
 
 #endif //_RBTBASEINTRASF_H_

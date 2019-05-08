@@ -79,11 +79,11 @@ void RbtAlignTransform::Execute() {
   if (spLigand.Null() || m_cavities.empty())
     return;
 
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
   // Select a cavity at random, weighted by each cavity size
-  RbtInt iRnd = m_rand.GetRandomInt(m_totalSize);
-  RbtInt iCavity(0);
+  int iRnd = m_rand.GetRandomInt(m_totalSize);
+  int iCavity(0);
   for (iCavity = 0; iRnd >= m_cumulSize[iCavity]; iCavity++)
     ;
   RbtCavityPtr spCavity = m_cavities[iCavity];
@@ -100,7 +100,7 @@ void RbtAlignTransform::Execute() {
   // A. Random
   if ((strPlaceCOM == "RANDOM") && !coordList.empty()) {
     // Select a coord at random
-    RbtInt iRand = m_rand.GetRandomInt(coordList.size());
+    int iRand = m_rand.GetRandomInt(coordList.size());
     RbtCoord asCavityCoord = coordList[iRand];
     if (iTrace > 1) {
       cout << "Translating ligand COM to active site coord #" << iRand << ": "
@@ -121,7 +121,7 @@ void RbtAlignTransform::Execute() {
   // 2. Ligand axes
   // A. Random rotation around random axis
   if (strPlaceAxes == "RANDOM") {
-    RbtDouble thetaDeg = 180.0 * m_rand.GetRandom01();
+    double thetaDeg = 180.0 * m_rand.GetRandom01();
     RbtCoord axis = m_rand.GetRandomUnitVector();
     if (iTrace > 1) {
       cout << "Rotating ligand by " << thetaDeg << " deg around axis=" << axis

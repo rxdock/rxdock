@@ -24,7 +24,7 @@ RbtParamHandler::~RbtParamHandler() {
 // Public methods
 ////////////////
 // Get number of stored parameters
-RbtUInt RbtParamHandler::GetNumParameters() const {
+unsigned int RbtParamHandler::GetNumParameters() const {
   return m_parameters.size();
 }
 
@@ -39,7 +39,7 @@ RbtVariant RbtParamHandler::GetParameter(const std::string &strName) const
 }
 
 // Check if named parameter is present
-RbtBool RbtParamHandler::isParameterValid(const std::string &strName) const {
+bool RbtParamHandler::isParameterValid(const std::string &strName) const {
   return m_parameters.find(strName) != m_parameters.end();
 }
 

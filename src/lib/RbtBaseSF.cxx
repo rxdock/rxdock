@@ -62,14 +62,14 @@ std::string RbtBaseSF::GetFullName() const {
   return (m_parent) ? m_parent->GetFullName() + "." + GetName() : GetName();
 }
 
-RbtDouble RbtBaseSF::GetWeight() const { return m_weight; }
-void RbtBaseSF::SetWeight(RbtDouble weight) { SetParameter(_WEIGHT, weight); }
+double RbtBaseSF::GetWeight() const { return m_weight; }
+void RbtBaseSF::SetWeight(double weight) { SetParameter(_WEIGHT, weight); }
 
-RbtDouble RbtBaseSF::GetRange() const { return m_range; }
-void RbtBaseSF::SetRange(RbtDouble range) { SetParameter(_RANGE, range); }
+double RbtBaseSF::GetRange() const { return m_range; }
+void RbtBaseSF::SetRange(double range) { SetParameter(_RANGE, range); }
 
 // Returns weighted score if scoring function is enabled, else returns zero
-RbtDouble RbtBaseSF::Score() const {
+double RbtBaseSF::Score() const {
   return isEnabled() ? GetWeight() * RawScore() : 0.0;
 }
 
@@ -82,7 +82,7 @@ void RbtBaseSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // New approach:
     // 1) We record the raw, unweighted score for this term
     // in the map
-    RbtDouble rs = RawScore();
+    double rs = RawScore();
     std::string name = GetFullName();
     scoreMap[name] = rs;
     // 2) We add the weighted score to the parent aggregate
@@ -97,12 +97,12 @@ void RbtBaseSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
 
 // Helper method for ScoreMap
 void RbtBaseSF::AddToParentMapEntry(RbtStringVariantMap &scoreMap,
-                                    RbtDouble rs) const {
+                                    double rs) const {
   if (m_parent) {
-    RbtDouble w = GetWeight();
-    RbtDouble s = w * rs;
+    double w = GetWeight();
+    double s = w * rs;
     std::string parentName = m_parent->GetFullName();
-    RbtDouble parentScore = scoreMap[parentName];
+    double parentScore = scoreMap[parentName];
     parentScore += s;
     scoreMap[parentName] = parentScore;
   }
@@ -120,12 +120,12 @@ void RbtBaseSF::Remove(RbtBaseSF *) throw(RbtError) {
       _WHERE_, "Remove() invalid for non-aggregate scoring functions");
 }
 
-RbtBaseSF *RbtBaseSF::GetSF(RbtUInt iSF) const throw(RbtError) {
+RbtBaseSF *RbtBaseSF::GetSF(unsigned int iSF) const throw(RbtError) {
   throw RbtInvalidRequest(
       _WHERE_, "GetSF() invalid for non-aggregate scoring functions");
 }
-RbtBool RbtBaseSF::isAgg() const { return false; }
-RbtUInt RbtBaseSF::GetNumSF() const { return 0; }
+bool RbtBaseSF::isAgg() const { return false; }
+unsigned int RbtBaseSF::GetNumSF() const { return 0; }
 
 // Aggregate handling (concrete) methods
 RbtBaseSF *RbtBaseSF::GetParentSF() const { return m_parent; }

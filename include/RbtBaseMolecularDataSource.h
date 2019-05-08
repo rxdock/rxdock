@@ -39,10 +39,10 @@ public:
     return m_strName;
   } // Returns source identifier string
 
-  virtual RbtBool isTitleListSupported() { return false; }
-  virtual RbtBool isAtomListSupported() { return false; }
-  virtual RbtBool isCoordinatesSupported() { return false; }
-  virtual RbtBool isBondListSupported() { return false; }
+  virtual bool isTitleListSupported() { return false; }
+  virtual bool isAtomListSupported() { return false; }
+  virtual bool isCoordinatesSupported() { return false; }
+  virtual bool isBondListSupported() { return false; }
 
   // Pure virtual - derived classes must override
 
@@ -50,10 +50,10 @@ public:
   // objects are created
   virtual void Reset() = 0;
 
-  virtual RbtInt GetNumTitles() throw(RbtError) = 0;
-  virtual RbtInt GetNumAtoms() throw(RbtError) = 0;
-  virtual RbtInt GetNumBonds() throw(RbtError) = 0;
-  virtual RbtInt GetNumSegments() throw(RbtError) = 0;
+  virtual int GetNumTitles() throw(RbtError) = 0;
+  virtual int GetNumAtoms() throw(RbtError) = 0;
+  virtual int GetNumBonds() throw(RbtError) = 0;
+  virtual int GetNumSegments() throw(RbtError) = 0;
 
   virtual RbtStringList GetTitleList() throw(RbtError) = 0;
   virtual RbtAtomList GetAtomList() throw(RbtError) = 0;
@@ -62,16 +62,16 @@ public:
 
   // DM 12 May 1999 - support for data records (e.g. SD file)
   // Does source support data records (default=false)
-  virtual RbtBool isDataSupported() { return false; }
+  virtual bool isDataSupported() { return false; }
   // Get number of data fields
-  virtual RbtInt GetNumData() throw(RbtError) = 0;
+  virtual int GetNumData() throw(RbtError) = 0;
   // Get list of field names as string list
   virtual RbtStringList GetDataFieldList() throw(RbtError) = 0;
   // Get all data as map of key=field name, value=variant (double,string or
   // string list)
   virtual RbtStringVariantMap GetDataMap() throw(RbtError) = 0;
   // Query as to whether a particular data field name is present
-  virtual RbtBool isDataFieldPresent(const std::string &strDataField) = 0;
+  virtual bool isDataFieldPresent(const std::string &strDataField) = 0;
   // Get a particular data value
   virtual RbtVariant
   GetDataValue(const std::string &strDataField) throw(RbtError) = 0;

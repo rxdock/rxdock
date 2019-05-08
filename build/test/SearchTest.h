@@ -39,7 +39,7 @@ public:
 
   // rdock helper methods
   // RMSD calculation between two coordinate lists
-  RbtDouble rmsd(const RbtCoordList &rc, const RbtCoordList &c);
+  double rmsd(const RbtCoordList &rc, const RbtCoordList &c);
 
   // 1 Check that receptor, ligand and solvent models are loaded into workspace
   // Should be 6 models in total (4 solvent)

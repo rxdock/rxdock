@@ -32,9 +32,9 @@ class RbtCoord {
   //(leave public so we don't need
   // to write accessor functions)
 public:
-  RbtDouble x;
-  RbtDouble y;
-  RbtDouble z;
+  double x;
+  double y;
+  double z;
 
   ///////////////////////////////////////////////
   // Constructors/destructors:
@@ -44,8 +44,7 @@ public:
   inline RbtCoord() : x(0.0), y(0.0), z(0.0) {}
 
   // Constructor with initial values
-  inline RbtCoord(RbtDouble x1, RbtDouble y1, RbtDouble z1)
-      : x(x1), y(y1), z(z1) {}
+  inline RbtCoord(double x1, double y1, double z1) : x(x1), y(y1), z(z1) {}
 
   // Destructor
   virtual ~RbtCoord() {}
@@ -86,7 +85,7 @@ public:
   }
 
   // Copy assignment (*this = const)
-  inline RbtCoord &operator=(const RbtDouble &d) {
+  inline RbtCoord &operator=(const double &d) {
     x = d;
     y = d;
     z = d;
@@ -101,7 +100,7 @@ public:
   }
 
   //*this += const
-  inline void operator+=(const RbtDouble &d) {
+  inline void operator+=(const double &d) {
     x += d;
     y += d;
     z += d;
@@ -115,21 +114,21 @@ public:
   }
 
   //*this -= const
-  inline void operator-=(const RbtDouble &d) {
+  inline void operator-=(const double &d) {
     x -= d;
     y -= d;
     z -= d;
   }
 
   //*this *= const
-  inline void operator*=(const RbtDouble &d) {
+  inline void operator*=(const double &d) {
     x *= d;
     y *= d;
     z *= d;
   }
 
   //*this /= const
-  inline void operator/=(const RbtDouble &d) {
+  inline void operator/=(const double &d) {
     x /= d;
     y /= d;
     z /= d;
@@ -158,7 +157,7 @@ public:
   // uses the auxiliary function eatSeps
 
   friend istream &operator>>(istream &s, RbtCoord &coord) {
-    RbtDouble x = 0, y = 0, z = 0;
+    double x = 0, y = 0, z = 0;
     char c = 0;
     s >> c;
     if (c == '(') {
@@ -185,38 +184,36 @@ public:
   }
 
   // Equality
-  inline friend RbtBool operator==(const RbtCoord &coord1,
-                                   const RbtCoord &coord2) {
+  inline friend bool operator==(const RbtCoord &coord1,
+                                const RbtCoord &coord2) {
     return coord1.x == coord2.x && coord1.y == coord2.y && coord1.z == coord2.z;
   }
 
   // Non-equality
-  inline friend RbtBool operator!=(const RbtCoord &coord1,
-                                   const RbtCoord &coord2) {
+  inline friend bool operator!=(const RbtCoord &coord1,
+                                const RbtCoord &coord2) {
     return coord1.x != coord2.x || coord1.y != coord2.y || coord1.z != coord2.z;
   }
 
   // Greater than
-  inline friend RbtBool operator>(const RbtCoord &coord1,
-                                  const RbtCoord &coord2) {
+  inline friend bool operator>(const RbtCoord &coord1, const RbtCoord &coord2) {
     return coord1.x > coord2.x && coord1.y > coord2.y && coord1.z > coord2.z;
   }
 
   // Greater than or equal
-  inline friend RbtBool operator>=(const RbtCoord &coord1,
-                                   const RbtCoord &coord2) {
+  inline friend bool operator>=(const RbtCoord &coord1,
+                                const RbtCoord &coord2) {
     return coord1.x >= coord2.x && coord1.y >= coord2.y && coord1.z >= coord2.z;
   }
 
   // Less than
-  inline friend RbtBool operator<(const RbtCoord &coord1,
-                                  const RbtCoord &coord2) {
+  inline friend bool operator<(const RbtCoord &coord1, const RbtCoord &coord2) {
     return coord1.x < coord2.x && coord1.y < coord2.y && coord1.z < coord2.z;
   }
 
   // Less than or equal
-  inline friend RbtBool operator<=(const RbtCoord &coord1,
-                                   const RbtCoord &coord2) {
+  inline friend bool operator<=(const RbtCoord &coord1,
+                                const RbtCoord &coord2) {
     return coord1.x <= coord2.x && coord1.y <= coord2.y && coord1.z <= coord2.z;
   }
 
@@ -228,12 +225,12 @@ public:
   }
 
   // Addition (coord + const)
-  inline friend RbtCoord operator+(const RbtCoord &coord1, RbtDouble d) {
+  inline friend RbtCoord operator+(const RbtCoord &coord1, double d) {
     return RbtCoord(coord1.x + d, coord1.y + d, coord1.z + d);
   }
 
   // Addition (const + coord)
-  inline friend RbtCoord operator+(RbtDouble d, const RbtCoord &coord1) {
+  inline friend RbtCoord operator+(double d, const RbtCoord &coord1) {
     return RbtCoord(d + coord1.x, d + coord1.y, d + coord1.z);
   }
 
@@ -245,12 +242,12 @@ public:
   }
 
   // Subtraction (coord - const)
-  inline friend RbtCoord operator-(const RbtCoord &coord1, RbtDouble d) {
+  inline friend RbtCoord operator-(const RbtCoord &coord1, double d) {
     return RbtCoord(coord1.x - d, coord1.y - d, coord1.z - d);
   }
 
   // Subtraction (const - coord)
-  inline friend RbtCoord operator-(RbtDouble d, const RbtCoord &coord1) {
+  inline friend RbtCoord operator-(double d, const RbtCoord &coord1) {
     return RbtCoord(d - coord1.x, d - coord1.y, d - coord1.z);
   }
 
@@ -268,12 +265,12 @@ public:
   //}
 
   // Scalar product (coord * const)
-  inline friend RbtCoord operator*(const RbtCoord &coord, const RbtDouble &d) {
+  inline friend RbtCoord operator*(const RbtCoord &coord, const double &d) {
     return RbtCoord(coord.x * d, coord.y * d, coord.z * d);
   }
 
   // Scalar product (const * coord)
-  inline friend RbtCoord operator*(const RbtDouble &d, const RbtCoord &coord) {
+  inline friend RbtCoord operator*(const double &d, const RbtCoord &coord) {
     return RbtCoord(coord.x * d, coord.y * d, coord.z * d);
   }
 
@@ -285,7 +282,7 @@ public:
   }
 
   // Scalar division (coord / const)
-  inline friend RbtCoord operator/(const RbtCoord &coord, const RbtDouble &d) {
+  inline friend RbtCoord operator/(const RbtCoord &coord, const double &d) {
     return RbtCoord(coord.x / d, coord.y / d, coord.z / d);
   }
 
@@ -296,16 +293,16 @@ public:
   // Mostly applicable to vectors (rather than coords)
 
   // Returns square of magnitude of vector (or distance from origin)
-  inline RbtDouble Length2() const { return x * x + y * y + z * z; }
+  inline double Length2() const { return x * x + y * y + z * z; }
 
   // Returns magnitude of vector (or distance from origin)
-  inline RbtDouble Length() const { return sqrt(Length2()); }
+  inline double Length() const { return sqrt(Length2()); }
 
   // Returns unit vector in same direction
   // Member function (V2 = V1.Unit())
   // Checks for zero length
   inline RbtCoord Unit() const {
-    RbtDouble l = Length();
+    double l = Length();
     return (l > 0) ? *this / l : *this;
   }
 
@@ -316,7 +313,7 @@ public:
   }
 
   // Dot product member function (D = V1.Dot(V2)
-  inline RbtDouble Dot(const RbtCoord &v2) const {
+  inline double Dot(const RbtCoord &v2) const {
     return x * v2.x + y * v2.y + z * v2.z;
   }
 };
@@ -336,7 +333,7 @@ typedef RbtCoordList::const_iterator RbtCoordListConstIter;
 // typedef RbtStringCoordMap::iterator RbtStringCoordMapIter;
 // typedef RbtStringCoordMap::const_iterator RbtStringCoordMapConstIter;
 // DM 08 Feb 1999 - Changed from key=string to key=int
-typedef map<RbtUInt, RbtCoord> RbtUIntCoordMap;
+typedef map<unsigned int, RbtCoord> RbtUIntCoordMap;
 typedef RbtUIntCoordMap::iterator RbtUIntCoordMapIter;
 typedef RbtUIntCoordMap::const_iterator RbtUIntCoordMapConstIter;
 
@@ -349,18 +346,18 @@ namespace Rbt {
 //////////////////
 
 // Returns square of magnitude of vector
-inline RbtDouble Length2(const RbtVector &v1) { return v1.Length2(); }
+inline double Length2(const RbtVector &v1) { return v1.Length2(); }
 
 // Returns square of distance between two coords
-inline RbtDouble Length2(const RbtCoord &c1, const RbtCoord &c2) {
+inline double Length2(const RbtCoord &c1, const RbtCoord &c2) {
   return Rbt::Length2(c2 - c1);
 }
 
 // Returns magnitude of vector
-inline RbtDouble Length(const RbtVector &v1) { return v1.Length(); }
+inline double Length(const RbtVector &v1) { return v1.Length(); }
 
 // Returns distance between two coords
-inline RbtDouble Length(const RbtCoord &c1, const RbtCoord &c2) {
+inline double Length(const RbtCoord &c1, const RbtCoord &c2) {
   return Rbt::Length(c2 - c1);
 }
 
@@ -374,54 +371,54 @@ inline RbtVector Cross(const RbtVector &v11, const RbtVector &v2) {
 }
 
 // Dot product (D = Rbt::Dot(V1,V2))
-inline RbtDouble Dot(const RbtVector &v1, const RbtVector &v2) {
+inline double Dot(const RbtVector &v1, const RbtVector &v2) {
   return v1.Dot(v2);
 }
 
 // Returns angle formed between 2 vectors
-inline RbtDouble Angle(const RbtVector &v1, const RbtVector &v2) {
+inline double Angle(const RbtVector &v1, const RbtVector &v2) {
   // Calculate the product of the lengths
-  RbtDouble d1d2 = v1.Length() * v2.Length();
+  double d1d2 = v1.Length() * v2.Length();
 
   // Calculate the sin and cos
-  RbtDouble cos_theta = v1.Dot(v2) / d1d2;
-  RbtDouble sin_theta = (v1.Cross(v2)).Length() / d1d2;
+  double cos_theta = v1.Dot(v2) / d1d2;
+  double sin_theta = (v1.Cross(v2)).Length() / d1d2;
 
   // Get theta and convert to degrees
-  RbtDouble theta = atan2(sin_theta, cos_theta);
+  double theta = atan2(sin_theta, cos_theta);
   return theta * 180.0 / M_PI;
 }
 
 // Returns angle formed between 3 coords coord1..coord2..coord3
-inline RbtDouble Angle(const RbtCoord &coord1, const RbtCoord &coord2,
-                       const RbtCoord &coord3) {
+inline double Angle(const RbtCoord &coord1, const RbtCoord &coord2,
+                    const RbtCoord &coord3) {
   // Determine vectors between coords and call vector version of Angle()
   return Rbt::Angle(coord1 - coord2, coord3 - coord2);
 }
 
 // DM 7 June 1999
 // Returns dihedral formed between 3 vectors
-inline RbtDouble Dihedral(const RbtVector &v1, const RbtVector &v2,
-                          const RbtVector &v3) {
+inline double Dihedral(const RbtVector &v1, const RbtVector &v2,
+                       const RbtVector &v3) {
   // Calculate the cross products
   RbtVector A = v1.Cross(v2);
   RbtVector B = v2.Cross(v3);
   RbtVector C = v2.Cross(A);
   // Calculate the distances
-  RbtDouble rA = A.Length();
-  RbtDouble rB = B.Length();
-  RbtDouble rC = C.Length();
+  double rA = A.Length();
+  double rB = B.Length();
+  double rC = C.Length();
   // Calculate the sin and cos
-  RbtDouble cos_phi = A.Dot(B) / (rA * rB);
-  RbtDouble sin_phi = C.Dot(B) / (rC * rB);
+  double cos_phi = A.Dot(B) / (rA * rB);
+  double sin_phi = C.Dot(B) / (rC * rB);
   // Get phi and convert to degrees
-  RbtDouble phi = -atan2(sin_phi, cos_phi);
+  double phi = -atan2(sin_phi, cos_phi);
   return phi * 180.0 / M_PI;
 }
 
 // Returns dihedral formed between 4 coords c1..c2..c3..c4
-inline RbtDouble Dihedral(const RbtCoord &c1, const RbtCoord &c2,
-                          const RbtCoord &c3, const RbtCoord &c4) {
+inline double Dihedral(const RbtCoord &c1, const RbtCoord &c2,
+                       const RbtCoord &c3, const RbtCoord &c4) {
   // Determine vectors between coords and call vector version of Dihedral()
   return Rbt::Dihedral(c1 - c2, c2 - c3, c3 - c4);
 }
@@ -431,9 +428,9 @@ inline RbtDouble Dihedral(const RbtCoord &c1, const RbtCoord &c2,
 //////////////////////
 
 // DM 28 Jul 1999 - functions for use by STL transform
-inline RbtDouble ExtractXCoord(const RbtCoord &c) { return c.x; }
-inline RbtDouble ExtractYCoord(const RbtCoord &c) { return c.y; }
-inline RbtDouble ExtractZCoord(const RbtCoord &c) { return c.z; }
+inline double ExtractXCoord(const RbtCoord &c) { return c.x; }
+inline double ExtractYCoord(const RbtCoord &c) { return c.y; }
+inline double ExtractZCoord(const RbtCoord &c) { return c.z; }
 
 // Returns minimum of two coords (component-wise minimum)
 inline RbtCoord Min(const RbtCoord &coord1, const RbtCoord &coord2) {

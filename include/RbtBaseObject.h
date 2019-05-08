@@ -52,12 +52,12 @@ public:
   virtual std::string GetFullName() const;
   void Enable();
   void Disable();
-  RbtBool isEnabled() const;
+  bool isEnabled() const;
 
   // DM 1 Mar 2002 - move from RbtBaseTransform
   // get/set the trace level for debugging
-  RbtInt GetTrace() const;
-  void SetTrace(RbtInt);
+  int GetTrace() const;
+  void SetTrace(int);
 
   // WorkSpace handling methods
   // Register scoring function with a workspace
@@ -109,8 +109,8 @@ private:
   // Private data
   //////////////
   RbtWorkSpace *m_workspace;
-  RbtBool m_enabled;
-  RbtInt m_trace;
+  bool m_enabled;
+  int m_trace;
 };
 
 // Useful typedefs

@@ -25,7 +25,6 @@ using std::ostringstream;
 
 #include "RbtContainers.h"
 #include "RbtCoord.h"
-#include "RbtTypes.h"
 
 // Strings representing TRUE and FALSE
 const std::string _TRUE("TRUE");
@@ -36,16 +35,16 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   RbtVariant() : m_d(0.0) {}
-  RbtVariant(RbtInt i) { SetDouble(i); }
-  RbtVariant(RbtDouble d) { SetDouble(d); }
+  RbtVariant(int i) { SetDouble(i); }
+  RbtVariant(double d) { SetDouble(d); }
   RbtVariant(const std::string &s) { SetString(s); }
   RbtVariant(const char *c) { SetString(std::string(c)); }
   RbtVariant(const RbtStringList &sl) { SetStringList(sl); }
-  RbtVariant(RbtBool b) { SetBool(b); }
+  RbtVariant(bool b) { SetBool(b); }
   RbtVariant(const RbtCoord &c) { SetCoord(c); }
   // Renders a vector of doubles into comma-separated strings of maxCols in
   // length
-  RbtVariant(const RbtDoubleList &dl, RbtInt maxCols, RbtInt precision) {
+  RbtVariant(const RbtDoubleList &dl, int maxCols, int precision) {
     SetDoubleList(dl, maxCols, precision);
   }
   virtual ~RbtVariant() { m_sl.clear(); }
@@ -78,11 +77,11 @@ public:
   /////////////////////
 
   // Set methods
-  RbtVariant &operator=(RbtInt i) {
+  RbtVariant &operator=(int i) {
     SetDouble(i);
     return *this;
   }
-  RbtVariant &operator=(RbtDouble d) {
+  RbtVariant &operator=(double d) {
     SetDouble(d);
     return *this;
   }
@@ -98,7 +97,7 @@ public:
     SetStringList(sl);
     return *this;
   }
-  RbtVariant &operator=(RbtBool b) {
+  RbtVariant &operator=(bool b) {
     SetBool(b);
     return *this;
   }
@@ -113,11 +112,11 @@ public:
   }
 
   // Conversion operators to convert back to basic types
-  operator RbtInt() const { return int(Double()); }
-  operator RbtDouble() const { return Double(); }
+  operator int() const { return int(Double()); }
+  operator double() const { return Double(); }
   operator std::string() const { return String(); }
   operator RbtStringList() const { return StringList(); }
-  operator RbtBool() const { return Bool(); }
+  operator bool() const { return Bool(); }
   operator RbtCoord() const { return Coord(); }
 
   ////////////////////////////////////////
@@ -125,12 +124,12 @@ public:
   ////////////////
 
   // Get methods
-  RbtDouble Double() const { return m_d; }
+  double Double() const { return m_d; }
   std::string String() const {
     return m_sl.empty() ? std::string() : m_sl.front();
   }
   RbtStringList StringList() const { return m_sl; }
-  RbtBool Bool() const { return m_d != 0.0 || String() == _TRUE; }
+  bool Bool() const { return m_d != 0.0 || String() == _TRUE; }
   RbtCoord Coord() const {
     RbtCoord c;
     if (m_sl.empty())
@@ -141,8 +140,8 @@ public:
     }
   }
 
-  RbtUInt Size() const { return m_sl.size(); }
-  RbtBool isEmpty() const { return m_sl.empty(); }
+  unsigned int Size() const { return m_sl.size(); }
+  bool isEmpty() const { return m_sl.empty(); }
 
 protected:
   ////////////////////////////////////////
@@ -153,7 +152,7 @@ private:
   ////////////////////////////////////////
   // Private methods
   /////////////////
-  void SetDouble(RbtDouble d) {
+  void SetDouble(double d) {
     m_d = d;
     m_sl.clear();
     ostringstream ostr;
@@ -178,7 +177,7 @@ private:
     m_d = atof(String().c_str());
   }
 
-  void SetBool(RbtBool b) {
+  void SetBool(bool b) {
     if (b) {
       SetString(_TRUE);
     } else {
@@ -199,16 +198,15 @@ private:
     m_sl.push_back(s);
   }
 
-  void SetDoubleList(const RbtDoubleList &dl, RbtInt maxColumns,
-                     RbtInt precision) {
-    RbtInt nValues = dl.size();
+  void SetDoubleList(const RbtDoubleList &dl, int maxColumns, int precision) {
+    int nValues = dl.size();
     m_d = (nValues > 0) ? dl[0] : 0.0;
     m_sl.clear();
     ostringstream ostr;
     ostr.precision(precision);
     ostr.setf(ios_base::fixed, ios_base::floatfield);
-    RbtInt lastIndex = nValues - 1;
-    for (RbtInt i = 0; i < nValues; ++i) {
+    int lastIndex = nValues - 1;
+    for (int i = 0; i < nValues; ++i) {
       ostr << dl[i];
       if ((ostr.tellp() >= maxColumns) || (i == lastIndex)) {
         m_sl.push_back(ostr.str());
@@ -228,7 +226,7 @@ private:
   ////////////////////////////////////////
   // Private data
   //////////////
-  RbtDouble m_d;
+  double m_d;
   RbtStringList m_sl;
 };
 

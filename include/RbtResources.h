@@ -15,14 +15,13 @@
 #ifndef _RBTRESOURCES_H_
 #define _RBTRESOURCES_H_
 
-#include "RbtTypes.h"
 #include "VERSION"
 #include <string>
 
 const std::string IDS_COPYRIGHT = "The rDock program is licensed under "
                                   "GNU-LGPLv3.0. http://rdock.sourceforge.net/";
 #ifdef _DEBUG
-const RbtString IDS_PRODUCT = "libRbtD.so";
+const std::string IDS_PRODUCT = "libRbtD.so";
 #else
 const std::string IDS_PRODUCT = "libRbt.so";
 #endif //_DEBUG

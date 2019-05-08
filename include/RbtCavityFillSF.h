@@ -31,7 +31,7 @@ protected:
   virtual void SetupReceptor();
   virtual void SetupLigand();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
   void ParameterUpdated(const std::string &strName);
 
 private:

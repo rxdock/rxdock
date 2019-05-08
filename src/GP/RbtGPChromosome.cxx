@@ -19,26 +19,26 @@
 std::string RbtGPChromosome::_CT("RbtGPChromosome");
 
 // Constructors
-RbtGPChromosome::RbtGPChromosome(RbtInt npi, RbtInt nfi, RbtInt nn, RbtInt no,
-                                 RbtInt nr, RbtInt nc) {
+RbtGPChromosome::RbtGPChromosome(int npi, int nfi, int nn, int no, int nr,
+                                 int nc) {
   chrom = RbtIntList(nn * (nfi + 1) + no);
-  RbtInt i = 0, n;
+  int i = 0, n;
   nProgramInputs = npi;
   nFunctionsInputs = nfi;
-  RbtInt ncells = nn + npi; // number of nodes + inputs
+  int ncells = nn + npi; // number of nodes + inputs
   nProgramOutputs = no;
   nColumns = nc;
   nRows = nr;
   cells = RbtCellList(ncells);
-  for (RbtInt i = 0; i < ncells; i++)
+  for (int i = 0; i < ncells; i++)
     cells[i] = new RbtCell();
 }
 RbtGPChromosome::RbtGPChromosome(const RbtGPChromosome &c) {
   chrom = RbtIntList(c.chrom.size());
   cells = RbtCellList(c.cells.size());
-  for (RbtInt i = 0; i < cells.size(); i++)
+  for (int i = 0; i < cells.size(); i++)
     cells[i] = c.cells[i];
-  for (RbtInt i = 0; i < chrom.size(); i++)
+  for (int i = 0; i < chrom.size(); i++)
     chrom[i] = c.chrom[i];
   nProgramInputs = c.nProgramInputs;
   nFunctionsInputs = c.nFunctionsInputs;
@@ -51,14 +51,14 @@ RbtGPChromosome::RbtGPChromosome(const RbtGPChromosome &c) {
 RbtGPChromosome::~RbtGPChromosome() {}
 
 void RbtGPChromosome::Clear() {
-  for (RbtInt i = 0; i < cells.size(); i++)
+  for (int i = 0; i < cells.size(); i++)
     cells[i]->Clear();
   RbtCommand::Clear();
 }
 RbtGPChromosome &RbtGPChromosome::operator=(const RbtGPChromosome &c) {
-  for (RbtInt i = 0; i < cells.size(); i++)
+  for (int i = 0; i < cells.size(); i++)
     *(cells[i]) = *(c.cells[i]);
-  for (RbtInt i = 0; i < chrom.size(); i++)
+  for (int i = 0; i < chrom.size(); i++)
     chrom[i] = c.chrom[i];
   nProgramInputs = c.nProgramInputs;
   nFunctionsInputs = c.nFunctionsInputs;
@@ -66,9 +66,9 @@ RbtGPChromosome &RbtGPChromosome::operator=(const RbtGPChromosome &c) {
 }
 
 istream &operator>>(istream &s, RbtGPChromosome &p) {
-  for (RbtInt i = 0; i < p.chrom.size(); i++)
+  for (int i = 0; i < p.chrom.size(); i++)
     s >> p.chrom[i];
-  RbtInt cell;
+  int cell;
   RbtReturnType value;
   while (!s.eof()) {
     s >> cell >> value;
@@ -77,19 +77,19 @@ istream &operator>>(istream &s, RbtGPChromosome &p) {
 }
 
 ostream &RbtGPChromosome::Print(ostream &s) const {
-  RbtInt g = 0;
-  for (RbtInt i = 0; i < nColumns; i++) {
-    for (RbtInt j = 0; j < nRows; j++) {
-      for (RbtInt k = 0; k <= nFunctionsInputs; k++)
+  int g = 0;
+  for (int i = 0; i < nColumns; i++) {
+    for (int j = 0; j < nRows; j++) {
+      for (int k = 0; k <= nFunctionsInputs; k++)
         s << chrom[g++] << " ";
       s << "\t";
     }
     s << endl;
   }
-  for (RbtInt i = 0; i < nProgramOutputs; i++)
+  for (int i = 0; i < nProgramOutputs; i++)
     s << chrom[g++] << " ";
   s << endl;
-  for (RbtInt i = 0; i < cells.size(); i++)
+  for (int i = 0; i < cells.size(); i++)
     if (cells[i]->Constant())
       s << i << "\t" << cells[i]->GetResult() << endl;
   return s;
@@ -100,14 +100,14 @@ ostream &operator<<(ostream &s, const RbtGPChromosome &p) {
   return s;
 }
 
-void RbtGPChromosome::SetConstant(RbtReturnType cte, RbtInt idx) {
-  RbtInt cell = idx / (nFunctionsInputs + 1) + nProgramInputs;
+void RbtGPChromosome::SetConstant(RbtReturnType cte, int idx) {
+  int cell = idx / (nFunctionsInputs + 1) + nProgramInputs;
   //    cout << cell << endl;
   cells[cell]->SetConstant(cte);
 }
 
-void RbtGPChromosome::ResetConstant(RbtInt idx) {
-  RbtInt cell = idx / (nFunctionsInputs + 1) + nProgramInputs;
+void RbtGPChromosome::ResetConstant(int idx) {
+  int cell = idx / (nFunctionsInputs + 1) + nProgramInputs;
   //    cout << cell << endl;
   cells[cell]->ResetConstant();
   if (cells[cell]->Evaluated())

@@ -20,13 +20,13 @@
 
 #include "RbtVariant.h"
 
-typedef RbtInt RbtRequestID;
+typedef int RbtRequestID;
 
 // Only check request assertions in debug build
 #ifdef _NDEBUG
 const RbtBool REQ_CHECK = false;
 #else
-const RbtBool REQ_CHECK = true;
+const bool REQ_CHECK = true;
 #endif //_NDEBUG
 
 class RbtRequest {
@@ -39,7 +39,7 @@ public:
   // Public methods
   ////////////////
   RbtRequestID GetID() const { return m_id; }
-  RbtUInt GetNumParameters() const { return m_parameters.size(); }
+  unsigned int GetNumParameters() const { return m_parameters.size(); }
   RbtVariantList GetParameters() const { return m_parameters; }
 
   ////////////////////////////////////////

@@ -37,10 +37,10 @@ public:
 
   // Pure virtual methods from RbtBaseMolecularDataSource
   void Reset();
-  RbtInt GetNumTitles() throw(RbtError);
-  RbtInt GetNumAtoms() throw(RbtError);
-  RbtInt GetNumBonds() throw(RbtError);
-  RbtInt GetNumSegments() throw(RbtError);
+  int GetNumTitles() throw(RbtError);
+  int GetNumAtoms() throw(RbtError);
+  int GetNumBonds() throw(RbtError);
+  int GetNumSegments() throw(RbtError);
 
   RbtStringList GetTitleList() throw(RbtError);
   RbtAtomList GetAtomList() throw(RbtError);
@@ -49,14 +49,14 @@ public:
 
   // DM 12 May 1999 - support for data records (e.g. SD file)
   // Get number of data fields
-  virtual RbtInt GetNumData() throw(RbtError);
+  virtual int GetNumData() throw(RbtError);
   // Get list of field names as string list
   virtual RbtStringList GetDataFieldList() throw(RbtError);
   // Get all data as map of key=field name, value=variant (double,string or
   // string list)
   virtual RbtStringVariantMap GetDataMap() throw(RbtError);
   // Query as to whether a particular data field name is present
-  virtual RbtBool isDataFieldPresent(const std::string &strDataField);
+  virtual bool isDataFieldPresent(const std::string &strDataField);
   // Get a particular data value
   virtual RbtVariant
   GetDataValue(const std::string &strDataField) throw(RbtError);
@@ -67,7 +67,7 @@ public:
   RbtSegmentMap GetSegmentFilterMap();
   void SetSegmentFilterMap(const RbtSegmentMap &segmentFilterMap);
   void ClearSegmentFilterMap();
-  RbtBool isSegmentFilterMapDefined();
+  bool isSegmentFilterMapDefined();
 
 protected:
   // Protected methods
@@ -92,8 +92,8 @@ private:
                 &); // Copy assignment disabled by default
 
   // Get methods with segment filter applied
-  RbtInt GetNumAtomsWithFilter();
-  RbtInt GetNumBondsWithFilter();
+  int GetNumAtomsWithFilter();
+  int GetNumBondsWithFilter();
   RbtAtomList GetAtomListWithFilter();
   RbtBondList GetBondListWithFilter();
 

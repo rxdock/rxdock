@@ -106,7 +106,7 @@ void RbtPharmaSF::SetupReceptor() {
     }
     Rbt::ReadConstraints(optFile, m_optList, false);
     // Keep m_nopt within range
-    SetParameter(_NOPT, std::min(m_nopt, RbtInt(m_optList.size())));
+    SetParameter(_NOPT, std::min(m_nopt, int(m_optList.size())));
     SetParameter(_NOPT, std::max(m_nopt, 0));
     if (GetTrace() > 0) {
       cout << _CT << ": " << m_nopt
@@ -156,10 +156,10 @@ void RbtPharmaSF::SetupScore() {
   // No further setup required
 }
 
-RbtDouble RbtPharmaSF::RawScore() const {
-  RbtDouble total(0.0);
+double RbtPharmaSF::RawScore() const {
+  double total(0.0);
   // Store and sum all the mandatory terms
-  RbtInt i = 0;
+  int i = 0;
   for (RbtConstraintListConstIter iter = m_constrList.begin();
        iter != m_constrList.end(); iter++, i++) {
     m_conScores[i] = (*iter)->Score();
@@ -177,7 +177,7 @@ RbtDouble RbtPharmaSF::RawScore() const {
   std::partial_sort_copy(m_optScores.begin(), m_optScores.end(), lowest.begin(),
                          lowest.end());
   // cout << m_nopt << " lowest optional scores:\t";
-  for (RbtInt i = 0; i < lowest.size(); i++) {
+  for (int i = 0; i < lowest.size(); i++) {
     // cout << lowest[i] << "\t";
   }
   // cout << endl;
@@ -200,18 +200,18 @@ void RbtPharmaSF::ParameterUpdated(const std::string &strName) {
 void RbtPharmaSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
   if (isEnabled()) {
     // Copied from RbtBaseSF
-    RbtDouble rs = RawScore();
+    double rs = RawScore();
     std::string name = GetFullName();
     scoreMap[name] = rs;
     AddToParentMapEntry(scoreMap, rs);
     // Store the mandatory constraint scores
-    for (RbtInt i = 0; i < m_conScores.size(); i++) {
+    for (int i = 0; i < m_conScores.size(); i++) {
       ostringstream field;
       field << name << ".con_" << i + 1;
       scoreMap[field.str()] = m_conScores[i];
     }
     // Store the optional constraint scores (unsorted)
-    for (RbtInt i = 0; i < m_optScores.size(); i++) {
+    for (int i = 0; i < m_optScores.size(); i++) {
       ostringstream field;
       field << name << ".opt_" << i + 1;
       scoreMap[field.str()] = m_optScores[i];

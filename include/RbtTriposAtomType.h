@@ -74,10 +74,10 @@ public:
 
   struct info {
     std::string name;
-    RbtInt atomicNo;
+    int atomicNo;
     int hybrid;
     info() : atomicNo(0), hybrid(0) {}
-    info(const std::string &n, RbtInt a, RbtInt h)
+    info(const std::string &n, int a, int h)
         : name(n), atomicNo(a), hybrid(h) {}
   };
 
@@ -94,13 +94,13 @@ public:
   // Returns Tripos atom type for given atom
   // If useExtendedTypes is true, pseudo types for extended carbons and polar Hs
   // are used
-  eType operator()(RbtAtom *pAtom, RbtBool useExtendedTypes = false) const;
+  eType operator()(RbtAtom *pAtom, bool useExtendedTypes = false) const;
   // Converts Tripos type to string
   std::string Type2Str(eType) const;
   // Get hybridisation from Tripos type
   int Type2Hybrid(eType) const;
   // Get atomic number from Tripos type
-  RbtInt Type2AtomicNo(eType) const;
+  int Type2AtomicNo(eType) const;
   // Converts string to Tripos type
   eType Str2Type(const std::string &) const;
 

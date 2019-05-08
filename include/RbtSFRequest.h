@@ -43,12 +43,12 @@ public:
 class RbtSFPartitionRequest : public RbtRequest {
 public:
   // Request to partition all scoring functions to a particular distance
-  RbtSFPartitionRequest(RbtDouble dist) : RbtRequest(ID_REQ_SF_PARTITION) {
+  RbtSFPartitionRequest(double dist) : RbtRequest(ID_REQ_SF_PARTITION) {
     AddParameter(dist);
   }
   // Request to partition a particular named scoring function to a particular
   // distance
-  RbtSFPartitionRequest(const std::string &sfName, RbtDouble dist)
+  RbtSFPartitionRequest(const std::string &sfName, double dist)
       : RbtRequest(ID_REQ_SF_PARTITION) {
     AddParameter(sfName);
     AddParameter(dist);

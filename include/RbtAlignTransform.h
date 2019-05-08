@@ -67,7 +67,7 @@ private:
   RbtRand &m_rand; // keep a reference to the singleton random number generator
   RbtCavityList m_cavities; // List of active site cavities to choose from
   RbtIntList m_cumulSize;   // Cumulative sizes, for weighted probabilities
-  RbtInt m_totalSize;       // Total size of all cavities
+  int m_totalSize;          // Total size of all cavities
 };
 
 // Useful typedefs

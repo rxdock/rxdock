@@ -38,9 +38,7 @@ RbtModelPtr RbtBiMolWorkSpace::GetLigand() const { return GetModel(LIGAND); }
 RbtModelList RbtBiMolWorkSpace::GetSolvent() const {
   return GetModels(SOLVENT);
 }
-RbtBool RbtBiMolWorkSpace::hasSolvent() const {
-  return GetNumModels() > SOLVENT;
-}
+bool RbtBiMolWorkSpace::hasSolvent() const { return GetNumModels() > SOLVENT; }
 
 void RbtBiMolWorkSpace::SetReceptor(RbtModelPtr spReceptor) {
   SetModel(RECEPTOR, spReceptor);
@@ -72,15 +70,15 @@ void RbtBiMolWorkSpace::RemoveSolvent() {
 }
 
 void RbtBiMolWorkSpace::UpdateModelCoordsFromChromRecords(
-    RbtBaseMolecularFileSource *pSource, RbtInt iTrace) {
-  RbtInt nModels = GetNumModels();
-  for (RbtInt iModel = 0; iModel < nModels; iModel++) {
+    RbtBaseMolecularFileSource *pSource, int iTrace) {
+  int nModels = GetNumModels();
+  for (int iModel = 0; iModel < nModels; iModel++) {
     // if (iModel == LIGAND) continue;
     RbtModelPtr spModel = GetModel(iModel);
     if (spModel.Ptr()) {
       RbtChromElementPtr spChrom = spModel->GetChrom();
       if (spChrom.Ptr()) {
-        RbtInt chromLength = spChrom->GetLength();
+        int chromLength = spChrom->GetLength();
         if (chromLength > 0) {
           ostringstream ostr;
           ostr << "CHROM." << iModel;
@@ -120,19 +118,19 @@ void RbtBiMolWorkSpace::UpdateModelCoordsFromChromRecords(
 
 // Model I/O
 // Saves ligand to file sink
-void RbtBiMolWorkSpace::Save(RbtBool bSaveScores) {
+void RbtBiMolWorkSpace::Save(bool bSaveScores) {
   SaveLigand(GetSink(), bSaveScores);
 }
 
 // Model I/O
 // Saves ligand to history file sink
-void RbtBiMolWorkSpace::SaveHistory(RbtBool bSaveScores) {
+void RbtBiMolWorkSpace::SaveHistory(bool bSaveScores) {
   SaveLigand(GetHistorySink(), bSaveScores);
 }
 
 // Private method to save ligand to file sink, optionally with score attached
 void RbtBiMolWorkSpace::SaveLigand(RbtMolecularFileSinkPtr spSink,
-                                   RbtBool bSaveScores) {
+                                   bool bSaveScores) {
   if (spSink.Null()) // Check we have a valid sink
     return;
   RbtModelPtr spLigand(GetLigand());
@@ -156,8 +154,8 @@ void RbtBiMolWorkSpace::SaveLigand(RbtMolecularFileSinkPtr spSink,
     }
     // Save the chromosome values for all models for later retrieval
     spLigand->ClearAllDataFields("CHROM.");
-    RbtInt nModels = GetNumModels();
-    for (RbtInt iModel = 0; iModel < nModels; iModel++) {
+    int nModels = GetNumModels();
+    for (int iModel = 0; iModel < nModels; iModel++) {
       RbtModelPtr spModel = GetModel(iModel);
       if (spModel.Ptr()) {
         RbtChromElementPtr spChrom = spModel->GetChrom();

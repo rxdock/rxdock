@@ -45,7 +45,7 @@ protected:
   virtual void SetupLigand();
   virtual void SetupSolvent();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
 
   // Clear the receptor and ligand grids and lists respectively
   // As we are not using smart pointers, there is some memory management to do
@@ -60,15 +60,14 @@ protected:
   void ParameterUpdated(const std::string &strName);
 
 private:
-  RbtDouble ReceptorScore() const;
-  RbtDouble SolventScore() const;
-  RbtDouble InterScore() const;
-  RbtDouble ReceptorSolventScore() const;
-  RbtDouble LigandSolventScore() const;
+  double ReceptorScore() const;
+  double SolventScore() const;
+  double InterScore() const;
+  double ReceptorSolventScore() const;
+  double LigandSolventScore() const;
 
-  RbtDouble InterScore(const RbtInteractionCenterList &posList,
-                       const RbtInteractionCenterList &negList,
-                       RbtBool bCount) const;
+  double InterScore(const RbtInteractionCenterList &posList,
+                    const RbtInteractionCenterList &negList, bool bCount) const;
   RbtInteractionGridPtr m_spPosGrid;
   RbtInteractionGridPtr m_spNegGrid;
   RbtInteractionCenterList m_recepPosList;
@@ -85,15 +84,15 @@ private:
   RbtInteractionCenterList m_solventNegList;
   RbtInteractionListMap m_solventIntns;
 
-  RbtBool m_bAttr;
-  RbtBool m_bFlexRec;
-  RbtBool m_bSolvent;
+  bool m_bAttr;
+  bool m_bFlexRec;
+  bool m_bSolvent;
   // DM 12 Jun 2002 - keep track of number of ligand atoms involved in non-zero
   // polar interactions
-  mutable RbtInt m_nPos; //#positive centers with non-zero scores
-  mutable RbtInt m_nNeg; //#negative centers with non-zero scores
-  RbtDouble m_posThreshold;
-  RbtDouble m_negThreshold;
+  mutable int m_nPos; //#positive centers with non-zero scores
+  mutable int m_nNeg; //#negative centers with non-zero scores
+  double m_posThreshold;
+  double m_negThreshold;
 };
 
 #endif //_RBTPOLARIDXSF_H_

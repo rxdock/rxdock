@@ -35,18 +35,18 @@ public:
   // pure virtual from RbtChromElement
   virtual void Reset();
   virtual void Randomise();
-  virtual void Mutate(RbtDouble relStepSize);
+  virtual void Mutate(double relStepSize);
   virtual void SyncFromModel();
   virtual void SyncToModel();
   virtual RbtChromElement *clone() const;
-  virtual RbtInt GetLength() const;
-  virtual RbtInt GetXOverLength() const;
+  virtual int GetLength() const;
+  virtual int GetXOverLength() const;
   virtual void GetVector(RbtDoubleList &v) const;
   virtual void GetVector(RbtXOverList &v) const;
-  virtual void SetVector(const RbtDoubleList &v, RbtInt &i) throw(RbtError);
-  virtual void SetVector(const RbtXOverList &v, RbtInt &i) throw(RbtError);
+  virtual void SetVector(const RbtDoubleList &v, int &i) throw(RbtError);
+  virtual void SetVector(const RbtXOverList &v, int &i) throw(RbtError);
   virtual void GetStepVector(RbtDoubleList &v) const;
-  virtual RbtDouble CompareVector(const RbtDoubleList &v, RbtInt &i) const;
+  virtual double CompareVector(const RbtDoubleList &v, int &i) const;
   virtual void Print(ostream &s) const;
 
   // Aggregate methods

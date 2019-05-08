@@ -43,8 +43,8 @@ RbtGPFitnessFunction::operator=(const RbtGPFitnessFunction &g) {
 //////////////////
 RbtGPFitnessFunction::~RbtGPFitnessFunction() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
-RbtDouble RbtGPFitnessFunction::GetObjective() const { return objective; }
+double RbtGPFitnessFunction::GetObjective() const { return objective; }
 
-RbtDouble RbtGPFitnessFunction::GetFitness() const { return fitness; }
+double RbtGPFitnessFunction::GetFitness() const { return fitness; }
 
-void RbtGPFitnessFunction::SetFitness(RbtDouble f) { fitness = f; }
+void RbtGPFitnessFunction::SetFitness(double f) { fitness = f; }

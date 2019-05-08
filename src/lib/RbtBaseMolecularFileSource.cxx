@@ -49,7 +49,7 @@ RbtBaseMolecularFileSource::~RbtBaseMolecularFileSource() {
 // are created
 void RbtBaseMolecularFileSource::Reset() { ClearMolCache(); }
 
-RbtInt RbtBaseMolecularFileSource::GetNumTitles() throw(RbtError) {
+int RbtBaseMolecularFileSource::GetNumTitles() throw(RbtError) {
   if (isTitleListSupported()) {
     Parse();
     return m_titleList.size();
@@ -58,7 +58,7 @@ RbtInt RbtBaseMolecularFileSource::GetNumTitles() throw(RbtError) {
                             "Title list not supported by " + GetName());
 }
 
-RbtInt RbtBaseMolecularFileSource::GetNumAtoms() throw(RbtError) {
+int RbtBaseMolecularFileSource::GetNumAtoms() throw(RbtError) {
   if (isAtomListSupported()) {
     Parse();
     if (isSegmentFilterMapDefined())
@@ -69,7 +69,7 @@ RbtInt RbtBaseMolecularFileSource::GetNumAtoms() throw(RbtError) {
     throw RbtInvalidRequest(_WHERE_, "Atom list not supported by " + GetName());
 }
 
-RbtInt RbtBaseMolecularFileSource::GetNumBonds() throw(RbtError) {
+int RbtBaseMolecularFileSource::GetNumBonds() throw(RbtError) {
   if (isBondListSupported()) {
     Parse();
     if (isSegmentFilterMapDefined())
@@ -80,7 +80,7 @@ RbtInt RbtBaseMolecularFileSource::GetNumBonds() throw(RbtError) {
     throw RbtInvalidRequest(_WHERE_, "Bond list not supported by " + GetName());
 }
 
-RbtInt RbtBaseMolecularFileSource::GetNumSegments() throw(RbtError) {
+int RbtBaseMolecularFileSource::GetNumSegments() throw(RbtError) {
   if (isAtomListSupported()) {
     Parse();
     return m_segmentMap.size();
@@ -129,7 +129,7 @@ RbtSegmentMap RbtBaseMolecularFileSource::GetSegmentMap() throw(RbtError) {
 
 // DM 12 May 1999 - support for data records (e.g. SD file)
 // Get number of data fields
-RbtInt RbtBaseMolecularFileSource::GetNumData() throw(RbtError) {
+int RbtBaseMolecularFileSource::GetNumData() throw(RbtError) {
   if (isDataSupported()) {
     Parse();
     return m_dataMap.size();
@@ -165,7 +165,7 @@ RbtStringVariantMap RbtBaseMolecularFileSource::GetDataMap() throw(RbtError) {
 }
 
 // Query as to whether a particular data field name is present
-RbtBool RbtBaseMolecularFileSource::isDataFieldPresent(
+bool RbtBaseMolecularFileSource::isDataFieldPresent(
     const std::string &strDataField) {
   if (isDataSupported()) {
     Parse();
@@ -208,7 +208,7 @@ void RbtBaseMolecularFileSource::ClearSegmentFilterMap() {
   m_segmentFilterMap.clear();
 }
 
-RbtBool RbtBaseMolecularFileSource::isSegmentFilterMapDefined() {
+bool RbtBaseMolecularFileSource::isSegmentFilterMapDefined() {
   return !m_segmentFilterMap.empty();
 }
 
@@ -268,12 +268,12 @@ void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
 // DM 30 Oct 2000 - now independent from RemoveAtom
 void RbtBaseMolecularFileSource::RenumberAtomsAndBonds() {
   // Renumber the bond and atom IDs from 1
-  RbtInt nAtomId(1);
+  int nAtomId(1);
   for (RbtAtomListIter aIter = m_atomList.begin(); aIter != m_atomList.end();
        aIter++, nAtomId++) {
     (*aIter)->SetAtomId(nAtomId);
   }
-  RbtInt nBondId(1);
+  int nBondId(1);
   for (RbtBondListIter bIter = m_bondList.begin(); bIter != m_bondList.end();
        bIter++, nBondId++) {
     (*bIter)->SetBondId(nBondId);
@@ -286,8 +286,8 @@ void RbtBaseMolecularFileSource::RenumberAtomsAndBonds() {
 // This version of GetNumAtoms applies the segment filter
 // Called by the public GetNumAtoms
 // Assume that Parse has already been called
-RbtInt RbtBaseMolecularFileSource::GetNumAtomsWithFilter() {
-  RbtInt nAtoms(0);
+int RbtBaseMolecularFileSource::GetNumAtomsWithFilter() {
+  int nAtoms(0);
   // The segment map data member (m_segmentMap) already contains the atom counts
   // for each segment present but we need to iterate over the segment filter map
   // to see how many of those requested are actually present
@@ -305,8 +305,8 @@ RbtInt RbtBaseMolecularFileSource::GetNumAtomsWithFilter() {
 // This version of GetNumBonds applies the segment filter
 // Called by the public GetNumBonds
 // Assume that Parse has already been called
-RbtInt RbtBaseMolecularFileSource::GetNumBondsWithFilter() {
-  RbtInt nBonds(0);
+int RbtBaseMolecularFileSource::GetNumBondsWithFilter() {
+  int nBonds(0);
   // More tricky this one, there's no option but to iterate over all the bonds
   // to find if the atoms are in one of the segments in the filter map
   for (RbtBondListIter iter = m_bondList.begin(); iter != m_bondList.end();
@@ -328,7 +328,7 @@ RbtAtomList RbtBaseMolecularFileSource::GetAtomListWithFilter() {
   // Loop over all atoms and check whether they belong to one of the requested
   // segments DM 29 Jul 1999 - set consecutive atom ID's starting from 1,
   // irrespective of ID in file
-  RbtInt nAtomId(0);
+  int nAtomId(0);
   for (RbtAtomListIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter++) {
     if (m_segmentFilterMap.find((*iter)->GetSegmentName()) !=
@@ -392,7 +392,7 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     std::string mandatory =
         spParamSource->GetParameterValueAsString(_MANDATORY);
     RbtStringList mandAtoms = Rbt::ConvertDelimitedStringToList(mandatory);
-    RbtInt nPresent = Rbt::GetNumMatchingAtoms(atoms, mandAtoms);
+    int nPresent = Rbt::GetNumMatchingAtoms(atoms, mandAtoms);
     if (nPresent != mandAtoms.size()) {
 #ifdef _DEBUG
       cout << "INFO SetupPartialIonicGroups: Only " << nPresent << " out of "
@@ -408,7 +408,7 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     std::string forbidden =
         spParamSource->GetParameterValueAsString(_FORBIDDEN);
     RbtStringList forbAtoms = Rbt::ConvertDelimitedStringToList(forbidden);
-    RbtInt nPresent = Rbt::GetNumMatchingAtoms(atoms, forbAtoms);
+    int nPresent = Rbt::GetNumMatchingAtoms(atoms, forbAtoms);
     if (nPresent > 0) {
 #ifdef _DEBUG
       cout << "INFO SetupPartialIonicGroups: " << nPresent
@@ -422,7 +422,7 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
 
   for (RbtStringListConstIter aIter = atList.begin(); aIter != atList.end();
        aIter++) {
-    RbtDouble partialCharge(spParamSource->GetParameterValue(
+    double partialCharge(spParamSource->GetParameterValue(
         *aIter)); // Get the partial charge value
 #ifdef _DEBUG
     cout << endl << "Trying to match " << *aIter << endl;

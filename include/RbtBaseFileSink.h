@@ -38,7 +38,7 @@ public:
   std::string GetFileName() const { return m_strFileName; }
   // void SetFileName(const char* fileName);
   void SetFileName(const std::string &fileName);
-  RbtBool StatusOK() { return Status().isOK(); }
+  bool StatusOK() { return Status().isOK(); }
   RbtError Status();
 
   // PURE VIRTUAL - MUST BE OVERRIDDEN IN DERIVED CLASSES
@@ -51,19 +51,19 @@ protected:
   // Write the cache to the file
   // DM 11 Feb 1999 - add flag to allow the cache to be written without clearing
   // it
-  void Write(RbtBool bClearCache = true) throw(RbtError);
+  void Write(bool bClearCache = true) throw(RbtError);
   // Add a complete line to the cache
   void AddLine(const std::string &fileRec);
   // Replace a complete line in the cache
-  void ReplaceLine(const std::string &fileRec, RbtUInt nRec);
+  void ReplaceLine(const std::string &fileRec, unsigned int nRec);
   // Is cache empty
-  RbtBool isCacheEmpty() const { return m_lineRecs.empty(); }
+  bool isCacheEmpty() const { return m_lineRecs.empty(); }
 
   // DM 06 Apr 1999 - append attribute is for derived class use only
-  RbtBool GetAppend() const {
+  bool GetAppend() const {
     return m_bAppend;
   } // Get append status (true=append, false=overwrite)
-  void SetAppend(RbtBool bAppend) {
+  void SetAppend(bool bAppend) {
     m_bAppend = bAppend;
   } // Set append status (true=append, false=overwrite)
 
@@ -78,7 +78,7 @@ private:
   RbtBaseFileSink &
   operator=(const RbtBaseFileSink &); // Copy assignment disabled by default
 
-  void Open(RbtBool bAppend = false) throw(RbtError);
+  void Open(bool bAppend = false) throw(RbtError);
   void Close();
   void ClearCache();
 
@@ -94,7 +94,7 @@ private:
   RbtStringList m_lineRecs;
   std::string m_strFileName;
   ofstream m_fileOut;
-  RbtBool m_bAppend; // If true, Write() appends to file rather than overwriting
+  bool m_bAppend; // If true, Write() appends to file rather than overwriting
 };
 
 // Useful typedefs

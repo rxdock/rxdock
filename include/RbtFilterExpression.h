@@ -19,7 +19,6 @@
 #include "RbtFilterExpressionVisitor.h"
 #include "RbtGPTypes.h"
 #include "RbtTokenIter.h"
-#include "RbtTypes.h"
 
 class RbtFilterExpressionVisitor;
 
@@ -28,8 +27,8 @@ public:
   static std::string _CT;
   virtual void Print() = 0;
   virtual void Accept(RbtFilterExpressionVisitor &) = 0;
-  virtual RbtInt GetNOps() = 0;
-  virtual SmartPtr<RbtFilterExpression> GetOp(RbtInt) = 0;
+  virtual int GetNOps() = 0;
+  virtual SmartPtr<RbtFilterExpression> GetOp(int) = 0;
   ///////////////////
   // Destructor
   //////////////////
@@ -60,9 +59,9 @@ public:
   virtual ~FilterVbleExp();
   void Accept(RbtFilterExpressionVisitor &visitor);
   void Print() { cout << "v" << vble.GetName() << " "; }
-  RbtInt GetNOps() { return 0; }
+  int GetNOps() { return 0; }
   const RbtVble &GetVble() const { return vble; }
-  RbtFilterExpressionPtr GetOp(RbtInt i) {
+  RbtFilterExpressionPtr GetOp(int i) {
     throw RbtError(_WHERE_, "Vble Expressions don't have operands");
   }
 
@@ -79,8 +78,8 @@ public:
     cout << "log ";
     operand->Print();
   }
-  virtual RbtInt GetNOps() { return 1; }
-  RbtFilterExpressionPtr GetOp(RbtInt i) {
+  virtual int GetNOps() { return 1; }
+  RbtFilterExpressionPtr GetOp(int i) {
     if (i == 0)
       return operand;
     else
@@ -100,8 +99,8 @@ public:
     cout << "exp ";
     operand->Print();
   }
-  virtual RbtInt GetNOps() { return 1; }
-  RbtFilterExpressionPtr GetOp(RbtInt i) {
+  virtual int GetNOps() { return 1; }
+  RbtFilterExpressionPtr GetOp(int i) {
     if (i == 0)
       return operand;
     else
@@ -122,8 +121,8 @@ public:
     operand1->Print();
     operand2->Print();
   }
-  virtual RbtInt GetNOps() { return 2; }
-  RbtFilterExpressionPtr GetOp(RbtInt i) {
+  virtual int GetNOps() { return 2; }
+  RbtFilterExpressionPtr GetOp(int i) {
     if (i == 0)
       return operand1;
     if (i == 1)
@@ -146,8 +145,8 @@ public:
     operand1->Print();
     operand2->Print();
   }
-  virtual RbtInt GetNOps() { return 2; }
-  RbtFilterExpressionPtr GetOp(RbtInt i) {
+  virtual int GetNOps() { return 2; }
+  RbtFilterExpressionPtr GetOp(int i) {
     if (i == 0)
       return operand1;
     if (i == 1)
@@ -170,8 +169,8 @@ public:
     operand1->Print();
     operand2->Print();
   }
-  virtual RbtInt GetNOps() { return 2; }
-  RbtFilterExpressionPtr GetOp(RbtInt i) {
+  virtual int GetNOps() { return 2; }
+  RbtFilterExpressionPtr GetOp(int i) {
     if (i == 0)
       return operand1;
     if (i == 1)
@@ -194,8 +193,8 @@ public:
     operand1->Print();
     operand2->Print();
   }
-  virtual RbtInt GetNOps() { return 2; }
-  RbtFilterExpressionPtr GetOp(RbtInt i) {
+  virtual int GetNOps() { return 2; }
+  RbtFilterExpressionPtr GetOp(int i) {
     if (i == 0)
       return operand1;
     if (i == 1)
@@ -218,8 +217,8 @@ public:
     operand1->Print();
     operand2->Print();
   }
-  virtual RbtInt GetNOps() { return 2; }
-  RbtFilterExpressionPtr GetOp(RbtInt i) {
+  virtual int GetNOps() { return 2; }
+  RbtFilterExpressionPtr GetOp(int i) {
     if (i == 0)
       return operand1;
     if (i == 1)
@@ -244,8 +243,8 @@ public:
     operand2->Print();
     operand3->Print();
   }
-  virtual RbtInt GetNOps() { return 3; }
-  RbtFilterExpressionPtr GetOp(RbtInt i) {
+  virtual int GetNOps() { return 3; }
+  RbtFilterExpressionPtr GetOp(int i) {
     if (i == 0)
       return operand1;
     if (i == 1)

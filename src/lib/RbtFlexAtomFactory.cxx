@@ -64,7 +64,7 @@ void RbtFlexAtomFactory::VisitReceptorFlexData(RbtReceptorFlexData *pFlexData) {
       RbtAtomList bondedAtomList = Rbt::GetBondedAtomList(*iter);
       if (bondedAtomList.size() == 1) {
         RbtAtom *parent = bondedAtomList.front();
-        RbtDouble bondLength =
+        double bondLength =
             Rbt::Length(parent->GetCoords(), (*iter)->GetCoords());
         (*iter)->SetUser2Value(2.0 * bondLength);
       }
@@ -103,12 +103,12 @@ void RbtFlexAtomFactory::VisitLigandFlexData(RbtLigandFlexData *pFlexData) {
       for (RbtAtomListIter iter = atomList.begin(); iter != atomList.end();
            ++iter) {
         m_tetheredAtomList.push_back(*iter);
-        RbtDouble radius = Rbt::Length((*iter)->GetCoords(), prAxes.com);
+        double radius = Rbt::Length((*iter)->GetCoords(), prAxes.com);
         (*iter)->SetUser2Value(2.0 * radius);
       }
     }
   } else if (eTransMode == RbtChromElement::TETHERED) {
-    RbtDouble maxTrans = pFlexData->GetParameter(RbtLigandFlexData::_MAX_TRANS);
+    double maxTrans = pFlexData->GetParameter(RbtLigandFlexData::_MAX_TRANS);
     // Tethered translation; fixed rotation
     // Therefore max translation of any atom is a constant (+/- maxTrans)
     if (eRotMode == RbtChromElement::FIXED) {
@@ -126,7 +126,7 @@ void RbtFlexAtomFactory::VisitLigandFlexData(RbtLigandFlexData *pFlexData) {
       for (RbtAtomListIter iter = atomList.begin(); iter != atomList.end();
            ++iter) {
         m_tetheredAtomList.push_back(*iter);
-        RbtDouble radius = Rbt::Length((*iter)->GetCoords(), prAxes.com);
+        double radius = Rbt::Length((*iter)->GetCoords(), prAxes.com);
         (*iter)->SetUser2Value((2.0 * radius) + maxTrans);
       }
     }

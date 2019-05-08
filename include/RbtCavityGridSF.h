@@ -50,17 +50,17 @@ protected:
   virtual void SetupLigand();
   virtual void SetupSolvent();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
   void ParameterUpdated(const std::string &strName);
 
 private:
   RbtRealGridPtr m_spGrid;
-  RbtDouble m_maxDist;     // Max distance of any grid point from the cavity
+  double m_maxDist;        // Max distance of any grid point from the cavity
   RbtAtomRList m_atomList; // combined list of all movable heavy atoms
-  RbtDouble m_rMax;
-  RbtBool m_bQuadratic; // synchronised with QUADRATIC named parameter
+  double m_rMax;
+  bool m_bQuadratic; // synchronised with QUADRATIC named parameter
 };
 
 #endif //_RBTCAVITYGRIDSF_H_

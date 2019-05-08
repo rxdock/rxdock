@@ -52,9 +52,9 @@ public:
   ////////////////////////////////////////
   // Public methods
   ////////////////
-  RbtUInt GetNumNoeRestraints(); // Number of NOE restraints in file
+  unsigned int GetNumNoeRestraints(); // Number of NOE restraints in file
   RbtNoeRestraintNamesList GetNoeRestraintList(); // List of NOE restraints
-  RbtUInt GetNumStdRestraints(); // Number of STD restraints in file
+  unsigned int GetNumStdRestraints(); // Number of STD restraints in file
   RbtStdRestraintNamesList GetStdRestraintList(); // List of STD restraints
 
 protected:

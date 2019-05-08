@@ -13,21 +13,21 @@
 #include "RbtEuler.h"
 
 RbtQuat RbtEuler::ToQuat() const {
-  RbtDouble c1 = cos(m_heading / 2.0);
-  RbtDouble s1 = sin(m_heading / 2.0);
-  RbtDouble c2 = cos(m_attitude / 2.0);
-  RbtDouble s2 = sin(m_attitude / 2.0);
-  RbtDouble c3 = cos(m_bank / 2.0);
-  RbtDouble s3 = sin(m_bank / 2.0);
-  RbtDouble c1c2 = c1 * c2;
-  RbtDouble s1s2 = s1 * s2;
+  double c1 = cos(m_heading / 2.0);
+  double s1 = sin(m_heading / 2.0);
+  double c2 = cos(m_attitude / 2.0);
+  double s2 = sin(m_attitude / 2.0);
+  double c3 = cos(m_bank / 2.0);
+  double s3 = sin(m_bank / 2.0);
+  double c1c2 = c1 * c2;
+  double s1s2 = s1 * s2;
   RbtQuat q(c1c2 * c3 - s1s2 * s3, c1c2 * s3 + s1s2 * c3,
             c1 * s2 * c3 - s1 * c2 * s3, s1 * c2 * c3 + c1 * s2 * s3);
   return q;
 }
 
 void RbtEuler::FromQuat(const RbtQuat &q) {
-  RbtDouble test = (q.v.x * q.v.z) + (q.v.y * q.s);
+  double test = (q.v.x * q.v.z) + (q.v.y * q.s);
   if (test > 0.499999) { // singularity at north pole
     m_heading = 2.0 * atan2(q.v.x, q.s);
     m_attitude = M_PI / 2.0;

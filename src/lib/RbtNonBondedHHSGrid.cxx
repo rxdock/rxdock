@@ -17,9 +17,10 @@
 std::string RbtNonBondedHHSGrid::_CT("RbtNonBondedHHSGrid");
 
 RbtNonBondedHHSGrid::RbtNonBondedHHSGrid(const RbtCoord &gridMin,
-                                         const RbtCoord &gridStep, RbtUInt NX,
-                                         RbtUInt NY, RbtUInt NZ,
-                                         RbtUInt NPad /*=0*/)
+                                         const RbtCoord &gridStep,
+                                         unsigned int NX, unsigned int NY,
+                                         unsigned int NZ,
+                                         unsigned int NPad /*=0*/)
     : RbtBaseGrid(gridMin, gridStep, NX, NY, NZ, NPad) {
   CreateMap();
   _RBTOBJECTCOUNTER_CONSTR_("RbtNonBondedHHSGrid");
@@ -90,7 +91,8 @@ void RbtNonBondedHHSGrid::Read(istream &istr) {
   OwnRead(istr);
 }
 
-const HHS_SolvationRList &RbtNonBondedHHSGrid::GetHHSList(RbtUInt iXYZ) const {
+const HHS_SolvationRList &
+RbtNonBondedHHSGrid::GetHHSList(unsigned int iXYZ) const {
   if (isValid(iXYZ)) {
     return m_hhsMap[iXYZ];
   } else {
@@ -107,7 +109,7 @@ RbtNonBondedHHSGrid::GetHHSList(const RbtCoord &c) const {
   }
 }
 
-void RbtNonBondedHHSGrid::SetHHSLists(HHS_Solvation *pHHS, RbtDouble radius) {
+void RbtNonBondedHHSGrid::SetHHSLists(HHS_Solvation *pHHS, double radius) {
   const RbtCoord &c = (pHHS->GetAtom())->GetCoords();
   RbtUIntList sphereIndices;
   GetSphereIndices(c, radius, sphereIndices);

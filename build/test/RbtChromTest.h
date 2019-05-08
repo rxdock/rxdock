@@ -69,7 +69,7 @@ class RbtChromTest : public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE_END();
 
 public:
-  static RbtDouble TINY;
+  static double TINY;
   // TextFixture methods
   void setUp();
   void tearDown();
@@ -79,18 +79,17 @@ public:
 
   // rdock helper methods
   // RMSD calculation between two coordinate lists
-  RbtDouble rmsd(const RbtCoordList &rc, const RbtCoordList &c);
+  double rmsd(const RbtCoordList &rc, const RbtCoordList &c);
   // Measures the variation in chromosome vector values for repeated
   // mutations or randomisations
-  void measureRandOrMutateDiff(RbtChromElement *chrom, RbtInt nTrials,
-                               RbtBool bMutate, // true=mutate; false=randomise
-                               RbtDouble &meanDiff, RbtDouble &minDiff,
-                               RbtDouble &maxDiff);
+  void measureRandOrMutateDiff(RbtChromElement *chrom, int nTrials,
+                               bool bMutate, // true=mutate; false=randomise
+                               double &meanDiff, double &minDiff,
+                               double &maxDiff);
   // Measures the variation in chromosome vector values for repeated
   // crossovers
-  void measureCrossoverDiff(RbtChromElement *chrom, RbtInt nTrials,
-                            RbtDouble &meanDiff, RbtDouble &minDiff,
-                            RbtDouble &maxDiff);
+  void measureCrossoverDiff(RbtChromElement *chrom, int nTrials,
+                            double &meanDiff, double &minDiff, double &maxDiff);
 
   // The unit tests
   // 1) Does RbtChromFactory create a valid chromosome?

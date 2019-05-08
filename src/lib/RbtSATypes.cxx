@@ -21,13 +21,12 @@ RbtHHSType::~RbtHHSType() {}
 RbtHHSType::eType RbtHHSType::operator()(RbtAtom *anAtom) const {
   RbtAtomList bondedAtomList;
   RbtAtomPtr bondedAtom;
-  RbtBool polar(false);
+  bool polar(false);
   Rbt::isAtomCationic bIsCat;
   Rbt::isAtomAnionic bIsAni;
   Rbt::isAtomMetal bIsMet;
   Rbt::isAtomLipophilic bIsLipo;
-  RbtInt nH =
-      anAtom->GetNumImplicitHydrogens() + anAtom->GetCoordinationNumber(1);
+  int nH = anAtom->GetNumImplicitHydrogens() + anAtom->GetCoordinationNumber(1);
   switch (anAtom->GetAtomicNo()) {
 
   case 1: // Hydrogen
@@ -301,16 +300,16 @@ void RbtHHSType::SetupTypeNames() {
 //////////////////////
 // Solvation class (extended atom)
 // Constants from the HHS paper
-const RbtDouble HHS_Solvation::r_s = 0.6; // solvent probe radius
-const RbtDouble HHS_Solvation::d_s =
+const double HHS_Solvation::r_s = 0.6; // solvent probe radius
+const double HHS_Solvation::d_s =
     2.0 * HHS_Solvation::r_s; // solvent probe diameter
-const RbtDouble HHS_Solvation::Pij_12 =
+const double HHS_Solvation::Pij_12 =
     0.8875; // correction factor for 1-2 connections
-const RbtDouble HHS_Solvation::Pij_13 = 0.3516; // ditto for 1-3
-const RbtDouble HHS_Solvation::Pij_14 = 0.3156; // and for 1-4+
+const double HHS_Solvation::Pij_13 = 0.3516; // ditto for 1-3
+const double HHS_Solvation::Pij_14 = 0.3156; // and for 1-4+
 
-HHS_Solvation::HHS_Solvation(RbtHHSType::eType t, RbtAtom *a, RbtDouble p,
-                             RbtDouble r, RbtDouble s)
+HHS_Solvation::HHS_Solvation(RbtHHSType::eType t, RbtAtom *a, double p,
+                             double r, double s)
     : p_i(p), r_i(r), sigma(s), hhsType(t), atom(a) {
   Init();
 }
@@ -331,21 +330,21 @@ void HHS_Solvation::Init() {
 // void HHS_Solvation::Save() {A_inv = A_i;}
 // void HHS_Solvation::Restore() {A_i = A_inv;}
 
-void HHS_Solvation::Overlap(HHS_Solvation *h, RbtDouble p_ij) {
+void HHS_Solvation::Overlap(HHS_Solvation *h, double p_ij) {
   // check is there an overlap at all
-  RbtDouble d2 = Rbt::Length2(atom->GetCoords(), h->atom->GetCoords());
-  RbtDouble ol = r_i + h->r_i + 2.0 * r_s;
+  double d2 = Rbt::Length2(atom->GetCoords(), h->atom->GetCoords());
+  double ol = r_i + h->r_i + 2.0 * r_s;
   if (ol * ol < d2) {
     return;
   }
 
-  RbtDouble d = sqrt(d2);
-  RbtDouble recip_d = 1.0 / d;
-  RbtDouble ol_minus_d = ol - d;
-  RbtDouble r_i_diff_over_d = recip_d * (h->r_i - r_i);
+  double d = sqrt(d2);
+  double recip_d = 1.0 / d;
+  double ol_minus_d = ol - d;
+  double r_i_diff_over_d = recip_d * (h->r_i - r_i);
   // Update the area for this atom
-  RbtDouble b_ij = PI_r_i_plus_r_s * ol_minus_d * (1.0 + r_i_diff_over_d);
-  RbtDouble A = 1.0 - (p_i_over_S_i * p_ij * b_ij);
+  double b_ij = PI_r_i_plus_r_s * ol_minus_d * (1.0 + r_i_diff_over_d);
+  double A = 1.0 - (p_i_over_S_i * p_ij * b_ij);
   // Keep A between zero and one
   // otherwise get odd behavior for interpenetrating atoms
   //(possible at start of GA)
@@ -393,9 +392,9 @@ void HHS_Solvation::OverlapVariableEnabledOnly() {
 // Partition the list of variable interactions
 // Copy those that are closer than distance d to the partitioned list
 // d=0 => clear the partition
-void HHS_Solvation::Partition(RbtDouble d) {
+void HHS_Solvation::Partition(double d) {
   if (d > 0) {
-    RbtDouble dd(d * d);
+    double dd(d * d);
     m_prt.clear();
     for (HHS_SolvationRListConstIter iter = m_var.begin(); iter != m_var.end();
          iter++) {
@@ -410,6 +409,6 @@ void HHS_Solvation::Partition(RbtDouble d) {
   }
 }
 
-RbtBool Rbt::isHHSSelected::operator()(const HHS_Solvation *pHHS) const {
+bool Rbt::isHHSSelected::operator()(const HHS_Solvation *pHHS) const {
   return pHHS->GetAtom()->GetSelectionFlag();
 }

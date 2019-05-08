@@ -91,8 +91,8 @@ int main(int argc, char *argv[]) {
   vector<std::string>
       strReceptorPrmFiles; // Receptor param files (you can have more!)
   std::string strSFFile("calcgrid_vdw.prm"); // Scoring function file
-  RbtDouble gs(0.5);                         // grid step
-  RbtDouble border(1.0);                     // grid border around docking site
+  double gs(0.5);                            // grid step
+  double border(1.0);                        // grid border around docking site
 
   // Brief help message
   if (argc == 1) {
@@ -161,9 +161,9 @@ int main(int argc, char *argv[]) {
     RbtCoord maxCoord = theMOEGrid.GetMaxExtents() + border;
     RbtVector gridStep(gs, gs, gs);
     RbtVector recepExtent = maxCoord - minCoord;
-    RbtUInt nX = int(recepExtent.x / gridStep.x) + 1;
-    RbtUInt nY = int(recepExtent.y / gridStep.y) + 1;
-    RbtUInt nZ = int(recepExtent.z / gridStep.z) + 1;
+    unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
+    unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
+    unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
     cout << "Constructing grid of size " << nX << " x " << nY << " x " << nZ
          << endl;
     vector<std::string>::iterator strReceptorPrmFilesIter;
@@ -272,7 +272,7 @@ int main(int argc, char *argv[]) {
         // Register ligand with workspace
         spWS->SetLigand(spLigand);
         // Loop over all grid coords and calculate the score at each position
-        for (RbtUInt i = 0; i < spGrid->GetN(); i++) {
+        for (unsigned int i = 0; i < spGrid->GetN(); i++) {
           pAtom->SetCoords(pGrid->GetCoord(i));
           RbtMOEGridPoint p;
           p.SetValue(pSF->Score());

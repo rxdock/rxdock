@@ -15,8 +15,8 @@
 std::string RbtChromOccupancyElement::_CT = "RbtChromOccupancyElement";
 
 RbtChromOccupancyElement::RbtChromOccupancyElement(RbtModel *pModel,
-                                                   RbtDouble stepSize,
-                                                   RbtDouble threshold)
+                                                   double stepSize,
+                                                   double threshold)
     : m_value(1.0) {
   m_spRefData = new RbtChromOccupancyRefData(pModel, stepSize, threshold);
   // Set the initial genotype to match the current phenotype
@@ -25,7 +25,7 @@ RbtChromOccupancyElement::RbtChromOccupancyElement(RbtModel *pModel,
 }
 
 RbtChromOccupancyElement::RbtChromOccupancyElement(
-    RbtChromOccupancyRefDataPtr spRefData, RbtDouble value)
+    RbtChromOccupancyRefDataPtr spRefData, double value)
     : m_spRefData(spRefData), m_value(value) {
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -42,9 +42,9 @@ void RbtChromOccupancyElement::Randomise() {
   m_value = GetRand().GetRandom01();
 }
 
-void RbtChromOccupancyElement::Mutate(RbtDouble relStepSize) {
-  RbtDouble absStepSize = relStepSize * m_spRefData->GetStepSize();
-  RbtDouble delta;
+void RbtChromOccupancyElement::Mutate(double relStepSize) {
+  double absStepSize = relStepSize * m_spRefData->GetStepSize();
+  double delta;
   if (absStepSize > 0) {
     delta = 2.0 * absStepSize * GetRand().GetRandom01() - absStepSize;
     m_value = StandardisedValue(m_value + delta);
@@ -74,7 +74,7 @@ void RbtChromOccupancyElement::GetVector(RbtXOverList &v) const {
 }
 
 void RbtChromOccupancyElement::SetVector(const RbtDoubleList &v,
-                                         RbtInt &i) throw(RbtError) {
+                                         int &i) throw(RbtError) {
   if (VectorOK(v, i)) {
     m_value = StandardisedValue(v[i++]);
   } else {
@@ -84,7 +84,7 @@ void RbtChromOccupancyElement::SetVector(const RbtDoubleList &v,
 }
 
 void RbtChromOccupancyElement::SetVector(const RbtXOverList &v,
-                                         RbtInt &i) throw(RbtError) {
+                                         int &i) throw(RbtError) {
   if (VectorOK(v, i)) {
     RbtXOverElement occupancyElement(v[i++]);
     if (occupancyElement.size() == 1) {
@@ -103,16 +103,16 @@ void RbtChromOccupancyElement::GetStepVector(RbtDoubleList &v) const {
   v.push_back(m_spRefData->GetStepSize());
 }
 
-RbtDouble RbtChromOccupancyElement::CompareVector(const RbtDoubleList &v,
-                                                  RbtInt &i) const {
-  RbtDouble retVal(0.0);
+double RbtChromOccupancyElement::CompareVector(const RbtDoubleList &v,
+                                               int &i) const {
+  double retVal(0.0);
   if (!VectorOK(v, i)) {
     retVal = -1.0;
   } else {
-    RbtDouble otherOccupancy = v[i++];
-    RbtDouble stepSize = m_spRefData->GetStepSize();
+    double otherOccupancy = v[i++];
+    double stepSize = m_spRefData->GetStepSize();
     if (stepSize > 0.0) {
-      RbtDouble absDiff = fabs(m_value - otherOccupancy);
+      double absDiff = fabs(m_value - otherOccupancy);
       retVal = absDiff / stepSize;
     }
   }
@@ -123,7 +123,7 @@ void RbtChromOccupancyElement::Print(ostream &s) const {
   s << "OCCUPANCY " << m_value << endl;
 }
 
-RbtDouble RbtChromOccupancyElement::StandardisedValue(RbtDouble occupancy) {
+double RbtChromOccupancyElement::StandardisedValue(double occupancy) {
   if (occupancy < 0.0) {
     occupancy = 0.0;
   } else if (occupancy > 1.0) {

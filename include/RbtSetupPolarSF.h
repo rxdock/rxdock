@@ -41,11 +41,11 @@ protected:
   virtual void SetupLigand();
   virtual void SetupSolvent();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
 
 private:
   void SetupAtomList(RbtAtomList &atomList, const RbtAtomList &neighbourList,
-                     RbtInt traceTriggerLevel);
+                     int traceTriggerLevel);
 };
 
 #endif //_RBTSETUPPOLARSF_H_

@@ -46,14 +46,14 @@ public:
   ////////////////
   // Fully qualified name, prefixed by all ancestors (e.g. SCORE.INTER.HBOND)
   std::string GetFullName() const;
-  RbtDouble GetWeight() const;
-  void SetWeight(RbtDouble);
+  double GetWeight() const;
+  void SetWeight(double);
 
-  RbtDouble GetRange() const;
-  void SetRange(RbtDouble);
+  double GetRange() const;
+  void SetRange(double);
 
   // Main public method - returns current weighted score
-  RbtDouble Score() const;
+  double Score() const;
   // Returns all child component scores as a string-variant map
   // Key = fully qualified component name, value = weighted score
   //(for saving in a Model's data fields)
@@ -62,9 +62,9 @@ public:
   // Aggregate handling methods
   virtual void Add(RbtBaseSF *) throw(RbtError);
   virtual void Remove(RbtBaseSF *) throw(RbtError);
-  virtual RbtBool isAgg() const;
-  virtual RbtUInt GetNumSF() const;
-  virtual RbtBaseSF *GetSF(RbtUInt iSF) const throw(RbtError);
+  virtual bool isAgg() const;
+  virtual unsigned int GetNumSF() const;
+  virtual RbtBaseSF *GetSF(unsigned int iSF) const throw(RbtError);
   void Orphan(); // Force removal from the parent aggregate
   RbtBaseSF *GetParentSF() const;
 
@@ -75,12 +75,12 @@ protected:
   RbtBaseSF(const std::string &strClass, const std::string &strName);
   RbtBaseSF();
   // PURE VIRTUAL - DERIVED CLASSES MUST OVERRIDE
-  virtual RbtDouble RawScore() const = 0;
+  virtual double RawScore() const = 0;
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
   void ParameterUpdated(const std::string &strName);
   // Helper method for ScoreMap
-  void AddToParentMapEntry(RbtStringVariantMap &scoreMap, RbtDouble rs) const;
+  void AddToParentMapEntry(RbtStringVariantMap &scoreMap, double rs) const;
 
 private:
   ////////////////////////////////////////
@@ -100,8 +100,8 @@ private:
   // Private data
   //////////////
   RbtBaseSF *m_parent;
-  RbtDouble m_weight;
-  RbtDouble m_range;
+  double m_weight;
+  double m_range;
 };
 
 // Useful typedefs

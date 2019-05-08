@@ -56,12 +56,12 @@ const RbtVble &RbtToken::GetVble() const {
     vble.SetValue(vn);
 }*/
 
-RbtBool RbtToken::IsVble() { return (isvble); }
-RbtBool RbtToken::IsLog() { return (!isvble && comm.IsLog()); }
-RbtBool RbtToken::IsExp() { return (!isvble && comm.IsExp()); }
-RbtBool RbtToken::IsAdd() { return (!isvble && comm.IsAdd()); }
-RbtBool RbtToken::IsSub() { return (!isvble && comm.IsSub()); }
-RbtBool RbtToken::IsMul() { return (!isvble && comm.IsMul()); }
-RbtBool RbtToken::IsDiv() { return (!isvble && comm.IsDiv()); }
-RbtBool RbtToken::IsAnd() { return (!isvble && comm.IsAnd()); }
-RbtBool RbtToken::IsIf() { return (!isvble && comm.IsIf()); }
+bool RbtToken::IsVble() { return (isvble); }
+bool RbtToken::IsLog() { return (!isvble && comm.IsLog()); }
+bool RbtToken::IsExp() { return (!isvble && comm.IsExp()); }
+bool RbtToken::IsAdd() { return (!isvble && comm.IsAdd()); }
+bool RbtToken::IsSub() { return (!isvble && comm.IsSub()); }
+bool RbtToken::IsMul() { return (!isvble && comm.IsMul()); }
+bool RbtToken::IsDiv() { return (!isvble && comm.IsDiv()); }
+bool RbtToken::IsAnd() { return (!isvble && comm.IsAnd()); }
+bool RbtToken::IsIf() { return (!isvble && comm.IsIf()); }

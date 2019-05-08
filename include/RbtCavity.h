@@ -61,7 +61,7 @@ public:
     // DM 4 Apr 2002 - Write grid step
     m_gridStep.Write(ostr);
     // Write number of coords
-    RbtInt nCoords = m_coordList.size();
+    int nCoords = m_coordList.size();
     Rbt::WriteWithThrow(ostr, (const char *)&nCoords, sizeof(nCoords));
     for (RbtCoordListConstIter cIter = m_coordList.begin();
          cIter != m_coordList.end(); cIter++) {
@@ -76,12 +76,12 @@ public:
     // DM 4 Apr 2002 - Read grid step
     m_gridStep.Read(istr);
     // Read number of coords
-    RbtInt nCoords;
+    int nCoords;
     Rbt::ReadWithThrow(istr, (char *)&nCoords, sizeof(nCoords));
     m_coordList.reserve(nCoords);
     RbtCoord c;
     // Read each coord and add it to the cavity list
-    for (RbtInt i = 0; i < nCoords; i++) {
+    for (int i = 0; i < nCoords; i++) {
       c.Read(istr);
       m_coordList.push_back(c);
     }
@@ -94,9 +94,10 @@ public:
   // DM 4 Apr 2002 - return a grid with all cavity points set to 1.0
   RbtRealGridPtr GetGrid() const {
     RbtVector extent = m_maxCoord - m_minCoord;
-    RbtUInt nX = int(extent.x / m_gridStep.x) + 3; //+3 to allow a small border
-    RbtUInt nY = int(extent.y / m_gridStep.y) + 3;
-    RbtUInt nZ = int(extent.z / m_gridStep.z) + 3;
+    unsigned int nX =
+        int(extent.x / m_gridStep.x) + 3; //+3 to allow a small border
+    unsigned int nY = int(extent.y / m_gridStep.y) + 3;
+    unsigned int nZ = int(extent.z / m_gridStep.z) + 3;
     RbtRealGridPtr spGrid = RbtRealGridPtr(
         new RbtRealGrid(m_minCoord - m_gridStep, m_gridStep, nX, nY, nZ));
     for (RbtCoordListConstIter iter = m_coordList.begin();
@@ -111,12 +112,12 @@ public:
   ////////////////
   const RbtCoord &GetCenterOfMass() const { return m_prAxes.com; }
   const RbtPrincipalAxes &GetPrincipalAxes() const { return m_prAxes; }
-  RbtInt GetNumCoords() const { return m_coordList.size(); }
+  int GetNumCoords() const { return m_coordList.size(); }
   const RbtCoordList &GetCoordList() const { return m_coordList; }
   const RbtCoord &GetMinCoord() const { return m_minCoord; }
   const RbtCoord &GetMaxCoord() const { return m_maxCoord; }
   const RbtVector &GetGridStep() const { return m_gridStep; }
-  RbtDouble GetVolume() const {
+  double GetVolume() const {
     return m_coordList.size() * m_gridStep.x * m_gridStep.y * m_gridStep.z;
   }
 
@@ -168,7 +169,7 @@ class RbtCavityPtrCmp_Distance {
 
 public:
   RbtCavityPtrCmp_Distance(const RbtCoord &cc) : c(cc) {}
-  RbtBool operator()(RbtCavityPtr spCav1, RbtCavityPtr spCav2) const {
+  bool operator()(RbtCavityPtr spCav1, RbtCavityPtr spCav2) const {
     return Rbt::Length2(spCav1->GetCenterOfMass() - c) <
            Rbt::Length2(spCav2->GetCenterOfMass() - c);
   }
@@ -177,7 +178,7 @@ public:
 class RbtCavityPtrCmp_Volume {
 public:
   RbtCavityPtrCmp_Volume() {}
-  RbtBool operator()(RbtCavityPtr spCav1, RbtCavityPtr spCav2) const {
+  bool operator()(RbtCavityPtr spCav1, RbtCavityPtr spCav2) const {
     return spCav1->GetNumCoords() > spCav2->GetNumCoords();
   }
 };
@@ -185,13 +186,13 @@ public:
 // Predicate functions for RbtCavityPtr
 // For use by STL algorithms
 ////////////////////////////////////////////////////////
-class isCavityNearCoord : public std::unary_function<RbtCavityPtr, RbtBool> {
+class isCavityNearCoord : public std::unary_function<RbtCavityPtr, bool> {
   const RbtCoord &c;
-  RbtDouble r2; // radius squared (to avoid taking square roots)
+  double r2; // radius squared (to avoid taking square roots)
 public:
-  explicit isCavityNearCoord(const RbtCoord &cc, RbtDouble rr)
+  explicit isCavityNearCoord(const RbtCoord &cc, double rr)
       : c(cc), r2(rr * rr) {}
-  RbtBool operator()(RbtCavityPtr spCavity) const {
+  bool operator()(RbtCavityPtr spCavity) const {
     return Rbt::Length2(spCavity->GetCenterOfMass() - c) <= r2;
   }
 };

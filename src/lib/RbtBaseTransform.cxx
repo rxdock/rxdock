@@ -68,13 +68,13 @@ void RbtBaseTransform::Remove(RbtBaseTransform *) throw(RbtError) {
                           "Remove() invalid for non-aggregate transforms");
 }
 
-RbtBaseTransform *RbtBaseTransform::GetTransform(RbtUInt i) const
+RbtBaseTransform *RbtBaseTransform::GetTransform(unsigned int i) const
     throw(RbtError) {
   throw RbtInvalidRequest(
       _WHERE_, "GetTransform() invalid for non-aggregate transforms");
 }
-RbtBool RbtBaseTransform::isAgg() const { return false; }
-RbtUInt RbtBaseTransform::GetNumTransforms() const { return 0; }
+bool RbtBaseTransform::isAgg() const { return false; }
+unsigned int RbtBaseTransform::GetNumTransforms() const { return 0; }
 
 // Aggregate handling (concrete) methods
 RbtBaseTransform *RbtBaseTransform::GetParentTransform() const {

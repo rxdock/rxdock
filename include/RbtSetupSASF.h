@@ -17,8 +17,8 @@
 
 // after Hasel, Hendrickson and Still
 struct RbtSimpleSolvationParameters {
-  RbtDouble p;
-  RbtDouble r;
+  double p;
+  double r;
 };
 
 class RbtSetupSASF : public RbtBaseInterSF {
@@ -35,7 +35,7 @@ protected:
   virtual void SetupReceptor();
   virtual void SetupLigand();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
 
   void SetupReceptorSATypes(void) throw(RbtError);
   void SetupLigandSATypes(void) throw(RbtError);

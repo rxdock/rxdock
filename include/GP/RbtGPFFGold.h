@@ -27,10 +27,10 @@ public:
   static std::string _CT;
 
   void ReadTables(istream &);
-  RbtDouble CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
-                             RbtReturnTypeArray &, RbtDouble, RbtBool);
-  RbtDouble CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
-                             RbtReturnTypeArray &, RbtBool);
+  double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
+                          RbtReturnTypeArray &, double, bool);
+  double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
+                          RbtReturnTypeArray &, bool);
 };
 
 // Useful typedefs

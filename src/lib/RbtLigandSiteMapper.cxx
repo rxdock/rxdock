@@ -55,20 +55,20 @@ RbtCavityList RbtLigandSiteMapper::operator()() {
     return cavityList;
 
   std::string strRef = GetParameter(_REF_MOL);
-  RbtDouble rVolIncr = GetParameter(_VOL_INCR);
-  RbtDouble smallR = GetParameter(_SMALL_SPHERE);
-  RbtDouble step = GetParameter(_GRIDSTEP);
-  RbtDouble radius = GetParameter(_RADIUS);
-  RbtDouble minVol = GetParameter(_MIN_VOLUME);
-  RbtInt maxCavities = GetParameter(_MAX_CAVITIES);
-  RbtInt iTrace = GetTrace();
+  double rVolIncr = GetParameter(_VOL_INCR);
+  double smallR = GetParameter(_SMALL_SPHERE);
+  double step = GetParameter(_GRIDSTEP);
+  double radius = GetParameter(_RADIUS);
+  double minVol = GetParameter(_MIN_VOLUME);
+  int maxCavities = GetParameter(_MAX_CAVITIES);
+  int iTrace = GetTrace();
 
   // Grid values
-  const RbtDouble recVal = -1.0; // Receptor volume
-  const RbtDouble cavVal = 1.0;  // Ligand expanded volume
+  const double recVal = -1.0; // Receptor volume
+  const double cavVal = 1.0;  // Ligand expanded volume
 
   // Convert from min volume (in A^3) to min size (number of grid points)
-  RbtDouble minSize = minVol / (step * step * step);
+  double minSize = minVol / (step * step * step);
 
   // Get the reference atom list from the mol/SD file
   // Simple extension would be to read all the records from the SD file
@@ -91,13 +91,13 @@ RbtCavityList RbtLigandSiteMapper::operator()() {
   // Construct the grid to cover the ligand coords + radius
   RbtCoordList refCoordList;
   Rbt::GetCoordList(refAtomList, refCoordList);
-  RbtDouble border = radius + smallR + step;
+  double border = radius + smallR + step;
   RbtCoord minCoord = Rbt::Min(refCoordList) - border;
   RbtCoord maxCoord = Rbt::Max(refCoordList) + border;
   RbtVector extent = maxCoord - minCoord;
-  RbtUInt nX = int(extent.x / gridStep.x) + 1;
-  RbtUInt nY = int(extent.y / gridStep.y) + 1;
-  RbtUInt nZ = int(extent.z / gridStep.z) + 1;
+  unsigned int nX = int(extent.x / gridStep.x) + 1;
+  unsigned int nY = int(extent.y / gridStep.y) + 1;
+  unsigned int nZ = int(extent.z / gridStep.z) + 1;
   spGrid = RbtFFTGridPtr(new RbtFFTGrid(minCoord, gridStep, nX, nY, nZ));
   spGrid->SetAllValues(recVal);
 
@@ -118,7 +118,7 @@ RbtCavityList RbtLigandSiteMapper::operator()() {
   // Now exclude the receptor volume
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
-    RbtDouble r = (**iter).GetVdwRadius();
+    double r = (**iter).GetVdwRadius();
     spGrid->SetSphere((**iter).GetCoords(), r + rVolIncr, recVal, true);
   }
 

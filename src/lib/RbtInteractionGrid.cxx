@@ -44,7 +44,7 @@ RbtAtomRList RbtInteractionCenter::GetAtomList() const {
 
 // An interaction is selected if any of its constituent atoms are selected
 // If any of the constituent atoms are pseudo-atoms, then check these also
-RbtBool RbtInteractionCenter::isSelected() const {
+bool RbtInteractionCenter::isSelected() const {
   RbtAtomRList atomList = GetAtomList();
   return (std::count_if(atomList.begin(), atomList.end(),
                         Rbt::isAtomSelected()) > 0);
@@ -63,8 +63,9 @@ std::string RbtInteractionGrid::_CT("RbtInteractionGrid");
 // Constructors/destructors
 // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution
 RbtInteractionGrid::RbtInteractionGrid(const RbtCoord &gridMin,
-                                       const RbtCoord &gridStep, RbtUInt NX,
-                                       RbtUInt NY, RbtUInt NZ, RbtUInt NPad)
+                                       const RbtCoord &gridStep,
+                                       unsigned int NX, unsigned int NY,
+                                       unsigned int NZ, unsigned int NPad)
     : RbtBaseGrid(gridMin, gridStep, NX, NY, NZ, NPad) {
   CreateMap();
   _RBTOBJECTCOUNTER_CONSTR_("RbtInteractionGrid");
@@ -156,7 +157,7 @@ void RbtInteractionGrid::Read(istream &istr) {
 /////////////////////////
 
 const RbtInteractionCenterList &
-RbtInteractionGrid::GetInteractionList(RbtUInt iXYZ) const {
+RbtInteractionGrid::GetInteractionList(unsigned int iXYZ) const {
   // RbtInteractionListMapConstIter iter = m_intnMap.find(iXYZ);
   // if (iter != m_intnMap.end())
   //  return iter->second;
@@ -191,7 +192,7 @@ RbtInteractionGrid::GetInteractionList(const RbtCoord &c) const {
 // Set attribute functions
 /////////////////////////
 void RbtInteractionGrid::SetInteractionLists(RbtInteractionCenter *pIntn,
-                                             RbtDouble radius) {
+                                             double radius) {
   // Index using atom 1 coords - check if atom 1 is present
   RbtAtom *pAtom1 = pIntn->GetAtom1Ptr();
   if (pAtom1 == NULL)

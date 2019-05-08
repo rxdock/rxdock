@@ -20,7 +20,6 @@
 #include "RbtContainers.h"
 #include "RbtGPChromosome.h"
 #include "RbtGPTypes.h"
-#include "RbtTypes.h"
 
 class RbtGPParser {
 public:
@@ -28,7 +27,7 @@ public:
   ///////////////////
   // Constructors
   ///////////////////
-  RbtGPParser(RbtInt, RbtInt, RbtInt, RbtInt);
+  RbtGPParser(int, int, int, int);
   RbtGPParser(const RbtGPParser &);
 
   ///////////////////
@@ -40,23 +39,23 @@ public:
   ostream &Print(ostream &) const;
   friend ostream &operator<<(ostream &s, const RbtGPParser &p);
   RbtReturnTypeList Parse(RbtGPChromosomePtr, RbtReturnTypeList &);
-  std::string PrintParse(istream &, RbtGPChromosomePtr, RbtBool, RbtBool);
-  RbtBool IsConstantInt(RbtInt i) { return (i == CINT); }
-  RbtBool IsConstantFloat(RbtInt i) { return (i == CFLOAT); }
+  std::string PrintParse(istream &, RbtGPChromosomePtr, bool, bool);
+  bool IsConstantInt(int i) { return (i == CINT); }
+  bool IsConstantFloat(int i) { return (i == CFLOAT); }
 
 private:
   /////////////////////
   // Private data
   /////////////////////
-  RbtReturnType Eval(RbtGPChromosomePtr, RbtInt);
-  RbtReturnType Parse1Output(RbtGPChromosomePtr, RbtInt);
-  std::string PrintEval(RbtGPChromosomePtr, RbtInt, RbtBool, RbtBool);
-  std::string PrintParse1Output(RbtGPChromosomePtr, RbtInt, RbtBool, RbtBool);
+  RbtReturnType Eval(RbtGPChromosomePtr, int);
+  RbtReturnType Parse1Output(RbtGPChromosomePtr, int);
+  std::string PrintEval(RbtGPChromosomePtr, int, bool, bool);
+  std::string PrintParse1Output(RbtGPChromosomePtr, int, bool, bool);
   // RbtGPChromosomePtr chrom;
   // RbtCellList cells;
   RbtCommandList commands;
-  RbtInt nProgramInputs, nFunctionsInputs, nProgramOutputs;
-  RbtInt ADD, SUB, MUL, DIV, IF, CINT, CFLOAT;
+  int nProgramInputs, nFunctionsInputs, nProgramOutputs;
+  int ADD, SUB, MUL, DIV, IF, CINT, CFLOAT;
 };
 
 // Useful typedefs

@@ -46,12 +46,12 @@ void RbtNmrSF::SetupReceptor() {
   if (GetReceptor().Null())
     return;
 
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
   // Create indexed grid for STD restraints penalty function
   m_spGrid = CreateNonBondedGrid();
   // Fixed distance range used for indexing the relevant receptor atoms
-  RbtDouble range = GetRange() + GetMaxError();
+  double range = GetRange() + GetMaxError();
   RbtDockingSitePtr spDS = GetWorkSpace()->GetDockingSite();
 
   // Find the non-polar hydrogens (nph) in the receptor
@@ -95,7 +95,7 @@ void RbtNmrSF::SetupScore() {
   if (GetLigand().Null() || GetReceptor().Null())
     return;
 
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
   // Create a restraint filesource with the appropriate filename
   std::string strRestrFile =
@@ -163,24 +163,24 @@ void RbtNmrSF::SetupScore() {
   }
 }
 
-RbtDouble RbtNmrSF::RawScore() const {
-  RbtDouble score(0.0);
+double RbtNmrSF::RawScore() const {
+  double score(0.0);
   // QUADRATIC POTENTIAL
   if (m_bQuadratic) {
     for (RbtNoeRestraintAtomsListConstIter iter = m_noeList.begin();
          iter != m_noeList.end(); iter++) {
-      RbtDouble r = NoeDistance(*iter);
-      RbtDouble dr = r - (*iter).maxDist; // delta(R)
-      RbtDouble s = (dr > 0.0) ? dr * dr : 0.0;
+      double r = NoeDistance(*iter);
+      double dr = r - (*iter).maxDist; // delta(R)
+      double s = (dr > 0.0) ? dr * dr : 0.0;
       // cout << "(NOE) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << "," <<
       // dr << "," << s << endl;
       score += s;
     }
     for (RbtStdRestraintAtomsListConstIter iter = m_stdList.begin();
          iter != m_stdList.end(); iter++) {
-      RbtDouble r = StdDistance(*iter);
-      RbtDouble dr = r - (*iter).maxDist; // delta(R)
-      RbtDouble s = (dr > 0.0) ? dr * dr : 0.0;
+      double r = StdDistance(*iter);
+      double dr = r - (*iter).maxDist; // delta(R)
+      double s = (dr > 0.0) ? dr * dr : 0.0;
       // cout << "(STD) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << "," <<
       // dr << "," << s << endl;
       score += s;
@@ -190,18 +190,18 @@ RbtDouble RbtNmrSF::RawScore() const {
   else {
     for (RbtNoeRestraintAtomsListConstIter iter = m_noeList.begin();
          iter != m_noeList.end(); iter++) {
-      RbtDouble r = NoeDistance(*iter);
-      RbtDouble dr = r - (*iter).maxDist; // delta(R)
-      RbtDouble s = (dr > 0.0) ? dr : 0.0;
+      double r = NoeDistance(*iter);
+      double dr = r - (*iter).maxDist; // delta(R)
+      double s = (dr > 0.0) ? dr : 0.0;
       // cout << "(NOE) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << "," <<
       // dr << "," << s << endl;
       score += s;
     }
     for (RbtStdRestraintAtomsListConstIter iter = m_stdList.begin();
          iter != m_stdList.end(); iter++) {
-      RbtDouble r = StdDistance(*iter);
-      RbtDouble dr = r - (*iter).maxDist; // delta(R)
-      RbtDouble s = (dr > 0.0) ? dr : 0.0;
+      double r = StdDistance(*iter);
+      double dr = r - (*iter).maxDist; // delta(R)
+      double s = (dr > 0.0) ? dr : 0.0;
       // cout << "(STD) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << "," <<
       // dr << "," << s << endl;
       score += s;
@@ -210,7 +210,7 @@ RbtDouble RbtNmrSF::RawScore() const {
   return score;
 }
 
-RbtDouble RbtNmrSF::NoeDistance(const RbtNoeRestraintAtoms &noe) const {
+double RbtNmrSF::NoeDistance(const RbtNoeRestraintAtoms &noe) const {
   // Simple, unambiguous restraint - just return the interatomic distance
   if (noe.isSimple()) {
     return Rbt::BondLength(noe.from.atoms.front(), noe.to.atoms.front());
@@ -233,7 +233,7 @@ RbtDouble RbtNmrSF::NoeDistance(const RbtNoeRestraintAtoms &noe) const {
     else
       toCoords = Rbt::GetCoordList(noe.to.atoms);
 
-    RbtDouble dist_sq(0.0); // Keep track of minimum distance**2
+    double dist_sq(0.0); // Keep track of minimum distance**2
     // Iterate over coords in each list and return the appropriate distance**2
     // between any of them
     for (RbtCoordListConstIter fIter = fromCoords.begin();
@@ -242,10 +242,10 @@ RbtDouble RbtNmrSF::NoeDistance(const RbtNoeRestraintAtoms &noe) const {
       // coord and all the coords in the "to" list. i.e. if to.type==NOE_AND,
       // dist1_sq is the max distance**2 to any atom in the "to" list else
       // dist1_sq is the min distance**2 to any atom in the "to" list
-      RbtDouble dist1_sq(0.0);
+      double dist1_sq(0.0);
       for (RbtCoordListConstIter tIter = toCoords.begin();
            tIter != toCoords.end(); tIter++) {
-        RbtDouble r12_sq = Rbt::Length2(*fIter, *tIter);
+        double r12_sq = Rbt::Length2(*fIter, *tIter);
         dist1_sq = (tIter == toCoords.begin())
                        ? r12_sq
                        : (noe.to.type == Rbt::NOE_AND)
@@ -265,7 +265,7 @@ RbtDouble RbtNmrSF::NoeDistance(const RbtNoeRestraintAtoms &noe) const {
   }
 }
 
-RbtDouble RbtNmrSF::StdDistance(const RbtStdRestraintAtoms &std) const {
+double RbtNmrSF::StdDistance(const RbtStdRestraintAtoms &std) const {
   // Compile the list of coords at each end
   // If the restraint end is defined of type MEAN, just store the center of mass
   // of the atoms in the list If the restraint end is defined of type OR or AND,
@@ -276,19 +276,19 @@ RbtDouble RbtNmrSF::StdDistance(const RbtStdRestraintAtoms &std) const {
   else
     fromCoords = Rbt::GetCoordList(std.from.atoms);
 
-  RbtDouble dist_sq(999.9); // Keep track of minimum distance**2
+  double dist_sq(999.9); // Keep track of minimum distance**2
   // Iterate over coords in each list and return the appropriate distance**2
   // between any of them
   for (RbtCoordListConstIter fIter = fromCoords.begin();
        fIter != fromCoords.end(); fIter++) {
     // dist1_sq is the minimum distance**2 between the current "from" coord
     // and all the coords in the "to" list.
-    RbtDouble dist1_sq(999.9);
+    double dist1_sq(999.9);
     // For STD restraints, the list of "to" coords comes from the indexing grid
     const RbtAtomRList &toAtoms = m_spGrid->GetAtomList(*fIter);
     for (RbtAtomRListConstIter tIter = toAtoms.begin(); tIter != toAtoms.end();
          tIter++) {
-      RbtDouble r12_sq = Rbt::Length2(*fIter, (*tIter)->GetCoords());
+      double r12_sq = Rbt::Length2(*fIter, (*tIter)->GetCoords());
       dist1_sq =
           (tIter == toAtoms.begin()) ? r12_sq : std::min(dist1_sq, r12_sq);
     }

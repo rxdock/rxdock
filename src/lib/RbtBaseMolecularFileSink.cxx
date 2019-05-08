@@ -26,9 +26,9 @@
 // the constructor so that the first model is rendered using the model segment
 // names Default in calls to SetModel is to set m_bUseModelSegmentNames to false
 // so that subsequent Render()s use numeric segment IDs
-RbtBaseMolecularFileSink::RbtBaseMolecularFileSink(
-    const std::string &fileName, RbtModelPtr spModel,
-    RbtBool bUseModelSegmentNames)
+RbtBaseMolecularFileSink::RbtBaseMolecularFileSink(const std::string &fileName,
+                                                   RbtModelPtr spModel,
+                                                   bool bUseModelSegmentNames)
     : RbtBaseFileSink(fileName), m_spModel(spModel), m_bMultiConf(false),
       m_bUseModelSegmentNames(bUseModelSegmentNames) {
   Reset();
@@ -48,15 +48,15 @@ RbtBaseMolecularFileSink::~RbtBaseMolecularFileSink() {
 RbtModelPtr RbtBaseMolecularFileSink::GetModel() const { return m_spModel; }
 
 void RbtBaseMolecularFileSink::SetModel(RbtModelPtr spModel,
-                                        RbtBool bUseModelSegmentNames) {
+                                        bool bUseModelSegmentNames) {
   m_spModel = spModel;
   m_bUseModelSegmentNames = bUseModelSegmentNames;
 }
 
 // Get/set the multiconformer status
-RbtBool RbtBaseMolecularFileSink::GetMultiConf() const { return m_bMultiConf; }
+bool RbtBaseMolecularFileSink::GetMultiConf() const { return m_bMultiConf; }
 
-void RbtBaseMolecularFileSink::SetMultiConf(RbtBool bMultiConf) {
+void RbtBaseMolecularFileSink::SetMultiConf(bool bMultiConf) {
   // If the MultiConf status of the sink is changing, we need to ensure
   // that the cache gets written first
   if (m_bMultiConf != bMultiConf) {

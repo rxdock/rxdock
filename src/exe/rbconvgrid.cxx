@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
   // Command line arguments and default values
   std::string strInputFile;
   std::string strOutputFile("insight.grid");
-  RbtInt iGrid = 999;
+  int iGrid = 999;
 
   // Brief help message
   if (argc == 1) {
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 
   // Check command line arguments
   cout << endl << "Command line args:" << endl;
-  for (RbtInt iarg = 1; iarg < argc; iarg++) {
+  for (int iarg = 1; iarg < argc; iarg++) {
     cout << argv[iarg];
     std::string strArg(argv[iarg]);
     if (strArg.find("-i") == 0)
@@ -75,14 +75,14 @@ int main(int argc, char *argv[]) {
       cout << strInputFile << " opened OK" << endl;
     }
     // Read header string
-    RbtInt length;
+    int length;
     Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
     char *header = new char[length + 1];
     Rbt::ReadWithThrow(istr, header, length);
     // Add null character to end of string
     header[length] = '\0';
     // Compare title with
-    RbtBool match = (RbtVdwGridSF::_CT == header);
+    bool match = (RbtVdwGridSF::_CT == header);
     delete[] header;
     if (!match) {
       throw RbtFileParseError(_WHERE_,
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Skip the appropriate number of grids
-    RbtInt nGrids;
+    int nGrids;
     Rbt::ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
     cout << "File contains " << nGrids << " grids..." << endl;
     if ((iGrid > nGrids) || (iGrid < 1)) {
@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
       cout << "Locating grid# " << iGrid << "..." << endl;
     }
     RbtRealGridPtr spGrid;
-    for (RbtInt i = 1; (i <= nGrids) && (i <= iGrid); i++) {
+    for (int i = 1; (i <= nGrids) && (i <= iGrid); i++) {
       // Read the atom type string
       Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
       char *szType = new char[length + 1];

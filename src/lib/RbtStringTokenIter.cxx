@@ -77,7 +77,7 @@ RbtTokenPtr RbtStringTokenIter::translate(std::string s) {
   {
     char *error;
     errno = 0;
-    RbtDouble val = strtod(s.c_str(), &error);
+    double val = strtod(s.c_str(), &error);
     if (!errno && !*error) // This checks for errors
     {
       contextp->Assign(s, val);

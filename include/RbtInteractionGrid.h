@@ -36,7 +36,7 @@ public:
   // Returns list of constituent atoms
   //(deconvolutes pseudoatoms into their constituent RbtAtom* lists)
   RbtAtomRList GetAtomList() const;
-  RbtBool isSelected() const;
+  bool isSelected() const;
 
 private:
   // Could be a useful general function
@@ -59,17 +59,17 @@ namespace Rbt {
 // Less than operator for sorting RbtInteractionCenter* by pointer value
 class InteractionCenterCmp {
 public:
-  RbtBool operator()(const RbtInteractionCenter *pIC1,
-                     const RbtInteractionCenter *pIC2) const {
+  bool operator()(const RbtInteractionCenter *pIC1,
+                  const RbtInteractionCenter *pIC2) const {
     return pIC1 < pIC2;
   }
 };
 // Is interaction center selected ?
 class isInteractionCenterSelected
-    : public std::unary_function<RbtInteractionCenter *, RbtBool> {
+    : public std::unary_function<RbtInteractionCenter *, bool> {
 public:
   explicit isInteractionCenterSelected() {}
-  RbtBool operator()(const RbtInteractionCenter *pIC) const {
+  bool operator()(const RbtInteractionCenter *pIC) const {
     return pIC->isSelected();
   }
 };
@@ -77,14 +77,14 @@ public:
 // Is the distance between interaction centers less than a given value ?
 // Function checks d**2 to save performing a sqrt
 class isInteractionD_lt
-    : public std::unary_function<RbtInteractionCenter *, RbtBool> {
-  RbtDouble d_sq;
+    : public std::unary_function<RbtInteractionCenter *, bool> {
+  double d_sq;
   RbtAtom *a;
 
 public:
-  explicit isInteractionD_lt(const RbtInteractionCenter *pIC1, RbtDouble dd)
+  explicit isInteractionD_lt(const RbtInteractionCenter *pIC1, double dd)
       : d_sq(dd * dd), a(pIC1->GetAtom1Ptr()) {}
-  RbtBool operator()(const RbtInteractionCenter *pIC2) const {
+  bool operator()(const RbtInteractionCenter *pIC2) const {
     return Rbt::Length2(pIC2->GetAtom1Ptr()->GetCoords(), a->GetCoords()) <
            d_sq;
   }
@@ -92,10 +92,10 @@ public:
 
 // Select/deselect the interaction center (selects all constituent atoms)
 class SelectInteractionCenter {
-  RbtBool b;
+  bool b;
 
 public:
-  explicit SelectInteractionCenter(RbtBool bb) : b(bb) {}
+  explicit SelectInteractionCenter(bool bb) : b(bb) {}
   void operator()(RbtInteractionCenter *pIC);
 };
 } // namespace Rbt
@@ -120,7 +120,8 @@ public:
   // Constructors/destructors
   // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution
   RbtInteractionGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
-                     RbtUInt NX, RbtUInt NY, RbtUInt NZ, RbtUInt NPad = 0);
+                     unsigned int NX, unsigned int NY, unsigned int NZ,
+                     unsigned int NPad = 0);
 
   // Constructor reading all params from binary stream
   RbtInteractionGrid(istream &istr);
@@ -153,13 +154,13 @@ public:
   /////////////////////////
   // Get attribute functions
   /////////////////////////
-  const RbtInteractionCenterList &GetInteractionList(RbtUInt iXYZ) const;
+  const RbtInteractionCenterList &GetInteractionList(unsigned int iXYZ) const;
   const RbtInteractionCenterList &GetInteractionList(const RbtCoord &c) const;
 
   /////////////////////////
   // Set attribute functions
   /////////////////////////
-  void SetInteractionLists(RbtInteractionCenter *pIntn, RbtDouble radius);
+  void SetInteractionLists(RbtInteractionCenter *pIntn, double radius);
   void ClearInteractionLists();
   void UniqueInteractionLists();
 

@@ -70,24 +70,24 @@ void RbtGATransform::Execute() {
   // the scoring function has changed
   pop->SetSF(pSF);
 
-  RbtDouble newFraction = GetParameter(_NEW_FRACTION);
-  RbtDouble pcross = GetParameter(_PCROSSOVER);
-  RbtBool xovermut = GetParameter(_XOVERMUT);
-  RbtBool cmutate = GetParameter(_CMUTATE);
-  RbtDouble relStepSize = GetParameter(_STEP_SIZE);
-  RbtDouble equalityThreshold = GetParameter(_EQUALITY_THRESHOLD);
-  RbtInt nCycles = GetParameter(_NCYCLES);
-  RbtInt nConvergence = GetParameter(_NCONVERGENCE);
-  RbtInt nHisFreq = GetParameter(_HISTORY_FREQ);
+  double newFraction = GetParameter(_NEW_FRACTION);
+  double pcross = GetParameter(_PCROSSOVER);
+  bool xovermut = GetParameter(_XOVERMUT);
+  bool cmutate = GetParameter(_CMUTATE);
+  double relStepSize = GetParameter(_STEP_SIZE);
+  double equalityThreshold = GetParameter(_EQUALITY_THRESHOLD);
+  int nCycles = GetParameter(_NCYCLES);
+  int nConvergence = GetParameter(_NCONVERGENCE);
+  int nHisFreq = GetParameter(_HISTORY_FREQ);
 
-  RbtInt popsize = pop->GetMaxSize();
-  RbtInt nrepl = newFraction * popsize;
-  RbtBool bHistory = nHisFreq > 0;
-  RbtInt iTrace = GetTrace();
+  int popsize = pop->GetMaxSize();
+  int nrepl = newFraction * popsize;
+  bool bHistory = nHisFreq > 0;
+  int iTrace = GetTrace();
 
-  RbtDouble bestScore = pop->Best()->GetScore();
+  double bestScore = pop->Best()->GetScore();
   // Number of consecutive cycles with no improvement in best score
-  RbtInt iConvergence = 0;
+  int iConvergence = 0;
 
   if (iTrace > 0) {
     cout.precision(3);
@@ -103,7 +103,7 @@ void RbtGATransform::Execute() {
          << pop->GetScoreVariance() << endl;
   }
 
-  for (RbtInt iCycle = 0; (iCycle < nCycles) && (iConvergence < nConvergence);
+  for (int iCycle = 0; (iCycle < nCycles) && (iConvergence < nConvergence);
        ++iCycle) {
     if (bHistory && ((iCycle % nHisFreq) == 0)) {
       pop->Best()->GetChrom()->SyncToModel();
@@ -111,7 +111,7 @@ void RbtGATransform::Execute() {
     }
     pop->GAstep(nrepl, relStepSize, equalityThreshold, pcross, xovermut,
                 cmutate);
-    RbtDouble score = pop->Best()->GetScore();
+    double score = pop->Best()->GetScore();
     if (score > bestScore) {
       bestScore = score;
       iConvergence = 0;
@@ -125,6 +125,6 @@ void RbtGATransform::Execute() {
     }
   }
   pop->Best()->GetChrom()->SyncToModel();
-  RbtInt ri = GetReceptor()->GetCurrentCoords();
+  int ri = GetReceptor()->GetCurrentCoords();
   GetLigand()->SetDataValue("RI", ri);
 }

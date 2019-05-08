@@ -26,14 +26,14 @@ typedef RbtCoordListList::const_iterator RbtCoordListListConstIter;
 // Struct for holding symmetric bond params
 class RbtSymBond {
 public:
-  RbtSymBond(RbtBondPtr bond, RbtInt n, RbtBool swap)
+  RbtSymBond(RbtBondPtr bond, int n, bool swap)
       : m_bond(bond), m_n(n), m_swap(swap) {
     m_dih = (m_n > 0) ? 360.0 / m_n : 360.0;
   }
   RbtBondPtr m_bond; // The smart pointer to the bond itself
-  RbtInt m_n;        // The symmetry operator (n-fold rotation)
-  RbtBool m_swap;    // false = spin atom 2 in bond; true = spin atom 1 in bond
-  RbtDouble m_dih;   // The dihedral step (360/n)
+  int m_n;           // The symmetry operator (n-fold rotation)
+  bool m_swap;       // false = spin atom 2 in bond; true = spin atom 1 in bond
+  double m_dih;      // The dihedral step (360/n)
 };
 
 typedef SmartPtr<RbtSymBond> RbtSymBondPtr;
@@ -72,7 +72,7 @@ void EnumerateSymCoords::operator()(RbtSymBondListConstIter symIter,
   // At each dihedral step, recursively spin all remaining sym bonds
   if (symIter != m_symBondList.end()) {
     RbtSymBondPtr spSymBond = *symIter;
-    for (RbtInt i = 0; i < spSymBond->m_n; i++) {
+    for (int i = 0; i < spSymBond->m_n; i++) {
       m_spModel->RotateBond(spSymBond->m_bond, spSymBond->m_dih,
                             spSymBond->m_swap);
       (*this)(symIter + 1, cll); // Recursion
@@ -100,16 +100,16 @@ void EnumerateSymCoords::Setup() {
                                      std::not1(Rbt::isAtomicNo_eq(1)));
   m_symBondList.clear();
   RbtBondList bondList = m_spModel->GetBondList();
-  RbtInt nBonds = bondList.size();
+  int nBonds = bondList.size();
   RbtStringList symBonds = m_spModel->GetDataValue("SYMMETRIC_BONDS");
   for (RbtStringListConstIter iter = symBonds.begin(); iter != symBonds.end();
        iter++) {
-    RbtInt atomId1(1);
-    RbtInt atomId2(1);
-    RbtInt nSym(1);
+    int atomId1(1);
+    int atomId2(1);
+    int nSym(1);
     std::istringstream istr((*iter).c_str());
     istr >> atomId1 >> atomId2 >> nSym;
-    RbtBool bMatch = false;
+    bool bMatch = false;
     // Find the bond which matches these two atom IDs
     for (RbtBondListConstIter bIter = bondList.begin();
          bIter != bondList.end() && !bMatch; bIter++) {
@@ -140,13 +140,13 @@ void EnumerateSymCoords::Setup() {
 }
 
 // RMSD calculation between two coordinate lists
-RbtDouble rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
-  RbtInt nCoords = rc.size();
+double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
+  int nCoords = rc.size();
   if (c.size() != nCoords) {
     return 0.0;
   } else {
-    RbtDouble rms(0.0);
-    for (RbtInt i = 0; i < nCoords; i++) {
+    double rms(0.0);
+    for (int i = 0; i < nCoords; i++) {
       rms += Rbt::Length2(rc[i], c[i]);
     }
     rms = sqrt(rms / float(nCoords));
@@ -175,13 +175,13 @@ int main(int argc, char *argv[]) {
   std::string strRefSDFile(argv[1]);
   std::string strInputSDFile(argv[2]);
   std::string strOutputSDFile;
-  RbtBool bOutput(false);
+  bool bOutput(false);
   if (argc > 3) {
     strOutputSDFile = argv[3];
     bOutput = true;
   }
-  RbtBool bRemoveDups(false);
-  RbtDouble threshold(1.0);
+  bool bRemoveDups(false);
+  double threshold(1.0);
   if (argc > 4) {
     threshold = atof(argv[4]);
     bRemoveDups = true;
@@ -192,7 +192,7 @@ int main(int argc, char *argv[]) {
 
   RbtDoubleList scoreVec;
   RbtDoubleList rmsVec;
-  RbtDouble minScore(9999.9);
+  double minScore(9999.9);
 
   try {
     RbtMolecularFileSourcePtr spRefFileSource(new RbtMdlFileSource(
@@ -206,7 +206,7 @@ int main(int argc, char *argv[]) {
     RbtCoordListList cll;
     EnumerateSymCoords symEnumerator(spRefModel);
     symEnumerator.GetSymCoords(cll);
-    RbtInt nCoords = cll.front().size();
+    int nCoords = cll.front().size();
 
     cout << "molv_	rms rms	rmc rmc"
          << endl; // Dummy header line to be like do_anal
@@ -225,7 +225,7 @@ int main(int argc, char *argv[]) {
       spMdlFileSink = new RbtMdlFileSink(strOutputSDFile, RbtModelPtr());
     }
     RbtModelList previousModels;
-    for (RbtInt nRec = 1; spMdlFileSource->FileStatusOK();
+    for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
       RbtError molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
@@ -242,32 +242,32 @@ int main(int argc, char *argv[]) {
 
       if (coords.size() ==
           nCoords) { // Only calculate RMSD if atom count is same as reference
-        RbtDouble rms(9999.9);
+        double rms(9999.9);
         for (RbtCoordListListConstIter cIter = cll.begin(); cIter != cll.end();
              cIter++) {
-          RbtDouble rms1 = rmsd(*cIter, coords);
+          double rms1 = rmsd(*cIter, coords);
           // cout << "\tRMSD = " << rms1 << endl;
           rms = std::min(rms, rms1);
         }
         spModel->SetDataValue("RMSD", rms);
-        RbtDouble score = spModel->GetDataValue("SCORE");
-        RbtDouble scoreInter = spModel->GetDataValue("SCORE.INTER");
-        RbtDouble scoreIntra = spModel->GetDataValue("SCORE.INTRA");
+        double score = spModel->GetDataValue("SCORE");
+        double scoreInter = spModel->GetDataValue("SCORE.INTER");
+        double scoreIntra = spModel->GetDataValue("SCORE.INTRA");
 
         scoreVec.push_back(score);
         rmsVec.push_back(rms);
         minScore = std::min(minScore, score);
 
-        RbtBool bIsUnique(true);
+        bool bIsUnique(true);
         // Duplicate check
         if (bRemoveDups) {
-          for (RbtInt i = 0; i < previousModels.size() && bIsUnique; i++) {
+          for (int i = 0; i < previousModels.size() && bIsUnique; i++) {
             RbtCoordList prevCoords;
             Rbt::GetCoordList(
                 Rbt::GetAtomList(previousModels[i]->GetAtomList(),
                                  std::not1(Rbt::isAtomicNo_eq(1))),
                 prevCoords);
-            RbtDouble rms0 = rmsd(prevCoords, coords);
+            double rms0 = rmsd(prevCoords, coords);
             bIsUnique = (rms0 > threshold);
           }
         }
@@ -290,14 +290,14 @@ int main(int argc, char *argv[]) {
     ////////////////////////////////////////////////////
     RbtDoubleListConstIter sIter = scoreVec.begin();
     RbtDoubleListConstIter rIter = rmsVec.begin();
-    RbtDouble zTot(0.0);
-    RbtDouble zMean(0.0);
-    RbtDouble zMean2(0.0);
+    double zTot(0.0);
+    double zMean(0.0);
+    double zMean2(0.0);
     // cout << endl << "Bolztmann-weighted RMSD calculation" << endl;
     for (; (sIter != scoreVec.end()) && (rIter != rmsVec.end());
          sIter++, rIter++) {
-      RbtDouble de = (*sIter) - minScore;
-      RbtDouble z = exp(-de / (8.314e-3 * 298.0));
+      double de = (*sIter) - minScore;
+      double z = exp(-de / (8.314e-3 * 298.0));
       zTot += z;
       zMean += (*rIter) * z;
       zMean2 += (*rIter) * (*rIter) * z;
@@ -305,7 +305,7 @@ int main(int argc, char *argv[]) {
       // (*rIter) << endl;
     }
     zMean /= zTot;
-    RbtDouble zVar = zMean2 / zTot - (zMean * zMean);
+    double zVar = zMean2 / zTot - (zMean * zMean);
     // cout << "zRMSD," << zTot << "," << zMean << "," << sqrt(zVar) << endl;
   } catch (RbtError &e) {
     cout << e << endl;

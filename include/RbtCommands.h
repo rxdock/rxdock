@@ -15,8 +15,6 @@
 #ifndef _RBT_COMMANDS_H_
 #define _RBT_COMMANDS_H_
 
-#include "RbtTypes.h"
-
 class RbtCommands {
 public:
   enum RbtCommName {
@@ -36,7 +34,7 @@ public:
   // Constructors
   ///////////////////
   RbtCommands(const RbtCommands &c) : name(c.name), nargs(c.nargs) {}
-  inline RbtCommands(RbtInt ncomm) {
+  inline RbtCommands(int ncomm) {
     name = RbtCommName(ncomm);
     switch (name) {
     case ADD:
@@ -64,17 +62,17 @@ public:
 
   inline RbtCommName GetName() const { return name; }
 
-  inline RbtInt GetNArgs() const { return nargs; }
+  inline int GetNArgs() const { return nargs; }
 
-  inline RbtBool IsAdd() const { return (name == ADD); }
-  inline RbtBool IsSub() const { return (name == SUB); }
-  inline RbtBool IsMul() const { return (name == MUL); }
-  inline RbtBool IsDiv() const { return (name == DIV); }
-  inline RbtBool IsIf() const { return (name == IF); }
-  inline RbtBool IsLog() const { return (name == LOG); }
-  inline RbtBool IsExp() const { return (name == EXP); }
-  inline RbtBool IsRCte() const { return (name == RCTE); }
-  inline RbtBool IsAnd() const { return (name == AND); }
+  inline bool IsAdd() const { return (name == ADD); }
+  inline bool IsSub() const { return (name == SUB); }
+  inline bool IsMul() const { return (name == MUL); }
+  inline bool IsDiv() const { return (name == DIV); }
+  inline bool IsIf() const { return (name == IF); }
+  inline bool IsLog() const { return (name == LOG); }
+  inline bool IsExp() const { return (name == EXP); }
+  inline bool IsRCte() const { return (name == RCTE); }
+  inline bool IsAnd() const { return (name == AND); }
 
   ///////////////////
   // Destructor
@@ -93,7 +91,7 @@ public:
 private:
   RbtCommands(); // Default constructor disabled
   RbtCommName name;
-  RbtInt nargs;
+  int nargs;
 };
 
 // Useful typedefs

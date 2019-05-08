@@ -20,7 +20,6 @@
 #include "RbtFilterExpression.h"
 #include "RbtToken.h"
 #include "RbtTokenIter.h"
-#include "RbtTypes.h"
 
 class RbtFilterExpression;
 

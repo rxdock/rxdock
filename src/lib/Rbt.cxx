@@ -142,10 +142,10 @@ RbtStringList Rbt::GetDirList(const std::string &strDir,
                               const std::string &strFilePrefix,
                               const std::string &strFileType) {
   RbtStringList dirList;
-  RbtBool bMatchPrefix =
+  bool bMatchPrefix =
       (strFilePrefix.size() > 0); // Check if we need to match on file prefix
-  RbtBool bMatchType = (strFileType.size() >
-                        0); // Check if we need to match on file type (suffix)
+  bool bMatchType = (strFileType.size() >
+                     0); // Check if we need to match on file type (suffix)
 
   DIR *pDir = opendir(strDir.c_str()); // Open directory
   if (pDir != NULL) {
@@ -162,7 +162,7 @@ RbtStringList Rbt::GetDirList(const std::string &strDir,
       std::string strFile = pEntry->d_name;
       if ((strFile == ".") || (strFile == ".."))
         continue; // Don't need to consider . and ..
-      RbtBool bMatch = true;
+      bool bMatch = true;
       if (bMatchPrefix && (strFile.find(strFilePrefix) !=
                            0)) // Eliminate those that don't match the prefix
         bMatch = false;

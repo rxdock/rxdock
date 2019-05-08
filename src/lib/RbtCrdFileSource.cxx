@@ -58,7 +58,7 @@ void RbtCrdFileSource::Parse() throw(RbtError) {
 
       //////////////////////////////////////////////////////////
       // 3a. Read number of atoms
-      RbtInt nAtomRec;
+      int nAtomRec;
       fileIter++;
       istringstream(*fileIter) >> nAtomRec;
 
@@ -66,9 +66,9 @@ void RbtCrdFileSource::Parse() throw(RbtError) {
       fileIter++;
       m_atomList.reserve(nAtomRec); // Allocate enough memory for the vector
 
-      RbtInt nAtomId;             // original atom number in CRD file
+      int nAtomId;                // original atom number in CRD file
       std::string strSegmentName; // segment name in PSF file
-      RbtInt nSubunitId;          // subunit(residue) number in CRD file
+      int nSubunitId;             // subunit(residue) number in CRD file
       //(residues are numbered consecutively across all segments.
       // Note that we don't store the residue number in RbtAtom)
       std::string strSubunitId;   // subunit(residue) ID in CRD file

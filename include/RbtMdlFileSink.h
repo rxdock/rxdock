@@ -27,7 +27,7 @@
 // Value = logical atom ID as rendered to file
 // Logical atom IDs are consecutive for all atoms rendered
 // The actual atom ID (RbtAtom::GetAtomId()) is unchanged
-typedef map<RbtAtom *, RbtUInt, Rbt::RbtAtomPtrCmp_Ptr> RbtAtomIdMap;
+typedef map<RbtAtom *, unsigned int, Rbt::RbtAtomPtrCmp_Ptr> RbtAtomIdMap;
 
 class RbtMdlFileSink : public RbtBaseMolecularFileSink {
 public:
@@ -77,7 +77,7 @@ private:
   RbtElementFileSourcePtr m_spElementData;
   // DM 27 Apr 1999 - default behaviour is for the first Render to overwrite any
   // existing file then subsequent Renders to append.
-  RbtBool m_bFirstRender;
+  bool m_bFirstRender;
   RbtAtomIdMap m_atomIdMap; // Keep track of logical atom IDs as rendered to
                             // file
 };

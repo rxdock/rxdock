@@ -28,11 +28,11 @@ std::string RbtGPFFCHK1::_CT("RbtGPFFCHK1");
 void RbtGPFFCHK1::ReadTables(istream &in, RbtReturnTypeArray &it,
                              RbtReturnTypeArray &sft) {
   RbtReturnType value;
-  RbtInt nip, nsfi;
-  RbtInt i = 0, j, recordn;
+  int nip, nsfi;
+  int i = 0, j, recordn;
   in >> nip;
   in.get();
-  RbtInt nctes = 15;
+  int nctes = 15;
   RbtGPGenome::SetNIP(nip + nctes);
   in >> nsfi;
   RbtGPGenome::SetNSFI(nsfi);
@@ -71,24 +71,22 @@ void RbtGPFFCHK1::ReadTables(istream &in, RbtReturnTypeArray &it,
   sft = SFTable;
 }
 
-RbtDouble RbtGPFFCHK1::CalculateFitness(RbtGPGenomePtr g,
-                                        RbtReturnTypeArray &it,
-                                        RbtReturnTypeArray &sft,
-                                        RbtBool function) {
-  RbtDouble tp = 0.0; // True Positives
-  RbtDouble fp = 0.0; // False Positives
-  RbtDouble fn = 0.0; // True Negatives
-  RbtDouble tn = 0.0; // False Negatives
+double RbtGPFFCHK1::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
+                                     RbtReturnTypeArray &sft, bool function) {
+  double tp = 0.0; // True Positives
+  double fp = 0.0; // False Positives
+  double fn = 0.0; // True Negatives
+  double tn = 0.0; // False Negatives
   RbtGPChromosomePtr c = g->GetChrom();
   RbtParser parse;
   RbtCellTokenIterPtr tokenIter(new RbtCellTokenIter(c, contextp));
   RbtFilterExpressionPtr fe(parse.Parse(tokenIter, contextp));
-  RbtDouble actualOutput, predictedOutput;
-  RbtDouble hitlimit = 0.0;
-  for (RbtInt i = 0; i < it.size(); i++) {
+  double actualOutput, predictedOutput;
+  double hitlimit = 0.0;
+  for (int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
     RbtReturnType pred;
-    for (RbtInt j = 0; j < inputs.size(); j++)
+    for (int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
     actualOutput = *(SFValues[SFValues.size() - 1]);
@@ -122,23 +120,22 @@ objective = ( tp + tn) / (tp + tn + fp + fn);
   return fitness;
 }
 
-RbtDouble RbtGPFFCHK1::CalculateFitness(RbtGPGenomePtr g,
-                                        RbtReturnTypeArray &it,
-                                        RbtReturnTypeArray &sft,
-                                        RbtDouble hitlimit, RbtBool function) {
-  RbtDouble tp = 0.0; // True Positives
-  RbtDouble fp = 0.0; // False Positives
-  RbtDouble fn = 0.0; // True Negatives
-  RbtDouble tn = 0.0; // False Negatives
+double RbtGPFFCHK1::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
+                                     RbtReturnTypeArray &sft, double hitlimit,
+                                     bool function) {
+  double tp = 0.0; // True Positives
+  double fp = 0.0; // False Positives
+  double fn = 0.0; // True Negatives
+  double tn = 0.0; // False Negatives
   RbtGPChromosomePtr c = g->GetChrom();
   RbtParser parse;
   RbtCellTokenIterPtr tokenIter(new RbtCellTokenIter(c, contextp));
   RbtFilterExpressionPtr fe(parse.Parse(tokenIter, contextp));
-  RbtDouble actualOutput, predictedOutput;
-  for (RbtInt i = 0; i < it.size(); i++) {
+  double actualOutput, predictedOutput;
+  for (int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
     RbtReturnType pred;
-    for (RbtInt j = 0; j < inputs.size(); j++)
+    for (int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
     actualOutput = *(SFValues[SFValues.size() - 1]);
@@ -168,16 +165,16 @@ RbtDouble RbtGPFFCHK1::CalculateFitness(RbtGPGenomePtr g,
   return fitness;
 }
 
-void RbtGPFFCHK1::CreateRandomCtes(RbtInt nctes) {
+void RbtGPFFCHK1::CreateRandomCtes(int nctes) {
   if (ctes.size() == 0) // it hasn't already been initialized
   {
-    RbtInt a, b;
-    RbtDouble c;
+    int a, b;
+    double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
     cout << "c0 \t0.0" << endl;
     cout << "c1 \t1.0" << endl;
-    for (RbtInt i = 0; i < (nctes - 2); i++) {
+    for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * pow(10, b);

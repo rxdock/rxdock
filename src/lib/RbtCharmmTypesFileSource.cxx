@@ -31,7 +31,7 @@ RbtCharmmTypesFileSource::~RbtCharmmTypesFileSource() {
 
 ////////////////////////////////////////
 // Public methods
-RbtInt RbtCharmmTypesFileSource::GetNumTypes() {
+int RbtCharmmTypesFileSource::GetNumTypes() {
   Parse();
   return m_typesList.size();
 }

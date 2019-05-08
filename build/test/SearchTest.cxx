@@ -34,8 +34,8 @@ void SearchTest::setUp() {
     m_workSpace->SetLigand(prmFactory.CreateLigand(spMdlFileSource));
     m_workSpace->SetSolvent(prmFactory.CreateSolvent());
     // Combine the atom lists of receptor, ligand and solvent
-    RbtInt nModels = m_workSpace->GetNumModels();
-    for (RbtInt i = 0; i < nModels; i++) {
+    int nModels = m_workSpace->GetNumModels();
+    for (int i = 0; i < nModels; i++) {
       RbtAtomList atomList = m_workSpace->GetModel(i)->GetAtomList();
       std::copy(atomList.begin(), atomList.end(),
                 std::back_inserter(m_atomList));
@@ -61,13 +61,13 @@ void SearchTest::tearDown() {
 }
 
 // RMSD calculation between two coordinate lists
-RbtDouble SearchTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
-  RbtDouble retVal(0.0);
-  RbtInt nCoords = rc.size();
+double SearchTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
+  double retVal(0.0);
+  int nCoords = rc.size();
   if (c.size() != nCoords) {
     retVal = 999.9;
   } else {
-    for (RbtInt i = 0; i < nCoords; i++) {
+    for (int i = 0; i < nCoords; i++) {
       retVal += Rbt::Length2(rc[i], c[i]);
     }
     retVal = sqrt(retVal / float(nCoords));
@@ -98,7 +98,7 @@ void SearchTest::testGA() {
   spTransformAgg->Add(pRandPop);
   spTransformAgg->Add(pGA);
   m_workSpace->SetTransform(spTransformAgg);
-  RbtBool isOK(true);
+  bool isOK(true);
   try {
     m_workSpace->Run();
   } catch (RbtError &e) {
@@ -120,7 +120,7 @@ void SearchTest::testSimplex() {
   // spTransformAgg->Add(pRandPop);
   spTransformAgg->Add(pSimplex);
   m_workSpace->SetTransform(spTransformAgg);
-  RbtBool isOK(true);
+  bool isOK(true);
   try {
     m_workSpace->Run();
   } catch (RbtError &e) {
@@ -141,7 +141,7 @@ void SearchTest::testSimAnn() {
   pSimAnn->SetParameter(RbtSimAnnTransform::_PARTITION_DIST, 0.0);
   pSimAnn->SetParameter(RbtSimAnnTransform::_PARTITION_FREQ, 0);
   m_workSpace->SetTransform(pSimAnn);
-  RbtBool isOK(true);
+  bool isOK(true);
   try {
     m_workSpace->Run();
   } catch (RbtError &e) {
@@ -161,9 +161,9 @@ void SearchTest::testRestart() {
   pSimplex->SetParameter(RbtSimplexTransform::_STEP_SIZE, 1.0);
   spTransformAgg->Add(pSimplex);
   m_workSpace->SetTransform(spTransformAgg);
-  RbtBool isOK(true);
-  RbtDouble finalScore(0.0);
-  RbtDouble restartScore(0.0);
+  bool isOK(true);
+  double finalScore(0.0);
+  double restartScore(0.0);
   try {
     // create an output sink for the minimised ligand/solvent
     RbtMolecularFileSinkPtr spMdlFileSink(

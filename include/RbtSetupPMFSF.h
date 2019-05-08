@@ -29,7 +29,7 @@ protected:
   virtual void SetupReceptor();
   virtual void SetupLigand();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
 
   void SetupReceptorPMFTypes(void) throw(RbtError);
   void SetupLigandPMFTypes(void) throw(RbtError);
@@ -46,6 +46,6 @@ protected:
   RbtPMFType GetPMFfor_rO(RbtAtomPtr);
   RbtPMFType GetPMFfor_rS(RbtAtomPtr);
 
-  RbtBool IsChargedNitrogen(RbtAtomPtr); // true for guanidino or other charged
+  bool IsChargedNitrogen(RbtAtomPtr); // true for guanidino or other charged
 };
 #endif //_RBTSETUPPMFSF_H_

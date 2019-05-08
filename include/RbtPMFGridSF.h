@@ -17,7 +17,7 @@
 #include "RbtRealGrid.h"
 
 class RbtPMFGridSF : public RbtBaseInterSF {
-  RbtBool m_bSmoothed;
+  bool m_bSmoothed;
   RbtAtomList theLigandList;       // vector to store the ligand
   vector<RbtPMFType> theTypeList;  // store PMF used types here
   vector<RbtRealGridPtr> theGrids; // grids with PMF data
@@ -36,8 +36,8 @@ protected:
   virtual void SetupReceptor();
   virtual void SetupLigand();
   virtual void SetupScore() {}
-  virtual RbtDouble RawScore() const;
-  RbtUInt GetCorrectedType(RbtPMFType aType) const;
+  virtual double RawScore() const;
+  unsigned int GetCorrectedType(RbtPMFType aType) const;
 };
 
 #endif // _RBTPMFGRIDSF_H_

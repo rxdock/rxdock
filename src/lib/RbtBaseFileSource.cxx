@@ -65,7 +65,7 @@ void RbtBaseFileSource::SetFileName(const std::string &fileName) {
 }
 
 // Status and StatusOK parse the file to check for errors
-RbtBool RbtBaseFileSource::StatusOK() { return Status().isOK(); }
+bool RbtBaseFileSource::StatusOK() { return Status().isOK(); }
 
 RbtError RbtBaseFileSource::Status() {
   // Try parsing the file and see what we catch
@@ -82,7 +82,7 @@ RbtError RbtBaseFileSource::Status() {
 }
 
 // FileStatus and FileStatusOK just try and read the file
-RbtBool RbtBaseFileSource::FileStatusOK() { return FileStatus().isOK(); }
+bool RbtBaseFileSource::FileStatusOK() { return FileStatus().isOK(); }
 
 RbtError RbtBaseFileSource::FileStatus() {
   // Try reading the file and see what we catch
@@ -118,7 +118,7 @@ void RbtBaseFileSource::Rewind() {
 
 // Protected functions
 
-void RbtBaseFileSource::Read(RbtBool aDelimiterAtEnd) throw(RbtError) {
+void RbtBaseFileSource::Read(bool aDelimiterAtEnd) throw(RbtError) {
   // If we haven't already read the file, do it now
   if (!m_bReadOK) {
     if (aDelimiterAtEnd) {
@@ -130,7 +130,7 @@ void RbtBaseFileSource::Read(RbtBool aDelimiterAtEnd) throw(RbtError) {
         // and leave file open for next record
         if (m_bMultiRec) {
           const char *cszRecDelim = m_strRecDelim.c_str();
-          RbtInt n = strlen(cszRecDelim);
+          int n = strlen(cszRecDelim);
           while ((m_fileIn.getline(m_szBuf, MAXLINELENGTH)) &&
                  (strncmp(m_szBuf, cszRecDelim, n) != 0)) {
 #ifdef _DEBUG
@@ -166,7 +166,7 @@ void RbtBaseFileSource::Read(RbtBool aDelimiterAtEnd) throw(RbtError) {
         // and leave file open for next record
         if (m_bMultiRec) {
           const char *cszRecDelim = m_strRecDelim.c_str();
-          RbtInt n = strlen(cszRecDelim);
+          int n = strlen(cszRecDelim);
           // skip to the header stuff until the first record
           // AND the first delimiter line
           while ((m_fileIn.getline(m_szBuf, MAXLINELENGTH)) &&

@@ -31,7 +31,7 @@ protected:
   virtual void SetupReceptor();
   virtual void SetupLigand();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
+  virtual double RawScore() const;
 
   // Clear the dihedral list
   // As we are not using smart pointers, there is some memory management to do

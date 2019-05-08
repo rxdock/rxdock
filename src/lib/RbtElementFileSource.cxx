@@ -49,7 +49,7 @@ std::string RbtElementFileSource::GetVersion() {
   return m_strVersion;
 }
 
-RbtUInt RbtElementFileSource::GetNumElements() {
+unsigned int RbtElementFileSource::GetNumElements() {
   Parse();
   return m_elementNameMap.size();
 }
@@ -91,7 +91,7 @@ RbtElementData RbtElementFileSource::GetElementData(
 
 // Get element data for a given atomic number, throws error if not found
 RbtElementData
-RbtElementFileSource::GetElementData(RbtInt nAtomicNumber) throw(RbtError) {
+RbtElementFileSource::GetElementData(int nAtomicNumber) throw(RbtError) {
   Parse();
   RbtIntElementDataMapIter iter = m_atomicNumberMap.find(nAtomicNumber);
   if (iter != m_atomicNumberMap.end())
@@ -107,8 +107,8 @@ RbtElementFileSource::GetElementData(RbtInt nAtomicNumber) throw(RbtError) {
 }
 
 // Check if given element name is present
-RbtBool
-RbtElementFileSource::isElementNamePresent(const std::string &strElementName) {
+bool RbtElementFileSource::isElementNamePresent(
+    const std::string &strElementName) {
   Parse();
   RbtStringElementDataMapIter iter = m_elementNameMap.find(strElementName);
   if (iter != m_elementNameMap.end())
@@ -118,7 +118,7 @@ RbtElementFileSource::isElementNamePresent(const std::string &strElementName) {
 }
 
 // Check if given atomic number is present
-RbtBool RbtElementFileSource::isAtomicNumberPresent(RbtInt nAtomicNumber) {
+bool RbtElementFileSource::isAtomicNumberPresent(int nAtomicNumber) {
   Parse();
   RbtIntElementDataMapIter iter = m_atomicNumberMap.find(nAtomicNumber);
   if (iter != m_atomicNumberMap.end())
@@ -128,13 +128,13 @@ RbtBool RbtElementFileSource::isAtomicNumberPresent(RbtInt nAtomicNumber) {
 }
 
 // Get vdw radius increment for hydrogen-bonding donors
-RbtDouble RbtElementFileSource::GetHBondRadiusIncr() {
+double RbtElementFileSource::GetHBondRadiusIncr() {
   Parse();
   return m_dHBondRadiusIncr;
 }
 
 // Get vdw radius increment for atoms with implicit hydrogens
-RbtDouble RbtElementFileSource::GetImplicitRadiusIncr() {
+double RbtElementFileSource::GetImplicitRadiusIncr() {
   Parse();
   return m_dImplicitRadiusIncr;
 }

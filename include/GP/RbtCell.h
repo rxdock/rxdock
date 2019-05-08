@@ -39,9 +39,9 @@ public:
   //////////////////
   virtual ~RbtCell() {}
 
-  RbtBool Evaluated() const { return evaluated; }
-  RbtBool Named() const { return (name != ""); }
-  RbtBool Constant() const { return constant; }
+  bool Evaluated() const { return evaluated; }
+  bool Named() const { return (name != ""); }
+  bool Constant() const { return constant; }
   void Clear() {
     if (!constant) {
       evaluated = false;
@@ -71,7 +71,7 @@ public:
   }
 
 private:
-  RbtBool evaluated, constant;
+  bool evaluated, constant;
   std::string name;
   RbtReturnType result;
   //    friend ostream& operator<<(ostream& s, const RbtCell &p);

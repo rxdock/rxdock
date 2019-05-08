@@ -18,9 +18,9 @@ std::string RbtChromDihedralRefData::_CT = "RbtChromDihedralRefData";
 
 RbtChromDihedralRefData::RbtChromDihedralRefData(RbtBondPtr spBond,
                                                  RbtAtomList tetheredAtoms,
-                                                 RbtDouble stepSize,
+                                                 double stepSize,
                                                  RbtChromElement::eMode mode,
-                                                 RbtDouble maxDihedral)
+                                                 double maxDihedral)
     : m_stepSize(stepSize), m_mode(mode), m_maxDihedral(maxDihedral) {
   Setup(spBond, tetheredAtoms);
   m_initialValue = GetModelValue();
@@ -31,12 +31,12 @@ RbtChromDihedralRefData::~RbtChromDihedralRefData() {
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
-RbtDouble RbtChromDihedralRefData::GetModelValue() const {
+double RbtChromDihedralRefData::GetModelValue() const {
   return Rbt::BondDihedral(m_atom1, m_atom2, m_atom3, m_atom4);
 }
 
-void RbtChromDihedralRefData::SetModelValue(RbtDouble dihedralAngle) {
-  RbtDouble delta = dihedralAngle - GetModelValue();
+void RbtChromDihedralRefData::SetModelValue(double dihedralAngle) {
+  double delta = dihedralAngle - GetModelValue();
   // Only rotate if delta is non-zero
   if (fabs(delta) > 0.001) {
     // Coords of atom 1
@@ -62,8 +62,8 @@ void RbtChromDihedralRefData::Setup(RbtBondPtr spBond,
   RbtModel *pModel = pAtom2->GetModelPtr();
   RbtAtomList atomList = pModel->GetAtomList();
   RbtBondList bondList = pModel->GetBondList();
-  RbtInt nAtoms = atomList.size();
-  RbtInt nTethered = tetheredAtoms.size();
+  int nAtoms = atomList.size();
+  int nTethered = tetheredAtoms.size();
   // The following lines get the bonded atom lists on each end of the rotable
   // bond, taking care not to include the atoms actually in the rotable bond
   RbtAtomList bondedAtoms2 =
@@ -85,9 +85,9 @@ void RbtChromDihedralRefData::Setup(RbtBondPtr spBond,
   // are rotated (preferably none). i.e. we rotate the free end of the bond,
   // even
   // if this is over half the molecule
-  RbtInt nSelected = (nTethered == 0) ? Rbt::GetNumSelectedAtoms(atomList)
-                                      : Rbt::GetNumSelectedAtoms(tetheredAtoms);
-  RbtInt nHalf = (nTethered == 0) ? (nAtoms - 2) / 2 : (nTethered - 2) / 2;
+  int nSelected = (nTethered == 0) ? Rbt::GetNumSelectedAtoms(atomList)
+                                   : Rbt::GetNumSelectedAtoms(tetheredAtoms);
+  int nHalf = (nTethered == 0) ? (nAtoms - 2) / 2 : (nTethered - 2) / 2;
   if (nSelected > nHalf) {
     // cout << "Over half the molecule selected: " << nSelected << " atoms" <<
     // endl;

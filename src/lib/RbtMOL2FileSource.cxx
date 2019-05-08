@@ -23,13 +23,13 @@ using std::stringstream;
 std::string RbtMOL2FileSource::_CT("RbtMOL2FileSource");
 // record delimiter strings
 std::string RbtMOL2FileSource::_TRIPOS_DELIM("@<TRIPOS>");
-RbtInt RbtMOL2FileSource::_TRIPOS_DELIM_SIZE(
+int RbtMOL2FileSource::_TRIPOS_DELIM_SIZE(
     RbtMOL2FileSource::_TRIPOS_DELIM.size());
 std::string RbtMOL2FileSource::_IDS_MOL2_RECDELIM("@<TRIPOS>MOLECULE");
 
 // straightforward ctor
 RbtMOL2FileSource::RbtMOL2FileSource(const std::string &fileName,
-                                     RbtBool bImplHydrogens)
+                                     bool bImplHydrogens)
     : RbtBaseMolecularFileSource(fileName, _IDS_MOL2_RECDELIM,
                                  "MOL2_FILE_SOURCE"),
       m_bImplHydrogens(bImplHydrogens) {
@@ -109,9 +109,9 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
       // let's assign chain ids to atoms
       // and sort atomlist by substructure ID
       m_atomList.clear();
-      for (map<RbtInt, RbtAtomList>::const_iterator iter = m_ssAtoms.begin();
+      for (map<int, RbtAtomList>::const_iterator iter = m_ssAtoms.begin();
            iter != m_ssAtoms.end(); iter++) {
-        RbtInt subst_id = iter->first;
+        int subst_id = iter->first;
         RbtAtomList ssAtomList = iter->second;
         // cout << "Found " << ssAtomList.size() << " atoms in SUBSTRUCTURE#" <<
         // subst_id << endl;
@@ -246,7 +246,7 @@ void RbtMOL2FileSource::ParseRecordATOM(const std::string &aLine) {
                             "Corrupted MOL2 file: not enough fields in ATOM ");
 
   // Compulsory fields
-  RbtInt atom_id = atoi(tokens[0].c_str());
+  int atom_id = atoi(tokens[0].c_str());
   std::string atom_name = tokens[1];
   RbtCoord atom_coord;
   atom_coord.x = atof(tokens[2].c_str());
@@ -255,11 +255,11 @@ void RbtMOL2FileSource::ParseRecordATOM(const std::string &aLine) {
   std::string atom_type = tokens[5];
 
   // Optional fields.
-  RbtInt subst_id = (tokens.size() > 6) ? atoi(tokens[6].c_str()) : 1;
+  int subst_id = (tokens.size() > 6) ? atoi(tokens[6].c_str()) : 1;
   std::string subst_name = (tokens.size() > 7) ? tokens[7] : "****";
   std::string sID, sName;
   GetSSIDandName(subst_name, subst_id, sID, sName);
-  RbtDouble charge = (tokens.size() > 8) ? atof(tokens[8].c_str()) : 0.0;
+  double charge = (tokens.size() > 8) ? atof(tokens[8].c_str()) : 0.0;
   // XB reweighting parameters
   //	RbtDouble wxb = (tokens.size() > 9) ? atof(tokens[9].c_str()) : 1.0;
   // XB mod for only doing if number, not characters
@@ -273,7 +273,7 @@ void RbtMOL2FileSource::ParseRecordATOM(const std::string &aLine) {
 
   // Derived atom params (some may be updated later)
   RbtTriposAtomType::eType tt = m_typer.Str2Type(atom_type);
-  RbtInt atomic_number = m_typer.Type2AtomicNo(tt);
+  int atomic_number = m_typer.Type2AtomicNo(tt);
   // Workaround for metals such as Zn, Mn, Mg
   // We should add Tripos types for these metals, but the most important thing
   // is to pick up the atomic number (can do this from the atom type string)
@@ -321,9 +321,9 @@ void RbtMOL2FileSource::ParseRecordBOND(const std::string &aLine) {
                             "Corrupted MOL2 file: not enough fields in BOND");
 
   // Compulsory fields
-  RbtInt bond_id = atoi(tokens[0].c_str());
-  RbtInt origin_bond_id = atoi(tokens[1].c_str());
-  RbtInt target_bond_id = atoi(tokens[2].c_str());
+  int bond_id = atoi(tokens[0].c_str());
+  int origin_bond_id = atoi(tokens[1].c_str());
+  int target_bond_id = atoi(tokens[2].c_str());
   std::string bond_type = tokens[3];
 
   // In rDock we only have integer bond order
@@ -331,7 +331,7 @@ void RbtMOL2FileSource::ParseRecordBOND(const std::string &aLine) {
   // files Can't do much here so define everything as single, double or triple
   // We have the hybridisation state of each atoms already (from the Tripos
   // type) so are not so dependent on bond orders to deduce hybridisation
-  RbtInt bond_order = (bond_type == "3") ? 3 : (bond_type == "2") ? 2 : 1;
+  int bond_order = (bond_type == "3") ? 3 : (bond_type == "2") ? 2 : 1;
   // Check that atom IDs are in range
   // This assumes that the Bond records are read after the Atom records (should
   // be always the case)
@@ -358,9 +358,9 @@ void RbtMOL2FileSource::ParseRecordSUBSTRUCTURE(const std::string &aLine) {
         _WHERE_, "Corrupted MOL2 file: not enough fields in SUBSTRUCTURE");
 
   // Compulsory fields
-  RbtInt subst_id = atoi(tokens[0].c_str());
+  int subst_id = atoi(tokens[0].c_str());
   std::string subst_name = tokens[1];
-  RbtInt root_atom = atoi(tokens[2].c_str());
+  int root_atom = atoi(tokens[2].c_str());
 
   // Optional fields
   std::string chain =
@@ -458,19 +458,19 @@ void RbtMOL2FileSource::FixImplicitHydrogenCount() {
     RbtAtom::eHybridState hyb = (*iter)->GetHybridState();
     // Compare actual and expected bond count based on hybridisation state
     // Asssume SP3 (4 bonds) if hyb state is undefined
-    RbtInt actual = (*iter)->GetNumBonds();
-    RbtInt expected =
+    int actual = (*iter)->GetNumBonds();
+    int expected =
         (hyb == RbtAtom::SP3)
             ? 4
             : (hyb == RbtAtom::SP2)
                   ? 3
                   : (hyb == RbtAtom::AROM) ? 3 : (hyb == RbtAtom::SP) ? 2 : 4;
-    RbtInt nImplH = expected - actual;
+    int nImplH = expected - actual;
     // Pick up fragmented aromatic rings here
     // Cannot have more than one explicit or implicit hydrogen to an aromatic
     // carbon
     if ((hyb == RbtAtom::AROM) && (nImplH > 0)) {
-      RbtInt nExplH = (*iter)->GetCoordinationNumber(1);
+      int nExplH = (*iter)->GetCoordinationNumber(1);
       if ((nImplH + nExplH) > 1) {
         cout << _CT << ": INFO Too few bonds detected to aromatic carbon "
              << (*iter)->GetFullAtomName() << "; #hydrogens capped at 1"
@@ -521,7 +521,7 @@ void RbtMOL2FileSource::FixTriposTypes() {
   for (RbtAtomListIter iter = cList.begin(); iter != cList.end(); iter++) {
     RbtTriposAtomType::eType t = (*iter)->GetTriposType();
     RbtTriposAtomType::eType xt = t;
-    RbtInt nImplH = (*iter)->GetNumImplicitHydrogens();
+    int nImplH = (*iter)->GetNumImplicitHydrogens();
     if (nImplH > 0) {
       switch (t) {
       case RbtTriposAtomType::C_3:
@@ -573,7 +573,7 @@ void RbtMOL2FileSource::RemoveNonPolarHydrogens() {
     // Get list of all bonded hydrogens
     RbtAtomList hList =
         Rbt::GetAtomList(Rbt::GetBondedAtomList(*cIter), Rbt::isAtomicNo_eq(1));
-    RbtInt nH = hList.size();
+    int nH = hList.size();
     if (nH > 0) {
       for (RbtAtomListIter hIter = hList.begin(); hIter != hList.end();
            hIter++) {
@@ -603,21 +603,21 @@ void RbtMOL2FileSource::SetupVdWRadii() {
   // DM 22 Jul 1999 - only increase the radius for sp3 atoms with implicit
   // hydrogens For sp2 and aromatic, leave as is
   Rbt::isHybridState_eq bIsSP3(RbtAtom::SP3);
-  RbtDouble dImplRadIncr = m_spElementData->GetImplicitRadiusIncr();
+  double dImplRadIncr = m_spElementData->GetImplicitRadiusIncr();
   // Element data for hydrogen
   RbtElementData elHData = m_spElementData->GetElementData(1);
   // Radius increment and predicate for H-bonding hydrogens
   Rbt::isAtomHBondDonor bIsHBondDonor;
-  RbtDouble dHBondRadius =
+  double dHBondRadius =
       elHData.vdwRadius + m_spElementData->GetHBondRadiusIncr();
 
   for (RbtAtomListIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter++) {
     // Get the element data for this atom
-    RbtInt nAtomicNo = (*iter)->GetAtomicNo();
+    int nAtomicNo = (*iter)->GetAtomicNo();
     RbtElementData elData = m_spElementData->GetElementData(nAtomicNo);
-    RbtDouble vdwRadius = elData.vdwRadius;
-    RbtInt nImplH = (*iter)->GetNumImplicitHydrogens();
+    double vdwRadius = elData.vdwRadius;
+    int nImplH = (*iter)->GetNumImplicitHydrogens();
     // Adjust atomic mass and vdw radius for atoms with implicit hydrogens
     if (nImplH > 0) {
       (*iter)->SetAtomicMass(elData.mass +
@@ -645,7 +645,7 @@ void RbtMOL2FileSource::SetupVdWRadii() {
 // and residue ID (sID) components If subst_name is **** or in the style <148>,
 // then substitutes default name (UNK) and default ID (subst_id)
 void RbtMOL2FileSource::GetSSIDandName(const std::string &subst_name,
-                                       RbtInt subst_id, std::string &sID,
+                                       int subst_id, std::string &sID,
                                        std::string &sName) {
   // subst_names beginning with * or < do not follow the normal pattern of ALA99
   // etc

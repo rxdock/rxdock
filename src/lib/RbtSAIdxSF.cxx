@@ -44,11 +44,11 @@ void RbtSAIdxSF::SetupReceptor() {
   ClearReceptor();
   if (GetReceptor().Null())
     return;
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
   // Trap multiple receptor conformations here: this SF does not support them
   // yet
-  RbtBool bEnsemble = (GetReceptor()->GetNumSavedCoords() > 1);
+  bool bEnsemble = (GetReceptor()->GetNumSavedCoords() > 1);
   if (bEnsemble) {
     throw RbtInvalidRequest(_WHERE_,
                             "Solvation scoring function does not support "
@@ -58,10 +58,10 @@ void RbtSAIdxSF::SetupReceptor() {
   // MAKE THE ASSUMPTION that the only flexible receptor atoms are terminal
   // OH/NH3 and that they don't move very far (up to 2A)
   m_bFlexRec = GetReceptor()->isFlexible();
-  RbtDouble flexDist = 2.0;
+  double flexDist = 2.0;
   theIdxGrid = CreateNonBondedHHSGrid();
-  RbtDouble idxIncr = GetParameter(_INCR).Double() + GetMaxError();
-  RbtDouble flexIncr = idxIncr + flexDist;
+  double idxIncr = GetParameter(_INCR).Double() + GetMaxError();
+  double flexIncr = idxIncr + flexDist;
 
   // At this stage we deal with all receptor atoms, to avoid edge effects when
   // determining surface areas for atoms on the periphery of the docking site At
@@ -108,7 +108,7 @@ void RbtSAIdxSF::SetupReceptor() {
     // Do a one-shot partitioning of the variable distances
     // For grosser flexibility than OH/NH3 rotation, would have to partition
     // more frequently during docking
-    RbtDouble dist =
+    double dist =
         GetR_i(RbtHHSType::HNp) + GetParameter(_INCR).Double() + flexDist;
     Partition(theFlexList, dist);
     Rbt::OverlapVariableHHS updateVariableArea;
@@ -172,9 +172,9 @@ void RbtSAIdxSF::SetupReceptor() {
          iter != theCavList.end(); iter++) {
       RbtHHSType::eType t = (*iter)->GetHHSType();
       RbtAtom *pAtom = (*iter)->GetAtom();
-      RbtDouble sasa = (*iter)->GetArea();
-      RbtDouble asp = (*iter)->GetSigma();
-      RbtDouble energy = (*iter)->GetEnergy();
+      double sasa = (*iter)->GetArea();
+      double asp = (*iter)->GetSigma();
+      double energy = (*iter)->GetEnergy();
       cout << _CT << ": " << pAtom->GetFullAtomName() << ", "
            << hhsType.Type2Str(t) << ", " << sasa << ", " << asp << ", "
            << energy << endl;
@@ -190,9 +190,9 @@ void RbtSAIdxSF::SetupReceptor() {
            iter != theFlexList.end(); iter++) {
         RbtHHSType::eType t = (*iter)->GetHHSType();
         RbtAtom *pAtom = (*iter)->GetAtom();
-        RbtDouble sasa = (*iter)->GetArea();
-        RbtDouble asp = (*iter)->GetSigma();
-        RbtDouble energy = (*iter)->GetEnergy();
+        double sasa = (*iter)->GetArea();
+        double asp = (*iter)->GetSigma();
+        double energy = (*iter)->GetEnergy();
         cout << _CT << ": " << pAtom->GetFullAtomName() << ", "
              << hhsType.Type2Str(t) << ", " << sasa << ", " << asp << ", "
              << energy << endl;
@@ -206,15 +206,15 @@ void RbtSAIdxSF::SetupReceptor() {
          << endl;
     // Count the number of undefined types
     Rbt::isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
-    RbtInt nUndefRec =
+    int nUndefRec =
         std::count_if(theRSPList.begin(), theRSPList.end(), isUndefined);
-    RbtInt nUndefSite =
+    int nUndefSite =
         std::count_if(theCavList.begin(), theCavList.end(), isUndefined);
 
     cout << "#UNDEFINED TYPES (rigid recep)  : " << nUndefRec << endl;
     cout << "#UNDEFINED TYPES (rigid site)   : " << nUndefSite << endl;
     if (m_bFlexRec) {
-      RbtInt nUndefFlex =
+      int nUndefFlex =
           std::count_if(theFlexList.begin(), theFlexList.end(), isUndefined);
       cout << "#UNDEFINED TYPES (flex site)    : " << nUndefFlex << endl;
     }
@@ -236,7 +236,7 @@ void RbtSAIdxSF::SetupLigand() {
   // Store the per-atom invariant free areas for later retrieval
   Rbt::SaveHHS saveInvariantArea;
   std::for_each(theLSPList.begin(), theLSPList.end(), saveInvariantArea);
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   // The solvation term also describes the intramolecular solvation energy of
   // the ligand so, as with the intramolecular terms, we want to take the "zero"
   // point energy from the initial (Corina) conformation of the ligand. Read the
@@ -267,7 +267,7 @@ void RbtSAIdxSF::SetupLigand() {
     cout << "Initial ligand dG(solv):     " << m_lig_0 << " kcal/mol" << endl;
     // Count the number of undefined types
     Rbt::isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
-    RbtInt nUndef =
+    int nUndef =
         std::count_if(theLSPList.begin(), theLSPList.end(), isUndefined);
     cout << "#UNDEFINED TYPES (lig)    : " << nUndef << endl;
   }
@@ -276,7 +276,7 @@ void RbtSAIdxSF::SetupLigand() {
 void RbtSAIdxSF::SetupSolvent() {
   ClearSolvent();
   RbtModelList solventModelList = GetSolvent();
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   // Process the solvent models individually in order to build up each
   // intra-solvent interaction map correctly.
   for (RbtModelListConstIter iter = solventModelList.begin();
@@ -318,15 +318,15 @@ void RbtSAIdxSF::SetupSolvent() {
          << endl;
     // Count the number of undefined types
     Rbt::isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
-    RbtInt nUndef = std::count_if(theSolventList.begin(), theSolventList.end(),
-                                  isUndefined);
+    int nUndef = std::count_if(theSolventList.begin(), theSolventList.end(),
+                               isUndefined);
     cout << "#UNDEFINED TYPES (sol)    : " << nUndef << endl;
   }
 }
 
 void RbtSAIdxSF::SetupScore() {}
 
-RbtDouble RbtSAIdxSF::RawScore(void) const {
+double RbtSAIdxSF::RawScore(void) const {
   // restore invariant surface areas for ligand, solvent and rigid receptor
   for (HHS_SolvationRListConstIter iter = theLSPList.begin();
        iter != theLSPList.end(); ++iter)
@@ -433,21 +433,21 @@ RbtDouble RbtSAIdxSF::RawScore(void) const {
 
   // Total score is overall change in solvation energy for ligand, site and
   // solvent relative to initial unbound scores
-  RbtDouble theScore = (m_lig_bound - m_lig_0) + (m_site_bound - m_site_0) +
-                       (m_solvent_bound - m_solvent_0);
+  double theScore = (m_lig_bound - m_lig_0) + (m_site_bound - m_site_0) +
+                    (m_solvent_bound - m_solvent_0);
   return theScore;
 }
 
-RbtDouble RbtSAIdxSF::GetP_i(RbtHHSType::eType theType) const {
+double RbtSAIdxSF::GetP_i(RbtHHSType::eType theType) const {
   return m_solvTable[theType].p;
 }
 
-RbtDouble RbtSAIdxSF::GetR_i(RbtHHSType::eType theType) const {
+double RbtSAIdxSF::GetR_i(RbtHHSType::eType theType) const {
   return m_solvTable[theType].r;
 }
 
-RbtDouble RbtSAIdxSF::GetASP(RbtHHSType::eType theType, RbtDouble chg) const {
-  RbtDouble asp = m_solvTable[theType].asp;
+double RbtSAIdxSF::GetASP(RbtHHSType::eType theType, double chg) const {
+  double asp = m_solvTable[theType].asp;
   return m_solvTable[theType].chg_scaling ? asp * fabs(chg) : asp;
 }
 
@@ -469,9 +469,9 @@ void RbtSAIdxSF::PrintWeightMatrix(void) const {
        iter != theLSPList.end(); iter++) {
     RbtHHSType::eType hhsType = (*iter)->GetHHSType();
     count[hhsType]++;
-    RbtDouble sa = (*iter)->GetArea();
+    double sa = (*iter)->GetArea();
     if (m_solvTable[hhsType].chg_scaling) {
-      RbtDouble chg = fabs((*iter)->GetAtom()->GetGroupCharge());
+      double chg = fabs((*iter)->GetAtom()->GetGroupCharge());
       if (chg > 0.0)
         sa *= chg;
     }
@@ -541,7 +541,7 @@ void RbtSAIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
 
     // First we need to force the calculation of all the raw score components
     EnableAnnotations(true);
-    RbtDouble rs = RawScore();
+    double rs = RawScore();
     EnableAnnotations(false);
     std::string name = GetFullName();
 
@@ -549,9 +549,9 @@ void RbtSAIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // solvent) for the current internal conformations when intermolecular
     // desolvation interactions are taken into account. i.e. the difference
     // between bound and free states.
-    RbtDouble inter_rs = (m_site_bound - m_site_free) +
-                         (m_lig_bound - m_lig_free) +
-                         (m_solvent_bound - m_solvent_free);
+    double inter_rs = (m_site_bound - m_site_free) +
+                      (m_lig_bound - m_lig_free) +
+                      (m_solvent_bound - m_solvent_free);
     scoreMap[name] = inter_rs;
     AddToParentMapEntry(scoreMap, inter_rs);
 
@@ -559,12 +559,12 @@ void RbtSAIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // between the initial ligand conformation and the current ligand
     // conformation. This is nothing to do with the binding event, and so
     // belongs with the other ligand intramolecular scores.
-    RbtDouble intra_rs = m_lig_free - m_lig_0;
+    double intra_rs = m_lig_free - m_lig_0;
     std::string intraName = RbtBaseSF::_INTRA_SF + "." + GetName();
     scoreMap[intraName] = intra_rs;
     scoreMap[intraName + ".lig_0"] = m_lig_0;
     // increment the SCORE.INTRA total
-    RbtDouble parentScore = scoreMap[RbtBaseSF::_INTRA_SF];
+    double parentScore = scoreMap[RbtBaseSF::_INTRA_SF];
     parentScore += intra_rs * GetWeight();
     scoreMap[RbtBaseSF::_INTRA_SF] = parentScore;
 
@@ -572,7 +572,7 @@ void RbtSAIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // solvent between the initial conformations and the current conformations.
     // This is nothing to do with the binding event, and so belongs with the
     // other system scores.
-    RbtDouble system_rs =
+    double system_rs =
         (m_site_free - m_site_0) + (m_solvent_free - m_solvent_0);
     std::string systemName = RbtBaseSF::_SYSTEM_SF + "." + GetName();
     scoreMap[systemName] = system_rs;
@@ -585,7 +585,7 @@ void RbtSAIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
 
 void RbtSAIdxSF::Setup() {
   RbtHHSType hhsType;
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   m_maxR = 0.0; // keep track of maximum radius for any atom type
   if (iTrace > 1) {
     cout << endl << _CT << "::Setup()" << endl;
@@ -600,13 +600,13 @@ void RbtSAIdxSF::Setup() {
   std::string _CHG_SCALING("CHG_SCALING");
   m_solvTable.clear();
 
-  for (RbtInt i = RbtHHSType::UNDEFINED; i < RbtHHSType::MAXTYPES; i++) {
+  for (int i = RbtHHSType::UNDEFINED; i < RbtHHSType::MAXTYPES; i++) {
     std::string stri = hhsType.Type2Str(RbtHHSType::eType(i));
     m_spSolvSource->SetSection(stri);
-    RbtDouble r = m_spSolvSource->GetParameterValue(_R);
-    RbtDouble p = m_spSolvSource->GetParameterValue(_P);
-    RbtDouble asp = m_spSolvSource->GetParameterValue(_ASP);
-    RbtBool chg_scaling = m_spSolvSource->isParameterPresent(_CHG_SCALING);
+    double r = m_spSolvSource->GetParameterValue(_R);
+    double p = m_spSolvSource->GetParameterValue(_P);
+    double asp = m_spSolvSource->GetParameterValue(_ASP);
+    bool chg_scaling = m_spSolvSource->isParameterPresent(_CHG_SCALING);
     m_solvTable.push_back(solvprms(r, p, asp, chg_scaling));
     if (iTrace > 1) {
       cout << stri << "," << r << "," << p << "," << asp << "," << chg_scaling
@@ -628,10 +628,10 @@ void RbtSAIdxSF::Setup() {
 
 // Sum the exposed areas and energies (ASP*area) for the list of solvation
 // interaction centers energy and area are the return values (by reference)
-RbtDouble RbtSAIdxSF::TotalEnergy(const HHS_SolvationRList &intnCenters) const {
+double RbtSAIdxSF::TotalEnergy(const HHS_SolvationRList &intnCenters) const {
   // return
   // std::accumulate(intnCenters.begin(),intnCenters.end(),0.0,Rbt::AccumHHSEnergy);
-  RbtDouble energy(0.0);
+  double energy(0.0);
   for (HHS_SolvationRListConstIter iter = intnCenters.begin();
        iter != intnCenters.end(); ++iter)
     energy += (*iter)->GetEnergy();
@@ -642,7 +642,7 @@ RbtDouble RbtSAIdxSF::TotalEnergy(const HHS_SolvationRList &intnCenters) const {
 // Handles the Partition request
 void RbtSAIdxSF::HandleRequest(RbtRequestPtr spRequest) {
   RbtVariantList params = spRequest->GetParameters();
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
 
   switch (spRequest->GetID()) {
 
@@ -676,7 +676,7 @@ void RbtSAIdxSF::HandleRequest(RbtRequestPtr spRequest) {
     break;
   }
 }
-void RbtSAIdxSF::Partition(HHS_SolvationRList &intnCenters, RbtDouble dist) {
+void RbtSAIdxSF::Partition(HHS_SolvationRList &intnCenters, double dist) {
   // Rbt::PartitionHHS partition(dist);
   // std::for_each(intnCenters.begin(),intnCenters.end(),partition);
   for (HHS_SolvationRListIter iter = intnCenters.begin();
@@ -689,7 +689,7 @@ RbtSAIdxSF::CreateInteractionCenters(const RbtAtomList &atomList) const {
   HHS_SolvationRList retList;
   // assign atom types and ASP parameters
   RbtHHSType hhsType;
-  RbtInt iTrace = GetTrace();
+  int iTrace = GetTrace();
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
     RbtHHSType::eType t = hhsType(*iter);
@@ -698,9 +698,9 @@ RbtSAIdxSF::CreateInteractionCenters(const RbtAtomList &atomList) const {
     // the H's are implicit or not, so all should work well even for all-atom
     // models
     if (t != RbtHHSType::H) {
-      RbtDouble p_i = GetP_i(t);
-      RbtDouble r_i = GetR_i(t);
-      RbtDouble sigma = GetASP(t, (*iter)->GetGroupCharge());
+      double p_i = GetP_i(t);
+      double r_i = GetR_i(t);
+      double sigma = GetASP(t, (*iter)->GetGroupCharge());
       retList.push_back(new HHS_Solvation(t, *iter, p_i, r_i, sigma));
       if (t == RbtHHSType::UNDEFINED)
         cout << _CT << ": WARNING - CANNOT ASSIGN SOLVATION ATOM TYPE FOR "

@@ -51,12 +51,12 @@ protected:
   virtual void SetupLigand();
   virtual void SetupSolvent();
   virtual void SetupScore();
-  virtual RbtDouble RawScore() const;
-  RbtDouble InterScore() const;
-  RbtDouble ReceptorScore() const;
-  RbtDouble SolventScore() const;
-  RbtDouble ReceptorSolventScore() const;
-  RbtDouble LigandSolventScore() const;
+  virtual double RawScore() const;
+  double InterScore() const;
+  double ReceptorScore() const;
+  double SolventScore() const;
+  double ReceptorSolventScore() const;
+  double LigandSolventScore() const;
 
   // DM 25 Oct 2000 - track changes to parameter values in local data members
   // ParameterUpdated is invoked by RbtParamHandler::SetParameter
@@ -86,14 +86,14 @@ private:
       m_solventFreeIntns; // Intra-solvent intns between free solvent atoms
   // DM 12 Jun 2002 - keep track of number of ligand atoms involved in non-zero
   // vdW interactions
-  mutable RbtInt m_nAttr; //#atoms with net attractive (-ve) vdw scores
-  mutable RbtInt m_nRep;  //#atoms with net repulsive (+ve) vdw scores
-  RbtDouble m_attrThreshold;
-  RbtDouble m_repThreshold;
-  RbtDouble m_lipoAnnot;
-  RbtBool m_bAnnotate;
-  RbtBool m_bFlexRec;
-  RbtBool m_bFastSolvent;
+  mutable int m_nAttr; //#atoms with net attractive (-ve) vdw scores
+  mutable int m_nRep;  //#atoms with net repulsive (+ve) vdw scores
+  double m_attrThreshold;
+  double m_repThreshold;
+  double m_lipoAnnot;
+  bool m_bAnnotate;
+  bool m_bFlexRec;
+  bool m_bFastSolvent;
 };
 
 #endif //_RBTVDWIDXSF_H_

@@ -16,7 +16,7 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(RbtChromTest);
 
-RbtDouble RbtChromTest::TINY = 1E-4;
+double RbtChromTest::TINY = 1E-4;
 
 void RbtChromTest::setUp() {
   try {
@@ -87,13 +87,13 @@ void RbtChromTest::setupWorkSpace() {
 }
 
 // RMSD calculation between two coordinate lists
-RbtDouble RbtChromTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
-  RbtDouble retVal(0.0);
-  RbtInt nCoords = rc.size();
+double RbtChromTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
+  double retVal(0.0);
+  int nCoords = rc.size();
   if (c.size() != nCoords) {
     retVal = 999.9;
   } else {
-    for (RbtInt i = 0; i < nCoords; i++) {
+    for (int i = 0; i < nCoords; i++) {
       retVal += Rbt::Length2(rc[i], c[i]);
     }
     retVal = sqrt(retVal / float(nCoords));
@@ -131,7 +131,7 @@ void RbtChromTest::testSyncToModel() {
   Rbt::GetCoordList(m_atomList, coordsBefore);
   m_chrom_1koc->SyncToModel();
   Rbt::GetCoordList(m_atomList, coordsAfter);
-  RbtDouble rms = rmsd(coordsBefore, coordsAfter);
+  double rms = rmsd(coordsBefore, coordsAfter);
   CPPUNIT_ASSERT(rms < TINY);
 }
 
@@ -141,7 +141,7 @@ void RbtChromTest::testSyncToModelAfterMutate() {
   m_chrom_1koc->Mutate(1.0);
   m_chrom_1koc->SyncToModel();
   Rbt::GetCoordList(m_atomList, coordsAfter);
-  RbtDouble rms = rmsd(coordsBefore, coordsAfter);
+  double rms = rmsd(coordsBefore, coordsAfter);
   CPPUNIT_ASSERT(rms > TINY);
 }
 
@@ -153,7 +153,7 @@ void RbtChromTest::testSyncToModelAfterReset() {
   m_chrom_1koc->Reset();
   m_chrom_1koc->SyncToModel();
   Rbt::GetCoordList(m_atomList, coordsAfter);
-  RbtDouble rms = rmsd(coordsBefore, coordsAfter);
+  double rms = rmsd(coordsBefore, coordsAfter);
   CPPUNIT_ASSERT(rms < TINY);
 }
 
@@ -166,7 +166,7 @@ void RbtChromTest::testCloneReset() {
   clone->Reset();
   clone->SyncToModel();
   Rbt::GetCoordList(m_atomList, coordsAfter);
-  RbtDouble rms = rmsd(coordsBefore, coordsAfter);
+  double rms = rmsd(coordsBefore, coordsAfter);
   CPPUNIT_ASSERT(rms < TINY);
 }
 
@@ -182,7 +182,7 @@ void RbtChromTest::testMutatedCloneReset() {
   clone->Reset();
   clone->SyncToModel();
   Rbt::GetCoordList(m_atomList, coordsAfter);
-  RbtDouble rms = rmsd(coordsBefore, coordsAfter);
+  double rms = rmsd(coordsBefore, coordsAfter);
   CPPUNIT_ASSERT(rms < TINY);
   delete clone;
 }
@@ -199,7 +199,7 @@ void RbtChromTest::testSyncToModelAfterRandomise() {
   m_chrom_1koc->Randomise();
   m_chrom_1koc->SyncToModel();
   Rbt::GetCoordList(m_atomList, coordsAfter);
-  RbtDouble rms = rmsd(coordsBefore, coordsAfter);
+  double rms = rmsd(coordsBefore, coordsAfter);
   CPPUNIT_ASSERT(rms > TINY);
 }
 
@@ -211,7 +211,7 @@ void RbtChromTest::testSyncToModelAfterRandomiseReset() {
   m_chrom_1koc->Reset();
   m_chrom_1koc->SyncToModel();
   Rbt::GetCoordList(m_atomList, coordsAfter);
-  RbtDouble rms = rmsd(coordsBefore, coordsAfter);
+  double rms = rmsd(coordsBefore, coordsAfter);
   CPPUNIT_ASSERT(rms < TINY);
 }
 
@@ -234,10 +234,10 @@ void RbtChromTest::testNullCrossover() {
   RbtChromElementPtr clone2 = m_chrom_1koc->clone();
   RbtChromElementPtr clone3 = m_chrom_1koc->clone();
   RbtChromElementPtr clone4 = m_chrom_1koc->clone();
-  RbtBool isEqualBeforeXOver =
+  bool isEqualBeforeXOver =
       (*clone1 == *clone2) && (*clone1 == *clone3) && (*clone1 == *clone4);
   Rbt::Crossover(clone1, clone2, clone3, clone4);
-  RbtBool isEqualAfterXOver =
+  bool isEqualAfterXOver =
       (*clone1 == *clone2) && (*clone1 == *clone3) && (*clone1 == *clone4);
   CPPUNIT_ASSERT(isEqualBeforeXOver && isEqualAfterXOver);
 }
@@ -258,30 +258,30 @@ void RbtChromTest::testRepeatedSync() {
   RbtChromElementPtr clone = m_chrom_1koc->clone();
   RbtCoordList coordsBefore, coordsAfter;
   Rbt::GetCoordList(m_atomList, coordsBefore);
-  for (RbtInt i = 0; i < 100; i++) {
+  for (int i = 0; i < 100; i++) {
     m_chrom_1koc->SyncToModel();
     m_chrom_1koc->SyncFromModel();
   }
   Rbt::GetCoordList(m_atomList, coordsAfter);
-  RbtDouble rms = rmsd(coordsBefore, coordsAfter);
-  RbtDouble cmp = m_chrom_1koc->Compare(*clone);
+  double rms = rmsd(coordsBefore, coordsAfter);
+  double cmp = m_chrom_1koc->Compare(*clone);
   CPPUNIT_ASSERT((rms < TINY) && (cmp < TINY));
 }
 
 void RbtChromTest::testCompareWithNullChrom() {
   RbtChromElementPtr nullChrom = new RbtChrom();
-  RbtDouble cmp = m_chrom_1koc->Compare(*nullChrom);
+  double cmp = m_chrom_1koc->Compare(*nullChrom);
   CPPUNIT_ASSERT((cmp < 0.0) && (*m_chrom_1koc != *nullChrom));
 }
 
 void RbtChromTest::testCompareAfterMutate() {
-  RbtBool isOK(true);
+  bool isOK(true);
   RbtRand &rand = Rbt::GetRbtRand();
-  for (RbtInt i = 0; (i < 10000) && isOK; i++) {
+  for (int i = 0; (i < 10000) && isOK; i++) {
     RbtChromElementPtr clone = m_chrom_1koc->clone();
-    RbtDouble mutationDistance = rand.GetRandom01();
+    double mutationDistance = rand.GetRandom01();
     clone->Mutate(mutationDistance);
-    RbtDouble cmp = m_chrom_1koc->Compare(*clone);
+    double cmp = m_chrom_1koc->Compare(*clone);
     isOK = (cmp >= 0.0) && (cmp <= mutationDistance);
   }
   CPPUNIT_ASSERT(isOK);
@@ -293,20 +293,20 @@ void RbtChromTest::testOperatorEqualsWithModifiedThreshold() {
   clone->SyncFromModel();
   // Very fine threshold - should fail
   RbtChromElement::_THRESHOLD = 1E-20;
-  RbtBool isEqual20 = (*m_chrom_1koc == *clone);
+  bool isEqual20 = (*m_chrom_1koc == *clone);
   // Fine threshold, but should pass
   RbtChromElement::_THRESHOLD = 1E-10;
-  RbtBool isEqual10 = (*m_chrom_1koc == *clone);
+  bool isEqual10 = (*m_chrom_1koc == *clone);
   // Crude threshold - should pass even after a single mutation
   RbtChromElement::_THRESHOLD = 1.0;
   clone->Mutate(0.5);
-  RbtBool isEqualAfterMutate1 = (*m_chrom_1koc == *clone);
+  bool isEqualAfterMutate1 = (*m_chrom_1koc == *clone);
   CPPUNIT_ASSERT(!isEqual20 && isEqual10 && isEqualAfterMutate1);
 }
 
 void RbtChromTest::testPopulationConstructor() {
   setupWorkSpace();
-  RbtInt popSize = 100;
+  int popSize = 100;
   RbtPopulationPtr pop = new RbtPopulation(m_chrom_1koc, popSize, m_SF);
   CPPUNIT_ASSERT((pop->GetMaxSize() == popSize) &&
                  (pop->GetActualSize() == popSize));
@@ -314,32 +314,32 @@ void RbtChromTest::testPopulationConstructor() {
 
 void RbtChromTest::testPopulationConstructorZeroSize() {
   setupWorkSpace();
-  RbtInt popSize = 0;
+  int popSize = 0;
   RbtPopulationPtr pop = new RbtPopulation(m_chrom_1koc, popSize, m_SF);
 }
 
 void RbtChromTest::testPopulationConstructorNullChromosome() {
   setupWorkSpace();
-  RbtInt popSize = 100;
+  int popSize = 100;
   RbtPopulationPtr pop = new RbtPopulation(NULL, popSize, m_SF);
 }
 
 void RbtChromTest::testPopulationConstructorNullSF() {
   setupWorkSpace();
-  RbtInt popSize = 100;
+  int popSize = 100;
   RbtPopulationPtr pop = new RbtPopulation(m_chrom_1koc, popSize, NULL);
 }
 
 void RbtChromTest::testPopulationRWFitness() {
   setupWorkSpace();
-  RbtInt popSize = 100;
+  int popSize = 100;
   RbtPopulationPtr pop = new RbtPopulation(m_chrom_1koc, popSize, m_SF);
   const RbtGenomeList &genomeList = pop->GetGenomeList();
-  RbtDouble lastValue = 0.0;
-  RbtBool isAscending = true;
+  double lastValue = 0.0;
+  bool isAscending = true;
   for (RbtGenomeListConstIter iter = genomeList.begin();
        (iter != genomeList.end()) && isAscending; ++iter) {
-    RbtDouble value = (*iter)->GetRWFitness();
+    double value = (*iter)->GetRWFitness();
     // cout << (*iter)->GetScore() << "\t" << (*iter)->GetRWFitness() << endl;
     isAscending = (value >= lastValue);
     lastValue = value;
@@ -349,14 +349,14 @@ void RbtChromTest::testPopulationRWFitness() {
 
 void RbtChromTest::testPopulationRWSelect() {
   setupWorkSpace();
-  RbtInt popSize = 100;
+  int popSize = 100;
   RbtPopulationPtr pop = new RbtPopulation(m_chrom_1koc, popSize, m_SF);
-  RbtDouble popMean = pop->GetScoreMean();
-  RbtDouble selectionMean(0.0);
-  RbtInt nToSelect(100);
-  for (RbtInt i = 0; i < nToSelect; i++) {
+  double popMean = pop->GetScoreMean();
+  double selectionMean(0.0);
+  int nToSelect(100);
+  for (int i = 0; i < nToSelect; i++) {
     RbtGenomePtr genome = pop->RouletteWheelSelect();
-    RbtDouble score = genome->GetScore();
+    double score = genome->GetScore();
     selectionMean += score;
     // cout << "RWSelect score=" << score << endl;
   }
@@ -368,22 +368,22 @@ void RbtChromTest::testPopulationRWSelect() {
 
 void RbtChromTest::testPopulationGAstep() {
   setupWorkSpace();
-  RbtInt popSize = 100;
-  RbtInt nReplicates = 50;
-  RbtInt nIter = 100;
-  RbtDouble equalityThreshold = 1.0E-2;
-  RbtDouble relStepSize = 1.0;
-  RbtDouble pcross = 0.4;
-  RbtBool xovermut = true;
-  RbtBool cmutate = false;
+  int popSize = 100;
+  int nReplicates = 50;
+  int nIter = 100;
+  double equalityThreshold = 1.0E-2;
+  double relStepSize = 1.0;
+  double pcross = 0.4;
+  bool xovermut = true;
+  bool cmutate = false;
   RbtPopulationPtr pop = new RbtPopulation(m_chrom_1koc, popSize, m_SF);
-  RbtDouble lastScore = pop->Best()->GetScore();
-  RbtBool isOK = true;
+  double lastScore = pop->Best()->GetScore();
+  bool isOK = true;
   try {
-    for (RbtInt i = 0; (i < nIter) && isOK; ++i) {
+    for (int i = 0; (i < nIter) && isOK; ++i) {
       pop->GAstep(nReplicates, relStepSize, equalityThreshold, pcross, xovermut,
                   cmutate);
-      RbtDouble score = pop->Best()->GetScore();
+      double score = pop->Best()->GetScore();
       isOK = (score >= lastScore);
       lastScore = score;
     }
@@ -420,23 +420,23 @@ void RbtChromTest::testRbtModelGetChrom() {
 }
 
 void RbtChromTest::testRandomiseTetheredOrientation() {
-  RbtDouble transStepSize = 0.1;
-  RbtDouble rotStepSize = 10.0;
+  double transStepSize = 0.1;
+  double rotStepSize = 10.0;
   RbtChromElement::eMode transMode = RbtChromElement::FIXED;
   RbtChromElement::eMode rotMode = RbtChromElement::TETHERED;
-  RbtDouble maxTrans = 1.0;
-  RbtDouble maxRot = 45.0;
+  double maxTrans = 1.0;
+  double maxRot = 45.0;
   rotStepSize *= M_PI / 180.0;
   maxRot *= M_PI / 180.0;
   RbtChromElementPtr chrom = new RbtChromPositionElement(
       m_lig_1koc, m_site_1koc, transStepSize, rotStepSize, transMode, rotMode,
       maxTrans, maxRot);
-  RbtDouble meanDiff, minDiff, maxDiff;
+  double meanDiff, minDiff, maxDiff;
   // Measure 1M randomisations of the tethered orientation
   measureRandOrMutateDiff(chrom, 1000000, false, meanDiff, minDiff, maxDiff);
   // The expected mean rotation should be half the maximum step size
   // as CompareVector always returns a positive difference.
-  RbtDouble expectedMean = 0.5 * maxRot / rotStepSize;
+  double expectedMean = 0.5 * maxRot / rotStepSize;
   // Check that min, max rotation are in range [0,maxRot]
   // and that mean rotation is within 1% of the expected mean.
   CPPUNIT_ASSERT((minDiff >= 0.0) && (maxDiff <= (2.0 * expectedMean)) &&
@@ -445,23 +445,23 @@ void RbtChromTest::testRandomiseTetheredOrientation() {
 }
 
 void RbtChromTest::testRandomiseTetheredCOM() {
-  RbtDouble transStepSize = 0.1;
-  RbtDouble rotStepSize = 10.0;
+  double transStepSize = 0.1;
+  double rotStepSize = 10.0;
   RbtChromElement::eMode transMode = RbtChromElement::TETHERED;
   RbtChromElement::eMode rotMode = RbtChromElement::FIXED;
-  RbtDouble maxTrans = 1.0;
-  RbtDouble maxRot = 45.0;
+  double maxTrans = 1.0;
+  double maxRot = 45.0;
   rotStepSize *= M_PI / 180.0;
   maxRot *= M_PI / 180.0;
   RbtChromElementPtr chrom = new RbtChromPositionElement(
       m_lig_1koc, m_site_1koc, transStepSize, rotStepSize, transMode, rotMode,
       maxTrans, maxRot);
-  RbtDouble meanDiff, minDiff, maxDiff;
+  double meanDiff, minDiff, maxDiff;
   // Measure 1M randomisations of the tethered COM
   measureRandOrMutateDiff(chrom, 1000000, false, meanDiff, minDiff, maxDiff);
   // The expected mean displacement should be half the maximum step size
   // as CompareVector always returns a positive difference.
-  RbtDouble expectedMean = 0.5 * maxTrans / transStepSize;
+  double expectedMean = 0.5 * maxTrans / transStepSize;
   // Check that min, max displacement are in range [0,maxTrans]
   // and that mean rotation is within 1% of the expected mean.
   CPPUNIT_ASSERT((minDiff >= 0.0) && (maxDiff <= (2.0 * expectedMean)) &&
@@ -470,21 +470,21 @@ void RbtChromTest::testRandomiseTetheredCOM() {
 }
 
 void RbtChromTest::testRandomiseTetheredDihedral() {
-  RbtDouble stepSize = 10.0;
+  double stepSize = 10.0;
   RbtChromElement::eMode mode = RbtChromElement::TETHERED;
-  RbtDouble maxDelta = 45.0;
+  double maxDelta = 45.0;
   RbtBondList rotBondList =
       Rbt::GetBondList(m_lig_1koc->GetBondList(), Rbt::isBondRotatable());
   RbtAtomList noTetheredAtoms;
   RbtBondListConstIter iter = rotBondList.begin();
   RbtChromElementPtr chrom = new RbtChromDihedralElement(
       *iter, noTetheredAtoms, stepSize, mode, maxDelta);
-  RbtDouble meanDiff, minDiff, maxDiff;
+  double meanDiff, minDiff, maxDiff;
   // Measure 1M randomisations of the tethered dihedrals
   measureRandOrMutateDiff(chrom, 1000000, false, meanDiff, minDiff, maxDiff);
   // The expected mean displacement should be half the maximum step size
   // as CompareVector always returns a positive difference.
-  RbtDouble expectedMean = 0.5 * maxDelta / stepSize;
+  double expectedMean = 0.5 * maxDelta / stepSize;
   // Check that min, max displacement are in range [0,maxTrans]
   // and that mean rotation is within 1% of the expected mean.
   CPPUNIT_ASSERT((minDiff >= 0.0) && (maxDiff <= (2.0 * expectedMean)) &&
@@ -493,113 +493,113 @@ void RbtChromTest::testRandomiseTetheredDihedral() {
 }
 
 void RbtChromTest::testMutateTetheredOrientation() {
-  RbtDouble transStepSize = 0.1;
-  RbtDouble rotStepSize = 10.0;
+  double transStepSize = 0.1;
+  double rotStepSize = 10.0;
   RbtChromElement::eMode transMode = RbtChromElement::FIXED;
   RbtChromElement::eMode rotMode = RbtChromElement::TETHERED;
-  RbtDouble maxTrans = 1.0;
-  RbtDouble maxRot = 45.0;
+  double maxTrans = 1.0;
+  double maxRot = 45.0;
   rotStepSize *= M_PI / 180.0;
   maxRot *= M_PI / 180.0;
   RbtChromElementPtr chrom = new RbtChromPositionElement(
       m_lig_1koc, m_site_1koc, transStepSize, rotStepSize, transMode, rotMode,
       maxTrans, maxRot);
-  RbtDouble meanDiff, minDiff, maxDiff;
+  double meanDiff, minDiff, maxDiff;
   measureRandOrMutateDiff(chrom, 1000000, true, meanDiff, minDiff, maxDiff);
   CPPUNIT_ASSERT((minDiff >= 0.0) &&
                  (maxDiff <= 1.01 * (maxRot / rotStepSize)));
 }
 
 void RbtChromTest::testMutateTetheredCOM() {
-  RbtDouble transStepSize = 0.1;
-  RbtDouble rotStepSize = 10.0;
+  double transStepSize = 0.1;
+  double rotStepSize = 10.0;
   RbtChromElement::eMode transMode = RbtChromElement::TETHERED;
   RbtChromElement::eMode rotMode = RbtChromElement::FIXED;
-  RbtDouble maxTrans = 1.0;
-  RbtDouble maxRot = 45.0;
+  double maxTrans = 1.0;
+  double maxRot = 45.0;
   rotStepSize *= M_PI / 180.0;
   maxRot *= M_PI / 180.0;
   RbtChromElementPtr chrom = new RbtChromPositionElement(
       m_lig_1koc, m_site_1koc, transStepSize, rotStepSize, transMode, rotMode,
       maxTrans, maxRot);
-  RbtDouble meanDiff, minDiff, maxDiff;
+  double meanDiff, minDiff, maxDiff;
   measureRandOrMutateDiff(chrom, 1000000, true, meanDiff, minDiff, maxDiff);
   CPPUNIT_ASSERT((minDiff >= 0.0) &&
                  (maxDiff <= 1.01 * (maxTrans / transStepSize)));
 }
 
 void RbtChromTest::testMutateTetheredDihedral() {
-  RbtDouble stepSize = 10.0;
+  double stepSize = 10.0;
   RbtChromElement::eMode mode = RbtChromElement::TETHERED;
-  RbtDouble maxDelta = 45.0;
+  double maxDelta = 45.0;
   RbtBondList rotBondList =
       Rbt::GetBondList(m_lig_1koc->GetBondList(), Rbt::isBondRotatable());
   RbtAtomList noTetheredAtoms;
   RbtBondListConstIter iter = rotBondList.begin();
   RbtChromElementPtr chrom = new RbtChromDihedralElement(
       *iter, noTetheredAtoms, stepSize, mode, maxDelta);
-  RbtDouble meanDiff, minDiff, maxDiff;
+  double meanDiff, minDiff, maxDiff;
   measureRandOrMutateDiff(chrom, 1000000, true, meanDiff, minDiff, maxDiff);
   CPPUNIT_ASSERT((minDiff >= 0.0) && (maxDiff <= 1.01 * (maxDelta / stepSize)));
 }
 
 void RbtChromTest::testCrossoverTetheredOrientation() {
-  RbtDouble transStepSize = 0.1;
-  RbtDouble rotStepSize = 10.0;
+  double transStepSize = 0.1;
+  double rotStepSize = 10.0;
   RbtChromElement::eMode transMode = RbtChromElement::FIXED;
   RbtChromElement::eMode rotMode = RbtChromElement::TETHERED;
-  RbtDouble maxTrans = 1.0;
-  RbtDouble maxRot = 45.0;
+  double maxTrans = 1.0;
+  double maxRot = 45.0;
   rotStepSize *= M_PI / 180.0;
   maxRot *= M_PI / 180.0;
   RbtChromElementPtr chrom = new RbtChromPositionElement(
       m_lig_1koc, m_site_1koc, transStepSize, rotStepSize, transMode, rotMode,
       maxTrans, maxRot);
-  RbtDouble meanDiff, minDiff, maxDiff;
+  double meanDiff, minDiff, maxDiff;
   measureCrossoverDiff(chrom, 100, meanDiff, minDiff, maxDiff);
   CPPUNIT_ASSERT((minDiff >= 0.0) &&
                  (maxDiff <= 1.01 * (maxRot / rotStepSize)));
 }
 
 void RbtChromTest::testCrossoverTetheredCOM() {
-  RbtDouble transStepSize = 0.1;
-  RbtDouble rotStepSize = 10.0;
+  double transStepSize = 0.1;
+  double rotStepSize = 10.0;
   RbtChromElement::eMode transMode = RbtChromElement::TETHERED;
   RbtChromElement::eMode rotMode = RbtChromElement::FIXED;
-  RbtDouble maxTrans = 1.0;
-  RbtDouble maxRot = 45.0;
+  double maxTrans = 1.0;
+  double maxRot = 45.0;
   rotStepSize *= M_PI / 180.0;
   maxRot *= M_PI / 180.0;
   RbtChromElementPtr chrom = new RbtChromPositionElement(
       m_lig_1koc, m_site_1koc, transStepSize, rotStepSize, transMode, rotMode,
       maxTrans, maxRot);
-  RbtDouble meanDiff, minDiff, maxDiff;
+  double meanDiff, minDiff, maxDiff;
   measureCrossoverDiff(chrom, 100, meanDiff, minDiff, maxDiff);
   CPPUNIT_ASSERT((minDiff >= 0.0) &&
                  (maxDiff <= 1.01 * (maxTrans / transStepSize)));
 }
 
 void RbtChromTest::testCrossoverTetheredDihedral() {
-  RbtDouble stepSize = 10.0;
+  double stepSize = 10.0;
   RbtChromElement::eMode mode = RbtChromElement::TETHERED;
-  RbtDouble maxDelta = 45.0;
+  double maxDelta = 45.0;
   RbtBondList rotBondList =
       Rbt::GetBondList(m_lig_1koc->GetBondList(), Rbt::isBondRotatable());
   RbtAtomList noTetheredAtoms;
   RbtBondListConstIter iter = rotBondList.begin();
   RbtChromElementPtr chrom = new RbtChromDihedralElement(
       *iter, noTetheredAtoms, stepSize, mode, maxDelta);
-  RbtDouble meanDiff, minDiff, maxDiff;
+  double meanDiff, minDiff, maxDiff;
   measureCrossoverDiff(chrom, 100, meanDiff, minDiff, maxDiff);
   CPPUNIT_ASSERT((minDiff >= 0.0) && (maxDiff <= 1.01 * (maxDelta / stepSize)));
 }
 
 void RbtChromTest::testRandomiseOccupancy() {
-  RbtDouble stepSize = 0.1;
-  RbtDouble threshold = 0.5;
+  double stepSize = 0.1;
+  double threshold = 0.5;
   RbtChromElementPtr chrom =
       new RbtChromOccupancyElement(m_lig_1koc, stepSize, threshold);
-  RbtDouble meanDiff, minDiff, maxDiff;
+  double meanDiff, minDiff, maxDiff;
   measureRandOrMutateDiff(chrom, 1000000, false, meanDiff, minDiff, maxDiff);
   // Randomised occupancy should be a rectangular distribution
   // between 0 and 1, mean = 0.5.
@@ -611,46 +611,44 @@ void RbtChromTest::testRandomiseOccupancy() {
 }
 
 void RbtChromTest::testOccupancyThreshold() {
-  RbtDouble stepSize = 0.1;
-  RbtDouble occupancyProb = 0.7;
-  RbtDouble threshold = 1.0 - occupancyProb;
+  double stepSize = 0.1;
+  double occupancyProb = 0.7;
+  double threshold = 1.0 - occupancyProb;
   RbtChromElementPtr chrom =
       new RbtChromOccupancyElement(m_lig_1koc, stepSize, threshold);
-  RbtInt nTrials = 1000000;
-  RbtInt nEnabled = 0;
+  int nTrials = 1000000;
+  int nEnabled = 0;
   RbtAtomList atomList = m_lig_1koc->GetAtomList();
   RbtAtom *pAtom0 = atomList.front();
   // Measure whether the actual probability of enabling the model atoms
   // is equal to the desired probability
-  for (RbtInt i = 0; i < nTrials; i++) {
+  for (int i = 0; i < nTrials; i++) {
     chrom->Randomise();
     chrom->SyncToModel();
     if (pAtom0->GetEnabled()) {
       nEnabled++;
     }
   }
-  RbtDouble enabledProb = (RbtDouble)nEnabled / (RbtDouble)nTrials;
+  double enabledProb = (double)nEnabled / (double)nTrials;
   CPPUNIT_ASSERT((fabs(enabledProb - occupancyProb) < 0.01));
 }
 
-void RbtChromTest::measureRandOrMutateDiff(RbtChromElement *chrom,
-                                           RbtInt nTrials, RbtBool bMutate,
-                                           RbtDouble &meanDiff,
-                                           RbtDouble &minDiff,
-                                           RbtDouble &maxDiff) {
+void RbtChromTest::measureRandOrMutateDiff(RbtChromElement *chrom, int nTrials,
+                                           bool bMutate, double &meanDiff,
+                                           double &minDiff, double &maxDiff) {
   RbtDoubleList refVec;
   chrom->GetVector(refVec);
   meanDiff = 0.0;
   minDiff = 0.0;
   maxDiff = 0.0;
-  for (RbtInt iTrial = 0; iTrial < nTrials; iTrial++) {
+  for (int iTrial = 0; iTrial < nTrials; iTrial++) {
     if (bMutate) {
       chrom->Mutate(1.0);
     } else {
       chrom->Randomise();
     }
-    RbtInt i(0);
-    RbtDouble diff = chrom->CompareVector(refVec, i);
+    int i(0);
+    double diff = chrom->CompareVector(refVec, i);
     meanDiff += diff;
     if (iTrial == 0) {
       minDiff = diff;
@@ -665,9 +663,9 @@ void RbtChromTest::measureRandOrMutateDiff(RbtChromElement *chrom,
   }
 }
 
-void RbtChromTest::measureCrossoverDiff(RbtChromElement *chrom, RbtInt nTrials,
-                                        RbtDouble &meanDiff, RbtDouble &minDiff,
-                                        RbtDouble &maxDiff) {
+void RbtChromTest::measureCrossoverDiff(RbtChromElement *chrom, int nTrials,
+                                        double &meanDiff, double &minDiff,
+                                        double &maxDiff) {
   RbtDoubleList refVec;
   chrom->GetVector(refVec);
   meanDiff = 0.0;
@@ -676,14 +674,14 @@ void RbtChromTest::measureCrossoverDiff(RbtChromElement *chrom, RbtInt nTrials,
   RbtChromElementPtr chrom2 = chrom->clone();
   RbtChromElementPtr chrom3 = chrom->clone();
   RbtChromElementPtr chrom4 = chrom->clone();
-  for (RbtInt iTrial = 0; iTrial < nTrials; iTrial++) {
+  for (int iTrial = 0; iTrial < nTrials; iTrial++) {
     chrom->Randomise();
     chrom2->Randomise();
     Rbt::Crossover(chrom, chrom2, chrom3, chrom4);
-    RbtInt i(0);
-    RbtDouble diff3 = chrom3->CompareVector(refVec, i);
+    int i(0);
+    double diff3 = chrom3->CompareVector(refVec, i);
     i = 0;
-    RbtDouble diff4 = chrom4->CompareVector(refVec, i);
+    double diff4 = chrom4->CompareVector(refVec, i);
     meanDiff += diff3;
     meanDiff += diff4;
     if (iTrial == 0) {

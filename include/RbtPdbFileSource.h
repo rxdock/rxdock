@@ -29,10 +29,10 @@ public:
 
   ////////////////////////////////////////
   // Override public methods from RbtBaseMolecularDataSource
-  virtual RbtBool isTitleListSupported() { return true; }
-  virtual RbtBool isAtomListSupported() { return true; }
-  virtual RbtBool isCoordinatesSupported() { return true; }
-  virtual RbtBool isBondListSupported() { return false; }
+  virtual bool isTitleListSupported() { return true; }
+  virtual bool isAtomListSupported() { return true; }
+  virtual bool isCoordinatesSupported() { return true; }
+  virtual bool isBondListSupported() { return false; }
 
 protected:
   // Pure virtual in RbtBaseFileSource - needs to be defined here

@@ -69,8 +69,8 @@ void RbtModelMutator::Setup() {
   if (m_pModel == NULL)
     return;
 
-  RbtInt nAtoms = m_pModel->GetNumAtoms();
-  RbtInt nTethered = m_tetheredAtoms.size();
+  int nAtoms = m_pModel->GetNumAtoms();
+  int nTethered = m_tetheredAtoms.size();
   m_flexIntns = RbtAtomRListList(nAtoms, RbtAtomRList());
 
   // Loop over each rotable bond
@@ -98,10 +98,10 @@ void RbtModelMutator::Setup() {
     // tethered mode we want to ensure that the minimum number of *tethered*
     // atoms are rotated (preferably none). i.e. we rotate the free end of the
     // bond, even if this is over half the molecule
-    RbtInt nSelected = (nTethered == 0)
-                           ? Rbt::GetNumSelectedAtoms(m_pModel->m_atomList)
-                           : Rbt::GetNumSelectedAtoms(m_tetheredAtoms);
-    RbtInt nHalf = (nTethered == 0) ? (nAtoms - 2) / 2 : (nTethered - 2) / 2;
+    int nSelected = (nTethered == 0)
+                        ? Rbt::GetNumSelectedAtoms(m_pModel->m_atomList)
+                        : Rbt::GetNumSelectedAtoms(m_tetheredAtoms);
+    int nHalf = (nTethered == 0) ? (nAtoms - 2) / 2 : (nTethered - 2) / 2;
     if (nSelected > nHalf) {
       // cout << "Over half the molecule selected: " << nSelected << " atoms" <<
       // endl;
@@ -170,7 +170,7 @@ void RbtModelMutator::Setup() {
     // and append the unselected atom list to the interaction list for each atom
     for (RbtAtomRListConstIter sIter = sList.begin(); sIter != sList.end();
          sIter++) {
-      RbtInt id = (*sIter)->GetAtomId() - 1;
+      int id = (*sIter)->GetAtomId() - 1;
       // Assertion - check id is within range
       Assert<RbtAssert>(!MUT_CHECK || (id >= 0 && id < m_flexIntns.size()));
       RbtAtomRListListIter lIter = m_flexIntns.begin() + id;
@@ -180,7 +180,7 @@ void RbtModelMutator::Setup() {
     // Ditto for unselected atom list
     for (RbtAtomRListConstIter uIter = uList.begin(); uIter != uList.end();
          uIter++) {
-      RbtInt id = (*uIter)->GetAtomId() - 1;
+      int id = (*uIter)->GetAtomId() - 1;
       // Assertion - check id is within range
       Assert<RbtAssert>(!MUT_CHECK || (id >= 0 && id < m_flexIntns.size()));
       RbtAtomRListListIter lIter = m_flexIntns.begin() + id;
@@ -196,7 +196,7 @@ void RbtModelMutator::Setup() {
       // vector and return an iterator to the end of the unique elements
       RbtAtomRListIter uniqIter = std::unique((*lIter).begin(), (*lIter).end());
 #ifdef _DEBUG
-      RbtInt id = lIter - m_flexIntns.begin();
+      int id = lIter - m_flexIntns.begin();
       RbtAtom *pAtom = m_pModel->m_atomList[id];
       cout << "Atom " << pAtom->GetFullAtomName() << " (" << id + 1
            << "): with dups=" << (*lIter).size();

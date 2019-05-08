@@ -90,8 +90,8 @@ void RbtAromIdxSF::SetupReceptor() {
   m_spAromGrid = CreateInteractionGrid();
   m_spGuanGrid = CreateInteractionGrid();
 
-  RbtDouble idxIncr = GetParameter(_INCR); // vdw Radius increment for indexing
-  RbtDouble maxError = GetMaxError();
+  double idxIncr = GetParameter(_INCR); // vdw Radius increment for indexing
+  double maxError = GetMaxError();
   idxIncr += maxError;
 
   // First, index the receptor aromatic rings
@@ -101,7 +101,7 @@ void RbtAromIdxSF::SetupReceptor() {
   RbtAtomListList recepRingLists = GetReceptor()->GetRingAtomLists();
   RbtDockingSitePtr spDS = GetWorkSpace()->GetDockingSite();
 
-  RbtInt nCoords = GetReceptor()->GetNumSavedCoords() - 1;
+  int nCoords = GetReceptor()->GetNumSavedCoords() - 1;
   if (nCoords > 0) {
     for (RbtAtomListListConstIter rIter = recepRingLists.begin();
          rIter != recepRingLists.end(); rIter++) {
@@ -127,7 +127,7 @@ void RbtAromIdxSF::SetupReceptor() {
       m_recepGuanList.push_back(pIntnCenter); // Store the interaction center
     }
 
-    for (RbtInt i = 1; i <= nCoords; i++) {
+    for (int i = 1; i <= nCoords; i++) {
       cout << _CT << ": Indexing receptor coords # " << i << endl;
       GetReceptor()->RevertCoords(i);
       for (RbtInteractionCenterListConstIter iter = m_recepAromList.begin();
@@ -221,8 +221,8 @@ void RbtAromIdxSF::SetupScore() {
   // No further setup required
 }
 
-RbtDouble RbtAromIdxSF::RawScore() const {
-  RbtDouble score = 0.0;
+double RbtAromIdxSF::RawScore() const {
+  double score = 0.0;
   m_nArom = 0;
   m_nGuan = 0;
 
@@ -244,7 +244,7 @@ RbtDouble RbtAromIdxSF::RawScore() const {
     const RbtInteractionCenterList &recepGuanList =
         m_spGuanGrid->GetInteractionList(cLig1);
 
-    RbtDouble s = AromScore(*ligIter, recepAromList, Rprms, Aprms);
+    double s = AromScore(*ligIter, recepAromList, Rprms, Aprms);
     s += AromScore(*ligIter, recepGuanList, Rprms, Aprms);
     // RbtDouble s = PiScore(*ligIter,recepAromList);
     if (s > m_threshold) {
@@ -261,7 +261,7 @@ RbtDouble RbtAromIdxSF::RawScore() const {
     const RbtInteractionCenterList &recepAromList =
         m_spAromGrid->GetInteractionList(cLig1);
 
-    RbtDouble s = AromScore(*ligIter, recepAromList, Rprms, Aprms);
+    double s = AromScore(*ligIter, recepAromList, Rprms, Aprms);
     // RbtDouble s = 0.0;
     if (s > m_threshold) {
       m_nGuan++;
@@ -326,16 +326,15 @@ void RbtAromIdxSF::ParameterUpdated(const std::string &strName) {
 
 // The actual aromatic score, between a given interaction center and a list of
 // near neighbour centers
-RbtDouble RbtAromIdxSF::AromScore(const RbtInteractionCenter *pIC1,
-                                  const RbtInteractionCenterList &IC2List,
-                                  const f1prms &Rprms,
-                                  const f1prms &Aprms) const {
-  RbtDouble s(0.0);
+double RbtAromIdxSF::AromScore(const RbtInteractionCenter *pIC1,
+                               const RbtInteractionCenterList &IC2List,
+                               const f1prms &Rprms, const f1prms &Aprms) const {
+  double s(0.0);
   if (IC2List.empty()) {
     return s;
   }
 
-  RbtBool bAnnotate = isAnnotationEnabled();
+  bool bAnnotate = isAnnotationEnabled();
 
   RbtAtom *pAtom1_1 = pIC1->GetAtom1Ptr();
   const RbtCoord &cAtom1_1 = pAtom1_1->GetCoords();
@@ -355,16 +354,16 @@ RbtDouble RbtAromIdxSF::AromScore(const RbtInteractionCenter *pIC1,
 
     // Calculate average perp. distance from each pi center to the other ring
     // plane
-    RbtDouble R = (fabs(Rbt::DistanceFromPointToPlane(cAtom1_1, pl2)) +
-                   fabs(Rbt::DistanceFromPointToPlane(cAtom2_1, pl1))) /
-                  2.0;
-    RbtDouble f = f1(R - Rprms.R0, Rprms);
+    double R = (fabs(Rbt::DistanceFromPointToPlane(cAtom1_1, pl2)) +
+                fabs(Rbt::DistanceFromPointToPlane(cAtom2_1, pl1))) /
+               2.0;
+    double f = f1(R - Rprms.R0, Rprms);
     // Only calculate average slip angle if f  > 0
     if (f > 0.0) {
       RbtVector v = cAtom2_1 - cAtom1_1;
-      RbtDouble sa = (acos(fabs(Rbt::Dot(v.Unit(), pl1.VNorm()))) +
-                      acos(fabs(Rbt::Dot(v.Unit(), pl2.VNorm())))) *
-                     90.0 / M_PI;
+      double sa = (acos(fabs(Rbt::Dot(v.Unit(), pl1.VNorm()))) +
+                   acos(fabs(Rbt::Dot(v.Unit(), pl2.VNorm())))) *
+                  90.0 / M_PI;
       f *= f1(sa, Aprms);
       if (f > 0.0) {
         s += f;
@@ -383,8 +382,8 @@ RbtDouble RbtAromIdxSF::AromScore(const RbtInteractionCenter *pIC1,
 
 // The actual aromatic score, between a given interaction center and a list of
 // near neighbour centers
-RbtDouble RbtAromIdxSF::PiScore(const RbtInteractionCenter *pIC1,
-                                const RbtInteractionCenterList &IC2List) const {
+double RbtAromIdxSF::PiScore(const RbtInteractionCenter *pIC1,
+                             const RbtInteractionCenterList &IC2List) const {
   m_ss = 0.0; // sigma-sigma
   m_pp = 0.0; // pi-pi
   m_sp = 0.0; // sigma-pi
@@ -393,7 +392,7 @@ RbtDouble RbtAromIdxSF::PiScore(const RbtInteractionCenter *pIC1,
     return 0.0;
   }
 
-  RbtDouble delta = 0.47;
+  double delta = 0.47;
 
   RbtAtom *pAtom1_1 = pIC1->GetAtom1Ptr();
   RbtAtom *pAtom1_2 = pIC1->GetAtom2Ptr();
@@ -441,13 +440,13 @@ RbtDouble RbtAromIdxSF::PiScore(const RbtInteractionCenter *pIC1,
          cIter1++) {
       for (RbtCoordListConstIter cIter2 = sigma2.begin();
            cIter2 != sigma2.end(); cIter2++) {
-        RbtDouble r =
+        double r =
             Rbt::Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
         m_ss += (1.0 / r);
       }
       for (RbtCoordListConstIter cIter2 = pi2.begin(); cIter2 != pi2.end();
            cIter2++) {
-        RbtDouble r =
+        double r =
             Rbt::Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
         m_sp += (1.0 / r);
       }
@@ -456,13 +455,13 @@ RbtDouble RbtAromIdxSF::PiScore(const RbtInteractionCenter *pIC1,
          cIter1++) {
       for (RbtCoordListConstIter cIter2 = pi2.begin(); cIter2 != pi2.end();
            cIter2++) {
-        RbtDouble r =
+        double r =
             Rbt::Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
         m_pp += (1.0 / r);
       }
       for (RbtCoordListConstIter cIter2 = sigma2.begin();
            cIter2 != sigma2.end(); cIter2++) {
-        RbtDouble r =
+        double r =
             Rbt::Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
         m_sp += (1.0 / r);
       }

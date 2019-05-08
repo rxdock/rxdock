@@ -28,8 +28,9 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution
-  RbtBaseGrid(const RbtCoord &gridMin, const RbtVector &gridStep, RbtUInt NX,
-              RbtUInt NY, RbtUInt NZ, RbtUInt NPad = 0);
+  RbtBaseGrid(const RbtCoord &gridMin, const RbtVector &gridStep,
+              unsigned int NX, unsigned int NY, unsigned int NZ,
+              unsigned int NPad = 0);
   // Constructor reading all params from binary stream
   RbtBaseGrid(istream &istr);
   RbtBaseGrid(const RbtBaseGrid &);            // Copy constructor
@@ -58,26 +59,26 @@ public:
   // Get attribute functions
   /////////////////////////
 
-  RbtUInt GetNX() const { return m_NX; }
-  RbtUInt GetNY() const { return m_NY; }
-  RbtUInt GetNZ() const { return m_NZ; }
-  RbtUInt GetN() const { return m_N; }
-  RbtUInt GetStrideX() const { return m_SX; }
-  RbtUInt GetStrideY() const { return m_SY; }
-  RbtUInt GetStrideZ() const { return m_SZ; }
-  RbtInt GetnXMin() const { return m_nXMin; }
-  RbtInt GetnYMin() const { return m_nYMin; }
-  RbtInt GetnZMin() const { return m_nZMin; }
-  RbtInt GetnXMax() const { return m_nXMax; }
-  RbtInt GetnYMax() const { return m_nYMax; }
-  RbtInt GetnZMax() const { return m_nZMax; }
+  unsigned int GetNX() const { return m_NX; }
+  unsigned int GetNY() const { return m_NY; }
+  unsigned int GetNZ() const { return m_NZ; }
+  unsigned int GetN() const { return m_N; }
+  unsigned int GetStrideX() const { return m_SX; }
+  unsigned int GetStrideY() const { return m_SY; }
+  unsigned int GetStrideZ() const { return m_SZ; }
+  int GetnXMin() const { return m_nXMin; }
+  int GetnYMin() const { return m_nYMin; }
+  int GetnZMin() const { return m_nZMin; }
+  int GetnXMax() const { return m_nXMax; }
+  int GetnYMax() const { return m_nYMax; }
+  int GetnZMax() const { return m_nZMax; }
 
   const RbtCoord &GetGridMin() const { return m_min; }
   const RbtCoord &GetGridMax() const { return m_max; }
   const RbtVector &GetGridStep() const { return m_step; }
   RbtCoord GetGridCenter() const { return (GetGridMax() + GetGridMin()) / 2.0; }
   RbtCoord GetGridSize() const { return GetGridMax() - GetGridMin(); }
-  RbtUInt GetPad() const { return m_NPad; }
+  unsigned int GetPad() const { return m_NPad; }
   const RbtCoord &GetPadMin() const { return m_padMin; }
   const RbtCoord &GetPadMax() const { return m_padMax; }
 
@@ -96,75 +97,86 @@ public:
   // Set grid step
   void SetGridStep(const RbtVector &gridStep);
   // Set a pad region (cuboid inside the grid which defines the valid coords)
-  void SetPad(RbtUInt NPad = 0);
+  void SetPad(unsigned int NPad = 0);
 
   /////////////////////////
   // Bounds checking and index conversion routines
   /////////////////////////
 
   // When checking coords, take account of pad region
-  RbtBool isValid(const RbtCoord &c) const {
+  bool isValid(const RbtCoord &c) const {
     return (c >= m_padMin) && (c < m_padMax);
   }
   // When checking 3-D indices, take account of pad region
-  RbtBool isValid(RbtUInt iX, RbtUInt iY, RbtUInt iZ) const {
+  bool isValid(unsigned int iX, unsigned int iY, unsigned int iZ) const {
     return (iX >= m_NPad + 1) && (iX <= m_NX - m_NPad) && (iY >= m_NPad + 1) &&
            (iY <= m_NY - m_NPad) && (iZ >= m_NPad + 1) && (iZ <= m_NZ - m_NPad);
   }
   // When checking 1-D index, don't take account of pad region
-  RbtBool isValid(RbtUInt iXYZ) const { return (iXYZ < m_N); }
+  bool isValid(unsigned int iXYZ) const { return (iXYZ < m_N); }
 
   // Return iX,iY,iZ indices for given coord
-  RbtUInt GetIX(const RbtCoord &c) const {
+  unsigned int GetIX(const RbtCoord &c) const {
     return int((c.x - m_min.x) / m_step.x) + 1;
   }
-  RbtUInt GetIY(const RbtCoord &c) const {
+  unsigned int GetIY(const RbtCoord &c) const {
     return int((c.y - m_min.y) / m_step.y) + 1;
   }
-  RbtUInt GetIZ(const RbtCoord &c) const {
+  unsigned int GetIZ(const RbtCoord &c) const {
     return int((c.z - m_min.z) / m_step.z) + 1;
   }
 
   // Return iX,iY,iZ indices for given coord
-  RbtUInt GetIX(RbtDouble x) const { return int((x - m_min.x) / m_step.x) + 1; }
-  RbtUInt GetIY(RbtDouble y) const { return int((y - m_min.y) / m_step.y) + 1; }
-  RbtUInt GetIZ(RbtDouble z) const { return int((z - m_min.z) / m_step.z) + 1; }
+  unsigned int GetIX(double x) const {
+    return int((x - m_min.x) / m_step.x) + 1;
+  }
+  unsigned int GetIY(double y) const {
+    return int((y - m_min.y) / m_step.y) + 1;
+  }
+  unsigned int GetIZ(double z) const {
+    return int((z - m_min.z) / m_step.z) + 1;
+  }
 
   // Return iX,iY,iZ indices for given iXYZ index
-  RbtUInt GetIX(RbtUInt iXYZ) const { return iXYZ / m_SX + 1; }
-  RbtUInt GetIY(RbtUInt iXYZ) const { return (iXYZ % m_SX) / m_SY + 1; }
-  RbtUInt GetIZ(RbtUInt iXYZ) const { return (iXYZ % m_SY) / m_SZ + 1; }
+  unsigned int GetIX(unsigned int iXYZ) const { return iXYZ / m_SX + 1; }
+  unsigned int GetIY(unsigned int iXYZ) const {
+    return (iXYZ % m_SX) / m_SY + 1;
+  }
+  unsigned int GetIZ(unsigned int iXYZ) const {
+    return (iXYZ % m_SY) / m_SZ + 1;
+  }
 
   // Return iXYZ index for given iX,iY,iZ indices
-  RbtUInt GetIXYZ(RbtUInt iX, RbtUInt iY, RbtUInt iZ) const {
+  unsigned int GetIXYZ(unsigned int iX, unsigned int iY,
+                       unsigned int iZ) const {
     return (iX - 1) * m_SX + (iY - 1) * m_SY + (iZ - 1) * m_SZ;
   }
   // Return iXYZ index for given coord
-  RbtUInt GetIXYZ(const RbtCoord &c) const {
+  unsigned int GetIXYZ(const RbtCoord &c) const {
     return GetIXYZ(GetIX(c), GetIY(c), GetIZ(c));
   }
 
   // Returns real-world coordinate for given iX,iY,iZ indices
-  RbtCoord GetCoord(RbtUInt iX, RbtUInt iY, RbtUInt iZ) const {
+  RbtCoord GetCoord(unsigned int iX, unsigned int iY, unsigned int iZ) const {
     return (RbtCoord(m_nXMin, m_nYMin, m_nZMin) +
             RbtCoord(iX - 1, iY - 1, iZ - 1)) *
            m_step;
   }
   // Returns real-world X coordinate for given iX index
-  RbtDouble GetXCoord(RbtUInt iX) const {
-    return (m_nXMin + (RbtInt)iX - 1) * m_step.x;
+  double GetXCoord(unsigned int iX) const {
+    return (m_nXMin + (int)iX - 1) * m_step.x;
   }
   // Returns real-world Y coordinate for given iY index
-  RbtDouble GetYCoord(RbtUInt iY) const {
-    return (m_nYMin + (RbtInt)iY - 1) * m_step.y;
+  double GetYCoord(unsigned int iY) const {
+    return (m_nYMin + (int)iY - 1) * m_step.y;
   }
   // Returns real-world Z coordinate for given iZ index
-  RbtDouble GetZCoord(RbtUInt iZ) const {
-    return (m_nZMin + (RbtInt)iZ - 1) * m_step.z;
+  double GetZCoord(unsigned int iZ) const {
+    return (m_nZMin + (int)iZ - 1) * m_step.z;
   }
 
   // Returns real-world coordinate for given iXYZ index
-  RbtCoord GetCoord(RbtUInt iXYZ) const {
+  RbtCoord GetCoord(unsigned int iXYZ) const {
     return GetCoord(GetIX(iXYZ), GetIY(iXYZ), GetIZ(iXYZ));
   }
   // Returns list of real-world coordinates for given set of iXYZ indices
@@ -173,7 +185,7 @@ public:
   // DM 17 May 1999 - returns the set of valid grid points within a sphere of a
   // given center and radius DM 17 Jul 2000 - use vector<RbtUInt> and return by
   // reference, for performance boost
-  void GetSphereIndices(const RbtCoord &c, RbtDouble radius,
+  void GetSphereIndices(const RbtCoord &c, double radius,
                         RbtUIntList &sIndices) const;
 
 protected:
@@ -206,27 +218,30 @@ private:
   ////////////////////////////////////////
   // Private data
   //////////////
-  RbtUInt m_NX;   // Number of grid points in X direction (fixed in constructor)
-  RbtUInt m_NY;   // Number of grid points in Y direction (fixed in constructor)
-  RbtUInt m_NZ;   // Number of grid points in Z direction (fixed in constructor)
-  RbtUInt m_N;    // Total number of grid points (fixed in constructor)
-  RbtUInt m_SX;   // Stride of X
-  RbtUInt m_SY;   // Stride of Y
-  RbtUInt m_SZ;   // Stride of Z
-  RbtCoord m_min; // Minimum grid coords (real-world units)
-  RbtCoord m_max; // Maximum grid coords (real-world units)
-  RbtVector m_step;  // Grid step in X,Y,Z (real-world units)
-  RbtUInt m_NPad;    // Defines a zero-padded border around the grid
-  RbtCoord m_padMin; // Minimum pad coords (used to define an active region of
-                     // the grid)
-  RbtCoord m_padMax; // Maximum pad coords (used to define an active region of
-                     // the grid)
-  RbtInt m_nXMin;    // Minimum X grid point (in units of grid step)
-  RbtInt m_nXMax;    // Maximum X grid point (in units of grid step)
-  RbtInt m_nYMin;    // Minimum Y grid point (in units of grid step)
-  RbtInt m_nYMax;    // Maximum Y grid point (in units of grid step)
-  RbtInt m_nZMin;    // Minimum Z grid point (in units of grid step)
-  RbtInt m_nZMax;    // Maximum Z grid point (in units of grid step)
+  unsigned int
+      m_NX; // Number of grid points in X direction (fixed in constructor)
+  unsigned int
+      m_NY; // Number of grid points in Y direction (fixed in constructor)
+  unsigned int
+      m_NZ; // Number of grid points in Z direction (fixed in constructor)
+  unsigned int m_N;    // Total number of grid points (fixed in constructor)
+  unsigned int m_SX;   // Stride of X
+  unsigned int m_SY;   // Stride of Y
+  unsigned int m_SZ;   // Stride of Z
+  RbtCoord m_min;      // Minimum grid coords (real-world units)
+  RbtCoord m_max;      // Maximum grid coords (real-world units)
+  RbtVector m_step;    // Grid step in X,Y,Z (real-world units)
+  unsigned int m_NPad; // Defines a zero-padded border around the grid
+  RbtCoord m_padMin;   // Minimum pad coords (used to define an active region of
+                       // the grid)
+  RbtCoord m_padMax;   // Maximum pad coords (used to define an active region of
+                       // the grid)
+  int m_nXMin;         // Minimum X grid point (in units of grid step)
+  int m_nXMax;         // Maximum X grid point (in units of grid step)
+  int m_nYMin;         // Minimum Y grid point (in units of grid step)
+  int m_nYMax;         // Maximum Y grid point (in units of grid step)
+  int m_nZMin;         // Minimum Z grid point (in units of grid step)
+  int m_nZMax;         // Maximum Z grid point (in units of grid step)
 };
 
 // Useful typedefs

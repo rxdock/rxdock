@@ -16,9 +16,9 @@ std::string RbtChromDihedralElement::_CT = "RbtChromDihedralElement";
 
 RbtChromDihedralElement::RbtChromDihedralElement(RbtBondPtr spBond,
                                                  RbtAtomList tetheredAtoms,
-                                                 RbtDouble stepSize,
+                                                 double stepSize,
                                                  RbtChromElement::eMode mode,
-                                                 RbtDouble maxDihedral)
+                                                 double maxDihedral)
     : m_value(0.0) {
   m_spRefData = new RbtChromDihedralRefData(spBond, tetheredAtoms, stepSize,
                                             mode, maxDihedral);
@@ -28,7 +28,7 @@ RbtChromDihedralElement::RbtChromDihedralElement(RbtBondPtr spBond,
 }
 
 RbtChromDihedralElement::RbtChromDihedralElement(
-    RbtChromDihedralRefDataPtr spRefData, RbtDouble value)
+    RbtChromDihedralRefDataPtr spRefData, double value)
     : m_spRefData(spRefData), m_value(value) {
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -42,8 +42,8 @@ void RbtChromDihedralElement::Reset() {
 }
 
 void RbtChromDihedralElement::Randomise() {
-  RbtDouble maxDelta = m_spRefData->GetMaxDihedral();
-  RbtDouble delta;
+  double maxDelta = m_spRefData->GetMaxDihedral();
+  double delta;
   switch (m_spRefData->GetMode()) {
   case RbtChromElement::TETHERED:
     delta = 2.0 * maxDelta * GetRand().GetRandom01() - maxDelta;
@@ -58,9 +58,9 @@ void RbtChromDihedralElement::Randomise() {
   }
 }
 
-void RbtChromDihedralElement::Mutate(RbtDouble relStepSize) {
-  RbtDouble absStepSize = relStepSize * m_spRefData->GetStepSize();
-  RbtDouble delta;
+void RbtChromDihedralElement::Mutate(double relStepSize) {
+  double absStepSize = relStepSize * m_spRefData->GetStepSize();
+  double delta;
   if (absStepSize > 0) {
     switch (m_spRefData->GetMode()) {
     case RbtChromElement::TETHERED:
@@ -101,7 +101,7 @@ void RbtChromDihedralElement::GetVector(RbtXOverList &v) const {
 }
 
 void RbtChromDihedralElement::SetVector(const RbtDoubleList &v,
-                                        RbtInt &i) throw(RbtError) {
+                                        int &i) throw(RbtError) {
   if (VectorOK(v, i)) {
     m_value = StandardisedValue(v[i++]);
   } else {
@@ -111,7 +111,7 @@ void RbtChromDihedralElement::SetVector(const RbtDoubleList &v,
 }
 
 void RbtChromDihedralElement::SetVector(const RbtXOverList &v,
-                                        RbtInt &i) throw(RbtError) {
+                                        int &i) throw(RbtError) {
   if (VectorOK(v, i)) {
     RbtXOverElement dihedralElement(v[i++]);
     if (dihedralElement.size() == 1) {
@@ -130,16 +130,16 @@ void RbtChromDihedralElement::GetStepVector(RbtDoubleList &v) const {
   v.push_back(m_spRefData->GetStepSize());
 }
 
-RbtDouble RbtChromDihedralElement::CompareVector(const RbtDoubleList &v,
-                                                 RbtInt &i) const {
-  RbtDouble retVal(0.0);
+double RbtChromDihedralElement::CompareVector(const RbtDoubleList &v,
+                                              int &i) const {
+  double retVal(0.0);
   if (!VectorOK(v, i)) {
     retVal = -1.0;
   } else {
-    RbtDouble otherAngle = v[i++];
-    RbtDouble stepSize = m_spRefData->GetStepSize();
+    double otherAngle = v[i++];
+    double stepSize = m_spRefData->GetStepSize();
     if (stepSize > 0.0) {
-      RbtDouble absDiff = fabs(StandardisedValue(m_value - otherAngle));
+      double absDiff = fabs(StandardisedValue(m_value - otherAngle));
       retVal = absDiff / stepSize;
     }
   }
@@ -150,7 +150,7 @@ void RbtChromDihedralElement::Print(ostream &s) const {
   s << "DIHEDRAL " << m_value << endl;
 }
 
-RbtDouble RbtChromDihedralElement::StandardisedValue(RbtDouble dihedralAngle) {
+double RbtChromDihedralElement::StandardisedValue(double dihedralAngle) {
   while (dihedralAngle >= 180) {
     dihedralAngle -= 360.0;
   }
@@ -161,9 +161,9 @@ RbtDouble RbtChromDihedralElement::StandardisedValue(RbtDouble dihedralAngle) {
 }
 
 void RbtChromDihedralElement::CorrectTetheredDihedral() {
-  RbtDouble maxDelta = m_spRefData->GetMaxDihedral();
-  RbtDouble initialValue = m_spRefData->GetInitialValue();
-  RbtDouble delta = StandardisedValue(m_value - initialValue);
+  double maxDelta = m_spRefData->GetMaxDihedral();
+  double initialValue = m_spRefData->GetInitialValue();
+  double delta = StandardisedValue(m_value - initialValue);
   if (delta > maxDelta) {
     m_value = StandardisedValue(initialValue + maxDelta);
   } else if (delta < -maxDelta) {

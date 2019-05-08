@@ -16,7 +16,6 @@
 #define _RBT_VBLE_H_
 
 #include "RbtGPTypes.h"
-#include "RbtTypes.h"
 
 class RbtVble {
 public:
@@ -50,9 +49,9 @@ public:
   void SetName(std::string nm) { name = nm; }
   std::string GetName() const { return name; }
 
-  RbtBool IsLig() { return (vt == LIG); }
-  RbtBool IsScore() { return (vt == SCORE); }
-  RbtBool IsSite() { return (vt == SITE); }
+  bool IsLig() { return (vt == LIG); }
+  bool IsScore() { return (vt == SCORE); }
+  bool IsSite() { return (vt == SITE); }
 
 private:
   VbleType vt;

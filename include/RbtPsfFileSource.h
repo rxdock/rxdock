@@ -26,17 +26,17 @@ public:
   RbtPsfFileSource(const std::string &fileName,
                    const std::string &strMassesFile =
                        Rbt::GetRbtFileName("data", "masses.rtf"),
-                   RbtBool bImplHydrogens = true);
+                   bool bImplHydrogens = true);
 
   // Default destructor
   virtual ~RbtPsfFileSource();
 
   ////////////////////////////////////////
   // Override public methods from RbtBaseMolecularDataSource
-  virtual RbtBool isTitleListSupported() { return true; }
-  virtual RbtBool isAtomListSupported() { return true; }
-  virtual RbtBool isCoordinatesSupported() { return false; }
-  virtual RbtBool isBondListSupported() { return true; }
+  virtual bool isTitleListSupported() { return true; }
+  virtual bool isAtomListSupported() { return true; }
+  virtual bool isCoordinatesSupported() { return false; }
+  virtual bool isBondListSupported() { return true; }
 
 protected:
   // Pure virtual in RbtBaseFileSource - needs to be defined here
@@ -57,12 +57,12 @@ private:
   void SetupPartialIonicGroups();
   void RemoveNonPolarHydrogens();
   // Is atom in same substructure
-  class isSS_eq : public std::unary_function<RbtAtom *, RbtBool> {
+  class isSS_eq : public std::unary_function<RbtAtom *, bool> {
     const RbtAtom *a1;
 
   public:
     explicit isSS_eq(const RbtAtom *aa) : a1(aa) {}
-    RbtBool operator()(const RbtAtom *a2) const {
+    bool operator()(const RbtAtom *a2) const {
       return (a1->GetSubunitName() == a2->GetSubunitName()) &&
              (a1->GetSubunitId() == a2->GetSubunitId()) &&
              (a1->GetSegmentName() == a2->GetSegmentName());
@@ -74,9 +74,8 @@ private:
       m_spElementData; // Elemental data source for vdW radii etc
   RbtCharmmDataSourcePtr m_spCharmmData; // Charmm data source for fftype lookup
   RbtParameterFileSourcePtr
-      m_spParamSource; // Parameter file source for partial charges etc
-  RbtBool
-      m_bImplHydrogens; // If true, non-hydrogen bonding hydrogens are removed
+      m_spParamSource;   // Parameter file source for partial charges etc
+  bool m_bImplHydrogens; // If true, non-hydrogen bonding hydrogens are removed
 };
 
 // useful typedefs
