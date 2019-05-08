@@ -202,7 +202,7 @@ void RbtMOEGrid::CalculateCommonExtents(vector<RbtString> strPrmFiles) {
 // and returns the number of gridpoints written
 // that should be the same as the number of datapoints (a_data.size() above)
 // mode stands for ios_base::trunc or ios:app
-long RbtMOEGrid::WriteGrid(std::_Ios_Openmode mode) {
+long RbtMOEGrid::WriteGrid(std::ios_base::openmode mode) {
   // file to save (binary, overidden)
   ofstream ofstr;
   ofstr.open(stream_name.c_str(), ios_base::out | mode | ios_base::binary);

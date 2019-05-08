@@ -126,9 +126,9 @@ public:
   RbtCoord GetMaxExtents() { return max; }
 
   // iofstream methods
-  long
-  WriteGrid(std::_Ios_Openmode mode); // returns the number of points written
-  long ReadGrid();                    // ditto (fields read)
+  long WriteGrid(
+      std::ios_base::openmode mode); // returns the number of points written
+  long ReadGrid();                   // ditto (fields read)
 };
 
 // the relevant SVL code in gridshow.svl

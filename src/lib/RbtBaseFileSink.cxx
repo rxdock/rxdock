@@ -110,7 +110,7 @@ void RbtBaseFileSink::ReplaceLine(const RbtString &fileRec, RbtUInt nRec) {
 // Private methods
 /////////////////
 void RbtBaseFileSink::Open(RbtBool bAppend) throw(RbtError) {
-  std::_Ios_Openmode openMode = ios_base::out;
+  std::ios_base::openmode openMode = std::ios_base::out;
   if (bAppend)
     openMode = openMode | ios_base::app;
   m_fileOut.open(m_strFileName.c_str(), openMode);
