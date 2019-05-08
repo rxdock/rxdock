@@ -182,6 +182,20 @@ Tutorials
 
    tutorials/index
 
+.. _developer-guide:
+
+Developer guide
+---------------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   developer-guide/target-platforms
+   developer-guide/build-system
+   developer-guide/documentation
+   developer-guide/versioning
+
 .. _support:
 
 Support
