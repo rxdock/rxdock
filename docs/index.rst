@@ -193,6 +193,7 @@ Developer guide
 
    developer-guide/target-platforms
    developer-guide/build-system
+   developer-guide/coding-standards
    developer-guide/documentation
    developer-guide/versioning
 

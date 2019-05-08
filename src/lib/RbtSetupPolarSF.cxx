@@ -1,38 +1,37 @@
 /***********************************************************************
-* The rDock program was developed from 1998 - 2006 by the software team 
-* at RiboTargets (subsequently Vernalis (R&D) Ltd).
-* In 2006, the software was licensed to the University of York for 
-* maintenance and distribution.
-* In 2012, Vernalis and the University of York agreed to release the 
-* program as Open Source software.
-* This version is licensed under GNU-LGPL version 3.0 with support from
-* the University of Barcelona.
-* http://rdock.sourceforge.net/
-***********************************************************************/
+ * The rDock program was developed from 1998 - 2006 by the software team
+ * at RiboTargets (subsequently Vernalis (R&D) Ltd).
+ * In 2006, the software was licensed to the University of York for
+ * maintenance and distribution.
+ * In 2012, Vernalis and the University of York agreed to release the
+ * program as Open Source software.
+ * This version is licensed under GNU-LGPL version 3.0 with support from
+ * the University of Barcelona.
+ * http://rdock.sourceforge.net/
+ ***********************************************************************/
 
 #include <iomanip>
 using std::setw;
 #include "RbtSetupPolarSF.h"
 
-//Static data members
+// Static data members
 RbtString RbtSetupPolarSF::_CT("RbtSetupPolarSF");
 RbtString RbtSetupPolarSF::_RADIUS("RADIUS");
 RbtString RbtSetupPolarSF::_NORM("NORM");
 RbtString RbtSetupPolarSF::_POWER("POWER");
 RbtString RbtSetupPolarSF::_CHGFACTOR("CHGFACTOR");
 RbtString RbtSetupPolarSF::_GUANFACTOR("GUANFACTOR");
-	
-//NB - Virtual base class constructor (RbtBaseSF) gets called first,
-//implicit constructor for RbtBaseInterSF is called second
-RbtSetupPolarSF::RbtSetupPolarSF(const RbtString& strName)
-  : RbtBaseSF(_CT,strName)
-{
-  //Add parameters
-  AddParameter(_RADIUS,5.0);
-  AddParameter(_NORM,25);
-  AddParameter(_POWER,0.5);
-  AddParameter(_CHGFACTOR,0.5);
-  AddParameter(_GUANFACTOR,1.0);
+
+// NB - Virtual base class constructor (RbtBaseSF) gets called first,
+// implicit constructor for RbtBaseInterSF is called second
+RbtSetupPolarSF::RbtSetupPolarSF(const RbtString &strName)
+    : RbtBaseSF(_CT, strName) {
+  // Add parameters
+  AddParameter(_RADIUS, 5.0);
+  AddParameter(_NORM, 25);
+  AddParameter(_POWER, 0.5);
+  AddParameter(_CHGFACTOR, 0.5);
+  AddParameter(_GUANFACTOR, 1.0);
   Disable();
 #ifdef _DEBUG
   cout << _CT << " parameterised constructor" << endl;
@@ -51,9 +50,10 @@ void RbtSetupPolarSF::SetupReceptor() {
   if (GetReceptor().Null())
     return;
   RbtAtomList atomList = GetReceptor()->GetAtomList();
-  RbtAtomList heavyAtomList = Rbt::GetAtomList(atomList,std::not1(Rbt::isAtomicNo_eq(1)));
+  RbtAtomList heavyAtomList =
+      Rbt::GetAtomList(atomList, std::not1(Rbt::isAtomicNo_eq(1)));
   RbtInt traceTriggerLevel = 1;
-  SetupAtomList(atomList,heavyAtomList,traceTriggerLevel);
+  SetupAtomList(atomList, heavyAtomList, traceTriggerLevel);
 }
 
 void RbtSetupPolarSF::SetupLigand() {
@@ -69,25 +69,27 @@ void RbtSetupPolarSF::SetupSolvent() {
   RbtModelList solventList = GetSolvent();
   if (solventList.empty())
     return;
-  //Concatenate all solvent atoms into a single list
+  // Concatenate all solvent atoms into a single list
   RbtAtomList solventAtomList;
-  for (RbtModelListConstIter iter = solventList.begin(); iter != solventList.end(); ++iter) {
-  	RbtAtomList atomList = (*iter)->GetAtomList();
-   	std::copy(atomList.begin(),atomList.end(),std::back_inserter(solventAtomList));
+  for (RbtModelListConstIter iter = solventList.begin();
+       iter != solventList.end(); ++iter) {
+    RbtAtomList atomList = (*iter)->GetAtomList();
+    std::copy(atomList.begin(), atomList.end(),
+              std::back_inserter(solventAtomList));
   }
   RbtAtomList emptyList;
   RbtInt traceTriggerLevel = 1;
   SetupAtomList(solventAtomList, emptyList, traceTriggerLevel);
 }
 
-//Reusable method for setting up an arbitrary atom list
-//If neigbourList is empty, then do not include the neighbour density factor
-void RbtSetupPolarSF::SetupAtomList(RbtAtomList& atomList,
-									const RbtAtomList& neighbourList,
-									RbtInt traceTriggerLevel) {
+// Reusable method for setting up an arbitrary atom list
+// If neigbourList is empty, then do not include the neighbour density factor
+void RbtSetupPolarSF::SetupAtomList(RbtAtomList &atomList,
+                                    const RbtAtomList &neighbourList,
+                                    RbtInt traceTriggerLevel) {
   if (atomList.empty())
     return;
-  
+
   RbtInt iTrace = GetTrace();
   RbtBool bCalcNeighbourDensity = !neighbourList.empty();
   RbtDouble radius = GetParameter(_RADIUS);
@@ -103,51 +105,58 @@ void RbtSetupPolarSF::SetupAtomList(RbtAtomList& atomList,
 
   std::ios_base::fmtflags oldflags = cout.flags();
   cout.precision(3);
-  cout.setf(ios_base::fixed,ios_base::floatfield);
-  cout.setf(ios_base::right,ios_base::adjustfield);
+  cout.setf(ios_base::fixed, ios_base::floatfield);
+  cout.setf(ios_base::right, ios_base::adjustfield);
   if (iTrace > traceTriggerLevel) {
-    cout << endl << _CT << ": Atom\t\t, f(neighb), f(charge), isLipo,  isHBA,  isHBD" << endl;
+    cout << endl
+         << _CT << ": Atom\t\t, f(neighb), f(charge), isLipo,  isHBA,  isHBD"
+         << endl;
   }
-  
-  for (RbtAtomListIter iter = atomList.begin(); iter != atomList.end(); iter++) {
-  	RbtDouble fNeighb = 1.0;
-  	if (bCalcNeighbourDensity) {
-	    //Neighbour density function
-	    RbtInt nNeighb = Rbt::GetNumAtoms(neighbourList,Rbt::isAtomInsideSphere((*iter)->GetCoords(),radius));
-	    nNeighb--;//Don't count the atom itself!
-	    fNeighb = pow(nNeighb/norm,power);
-  	}
-    //Charge factor (always >= 1, sign reflects whether charge is positive or negative)
-    RbtDouble charge = (*iter)->GetGroupCharge();
-    //DM 18 Jan 2001 - need to check for neutral HBond acceptors and set sign to -1
-    RbtDouble sign = ( (charge < 0.0) || (bIsHBA(*iter)) ) ? -1.0 : 1.0;
-    charge = sign*(1.0+(fabs(charge)*chgFactor));
-    if (bIsGuan(*iter)) {
-      charge *= guanFactor;//Adjustable weight for "IONIC" interactions with guanidinium carbons
+
+  for (RbtAtomListIter iter = atomList.begin(); iter != atomList.end();
+       iter++) {
+    RbtDouble fNeighb = 1.0;
+    if (bCalcNeighbourDensity) {
+      // Neighbour density function
+      RbtInt nNeighb = Rbt::GetNumAtoms(
+          neighbourList, Rbt::isAtomInsideSphere((*iter)->GetCoords(), radius));
+      nNeighb--; // Don't count the atom itself!
+      fNeighb = pow(nNeighb / norm, power);
     }
-// XB apply reweighting factor for receptor's polar atoms:
-   // if (traceTriggerLevel == 1) {
+    // Charge factor (always >= 1, sign reflects whether charge is positive or
+    // negative)
+    RbtDouble charge = (*iter)->GetGroupCharge();
+    // DM 18 Jan 2001 - need to check for neutral HBond acceptors and set sign
+    // to -1
+    RbtDouble sign = ((charge < 0.0) || (bIsHBA(*iter))) ? -1.0 : 1.0;
+    charge = sign * (1.0 + (fabs(charge) * chgFactor));
+    if (bIsGuan(*iter)) {
+      charge *= guanFactor; // Adjustable weight for "IONIC" interactions with
+                            // guanidinium carbons
+    }
+    // XB apply reweighting factor for receptor's polar atoms:
+    // if (traceTriggerLevel == 1) {
     //  RbtDouble wxb = (*iter)->GetReweight();
     //  (*iter)->SetUser1Value(fNeighb*charge*wxb);
-     // cout << "Atom: " << (*iter)->GetAtomName() << " Polar_User1Value: " << (*iter)->GetUser1Value() << " weigth: " << wxb << endl;
+    // cout << "Atom: " << (*iter)->GetAtomName() << " Polar_User1Value: " <<
+    // (*iter)->GetUser1Value() << " weigth: " << wxb << endl;
     //}else{
-      (*iter)->SetUser1Value(fNeighb*charge);
-   // }
-// XB END MODIFICATIONS
+    (*iter)->SetUser1Value(fNeighb * charge);
+    // }
+    // XB END MODIFICATIONS
     (*iter)->SetUser1Flag(bIsLipo(*iter));
     if (iTrace > traceTriggerLevel) {
-   //   cout << _CT << ": " << (*iter)->GetFullAtomName() << "\t," << setw(10) << fNeighb << "," << setw(10) << charge
-//	   << "," << setw(7) << (*iter)->GetUser1Flag() << "," << setw(7) << bIsHBA(*iter) << "," << setw(7) << bIsHBD(*iter) << endl;
+      //   cout << _CT << ": " << (*iter)->GetFullAtomName() << "\t," <<
+      //   setw(10) << fNeighb << "," << setw(10) << charge
+      //	   << "," << setw(7) << (*iter)->GetUser1Flag() << "," <<
+      // setw(7) << bIsHBA(*iter) << "," << setw(7) << bIsHBD(*iter) << endl;
     }
   }
   cout.flags(oldflags);
 }
 
 void RbtSetupPolarSF::SetupScore() {
-  //No further setup required
+  // No further setup required
 }
 
-RbtDouble RbtSetupPolarSF::RawScore() const {
-  return 0.0;
-}
-
+RbtDouble RbtSetupPolarSF::RawScore() const { return 0.0; }
