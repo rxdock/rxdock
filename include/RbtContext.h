@@ -65,9 +65,7 @@ public:
     if (it != vm.end())
       vm[key]->SetValue(val);
     else {
-      ostrstream s;
-      s << val << ends;
-      vm[key] = new RbtVble(s.str(), val);
+      vm[key] = new RbtVble(std::to_string(val), val);
     }
   }
   void Assign(RbtString s, RbtReturnType val) {

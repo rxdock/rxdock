@@ -21,7 +21,7 @@
 #include "RbtTokenIter.h"
 #include <cassert>
 #include <fstream>
-#include <strstream>
+#include <sstream>
 
 RbtString RbtGPFFSpike::_CT("RbtGPFFSpike");
 void RbtGPFFSpike::ReadTables(istream &in, RbtReturnTypeArray &it,

@@ -15,7 +15,7 @@
 #include "RbtGPGenome.h"
 #include "RbtGPParser.h"
 #include <fstream>
-#include <strstream>
+#include <sstream>
 
 RbtString RbtGPFFGold::_CT("RbtGPFFGold");
 

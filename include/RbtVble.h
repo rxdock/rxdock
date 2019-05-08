@@ -17,7 +17,6 @@
 
 #include "RbtGPTypes.h"
 #include "RbtTypes.h"
-#include <strstream>
 
 class RbtVble {
 public:
@@ -43,9 +42,7 @@ public:
   void SetValue(RbtReturnType val) {
     value = val;
     if (name == "") {
-      ostrstream s;
-      s << value << ends;
-      name = s.str();
+      name = std::to_string(value);
     }
   }
   RbtReturnType GetValue() const { return value; }

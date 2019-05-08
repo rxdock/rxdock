@@ -134,9 +134,7 @@ public:
     if (m_sl.empty())
       return c;
     else {
-      /// istrstream istr(m_sl.front().c_str());
-      istringstream istr(m_sl.front().c_str());
-      istr >> c;
+      istringstream(m_sl.front()) >> c;
       return c;
     }
   }

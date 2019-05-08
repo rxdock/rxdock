@@ -15,7 +15,7 @@
 #include "RbtGPGenome.h"
 #include "RbtGPParser.h"
 #include <fstream>
-#include <strstream>
+#include <sstream>
 
 RbtString RbtGPFitnessFunction::_CT("RbtGPFitnessFunction");
 

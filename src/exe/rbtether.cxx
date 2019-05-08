@@ -14,7 +14,7 @@
 // corresponding tethered atoms in the sd files
 
 #include <iomanip>
-#include <strstream>
+#include <sstream>
 
 #include "RbtBiMolWorkSpace.h"
 #include "RbtMdlFileSink.h"
@@ -25,7 +25,7 @@
 const RbtString EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbtether.cxx#5 $)";
 
-void print_atoms(RbtAtomList &atoms, ostrstream &ost);
+void print_atoms(RbtAtomList &atoms, ostringstream &ost);
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
@@ -167,7 +167,7 @@ int main(int argc, char *argv[]) {
     // for each ligand
     if (bOutput) {
       // writing down the reference sd file for the query
-      ostrstream ost;
+      ostringstream ost;
       print_atoms(tetheredAtomList, ost);
       RbtVariant vTetherAtoms(ost.str());
       RbtMolecularFileSinkPtr spRefMdlFileSink(
@@ -254,7 +254,7 @@ int main(int argc, char *argv[]) {
                       Rbt::TranslateAtom(refAxes.com));
         ///////////////////////////////////
 
-        ostrstream ost;
+        ostringstream ost;
         print_atoms(*alli, ost);
         RbtVariant vTetherAtoms(ost.str());
         // DM 18 May 1999 - store run info in model data
@@ -283,7 +283,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void print_atoms(RbtAtomList &atoms, ostrstream &ost) {
+void print_atoms(RbtAtomList &atoms, ostringstream &ost) {
   ost.clear();
   for (RbtInt iter = 0; iter < atoms.size(); iter++) {
     ost << atoms[iter]->GetAtomId();
@@ -295,5 +295,4 @@ void print_atoms(RbtAtomList &atoms, ostrstream &ost) {
     else
       ost << ",";
   }
-  ost << ends;
 }

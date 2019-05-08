@@ -21,7 +21,7 @@
 #include "RbtRand.h"
 #include "RbtTokenIter.h"
 #include <fstream>
-#include <strstream>
+#include <sstream>
 
 RbtString RbtGPFFCHK1::_CT("RbtGPFFCHK1");
 

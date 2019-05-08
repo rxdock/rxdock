@@ -14,8 +14,8 @@
 #include "../inc/RbtGPPopulation.h"
 #include "../inc/RbtParser.h"
 #include <fstream>
+#include <sstream>
 #include <stdio.h>
-#include <strstream>
 void main(int argc, char *argv[]) {
   /*cout << "Genome file: \n";
   RbtString gfile;

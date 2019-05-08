@@ -192,7 +192,7 @@ void RbtParameterFileSource::Parse() throw(RbtError) {
         else if ((*fileIter).find(strSectionKey) == 0) {
           RbtString strSection;
           RbtString strDummy;
-          istrstream istr((*fileIter).c_str());
+          istringstream istr(*fileIter);
           istr >> strDummy >> strSection;
           AddSection(strSection);
         }
@@ -208,7 +208,7 @@ void RbtParameterFileSource::Parse() throw(RbtError) {
           RbtString strParamName;
           // DM 12 May 1999 - read as string then convert to variant
           RbtString strParamValue;
-          istrstream istr((*fileIter).c_str());
+          istringstream istr(*fileIter);
           istr >> strParamName >> strParamValue;
           // Prefix the parameter name with the section name and ::
           // Hopefully, this will ensure unique parameter names between sections

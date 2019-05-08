@@ -22,7 +22,7 @@
 #include "RbtTokenIter.h"
 #include <cassert>
 #include <fstream>
-#include <strstream>
+#include <sstream>
 
 RbtString RbtGPFFHSP90::_CT("RbtGPFFHSP90");
 int nInversions(RbtInt idx, RbtReturnTypeArray &list);

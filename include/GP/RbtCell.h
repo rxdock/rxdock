@@ -59,9 +59,7 @@ public:
     result = r;
     evaluated = true;
     constant = true;
-    ostrstream nm;
-    nm << r << ends;
-    name = nm.str();
+    name = std::to_string(r);
   }
   void ResetConstant() {
     evaluated = false;

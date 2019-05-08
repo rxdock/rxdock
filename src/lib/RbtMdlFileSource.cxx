@@ -78,7 +78,7 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
         // to insert a space between the two fields (or use sscanf)
         if ((*fileIter).size() > 3)
           (*fileIter).insert(3, " ");
-        istrstream istr((*fileIter++).c_str());
+        istringstream istr(*fileIter++);
         istr >> nAtomRec >> nBondRec;
 #ifdef _DEBUG
         // cout << nAtomRec << " atoms, " << nBondRec << " bonds" << endl;
@@ -101,12 +101,8 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
       RbtString strSubunitId("1");   // constant
       RbtString strSubunitName("MOL"); // constant
 
-      // DM 24 Mar 1999 - allocate a C-string for streaming the atom name into
-      RbtInt lenAtomName(10);
-      char *szAtomName(new char[lenAtomName + 1]);
-
       while ((m_atomList.size() < nAtomRec) && (fileIter != fileEnd)) {
-        istrstream istr((*fileIter++).c_str());
+        istringstream istr(*fileIter++);
         istr >> coord.x >> coord.y >> coord.z >> strElementName >> nMassDiff >>
             nFormalCharge;
 
@@ -122,9 +118,9 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
 
         // Compose the atom name from element+atomID (i.e. C1, N2, C3 etc)
         nAtomId++;
-        ostrstream ostr(szAtomName, lenAtomName);
-        ostr << strElementName << nAtomId << ends;
-        RbtString strAtomName(szAtomName);
+        ostringstream ostr;
+        ostr << strElementName << nAtomId;
+        RbtString strAtomName(ostr.str());
 
         // Construct a new atom (constructor only accepts the 2D params)
         RbtAtomPtr spAtom(
@@ -145,8 +141,6 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
         m_atomList.push_back(spAtom);
         m_segmentMap[strSegmentName]++; // increment atom count in segment map
       }
-
-      delete[] szAtomName; // Tidy up the C-string
 
       // 3b ..and check we read them all before reaching the end of the file
       if (m_atomList.size() != nAtomRec)
@@ -169,7 +163,7 @@ void RbtMdlFileSource::Parse() throw(RbtError) {
         // sscanf)
         if ((*fileIter).size() > 3)
           (*fileIter).insert(3, " ");
-        istrstream istr((*fileIter++).c_str());
+        istringstream istr(*fileIter++);
         istr >> idxAtom1 >> idxAtom2 >> nBondOrder;
         if ((idxAtom1 > nAtomRec) ||
             (idxAtom2 > nAtomRec)) { // Check for indices in range
@@ -817,10 +811,9 @@ void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) throw(RbtError) {
 
   // Construct the new hydrogen atom (constructor only accepts the 2D params)
   RbtInt nAtomId = m_atomList.size() + 1;
-  ostrstream ostr;
-  ostr << "H" << nAtomId << ends;
+  ostringstream ostr;
+  ostr << "H" << nAtomId;
   RbtString strAtomName(ostr.str());
-  delete ostr.str();
   RbtAtomPtr spHAtom(new RbtAtom(nAtomId,
                                  1, // nAtomicNo,
                                  strAtomName,
@@ -1066,10 +1059,9 @@ void RbtMdlFileSource::SetupSegmentNames() {
   for (nSeg = 1, seed = m_atomList.begin(); seed != m_atomList.end();
        nSeg++, seed = Rbt::FindAtom(m_atomList, Rbt::isSegmentName_eq("H"))) {
     // New segment name (H1, H2 etc)
-    ostrstream ostr;
-    ostr << "H" << nSeg << ends;
+    ostringstream ostr;
+    ostr << "H" << nSeg;
     RbtString strSegName(ostr.str());
-    delete ostr.str();
     // Temporary atom list containing atoms to be processed
     // Note: this is a true list (not a vector) as we will be making numerous
     // insertions and deletions

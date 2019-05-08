@@ -14,8 +14,8 @@
 #include "RbtCell.h"
 #include "RbtCommand.h"
 #include <fstream>
-#include <strstream>
-using std::ostrstream;
+#include <sstream>
+using std::ostringstream;
 
 RbtString RbtGPParser::_CT("RbtGPParser");
 RbtInt RbtCommand::ntabs = 0;
@@ -101,15 +101,15 @@ RbtString RbtGPParser::PrintEval(RbtGPChromosomePtr chrom, RbtInt n,
                                  RbtBool numbers, RbtBool ins) {
   if (!(chrom->Cells(n)->Named())) {
     RbtString o(PrintParse1Output(chrom, n, numbers, ins));
-    ostrstream nm;
+    ostringstream nm;
     if (numbers) {
       nm << "(";
       nm << n << " ";
-      nm << o << ") " << ends;
+      nm << o << ") ";
     } else
-      nm << o << ends;
+      nm << o;
     chrom->Cells(n)->SetName(nm.str());
-    return (nm.str());
+    return nm.str();
   } else
     return chrom->Cells(n)->GetName();
 }

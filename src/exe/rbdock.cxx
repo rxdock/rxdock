@@ -237,7 +237,7 @@ int main(int argc, char *argv[]) {
 
   // BGD 26 Feb 2003 - Create filters to simulate old rbdock
   // behaviour
-  ostrstream strFilter;
+  ostringstream strFilter;
   if (!bFilter) {
     if (bTarget) // -t<TS>
     {
@@ -518,12 +518,11 @@ int main(int argc, char *argv[]) {
           // Catching errors with this specific run
           try {
             if (bOutput) {
-              ostrstream histr;
+              ostringstream histr;
               histr << strRunName << "_" << strMolName << nRec << "_his_"
-                    << iRun << ".sd" << ends;
+                    << iRun << ".sd";
               RbtMolecularFileSinkPtr spHistoryFileSink(
                   new RbtMdlFileSink(histr.str(), spLigand));
-              delete histr.str();
               spWS->SetHistorySink(spHistoryFileSink);
             }
             spWS->Run(); // Dock!
