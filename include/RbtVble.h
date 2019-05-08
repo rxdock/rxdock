@@ -27,7 +27,7 @@ public:
   RbtVble() : value(0.0), vt(CTE), name("")
   {
     _RBTOBJECTCOUNTER_CONSTR_(_CT);
-  }; // default const.
+  } // default const.
   RbtVble(RbtString s, RbtReturnType val = 0.0) : value(val), name(s)
   {
     if (s.find("LIG_") == 0)

@@ -35,7 +35,7 @@ class RbtPMFGridSF : public RbtBaseInterSF
 	protected:
 		virtual void		SetupReceptor();
 		virtual void		SetupLigand();
-		virtual void		SetupScore() {};
+		virtual void		SetupScore() {}
 		virtual RbtDouble	RawScore() const;
 		RbtUInt				GetCorrectedType(RbtPMFType aType) const;
 };

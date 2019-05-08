@@ -42,8 +42,8 @@ public:
     friend ostream& operator<<(ostream& s, const RbtGPParser &p);
     RbtReturnTypeList Parse(RbtGPChromosomePtr,RbtReturnTypeList&);
     RbtString PrintParse(istream&,RbtGPChromosomePtr,RbtBool,RbtBool);
-	RbtBool IsConstantInt(RbtInt i) { return (i == CINT);};
-	RbtBool IsConstantFloat(RbtInt i) { return (i == CFLOAT);};
+        RbtBool IsConstantInt(RbtInt i) { return (i == CINT);}
+        RbtBool IsConstantFloat(RbtInt i) { return (i == CFLOAT);}
 
 private:
     /////////////////////

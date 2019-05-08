@@ -50,7 +50,7 @@ class RbtBaseInterSF : public virtual RbtBaseSF
   //PURE VIRTUAL - Derived classes must override
   virtual void SetupReceptor() = 0;//Called by Update when receptor is changed
   virtual void SetupLigand() = 0;//Called by Update when ligand is changed
-  virtual void SetupSolvent() {};//Called by Update when solvent is changed
+  virtual void SetupSolvent() {}//Called by Update when solvent is changed
   virtual void SetupScore() = 0;//Called by Update when either model has changed
   
  private:

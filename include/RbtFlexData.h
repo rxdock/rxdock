@@ -24,7 +24,7 @@ class RbtDockingSite;
 
 class RbtFlexData : public RbtParamHandler {
 public:
-	virtual ~RbtFlexData() {};
+	virtual ~RbtFlexData() {}
     RbtModel* GetModel() const {return m_pModel;}
     void SetModel(RbtModel* pModel) {m_pModel = pModel;}
     RbtDockingSite* GetDockingSite() const {return m_pDockSite;}

@@ -28,9 +28,9 @@ class RbtGPFFCHK1 : public RbtGPFitnessFunction
 public:
     static RbtString _CT;
     RbtGPFFCHK1(RbtContextPtr c) : contextp(c)
-	   {_RBTOBJECTCOUNTER_CONSTR_(_CT);};
+           {_RBTOBJECTCOUNTER_CONSTR_(_CT);}
     virtual ~RbtGPFFCHK1()
-	   {_RBTOBJECTCOUNTER_DESTR_(_CT);};
+           {_RBTOBJECTCOUNTER_DESTR_(_CT);}
 
     void ReadTables(istream&,RbtReturnTypeArray&,RbtReturnTypeArray&);
     RbtDouble CalculateFitness(RbtGPGenomePtr,RbtReturnTypeArray&,

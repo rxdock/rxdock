@@ -38,10 +38,10 @@ class RbtBaseMolecularDataSource
   ////////////////
   RbtString GetName() {return m_strName;} //Returns source identifier string
 
-  virtual RbtBool isTitleListSupported() {return false;};
-  virtual RbtBool isAtomListSupported() {return false;};
-  virtual RbtBool isCoordinatesSupported() {return false;};
-  virtual RbtBool isBondListSupported() {return false;};
+  virtual RbtBool isTitleListSupported() {return false;}
+  virtual RbtBool isAtomListSupported() {return false;}
+  virtual RbtBool isCoordinatesSupported() {return false;}
+  virtual RbtBool isBondListSupported() {return false;}
 
   //Pure virtual - derived classes must override
   
@@ -61,7 +61,7 @@ class RbtBaseMolecularDataSource
 
   //DM 12 May 1999 - support for data records (e.g. SD file)
   //Does source support data records (default=false)
-  virtual RbtBool isDataSupported() {return false;};
+  virtual RbtBool isDataSupported() {return false;}
   //Get number of data fields
   virtual RbtInt GetNumData() throw (RbtError) = 0;
   //Get list of field names as string list

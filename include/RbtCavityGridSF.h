@@ -25,7 +25,7 @@ class RbtCavityGridSF : public RbtBaseInterSF
     //i.e. those atoms that have the potential to move outside of the cavity
     class HeavyAtomFactory : public RbtFlexDataVisitor {
     public:
-        HeavyAtomFactory() {};
+        HeavyAtomFactory() {}
         HeavyAtomFactory(RbtModelList modelList);
         virtual void VisitReceptorFlexData(RbtReceptorFlexData*);
         virtual void VisitLigandFlexData(RbtLigandFlexData*);

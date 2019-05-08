@@ -38,7 +38,7 @@ class RbtBaseMolecularFileSink : public RbtBaseFileSink
   
   //Derived classes should override
   //Controls whether file type can support the writing of multiple conformations/models to a single file
-  virtual RbtBool isMultiConfSupported() {return false;};
+  virtual RbtBool isMultiConfSupported() {return false;}
 
   //Get/set the RbtModel that is linked to the sink
   RbtModelPtr GetModel() const;

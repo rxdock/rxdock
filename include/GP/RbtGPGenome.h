@@ -40,18 +40,18 @@ public:
     virtual ~RbtGPGenome();
     static void SetStructure(RbtInt, RbtInt, RbtInt, RbtInt,
                              RbtInt, RbtInt, RbtInt, RbtInt);
-    static RbtInt GetNIP(){return npi;} ;
-    static void SetNIP(RbtInt n){ npi = n;} ;
-    static RbtInt GetNIF(){return nfi;} ;
-    static RbtInt GetNN(){return nn;} ;
-    static RbtInt GetNO(){return no;} ;
-    static RbtInt GetNSFI(){return nsfi;} ;
-    static void SetNSFI(RbtInt n){nsfi = n;} ;
-    RbtGPChromosomePtr GetChrom() const {return (new RbtGPChromosome(*chrom));} ;
+    static RbtInt GetNIP(){return npi;}
+    static void SetNIP(RbtInt n){ npi = n;}
+    static RbtInt GetNIF(){return nfi;}
+    static RbtInt GetNN(){return nn;}
+    static RbtInt GetNO(){return no;}
+    static RbtInt GetNSFI(){return nsfi;}
+    static void SetNSFI(RbtInt n){nsfi = n;}
+    RbtGPChromosomePtr GetChrom() const {return (new RbtGPChromosome(*chrom));}
     void Initialise();
     void Mutate(RbtDouble);
-	void SetFitness(RbtDouble f){fitness = f;};
-	RbtDouble GetFitness()const{return fitness;};
+        void SetFitness(RbtDouble f){fitness = f;}
+        RbtDouble GetFitness()const{return fitness;}
     void UniformCrossover(const RbtGPGenome&, const RbtGPGenome&);
     void Crossover(RbtGPGenome&);
     friend ostream& operator<<(ostream& s, const RbtGPGenome &p);

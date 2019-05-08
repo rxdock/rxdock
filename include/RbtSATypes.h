@@ -84,10 +84,10 @@ class HHS_Solvation
   RbtDouble GetP_i(void) const {return p_i;}
   RbtDouble GetR_i(void) const {return r_i;}
   RbtDouble GetSigma(void) const {return sigma;}
-  RbtHHSType::eType GetHHSType() const {return hhsType;};
-  RbtAtom* GetAtom() const {return atom;};
-  inline RbtDouble GetArea() const {return S_i * A_i;};//Exposed area
-  inline RbtDouble GetEnergy() const {return E_i * A_i;};//Surface energy
+  RbtHHSType::eType GetHHSType() const {return hhsType;}
+  RbtAtom* GetAtom() const {return atom;}
+  inline RbtDouble GetArea() const {return S_i * A_i;}//Exposed area
+  inline RbtDouble GetEnergy() const {return E_i * A_i;}//Surface energy
 
   //Actions
   //Initialise all calculated parameters to an isolated atom (no overlap)

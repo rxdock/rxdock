@@ -110,7 +110,7 @@ class RbtChromElement {
     //Invalid operation in base class
     virtual void Add(RbtChromElement* pChromElement) throw (RbtError);
     //Prints details of element to stream (null implementation in base class)
-    virtual void Print(ostream& s) const {};
+    virtual void Print(ostream& s) const {}
     //
     //NON-VIRTUAL METHODS
     //

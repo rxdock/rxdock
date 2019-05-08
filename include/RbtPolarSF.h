@@ -79,7 +79,7 @@ class RbtPolarSF : public virtual RbtBaseSF, public virtual RbtAnnotationHandler
   struct f1prms {
     RbtDouble R0,DRMin,DRMax,slope;
     f1prms(RbtDouble R, RbtDouble DMin, RbtDouble DMax)
-      : R0(R),DRMin(DMin),DRMax(DMax),slope(1.0/(DMax-DMin)) {};
+      : R0(R),DRMin(DMin),DRMax(DMax),slope(1.0/(DMax-DMin)) {}
   };
 
   inline f1prms GetRprms() const {return f1prms(0.0,m_DR12Min,m_DR12Max);}
@@ -98,7 +98,7 @@ class RbtPolarSF : public virtual RbtBaseSF, public virtual RbtAnnotationHandler
   //Generic scoring function primitive
   inline RbtDouble f1(RbtDouble DR, const f1prms& prms) const {
     return (DR > prms.DRMax) ? 0.0 : (DR > prms.DRMin) ? 1.0-prms.slope*(DR-prms.DRMin) : 1.0;
-  };
+  }
 
   void UpdateLPprms();
 

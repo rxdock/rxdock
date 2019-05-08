@@ -32,9 +32,9 @@ class RbtConstSF : public RbtBaseInterSF
 	virtual void ScoreMap(RbtStringVariantMap& scoreMap) const;
 
 	protected:
-  	virtual void SetupReceptor() {};
-  	virtual void SetupLigand() {};
-  	virtual void SetupScore() {};
+  	virtual void SetupReceptor() {}
+  	virtual void SetupLigand() {}
+  	virtual void SetupScore() {}
   	virtual RbtDouble RawScore() const;
   	void ParameterUpdated(const RbtString& strName);
 

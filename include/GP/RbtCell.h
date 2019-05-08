@@ -23,19 +23,19 @@ public:
     ///////////////////
     // Constructors
     ///////////////////
-    RbtCell(){evaluated = false; name = "";constant = false;};
+    RbtCell(){evaluated = false; name = "";constant = false;}
     RbtCell(const RbtCell& c) 
         {evaluated = c.evaluated; name = c.name; constant = c.constant;
-         result = c.result;};
+         result = c.result;}
 
     ///////////////////
     // Destructor
     //////////////////
-    virtual ~RbtCell(){};
+    virtual ~RbtCell(){}
  
-    RbtBool Evaluated()const {return evaluated;};
-    RbtBool Named()const {return (name != "");};
-    RbtBool Constant()const {return constant ;};
+    RbtBool Evaluated()const {return evaluated;}
+    RbtBool Named()const {return (name != "");}
+    RbtBool Constant()const {return constant ;}
     void Clear()
     {
         if (!constant)
@@ -43,19 +43,19 @@ public:
             evaluated = false; 
             name = "";
         }
-    };
-    RbtReturnType GetResult()const {return result;};
-    RbtString GetName()const {return name;};
+    }
+    RbtReturnType GetResult()const {return result;}
+    RbtString GetName()const {return name;}
     void SetName(RbtString s)
-        {name = s; };
+        {name = s; }
     void SetResult(RbtReturnType r)
-        {result = r; evaluated = true;};
+        {result = r; evaluated = true;}
     void SetConstant(RbtReturnType r)
         {result = r; evaluated = true; constant = true;
-        ostrstream nm; nm << r << ends; name = nm.str();};
+        ostrstream nm; nm << r << ends; name = nm.str();}
     void ResetConstant() 
         { evaluated = false; name = ""; 
-            if (constant) constant = false; else cout <<"ERROR\n";};
+            if (constant) constant = false; else cout <<"ERROR\n";}
 
 private:
     RbtBool evaluated, constant;

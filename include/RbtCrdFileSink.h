@@ -34,7 +34,7 @@ class RbtCrdFileSink : public RbtBaseMolecularFileSink
   //
   //Derived classes should override
   //Controls whether file type can support the writing of multiple conformations/models to a single file
-  virtual RbtBool isMultiConfSupported() {return true;};
+  virtual RbtBool isMultiConfSupported() {return true;}
   //
   ////////////////////////////////////////
   //Override public methods from RbtBaseFileSink

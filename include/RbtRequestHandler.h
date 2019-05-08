@@ -24,13 +24,13 @@ class RbtRequestHandler
 	public:
 	////////////////////////////////////////
 	//Constructors/destructors
-	RbtRequestHandler() {};
-	virtual ~RbtRequestHandler() {};
+	RbtRequestHandler() {}
+	virtual ~RbtRequestHandler() {}
 	
 	////////////////////////////////////////
 	//Public methods
 	////////////////
-	virtual void HandleRequest(RbtRequestPtr spRequest) {};
+	virtual void HandleRequest(RbtRequestPtr spRequest) {}
 };
 
 #endif //_RBTREQUESTHANDLER_H_

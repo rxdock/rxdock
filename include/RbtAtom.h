@@ -120,16 +120,16 @@ class RbtAtom
     RbtBool GetEnabled() const;
   
   //AtomId
-  RbtInt GetAtomId() const {return m_nAtomId;};
-  void SetAtomId(const RbtInt nAtomId) {m_nAtomId = nAtomId;};
+  RbtInt GetAtomId() const {return m_nAtomId;}
+  void SetAtomId(const RbtInt nAtomId) {m_nAtomId = nAtomId;}
 
   //AtomicNo
-  RbtInt GetAtomicNo() const {return m_nAtomicNo;};
-  void SetAtomicNo(const RbtInt nAtomicNo) {m_nAtomicNo = nAtomicNo;};
+  RbtInt GetAtomicNo() const {return m_nAtomicNo;}
+  void SetAtomicNo(const RbtInt nAtomicNo) {m_nAtomicNo = nAtomicNo;}
 
   //AtomName
-  RbtString GetAtomName() const {return m_strAtomName;};
-  void SetAtomName(const RbtString strAtomName) {m_strAtomName = strAtomName;};
+  RbtString GetAtomName() const {return m_strAtomName;}
+  void SetAtomName(const RbtString strAtomName) {m_strAtomName = strAtomName;}
   RbtString GetFullAtomName() const;//Returns composite of segment name, subunit id and name, and atom name
 
   //SubunitId

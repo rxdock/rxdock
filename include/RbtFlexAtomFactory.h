@@ -47,7 +47,7 @@
 //The User2Value for fixed and free atoms is set to zero.
 class RbtFlexAtomFactory : public RbtFlexDataVisitor {
  public:
-  RbtFlexAtomFactory() {};
+  RbtFlexAtomFactory() {}
   //Constructor accepting a single model
   RbtFlexAtomFactory(RbtModel*);
   //Constructor accepting a list of models

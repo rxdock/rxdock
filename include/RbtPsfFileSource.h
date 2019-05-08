@@ -33,10 +33,10 @@ class RbtPsfFileSource : public RbtBaseMolecularFileSource
 
   ////////////////////////////////////////
   //Override public methods from RbtBaseMolecularDataSource
-  virtual RbtBool isTitleListSupported() {return true;};
-  virtual RbtBool isAtomListSupported() {return true;};
-  virtual RbtBool isCoordinatesSupported() {return false;};
-  virtual RbtBool isBondListSupported() {return true;};
+  virtual RbtBool isTitleListSupported() {return true;}
+  virtual RbtBool isAtomListSupported() {return true;}
+  virtual RbtBool isCoordinatesSupported() {return false;}
+  virtual RbtBool isBondListSupported() {return true;}
 
  protected:
   //Pure virtual in RbtBaseFileSource - needs to be defined here

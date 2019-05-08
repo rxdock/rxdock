@@ -49,7 +49,7 @@ class RbtBaseBiMolTransform : public RbtBaseTransform
 	//PURE VIRTUAL - Derived classes must override
 	virtual void SetupReceptor() = 0;//Called by Update when receptor is changed
 	virtual void SetupLigand() = 0;//Called by Update when ligand is changed
-	virtual void SetupSolvent() {};//Called by Update when ligand is changed
+	virtual void SetupSolvent() {}//Called by Update when ligand is changed
 	virtual void SetupTransform() = 0;//Called by Update when either model has changed
 	
 	private:

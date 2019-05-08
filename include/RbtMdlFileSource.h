@@ -32,12 +32,12 @@ class RbtMdlFileSource : public RbtBaseMolecularFileSource
 
   ////////////////////////////////////////
   //Override public methods from RbtBaseMolecularDataSource
-  virtual RbtBool isTitleListSupported() {return true;};
-  virtual RbtBool isAtomListSupported() {return true;};
-  virtual RbtBool isCoordinatesSupported() {return true;};
-  virtual RbtBool isBondListSupported() {return true;};
+  virtual RbtBool isTitleListSupported() {return true;}
+  virtual RbtBool isAtomListSupported() {return true;}
+  virtual RbtBool isCoordinatesSupported() {return true;}
+  virtual RbtBool isBondListSupported() {return true;}
   //DM 12 May 1999 - support for data records
-  virtual RbtBool isDataSupported() {return true;};
+  virtual RbtBool isDataSupported() {return true;}
 
  protected:
   //Pure virtual in RbtBaseFileSource - needs to be defined here

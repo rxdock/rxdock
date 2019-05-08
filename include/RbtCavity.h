@@ -44,7 +44,7 @@ class RbtCavity
   }
 
   //Destructor
-  ~RbtCavity() {}; 
+  ~RbtCavity() {}
 
   ///////////////////////////////////////////////
   //Stream functions
@@ -54,7 +54,7 @@ class RbtCavity
   friend ostream& operator<<(ostream& s, const RbtCavity& cavity) {
     cavity.Print(s);
     return s;
-  };
+  }
 
   //Virtual function for dumping cavity details to an output stream
   //Derived classes can override if required

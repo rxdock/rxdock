@@ -27,9 +27,9 @@ class RbtGPFFHSP90 : public RbtGPFitnessFunction
 public:
     static RbtString _CT;
     RbtGPFFHSP90(RbtContextPtr c) : contextp(c)
-	   {_RBTOBJECTCOUNTER_CONSTR_(_CT);};
+           {_RBTOBJECTCOUNTER_CONSTR_(_CT);}
     virtual ~RbtGPFFHSP90()
-	   {_RBTOBJECTCOUNTER_DESTR_(_CT);};
+           {_RBTOBJECTCOUNTER_DESTR_(_CT);}
 
     void ReadTables(istream&,RbtReturnTypeArray&,RbtReturnTypeArray&);
     RbtDouble CalculateFitness(RbtGPGenomePtr,RbtReturnTypeArray&,

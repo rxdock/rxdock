@@ -43,7 +43,7 @@ RbtToken::RbtToken(const RbtToken& t) : isvble(t.isvble), comm(t.comm),
 RbtToken::~RbtToken()
 {
     _RBTOBJECTCOUNTER_DESTR_(_CT);
-};
+}
   
 /*void RbtToken::copy(const RbtToken &t)
 {

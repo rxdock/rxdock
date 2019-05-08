@@ -94,7 +94,7 @@ class RbtVdwSF : public virtual RbtBaseSF, public virtual RbtAnnotationHandler
       RbtDouble rr6 = 1.0 / (R_sq * R_sq * R_sq);
       return rr6 * (rr6 * prms.A - prms.B);
     }
-  };
+  }
   
   //Generic scoring function primitive for 4-8
   inline RbtDouble f4_8(RbtDouble R_sq, const vdwprms& prms) const {
@@ -111,7 +111,7 @@ class RbtVdwSF : public virtual RbtBaseSF, public virtual RbtAnnotationHandler
       RbtDouble rr4 = 1.0 / (R_sq * R_sq);
       return rr4 * (rr4 * prms.A - prms.B);
     }
-  };
+  }
 
   void Setup();//Initialise m_vdwTable with appropriate params for each atom type pair
   void SetupCloseRange();//Regenerate the short-range params only (called more frequently)

@@ -55,10 +55,10 @@ class RbtMOEGridPoint {
 		// grid for convenience)
 		RbtMOEGridPoint(RbtCoord&, double);
 		// data access methods
-		double					GetValue()	{ return value; 	};
-		const vector<double>&	GetCoords()	{ return coords;	};
-		void					SetCoords(double a_val)	{ coords.push_back(a_val); };
-		void					SetValue(double a_val)	{ value = a_val; };
+		double					GetValue()	{ return value; 	}
+		const vector<double>&	GetCoords()	{ return coords;	}
+		void					SetCoords(double a_val)	{ coords.push_back(a_val); }
+		void					SetValue(double a_val)	{ value = a_val; }
 };
 
 // MOE grid shape vector
@@ -91,11 +91,11 @@ class RbtMOEGridShape
 		// vector and stepsize
 		RbtMOEGridShape(vector<double>, vector<double>, double);
 
-		const vector<double>&	GetOrigin()		{ return origin;	};
-		const vector<double>&	GetExtents()	{ return extents;	};
-		const vector<int>&		GetIExtents()	{ return i_extents;	};
-		double					GetStepSize()	{ return step_size;	};
-		long					GetDataSize()	{ return data_size;	};
+		const vector<double>&	GetOrigin()		{ return origin;	}
+		const vector<double>&	GetExtents()	{ return extents;	}
+		const vector<int>&		GetIExtents()	{ return i_extents;	}
+		double					GetStepSize()	{ return step_size;	}
+		long					GetDataSize()	{ return data_size;	}
 };
 
 typedef	vector<RbtMOEGridPoint> RbtMOEGridData;
@@ -118,15 +118,15 @@ class RbtMOEGrid
 		RbtMOEGrid(RbtMOEGridShape&, RbtMOEGridData&, RbtString);
 		// or pass parameters using these functions (when it is about 
 		// to save multiple grids into a single file)
-		void	SetShape(RbtMOEGridShape& a_shape)			{myShape		= a_shape;};
-		void	SetData(RbtMOEGridData& a_data)				{myData			= a_data;};
-		void	SetOutputFileName(RbtString& a_filename)	{stream_name	= a_filename;};
+		void	SetShape(RbtMOEGridShape& a_shape)			{myShape		= a_shape;}
+		void	SetData(RbtMOEGridData& a_data)				{myData			= a_data;}
+		void	SetOutputFileName(RbtString& a_filename)	{stream_name	= a_filename;}
 		// methods to calculate grid extents
 		void	CalculateCommonExtents(vector<RbtString> strPrmFiles);	// for all
 		void	GetDockingSiteExtents(RbtString& a_strPrmFile);			// for a single
 		// get methods
-		RbtCoord	GetMinExtents()	{return min;};
-		RbtCoord	GetMaxExtents()	{return max;};
+		RbtCoord	GetMinExtents()	{return min;}
+		RbtCoord	GetMaxExtents()	{return max;}
 		
 		// iofstream methods
 		long		WriteGrid(std::_Ios_Openmode mode);	// returns the number of points written

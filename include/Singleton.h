@@ -34,16 +34,16 @@ class Singleton
           {
 	     return *object(CREATE);
 	  }
-    };
+    }
 
     virtual ~Singleton()
     {
        object(DESTROY);
-    };
+    }
 
 
  protected:
     Singleton()
-    {};
+    {}
 };
 #endif

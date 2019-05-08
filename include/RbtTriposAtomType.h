@@ -59,8 +59,8 @@ class RbtTriposAtomType
     RbtString name;
     RbtInt atomicNo;
     int hybrid;
-    info() : atomicNo(0), hybrid(0) {};
-    info(const RbtString& n, RbtInt a, RbtInt h) : name(n), atomicNo(a), hybrid(h) {};
+    info() : atomicNo(0), hybrid(0) {}
+    info(const RbtString& n, RbtInt a, RbtInt h) : name(n), atomicNo(a), hybrid(h) {}
   };
       
   ////////////////////////////////////////

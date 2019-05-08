@@ -57,7 +57,7 @@ class RbtSAIdxSF : public RbtBaseInterSF, public RbtBaseIdxSF, public RbtAnnotat
  private:
   struct solvprms {
     solvprms(RbtDouble r0, RbtDouble p0, RbtDouble asp0, RbtBool b) :
-      r(r0),p(p0),asp(asp0),chg_scaling(b) {};
+      r(r0),p(p0),asp(asp0),chg_scaling(b) {}
     RbtDouble r;
     RbtDouble p;
     RbtDouble asp;

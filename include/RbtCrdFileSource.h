@@ -29,10 +29,10 @@ class RbtCrdFileSource : public RbtBaseMolecularFileSource
 
   ////////////////////////////////////////
   //Override public methods from RbtBaseMolecularDataSource
-  virtual RbtBool isTitleListSupported() {return true;};
-  virtual RbtBool isAtomListSupported() {return true;};
-  virtual RbtBool isCoordinatesSupported() {return true;};
-  virtual RbtBool isBondListSupported() {return false;};
+  virtual RbtBool isTitleListSupported() {return true;}
+  virtual RbtBool isAtomListSupported() {return true;}
+  virtual RbtBool isCoordinatesSupported() {return true;}
+  virtual RbtBool isBondListSupported() {return false;}
 
  protected:
   //Pure virtual in RbtBaseFileSource - needs to be defined here

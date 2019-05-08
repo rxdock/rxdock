@@ -36,8 +36,8 @@ public:
     // Destructor
     //////////////////
   virtual ~RbtFilterExpression();
-  RbtReturnType GetValue(){return value;};
-  void SetValue(RbtReturnType v){value = v;};
+  RbtReturnType GetValue(){return value;}
+  void SetValue(RbtReturnType v){value = v;}
   
     ////////////////////
     // Private methods
@@ -62,7 +62,7 @@ public:
     FilterVbleExp(const RbtVble&);
     virtual ~FilterVbleExp();
     void Accept (RbtFilterExpressionVisitor& visitor);
-    void Print(){cout << "v" << vble.GetName() << " ";};
+    void Print(){cout << "v" << vble.GetName() << " ";}
     RbtInt GetNOps() { return 0;}
     const RbtVble& GetVble() const { return vble;}
     RbtFilterExpressionPtr GetOp(RbtInt i)
@@ -79,7 +79,7 @@ public:
     FilterLogExp(RbtFilterExpressionPtr);
     virtual ~FilterLogExp();
     void Accept (RbtFilterExpressionVisitor& visitor);
-    void Print(){cout << "log "; operand->Print();};
+    void Print(){cout << "log "; operand->Print();}
     virtual RbtInt GetNOps() { return 1;}
     RbtFilterExpressionPtr GetOp(RbtInt i)
     {
@@ -98,7 +98,7 @@ public:
     FilterExpExp(RbtFilterExpressionPtr);
     virtual ~FilterExpExp();
     void Accept (RbtFilterExpressionVisitor& visitor);
-    void Print(){cout << "exp "; operand->Print();};
+    void Print(){cout << "exp "; operand->Print();}
     virtual RbtInt GetNOps() { return 1;}
     RbtFilterExpressionPtr GetOp(RbtInt i)
     {
@@ -117,7 +117,7 @@ public:
     FilterAddExp(RbtFilterExpressionPtr, RbtFilterExpressionPtr);
     virtual ~FilterAddExp();
     void Accept (RbtFilterExpressionVisitor& visitor);
-    void Print(){cout << "add "; operand1->Print(); operand2->Print();};
+    void Print(){cout << "add "; operand1->Print(); operand2->Print();}
     virtual RbtInt GetNOps() { return 2;}
     RbtFilterExpressionPtr GetOp(RbtInt i)
     {
@@ -138,7 +138,7 @@ public:
     FilterSubExp(RbtFilterExpressionPtr, RbtFilterExpressionPtr);
     virtual ~FilterSubExp();
     void Accept (RbtFilterExpressionVisitor& visitor);
-    void Print(){cout << "sub "; operand1->Print(); operand2->Print();};
+    void Print(){cout << "sub "; operand1->Print(); operand2->Print();}
     virtual RbtInt GetNOps() { return 2;}
     RbtFilterExpressionPtr GetOp(RbtInt i)
     {
@@ -159,7 +159,7 @@ public:
     FilterMulExp(RbtFilterExpressionPtr, RbtFilterExpressionPtr);
     virtual ~FilterMulExp();
     void Accept (RbtFilterExpressionVisitor& visitor);
-    void Print(){cout << "mul "; operand1->Print(); operand2->Print();};
+    void Print(){cout << "mul "; operand1->Print(); operand2->Print();}
     virtual RbtInt GetNOps() { return 2;}
     RbtFilterExpressionPtr GetOp(RbtInt i)
     {
@@ -180,7 +180,7 @@ public:
     FilterDivExp(RbtFilterExpressionPtr, RbtFilterExpressionPtr);
     virtual ~FilterDivExp();
     void Accept (RbtFilterExpressionVisitor& visitor);
-    void Print(){cout << "div "; operand1->Print(); operand2->Print();};
+    void Print(){cout << "div "; operand1->Print(); operand2->Print();}
     virtual RbtInt GetNOps() { return 2;}
     RbtFilterExpressionPtr GetOp(RbtInt i)
     {
@@ -201,7 +201,7 @@ public:
     FilterAndExp(RbtFilterExpressionPtr, RbtFilterExpressionPtr);
     virtual ~FilterAndExp();
     void Accept (RbtFilterExpressionVisitor& visitor);
-    void Print(){cout << "and "; operand1->Print(); operand2->Print();};
+    void Print(){cout << "and "; operand1->Print(); operand2->Print();}
     virtual RbtInt GetNOps() { return 2;}
     RbtFilterExpressionPtr GetOp(RbtInt i)
     {
@@ -223,7 +223,7 @@ public:
                 RbtFilterExpressionPtr);
     virtual ~FilterIfExp();
     void Accept (RbtFilterExpressionVisitor& visitor);
-    void Print(){cout << "if "; operand1->Print(); operand2->Print();operand3->Print();};
+    void Print(){cout << "if "; operand1->Print(); operand2->Print();operand3->Print();}
     virtual RbtInt GetNOps() { return 3;}
     RbtFilterExpressionPtr GetOp(RbtInt i)
     {

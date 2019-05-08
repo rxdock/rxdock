@@ -86,8 +86,8 @@ public:
 //    RbtReturnType GetValue(RbtInt key) {return vm[key].GetValue();}
 //    RbtString GetName(RbtString){return "";}
 //    RbtReturnType GetValue(RbtString){return 0.0;}
-    const RbtVble& GetVble(RbtInt key){ return *(vm[key]);};
-    void SetVble(RbtInt key, const RbtVble& v){ *(vm[key]) = v;};
+    const RbtVble& GetVble(RbtInt key){ return *(vm[key]);}
+    void SetVble(RbtInt key, const RbtVble& v){ *(vm[key]) = v;}
     const RbtVble& GetVble(RbtString key)
     { 
         throw RbtError (_WHERE_, "This is not a string context");
@@ -138,7 +138,7 @@ public:
     { 
         throw RbtError (_WHERE_, "This is not a cell context");
     }
-    void SetVble(RbtInt key, const RbtVble& v){ *(vm[""]) = v;};
+    void SetVble(RbtInt key, const RbtVble& v){ *(vm[""]) = v;}
     void UpdateLigs(RbtModelPtr lig);
     void UpdateSite(RbtModelPtr rec, RbtDockingSitePtr site);
     void UpdateScores(RbtBaseSF* spSF, RbtModelPtr lig);
