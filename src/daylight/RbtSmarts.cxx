@@ -1,6 +1,6 @@
 //Smarts class. Defines a function that takes a model and a smarts string as
 //input, and returns a list of lists of atoms that match the pattern
-//　　　　　　　　　        WARNING        !!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!       WARNING        !!!!!!!!!!!!!!!!!!!!!!
 //This subroutines assume that atomId starts from 1 and goes incrementally
 //It will fail if this is not true. 
 
