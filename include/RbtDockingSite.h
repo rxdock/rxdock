@@ -50,7 +50,7 @@ public:
   RbtDockingSite(istream &istr);
 
   // Destructor
-  ~RbtDockingSite();
+  virtual ~RbtDockingSite();
 
   // Insertion operator
   friend ostream &operator<<(ostream &s, const RbtDockingSite &site);
