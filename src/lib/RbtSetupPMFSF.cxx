@@ -168,7 +168,7 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rS(RbtAtomPtr anAtom) {
     return SD; // cystein H-bond donor
 }
 
-void RbtSetupPMFSF::SetupReceptorPMFTypes(void) throw(RbtError) {
+void RbtSetupPMFSF::SetupReceptorPMFTypes(void) {
   // std::cout << _CT << " receptor size " << theReceptorList.size() <<
   // std::endl;
   for (long i = 0; i < theReceptorList.size(); i++) {
@@ -412,7 +412,7 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lS(RbtAtomPtr anAtom) {
     return SA;
 }
 
-void RbtSetupPMFSF::SetupLigandPMFTypes(void) throw(RbtError) {
+void RbtSetupPMFSF::SetupLigandPMFTypes(void) {
   for (int i = 0; i < theLigandList.size(); i++) {
     switch (theLigandList[i]->GetAtomicNo()) {
     case 1:

@@ -118,7 +118,7 @@ void RbtBaseFileSource::Rewind() {
 
 // Protected functions
 
-void RbtBaseFileSource::Read(bool aDelimiterAtEnd) throw(RbtError) {
+void RbtBaseFileSource::Read(bool aDelimiterAtEnd) {
   // If we haven't already read the file, do it now
   if (!m_bReadOK) {
     if (aDelimiterAtEnd) {
@@ -205,7 +205,7 @@ void RbtBaseFileSource::Read(bool aDelimiterAtEnd) throw(RbtError) {
 }
 
 // Private functions
-void RbtBaseFileSource::Open() throw(RbtError) {
+void RbtBaseFileSource::Open() {
   // DM 23 Mar 1999 - check if file is already open, to allow Open() to be
   // called redundantly
   if (!m_bFileOpen)

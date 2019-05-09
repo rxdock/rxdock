@@ -37,7 +37,7 @@ RbtMdlFileSink::~RbtMdlFileSink() {
 //
 ////////////////////////////////////////
 // Override public methods from RbtBaseFileSink
-void RbtMdlFileSink::Render() throw(RbtError) {
+void RbtMdlFileSink::Render() {
   try {
     RbtModelPtr spModel(GetModel());
     RbtAtomList modelAtomList(spModel->GetAtomList());

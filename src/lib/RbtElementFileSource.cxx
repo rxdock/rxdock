@@ -74,8 +74,8 @@ RbtIntList RbtElementFileSource::GetAtomicNumberList() {
 }
 
 // Get element data for a given element name, throws error if not found
-RbtElementData RbtElementFileSource::GetElementData(
-    const std::string &strElementName) throw(RbtError) {
+RbtElementData
+RbtElementFileSource::GetElementData(const std::string &strElementName) {
   Parse();
   RbtStringElementDataMapIter iter = m_elementNameMap.find(strElementName);
   if (iter != m_elementNameMap.end())
@@ -87,8 +87,7 @@ RbtElementData RbtElementFileSource::GetElementData(
 }
 
 // Get element data for a given atomic number, throws error if not found
-RbtElementData
-RbtElementFileSource::GetElementData(int nAtomicNumber) throw(RbtError) {
+RbtElementData RbtElementFileSource::GetElementData(int nAtomicNumber) {
   Parse();
   RbtIntElementDataMapIter iter = m_atomicNumberMap.find(nAtomicNumber);
   if (iter != m_atomicNumberMap.end())
@@ -138,7 +137,7 @@ double RbtElementFileSource::GetImplicitRadiusIncr() {
 
 // Private methods
 // Pure virtual in RbtBaseFileSource - needs to be defined here
-void RbtElementFileSource::Parse() throw(RbtError) {
+void RbtElementFileSource::Parse() {
   const std::string strRbtKey = "RBT_ELEMENT_FILE_V1.01";
   const std::string strTitleKey = "TITLE ";
   const std::string strVersionKey = "VERSION ";

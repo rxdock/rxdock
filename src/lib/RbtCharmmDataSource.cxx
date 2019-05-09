@@ -70,7 +70,7 @@ RbtCharmmDataSource::~RbtCharmmDataSource() {
 ////////////////////////////////////////
 // Public methods
 ////////////////
-std::string RbtCharmmDataSource::AtomTypeString(int nAtomType) throw(RbtError) {
+std::string RbtCharmmDataSource::AtomTypeString(int nAtomType) {
   RbtIntStringMapIter iter = m_atomTypes.find(nAtomType);
   if (iter != m_atomTypes.end())
     return (*iter).second;
@@ -84,8 +84,7 @@ std::string RbtCharmmDataSource::AtomTypeString(int nAtomType) throw(RbtError) {
   }
 }
 
-int RbtCharmmDataSource::ImplicitHydrogens(const std::string &strFFType) throw(
-    RbtError) {
+int RbtCharmmDataSource::ImplicitHydrogens(const std::string &strFFType) {
   RbtStringIntMapIter iter = m_implicitHydrogens.find(strFFType);
   if (iter != m_implicitHydrogens.end())
     return (*iter).second;
@@ -93,8 +92,7 @@ int RbtCharmmDataSource::ImplicitHydrogens(const std::string &strFFType) throw(
     return 0;
 }
 
-int RbtCharmmDataSource::AtomicNumber(const std::string &strFFType) throw(
-    RbtError) {
+int RbtCharmmDataSource::AtomicNumber(const std::string &strFFType) {
   RbtStringIntMapIter iter = m_atomicNumber.find(strFFType);
   if (iter != m_atomicNumber.end())
     return (*iter).second;
@@ -104,8 +102,7 @@ int RbtCharmmDataSource::AtomicNumber(const std::string &strFFType) throw(
                                       " not found in CharmmDataSource");
 }
 
-int RbtCharmmDataSource::FormalCharge(const std::string &strFFType) throw(
-    RbtError) {
+int RbtCharmmDataSource::FormalCharge(const std::string &strFFType) {
   RbtStringIntMapIter iter = m_formalCharge.find(strFFType);
   if (iter != m_formalCharge.end()) {
     return (*iter).second;
@@ -115,7 +112,7 @@ int RbtCharmmDataSource::FormalCharge(const std::string &strFFType) throw(
 
 // DM 8 Dec 1998
 RbtAtom::eHybridState
-RbtCharmmDataSource::HybridState(const std::string &strFFType) throw(RbtError) {
+RbtCharmmDataSource::HybridState(const std::string &strFFType) {
   RbtStringHybridStateMapIter iter = m_hybridState.find(strFFType);
   if (iter != m_hybridState.end())
     return (*iter).second;

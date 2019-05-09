@@ -85,7 +85,7 @@ RbtChromElement *RbtChrom::clone() const {
   return clone;
 }
 
-void RbtChrom::Add(RbtChromElement *pChromElement) throw(RbtError) {
+void RbtChrom::Add(RbtChromElement *pChromElement) {
   if (pChromElement) {
     m_elementList.push_back(pChromElement);
   }
@@ -123,7 +123,7 @@ void RbtChrom::GetVector(RbtXOverList &v) const {
   }
 }
 
-void RbtChrom::SetVector(const RbtDoubleList &v, int &i) throw(RbtError) {
+void RbtChrom::SetVector(const RbtDoubleList &v, int &i) {
   if (VectorOK(v, i)) {
     for (RbtChromElementListIter iter = m_elementList.begin();
          iter != m_elementList.end(); ++iter) {
@@ -135,7 +135,7 @@ void RbtChrom::SetVector(const RbtDoubleList &v, int &i) throw(RbtError) {
   }
 }
 
-void RbtChrom::SetVector(const RbtXOverList &v, int &i) throw(RbtError) {
+void RbtChrom::SetVector(const RbtXOverList &v, int &i) {
   if (VectorOK(v, i)) {
     for (RbtChromElementListIter iter = m_elementList.begin();
          iter != m_elementList.end(); ++iter) {

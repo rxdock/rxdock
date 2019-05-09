@@ -59,17 +59,16 @@ void RbtBaseTransform::Go() {
 // Aggregate handling (virtual) methods
 // Base class throws an InvalidRequest error
 
-void RbtBaseTransform::Add(RbtBaseTransform *) throw(RbtError) {
+void RbtBaseTransform::Add(RbtBaseTransform *) {
   throw RbtInvalidRequest(_WHERE_,
                           "Add() invalid for non-aggregate transforms");
 }
-void RbtBaseTransform::Remove(RbtBaseTransform *) throw(RbtError) {
+void RbtBaseTransform::Remove(RbtBaseTransform *) {
   throw RbtInvalidRequest(_WHERE_,
                           "Remove() invalid for non-aggregate transforms");
 }
 
-RbtBaseTransform *RbtBaseTransform::GetTransform(unsigned int i) const
-    throw(RbtError) {
+RbtBaseTransform *RbtBaseTransform::GetTransform(unsigned int i) const {
   throw RbtInvalidRequest(
       _WHERE_, "GetTransform() invalid for non-aggregate transforms");
 }

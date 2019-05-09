@@ -53,15 +53,14 @@ RbtPrincipalAxes GetSolventPrincipalAxes(const RbtAtomPtr &oAtom,
 RbtQuat
 AlignPrincipalAxes(RbtAtomList &atomList,
                    const RbtPrincipalAxes &alignAxes = RbtPrincipalAxes(),
-                   bool bAlignCOM = true) throw(RbtError);
+                   bool bAlignCOM = true);
 // Returns the quaternion required to align principal axes with reference axes
 RbtQuat GetQuatFromAlignAxes(const RbtPrincipalAxes &prAxes,
-                             const RbtPrincipalAxes &refAxes) throw(RbtError);
+                             const RbtPrincipalAxes &refAxes);
 // Returns the quaternion required to effect an alignment of v onto ref vector.
 // Vectors do not have to be unit length.
 // RbtBadArgument exception is thrown if either v or ref is zero length.
-RbtQuat GetQuatFromAlignVectors(const RbtVector &v,
-                                const RbtVector &ref) throw(RbtError);
+RbtQuat GetQuatFromAlignVectors(const RbtVector &v, const RbtVector &ref);
 } // namespace Rbt
 
 #endif //_RBTPRINCIPALAXES_H_

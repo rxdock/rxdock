@@ -60,10 +60,9 @@ public:
   RbtStringList GetElementNameList(); // List of element names
   RbtIntList GetAtomicNumberList();   // List of atomic numbers
   // Get element data for a given element name, throws error if not found
-  RbtElementData
-  GetElementData(const std::string &strElementName) throw(RbtError);
+  RbtElementData GetElementData(const std::string &strElementName);
   // Get element data for a given atomic number, throws error if not found
-  RbtElementData GetElementData(int nAtomicNumber) throw(RbtError);
+  RbtElementData GetElementData(int nAtomicNumber);
   // Check if given element name is present
   bool isElementNamePresent(const std::string &strElementName);
   // Check if given atomic number is present
@@ -86,7 +85,7 @@ private:
       const RbtElementFileSource &); // Copy assignment disabled by default
 
   // Pure virtual in RbtBaseFileSource - needs to be defined here
-  virtual void Parse() throw(RbtError);
+  virtual void Parse();
   void ClearElementDataCache();
 
 protected:

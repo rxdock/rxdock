@@ -46,11 +46,11 @@ public:
   void Go();
 
   // Aggregate handling methods
-  virtual void Add(RbtBaseTransform *) throw(RbtError);
-  virtual void Remove(RbtBaseTransform *) throw(RbtError);
+  virtual void Add(RbtBaseTransform *);
+  virtual void Remove(RbtBaseTransform *);
   virtual bool isAgg() const;
   virtual unsigned int GetNumTransforms() const;
-  virtual RbtBaseTransform *GetTransform(unsigned int) const throw(RbtError);
+  virtual RbtBaseTransform *GetTransform(unsigned int) const;
   void Orphan(); // Force removal from the parent aggregate
   RbtBaseTransform *GetParentTransform() const;
 

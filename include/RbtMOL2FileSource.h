@@ -59,7 +59,7 @@ public:
   bool isDataSupported() { return false; }
 
 protected:
-  virtual void Parse() throw(RbtError);
+  virtual void Parse();
 
 private:
   RbtMOL2FileSource();
@@ -67,7 +67,7 @@ private:
   RbtMOL2FileSource &operator=(const RbtMOL2FileSource &);
 
   // Helper functions to clean up atom attributes after parsing the file
-  void SetupAtomParams() throw(RbtError);
+  void SetupAtomParams();
   void FixImplicitHydrogenCount();
   void FixHybridState();
   void FixTriposTypes();

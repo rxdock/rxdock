@@ -49,7 +49,7 @@ protected:
   void CheckDirectory(std::string &); // to check directory access
 
 public:
-  RbtDirectorySource(const std::string &) throw(RbtError);
+  RbtDirectorySource(const std::string &);
   virtual ~RbtDirectorySource();
 
   static std::string _CT;

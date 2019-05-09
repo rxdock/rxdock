@@ -32,7 +32,7 @@ RbtPdbFileSource::~RbtPdbFileSource() {
   _RBTOBJECTCOUNTER_DESTR_("RbtPdbFileSource");
 }
 
-void RbtPdbFileSource::Parse() throw(RbtError) {
+void RbtPdbFileSource::Parse() {
   // Expected string constants in PDB files
   const std::string strTitleKey("REMARK ");
   const std::string strAtomKey("ATOM ");

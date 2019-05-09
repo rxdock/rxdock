@@ -127,9 +127,8 @@ std::ostream &PrintStdHeader(std::ostream &s,
 typedef int streamsize;
 //#endif
 
-void WriteWithThrow(std::ostream &ostr, const char *p,
-                    streamsize n) throw(RbtError);
-void ReadWithThrow(std::istream &istr, char *p, streamsize n) throw(RbtError);
+void WriteWithThrow(std::ostream &ostr, const char *p, streamsize n);
+void ReadWithThrow(std::istream &istr, char *p, streamsize n);
 
 } // namespace Rbt
 

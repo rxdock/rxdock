@@ -42,8 +42,8 @@ public:
   virtual int GetXOverLength() const { return m_spRefData->GetXOverLength(); }
   virtual void GetVector(RbtDoubleList &v) const;
   virtual void GetVector(RbtXOverList &v) const;
-  virtual void SetVector(const RbtDoubleList &v, int &i) throw(RbtError);
-  virtual void SetVector(const RbtXOverList &v, int &i) throw(RbtError);
+  virtual void SetVector(const RbtDoubleList &v, int &i);
+  virtual void SetVector(const RbtXOverList &v, int &i);
   virtual void GetStepVector(RbtDoubleList &v) const;
   virtual double CompareVector(const RbtDoubleList &v, int &i) const;
   virtual void Print(std::ostream &s) const;

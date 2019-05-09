@@ -40,7 +40,7 @@ public:
   // Creates a single transform object of type strTransformClass, and name
   // strName e.g. strTransformClass = RbtSimAnnTransform
   virtual RbtBaseTransform *Create(const std::string &strTransformClass,
-                                   const std::string &strName) throw(RbtError);
+                                   const std::string &strName);
 
   // Creates an aggregate transform from a parameter file source
   // Each component transform is in a named section, which should minimally
@@ -50,9 +50,10 @@ public:
   // spPrmSource are scanned for valid transform definitions Transform
   // parameters and scoring function requests are set from the list of
   // parameters in each named section
-  virtual RbtTransformAgg *CreateAggFromFile(
-      RbtParameterFileSourcePtr spPrmSource, const std::string &strName,
-      const std::string &strTransformClasses = std::string()) throw(RbtError);
+  virtual RbtTransformAgg *
+  CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
+                    const std::string &strName,
+                    const std::string &strTransformClasses = std::string());
 
 protected:
   ////////////////////////////////////////

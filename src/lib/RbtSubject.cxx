@@ -35,7 +35,7 @@ RbtSubject::~RbtSubject() {
 ////////////////////////////////////////
 // Public methods
 ////////////////
-void RbtSubject::Attach(RbtObserver *pObserver) throw(RbtError) {
+void RbtSubject::Attach(RbtObserver *pObserver) {
   RbtObserverListIter iter =
       std::find(m_observers.begin(), m_observers.end(), pObserver);
   if (iter != m_observers.end()) {
@@ -51,7 +51,7 @@ void RbtSubject::Attach(RbtObserver *pObserver) throw(RbtError) {
   }
 }
 
-void RbtSubject::Detach(RbtObserver *pObserver) throw(RbtError) {
+void RbtSubject::Detach(RbtObserver *pObserver) {
   RbtObserverListIter iter =
       std::find(m_observers.begin(), m_observers.end(), pObserver);
   if (iter == m_observers.end()) {

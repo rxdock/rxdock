@@ -54,7 +54,7 @@ RbtModelList RbtWorkSpace::GetModels() const { return m_models; }
 
 // Returns a specific (numbered) model
 // Throws RbtBadArgument if iModel out of range
-RbtModelPtr RbtWorkSpace::GetModel(unsigned int iModel) const throw(RbtError) {
+RbtModelPtr RbtWorkSpace::GetModel(unsigned int iModel) const {
   if (iModel >= m_models.size()) {
     throw RbtBadArgument(_WHERE_, "iModel out of range");
   }
@@ -63,8 +63,7 @@ RbtModelPtr RbtWorkSpace::GetModel(unsigned int iModel) const throw(RbtError) {
 
 // Replace an existing model, notify all observers
 // Throws RbtBadArgument if iModel out of range
-void RbtWorkSpace::SetModel(unsigned int iModel,
-                            RbtModelPtr spModel) throw(RbtError) {
+void RbtWorkSpace::SetModel(unsigned int iModel, RbtModelPtr spModel) {
   if (iModel >= m_models.size()) {
     throw RbtBadArgument(_WHERE_, "iModel out of range");
   }
@@ -73,8 +72,7 @@ void RbtWorkSpace::SetModel(unsigned int iModel,
 }
 
 // Returns vector of models, starting from index iModel
-RbtModelList RbtWorkSpace::GetModels(unsigned int iModel) const
-    throw(RbtError) {
+RbtModelList RbtWorkSpace::GetModels(unsigned int iModel) const {
   RbtModelList retVal;
   if (iModel >= m_models.size()) {
     throw RbtBadArgument(_WHERE_, "iModel out of range");
@@ -94,8 +92,7 @@ void RbtWorkSpace::AddModels(RbtModelList modelList) {
 // Replace a number of existing models
 // iModel is the index of the first model to replace
 // Throws RbtBadArgument if iModel out of range or modelList too large
-void RbtWorkSpace::SetModels(unsigned int iModel,
-                             RbtModelList modelList) throw(RbtError) {
+void RbtWorkSpace::SetModels(unsigned int iModel, RbtModelList modelList) {
   if (iModel > (m_models.size() - modelList.size())) {
     throw RbtBadArgument(_WHERE_, "iModel out of range");
   } else if (modelList.size() > m_models.size()) {
@@ -107,7 +104,7 @@ void RbtWorkSpace::SetModels(unsigned int iModel,
 
 // Removes a number of models from the workspace
 // Removes from index iModel to end of model list
-void RbtWorkSpace::RemoveModels(unsigned int iModel) throw(RbtError) {
+void RbtWorkSpace::RemoveModels(unsigned int iModel) {
   if (iModel >= m_models.size()) {
     throw RbtBadArgument(_WHERE_, "iModel out of range");
   }

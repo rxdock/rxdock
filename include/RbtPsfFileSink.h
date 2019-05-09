@@ -30,7 +30,7 @@ public:
   // Public methods
   ////////////////
   // Override public methods from RbtBaseFileSink
-  virtual void Render() throw(RbtError);
+  virtual void Render();
 
 protected:
   ////////////////////////////////////////

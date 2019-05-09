@@ -40,7 +40,7 @@ public:
 
 protected:
   // Pure virtual in RbtBaseFileSource - needs to be defined here
-  virtual void Parse() throw(RbtError);
+  virtual void Parse();
 
 private:
   // Private methods
@@ -52,8 +52,8 @@ private:
 
   // Sets up all the atomic attributes that are not explicitly stored in the PSF
   // file
-  void SetupAtomParams() throw(RbtError);
-  void SetupVdWRadii() throw(RbtError);
+  void SetupAtomParams();
+  void SetupVdWRadii();
   void SetupPartialIonicGroups();
   void RemoveNonPolarHydrogens();
   // Is atom in same substructure

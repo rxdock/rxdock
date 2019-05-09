@@ -21,8 +21,7 @@ std::string RbtDirectorySource::_CT("RbtDirectorySource");
  * Constructor checks wether the directory exists and gives
  * $RBT_ROOT to the path if required
  */
-RbtDirectorySource::RbtDirectorySource(const std::string &aDirectory) throw(
-    RbtError) {
+RbtDirectorySource::RbtDirectorySource(const std::string &aDirectory) {
   // std::string theFileStr;
   //// filename without path after scandir() std::string theLine;
   //// line read

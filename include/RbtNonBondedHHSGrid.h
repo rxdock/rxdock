@@ -47,7 +47,7 @@ public:
 protected:
   void OwnPrint(std::ostream &ostr) const;
   void OwnWrite(std::ostream &ostr) const;
-  void OwnRead(std::istream &istr) throw(RbtError);
+  void OwnRead(std::istream &istr);
 
 private:
   RbtNonBondedHHSGrid();

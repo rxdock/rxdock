@@ -20,7 +20,7 @@
 // pseudoatom only (the constituent atoms are already constructed so we don't
 // need to worry about them) Use Atomic No = -1 to signify a pseudoatom
 RbtPseudoAtom::RbtPseudoAtom(const RbtAtomList &atomList, int nAtomId,
-                             std::string strAtomName) throw(RbtError)
+                             std::string strAtomName)
     : RbtAtom(nAtomId, -1, strAtomName) {
   // Check atom list isn't empty (should be an assert)
   if (atomList.empty())

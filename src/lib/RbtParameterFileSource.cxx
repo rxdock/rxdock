@@ -66,8 +66,8 @@ RbtStringList RbtParameterFileSource::GetParameterList() {
 }
 
 // DM 4 Feb 1999 Get a particular named parameter value as a double
-double RbtParameterFileSource::GetParameterValue(
-    const std::string &strParamName) throw(RbtError) {
+double
+RbtParameterFileSource::GetParameterValue(const std::string &strParamName) {
   Parse();
   if (!strParamName.empty()) {
     std::string strFullParamName = GetFullParameterName(strParamName);
@@ -84,7 +84,7 @@ double RbtParameterFileSource::GetParameterValue(
 
 // DM 12 Feb 1999 Get a particular named parameter value as a string
 std::string RbtParameterFileSource::GetParameterValueAsString(
-    const std::string &strParamName) throw(RbtError) {
+    const std::string &strParamName) {
   Parse();
   if (!strParamName.empty()) {
     std::string strFullParamName = GetFullParameterName(strParamName);
@@ -140,7 +140,7 @@ void RbtParameterFileSource::SetSection(const std::string &strSection) {
 // Private methods
 
 // Pure virtual in RbtBaseFileSource - needs to be defined here
-void RbtParameterFileSource::Parse() throw(RbtError) {
+void RbtParameterFileSource::Parse() {
   const std::string strRbtKey = "RBT_PARAMETER_FILE_V1.00";
   const std::string strTitleKey = "TITLE ";
   const std::string strVersionKey = "VERSION ";
@@ -242,8 +242,7 @@ void RbtParameterFileSource::ClearParamsCache() {
 }
 
 // Add a new section name
-void RbtParameterFileSource::AddSection(const std::string &strSection) throw(
-    RbtError) {
+void RbtParameterFileSource::AddSection(const std::string &strSection) {
   // Only add if the name is not already in the list, and is not the empty
   // string
   if (strSection.empty())

@@ -61,7 +61,7 @@ RbtError RbtBaseFileSink::Status() {
 ///////////////////
 // DM 11 Feb 1999 - add flag to allow the cache to be written without clearing
 // it
-void RbtBaseFileSink::Write(bool bClearCache) throw(RbtError) {
+void RbtBaseFileSink::Write(bool bClearCache) {
   // Only write the file if there is anything in the cache
   if (isCacheEmpty())
     return;
@@ -107,7 +107,7 @@ void RbtBaseFileSink::ReplaceLine(const std::string &fileRec,
 ////////////////////////////////////////
 // Private methods
 /////////////////
-void RbtBaseFileSink::Open(bool bAppend) throw(RbtError) {
+void RbtBaseFileSink::Open(bool bAppend) {
   std::ios_base::openmode openMode = std::ios_base::out;
   if (bAppend)
     openMode = openMode | std::ios_base::app;

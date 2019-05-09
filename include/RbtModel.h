@@ -108,8 +108,8 @@ public:
   RbtPseudoAtomList GetPseudoAtomList() const;
 
   // DM 1 Jul 2002 - tethered atom handling
-  unsigned int GetNumTetheredAtoms() const throw(RbtError);
-  RbtAtomList GetTetheredAtomList() const throw(RbtError);
+  unsigned int GetNumTetheredAtoms() const;
+  RbtAtomList GetTetheredAtomList() const;
 
   // DM 7 June 2006 - occupancy handling
   // The model occupancy is represented in two ways:
@@ -130,7 +130,7 @@ public:
   //////////////////////
 
   // Update coords from a data source
-  void UpdateCoords(RbtBaseMolecularFileSource *pMolSource) throw(RbtError);
+  void UpdateCoords(RbtBaseMolecularFileSource *pMolSource);
 
   // DM 07 Jan 1999
   // Translate molecule by the given vector
@@ -154,7 +154,7 @@ public:
 
   // DM 8 Feb 1999
   void SaveCoords(const std::string &coordName = "");
-  void RevertCoords(const std::string &coordName = "") throw(RbtError);
+  void RevertCoords(const std::string &coordName = "");
   RbtStringIntMap GetSavedCoordNames() const { return m_coordNames; }
   int GetNumSavedCoords() const { return m_coordNames.size(); }
   int GetCurrentCoords() const { return m_currentCoord; }
@@ -193,8 +193,8 @@ public:
   RbtChromElement *GetChrom() const;
 
   bool isFlexible() const;
-  const RbtAtomRList &GetFlexIntns(RbtAtom *pAtom) const throw(RbtError);
-  RbtBondList GetFlexBonds() const throw(RbtError);
+  const RbtAtomRList &GetFlexIntns(RbtAtom *pAtom) const;
+  RbtBondList GetFlexBonds() const;
   // Selects all atoms that are rotated by at least one rotable bond
   void SelectFlexAtoms();
   void SelectFlexAtoms(RbtAtom *pAtom);
@@ -313,7 +313,7 @@ private:
   RbtModel &operator=(const RbtModel &); // Copy assignment disabled by default
 
   // Create a new model from a data source
-  void Create(RbtBaseMolecularFileSource *pMolSource) throw(RbtError);
+  void Create(RbtBaseMolecularFileSource *pMolSource);
   void Clear();                         // Clear the current model
   void AddAtoms(RbtAtomList &atomList); // Register an atom list with the model
 

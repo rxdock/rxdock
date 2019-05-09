@@ -49,7 +49,7 @@ RbtMOL2FileSource::~RbtMOL2FileSource() {
 // parsing file and setting up atom descriptors
 // at the beginning nothing is set, at the end everything should be set
 // correctly
-void RbtMOL2FileSource::Parse(void) throw(RbtError) {
+void RbtMOL2FileSource::Parse(void) {
   // start parsing if we haven't already done so
   if (!m_bParsedOK) {
     // clear current cache
@@ -435,7 +435,7 @@ void RbtMOL2FileSource::ParseCountFields(const std::string &aLine) {
 
 // Correct all the atom attributes that could not be set explicitly when
 // parsing the atom records
-void RbtMOL2FileSource::SetupAtomParams() throw(RbtError) {
+void RbtMOL2FileSource::SetupAtomParams() {
   FixImplicitHydrogenCount();
   if (m_bImplHydrogens) {
     RemoveNonPolarHydrogens();

@@ -37,7 +37,7 @@ protected:
   virtual void SetupScore();
   virtual double RawScore() const;
 
-  void SetupReceptorSATypes(void) throw(RbtError);
-  void SetupLigandSATypes(void) throw(RbtError);
+  void SetupReceptorSATypes(void);
+  void SetupLigandSATypes(void);
 };
 #endif //_RBTSETUPSASF_H_

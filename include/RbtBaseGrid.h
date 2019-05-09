@@ -198,7 +198,7 @@ protected:
   // Protected method for writing data members for this class to binary stream
   void OwnWrite(std::ostream &ostr) const;
   // Protected method for reading data members for this class from binary stream
-  void OwnRead(std::istream &istr) throw(RbtError);
+  void OwnRead(std::istream &istr);
 
 private:
   ////////////////////////////////////////

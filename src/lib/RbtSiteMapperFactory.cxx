@@ -29,9 +29,8 @@ RbtSiteMapperFactory::~RbtSiteMapperFactory() {}
 // Public methods
 ////////////////
 // Creates a single site mapper object of named class
-RbtSiteMapper *
-RbtSiteMapperFactory::Create(const std::string &strMapperClass,
-                             const std::string &strName) throw(RbtError) {
+RbtSiteMapper *RbtSiteMapperFactory::Create(const std::string &strMapperClass,
+                                            const std::string &strName) {
   if (strMapperClass == RbtSphereSiteMapper::_CT)
     return new RbtSphereSiteMapper(strName);
   if (strMapperClass == RbtLigandSiteMapper::_CT)
@@ -45,9 +44,9 @@ RbtSiteMapperFactory::Create(const std::string &strMapperClass,
 // parameter file source argument. Also sets the site mapper parameters from the
 // remaining parameter values in the current section
 // Note: the current section is restored to its original value upon exit
-RbtSiteMapper *RbtSiteMapperFactory::CreateFromFile(
-    RbtParameterFileSourcePtr spPrmSource,
-    const std::string &strName) throw(RbtError) {
+RbtSiteMapper *
+RbtSiteMapperFactory::CreateFromFile(RbtParameterFileSourcePtr spPrmSource,
+                                     const std::string &strName) {
   std::string strOrigSection(spPrmSource->GetSection());
   spPrmSource->SetSection(strName);
   if (spPrmSource->isParameterPresent(_MAPPER)) {

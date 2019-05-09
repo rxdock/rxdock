@@ -208,7 +208,7 @@ void RbtNonBondedGrid::OwnWrite(std::ostream &ostr) const {
 // Protected method for reading data members for this class from binary stream
 // WARNING: Assumes grid data array has already been created
 // and is of the correct size
-void RbtNonBondedGrid::OwnRead(std::istream &istr) throw(RbtError) {
+void RbtNonBondedGrid::OwnRead(std::istream &istr) {
   // Read all the data members
   // NOTHING TO READ - see above
 }

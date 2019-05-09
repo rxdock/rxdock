@@ -74,7 +74,7 @@ private:
       const RbtNmrRestraintFileSource &); // Copy assignment disabled by default
 
   // Pure virtual in RbtBaseFileSource - needs to be defined here
-  virtual void Parse() throw(RbtError);
+  virtual void Parse();
   void ClearRestraintCache();
 
   // Returns NOE restraint type and modifies the atom name string accordingly

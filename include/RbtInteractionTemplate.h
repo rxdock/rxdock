@@ -165,7 +165,7 @@ protected:
     ostr << "No. of entries in the map: " << m_intnMap.size() << std::endl;
   }
   void OwnWrite(std::ostream &ostr) const {}
-  void OwnRead(std::istream &istr) throw(RbtError) { CreateMap(); }
+  void OwnRead(std::istream &istr) { CreateMap(); }
 
 private:
   RbtInteractionGridTemplate();

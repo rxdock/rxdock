@@ -49,7 +49,7 @@ RbtBaseMolecularFileSource::~RbtBaseMolecularFileSource() {
 // are created
 void RbtBaseMolecularFileSource::Reset() { ClearMolCache(); }
 
-int RbtBaseMolecularFileSource::GetNumTitles() throw(RbtError) {
+int RbtBaseMolecularFileSource::GetNumTitles() {
   if (isTitleListSupported()) {
     Parse();
     return m_titleList.size();
@@ -58,7 +58,7 @@ int RbtBaseMolecularFileSource::GetNumTitles() throw(RbtError) {
                             "Title list not supported by " + GetName());
 }
 
-int RbtBaseMolecularFileSource::GetNumAtoms() throw(RbtError) {
+int RbtBaseMolecularFileSource::GetNumAtoms() {
   if (isAtomListSupported()) {
     Parse();
     if (isSegmentFilterMapDefined())
@@ -69,7 +69,7 @@ int RbtBaseMolecularFileSource::GetNumAtoms() throw(RbtError) {
     throw RbtInvalidRequest(_WHERE_, "Atom list not supported by " + GetName());
 }
 
-int RbtBaseMolecularFileSource::GetNumBonds() throw(RbtError) {
+int RbtBaseMolecularFileSource::GetNumBonds() {
   if (isBondListSupported()) {
     Parse();
     if (isSegmentFilterMapDefined())
@@ -80,7 +80,7 @@ int RbtBaseMolecularFileSource::GetNumBonds() throw(RbtError) {
     throw RbtInvalidRequest(_WHERE_, "Bond list not supported by " + GetName());
 }
 
-int RbtBaseMolecularFileSource::GetNumSegments() throw(RbtError) {
+int RbtBaseMolecularFileSource::GetNumSegments() {
   if (isAtomListSupported()) {
     Parse();
     return m_segmentMap.size();
@@ -88,7 +88,7 @@ int RbtBaseMolecularFileSource::GetNumSegments() throw(RbtError) {
     throw RbtInvalidRequest(_WHERE_, "Atom list not supported by " + GetName());
 }
 
-RbtStringList RbtBaseMolecularFileSource::GetTitleList() throw(RbtError) {
+RbtStringList RbtBaseMolecularFileSource::GetTitleList() {
   if (isTitleListSupported()) {
     Parse();
     return m_titleList;
@@ -97,7 +97,7 @@ RbtStringList RbtBaseMolecularFileSource::GetTitleList() throw(RbtError) {
                             "Title list not supported by " + GetName());
 }
 
-RbtAtomList RbtBaseMolecularFileSource::GetAtomList() throw(RbtError) {
+RbtAtomList RbtBaseMolecularFileSource::GetAtomList() {
   if (isAtomListSupported()) {
     Parse();
     if (isSegmentFilterMapDefined())
@@ -108,7 +108,7 @@ RbtAtomList RbtBaseMolecularFileSource::GetAtomList() throw(RbtError) {
     throw RbtInvalidRequest(_WHERE_, "Atom list not supported by " + GetName());
 }
 
-RbtBondList RbtBaseMolecularFileSource::GetBondList() throw(RbtError) {
+RbtBondList RbtBaseMolecularFileSource::GetBondList() {
   if (isBondListSupported()) {
     Parse();
     if (isSegmentFilterMapDefined())
@@ -119,7 +119,7 @@ RbtBondList RbtBaseMolecularFileSource::GetBondList() throw(RbtError) {
     throw RbtInvalidRequest(_WHERE_, "Bond list not supported by " + GetName());
 }
 
-RbtSegmentMap RbtBaseMolecularFileSource::GetSegmentMap() throw(RbtError) {
+RbtSegmentMap RbtBaseMolecularFileSource::GetSegmentMap() {
   if (isAtomListSupported()) {
     Parse();
     return m_segmentMap;
@@ -129,7 +129,7 @@ RbtSegmentMap RbtBaseMolecularFileSource::GetSegmentMap() throw(RbtError) {
 
 // DM 12 May 1999 - support for data records (e.g. SD file)
 // Get number of data fields
-int RbtBaseMolecularFileSource::GetNumData() throw(RbtError) {
+int RbtBaseMolecularFileSource::GetNumData() {
   if (isDataSupported()) {
     Parse();
     return m_dataMap.size();
@@ -139,7 +139,7 @@ int RbtBaseMolecularFileSource::GetNumData() throw(RbtError) {
 }
 
 // Get list of field names as string list
-RbtStringList RbtBaseMolecularFileSource::GetDataFieldList() throw(RbtError) {
+RbtStringList RbtBaseMolecularFileSource::GetDataFieldList() {
   if (isDataSupported()) {
     Parse();
     RbtStringList dataFieldList;
@@ -155,7 +155,7 @@ RbtStringList RbtBaseMolecularFileSource::GetDataFieldList() throw(RbtError) {
 
 // Get all data as map of key=field name, value=variant (double,string or string
 // list)
-RbtStringVariantMap RbtBaseMolecularFileSource::GetDataMap() throw(RbtError) {
+RbtStringVariantMap RbtBaseMolecularFileSource::GetDataMap() {
   if (isDataSupported()) {
     Parse();
     return m_dataMap;
@@ -176,8 +176,8 @@ bool RbtBaseMolecularFileSource::isDataFieldPresent(
 }
 
 // Get a particular data value
-RbtVariant RbtBaseMolecularFileSource::GetDataValue(
-    const std::string &strDataField) throw(RbtError) {
+RbtVariant
+RbtBaseMolecularFileSource::GetDataValue(const std::string &strDataField) {
   if (isDataSupported()) {
     Parse();
     RbtStringVariantMapConstIter iter = m_dataMap.find(strDataField);

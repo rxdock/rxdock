@@ -100,8 +100,7 @@ void RbtChromDihedralElement::GetVector(RbtXOverList &v) const {
   v.push_back(dihedralElement);
 }
 
-void RbtChromDihedralElement::SetVector(const RbtDoubleList &v,
-                                        int &i) throw(RbtError) {
+void RbtChromDihedralElement::SetVector(const RbtDoubleList &v, int &i) {
   if (VectorOK(v, i)) {
     m_value = StandardisedValue(v[i++]);
   } else {
@@ -110,8 +109,7 @@ void RbtChromDihedralElement::SetVector(const RbtDoubleList &v,
   }
 }
 
-void RbtChromDihedralElement::SetVector(const RbtXOverList &v,
-                                        int &i) throw(RbtError) {
+void RbtChromDihedralElement::SetVector(const RbtXOverList &v, int &i) {
   if (VectorOK(v, i)) {
     RbtXOverElement dihedralElement(v[i++]);
     if (dihedralElement.size() == 1) {

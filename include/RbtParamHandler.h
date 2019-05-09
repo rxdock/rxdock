@@ -33,8 +33,7 @@ public:
   // Get number of stored parameters
   unsigned int GetNumParameters() const;
   // Get a named parameter, throws error if name not found
-  RbtVariant GetParameter(const std::string &strName) const
-      throw(RbtBadArgument);
+  RbtVariant GetParameter(const std::string &strName) const;
   // Check if named parameter is present
   bool isParameterValid(const std::string &strName) const;
   // Get list of all parameter names
@@ -43,8 +42,7 @@ public:
   RbtStringVariantMap GetParameters() const;
 
   // Set named parameter to new value, throws error if name not found
-  void SetParameter(const std::string &strName,
-                    const RbtVariant &vValue) throw(RbtBadArgument);
+  void SetParameter(const std::string &strName, const RbtVariant &vValue);
 
   // Virtual function for dumping parameters to an output stream
   // Called by operator <<

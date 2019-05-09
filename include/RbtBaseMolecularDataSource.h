@@ -50,31 +50,30 @@ public:
   // objects are created
   virtual void Reset() = 0;
 
-  virtual int GetNumTitles() throw(RbtError) = 0;
-  virtual int GetNumAtoms() throw(RbtError) = 0;
-  virtual int GetNumBonds() throw(RbtError) = 0;
-  virtual int GetNumSegments() throw(RbtError) = 0;
+  virtual int GetNumTitles() = 0;
+  virtual int GetNumAtoms() = 0;
+  virtual int GetNumBonds() = 0;
+  virtual int GetNumSegments() = 0;
 
-  virtual RbtStringList GetTitleList() throw(RbtError) = 0;
-  virtual RbtAtomList GetAtomList() throw(RbtError) = 0;
-  virtual RbtBondList GetBondList() throw(RbtError) = 0;
-  virtual RbtSegmentMap GetSegmentMap() throw(RbtError) = 0;
+  virtual RbtStringList GetTitleList() = 0;
+  virtual RbtAtomList GetAtomList() = 0;
+  virtual RbtBondList GetBondList() = 0;
+  virtual RbtSegmentMap GetSegmentMap() = 0;
 
   // DM 12 May 1999 - support for data records (e.g. SD file)
   // Does source support data records (default=false)
   virtual bool isDataSupported() { return false; }
   // Get number of data fields
-  virtual int GetNumData() throw(RbtError) = 0;
+  virtual int GetNumData() = 0;
   // Get list of field names as string list
-  virtual RbtStringList GetDataFieldList() throw(RbtError) = 0;
+  virtual RbtStringList GetDataFieldList() = 0;
   // Get all data as map of key=field name, value=variant (double,string or
   // string list)
-  virtual RbtStringVariantMap GetDataMap() throw(RbtError) = 0;
+  virtual RbtStringVariantMap GetDataMap() = 0;
   // Query as to whether a particular data field name is present
   virtual bool isDataFieldPresent(const std::string &strDataField) = 0;
   // Get a particular data value
-  virtual RbtVariant
-  GetDataValue(const std::string &strDataField) throw(RbtError) = 0;
+  virtual RbtVariant GetDataValue(const std::string &strDataField) = 0;
 
 private:
   ////////////////////////////////////////

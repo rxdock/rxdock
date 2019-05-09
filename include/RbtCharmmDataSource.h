@@ -38,13 +38,13 @@ public:
   ////////////////////////////////////////
   // Public methods
   ////////////////
-  std::string AtomTypeString(int nAtomType) throw(RbtError);
-  int ImplicitHydrogens(const std::string &strFFType) throw(RbtError);
-  int AtomicNumber(const std::string &strFFType) throw(RbtError);
-  int FormalCharge(const std::string &strFFType) throw(
-      RbtError); // DM 24 Mar 1999 - changed from double to int
+  std::string AtomTypeString(int nAtomType);
+  int ImplicitHydrogens(const std::string &strFFType);
+  int AtomicNumber(const std::string &strFFType);
+  int FormalCharge(const std::string &strFFType); // DM 24 Mar 1999 - changed
+                                                  // from double to int
   RbtAtom::eHybridState
-  HybridState(const std::string &strFFType) throw(RbtError); // DM 8 Dec 1998
+  HybridState(const std::string &strFFType); // DM 8 Dec 1998
 
 protected:
   ////////////////////////////////////////

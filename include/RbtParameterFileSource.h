@@ -39,10 +39,9 @@ public:
   // DM 06 Jun 2000 - limits params to those in named section
   RbtStringList GetParameterList();
   // DM 4 Feb 1999 Get a particular named parameter value as a double
-  double GetParameterValue(const std::string &strParamName) throw(RbtError);
+  double GetParameterValue(const std::string &strParamName);
   // DM 12 Feb 1999 Get a particular named parameter value as a string
-  std::string
-  GetParameterValueAsString(const std::string &strParamName) throw(RbtError);
+  std::string GetParameterValueAsString(const std::string &strParamName);
   // DM 11 Feb 1999 Check if parameter is present
   bool isParameterPresent(const std::string &strParamName);
 
@@ -71,11 +70,11 @@ private:
       const RbtParameterFileSource &); // Copy assignment disabled by default
 
   // Pure virtual in RbtBaseFileSource - needs to be defined here
-  virtual void Parse() throw(RbtError);
+  virtual void Parse();
   void ClearParamsCache();
   // Add a new section name
   // Throws an error if section name is empty, or is a duplicate
-  void AddSection(const std::string &strSection) throw(RbtError);
+  void AddSection(const std::string &strSection);
   // Returns the fully qualified parameter name (<section>::<parameter name>)
   // Checks if name already contains a section name, if so just returns the name
   // unchanged If not, prefixes the name with the current section name

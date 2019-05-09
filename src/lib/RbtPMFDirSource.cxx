@@ -14,7 +14,7 @@
 // #include <stdlib>
 //#include "RbtFileError.h"
 
-RbtPMFDirSource::RbtPMFDirSource(const std::string &aDir) throw(RbtError)
+RbtPMFDirSource::RbtPMFDirSource(const std::string &aDir)
     : RbtDirectorySource(aDir) {
 #ifdef _DEBUG
   std::cout << _CT << " RbtPMFDirSource constructor" << std::endl;

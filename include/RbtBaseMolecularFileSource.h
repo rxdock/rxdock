@@ -37,29 +37,28 @@ public:
 
   // Pure virtual methods from RbtBaseMolecularDataSource
   void Reset();
-  int GetNumTitles() throw(RbtError);
-  int GetNumAtoms() throw(RbtError);
-  int GetNumBonds() throw(RbtError);
-  int GetNumSegments() throw(RbtError);
+  int GetNumTitles();
+  int GetNumAtoms();
+  int GetNumBonds();
+  int GetNumSegments();
 
-  RbtStringList GetTitleList() throw(RbtError);
-  RbtAtomList GetAtomList() throw(RbtError);
-  RbtBondList GetBondList() throw(RbtError);
-  RbtSegmentMap GetSegmentMap() throw(RbtError);
+  RbtStringList GetTitleList();
+  RbtAtomList GetAtomList();
+  RbtBondList GetBondList();
+  RbtSegmentMap GetSegmentMap();
 
   // DM 12 May 1999 - support for data records (e.g. SD file)
   // Get number of data fields
-  virtual int GetNumData() throw(RbtError);
+  virtual int GetNumData();
   // Get list of field names as string list
-  virtual RbtStringList GetDataFieldList() throw(RbtError);
+  virtual RbtStringList GetDataFieldList();
   // Get all data as map of key=field name, value=variant (double,string or
   // string list)
-  virtual RbtStringVariantMap GetDataMap() throw(RbtError);
+  virtual RbtStringVariantMap GetDataMap();
   // Query as to whether a particular data field name is present
   virtual bool isDataFieldPresent(const std::string &strDataField);
   // Get a particular data value
-  virtual RbtVariant
-  GetDataValue(const std::string &strDataField) throw(RbtError);
+  virtual RbtVariant GetDataValue(const std::string &strDataField);
 
   // These methods allow filtering of the data source by segment name
   // So for example, we could just read the segment named TAR from the source

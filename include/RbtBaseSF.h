@@ -60,11 +60,11 @@ public:
   virtual void ScoreMap(RbtStringVariantMap &scoreMap) const;
 
   // Aggregate handling methods
-  virtual void Add(RbtBaseSF *) throw(RbtError);
-  virtual void Remove(RbtBaseSF *) throw(RbtError);
+  virtual void Add(RbtBaseSF *);
+  virtual void Remove(RbtBaseSF *);
   virtual bool isAgg() const;
   virtual unsigned int GetNumSF() const;
-  virtual RbtBaseSF *GetSF(unsigned int iSF) const throw(RbtError);
+  virtual RbtBaseSF *GetSF(unsigned int iSF) const;
   void Orphan(); // Force removal from the parent aggregate
   RbtBaseSF *GetParentSF() const;
 

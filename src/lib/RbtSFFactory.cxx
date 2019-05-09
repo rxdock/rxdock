@@ -66,7 +66,7 @@ RbtSFFactory::~RbtSFFactory() {}
 // Public methods
 ////////////////
 RbtBaseSF *RbtSFFactory::Create(const std::string &strSFClass,
-                                const std::string &strName) throw(RbtError) {
+                                const std::string &strName) {
   // Precalculated-grid scoring functions
   if (strSFClass == RbtVdwGridSF::_CT)
     return new RbtVdwGridSF(strName);
@@ -145,9 +145,9 @@ RbtBaseSF *RbtSFFactory::Create(const std::string &strSFClass,
 // If strSFClasses is empty, all named sections in spPrmSource are scanned for
 // valid scoring function definitions SF parameters are set from the list of
 // parameters in each named section
-RbtSFAgg *RbtSFFactory::CreateAggFromFile(
-    RbtParameterFileSourcePtr spPrmSource, const std::string &strName,
-    const std::string &strSFClasses) throw(RbtError) {
+RbtSFAgg *RbtSFFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
+                                          const std::string &strName,
+                                          const std::string &strSFClasses) {
   // Get list of scoring function objects to create
   RbtStringList sfList = Rbt::ConvertDelimitedStringToList(strSFClasses);
   // If strSFClasses is empty, then default to reading all sections of the

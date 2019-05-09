@@ -262,7 +262,7 @@ void RbtAtom::SaveCoords(unsigned int coordNum) {
   m_savedCoords[coordNum] = m_coord;
 }
 
-void RbtAtom::RevertCoords(unsigned int coordNum) throw(RbtError) {
+void RbtAtom::RevertCoords(unsigned int coordNum) {
   RbtUIntCoordMapConstIter iter = m_savedCoords.find(coordNum);
   if (iter != m_savedCoords.end()) {
     m_coord = (*iter).second;

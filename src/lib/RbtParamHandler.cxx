@@ -29,8 +29,7 @@ unsigned int RbtParamHandler::GetNumParameters() const {
 }
 
 // Get a named parameter, throws error if name not found
-RbtVariant RbtParamHandler::GetParameter(const std::string &strName) const
-    throw(RbtBadArgument) {
+RbtVariant RbtParamHandler::GetParameter(const std::string &strName) const {
   RbtStringVariantMapConstIter iter = m_parameters.find(strName);
   if (iter == m_parameters.end()) {
     throw RbtBadArgument(_WHERE_, "Undefined parameter " + strName);
@@ -59,9 +58,8 @@ RbtStringVariantMap RbtParamHandler::GetParameters() const {
 }
 
 // Set named parameter to new value, throws error if name not found
-void RbtParamHandler::SetParameter(
-    const std::string &strName,
-    const RbtVariant &vValue) throw(RbtBadArgument) {
+void RbtParamHandler::SetParameter(const std::string &strName,
+                                   const RbtVariant &vValue) {
   if (!isParameterValid(strName)) {
     throw RbtBadArgument(_WHERE_, "Undefined parameter " + strName);
   } else {

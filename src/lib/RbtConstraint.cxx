@@ -219,8 +219,7 @@ void Rbt::ReadConstraints(std::istream &ifile, RbtConstraintList &cl,
 }
 
 // 07 Feb 2005 (DM) - new constraint type, any heavy atom
-void RbtHeavyConstraint::AddAtomList(RbtModelPtr lig,
-                                     bool bCheck) throw(RbtError) {
+void RbtHeavyConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   m_atomList =
       Rbt::GetAtomList(lig->GetAtomList(), std::not1(Rbt::isAtomicNo_eq(1)));
   if (bCheck && (m_atomList.size() < counter)) {
@@ -232,8 +231,7 @@ void RbtHeavyConstraint::AddAtomList(RbtModelPtr lig,
 }
 
 // 16 May 2003 (DM) - limit to neutral H-bond donor hydrogens
-void RbtHBDConstraint::AddAtomList(RbtModelPtr lig,
-                                   bool bCheck) throw(RbtError) {
+void RbtHBDConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomHBondDonor());
   m_atomList = Rbt::GetAtomList(m_atomList, std::not1(Rbt::isAtomCationic()));
   if (bCheck && (m_atomList.size() < counter)) {
@@ -246,8 +244,7 @@ void RbtHBDConstraint::AddAtomList(RbtModelPtr lig,
 }
 
 // 16 May 2003 (DM) - limit to neutral H-bond acceptors
-void RbtHBAConstraint::AddAtomList(RbtModelPtr lig,
-                                   bool bCheck) throw(RbtError) {
+void RbtHBAConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomHBondAcceptor());
   m_atomList = Rbt::GetAtomList(m_atomList, std::not1(Rbt::isAtomAnionic()));
   if (bCheck && (m_atomList.size() < counter)) {
@@ -259,8 +256,7 @@ void RbtHBAConstraint::AddAtomList(RbtModelPtr lig,
   }
 }
 
-void RbtHydroConstraint::AddAtomList(RbtModelPtr lig,
-                                     bool bCheck) throw(RbtError) {
+void RbtHydroConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomLipophilic());
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
@@ -270,8 +266,7 @@ void RbtHydroConstraint::AddAtomList(RbtModelPtr lig,
   }
 }
 
-void RbtHydroAliphaticConstraint::AddAtomList(RbtModelPtr lig,
-                                              bool bCheck) throw(RbtError) {
+void RbtHydroAliphaticConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomLipophilic());
   m_atomList =
       Rbt::GetAtomList(m_atomList, Rbt::isHybridState_eq(RbtAtom::SP3));
@@ -284,8 +279,7 @@ void RbtHydroAliphaticConstraint::AddAtomList(RbtModelPtr lig,
   }
 }
 
-void RbtHydroAromaticConstraint::AddAtomList(RbtModelPtr lig,
-                                             bool bCheck) throw(RbtError) {
+void RbtHydroAromaticConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomLipophilic());
   m_atomList =
       Rbt::GetAtomList(m_atomList, Rbt::isHybridState_eq(RbtAtom::AROM));
@@ -298,8 +292,7 @@ void RbtHydroAromaticConstraint::AddAtomList(RbtModelPtr lig,
   }
 }
 
-void RbtNegChargeConstraint::AddAtomList(RbtModelPtr lig,
-                                         bool bCheck) throw(RbtError) {
+void RbtNegChargeConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomAnionic());
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
@@ -310,8 +303,7 @@ void RbtNegChargeConstraint::AddAtomList(RbtModelPtr lig,
   }
 }
 
-void RbtPosChargeConstraint::AddAtomList(RbtModelPtr lig,
-                                         bool bCheck) throw(RbtError) {
+void RbtPosChargeConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomCationic());
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
@@ -322,8 +314,7 @@ void RbtPosChargeConstraint::AddAtomList(RbtModelPtr lig,
   }
 }
 
-void RbtRingAromaticConstraint::AddAtomList(RbtModelPtr lig,
-                                            bool bCheck) throw(RbtError) {
+void RbtRingAromaticConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   m_atomList.clear();
   RbtAtomList at = lig->GetAtomList();
   RbtAtomListList ligRingLists = lig->GetRingAtomLists();

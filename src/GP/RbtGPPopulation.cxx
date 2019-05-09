@@ -123,7 +123,7 @@ RbtGPGenomePtr RbtGPPopulation::Select(std::string selector) const {
 
 void RbtGPPopulation::GAstep(std::string selector, double pcross, double pmut,
                              double mean, double variance, double hitlimit,
-                             bool function) throw(RbtError) {
+                             bool function) {
   RbtGPGenomePtr mother, father;
   for (int i = 0; i < nrepl - 1; i++) {
     mother = Select(selector);
@@ -158,7 +158,7 @@ void RbtGPPopulation::GAstep(std::string selector, double pcross, double pmut,
 
 void RbtGPPopulation::EPstep(std::string selector, double pcross, double pmut,
                              double mean, double variance, double hitlimit,
-                             bool function) throw(RbtError) {
+                             bool function) {
   *(newpop[0]) = *(pop[bestInd]);
   for (int i = 1; i < popsize; i++) {
     *(newpop[i]) = *(pop[bestInd]);

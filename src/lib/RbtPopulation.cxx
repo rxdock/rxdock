@@ -17,8 +17,7 @@
 
 std::string RbtPopulation::_CT("RbtPopulation");
 
-RbtPopulation::RbtPopulation(RbtChromElement *pChr, int size,
-                             RbtBaseSF *pSF) throw(RbtError)
+RbtPopulation::RbtPopulation(RbtChromElement *pChr, int size, RbtBaseSF *pSF)
     : m_size(size), m_c(2.0), m_pSF(pSF), m_rand(Rbt::GetRbtRand()),
       m_scoreMean(0.0), m_scoreVariance(0.0) {
   if (pChr == NULL) {
@@ -45,7 +44,7 @@ RbtPopulation::RbtPopulation(RbtChromElement *pChr, int size,
 RbtPopulation::~RbtPopulation() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
 // Sets the scoring function used for ranking genomes
-void RbtPopulation::SetSF(RbtBaseSF *pSF) throw(RbtError) {
+void RbtPopulation::SetSF(RbtBaseSF *pSF) {
   if (pSF == NULL) {
     throw RbtBadArgument(_WHERE_, "Null scoring function passed to SetSF");
   }
@@ -59,7 +58,7 @@ void RbtPopulation::SetSF(RbtBaseSF *pSF) throw(RbtError) {
 
 void RbtPopulation::GAstep(int nReplicates, double relStepSize,
                            double equalityThreshold, double pcross,
-                           bool xovermut, bool cmutate) throw(RbtError) {
+                           bool xovermut, bool cmutate) {
   if (nReplicates <= 0) {
     throw RbtBadArgument(_WHERE_, "nReplicates must be positive (non-zero)");
   }

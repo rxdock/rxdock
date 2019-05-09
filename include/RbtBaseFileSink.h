@@ -41,7 +41,7 @@ public:
   RbtError Status();
 
   // PURE VIRTUAL - MUST BE OVERRIDDEN IN DERIVED CLASSES
-  virtual void Render() throw(RbtError) = 0;
+  virtual void Render() = 0;
 
 protected:
   ////////////////////////////////////////
@@ -50,7 +50,7 @@ protected:
   // Write the cache to the file
   // DM 11 Feb 1999 - add flag to allow the cache to be written without clearing
   // it
-  void Write(bool bClearCache = true) throw(RbtError);
+  void Write(bool bClearCache = true);
   // Add a complete line to the cache
   void AddLine(const std::string &fileRec);
   // Replace a complete line in the cache
@@ -77,7 +77,7 @@ private:
   RbtBaseFileSink &
   operator=(const RbtBaseFileSink &); // Copy assignment disabled by default
 
-  void Open(bool bAppend = false) throw(RbtError);
+  void Open(bool bAppend = false);
   void Close();
   void ClearCache();
 

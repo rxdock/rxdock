@@ -41,7 +41,7 @@ protected:
 
 private:
   // Read grids from input stream
-  void ReadGrids(std::istream &istr) throw(RbtError);
+  void ReadGrids(std::istream &istr);
 
   RbtRealGridList m_grids;
   RbtAtomRList m_ligAtomList;

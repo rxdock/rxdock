@@ -18,7 +18,7 @@
 
 class RbtPMFDirSource : public RbtDirectorySource {
 public:
-  RbtPMFDirSource(const std::string &) throw(RbtError);
+  RbtPMFDirSource(const std::string &);
   virtual ~RbtPMFDirSource() {}
 
   virtual void ReadFiles(vector<vector<RbtPMFValue>> *aVect,

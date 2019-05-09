@@ -39,7 +39,7 @@ public:
   // Creates a single scoring function object of type strSFClass, and name
   // strName e.g. strSFClass = RbtHBondIntnSF
   virtual RbtBaseSF *Create(const std::string &strSFClass,
-                            const std::string &strName) throw(RbtError);
+                            const std::string &strName);
 
   // Creates an aggregate scoring function from a parameter file source
   // Each component SF is in a named section, which should minimally contain a
@@ -48,9 +48,10 @@ public:
   // instantiate If strSFClasses is empty, all named sections in spPrmSource are
   // scanned for valid scoring function definitions SF parameters are set from
   // the list of parameters in each named section
-  virtual RbtSFAgg *CreateAggFromFile(
-      RbtParameterFileSourcePtr spPrmSource, const std::string &strName,
-      const std::string &strSFClasses = std::string()) throw(RbtError);
+  virtual RbtSFAgg *
+  CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
+                    const std::string &strName,
+                    const std::string &strSFClasses = std::string());
 
 protected:
   ////////////////////////////////////////

@@ -39,7 +39,7 @@ RbtTransformFactory::~RbtTransformFactory() {}
 // e.g. strTransformClass = RbtSimAnnTransform
 RbtBaseTransform *
 RbtTransformFactory::Create(const std::string &strTransformClass,
-                            const std::string &strName) throw(RbtError) {
+                            const std::string &strName) {
   // Component transforms
   if (strTransformClass == RbtSimAnnTransform::_CT)
     return new RbtSimAnnTransform(strName);
@@ -70,9 +70,10 @@ RbtTransformFactory::Create(const std::string &strTransformClass,
 // spPrmSource are scanned for valid transform definitions Transform parameters
 // and scoring function requests are set from the list of parameters in each
 // named section
-RbtTransformAgg *RbtTransformFactory::CreateAggFromFile(
-    RbtParameterFileSourcePtr spPrmSource, const std::string &strName,
-    const std::string &strTransformClasses) throw(RbtError) {
+RbtTransformAgg *
+RbtTransformFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
+                                       const std::string &strName,
+                                       const std::string &strTransformClasses) {
   // Get list of transform objects to create
   RbtStringList transformList =
       Rbt::ConvertDelimitedStringToList(strTransformClasses);

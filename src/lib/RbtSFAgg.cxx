@@ -88,7 +88,7 @@ void RbtSFAgg::ScoreMap(RbtStringVariantMap &scoreMap) const {
 }
 
 // Aggregate handling methods
-void RbtSFAgg::Add(RbtBaseSF *pSF) throw(RbtError) {
+void RbtSFAgg::Add(RbtBaseSF *pSF) {
   // By first orphaning the scoring function to be added,
   // we handle attempts to readd existing children automatically,
   pSF->Orphan();
@@ -100,7 +100,7 @@ void RbtSFAgg::Add(RbtBaseSF *pSF) throw(RbtError) {
   m_sf.push_back(pSF);
 }
 
-void RbtSFAgg::Remove(RbtBaseSF *pSF) throw(RbtError) {
+void RbtSFAgg::Remove(RbtBaseSF *pSF) {
   RbtBaseSFListIter iter = std::find(m_sf.begin(), m_sf.end(), pSF);
   if (iter == m_sf.end()) {
     throw RbtBadArgument(_WHERE_,
@@ -120,7 +120,7 @@ void RbtSFAgg::Remove(RbtBaseSF *pSF) throw(RbtError) {
 
 bool RbtSFAgg::isAgg() const { return true; }
 unsigned int RbtSFAgg::GetNumSF() const { return m_sf.size(); }
-RbtBaseSF *RbtSFAgg::GetSF(unsigned int iSF) const throw(RbtError) {
+RbtBaseSF *RbtSFAgg::GetSF(unsigned int iSF) const {
   if (iSF >= m_sf.size()) {
     throw RbtBadArgument(_WHERE_, "GetSF(): iSF out of range");
   } else {

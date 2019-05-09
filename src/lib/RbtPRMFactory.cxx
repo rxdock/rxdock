@@ -41,7 +41,7 @@ RbtPRMFactory::RbtPRMFactory(RbtParameterFileSource *pParamSource)
 RbtPRMFactory::RbtPRMFactory(RbtParameterFileSource *pParamSource,
                              RbtDockingSite *pDS)
     : m_pParamSource(pParamSource), m_pDS(pDS), m_iTrace(0) {}
-RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
+RbtModelPtr RbtPRMFactory::CreateReceptor() {
   RbtModelPtr retVal;
   m_pParamSource->SetSection(_REC_SECTION);
   // Detect if we have an ensemble of receptor coordinate files defined
@@ -202,8 +202,7 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
   return retVal;
 }
 
-RbtModelPtr RbtPRMFactory::CreateLigand(
-    RbtBaseMolecularFileSource *pSource) throw(RbtError) {
+RbtModelPtr RbtPRMFactory::CreateLigand(RbtBaseMolecularFileSource *pSource) {
   RbtModelPtr retVal;
   // TODO: Move some of the status checks from rbdock to here.
   retVal = new RbtModel(pSource);
@@ -215,7 +214,7 @@ RbtModelPtr RbtPRMFactory::CreateLigand(
   return retVal;
 }
 
-RbtModelList RbtPRMFactory::CreateSolvent() throw(RbtError) {
+RbtModelList RbtPRMFactory::CreateSolvent() {
   RbtModelList retVal;
   m_pParamSource->SetSection(_SOLV_SECTION);
   if (m_pParamSource->isParameterPresent(_SOLV_FILE)) {
@@ -429,8 +428,8 @@ void RbtPRMFactory::AttachSolventFlexData(RbtModel *pSolvent) {
   }
 }
 
-RbtMolecularFileSourcePtr RbtPRMFactory::CreateMolFileSource(
-    const std::string &fileName) throw(RbtError) {
+RbtMolecularFileSourcePtr
+RbtPRMFactory::CreateMolFileSource(const std::string &fileName) {
   RbtMolecularFileSourcePtr retVal;
   std::string fileType = Rbt::GetFileType(fileName);
   std::string fileTypeUpper;
@@ -471,8 +470,8 @@ RbtMolecularFileSourcePtr RbtPRMFactory::CreateMolFileSource(
   } else if ((fileTypeUpper == "SD") || (fileTypeUpper == "SDF")) {
     retVal = new RbtMdlFileSource(fullFileName, false, false, bImplH);
   } else {
-    throw(RbtBadReceptorFile(
-        _WHERE_, fileType + " is not a supported molecular file type"));
+    throw RbtBadReceptorFile(
+        _WHERE_, fileType + " is not a supported molecular file type");
   }
 
   if (m_pParamSource->isParameterPresent("RECEPTOR_SEGMENT_NAME")) {

@@ -112,16 +112,16 @@ void RbtBaseSF::AddToParentMapEntry(RbtStringVariantMap &scoreMap,
 // Aggregate handling (virtual) methods
 // Base class throws an InvalidRequest error
 
-void RbtBaseSF::Add(RbtBaseSF *) throw(RbtError) {
+void RbtBaseSF::Add(RbtBaseSF *) {
   throw RbtInvalidRequest(_WHERE_,
                           "Add() invalid for non-aggregate scoring functions");
 }
-void RbtBaseSF::Remove(RbtBaseSF *) throw(RbtError) {
+void RbtBaseSF::Remove(RbtBaseSF *) {
   throw RbtInvalidRequest(
       _WHERE_, "Remove() invalid for non-aggregate scoring functions");
 }
 
-RbtBaseSF *RbtBaseSF::GetSF(unsigned int iSF) const throw(RbtError) {
+RbtBaseSF *RbtBaseSF::GetSF(unsigned int iSF) const {
   throw RbtInvalidRequest(
       _WHERE_, "GetSF() invalid for non-aggregate scoring functions");
 }

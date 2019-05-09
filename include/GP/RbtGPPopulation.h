@@ -46,10 +46,8 @@ public:
 
   void SelectionUpdate(std::string);
 
-  void GAstep(std::string, double, double, double, double, double,
-              bool) throw(RbtError);
-  void EPstep(std::string, double, double, double, double, double,
-              bool) throw(RbtError);
+  void GAstep(std::string, double, double, double, double, double, bool);
+  void EPstep(std::string, double, double, double, double, double, bool);
   RbtGPGenomePtr Best() const;
   std::ostream &Print(std::ostream &) const;
   friend std::ostream &operator<<(std::ostream &, const RbtGPPopulation &);

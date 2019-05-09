@@ -76,15 +76,14 @@ public:
   // Filters an atom list according to distance from the cavity coords
   // Only returns atoms within minDist and maxDist from cavity
   RbtAtomList GetAtomList(const RbtAtomList &atomList, double minDist,
-                          double maxDist) throw(RbtError);
+                          double maxDist);
   // Filters an atom list according to distance from the cavity coords
   // Only returns atoms within maxDist from cavity
   // This version does not require the cavity grid
-  RbtAtomList GetAtomList(const RbtAtomList &atomList,
-                          double maxDist) throw(RbtError);
+  RbtAtomList GetAtomList(const RbtAtomList &atomList, double maxDist);
   // Returns the count of atoms within minDist and maxDist from cavity
   unsigned int GetNumAtoms(const RbtAtomList &atomList, double minDist,
-                           double maxDist) throw(RbtError);
+                           double maxDist);
 
   // private methods
 private:

@@ -143,7 +143,7 @@ void RbtVdwGridSF::SetupScore() {
       if (bHasUndefined) {
         aType = RbtTriposAtomType::UNDEFINED;
       } else {
-        throw(RbtFileError(_WHERE_, strError));
+        throw RbtFileError(_WHERE_, strError);
       }
     }
 
@@ -179,7 +179,7 @@ double RbtVdwGridSF::RawScore() const {
 
 // Read grids from input stream, checking that header string matches
 // RbtVdwGridSF
-void RbtVdwGridSF::ReadGrids(std::istream &istr) throw(RbtError) {
+void RbtVdwGridSF::ReadGrids(std::istream &istr) {
   m_grids.clear();
   int iTrace = GetTrace();
 

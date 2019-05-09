@@ -268,7 +268,7 @@ public:
   // DM 08 Feb 1999 - all saved coords are now saved in a map<RbtUInt,RbtCoord>
   // map key=0 is reserved for the default SaveCoords and RevertCoords
   void SaveCoords(unsigned int coordNum = 0);
-  void RevertCoords(unsigned int coordNum = 0) throw(RbtError);
+  void RevertCoords(unsigned int coordNum = 0);
 
   // Translate - translate coordinates by the supplied vector
   void Translate(const RbtVector &vector) { m_coord += vector; }
