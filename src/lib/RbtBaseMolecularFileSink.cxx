@@ -29,8 +29,8 @@
 RbtBaseMolecularFileSink::RbtBaseMolecularFileSink(const std::string &fileName,
                                                    RbtModelPtr spModel,
                                                    bool bUseModelSegmentNames)
-    : RbtBaseFileSink(fileName), m_spModel(spModel), m_bMultiConf(false),
-      m_bUseModelSegmentNames(bUseModelSegmentNames) {
+    : RbtBaseFileSink(fileName), m_bUseModelSegmentNames(bUseModelSegmentNames),
+      m_spModel(spModel), m_bMultiConf(false) {
   Reset();
   _RBTOBJECTCOUNTER_CONSTR_("RbtBaseMolecularFileSink");
 }

@@ -21,16 +21,16 @@ std::string RbtToken::_CT("RbtToken");
 ///////////////////
 // Constructors
 ///////////////////
-RbtToken::RbtToken(const RbtVble &v) : isvble(true), vble(v), comm(-1) {
+RbtToken::RbtToken(const RbtVble &v) : comm(-1), vble(v), isvble(true) {
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
-RbtToken::RbtToken(RbtCommands c) : isvble(false), comm(c), vble(default_vble) {
+RbtToken::RbtToken(RbtCommands c) : comm(c), vble(default_vble), isvble(false) {
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtToken::RbtToken(const RbtToken &t)
-    : isvble(t.isvble), comm(t.comm), vble(t.vble) {
+    : comm(t.comm), vble(t.vble), isvble(t.isvble) {
   _RBTOBJECTCOUNTER_COPYCONSTR_(_CT);
 }
 

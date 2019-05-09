@@ -26,8 +26,8 @@ std::string RbtBaseGrid::_CT("RbtBaseGrid");
 RbtBaseGrid::RbtBaseGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
                          unsigned int NX, unsigned int NY, unsigned int NZ,
                          unsigned int NPad)
-    : m_step(gridStep), m_NX(NX), m_NY(NY), m_NZ(NZ), m_N(NX * NY * NZ),
-      m_SX(NY * NZ), m_SY(NZ), m_SZ(1), m_NPad(NPad) {
+    : m_NX(NX), m_NY(NY), m_NZ(NZ), m_N(NX * NY * NZ), m_SX(NY * NZ), m_SY(NZ),
+      m_SZ(1), m_step(gridStep), m_NPad(NPad) {
   // Set the logical (real-world) dimensions of the grid
   SetGridMin(gridMin);
   _RBTOBJECTCOUNTER_CONSTR_("RbtBaseGrid");

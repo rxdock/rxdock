@@ -23,7 +23,7 @@
 //}
 
 RbtBaseFileSource::RbtBaseFileSource(const std::string &fileName)
-    : m_bMultiRec(false), m_bFileOpen(false) {
+    : m_bFileOpen(false), m_bMultiRec(false) {
   m_strFileName = fileName;
   m_szBuf = new char[MAXLINELENGTH + 1]; // DM 24 Mar - allocate line buffer
   ClearCache();
@@ -33,7 +33,7 @@ RbtBaseFileSource::RbtBaseFileSource(const std::string &fileName)
 // Multi-record constructor
 RbtBaseFileSource::RbtBaseFileSource(const std::string &fileName,
                                      const std::string &strRecDelim)
-    : m_bMultiRec(true), m_strRecDelim(strRecDelim), m_bFileOpen(false) {
+    : m_bFileOpen(false), m_bMultiRec(true), m_strRecDelim(strRecDelim) {
   m_strFileName = fileName;
   m_szBuf = new char[MAXLINELENGTH + 1]; // DM 24 Mar - allocate line buffer
   ClearCache();

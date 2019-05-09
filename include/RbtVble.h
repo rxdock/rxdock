@@ -21,7 +21,7 @@ class RbtVble {
 public:
   static std::string _CT;
   enum VbleType { CTE, LIG, SCORE, SITE };
-  RbtVble() : value(0.0), vt(CTE), name("") {
+  RbtVble() : vt(CTE), value(0.0), name("") {
     _RBTOBJECTCOUNTER_CONSTR_(_CT);
   } // default const.
   RbtVble(std::string s, RbtReturnType val = 0.0) : value(val), name(s) {
@@ -35,7 +35,7 @@ public:
       vt = CTE;
     _RBTOBJECTCOUNTER_CONSTR_(_CT);
   }
-  RbtVble(const RbtVble &v) : value(v.value), vt(v.vt), name(v.name) {
+  RbtVble(const RbtVble &v) : vt(v.vt), value(v.value), name(v.name) {
     _RBTOBJECTCOUNTER_COPYCONSTR_(_CT);
   }
   void SetValue(RbtReturnType val) {

@@ -26,8 +26,8 @@ std::string RbtRealGrid::_CT("RbtRealGrid");
 RbtRealGrid::RbtRealGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
                          unsigned int NX, unsigned int NY, unsigned int NZ,
                          unsigned int NPad)
-    : RbtBaseGrid(gridMin, gridStep, NX, NY, NZ, NPad), m_tol(0.001),
-      m_grid(nullptr), m_data(nullptr) {
+    : RbtBaseGrid(gridMin, gridStep, NX, NY, NZ, NPad), m_grid(nullptr),
+      m_data(nullptr), m_tol(0.001) {
   CreateArrays();
   // Initialise the grid to zero
   SetAllValues(0.0);

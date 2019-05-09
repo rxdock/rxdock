@@ -830,19 +830,19 @@ class isCoordinationNumber_eq : public std::unary_function<RbtAtom *, bool> {
 public:
   // Total coordination number
   explicit isCoordinationNumber_eq(int nn)
-      : n(nn), eCNType(TOTAL), atNo(0), ffType(""), hybrid(RbtAtom::UNDEFINED) {
+      : eCNType(TOTAL), n(nn), atNo(0), ffType(""), hybrid(RbtAtom::UNDEFINED) {
   }
   // Atomic number coordination number
   explicit isCoordinationNumber_eq(int nn, int nAt)
-      : n(nn), eCNType(ATNO), atNo(nAt), ffType(""),
+      : eCNType(ATNO), n(nn), atNo(nAt), ffType(""),
         hybrid(RbtAtom::UNDEFINED) {}
   // Force field type coordination number
   explicit isCoordinationNumber_eq(int nn, const std::string &strType)
-      : n(nn), eCNType(FFTYPE), atNo(0), ffType(strType),
+      : eCNType(FFTYPE), n(nn), atNo(0), ffType(strType),
         hybrid(RbtAtom::UNDEFINED) {}
   // Hybridisation state coordination number
   explicit isCoordinationNumber_eq(int nn, RbtAtom::eHybridState eState)
-      : n(nn), eCNType(HYBRID), atNo(0), ffType(""), hybrid(eState) {}
+      : eCNType(HYBRID), n(nn), atNo(0), ffType(""), hybrid(eState) {}
   bool operator()(RbtAtom *pAtom) const {
     switch (eCNType) {
     case TOTAL:

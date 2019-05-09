@@ -23,17 +23,17 @@
 // Initialise 2-D attributes to suitable defaults
 // Initialise 3-D attributes to zero/null
 RbtAtom::RbtAtom()
-    : m_nAtomId(0), m_nAtomicNo(6), m_strAtomName("C"), m_strSubunitId("1"),
+    : m_nAtomicNo(6), m_nAtomId(0), m_strAtomName("C"), m_strSubunitId("1"),
       m_strSubunitName("RES"), m_strSegmentName("SEG1"),
       m_eState(UNDEFINED), // DM 8 Dec 1998 Changed from SP3 to UNDEFINED
-      m_nHydrogens(0), m_nFormalCharge(0), m_coord(0.0, 0.0, 0.0),
-      m_dPartialCharge(0.0), m_dGroupCharge(0.0), m_dAtomicMass(0.0),
-      m_dVdwRadius(0.0), m_strFFType(""), m_pModel(nullptr), m_bCyclic(false),
+      m_nHydrogens(0), m_nFormalCharge(0), m_pModel(nullptr), m_bCyclic(false),
       m_bSelected(false), m_bUser1(false),
       m_dUser1(1.0), // DM 27 Jul 2000 - initialise user values to 1 as they are
                      // commonly used as weightings
       m_dUser2(1.0), m_nPMFType(PMF_UNDEFINED),
-      m_triposType(RbtTriposAtomType::UNDEFINED) {
+      m_triposType(RbtTriposAtomType::UNDEFINED), m_coord(0.0, 0.0, 0.0),
+      m_dPartialCharge(0.0), m_dGroupCharge(0.0), m_dAtomicMass(0.0),
+      m_dVdwRadius(0.0), m_strFFType("") {
   _RBTOBJECTCOUNTER_CONSTR_("RbtAtom");
 }
 
@@ -47,17 +47,17 @@ RbtAtom::RbtAtom(int nAtomId, int nAtomicNo /*= 6*/,
                  eHybridState eState /*= UNDEFINED*/,
                  unsigned int nHydrogens /*= 0*/, int nFormalCharge /*= 0.0*/
                  )
-    : m_nAtomId(nAtomId), m_nAtomicNo(nAtomicNo), m_strAtomName(strAtomName),
+    : m_nAtomicNo(nAtomicNo), m_nAtomId(nAtomId), m_strAtomName(strAtomName),
       m_strSubunitId(strSubunitId), m_strSubunitName(strSubunitName),
       m_strSegmentName(strSegmentName), m_eState(eState),
       m_nHydrogens(nHydrogens), m_nFormalCharge(nFormalCharge),
-      m_coord(0.0, 0.0, 0.0), m_dPartialCharge(0.0), m_dGroupCharge(0.0),
-      m_dAtomicMass(0.0), m_dVdwRadius(0.0), m_strFFType(""), m_pModel(nullptr),
-      m_bCyclic(false), m_bSelected(false), m_bUser1(false),
+      m_pModel(nullptr), m_bCyclic(false), m_bSelected(false), m_bUser1(false),
       m_dUser1(1.0), // DM 27 Jul 2000 - initialise user values to 1 as they are
                      // commonly used as weightings
       m_dUser2(1.0), m_nPMFType(PMF_UNDEFINED),
-      m_triposType(RbtTriposAtomType::UNDEFINED) {
+      m_triposType(RbtTriposAtomType::UNDEFINED), m_coord(0.0, 0.0, 0.0),
+      m_dPartialCharge(0.0), m_dGroupCharge(0.0), m_dAtomicMass(0.0),
+      m_dVdwRadius(0.0), m_strFFType("") {
   _RBTOBJECTCOUNTER_CONSTR_("RbtAtom");
 }
 

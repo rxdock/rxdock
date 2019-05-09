@@ -61,15 +61,15 @@ public:
   // Use to create an "error" with status=OK, no line, no file, no message
   // All other constructors set the OK flag to false
   RbtError()
-      : m_strName(IDS_OK), m_strFile(""), m_nLine(0), m_strMessage(""),
+      : m_strName(IDS_OK), m_strFile(""), m_strMessage(""), m_nLine(0),
         m_bOK(true) {}
 
   // Parameterised constructor
   // Use to create unspecified Rbt Errors
   RbtError(const std::string &strFile, int nLine,
            const std::string &strMessage = "")
-      : m_strName(IDS_ERROR), m_strFile(strFile), m_nLine(nLine),
-        m_strMessage(strMessage), m_bOK(false) {}
+      : m_strName(IDS_ERROR), m_strFile(strFile), m_strMessage(strMessage),
+        m_nLine(nLine), m_bOK(false) {}
 
   // Default destructor
   virtual ~RbtError() {}
@@ -100,8 +100,8 @@ protected:
   // Protected constructor to allow derived error classes to set error name
   RbtError(const std::string &strName, const std::string &strFile, int nLine,
            const std::string &strMessage = "")
-      : m_strName(strName), m_strFile(strFile), m_nLine(nLine),
-        m_strMessage(strMessage), m_bOK(false) {}
+      : m_strName(strName), m_strFile(strFile), m_strMessage(strMessage),
+        m_nLine(nLine), m_bOK(false) {}
 
   ///////////////////////
   // Private data
