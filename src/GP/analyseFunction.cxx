@@ -16,7 +16,8 @@
 #include <fstream>
 #include <sstream>
 #include <stdio.h>
-void main(int argc, char *argv[]) {
+
+int main(int argc, char *argv[]) {
   /*cout << "Genome file: \n";
   std::string gfile;
   cin >> gfile; */
@@ -42,4 +43,5 @@ void main(int argc, char *argv[]) {
     cout << p.PrintParse(nstr, gen.GetChrom(), false, false);
     i = EOF; // cin.get();
   }
+  return 0;
 }

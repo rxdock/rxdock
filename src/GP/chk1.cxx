@@ -18,7 +18,8 @@
 #include "RbtParser.h"
 #include <fstream>
 #include <stdio.h>
-void main(int argc, char *argv[]) {
+
+int main(int argc, char *argv[]) {
   try {
     RbtRand &theRand = Rbt::GetRbtRand(); // ref to random number generator
     if (argc > 1)
