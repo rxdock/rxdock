@@ -15,7 +15,6 @@
 #include "RbtSFRequest.h"
 #include "RbtWorkSpace.h"
 #include <iomanip>
-using std::setw;
 
 std::string RbtGATransform::_CT("RbtGATransform");
 std::string RbtGATransform::_NEW_FRACTION("NEW_FRACTION");
@@ -90,17 +89,18 @@ void RbtGATransform::Execute() {
   int iConvergence = 0;
 
   if (iTrace > 0) {
-    cout.precision(3);
-    cout.setf(ios_base::fixed, ios_base::floatfield);
-    cout.setf(ios_base::right, ios_base::adjustfield);
-    cout << endl
-         << setw(5) << "CYCLE" << setw(5) << "CONV" << setw(10) << "BEST"
-         << setw(10) << "MEAN" << setw(10) << "VAR" << endl;
+    std::cout.precision(3);
+    std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
+    std::cout.setf(std::ios_base::right, std::ios_base::adjustfield);
+    std::cout << std::endl
+              << std::setw(5) << "CYCLE" << std::setw(5) << "CONV"
+              << std::setw(10) << "BEST" << std::setw(10) << "MEAN"
+              << std::setw(10) << "VAR" << std::endl;
 
-    cout << endl
-         << setw(5) << "Init" << setw(5) << "-" << setw(10) << bestScore
-         << setw(10) << pop->GetScoreMean() << setw(10)
-         << pop->GetScoreVariance() << endl;
+    std::cout << std::endl
+              << std::setw(5) << "Init" << std::setw(5) << "-" << std::setw(10)
+              << bestScore << std::setw(10) << pop->GetScoreMean()
+              << std::setw(10) << pop->GetScoreVariance() << std::endl;
   }
 
   for (int iCycle = 0; (iCycle < nCycles) && (iConvergence < nConvergence);
@@ -119,9 +119,10 @@ void RbtGATransform::Execute() {
       iConvergence++;
     }
     if (iTrace > 0) {
-      cout << setw(5) << iCycle << setw(5) << iConvergence << setw(10) << score
-           << setw(10) << pop->GetScoreMean() << setw(10)
-           << pop->GetScoreVariance() << endl;
+      std::cout << std::setw(5) << iCycle << std::setw(5) << iConvergence
+                << std::setw(10) << score << std::setw(10)
+                << pop->GetScoreMean() << std::setw(10)
+                << pop->GetScoreVariance() << std::endl;
     }
   }
   pop->Best()->GetChrom()->SyncToModel();

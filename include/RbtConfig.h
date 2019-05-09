@@ -19,15 +19,6 @@
 
 // For g++ 3.4.3 (libstdc++)
 #include <sstream>
-using std::cerr;
-using std::cout;
-using std::endl;
-using std::ends;
-using std::ios_base;
-using std::istream;
-using std::istringstream;
-using std::ostream;
-using std::ostringstream;
 
 #ifndef _RBTSMARTPOINTER_H_
 #include "RbtSmartPointer.h"

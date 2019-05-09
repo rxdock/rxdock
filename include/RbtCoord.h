@@ -23,7 +23,7 @@
 
 #include "RbtConfig.h"
 
-extern istream &eatSeps(istream &is);
+extern std::istream &eatSeps(std::istream &is);
 
 class RbtCoord {
   ///////////////////////////////////////////////
@@ -57,13 +57,13 @@ public:
   }
 
   // DM 19 Jul 2000 - Read,Write methods to read/write coords to binary streams
-  inline ostream &Write(ostream &ostr) const {
+  inline std::ostream &Write(std::ostream &ostr) const {
     ostr.write((const char *)&x, sizeof(x));
     ostr.write((const char *)&y, sizeof(y));
     ostr.write((const char *)&z, sizeof(z));
     return ostr;
   }
-  inline istream &Read(istream &istr) {
+  inline std::istream &Read(std::istream &istr) {
     istr.read((char *)&x, sizeof(x));
     istr.read((char *)&y, sizeof(y));
     istr.read((char *)&z, sizeof(z));
@@ -139,7 +139,7 @@ public:
   ///////////////////
 
   // Insertion (output) operator
-  friend ostream &operator<<(ostream &s, const RbtCoord &coord) {
+  friend std::ostream &operator<<(std::ostream &s, const RbtCoord &coord) {
     return s << "(" << coord.x << "," << coord.y << "," << coord.z << ")";
   }
 
@@ -156,7 +156,7 @@ public:
   // (x   y, z  )
   // uses the auxiliary function eatSeps
 
-  friend istream &operator>>(istream &s, RbtCoord &coord) {
+  friend std::istream &operator>>(std::istream &s, RbtCoord &coord) {
     double x = 0, y = 0, z = 0;
     char c = 0;
     s >> c;
@@ -169,7 +169,7 @@ public:
       eatSeps(s);
       s >> c;
       if (c != ')')
-        s.clear(ios_base::badbit); // Missing closing bracket
+        s.clear(std::ios_base::badbit); // Missing closing bracket
     } else {
       s.putback(c);
       s >> x;

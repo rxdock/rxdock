@@ -34,7 +34,7 @@ RbtBaseGrid::RbtBaseGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
 }
 
 // Constructor reading params from binary stream
-RbtBaseGrid::RbtBaseGrid(istream &istr) {
+RbtBaseGrid::RbtBaseGrid(std::istream &istr) {
   OwnRead(istr);
   _RBTOBJECTCOUNTER_CONSTR_("RbtBaseGrid");
 }
@@ -57,7 +57,7 @@ RbtBaseGrid &RbtBaseGrid::operator=(const RbtBaseGrid &grid) {
 }
 
 // Insertion operator (primarily for debugging)
-ostream &operator<<(ostream &s, const RbtBaseGrid &grid) {
+std::ostream &operator<<(std::ostream &s, const RbtBaseGrid &grid) {
   grid.Print(s);
   return s;
 }
@@ -73,13 +73,13 @@ ostream &operator<<(ostream &s, const RbtBaseGrid &grid) {
 // as base class objects cannot be instantiated
 
 // Text output
-void RbtBaseGrid::Print(ostream &ostr) const { OwnPrint(ostr); }
+void RbtBaseGrid::Print(std::ostream &ostr) const { OwnPrint(ostr); }
 
 // Binary output
-void RbtBaseGrid::Write(ostream &ostr) const { OwnWrite(ostr); }
+void RbtBaseGrid::Write(std::ostream &ostr) const { OwnWrite(ostr); }
 
 // Binary input
-void RbtBaseGrid::Read(istream &istr) { OwnRead(istr); }
+void RbtBaseGrid::Read(std::istream &istr) { OwnRead(istr); }
 
 ////////////////////////////////////////
 // Public methods
@@ -205,25 +205,25 @@ void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, double radius,
 // Protected methods
 
 // Protected method for writing data members for this class to text stream
-void RbtBaseGrid::OwnPrint(ostream &ostr) const {
-  ostr << "Class\t" << _CT << endl;
-  ostr << "m_min\t" << m_min << endl;
-  ostr << "m_max\t" << m_max << endl;
-  ostr << "m_step\t" << m_step << endl;
-  ostr << "m_padMin\t" << m_padMin << endl;
-  ostr << "m_padMax\t" << m_padMax << endl;
-  ostr << "m_NX,m_NY,m_NZ\t" << m_NX << "," << m_NY << "," << m_NZ << endl;
-  ostr << "m_N\t" << m_N << endl;
-  ostr << "m_SX,m_SY,m_SZ\t" << m_SX << "," << m_SY << "," << m_SZ << endl;
-  ostr << "m_NPad\t" << m_NPad << endl;
-  ostr << "m_nXMin,m_nXMax\t" << m_nXMin << "," << m_nXMax << endl;
-  ostr << "m_nYMin,m_nYMax\t" << m_nYMin << "," << m_nYMax << endl;
-  ostr << "m_nZMin,m_nZMax\t" << m_nZMin << "," << m_nZMax << endl;
+void RbtBaseGrid::OwnPrint(std::ostream &ostr) const {
+  ostr << "Class\t" << _CT << std::endl;
+  ostr << "m_min\t" << m_min << std::endl;
+  ostr << "m_max\t" << m_max << std::endl;
+  ostr << "m_step\t" << m_step << std::endl;
+  ostr << "m_padMin\t" << m_padMin << std::endl;
+  ostr << "m_padMax\t" << m_padMax << std::endl;
+  ostr << "m_NX,m_NY,m_NZ\t" << m_NX << "," << m_NY << "," << m_NZ << std::endl;
+  ostr << "m_N\t" << m_N << std::endl;
+  ostr << "m_SX,m_SY,m_SZ\t" << m_SX << "," << m_SY << "," << m_SZ << std::endl;
+  ostr << "m_NPad\t" << m_NPad << std::endl;
+  ostr << "m_nXMin,m_nXMax\t" << m_nXMin << "," << m_nXMax << std::endl;
+  ostr << "m_nYMin,m_nYMax\t" << m_nYMin << "," << m_nYMax << std::endl;
+  ostr << "m_nZMin,m_nZMax\t" << m_nZMin << "," << m_nZMax << std::endl;
 }
 
 // Protected method for writing data members for this class to binary stream
 //(Serialisation)
-void RbtBaseGrid::OwnWrite(ostream &ostr) const {
+void RbtBaseGrid::OwnWrite(std::ostream &ostr) const {
   // Write the class name as a title so we can check the authenticity of streams
   // on read
   const char *const gridTitle = _CT.c_str();
@@ -256,7 +256,7 @@ void RbtBaseGrid::OwnWrite(ostream &ostr) const {
 }
 
 // Protected method for reading data members for this class from binary stream
-void RbtBaseGrid::OwnRead(istream &istr) throw(RbtError) {
+void RbtBaseGrid::OwnRead(std::istream &istr) throw(RbtError) {
   // Read title
   int length;
   Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));

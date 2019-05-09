@@ -46,21 +46,21 @@ public:
   static std::string _CT;
 
   RbtDockingSite(const RbtCavityList &cavList, double border);
-  RbtDockingSite(istream &istr);
+  RbtDockingSite(std::istream &istr);
 
   // Destructor
   virtual ~RbtDockingSite();
 
   // Insertion operator
-  friend ostream &operator<<(ostream &s, const RbtDockingSite &site);
+  friend std::ostream &operator<<(std::ostream &s, const RbtDockingSite &site);
 
   // Virtual function for dumping docking site details to an output stream
   // Derived classes can override if required
-  virtual void Print(ostream &s) const;
+  virtual void Print(std::ostream &s) const;
 
   // Public methods
-  void Read(istream &istr);  // Reads docking site from binary stream
-  void Write(ostream &ostr); // Writes docking site to binary stream
+  void Read(std::istream &istr);  // Reads docking site from binary stream
+  void Write(std::ostream &ostr); // Writes docking site to binary stream
 
   RbtRealGridPtr GetGrid();
   double GetBorder() const { return m_border; }

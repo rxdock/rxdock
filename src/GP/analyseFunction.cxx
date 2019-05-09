@@ -18,29 +18,29 @@
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
-  /*cout << "Genome file: \n";
+  /*std::cout << "Genome file: \n";
   std::string gfile;
-  cin >> gfile; */
+  std::cin >> gfile; */
   std::string gfile(argv[1]);
-  ifstream gstr(gfile.c_str(), ios::in);
+  std::ifstream gstr(gfile.c_str(), std::ios::in);
   RbtGPGenome gen(gstr);
-  /*cout << "Names file: \n";
+  /*std::cout << "Names file: \n";
   std::string nfile;
-  cin >> nfile;*/
+  std::cin >> nfile;*/
   std::string nfile(argv[2]);
-  ifstream nstr(nfile.c_str(), ios::in);
+  std::ifstream nstr(nfile.c_str(), std::ios::in);
   RbtParser p(gen.GetNIP(), gen.GetNIF(), gen.GetNN(), gen.GetNO());
   RbtInt i = 1;
   RbtInt pos = nstr.tellg();
   while (i != EOF) {
     gen.GetChrom()->Clear();
     nstr.close();
-    nstr.open(nfile.c_str(), ios::in);
-    cout << p.PrintParse(nstr, gen.GetChrom(), true, false) << endl;
+    nstr.open(nfile.c_str(), std::ios::in);
+    std::cout << p.PrintParse(nstr, gen.GetChrom(), true, false) << std::endl;
     gen.GetChrom()->Clear();
     nstr.close();
-    nstr.open(nfile.c_str(), ios::in);
-    cout << p.PrintParse(nstr, gen.GetChrom(), false, false);
+    nstr.open(nfile.c_str(), std::ios::in);
+    std::cout << p.PrintParse(nstr, gen.GetChrom(), false, false);
     i = EOF; // cin.get();
   }
   return 0;

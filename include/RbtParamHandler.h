@@ -48,7 +48,7 @@ public:
 
   // Virtual function for dumping parameters to an output stream
   // Called by operator <<
-  virtual void Print(ostream &s) const;
+  virtual void Print(std::ostream &s) const;
 
 protected:
   ////////////////////////////////////////
@@ -93,6 +93,6 @@ private:
 // Non-member functions
 
 // Insertion operator (primarily for debugging)
-ostream &operator<<(ostream &s, const RbtParamHandler &ph);
+std::ostream &operator<<(std::ostream &s, const RbtParamHandler &ph);
 
 #endif //_RBTPARAMHANDLER_H_

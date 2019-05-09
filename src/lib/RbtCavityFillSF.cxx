@@ -23,14 +23,14 @@ RbtCavityFillSF::RbtCavityFillSF(const std::string &strName)
     : RbtBaseSF(_CT, strName) {
   // Add parameters
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtCavityFillSF::~RbtCavityFillSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -65,9 +65,9 @@ void RbtCavityFillSF::SetupReceptor() {
   }
 
   if (iTrace > 1) {
-    cout << endl << "EXCLUDE RECEPTOR VOLUME" << endl;
-    cout << "N(excluded)=" << m_spGrid->Count(-1.0) << endl;
-    cout << "N(unallocated)=" << m_spGrid->Count(0.0) << endl;
+    std::cout << std::endl << "EXCLUDE RECEPTOR VOLUME" << std::endl;
+    std::cout << "N(excluded)=" << m_spGrid->Count(-1.0) << std::endl;
+    std::cout << "N(unallocated)=" << m_spGrid->Count(0.0) << std::endl;
   }
 
   for (RbtCavityListConstIter iter = cavList.begin(); iter != cavList.end();
@@ -80,20 +80,20 @@ void RbtCavityFillSF::SetupReceptor() {
   }
 
   if (iTrace > 1) {
-    cout << endl << "DEFINE CAVITY VOLUME" << endl;
-    cout << "N(excluded)=" << m_spGrid->Count(-1.0) << endl;
-    cout << "N(cavity)=" << m_spGrid->Count(1.0) << endl;
-    cout << "N(unallocated)=" << m_spGrid->Count(0.0) << endl;
+    std::cout << std::endl << "DEFINE CAVITY VOLUME" << std::endl;
+    std::cout << "N(excluded)=" << m_spGrid->Count(-1.0) << std::endl;
+    std::cout << "N(cavity)=" << m_spGrid->Count(1.0) << std::endl;
+    std::cout << "N(unallocated)=" << m_spGrid->Count(0.0) << std::endl;
   }
 
   // RbtDouble largeR = 4.0;
   // Map with a large solvent sphere
   // m_spGrid->SetAccessible(largeR,1.0,-1.0,0.0,false);
   // if (iTrace > 1) {
-  //  cout << endl << "MAP WITH LARGE SPHERE" << endl;
-  //  cout << "N(excluded)=" << m_spGrid->Count(-1.0) << endl;
-  //  cout << "N(cavity)=" << m_spGrid->Count(1.0) << endl;
-  //  cout << "N(unallocated)=" << m_spGrid->Count(0.0) << endl;
+  //  std::cout << std::endl << "MAP WITH LARGE SPHERE" << std::endl;
+  //  std::cout << "N(excluded)=" << m_spGrid->Count(-1.0) << std::endl;
+  //  std::cout << "N(cavity)=" << m_spGrid->Count(1.0) << std::endl;
+  //  std::cout << "N(unallocated)=" << m_spGrid->Count(0.0) << std::endl;
   //}
 }
 
@@ -122,10 +122,10 @@ double RbtCavityFillSF::RawScore() const {
   }
 
   if (iTrace > 1) {
-    cout << endl << "EXCLUDE LIGAND VOLUME" << endl;
-    cout << "N(excluded)=" << gridCopy->Count(-1.0) << endl;
-    cout << "N(cavity)=" << gridCopy->Count(1.0) << endl;
-    cout << "N(unallocated)=" << gridCopy->Count(0.0) << endl;
+    std::cout << std::endl << "EXCLUDE LIGAND VOLUME" << std::endl;
+    std::cout << "N(excluded)=" << gridCopy->Count(-1.0) << std::endl;
+    std::cout << "N(cavity)=" << gridCopy->Count(1.0) << std::endl;
+    std::cout << "N(unallocated)=" << gridCopy->Count(0.0) << std::endl;
   }
 
   // Map with a small solvent sphere
@@ -133,16 +133,16 @@ double RbtCavityFillSF::RawScore() const {
   gridCopy->SetAccessible(1.5, 1.0, -1.0, 2.0, false);
 
   if (iTrace > 1) {
-    cout << endl << "VOID DETECTION" << endl;
-    cout << "N(excluded)=" << gridCopy->Count(-1.0) << endl;
-    cout << "N(cavity)=" << gridCopy->Count(1.0) << endl;
-    cout << "N(voids)=" << gridCopy->Count(2.0) << endl;
-    cout << "N(unallocated)=" << gridCopy->Count(0.0) << endl;
+    std::cout << std::endl << "VOID DETECTION" << std::endl;
+    std::cout << "N(excluded)=" << gridCopy->Count(-1.0) << std::endl;
+    std::cout << "N(cavity)=" << gridCopy->Count(1.0) << std::endl;
+    std::cout << "N(voids)=" << gridCopy->Count(2.0) << std::endl;
+    std::cout << "N(unallocated)=" << gridCopy->Count(0.0) << std::endl;
   }
 
   gridCopy->ReplaceValue(-1.0, 0.0);
   gridCopy->ReplaceValue(1.0, 0.0);
-  ofstream dumpFile("void.grd");
+  std::ofstream dumpFile("void.grd");
   gridCopy->PrintInsightGrid(dumpFile);
   dumpFile.close();
 
@@ -168,7 +168,7 @@ double RbtCavityFillSF::RawScore() const {
   if (iTrace > 0) {
     for (RbtCavityListConstIter cIter = cavityList.begin();
          cIter != cavityList.end(); cIter++) {
-      cout << (**cIter) << endl;
+      std::cout << (**cIter) << std::endl;
     }
   }
 

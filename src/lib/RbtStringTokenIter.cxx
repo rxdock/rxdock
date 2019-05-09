@@ -22,7 +22,7 @@ std::string RbtStringTokenIter::_CT("RbtStringTokenIter");
 ///////////////////
 RbtStringTokenIter::RbtStringTokenIter(const istreamPtr fn, RbtContextPtr co)
     : filep(fn), contextp(co) {
-  (istream &)(*filep) >> strtok;
+  (std::istream &)(*filep) >> strtok;
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 

@@ -23,7 +23,6 @@
 #include "RbtModel.h"
 #include "RbtVble.h"
 #include <fstream>
-using std::ifstream;
 
 typedef map<std::string, RbtVblePtr> RbtStringVbleMap; // Map of Vbles
 typedef map<int, RbtVblePtr> RbtIntVbleMap;            // Map of Vbles
@@ -56,7 +55,7 @@ public:
 class RbtCellContext : public RbtContext {
 public:
   // static RbtString _CT;
-  RbtCellContext(ifstream &ifile);
+  RbtCellContext(std::ifstream &ifile);
   RbtCellContext();
   RbtCellContext(const RbtCellContext &c);
   virtual ~RbtCellContext();
@@ -91,7 +90,7 @@ class RbtStringContext : public RbtContext {
 
 public:
   RbtStringContext();
-  RbtStringContext(SmartPtr<ifstream> ifile);
+  RbtStringContext(SmartPtr<std::ifstream> ifile);
   RbtStringContext(const RbtStringContext &c);
   virtual ~RbtStringContext();
   void Assign(std::string key, RbtReturnType val) {

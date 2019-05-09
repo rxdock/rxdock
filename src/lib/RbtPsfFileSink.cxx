@@ -10,11 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include <sstream>
-using std::ostringstream;
-#include <iomanip>
-using std::setw;
 #include "RbtPsfFileSink.h"
+#include <iomanip>
+#include <sstream>
 #include <stdio.h>
 
 ////////////////////////////////////////
@@ -56,9 +54,9 @@ void RbtPsfFileSink::Render() throw(RbtError) {
     AddLine(strPsfKey);
     AddLine("");
     RbtStringList titleList(spModel->GetTitleList());
-    ostringstream ostr;
-    ostr << setw(8) << titleList.size() << setw(0) << " " << strTitleKey
-         << ends;
+    std::ostringstream ostr;
+    ostr << std::setw(8) << titleList.size() << std::setw(0) << " "
+         << strTitleKey << std::ends;
     AddLine(ostr.str());
     // delete ostr.str();
     for (RbtStringListConstIter iter = titleList.begin();
@@ -72,9 +70,9 @@ void RbtPsfFileSink::Render() throw(RbtError) {
     AddLine("");
 
     // 2. Write number of atoms
-    ostringstream ostr2;
-    ostr2 << setw(8) << spModel->GetNumAtoms() << setw(0) << " " << strAtomKey
-          << ends;
+    std::ostringstream ostr2;
+    ostr2 << std::setw(8) << spModel->GetNumAtoms() << std::setw(0) << " "
+          << strAtomKey << std::ends;
     AddLine(ostr2.str());
     // delete ostr2.str();
 
@@ -93,30 +91,30 @@ void RbtPsfFileSink::Render() throw(RbtError) {
               spAtom->GetPartialCharge(), spAtom->GetAtomicMass(), 0.0);
       AddLine(line);
       // Render the atom to a string stream
-      // ostringstream ostr;
+      // std::ostringstream ostr;
       // ostr.precision(5);
-      // ostr.setf(ios_base::fixed,ios_base::floatfield);
-      // ostr.setf(ios_base::right,ios_base::adjustfield);
+      // ostr.setf(std::ios_base::fixed,ios_base::floatfield);
+      // ostr.setf(std::ios_base::right,ios_base::adjustfield);
       // ostr.fill('#');
-      // ostr << setw(8) << spAtom->GetAtomId() << " ";
-      // ostr.setf(ios_base::left,ios_base::adjustfield);
-      // ostr << setw(4) << spAtom->GetSegmentName() << " ";
-      // ostr << setw(4) << spAtom->GetSubunitId() << " ";
-      // ostr << setw(4) << spAtom->GetSubunitName() << " ";
-      // ostr << setw(4) << spAtom->GetAtomName() << " ";
-      // ostr << setw(4) << spAtom->GetFFType() << " ";
-      // ostr.setf(ios_base::right,ios_base::adjustfield);
-      // ostr << setw(14) << spAtom->GetPartialCharge();
-      // ostr << setw(10) << spAtom->GetAtomicMass();
-      // ostr << setw(12) << 0.0 << ends;
+      // ostr << std::setw(8) << spAtom->GetAtomId() << " ";
+      // ostr.setf(std::ios_base::left,ios_base::adjustfield);
+      // ostr << std::setw(4) << spAtom->GetSegmentName() << " ";
+      // ostr << std::setw(4) << spAtom->GetSubunitId() << " ";
+      // ostr << std::setw(4) << spAtom->GetSubunitName() << " ";
+      // ostr << std::setw(4) << spAtom->GetAtomName() << " ";
+      // ostr << std::setw(4) << spAtom->GetFFType() << " ";
+      // ostr.setf(std::ios_base::right,ios_base::adjustfield);
+      // ostr << std::setw(14) << spAtom->GetPartialCharge();
+      // ostr << std::setw(10) << spAtom->GetAtomicMass();
+      // ostr << std::setw(12) << 0.0 << std::ends;
       // AddLine(ostr.str());
       // delete ostr.str();
     }
     delete[] line;
     // 4. Write number of bonds
-    ostringstream ostr3;
-    ostr3 << setw(8) << spModel->GetNumBonds() << setw(0) << " " << strBondKey
-          << ends;
+    std::ostringstream ostr3;
+    ostr3 << std::setw(8) << spModel->GetNumBonds() << std::setw(0) << " "
+          << strBondKey << std::ends;
     AddLine("");
     AddLine(ostr3.str());
     // delete ostr3.str();
@@ -127,31 +125,31 @@ void RbtPsfFileSink::Render() throw(RbtError) {
     int nRem = bondList.size() % 4;
     RbtBondListConstIter bIter = bondList.begin();
     for (int i = 0; i < nDiv; i++) {
-      ostringstream ostr;
-      ostr << setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId() << setw(8)
-           << (*bIter)->GetAtom2Ptr()->GetAtomId();
+      std::ostringstream ostr;
+      ostr << std::setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId()
+           << std::setw(8) << (*bIter)->GetAtom2Ptr()->GetAtomId();
       bIter++;
-      ostr << setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId() << setw(8)
-           << (*bIter)->GetAtom2Ptr()->GetAtomId();
+      ostr << std::setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId()
+           << std::setw(8) << (*bIter)->GetAtom2Ptr()->GetAtomId();
       bIter++;
-      ostr << setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId() << setw(8)
-           << (*bIter)->GetAtom2Ptr()->GetAtomId();
+      ostr << std::setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId()
+           << std::setw(8) << (*bIter)->GetAtom2Ptr()->GetAtomId();
       bIter++;
-      ostr << setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId() << setw(8)
-           << (*bIter)->GetAtom2Ptr()->GetAtomId();
+      ostr << std::setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId()
+           << std::setw(8) << (*bIter)->GetAtom2Ptr()->GetAtomId();
       bIter++;
-      ostr << ends;
+      ostr << std::ends;
       AddLine(ostr.str());
       // delete ostr.str();
     }
     // Remaining bonds on final incomplete line
     if (nRem > 0) {
-      ostringstream ostr;
+      std::ostringstream ostr;
       for (int i = 0; i < nRem; i++, bIter++) {
-        ostr << setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId() << setw(8)
-             << (*bIter)->GetAtom2Ptr()->GetAtomId();
+        ostr << std::setw(8) << (*bIter)->GetAtom1Ptr()->GetAtomId()
+             << std::setw(8) << (*bIter)->GetAtom2Ptr()->GetAtomId();
       }
-      ostr << ends;
+      ostr << std::ends;
       AddLine(ostr.str());
       // delete ostr.str();
     }

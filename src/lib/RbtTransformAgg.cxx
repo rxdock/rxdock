@@ -20,7 +20,7 @@ std::string RbtTransformAgg::_CT("RbtTransformAgg");
 RbtTransformAgg::RbtTransformAgg(const std::string &strName)
     : RbtBaseTransform(_CT, strName) {
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -28,8 +28,8 @@ RbtTransformAgg::RbtTransformAgg(const std::string &strName)
 RbtTransformAgg::~RbtTransformAgg() {
   // Delete all our children
 #ifdef _DEBUG
-  cout << _CT << "::~" << _CT << "(): Deleting child transforms of "
-       << GetName() << endl;
+  std::cout << _CT << "::~" << _CT << "(): Deleting child transforms of "
+            << GetName() << std::endl;
 #endif //_DEBUG
        // We need to iterate using a while loop because each deletion will
        // reduce the size of m_sf, hence conventional iterators would become
@@ -39,8 +39,8 @@ RbtTransformAgg::~RbtTransformAgg() {
     // Assertion: parent of child is this object
     Assert<RbtAssert>(!TRANSFORMAGG_CHECK || pTransform->m_parent == this);
 #ifdef _DEBUG
-    cout << "Deleting " << pTransform->GetName() << " from " << GetName()
-         << endl;
+    std::cout << "Deleting " << pTransform->GetName() << " from " << GetName()
+              << std::endl;
 #endif //_DEBUG
     delete pTransform;
   }
@@ -58,8 +58,8 @@ void RbtTransformAgg::Add(RbtBaseTransform *pTransform) throw(RbtError) {
   pTransform->Orphan();
   pTransform->m_parent = this;
 #ifdef _DEBUG
-  cout << _CT << "::Add(): Adding " << pTransform->GetName() << " to "
-       << GetName() << endl;
+  std::cout << _CT << "::Add(): Adding " << pTransform->GetName() << " to "
+            << GetName() << std::endl;
 #endif //_DEBUG
   m_transforms.push_back(pTransform);
 }
@@ -74,8 +74,8 @@ void RbtTransformAgg::Remove(RbtBaseTransform *pTransform) throw(RbtError) {
     // Assertion: parent of child is this object
     Assert<RbtAssert>(!TRANSFORMAGG_CHECK || pTransform->m_parent == this);
 #ifdef _DEBUG
-    cout << _CT << "::Remove(): Removing " << pTransform->GetName() << " from "
-         << GetName() << endl;
+    std::cout << _CT << "::Remove(): Removing " << pTransform->GetName()
+              << " from " << GetName() << std::endl;
 #endif //_DEBUG
     m_transforms.erase(iter);
     pTransform->m_parent =
@@ -102,8 +102,8 @@ RbtBaseTransform *RbtTransformAgg::GetTransform(unsigned int iTransform) const
 //(Aggregates are just containers, and have no need for model information
 void RbtTransformAgg::Register(RbtWorkSpace *pWorkSpace) {
 #ifdef _DEBUG
-  cout << _CT << "::Register(): Registering child transforms of " << GetName()
-       << endl;
+  std::cout << _CT << "::Register(): Registering child transforms of "
+            << GetName() << std::endl;
 #endif //_DEBUG
   for (RbtBaseTransformListIter iter = m_transforms.begin();
        iter != m_transforms.end(); iter++) {
@@ -115,8 +115,8 @@ void RbtTransformAgg::Register(RbtWorkSpace *pWorkSpace) {
 // Aggregate version unregisters all children, but NOT itself
 void RbtTransformAgg::Unregister() {
 #ifdef _DEBUG
-  cout << _CT << "::Unregister(): Unregistering child transforms of "
-       << GetName() << endl;
+  std::cout << _CT << "::Unregister(): Unregistering child transforms of "
+            << GetName() << std::endl;
 #endif //_DEBUG
   for (RbtBaseTransformListIter iter = m_transforms.begin();
        iter != m_transforms.end(); iter++) {
@@ -130,8 +130,9 @@ void RbtTransformAgg::Unregister() {
 void RbtTransformAgg::Update(RbtSubject *theChangedSubject) {
   //	if (theChangedSubject == GetWorkSpace()) {
   //#ifdef _DEBUG
-  //		cout << _CT << "::Update(): " << GetName() << " received update
-  // from workspace" << endl; #endif //_DEBUG
+  //         std::cout << _CT << "::Update(): " << GetName() << " received
+  //         update
+  // from workspace" << std::endl; #endif //_DEBUG
   //	}
 }
 
@@ -147,7 +148,7 @@ void RbtTransformAgg::HandleRequest(RbtRequestPtr spRequest) {
 
 // Virtual function for dumping scoring function details to an output stream
 // Called by operator <<
-void RbtTransformAgg::Print(ostream &s) const {
+void RbtTransformAgg::Print(std::ostream &s) const {
   // First print the parameters for this aggregate
   RbtBaseObject::Print(s);
   // Now call Print() for each of the children

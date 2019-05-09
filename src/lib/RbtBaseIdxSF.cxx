@@ -20,7 +20,7 @@ std::string RbtBaseIdxSF::_BORDER("BORDER");
 
 RbtBaseIdxSF::RbtBaseIdxSF() : m_gridStep(0.5), m_border(1.0) {
 #ifdef _DEBUG
-  cout << _CT << " default constructor" << endl;
+  std::cout << _CT << " default constructor" << std::endl;
 #endif //_DEBUG
        // Add parameters
   AddParameter(_GRIDSTEP, m_gridStep);

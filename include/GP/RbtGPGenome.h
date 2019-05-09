@@ -29,7 +29,7 @@ public:
   RbtGPGenome();
   RbtGPGenome(const RbtGPGenome &);
   RbtGPGenome(std::string);
-  RbtGPGenome(istream &);
+  RbtGPGenome(std::istream &);
 
   RbtGPGenome &operator=(const RbtGPGenome &);
 
@@ -52,8 +52,8 @@ public:
   double GetFitness() const { return fitness; }
   void UniformCrossover(const RbtGPGenome &, const RbtGPGenome &);
   void Crossover(RbtGPGenome &);
-  friend ostream &operator<<(ostream &s, const RbtGPGenome &p);
-  ostream &Print(ostream &) const;
+  friend std::ostream &operator<<(std::ostream &s, const RbtGPGenome &p);
+  std::ostream &Print(std::ostream &) const;
 
 protected:
 private:

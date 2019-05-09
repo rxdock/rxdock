@@ -25,13 +25,13 @@
 const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbtether.cxx#5 $)";
 
-void print_atoms(RbtAtomList &atoms, ostringstream &ost);
+void print_atoms(RbtAtomList &atoms, std::ostringstream &ost);
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]) {
-  cout.setf(ios_base::left, ios_base::adjustfield);
+  std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 
   // Strip off the path to the executable, leaving just the file name
   std::string strExeName(argv[0]);
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
 
   // Command line arguments and default values
   std::string strLigandMdlFile;
@@ -54,32 +54,37 @@ int main(int argc, char *argv[]) {
 
   // Brief help message
   if (argc == 1) {
-    cout << endl
-         << "rbtether - marks the tethered atoms for use in docking" << endl;
-    cout << endl
-         << "Usage:\trbtether -i<InputSDFile> -o<OutputRoot>"
-         << "-r<ReferenceSDFile> -s<Smarts Query>"
-         << " [-ap] [-an] [-allH]" << endl;
-    cout << endl << "Options:\t-i<InputSDFile> - input ligand SD file" << endl;
-    cout << "\t\t-o<OutputRoot> - root name for output SD file(s)"
-         << "(.sd suffix not required)" << endl;
-    cout << "\t\t-r<ReferenceSDFile> - reference SD file "
-         << "(with the correct coordinates for the tethered atoms)" << endl;
-    cout << "\t\t-s<Smarts Query> - SMARTS query "
-         << "(specifying the atoms to be tethered)" << endl;
-    cout << "\t\t-ap - protonate all neutral amines, guanidines, "
-         << "imidazoles (default=disabled)" << endl;
-    cout << "\t\t-an - deprotonate all carboxylic, sulphur and phosphorous "
-         << "acid groups (default=disabled)" << endl;
-    cout << "\t\t-allH - read all hydrogens present (default=polar "
-         << "hydrogens only)" << endl;
+    std::cout << std::endl
+              << "rbtether - marks the tethered atoms for use in docking"
+              << std::endl;
+    std::cout << std::endl
+              << "Usage:\trbtether -i<InputSDFile> -o<OutputRoot>"
+              << "-r<ReferenceSDFile> -s<Smarts Query>"
+              << " [-ap] [-an] [-allH]" << std::endl;
+    std::cout << std::endl
+              << "Options:\t-i<InputSDFile> - input ligand SD file"
+              << std::endl;
+    std::cout << "\t\t-o<OutputRoot> - root name for output SD file(s)"
+              << "(.sd suffix not required)" << std::endl;
+    std::cout << "\t\t-r<ReferenceSDFile> - reference SD file "
+              << "(with the correct coordinates for the tethered atoms)"
+              << std::endl;
+    std::cout << "\t\t-s<Smarts Query> - SMARTS query "
+              << "(specifying the atoms to be tethered)" << std::endl;
+    std::cout << "\t\t-ap - protonate all neutral amines, guanidines, "
+              << "imidazoles (default=disabled)" << std::endl;
+    std::cout
+        << "\t\t-an - deprotonate all carboxylic, sulphur and phosphorous "
+        << "acid groups (default=disabled)" << std::endl;
+    std::cout << "\t\t-allH - read all hydrogens present (default=polar "
+              << "hydrogens only)" << std::endl;
     return 1;
   }
 
   // Check command line arguments
-  cout << endl << "Command line args:" << endl;
+  std::cout << std::endl << "Command line args:" << std::endl;
   for (int iarg = 1; iarg < argc; iarg++) {
-    cout << argv[iarg];
+    std::cout << argv[iarg];
     std::string strArg(argv[iarg]);
     if (strArg.find("-i") == 0)
       strLigandMdlFile = strArg.substr(2);
@@ -97,25 +102,27 @@ int main(int argc, char *argv[]) {
     else if (strArg.find("-allH") == 0)
       bImplH = false;
     else {
-      cout << " ** INVALID ARGUMENT" << endl;
+      std::cout << " ** INVALID ARGUMENT" << std::endl;
       return 1;
     }
-    cout << endl;
+    std::cout << std::endl;
   }
 
-  cout << endl;
+  std::cout << std::endl;
 
   // DM 20 Apr 1999 - set the auto-ionise flags
   if (bPosIonise)
-    cout << "Automatically protonating positive ionisable groups "
-         << "(amines, imidazoles, guanidines)" << endl;
+    std::cout << "Automatically protonating positive ionisable groups "
+              << "(amines, imidazoles, guanidines)" << std::endl;
   if (bNegIonise)
-    cout << "Automatically deprotonating negative ionisable groups "
-         << "(carboxylic acids, phosphates, sulphates, sulphonates)" << endl;
+    std::cout << "Automatically deprotonating negative ionisable groups "
+              << "(carboxylic acids, phosphates, sulphates, sulphonates)"
+              << std::endl;
   if (bImplH)
-    cout << "Reading polar hydrogens only from ligand SD file" << endl;
+    std::cout << "Reading polar hydrogens only from ligand SD file"
+              << std::endl;
   else
-    cout << "Reading all hydrogens from ligand SD file" << endl;
+    std::cout << "Reading all hydrogens from ligand SD file" << std::endl;
 
   try {
     // Read the reference SD file
@@ -125,21 +132,23 @@ int main(int argc, char *argv[]) {
     std::string strSmiles;
     RbtAtomListList tetherAtoms =
         DT::QueryModel(spReferenceMdl, strQuery, strSmiles);
-    cout << endl << "REFERENCE SD FILE: " << strReferenceSDFile << endl;
+    std::cout << std::endl
+              << "REFERENCE SD FILE: " << strReferenceSDFile << std::endl;
     if (strQuery.empty()) {
-      cout << "No SMARTS query defined - tethering to whole of reference ligand"
-           << endl;
+      std::cout
+          << "No SMARTS query defined - tethering to whole of reference ligand"
+          << std::endl;
       strQuery = strSmiles;
     }
-    cout << "SMILES: " << strSmiles << endl;
-    cout << "SMARTS: " << strQuery << endl;
+    std::cout << "SMILES: " << strSmiles << std::endl;
+    std::cout << "SMARTS: " << strQuery << std::endl;
     for (RbtAtomListListIter alli = tetherAtoms.begin();
          alli != tetherAtoms.end(); alli++) {
-      cout << "Path: ";
+      std::cout << "Path: ";
       for (RbtAtomListIter ali = alli->begin(); ali != alli->end(); ali++) {
-        cout << (*ali)->GetAtomName() << "\t";
+        std::cout << (*ali)->GetAtomName() << "\t";
       }
-      cout << endl;
+      std::cout << std::endl;
     }
     if ((argc == 2) && !strReferenceSDFile.empty()) {
       // smile expression found for the reference file. Nothing
@@ -152,9 +161,10 @@ int main(int argc, char *argv[]) {
     }
     if (tetherAtoms.size() > 1) {
       // throw RbtError(_WHERE_,
-      cout << "More than one SMARTS match found with the reference SD file"
-           << endl;
-      cout << "Will only tether to the first matching path..." << endl;
+      std::cout << "More than one SMARTS match found with the reference SD file"
+                << std::endl;
+      std::cout << "Will only tether to the first matching path..."
+                << std::endl;
     }
 
     // DM 1 Jul 2002 - calculate principal axes and COM of tethered atoms
@@ -167,7 +177,7 @@ int main(int argc, char *argv[]) {
     // for each ligand
     if (bOutput) {
       // writing down the reference sd file for the query
-      ostringstream ost;
+      std::ostringstream ost;
       print_atoms(tetheredAtomList, ost);
       RbtVariant vTetherAtoms(ost.str());
       RbtMolecularFileSinkPtr spRefMdlFileSink(
@@ -195,15 +205,17 @@ int main(int argc, char *argv[]) {
         new RbtMdlFileSource(strLigandMdlFile, bPosIonise, bNegIonise, bImplH));
     for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
-      cout.setf(ios_base::left, ios_base::adjustfield);
-      cout << endl
-           << "**************************************************" << endl
-           << "RECORD #" << nRec << endl;
+      std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
+      std::cout << std::endl
+                << "**************************************************"
+                << std::endl
+                << "RECORD #" << nRec << std::endl;
       RbtError molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
-        cout << endl
-             << molStatus << endl
-             << "************************************************" << endl;
+        std::cout << std::endl
+                  << molStatus << std::endl
+                  << "************************************************"
+                  << std::endl;
         continue;
       }
 
@@ -212,30 +224,31 @@ int main(int argc, char *argv[]) {
       spMdlFileSource->SetSegmentFilterMap(Rbt::ConvertStringToSegmentMap("H"));
 
       if (spMdlFileSource->isDataFieldPresent("Name"))
-        cout << "NAME:   " << spMdlFileSource->GetDataValue("Name") << endl;
+        std::cout << "NAME:   " << spMdlFileSource->GetDataValue("Name")
+                  << std::endl;
       if (spMdlFileSource->isDataFieldPresent("REG_Number"))
-        cout << "REG_Num:" << spMdlFileSource->GetDataValue("REG_Number")
-             << endl;
+        std::cout << "REG_Num:" << spMdlFileSource->GetDataValue("REG_Number")
+                  << std::endl;
 
       // Create the ligand model
       RbtModelPtr spLigand(new RbtModel(spMdlFileSource));
       std::string strMolName = spLigand->GetName();
 
       tetherAtoms = DT::QueryModel(spLigand, strQuery, strSmiles);
-      cout << "SMILES: " << strSmiles << endl;
-      cout << "SMARTS: " << strQuery << endl;
+      std::cout << "SMILES: " << strSmiles << std::endl;
+      std::cout << "SMARTS: " << strQuery << std::endl;
       if (tetherAtoms.empty()) {
-        cout << "No SMARTS match, structure not output" << endl;
+        std::cout << "No SMARTS match, structure not output" << std::endl;
         continue; // ligand filtered out
       }
       RbtAtomList ligAtomList = spLigand->GetAtomList();
       for (RbtAtomListListIter alli = tetherAtoms.begin();
            alli != tetherAtoms.end(); alli++) {
-        cout << "Path: ";
+        std::cout << "Path: ";
         for (RbtAtomListIter ali = alli->begin(); ali != alli->end(); ali++) {
-          cout << (*ali)->GetAtomName() << "\t";
+          std::cout << (*ali)->GetAtomName() << "\t";
         }
-        cout << endl;
+        std::cout << std::endl;
         /////////////////////////////////
         // DM 1 Jul 2002 - prealign each ligand with the reference tether
         // Calculate quat needed to overlay principal axes of tethered fragment
@@ -254,7 +267,7 @@ int main(int argc, char *argv[]) {
                       Rbt::TranslateAtom(refAxes.com));
         ///////////////////////////////////
 
-        ostringstream ost;
+        std::ostringstream ost;
         print_atoms(*alli, ost);
         RbtVariant vTetherAtoms(ost.str());
         // DM 18 May 1999 - store run info in model data
@@ -271,19 +284,19 @@ int main(int argc, char *argv[]) {
     }
     // END OF MAIN LOOP OVER LIGAND RECORDS
     ////////////////////////////////////////////////////
-    cout << endl << "END OF RUN" << endl;
+    std::cout << std::endl << "END OF RUN" << std::endl;
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
 
   return 0;
 }
 
-void print_atoms(RbtAtomList &atoms, ostringstream &ost) {
+void print_atoms(RbtAtomList &atoms, std::ostringstream &ost) {
   ost.clear();
   for (int iter = 0; iter < atoms.size(); iter++) {
     ost << atoms[iter]->GetAtomId();

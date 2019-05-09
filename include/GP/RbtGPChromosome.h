@@ -35,9 +35,9 @@ public:
   virtual ~RbtGPChromosome();
 
   void Clear();
-  ostream &Print(ostream &) const;
-  friend ostream &operator<<(ostream &s, const RbtGPChromosome &p);
-  friend istream &operator>>(istream &s, RbtGPChromosome &p);
+  std::ostream &Print(std::ostream &) const;
+  friend std::ostream &operator<<(std::ostream &s, const RbtGPChromosome &p);
+  friend std::istream &operator>>(std::istream &s, RbtGPChromosome &p);
   const int &operator[](int idx) const { return chrom[idx]; }
   int &operator[](int idx) { return chrom[idx]; }
   RbtGPChromosome &operator=(const RbtGPChromosome &c);

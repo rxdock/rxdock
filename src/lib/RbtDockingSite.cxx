@@ -63,7 +63,7 @@ RbtDockingSite::RbtDockingSite(const RbtCavityList &cavList, double border)
   }
 }
 
-RbtDockingSite::RbtDockingSite(istream &istr) {
+RbtDockingSite::RbtDockingSite(std::istream &istr) {
   Read(istr);
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -71,22 +71,22 @@ RbtDockingSite::RbtDockingSite(istream &istr) {
 RbtDockingSite::~RbtDockingSite() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
 // Insertion operator
-ostream &operator<<(ostream &s, const RbtDockingSite &site) {
+std::ostream &operator<<(std::ostream &s, const RbtDockingSite &site) {
   site.Print(s);
   return s;
 }
 
 // Virtual function for dumping docking site details to an output stream
 // Derived classes can override if required
-void RbtDockingSite::Print(ostream &s) const {
-  s << "Total volume " << GetVolume() << " A^3" << endl;
+void RbtDockingSite::Print(std::ostream &s) const {
+  s << "Total volume " << GetVolume() << " A^3" << std::endl;
   for (int i = 0; i < m_cavityList.size(); i++) {
-    s << "Cavity #" << i + 1 << "\t" << *(m_cavityList[i]) << endl;
+    s << "Cavity #" << i + 1 << "\t" << *(m_cavityList[i]) << std::endl;
   }
 }
 
 // Public methods
-void RbtDockingSite::Write(ostream &ostr) {
+void RbtDockingSite::Write(std::ostream &ostr) {
   // Make sure grid has been calculated
   if (m_spGrid.Null()) {
     CreateGrid();
@@ -119,7 +119,7 @@ void RbtDockingSite::Write(ostream &ostr) {
   }
 }
 
-void RbtDockingSite::Read(istream &istr) {
+void RbtDockingSite::Read(std::istream &istr) {
   m_cavityList.clear();
   m_minCoord = RbtCoord();
   m_maxCoord = RbtCoord();
@@ -192,8 +192,8 @@ void RbtDockingSite::GetCoordList(RbtCoordList &retVal) const {
     std::sort(retVal.begin(), retVal.end(), RbtCoordCmp());
     RbtCoordListIter uniqIter = std::unique(retVal.begin(), retVal.end());
     retVal.erase(uniqIter, retVal.end());
-    // cout << "Cav = " << cavCoords.size() << "; total = " << retVal.size() <<
-    // endl;
+    // std::cout << "Cav = " << cavCoords.size() << "; total = " <<
+    // retVal.size() << std::endl;
   }
 }
 
@@ -292,8 +292,8 @@ void RbtDockingSite::CreateGrid() {
     std::sort(allCoords.begin(), allCoords.end(), RbtCoordCmp());
     RbtCoordListIter uniqIter = std::unique(allCoords.begin(), allCoords.end());
     allCoords.erase(uniqIter, allCoords.end());
-    cout << "Cav = " << cavCoords.size() << "; total = " << allCoords.size()
-         << endl;
+    std::cout << "Cav = " << cavCoords.size()
+              << "; total = " << allCoords.size() << std::endl;
   }
 
   // Loop over all grid points in the distance grid

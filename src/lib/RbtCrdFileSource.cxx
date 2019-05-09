@@ -60,7 +60,7 @@ void RbtCrdFileSource::Parse() throw(RbtError) {
       // 3a. Read number of atoms
       int nAtomRec;
       fileIter++;
-      istringstream(*fileIter) >> nAtomRec;
+      std::istringstream(*fileIter) >> nAtomRec;
 
       // 3b ...and store them
       fileIter++;
@@ -78,9 +78,9 @@ void RbtCrdFileSource::Parse() throw(RbtError) {
       // NOTE: we do not read the weighting array value at present
 
       while ((m_atomList.size() < nAtomRec) && (fileIter != fileEnd)) {
-        istringstream(*fileIter++) >> nAtomId >> nSubunitId >> strSubunitName >>
-            strAtomName >> coord.x >> coord.y >> coord.z >> strSegmentName >>
-            strSubunitId;
+        std::istringstream(*fileIter++) >> nAtomId >> nSubunitId >>
+            strSubunitName >> strAtomName >> coord.x >> coord.y >> coord.z >>
+            strSegmentName >> strSubunitId;
 
         // Construct a new atom (constructor only accepts the 2D params)
         RbtAtomPtr spAtom(new RbtAtom(

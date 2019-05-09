@@ -12,10 +12,8 @@
 
 // Standalone executable for generating docking site .as files for rbdock
 
-#include <iomanip>
-using std::setw;
-
 #include <algorithm>
+#include <iomanip>
 #include <unistd.h>
 
 #include "RbtBiMolWorkSpace.h"
@@ -30,32 +28,38 @@ const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbcavity.cxx#3 $)";
 
 void PrintUsage(void) {
-  cout << "rbcavity - calculate docking cavities" << endl;
-  cout << "Usage:\trbcavity -r <ReceptorPrmFile> [-W] [-R] [-d] [-v] [-l "
-          "<dist>] [-s] [-b <border> [-m]"
-       << endl;
-  cout << "Options:" << endl;
-  cout << "\t\t-r <PrmFile> - receptor param file (contains active site params)"
-       << endl;
-  cout << "\t\t-W          - write docking cavities (plus distance grid) to "
-          ".as file"
-       << endl;
-  cout << "\t\t-R          - read docking cavities (plus distance grid) from "
-          ".as file"
-       << endl;
-  cout << "\t\t-d          - dump InsightII grids for each cavity for "
-          "visualisation"
-       << endl;
-  cout << "\t\t-v          - dump target PSF/CRD files for rDock Viewer"
-       << endl;
-  cout << "\t\t-l <dist>   - list receptor atoms with <dist> A of any cavity"
-       << endl;
-  cout << "\t\t-s          - print SITE descriptors (counts of exposed atoms)"
-       << endl;
-  cout << "\t\t-b <border> - set the border around the cavities for the "
-          "distance grid (default=8A)"
-       << endl;
-  cout << "\t\t-m          - write active site into a MOE grid" << endl;
+  std::cout << "rbcavity - calculate docking cavities" << std::endl;
+  std::cout << "Usage:\trbcavity -r <ReceptorPrmFile> [-W] [-R] [-d] [-v] [-l "
+               "<dist>] [-s] [-b <border> [-m]"
+            << std::endl;
+  std::cout << "Options:" << std::endl;
+  std::cout
+      << "\t\t-r <PrmFile> - receptor param file (contains active site params)"
+      << std::endl;
+  std::cout
+      << "\t\t-W          - write docking cavities (plus distance grid) to "
+         ".as file"
+      << std::endl;
+  std::cout
+      << "\t\t-R          - read docking cavities (plus distance grid) from "
+         ".as file"
+      << std::endl;
+  std::cout << "\t\t-d          - dump InsightII grids for each cavity for "
+               "visualisation"
+            << std::endl;
+  std::cout << "\t\t-v          - dump target PSF/CRD files for rDock Viewer"
+            << std::endl;
+  std::cout
+      << "\t\t-l <dist>   - list receptor atoms with <dist> A of any cavity"
+      << std::endl;
+  std::cout
+      << "\t\t-s          - print SITE descriptors (counts of exposed atoms)"
+      << std::endl;
+  std::cout << "\t\t-b <border> - set the border around the cavities for the "
+               "distance grid (default=8A)"
+            << std::endl;
+  std::cout << "\t\t-m          - write active site into a MOE grid"
+            << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -73,9 +77,10 @@ int main(int argc, char *argv[]) {
   for (int i = 0; i < argc; i++) {
     std::string opt = argv[i];
     if (opt == "-was" || opt == "-ras") {
-      cout << "Options -was and -ras are no longer supported; use -W and -R "
-              "(respectively) instead."
-           << endl;
+      std::cout
+          << "Options -was and -ras are no longer supported; use -W and -R "
+             "(respectively) instead."
+          << std::endl;
       return 2;
     }
   }
@@ -87,7 +92,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
 
   // Command line arguments and default values
   std::string strReceptorPrmFile;
@@ -139,42 +144,42 @@ int main(int argc, char *argv[]) {
     case '?':
       break;
     default:
-      cout << "WARNING: unknown argument: " << c << endl;
+      std::cout << "WARNING: unknown argument: " << c << std::endl;
       ;
       break;
     }
   }
-  cout << endl;
+  std::cout << std::endl;
 
   // check for parameter file name
   /*if(prmFile) {
           strReceptorPrmFile	= prmFile;
   }*/
   if (strReceptorPrmFile.empty()) {
-    cout << "Missing receptor parameter file name" << endl;
+    std::cout << "Missing receptor parameter file name" << std::endl;
     exit(1);
   }
   // writing command line arguments
-  cout << "Command line arguments:" << endl;
-  cout << "-r " << strReceptorPrmFile << endl;
+  std::cout << "Command line arguments:" << std::endl;
+  std::cout << "-r " << strReceptorPrmFile << std::endl;
   if (bList)
-    cout << "-l " << dist << endl;
+    std::cout << "-l " << dist << std::endl;
   if (bBorderArg)
-    cout << "-b " << border << endl;
+    std::cout << "-b " << border << std::endl;
   if (bWriteAS)
-    cout << "-W" << endl;
+    std::cout << "-W" << std::endl;
   if (bReadAS)
-    cout << "-R" << endl;
+    std::cout << "-R" << std::endl;
   if (bMOEgrid)
-    cout << "-m" << endl;
+    std::cout << "-m" << std::endl;
   if (bDump)
-    cout << "-d" << endl;
+    std::cout << "-d" << std::endl;
   if (bSite)
-    cout << "-s" << endl;
+    std::cout << "-s" << std::endl;
   if (bViewer)
-    cout << "-v" << endl;
+    std::cout << "-v" << std::endl;
 
-  cout.setf(ios_base::left, ios_base::adjustfield);
+  std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 
   try {
     // Create a bimolecular workspace
@@ -201,9 +206,10 @@ int main(int argc, char *argv[]) {
     if (bReadAS) {
       std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
 #if defined(__sgi) && !defined(__GNUC__)
-      ifstream istr(strInputFile.c_str(), ios_base::in);
+      std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
 #else
-      ifstream istr(strInputFile.c_str(), ios_base::in | ios_base::binary);
+      std::ifstream istr(strInputFile.c_str(),
+                         std::ios_base::in | std::ios_base::binary);
 #endif
       spDockSite = RbtDockingSitePtr(new RbtDockingSite(istr));
       istr.close();
@@ -215,7 +221,7 @@ int main(int argc, char *argv[]) {
           spMapperFactory->CreateFromFile(spRecepPrmSource, "MAPPER");
       spMapper->Register(spWS);
       spWS->SetReceptor(spReceptor);
-      cout << *spMapper << endl;
+      std::cout << *spMapper << std::endl;
 
       int nRI = spReceptor->GetNumSavedCoords() - 1;
       if (nRI == 0) {
@@ -232,14 +238,18 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    cout << endl << "DOCKING SITE" << endl << (*spDockSite) << endl;
+    std::cout << std::endl
+              << "DOCKING SITE" << std::endl
+              << (*spDockSite) << std::endl;
 
     if (bWriteAS) {
 #if defined(__sgi) && !defined(__GNUC__)
-      ofstream ostr(strASFile.c_str(), ios_base::out | ios_base::trunc);
+      std::ofstream ostr(strASFile.c_str(),
+                         std::ios_base::out | std::ios_base::trunc);
 #else
-      ofstream ostr(strASFile.c_str(),
-                    ios_base::out | ios_base::binary | ios_base::trunc);
+      std::ofstream ostr(strASFile.c_str(), std::ios_base::out |
+                                                std::ios_base::binary |
+                                                std::ios_base::trunc);
 #endif
       spDockSite->Write(ostr);
       ostr.close();
@@ -250,10 +260,12 @@ int main(int argc, char *argv[]) {
     if (bViewer) {
       RbtMolecularFileSinkPtr spRecepSink =
           new RbtPsfFileSink(wsName + "_for_viewer.psf", spReceptor);
-      cout << "Writing PSF file: " << spRecepSink->GetFileName() << endl;
+      std::cout << "Writing PSF file: " << spRecepSink->GetFileName()
+                << std::endl;
       spRecepSink->Render();
       spRecepSink = new RbtCrdFileSink(wsName + "_for_viewer.crd", spReceptor);
-      cout << "Writing CRD file: " << spRecepSink->GetFileName() << endl;
+      std::cout << "Writing CRD file: " << spRecepSink->GetFileName()
+                << std::endl;
       spRecepSink->Render();
     }
 
@@ -261,9 +273,9 @@ int main(int argc, char *argv[]) {
     if (bDump) {
       RbtCavityList cavList = spDockSite->GetCavityList();
       for (int i = 0; i < cavList.size(); i++) {
-        ostringstream filename;
+        std::ostringstream filename;
         filename << wsName << "_cav" << i + 1 << ".grd";
-        ofstream dumpFile(filename.str());
+        std::ofstream dumpFile(filename.str());
         if (dumpFile) {
           cavList[i]->GetGrid()->PrintInsightGrid(dumpFile);
           dumpFile.close();
@@ -272,22 +284,22 @@ int main(int argc, char *argv[]) {
     }
     // writing active site into MOE grid
     if (bMOEgrid) {
-      cout << "MOE grid feature not yet implemented, sorry." << endl;
+      std::cout << "MOE grid feature not yet implemented, sorry." << std::endl;
     }
     // List all receptor atoms within given distance of any cavity
     if (bList) {
       RbtRealGridPtr spGrid = spDockSite->GetGrid();
       RbtAtomList atomList =
           spDockSite->GetAtomList(spReceptor->GetAtomList(), 0.0, dist);
-      cout << atomList.size() << " receptor atoms within " << dist
-           << " A of any cavity" << endl;
-      cout << endl << "DISTANCE,ATOM" << endl;
+      std::cout << atomList.size() << " receptor atoms within " << dist
+                << " A of any cavity" << std::endl;
+      std::cout << std::endl << "DISTANCE,ATOM" << std::endl;
       for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
            iter++) {
-        cout << spGrid->GetSmoothedValue((*iter)->GetCoords()) << "\t" << **iter
-             << endl;
+        std::cout << spGrid->GetSmoothedValue((*iter)->GetCoords()) << "\t"
+                  << **iter << std::endl;
       }
-      cout << endl;
+      std::cout << std::endl;
     }
 
     // DM 15 Jul 2002 - print out SITE descriptors
@@ -304,15 +316,17 @@ int main(int argc, char *argv[]) {
       RbtAtomList recepAtomList = spReceptor->GetAtomList();
       RbtAtomList cavAtomList = spDockSite->GetAtomList(recepAtomList, cavDist);
       RbtAtomList exposedAtomList; // The list of exposed cavity atoms
-      cout << endl << "SOLVENT EXPOSED CAVITY ATOMS" << endl;
-      cout << "1) Consider atoms within " << cavDist << "A of docking site"
-           << endl;
-      cout << "2) Determine #neighbours within " << neighbR << "A of each atom"
-           << endl;
-      cout << "3) If #neighbours < " << threshold << " => exposed" << endl;
-      cout << "4) Calculate SITE* descriptors over exposed cavity atoms only"
-           << endl;
-      cout << endl << "ATOM NAME\t#NEIGHBOURS" << endl;
+      std::cout << std::endl << "SOLVENT EXPOSED CAVITY ATOMS" << std::endl;
+      std::cout << "1) Consider atoms within " << cavDist << "A of docking site"
+                << std::endl;
+      std::cout << "2) Determine #neighbours within " << neighbR
+                << "A of each atom" << std::endl;
+      std::cout << "3) If #neighbours < " << threshold << " => exposed"
+                << std::endl;
+      std::cout
+          << "4) Calculate SITE* descriptors over exposed cavity atoms only"
+          << std::endl;
+      std::cout << std::endl << "ATOM NAME\t#NEIGHBOURS" << std::endl;
 
       // Get the list of solvent exposed cavity atoms
       for (RbtAtomListConstIter iter = cavAtomList.begin();
@@ -322,7 +336,8 @@ int main(int argc, char *argv[]) {
             Rbt::isAtomInsideSphere((*iter)->GetCoords(), neighbR));
         nNeighb--;
         if (nNeighb < threshold) {
-          cout << (*iter)->GetFullAtomName() << "\t" << nNeighb << endl;
+          std::cout << (*iter)->GetFullAtomName() << "\t" << nNeighb
+                    << std::endl;
           exposedAtomList.push_back(*iter);
         }
       }
@@ -352,35 +367,42 @@ int main(int argc, char *argv[]) {
       int nNHBA = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondAcceptor());
 
       // Cavity volume
-      cout << endl << wsName << ",SITE_VOL," << spDockSite->GetVolume() << endl;
+      std::cout << std::endl
+                << wsName << ",SITE_VOL," << spDockSite->GetVolume()
+                << std::endl;
       // Atom type counts
-      cout << wsName << ",SITE_NATOMS," << nAtoms << endl;
-      cout << wsName << ",SITE_NLIPOC," << nLipoC << endl;
-      cout << wsName << ",SITE_NAROMATOMS," << nArom << endl;
-      cout << wsName << ",SITE_NHBD," << nNHBD << endl;
-      cout << wsName << ",SITE_NMETAL," << nMetal << endl;
-      cout << wsName << ",SITE_NGUAN," << nGuan << endl;
-      cout << wsName << ",SITE_NHBA," << nNHBA << endl;
+      std::cout << wsName << ",SITE_NATOMS," << nAtoms << std::endl;
+      std::cout << wsName << ",SITE_NLIPOC," << nLipoC << std::endl;
+      std::cout << wsName << ",SITE_NAROMATOMS," << nArom << std::endl;
+      std::cout << wsName << ",SITE_NHBD," << nNHBD << std::endl;
+      std::cout << wsName << ",SITE_NMETAL," << nMetal << std::endl;
+      std::cout << wsName << ",SITE_NGUAN," << nGuan << std::endl;
+      std::cout << wsName << ",SITE_NHBA," << nNHBA << std::endl;
       // Atom type percentages
-      cout << wsName << ",SITE_PERC_LIPOC," << 100.0 * nLipoC / nAtoms << endl;
-      cout << wsName << ",SITE_PERC_AROMATOMS," << 100.0 * nArom / nAtoms
-           << endl;
-      cout << wsName << ",SITE_PERC_HBD," << 100.0 * nNHBD / nAtoms << endl;
-      cout << wsName << ",SITE_PERC_METAL," << 100.0 * nMetal / nAtoms << endl;
-      cout << wsName << ",SITE_PERC_GUAN," << 100.0 * nGuan / nAtoms << endl;
-      cout << wsName << ",SITE_PERC_HBA," << 100.0 * nNHBA / nAtoms << endl;
+      std::cout << wsName << ",SITE_PERC_LIPOC," << 100.0 * nLipoC / nAtoms
+                << std::endl;
+      std::cout << wsName << ",SITE_PERC_AROMATOMS," << 100.0 * nArom / nAtoms
+                << std::endl;
+      std::cout << wsName << ",SITE_PERC_HBD," << 100.0 * nNHBD / nAtoms
+                << std::endl;
+      std::cout << wsName << ",SITE_PERC_METAL," << 100.0 * nMetal / nAtoms
+                << std::endl;
+      std::cout << wsName << ",SITE_PERC_GUAN," << 100.0 * nGuan / nAtoms
+                << std::endl;
+      std::cout << wsName << ",SITE_PERC_HBA," << 100.0 * nNHBA / nAtoms
+                << std::endl;
       // Charges
-      cout << wsName << ",SITE_POS_CHG," << posChg << endl;
-      cout << wsName << ",SITE_NEG_CHG," << negChg << endl;
-      cout << wsName << ",SITE_TOT_CHG," << posChg + negChg << endl;
+      std::cout << wsName << ",SITE_POS_CHG," << posChg << std::endl;
+      std::cout << wsName << ",SITE_NEG_CHG," << negChg << std::endl;
+      std::cout << wsName << ",SITE_TOT_CHG," << posChg + negChg << std::endl;
     }
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
 
   return 0;
 }

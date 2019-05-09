@@ -11,10 +11,8 @@
  ***********************************************************************/
 
 // Main docking application
-#include <iomanip>
-using std::setw;
-
 #include <errno.h>
+#include <iomanip>
 #include <unistd.h>
 
 #include "RbtBiMolWorkSpace.h"
@@ -41,35 +39,42 @@ const std::string _RESTRAINT_SF = "RESTR";
 const std::string _ROOT_TRANSFORM = "DOCK";
 
 void PrintUsage(void) {
-  cout << endl << "Usage:" << endl;
-  cout << "rbdock -i <sdFile> -o <outputRoot> -r <recepPrmFile> -p "
-          "<protoPrmFile> [-n <nRuns>] [-P] [-D] [-H]"
-       << endl;
-  cout << "       [-t <targetScore|targetFilterFile>] [-c] [-T <traceLevel>] "
-          "[-s <rndSeed>]"
-       << endl;
-  cout << endl << "Options:\t-i <sdFile> - input ligand SD file" << endl;
-  cout << "\t\t-o <outputRoot> - root name for output file(s)" << endl;
-  cout << "\t\t-r <recepPrmFile> - receptor parameter file " << endl;
-  cout << "\t\t-p <protoPrmFile> - docking protocol parameter file" << endl;
-  cout << "\t\t-n <nRuns> - number of runs/ligand (default=1)" << endl;
-  cout << "\t\t-P - protonate all neutral amines, guanidines, imidazoles "
-          "(default=disabled)"
-       << endl;
-  cout << "\t\t-D - deprotonate all carboxylic, sulphur and phosphorous acid "
-          "groups (default=disabled)"
-       << endl;
-  cout << "\t\t-H - read all hydrogens present (default=polar hydrogens only)"
-       << endl;
-  cout << "\t\t-t - score threshold OR filter file name" << endl;
-  cout << "\t\t-C - continue if score threshold is met (use with -t "
-          "<targetScore>, default=terminate ligand)"
-       << endl;
-  cout << "\t\t-T <traceLevel> - controls output level for debugging (0 = "
-          "minimal, >0 = more verbose)"
-       << endl;
-  cout << "\t\t-s <rndSeed> - random number seed (default=from sys clock)"
-       << endl;
+  std::cout << std::endl << "Usage:" << std::endl;
+  std::cout << "rbdock -i <sdFile> -o <outputRoot> -r <recepPrmFile> -p "
+               "<protoPrmFile> [-n <nRuns>] [-P] [-D] [-H]"
+            << std::endl;
+  std::cout
+      << "       [-t <targetScore|targetFilterFile>] [-c] [-T <traceLevel>] "
+         "[-s <rndSeed>]"
+      << std::endl;
+  std::cout << std::endl
+            << "Options:\t-i <sdFile> - input ligand SD file" << std::endl;
+  std::cout << "\t\t-o <outputRoot> - root name for output file(s)"
+            << std::endl;
+  std::cout << "\t\t-r <recepPrmFile> - receptor parameter file " << std::endl;
+  std::cout << "\t\t-p <protoPrmFile> - docking protocol parameter file"
+            << std::endl;
+  std::cout << "\t\t-n <nRuns> - number of runs/ligand (default=1)"
+            << std::endl;
+  std::cout << "\t\t-P - protonate all neutral amines, guanidines, imidazoles "
+               "(default=disabled)"
+            << std::endl;
+  std::cout
+      << "\t\t-D - deprotonate all carboxylic, sulphur and phosphorous acid "
+         "groups (default=disabled)"
+      << std::endl;
+  std::cout
+      << "\t\t-H - read all hydrogens present (default=polar hydrogens only)"
+      << std::endl;
+  std::cout << "\t\t-t - score threshold OR filter file name" << std::endl;
+  std::cout << "\t\t-C - continue if score threshold is met (use with -t "
+               "<targetScore>, default=terminate ligand)"
+            << std::endl;
+  std::cout << "\t\t-T <traceLevel> - controls output level for debugging (0 = "
+               "minimal, >0 = more verbose)"
+            << std::endl;
+  std::cout << "\t\t-s <rndSeed> - random number seed (default=from sys clock)"
+            << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -87,14 +92,15 @@ int main(int argc, char *argv[]) {
   for (int i = 0; i < argc; i++) {
     std::string opt = argv[i];
     if (opt == "-ap" || opt == "-an" || opt == "-allH" || opt == "-cont") {
-      cout << "Options -ap, -an, -allH, and -cont are no longer supported; use "
-              "-P, -D, -H, and -C (respectively) instead."
-           << endl;
+      std::cout
+          << "Options -ap, -an, -allH, and -cont are no longer supported; use "
+             "-P, -D, -H, and -C (respectively) instead."
+          << std::endl;
       return 2;
     }
   }
 
-  cout.setf(ios_base::left, ios_base::adjustfield);
+  std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 
   // Strip off the path to the executable, leaving just the file name
   std::string strExeName(argv[0]);
@@ -103,7 +109,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
 
   // Command line arguments and default values
   std::string strLigandMdlFile;
@@ -190,71 +196,73 @@ int main(int argc, char *argv[]) {
       break;
     }
   }
-  cout << endl;
+  std::cout << std::endl;
 
   // print out arguments
   // input ligand file, receptor and parameter is compulsory
-  cout << endl << "Command line args:" << endl;
+  std::cout << std::endl << "Command line args:" << std::endl;
   if (strLigandMdlFile.empty() || strReceptorPrmFile.empty() ||
       strParamFile.empty()) { // if any of them is missing
-    cout << "Missing required parameter(s)" << endl;
+    std::cout << "Missing required parameter(s)" << std::endl;
     exit(1);
   }
-  cout << " -i " << strLigandMdlFile << endl;
-  cout << " -r " << strReceptorPrmFile << endl;
-  cout << " -p " << strParamFile << endl;
+  std::cout << " -i " << strLigandMdlFile << std::endl;
+  std::cout << " -r " << strReceptorPrmFile << std::endl;
+  std::cout << " -p " << strParamFile << std::endl;
   // output is not that important but good to have
   if (!strRunName.empty()) {
     bOutput = true;
-    cout << " -o " << strRunName << endl;
+    std::cout << " -o " << strRunName << std::endl;
   } else {
-    cout << "WARNING: output file name is missing." << endl;
+    std::cout << "WARNING: output file name is missing." << std::endl;
   }
   // docking runs
   if (nDockingRuns >=
       1) { // User typed -n explicitly, so set bDockingRuns to true
     bDockingRuns = true;
-    cout << " -n " << nDockingRuns << endl;
+    std::cout << " -n " << nDockingRuns << std::endl;
   } else {
     nDockingRuns =
         1; // User didn't type -n explicitly, so fall back to the default of n=1
-    cout << " -n " << nDockingRuns << " (default) " << endl;
+    std::cout << " -n " << nDockingRuns << " (default) " << std::endl;
   }
   if (bSeed) // random seed (if provided)
-    cout << " -s " << nSeed << endl;
+    std::cout << " -s " << nSeed << std::endl;
   if (bTrace) // random seed (if provided)
-    cout << " -T " << iTrace << endl;
+    std::cout << " -T " << iTrace << std::endl;
   if (bPosIonise) // protonate
-    cout << " -ap " << endl;
+    std::cout << " -ap " << std::endl;
   if (bNegIonise) // deprotonate
-    cout << " -an " << endl;
+    std::cout << " -an " << std::endl;
   if (!bImplH) // all-H
-    cout << " -allH " << endl;
+    std::cout << " -allH " << std::endl;
   if (!bStop) // stop after target
-    cout << " -cont " << endl;
+    std::cout << " -cont " << std::endl;
   if (bTarget)
-    cout << " -t " << dTargetScore << endl;
+    std::cout << " -t " << dTargetScore << std::endl;
 
   // BGD 26 Feb 2003 - Create filters to simulate old rbdock
   // behaviour
-  ostringstream strFilter;
+  std::ostringstream strFilter;
   if (!bFilter) {
     if (bTarget) // -t<TS>
     {
       if (!bDockingRuns) // -t<TS> only
       {
-        strFilter << "0 1 - SCORE.INTER " << dTargetScore << endl;
+        strFilter << "0 1 - SCORE.INTER " << dTargetScore << std::endl;
       } else          // -t<TS> -n<N> need to check if -cont present
                       // for all other cases it doesn't matter
           if (!bStop) // -t<TS> -n<N> -cont
       {
         strFilter << "1 if - SCORE.NRUNS " << (nDockingRuns - 1)
-                  << " 0.0 -1.0,\n1 - SCORE.INTER " << dTargetScore << endl;
+                  << " 0.0 -1.0,\n1 - SCORE.INTER " << dTargetScore
+                  << std::endl;
       } else // -t<TS> -n<N>
       {
         strFilter << "1 if - " << dTargetScore << " SCORE.INTER 0.0 "
                   << "if - SCORE.NRUNS " << (nDockingRuns - 1)
-                  << " 0.0 -1.0,\n1 - SCORE.INTER " << dTargetScore << endl;
+                  << " 0.0 -1.0,\n1 - SCORE.INTER " << dTargetScore
+                  << std::endl;
       }
     }                      // no target score, no filter
     else if (bDockingRuns) // -n<N>
@@ -269,21 +277,24 @@ int main(int argc, char *argv[]) {
 
   // DM 20 Apr 1999 - set the auto-ionise flags
   if (bPosIonise)
-    cout << "Automatically protonating positive ionisable groups (amines, "
-            "imidazoles, guanidines)"
-         << endl;
+    std::cout << "Automatically protonating positive ionisable groups (amines, "
+                 "imidazoles, guanidines)"
+              << std::endl;
   if (bNegIonise)
-    cout << "Automatically deprotonating negative ionisable groups (carboxylic "
-            "acids, phosphates, sulphates, sulphonates)"
-         << endl;
+    std::cout
+        << "Automatically deprotonating negative ionisable groups (carboxylic "
+           "acids, phosphates, sulphates, sulphonates)"
+        << std::endl;
   if (bImplH)
-    cout << "Reading polar hydrogens only from ligand SD file" << endl;
+    std::cout << "Reading polar hydrogens only from ligand SD file"
+              << std::endl;
   else
-    cout << "Reading all hydrogens from ligand SD file" << endl;
+    std::cout << "Reading all hydrogens from ligand SD file" << std::endl;
 
   if (bTarget) {
-    cout << endl
-         << "Lower target intermolecular score = " << dTargetScore << endl;
+    std::cout << std::endl
+              << "Lower target intermolecular score = " << dTargetScore
+              << std::endl;
   }
 
   try {
@@ -301,14 +312,14 @@ int main(int argc, char *argv[]) {
     // Read the receptor parameter file
     RbtParameterFileSourcePtr spRecepPrmSource(new RbtParameterFileSource(
         Rbt::GetRbtFileName("data/receptors", strReceptorPrmFile)));
-    cout << endl
-         << "DOCKING PROTOCOL:" << endl
-         << spParamSource->GetFileName() << endl
-         << spParamSource->GetTitle() << endl;
-    cout << endl
-         << "RECEPTOR:" << endl
-         << spRecepPrmSource->GetFileName() << endl
-         << spRecepPrmSource->GetTitle() << endl;
+    std::cout << std::endl
+              << "DOCKING PROTOCOL:" << std::endl
+              << spParamSource->GetFileName() << std::endl
+              << spParamSource->GetTitle() << std::endl;
+    std::cout << std::endl
+              << "RECEPTOR:" << std::endl
+              << spRecepPrmSource->GetFileName() << std::endl
+              << spRecepPrmSource->GetTitle() << std::endl;
 
     // Create the scoring function from the SCORE section of the docking
     // protocol prm file Format is: SECTION SCORE
@@ -350,7 +361,7 @@ int main(int argc, char *argv[]) {
         spTransformFactory->CreateAggFromFile(spParamSource, _ROOT_TRANSFORM));
 
     // Override the TRACE levels for the scoring function and transform
-    // Dump details to cout
+    // Dump details to std::cout
     // Register the scoring function and the transform with the workspace
     if (bTrace) {
       RbtRequestPtr spTraceReq(new RbtSFSetParamRequest("TRACE", iTrace));
@@ -358,8 +369,12 @@ int main(int argc, char *argv[]) {
       spTransform->HandleRequest(spTraceReq);
     }
     if (iTrace > 0) {
-      cout << endl << "SCORING FUNCTION DETAILS:" << endl << *spSF << endl;
-      cout << endl << "SEARCH DETAILS:" << endl << *spTransform << endl;
+      std::cout << std::endl
+                << "SCORING FUNCTION DETAILS:" << std::endl
+                << *spSF << std::endl;
+      std::cout << std::endl
+                << "SEARCH DETAILS:" << std::endl
+                << *spTransform << std::endl;
     }
     spWS->SetSF(spSF);
     spWS->SetTransform(spTransform);
@@ -378,11 +393,12 @@ int main(int argc, char *argv[]) {
     // Read docking site from file and register with workspace
     std::string strASFile = spWS->GetName() + ".as";
     std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
-    // DM 26 Sep 2000 - ios_base::binary is invalid with IRIX CC
+    // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
-    ifstream istr(strInputFile.c_str(), ios_base::in);
+    std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
 #else
-    ifstream istr(strInputFile.c_str(), ios_base::in | ios_base::binary);
+    std::ifstream istr(strInputFile.c_str(),
+                       std::ios_base::in | std::ios_base::binary);
 #endif
     // DM 14 June 2006 - bug fix to one of the longest standing rDock issues
     //(the cryptic "Error reading from input stream" message, if cavity file was
@@ -396,7 +412,9 @@ int main(int argc, char *argv[]) {
     RbtDockingSitePtr spDS(new RbtDockingSite(istr));
     istr.close();
     spWS->SetDockingSite(spDS);
-    cout << endl << "DOCKING SITE" << endl << (*spDS) << endl;
+    std::cout << std::endl
+              << "DOCKING SITE" << std::endl
+              << (*spDS) << std::endl;
 
     // Prepare the SD file sink for saving the docked conformations for each
     // ligand DM 3 Dec 1999 - replaced ostrstream with RbtString in determining
@@ -419,9 +437,10 @@ int main(int argc, char *argv[]) {
     spWS->SetSolvent(solventList);
     if (spWS->hasSolvent()) {
       int nSolvent = spWS->GetSolvent().size();
-      cout << endl << nSolvent << " solvent molecules registered" << endl;
+      std::cout << std::endl
+                << nSolvent << " solvent molecules registered" << std::endl;
     } else {
-      cout << endl << "No solvent" << endl;
+      std::cout << std::endl << "No solvent" << std::endl;
     }
 
     // SRC 2014 removed sector bOutput from here to some blocks above, for
@@ -458,15 +477,17 @@ int main(int argc, char *argv[]) {
         new RbtMdlFileSource(strLigandMdlFile, bPosIonise, bNegIonise, bImplH));
     for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
-      cout.setf(ios_base::left, ios_base::adjustfield);
-      cout << endl
-           << "**************************************************" << endl
-           << "RECORD #" << nRec << endl;
+      std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
+      std::cout << std::endl
+                << "**************************************************"
+                << std::endl
+                << "RECORD #" << nRec << std::endl;
       RbtError molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
-        cout << endl
-             << molStatus << endl
-             << "************************************************" << endl;
+        std::cout << std::endl
+                  << molStatus << std::endl
+                  << "************************************************"
+                  << std::endl;
         continue;
       }
 
@@ -478,11 +499,13 @@ int main(int argc, char *argv[]) {
             Rbt::ConvertStringToSegmentMap("H"));
 
         if (spMdlFileSource->isDataFieldPresent("Name"))
-          cout << "NAME:   " << spMdlFileSource->GetDataValue("Name") << endl;
+          std::cout << "NAME:   " << spMdlFileSource->GetDataValue("Name")
+                    << std::endl;
         if (spMdlFileSource->isDataFieldPresent("REG_Number"))
-          cout << "REG_Num:" << spMdlFileSource->GetDataValue("REG_Number")
-               << endl;
-        cout << setw(30) << "RANDOM_NUMBER_SEED:" << theRand.GetSeed() << endl;
+          std::cout << "REG_Num:" << spMdlFileSource->GetDataValue("REG_Number")
+                    << std::endl;
+        std::cout << std::setw(30) << "RANDOM_NUMBER_SEED:" << theRand.GetSeed()
+                  << std::endl;
 
         // Create and register the ligand model
         RbtModelPtr spLigand = prmFactory.CreateLigand(spMdlFileSource);
@@ -518,7 +541,7 @@ int main(int argc, char *argv[]) {
           // Catching errors with this specific run
           try {
             if (bOutput) {
-              ostringstream histr;
+              std::ostringstream histr;
               histr << strRunName << "_" << strMolName << nRec << "_his_"
                     << iRun << ".sd";
               RbtMolecularFileSinkPtr spHistoryFileSink(
@@ -535,7 +558,7 @@ int main(int argc, char *argv[]) {
             }
             iRun++;
           } catch (RbtDockingError &e) {
-            cout << e << endl;
+            std::cout << e << std::endl;
           }
         }
         // END OF MAIN LOOP OVER EACH SIMULATED ANNEALING RUN
@@ -543,24 +566,24 @@ int main(int argc, char *argv[]) {
       }
       // END OF TRY
       catch (RbtLigandError &e) {
-        cout << e << endl;
+        std::cout << e << std::endl;
       }
     }
     // END OF MAIN LOOP OVER LIGAND RECORDS
     ////////////////////////////////////////////////////
-    cout << endl << "END OF RUN" << endl;
+    std::cout << std::endl << "END OF RUN" << std::endl;
     //    if (bOutput && flexRec) {
     //      RbtMolecularFileSinkPtr spRecepSink(new
     //      RbtCrdFileSink(strRunName+".crd",spReceptor));
     //      spRecepSink->Render();
     //    }
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
 
   return 0;
 }

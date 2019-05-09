@@ -32,7 +32,7 @@ public:
   ///////////////////////////////////////////////
   // Public accessor functions
   // Virtual function for dumping pseudoatom details to an output stream
-  virtual ostream &Print(ostream &s) const;
+  virtual std::ostream &Print(std::ostream &s) const;
 
   ///////////////////////////////////////////////
   // Public accessor functions

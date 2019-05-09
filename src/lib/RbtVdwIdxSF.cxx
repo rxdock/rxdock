@@ -37,14 +37,14 @@ RbtVdwIdxSF::RbtVdwIdxSF(const std::string &strName)
   AddParameter(_FAST_SOLVENT,
                m_bFastSolvent); // Controls solvent performance enhancements
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtVdwIdxSF::~RbtVdwIdxSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -121,7 +121,7 @@ void RbtVdwIdxSF::SetupReceptor() {
   if (nCoords > 0) {
     for (int i = 1; i <= nCoords; i++) {
       if (iTrace > 0) {
-        cout << _CT << ": Indexing receptor coords # " << i << endl;
+        std::cout << _CT << ": Indexing receptor coords # " << i << std::endl;
       }
       GetReceptor()->RevertCoords(i);
       RbtAtomList atomList =
@@ -178,8 +178,8 @@ void RbtVdwIdxSF::SetupReceptor() {
       }
       if (iTrace > 0) {
         double score = ReceptorScore();
-        cout << GetWorkSpace()->GetName() << " " << GetFullName()
-             << ": Intra-receptor score = " << score << endl;
+        std::cout << GetWorkSpace()->GetName() << " " << GetFullName()
+                  << ": Intra-receptor score = " << score << std::endl;
       }
     }
     // Index the rigid atoms as usual
@@ -292,14 +292,14 @@ void RbtVdwIdxSF::SetupSolvent() {
     Partition(m_solventFixTethAtomList, m_solventFixTethIntns,
               m_solventFixTethPrtIntns, partitionDist);
     if (GetTrace() > 0) {
-      cout << endl
-           << "Faster calculation of vdW scores involving fixed/tethered "
-              "solvent is enabled..."
-           << endl;
-      cout << "#Fixed/tethered solvent atoms = "
-           << m_solventFixTethAtomList.size() << endl;
-      cout << "Max translation of any fixed/tethered solvent atom = "
-           << maxFlexDist << "A" << endl;
+      std::cout << std::endl
+                << "Faster calculation of vdW scores involving fixed/tethered "
+                   "solvent is enabled..."
+                << std::endl;
+      std::cout << "#Fixed/tethered solvent atoms = "
+                << m_solventFixTethAtomList.size() << std::endl;
+      std::cout << "Max translation of any fixed/tethered solvent atom = "
+                << maxFlexDist << "A" << std::endl;
     }
   }
   // Build the interaction map for the free solvent - free solvent interactions
@@ -310,17 +310,18 @@ void RbtVdwIdxSF::SetupSolvent() {
     BuildIntraMap(m_solventFreeAtomList, m_solventFreeIntns);
     if (GetTrace() > 0) {
       if (m_bFastSolvent) {
-        cout << endl
-             << "Calculation of vdW scores involving freely translating "
-                "solvent can not be optimised..."
-             << endl;
-        cout << "#Free solvent atoms = " << m_solventFreeAtomList.size()
-             << endl;
+        std::cout << std::endl
+                  << "Calculation of vdW scores involving freely translating "
+                     "solvent can not be optimised..."
+                  << std::endl;
+        std::cout << "#Free solvent atoms = " << m_solventFreeAtomList.size()
+                  << std::endl;
       } else {
-        cout << endl
-             << "Faster calculation of vdW scores involving fixed/tethered "
-                "solvent is disabled..."
-             << endl;
+        std::cout
+            << std::endl
+            << "Faster calculation of vdW scores involving fixed/tethered "
+               "solvent is disabled..."
+            << std::endl;
       }
     }
   }

@@ -23,7 +23,6 @@
 #include "Rbt.h"
 #include "RbtFileError.h"
 #include "RbtResources.h"
-using std::istream;
 
 // GetRbtRoot - returns value of RBT_ROOT env variable
 std::string Rbt::GetRbtRoot() {
@@ -186,8 +185,8 @@ RbtStringList Rbt::GetDirList(const std::string &strDir,
 RbtSegmentMap Rbt::ConvertStringToSegmentMap(const std::string &strSegments,
                                              const std::string &strDelimiter) {
 #ifdef _DEBUG
-  // cout << "ConvertStringToSegmentMap: " << strSegments << " delimiter=" <<
-  // strDelimiter << endl;
+  // std::cout << "ConvertStringToSegmentMap: " << strSegments << " delimiter="
+  // << strDelimiter << std::endl;
 #endif //_DEBUG
 
   std::string::size_type nDelimiterSize = strDelimiter.size();
@@ -204,7 +203,7 @@ RbtSegmentMap Rbt::ConvertStringToSegmentMap(const std::string &strSegments,
     do {
       iEnd = strSegments.find(strDelimiter, iBegin);
 #ifdef _DEBUG
-      // cout << strSegments.substr(iBegin, iEnd-iBegin) << endl;
+      // std::cout << strSegments.substr(iBegin, iEnd-iBegin) << std::endl;
 #endif //_DEBUG
       segmentMap[strSegments.substr(iBegin, iEnd - iBegin)] = 0;
       iBegin = iEnd + nDelimiterSize;
@@ -315,7 +314,7 @@ std::ostream &Rbt::PrintStdHeader(std::ostream &s,
 
 // Helper functions to read/write chars from iostreams
 // Throws error if stream state is not Good() before and after the read/write
-// It appears the STL ios_base exception throwing is not yet implemented
+// It appears the STL std::ios_base exception throwing is not yet implemented
 // at least on RedHat 6.1, so this is a temporary workaround (yeah right)
 void Rbt::WriteWithThrow(std::ostream &ostr, const char *p,
                          streamsize n) throw(RbtError) {
@@ -341,8 +340,8 @@ void Rbt::ReadWithThrow(std::istream &istr, char *p,
 // If necessary, it can be modified to accept the ',' as a
 // parameter to be able to use it when other separators are
 // needed. Also, it should be possible to implemente it as a
-// manipulator of istream.
-istream &eatSeps(istream &is) {
+// manipulator of std::istream.
+std::istream &eatSeps(std::istream &is) {
   char c;
   while (is.get(c)) {
     if (!isspace(c) && (c != ',')) {

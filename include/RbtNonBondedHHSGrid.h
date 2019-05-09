@@ -26,7 +26,7 @@ public:
   RbtNonBondedHHSGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
                       unsigned int NX, unsigned int NY, unsigned int NZ,
                       unsigned int NPad = 0);
-  RbtNonBondedHHSGrid(istream &istr);
+  RbtNonBondedHHSGrid(std::istream &istr);
   ~RbtNonBondedHHSGrid();
 
   RbtNonBondedHHSGrid(const RbtNonBondedHHSGrid &);
@@ -34,9 +34,9 @@ public:
   RbtNonBondedHHSGrid &operator=(const RbtNonBondedHHSGrid &);
   RbtNonBondedHHSGrid &operator=(const RbtBaseGrid &);
 
-  virtual void Print(ostream &ostr) const;
-  virtual void Write(ostream &ostr) const;
-  virtual void Read(istream &istr);
+  virtual void Print(std::ostream &ostr) const;
+  virtual void Write(std::ostream &ostr) const;
+  virtual void Read(std::istream &istr);
 
   const HHS_SolvationRList &GetHHSList(unsigned int iXYZ) const;
   const HHS_SolvationRList &GetHHSList(const RbtCoord &c) const;
@@ -45,9 +45,9 @@ public:
   void ClearHHSLists(void);
 
 protected:
-  void OwnPrint(ostream &ostr) const;
-  void OwnWrite(ostream &ostr) const;
-  void OwnRead(istream &istr) throw(RbtError);
+  void OwnPrint(std::ostream &ostr) const;
+  void OwnWrite(std::ostream &ostr) const;
+  void OwnRead(std::istream &istr) throw(RbtError);
 
 private:
   RbtNonBondedHHSGrid();

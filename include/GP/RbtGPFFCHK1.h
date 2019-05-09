@@ -29,7 +29,7 @@ public:
   RbtGPFFCHK1(RbtContextPtr c) : contextp(c) { _RBTOBJECTCOUNTER_CONSTR_(_CT); }
   virtual ~RbtGPFFCHK1() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
-  void ReadTables(istream &, RbtReturnTypeArray &, RbtReturnTypeArray &);
+  void ReadTables(std::istream &, RbtReturnTypeArray &, RbtReturnTypeArray &);
   double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
                           RbtReturnTypeArray &, double, bool);
   double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,

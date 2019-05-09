@@ -26,27 +26,28 @@ int main(int argc, char *argv[]) {
       theRand.Seed(atoi(argv[1]));
     else
       theRand.SeedFromClock();
-    cout << "Seed: " << theRand.GetSeed() << endl;
-    cout << "Output taken from: \n";
+    std::cout << "Seed: " << theRand.GetSeed() << std::endl;
+    std::cout << "Output taken from: \n";
     std::string strInputFile;
-    cin >> strInputFile;
-    ifstream inputFile(strInputFile.c_str(), ios::in);
+    std::cin >> strInputFile;
+    std::ifstream inputFile(strInputFile.c_str(), std::ios::in);
     if (!inputFile)
       throw RbtError(_WHERE_, "can't open " + strInputFile);
     RbtGPGenome::SetStructure(56, 3, 1, 1, 7, 1, 200, 100);
-    ifstream desc("descnames", ios::in);
+    std::ifstream desc("descnames", std::ios::in);
     RbtContextPtr contextp(new RbtCellContext(desc));
     RbtGPFitnessFunctionPtr ff = new RbtGPFFHSP90(contextp);
-    cout << "Number of input sets: \n";
+    std::cout << "Number of input sets: \n";
     int nInputSets;
-    cin >> nInputSets;
+    std::cin >> nInputSets;
     int nTestSets = nInputSets / 3;
     std::string strTrainingFile = "/tmp/beatriz/" + strInputFile + ".training";
-    fstream trainingFile(strTrainingFile.c_str(), ios::in | ios::out);
+    std::fstream trainingFile(strTrainingFile.c_str(),
+                              std::ios::in | std::ios::out);
     std::string strTestFile = "/tmp/beatriz/" + strInputFile + ".test";
-    fstream testFile(strTestFile.c_str(), ios::in | ios::out);
+    std::fstream testFile(strTestFile.c_str(), std::ios::in | std::ios::out);
     RbtUIntSet randomList;
-    cout << nTestSets << endl;
+    std::cout << nTestSets << std::endl;
     for (int i = 0; i < nTestSets; i++) {
       bool insertb;
       do {
@@ -56,23 +57,23 @@ int main(int argc, char *argv[]) {
     }
     RbtUIntSetIter iter = randomList.end();
     for (iter = randomList.begin(); iter != randomList.end(); iter++)
-      cout << *iter << "\t";
-    cout << endl;
+      std::cout << *iter << "\t";
+    std::cout << std::endl;
     std::string line;
     getline(inputFile, line);
-    testFile << line << endl;
-    trainingFile << line << endl;
+    testFile << line << std::endl;
+    trainingFile << line << std::endl;
     for (int i = 0; i < nInputSets; i++) {
       getline(inputFile, line);
       if (randomList.find(i) != randomList.end())
         // found it
-        testFile << line << endl;
+        testFile << line << std::endl;
       else
-        trainingFile << line << endl;
+        trainingFile << line << std::endl;
     }
 
-    trainingFile.seekp(0, ios::beg);
-    testFile.seekp(0, ios::beg);
+    trainingFile.seekp(0, std::ios::beg);
+    testFile.seekp(0, std::ios::beg);
 
     RbtReturnTypeArray ittrain, sfttrain, ittest, sfttest;
     ff->ReadTables(trainingFile, ittrain, sfttrain);
@@ -89,32 +90,35 @@ int main(int argc, char *argv[]) {
       p.EPstep("", 1.0, 0.08, 0.0, 0.0, hitlimit, false);
       b = ff->CalculateFitness(p.Best(), ittrain, sfttrain, false);
       if ((i % 500) == 0) {
-        //        cout << ff->CalculateFitness(p.Best(),ittest,sfttest,
-        //                                    hitlimit,false) << endl;
-        cout << b << "\t"
-             << ff->CalculateFitness(p.Best(), ittrain, sfttrain, false)
-             << endl;
+        //        std::cout << ff->CalculateFitness(p.Best(),ittest,sfttest,
+        //                                    hitlimit,false) << std::endl;
+        std::cout << b << "\t"
+                  << ff->CalculateFitness(p.Best(), ittrain, sfttrain, false)
+                  << std::endl;
         if ((i == 5000) && (b < 0))
           break;
       }
       i++;
     }
-    cout << i << "\t" << *(p.Best()) << endl;
-    cout << "best with training: "
-         << ff->CalculateFitness(p.Best(), ittrain, sfttrain, false) << endl;
-    cout << "best with test:     "
-         << ff->CalculateFitness(p.Best(), ittest, sfttest, false) << endl;
-    inputFile.seekg(0, ios::beg);
+    std::cout << i << "\t" << *(p.Best()) << std::endl;
+    std::cout << "best with training: "
+              << ff->CalculateFitness(p.Best(), ittrain, sfttrain, false)
+              << std::endl;
+    std::cout << "best with test:     "
+              << ff->CalculateFitness(p.Best(), ittest, sfttest, false)
+              << std::endl;
+    inputFile.seekg(0, std::ios::beg);
     ff->ReadTables(inputFile, ittest, sfttest);
-    cout << "best with all:      "
-         << ff->CalculateFitness(p.Best(), ittest, sfttest, false) << endl;
+    std::cout << "best with all:      "
+              << ff->CalculateFitness(p.Best(), ittest, sfttest, false)
+              << std::endl;
 
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
   return 0;
 }

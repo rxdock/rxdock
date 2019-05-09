@@ -80,7 +80,7 @@ void RbtBiMolWorkSpace::UpdateModelCoordsFromChromRecords(
       if (spChrom.Ptr()) {
         int chromLength = spChrom->GetLength();
         if (chromLength > 0) {
-          ostringstream ostr;
+          std::ostringstream ostr;
           ostr << "CHROM." << iModel;
           std::string chromField = ostr.str();
           if (pSource->isDataFieldPresent(chromField)) {
@@ -102,12 +102,14 @@ void RbtBiMolWorkSpace::UpdateModelCoordsFromChromRecords(
               spChrom->SyncToModel();
               spModel->UpdatePseudoAtoms();
             } else if (iTrace > 0) {
-              cout << "Mismatched chromosome sizes for model #" << iModel
-                   << endl;
-              cout << chromField << " record in " << pSource->GetFileName()
-                   << " has " << chromValues.size() << " elements" << endl;
-              cout << "Expected number of elements is " << chromLength << endl;
-              cout << "Model chromosome not updated" << endl;
+              std::cout << "Mismatched chromosome sizes for model #" << iModel
+                        << std::endl;
+              std::cout << chromField << " record in " << pSource->GetFileName()
+                        << " has " << chromValues.size() << " elements"
+                        << std::endl;
+              std::cout << "Expected number of elements is " << chromLength
+                        << std::endl;
+              std::cout << "Model chromosome not updated" << std::endl;
             }
           }
         }
@@ -163,7 +165,7 @@ void RbtBiMolWorkSpace::SaveLigand(RbtMolecularFileSinkPtr spSink,
           spChrom->SyncFromModel();
           RbtDoubleList chromVec;
           spChrom->GetVector(chromVec);
-          ostringstream ostr;
+          std::ostringstream ostr;
           ostr << "CHROM." << iModel;
           spLigand->SetDataValue(ostr.str(), RbtVariant(chromVec, 72, 8));
         }

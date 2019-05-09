@@ -19,7 +19,7 @@
 
 std::string RbtGPFFGold::_CT("RbtGPFFGold");
 
-void RbtGPFFGold::ReadTables(istream &in) {
+void RbtGPFFGold::ReadTables(std::istream &in) {
   RbtReturnType value;
   int i = 0, j;
   in >> value;
@@ -67,7 +67,7 @@ double RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
     double rmsd = *(SFValues[1]);
     RbtGPChromosomePtr c(g->GetChrom());
     o = p.Parse(c, inputs);
-    //        cout << *(o[0]) << endl;
+    //        std::cout << *(o[0]) << std::endl;
     for (int j = 0; j < RbtGPGenome::GetNO(); j++)
       if (function) {
         double d = 2.5 * rmsd + scoreM - *(o[j]);
@@ -114,13 +114,13 @@ double RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
     RbtReturnTypeList SFValues = sft[i];
     double scoreM = *(SFValues[0]);
     double rmsd = *(SFValues[1]);
-    /*        cout << "input  : ";
+    /*        std::cout << "input  : ";
             for (RbtInt j = 0 ; j < inputs.size() ; j++)
-                cout << *(inputs[j]) << " ";
-            cout << endl; */
+                std::cout << *(inputs[j]) << " ";
+            std::cout << std::endl; */
     RbtGPChromosomePtr c = g->GetChrom();
     o = p.Parse(c, inputs);
-    //        cout << *(o[0]) << endl;
+    //        std::cout << *(o[0]) << std::endl;
     double limit = function ? scoreM + 5 : 0.0;
     for (int j = 0; j < RbtGPGenome::GetNO(); j++) {
       if (rmsd < hitlimit)
@@ -140,8 +140,8 @@ double RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
     c->Clear();
   }
   // objective value always an increasing function
-  cout << truehits << "\t" << falsehits << "\t" << truemisses << "\t"
-       << falsemisses << endl;
+  std::cout << truehits << "\t" << falsehits << "\t" << truemisses << "\t"
+            << falsemisses << std::endl;
   objective = truehits / (truehits + falsehits);
   fitness = objective;
   g->SetFitness(fitness);

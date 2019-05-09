@@ -44,7 +44,7 @@ public:
   // Insertion operator (primarily for debugging)
   // Note: needs to be friend so can access bond private data
   // without using the accessor functions
-  friend ostream &operator<<(ostream &s, const RbtBond &bond);
+  friend std::ostream &operator<<(std::ostream &s, const RbtBond &bond);
 
   ////////////////////////////////////////
   // Public accessor functions

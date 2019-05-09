@@ -26,7 +26,7 @@ class RbtGPFFGold : public RbtGPFitnessFunction {
 public:
   static std::string _CT;
 
-  void ReadTables(istream &);
+  void ReadTables(std::istream &);
   double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
                           RbtReturnTypeArray &, double, bool);
   double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,

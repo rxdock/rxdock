@@ -241,9 +241,9 @@ void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
         Rbt::FindBond(m_bondList, Rbt::isBond_eq((*mapIter).first));
     if (bIter != m_bondList.end()) {
 #ifdef _DEBUG
-      cout << "Removing bond #" << (*bIter)->GetBondId() << " ("
-           << (*bIter)->GetAtom1Ptr()->GetAtomName() << "-"
-           << (*bIter)->GetAtom2Ptr()->GetAtomName() << ")" << endl;
+      std::cout << "Removing bond #" << (*bIter)->GetBondId() << " ("
+                << (*bIter)->GetAtom1Ptr()->GetAtomName() << "-"
+                << (*bIter)->GetAtom2Ptr()->GetAtomName() << ")" << std::endl;
 #endif                         //_DEBUG
       m_bondList.erase(bIter); // Erase the bond
     }
@@ -258,8 +258,8 @@ void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
       Rbt::FindAtom(m_atomList, std::bind2nd(Rbt::isAtom_eq(), spAtom));
   if (aIter != m_atomList.end()) {
 #ifdef _DEBUG
-    cout << "Removing atom #" << (*aIter)->GetAtomId() << ", "
-         << (*aIter)->GetAtomName() << endl;
+    std::cout << "Removing atom #" << (*aIter)->GetAtomId() << ", "
+              << (*aIter)->GetAtomName() << std::endl;
 #endif                       //_DEBUG
     m_atomList.erase(aIter); // Erase the atom
   }
@@ -366,7 +366,8 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
   const std::string _MANDATORY("MANDATORY");
   const std::string _FORBIDDEN("FORBIDDEN");
   if (atoms.empty()) {
-    cout << "WARNING SetupPartialIonicGroups: Empty atom list" << endl;
+    std::cout << "WARNING SetupPartialIonicGroups: Empty atom list"
+              << std::endl;
     return;
   }
   RbtAtomPtr leadAtom = atoms.front();
@@ -374,15 +375,16 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
   std::string match = leadAtom->GetSegmentName() + ":" + subunitName + "_" +
                       leadAtom->GetSubunitId() + ":";
   if (Rbt::GetNumMatchingAtoms(atoms, match) != atoms.size()) {
-    cout << "WARNING SetupPartialIonicGroups: Inconsistent subunit names in "
-            "atom list headed by "
-         << leadAtom->GetFullAtomName() << endl;
+    std::cout
+        << "WARNING SetupPartialIonicGroups: Inconsistent subunit names in "
+           "atom list headed by "
+        << leadAtom->GetFullAtomName() << std::endl;
     return;
   }
   RbtStringList resList(spParamSource->GetSectionList());
   if (std::find(resList.begin(), resList.end(), subunitName) == resList.end()) {
-    // cout << "INFO SetupPartialIonicGroups: No section for residue " <<
-    // subunitName << endl;
+    // std::cout << "INFO SetupPartialIonicGroups: No section for residue " <<
+    // subunitName << std::endl;
     return;
   }
 
@@ -395,10 +397,10 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     int nPresent = Rbt::GetNumMatchingAtoms(atoms, mandAtoms);
     if (nPresent != mandAtoms.size()) {
 #ifdef _DEBUG
-      cout << "INFO SetupPartialIonicGroups: Only " << nPresent << " out of "
-           << mandAtoms.size()
-           << " mandatory atoms present in atom list headed by "
-           << leadAtom->GetFullAtomName() << endl;
+      std::cout << "INFO SetupPartialIonicGroups: Only " << nPresent
+                << " out of " << mandAtoms.size()
+                << " mandatory atoms present in atom list headed by "
+                << leadAtom->GetFullAtomName() << std::endl;
 #endif //_DEBUG
       return;
     }
@@ -411,9 +413,9 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     int nPresent = Rbt::GetNumMatchingAtoms(atoms, forbAtoms);
     if (nPresent > 0) {
 #ifdef _DEBUG
-      cout << "INFO SetupPartialIonicGroups: " << nPresent
-           << " forbidden atoms present in atom list headed by "
-           << leadAtom->GetFullAtomName() << endl;
+      std::cout << "INFO SetupPartialIonicGroups: " << nPresent
+                << " forbidden atoms present in atom list headed by "
+                << leadAtom->GetFullAtomName() << std::endl;
 #endif //_DEBUG
       return;
     }
@@ -425,7 +427,7 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     double partialCharge(spParamSource->GetParameterValue(
         *aIter)); // Get the partial charge value
 #ifdef _DEBUG
-    cout << endl << "Trying to match " << *aIter << endl;
+    std::cout << std::endl << "Trying to match " << *aIter << std::endl;
 #endif //_DEBUG
     // Find the atoms which match the specifier string
     RbtAtomList selectedAtoms = Rbt::GetMatchingAtomList(atoms, *aIter);
@@ -434,8 +436,8 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
          iter != selectedAtoms.end(); iter++) {
       (*iter)->SetGroupCharge(partialCharge);
 #ifdef _DEBUG
-      cout << "INFO Setting group charge on " << (*iter)->GetFullAtomName()
-           << " to " << partialCharge << endl;
+      std::cout << "INFO Setting group charge on " << (*iter)->GetFullAtomName()
+                << " to " << partialCharge << std::endl;
 #endif //_DEBUG
     }
   }

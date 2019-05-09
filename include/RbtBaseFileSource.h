@@ -16,7 +16,6 @@
 #define _RBTBASEFILESOURCE_H_
 
 #include <fstream>
-using std::ifstream;
 
 #include "RbtConfig.h"
 
@@ -88,7 +87,7 @@ private:
 private:
   std::string m_strFileName;
   bool m_bReadOK; // For use by Read
-  ifstream m_fileIn;
+  std::ifstream m_fileIn;
   char *m_szBuf;    // Line buffer
   bool m_bFileOpen; // Keep track of whether we've opened the file or not
   bool m_bMultiRec; // Is file multi-record ?

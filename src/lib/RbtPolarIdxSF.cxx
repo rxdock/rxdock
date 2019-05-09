@@ -33,7 +33,7 @@ RbtPolarIdxSF::RbtPolarIdxSF(const std::string &strName)
   AddParameter(_THRESHOLD_POS, m_posThreshold);
   AddParameter(_THRESHOLD_NEG, m_negThreshold);
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -43,7 +43,7 @@ RbtPolarIdxSF::~RbtPolarIdxSF() {
   ClearLigand();
   ClearSolvent();
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -114,7 +114,7 @@ void RbtPolarIdxSF::SetupReceptor() {
     m_recepNegList = CreateAcceptorInteractionCenters(atomList);
     for (int i = 1; i <= nCoords; i++) {
       if (iTrace > 0) {
-        cout << _CT << ": Indexing receptor coords # " << i << endl;
+        std::cout << _CT << ": Indexing receptor coords # " << i << std::endl;
       }
       GetReceptor()->RevertCoords(i);
       for (RbtInteractionCenterListConstIter iter = m_recepPosList.begin();
@@ -203,8 +203,8 @@ void RbtPolarIdxSF::SetupReceptor() {
       }
       if (iTrace > 0) {
         double score = ReceptorScore();
-        cout << GetWorkSpace()->GetName() << " " << GetFullName()
-             << ": Intra-receptor score = " << score << endl;
+        std::cout << GetWorkSpace()->GetName() << " " << GetFullName()
+                  << ": Intra-receptor score = " << score << std::endl;
       }
     }
 

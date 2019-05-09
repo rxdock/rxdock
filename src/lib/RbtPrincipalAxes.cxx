@@ -48,13 +48,13 @@ RbtPrincipalAxes Rbt::GetSolventPrincipalAxes(const RbtAtomPtr &oAtom,
     retVal.axis2 = -retVal.axis2;
     retVal.axis3 = -retVal.axis3;
   }
-  //  cout << "Solvent: Axis 1 = " << retVal.axis1;
-  //  cout << ": d1 = " << v1.Dot(retVal.axis1) << "; d2 = " <<
-  //  v2.Dot(retVal.axis1) << endl; cout << "Solvent: Axis 2 = " <<
-  //  retVal.axis2; cout << ": d1 = " << v1.Dot(retVal.axis2) << "; d2 = " <<
-  //  v2.Dot(retVal.axis2) << endl; cout << "Solvent: Axis 3 = " <<
-  //  retVal.axis3; cout << ": d1 = " << v1.Dot(retVal.axis3) << "; d2 = " <<
-  //  v2.Dot(retVal.axis3) << endl;
+  //  std::cout << "Solvent: Axis 1 = " << retVal.axis1;
+  //  std::cout << ": d1 = " << v1.Dot(retVal.axis1) << "; d2 = " <<
+  //  v2.Dot(retVal.axis1) << std::endl; std::cout << "Solvent: Axis 2 = " <<
+  //  retVal.axis2; std::cout << ": d1 = " << v1.Dot(retVal.axis2) << "; d2 = "
+  //  << v2.Dot(retVal.axis2) << std::endl; std::cout << "Solvent: Axis 3 = " <<
+  //  retVal.axis3; std::cout << ": d1 = " << v1.Dot(retVal.axis3) << "; d2 = "
+  //  << v2.Dot(retVal.axis3) << std::endl;
   return retVal;
 }
 
@@ -171,7 +171,8 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
   double d1 = c0.Dot(principalAxes.axis1);
   double d2 = c0.Dot(principalAxes.axis2);
   // RbtDouble d3 = c0.Dot(principalAxes.axis3);
-  // cout << "Before: d1,d2,d3=" << d1 << "\t" << d2 << "\t" << d3 << endl;
+  // std::cout << "Before: d1,d2,d3=" << d1 << "\t" << d2 << "\t" << d3 <<
+  // std::endl;
   if (d1 < 0.0)
     principalAxes.axis1 = -principalAxes.axis1;
   if (d2 < 0.0)
@@ -180,13 +181,15 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
   // d1 = c0.Dot(principalAxes.axis1);
   // d2 = c0.Dot(principalAxes.axis2);
   // d3 = c0.Dot(principalAxes.axis3);
-  // cout << "After: d1,d2,d3=" << d1 << "\t" << d2 << "\t" << d3 << endl;
+  // std::cout << "After: d1,d2,d3=" << d1 << "\t" << d2 << "\t" << d3 <<
+  // std::endl;
 
-  // cout << "(TNT) Axis1=" << principalAxes.axis1 << "; Moment1=" <<
-  // principalAxes.moment1 << endl; cout << "(TNT) Axis2=" <<
+  // std::cout << "(TNT) Axis1=" << principalAxes.axis1 << "; Moment1=" <<
+  // principalAxes.moment1 << std::endl; std::cout << "(TNT) Axis2=" <<
   // principalAxes.axis2
-  // << "; Moment2=" << principalAxes.moment2 << endl; cout << "(TNT) Axis3=" <<
-  // principalAxes.axis3 << "; Moment3=" << principalAxes.moment3 << endl;
+  // << "; Moment2=" << principalAxes.moment2 << std::endl; std::cout << "(TNT)
+  // Axis3=" << principalAxes.axis3 << "; Moment3=" << principalAxes.moment3 <<
+  // std::endl;
   return principalAxes;
 }
 

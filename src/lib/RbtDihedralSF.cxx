@@ -21,9 +21,9 @@ RbtDihedral::RbtDihedral(RbtAtom *pAtom1, RbtAtom *pAtom2, RbtAtom *pAtom3,
 void RbtDihedral::AddTerm(const prms &dihprms) { m_prms.push_back(dihprms); }
 
 double RbtDihedral::operator()() const {
-  // cout.precision(3);
-  // cout.setf(ios_base::fixed,ios_base::floatfield);
-  // cout.setf(ios_base::right,ios_base::adjustfield);
+  // std::cout.precision(3);
+  // std::cout.setf(std::ios_base::fixed,ios_base::floatfield);
+  // std::cout.setf(std::ios_base::right,ios_base::adjustfield);
   double dih = Rbt::BondDihedral(m_pAtom1, m_pAtom2, m_pAtom3, m_pAtom4);
   double score(0.0);
   for (int i = 0; i != m_prms.size(); ++i) {
@@ -31,11 +31,12 @@ double RbtDihedral::operator()() const {
     double dih1 = dih - m_prms[i].offset;
     score += m_prms[i].k *
              (1.0 + m_prms[i].sign * cos(m_prms[i].s * dih1 * M_PI / 180.0));
-    // cout << m_pAtom1->GetAtomName() << "," << m_pAtom2->GetAtomName() << ","
+    // std::cout << m_pAtom1->GetAtomName() << "," << m_pAtom2->GetAtomName() <<
+    // ","
     // << m_pAtom3->GetAtomName() << ","
     //	 << m_pAtom4->GetAtomName() << "\t" << m_prms[i].sign << "\t" <<
     // m_prms[i].s << "\t" << m_prms[i].k << "\t"
-    //	 << dih << "\t" << dih1 << "\t" << score << endl;
+    //	 << dih << "\t" << dih1 << "\t" << score << std::endl;
   }
   return score;
 }
@@ -46,7 +47,7 @@ std::string RbtDihedralSF::_IMPL_H_CORR("IMPL_H_CORR");
 
 RbtDihedralSF::RbtDihedralSF() {
 #ifdef _DEBUG
-  cout << _CT << " default constructor" << endl;
+  std::cout << _CT << " default constructor" << std::endl;
 #endif //_DEBUG
   // Add parameters
   AddParameter(_IMPL_H_CORR, false);
@@ -58,7 +59,7 @@ RbtDihedralSF::RbtDihedralSF() {
 
 RbtDihedralSF::~RbtDihedralSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -101,10 +102,11 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
               dihprms = FindDihedralParams(RbtTriposAtomType::H, t2, t3, t4);
               dihprms.offset = offset2[i1];
               if (iTrace > 1) {
-                cout << _CT << ": <H" << i1 + 1 << ">-" << pAtom2->GetAtomName()
-                     << "-" << pAtom3->GetAtomName() << "-"
-                     << pAtom4->GetAtomName() << "\toffset = " << dihprms.offset
-                     << endl;
+                std::cout << _CT << ": <H" << i1 + 1 << ">-"
+                          << pAtom2->GetAtomName() << "-"
+                          << pAtom3->GetAtomName() << "-"
+                          << pAtom4->GetAtomName()
+                          << "\toffset = " << dihprms.offset << std::endl;
               }
               pDih->AddTerm(dihprms);
               // Add all the ghost dihedral combinations for implicit Hs on
@@ -123,10 +125,10 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
                   if (dihprms.offset < -180.0)
                     dihprms.offset += 360.0;
                   if (iTrace > 1) {
-                    cout << _CT << ": <H" << i1 + 1 << ">-"
-                         << pAtom2->GetAtomName() << "-"
-                         << pAtom3->GetAtomName() << "-<H" << i4 + 1
-                         << ">\toffset = " << dihprms.offset << endl;
+                    std::cout << _CT << ": <H" << i1 + 1 << ">-"
+                              << pAtom2->GetAtomName() << "-"
+                              << pAtom3->GetAtomName() << "-<H" << i4 + 1
+                              << ">\toffset = " << dihprms.offset << std::endl;
                   }
                   pDih->AddTerm(dihprms);
                 }
@@ -143,10 +145,11 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
               // bond so sign is inverted
               dihprms.offset = offset3[i4];
               if (iTrace > 1) {
-                cout << _CT << ": " << pAtom1->GetAtomName() << "-"
-                     << pAtom2->GetAtomName() << "-" << pAtom3->GetAtomName()
-                     << "-" << pAtom4->GetAtomName()
-                     << "\toffset = " << dihprms.offset << endl;
+                std::cout << _CT << ": " << pAtom1->GetAtomName() << "-"
+                          << pAtom2->GetAtomName() << "-"
+                          << pAtom3->GetAtomName() << "-"
+                          << pAtom4->GetAtomName()
+                          << "\toffset = " << dihprms.offset << std::endl;
               }
               pDih->AddTerm(dihprms);
             }
@@ -170,9 +173,9 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
   std::string wild = std::string("*");
   int iTrace = GetTrace();
   if (iTrace > 2) {
-    cout << endl
-         << _CT << ": Searching for " << str1 << "," << str2 << "," << str3
-         << "," << str4 << endl;
+    std::cout << std::endl
+              << _CT << ": Searching for " << str1 << "," << str2 << "," << str3
+              << "," << str4 << std::endl;
   }
 
   std::string strParams;
@@ -187,27 +190,27 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
     std::string strw4 = wild + "_" + str4;
     std::string strww = wild + "_" + wild;
     if (iTrace > 2) {
-      cout << "Matched " << str23 << " central pair" << endl;
+      std::cout << "Matched " << str23 << " central pair" << std::endl;
     }
     if (m_spDihedralSource->isParameterPresent(str14)) {
       strParams = m_spDihedralSource->GetParameterValueAsString(str14);
       if (iTrace > 2) {
-        cout << "Matched " << str14 << " outer pair" << endl;
+        std::cout << "Matched " << str14 << " outer pair" << std::endl;
       }
     } else if (m_spDihedralSource->isParameterPresent(str1w)) {
       strParams = m_spDihedralSource->GetParameterValueAsString(str1w);
       if (iTrace > 2) {
-        cout << "Matched " << str1w << " outer pair" << endl;
+        std::cout << "Matched " << str1w << " outer pair" << std::endl;
       }
     } else if (m_spDihedralSource->isParameterPresent(strw4)) {
       strParams = m_spDihedralSource->GetParameterValueAsString(strw4);
       if (iTrace > 2) {
-        cout << "Matched " << strw4 << " outer pair" << endl;
+        std::cout << "Matched " << strw4 << " outer pair" << std::endl;
       }
     } else if (m_spDihedralSource->isParameterPresent(strww)) {
       strParams = m_spDihedralSource->GetParameterValueAsString(strww);
       if (iTrace > 2) {
-        cout << "Matched " << strww << " outer pair" << endl;
+        std::cout << "Matched " << strww << " outer pair" << std::endl;
       }
     }
   } else if (std::find(m_centralPairs.begin(), m_centralPairs.end(), str32) !=
@@ -218,35 +221,35 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
     std::string strw1 = wild + "_" + str1;
     std::string strww = wild + "_" + wild;
     if (iTrace > 2) {
-      cout << "Matched " << str32 << " central pair" << endl;
+      std::cout << "Matched " << str32 << " central pair" << std::endl;
     }
     if (m_spDihedralSource->isParameterPresent(str41)) {
       strParams = m_spDihedralSource->GetParameterValueAsString(str41);
       if (iTrace > 2) {
-        cout << "Matched " << str41 << " outer pair" << endl;
+        std::cout << "Matched " << str41 << " outer pair" << std::endl;
       }
     } else if (m_spDihedralSource->isParameterPresent(str4w)) {
       strParams = m_spDihedralSource->GetParameterValueAsString(str4w);
       if (iTrace > 2) {
-        cout << "Matched " << str4w << " outer pair" << endl;
+        std::cout << "Matched " << str4w << " outer pair" << std::endl;
       }
     } else if (m_spDihedralSource->isParameterPresent(strw1)) {
       strParams = m_spDihedralSource->GetParameterValueAsString(strw1);
       if (iTrace > 2) {
-        cout << "Matched " << strw1 << " outer pair" << endl;
+        std::cout << "Matched " << strw1 << " outer pair" << std::endl;
       }
     } else if (m_spDihedralSource->isParameterPresent(strww)) {
       strParams = m_spDihedralSource->GetParameterValueAsString(strww);
       if (iTrace > 2) {
-        cout << "Matched " << strww << " outer pair" << endl;
+        std::cout << "Matched " << strww << " outer pair" << std::endl;
       }
     }
   } else {
     m_spDihedralSource->SetSection();
     strParams = m_spDihedralSource->GetParameterValueAsString("DEFAULT");
     if (iTrace > 0) {
-      cout << _CT << ": No match for " << str23 << ": using DEFAULT params"
-           << endl;
+      std::cout << _CT << ": No match for " << str23 << ": using DEFAULT params"
+                << std::endl;
     }
   }
 
@@ -255,8 +258,8 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
   double k = atof(paramList[0].c_str());
   double s = atof(paramList[1].c_str());
   if (iTrace > 1) {
-    cout << _CT << ": Assigned " << str1 << "," << str2 << "," << str3 << ","
-         << str4 << "\tk=" << k << ", s=" << s << endl;
+    std::cout << _CT << ": Assigned " << str1 << "," << str2 << "," << str3
+              << "," << str4 << "\tk=" << k << ", s=" << s << std::endl;
   }
   return RbtDihedral::prms(s, k);
 }
@@ -277,8 +280,9 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
   if (nH == 0)
     return;
   if (GetTrace() > 2) {
-    cout << _CT << ": determining impl H offsets for " << pAtom1->GetAtomName()
-         << " - " << pAtom2->GetAtomName() << endl;
+    std::cout << _CT << ": determining impl H offsets for "
+              << pAtom1->GetAtomName() << " - " << pAtom2->GetAtomName()
+              << std::endl;
   }
   RbtAtom::eHybridState hybrid = pAtom1->GetHybridState();
   if (hybrid == RbtAtom::SP3) {
@@ -290,38 +294,38 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
           Rbt::BondDihedral(bondedAtoms[0], pAtom1, pAtom2, bondedAtoms[1]);
       double offset = -improper;
       if (GetTrace() > 2) {
-        cout << _CT << ": offset for SP3 atom " << pAtom1->GetAtomName()
-             << " = " << offset << endl;
+        std::cout << _CT << ": offset for SP3 atom " << pAtom1->GetAtomName()
+                  << " = " << offset << std::endl;
       }
       offsets.push_back(offset);
     }
     // SP3: 1 heavy atom plus 2 implicit H, return both offsets of +/- 120 deg
     else if ((nH == 2) && (bondedAtoms.size() == 1)) {
       if (GetTrace() > 2) {
-        cout << _CT << ": offsets for SP3 atom " << pAtom1->GetAtomName()
-             << " = -120,+120" << endl;
+        std::cout << _CT << ": offsets for SP3 atom " << pAtom1->GetAtomName()
+                  << " = -120,+120" << std::endl;
       }
       offsets.push_back(-120.0);
       offsets.push_back(+120.0);
     } else {
-      cout << _CT << ": WARNING - inconsistent bonding around SP3 atom "
-           << pAtom1->GetFullAtomName() << endl;
+      std::cout << _CT << ": WARNING - inconsistent bonding around SP3 atom "
+                << pAtom1->GetFullAtomName() << std::endl;
     }
   } else if (hybrid == RbtAtom::SP2) {
     // SP2: The only combination that makes sense is 1 heavy atom and 1 implicit
     // hydrogen Offset is always 180 deg.
     if ((nH == 1) && (bondedAtoms.size() == 1)) {
       if (GetTrace() > 2) {
-        cout << _CT << ": offset for SP2 atom " << pAtom1->GetAtomName()
-             << " = 180" << endl;
+        std::cout << _CT << ": offset for SP2 atom " << pAtom1->GetAtomName()
+                  << " = 180" << std::endl;
       }
       offsets.push_back(-180.0);
     } else {
-      cout << _CT << ": WARNING - inconsistent bonding around SP2 atom "
-           << pAtom1->GetFullAtomName() << endl;
+      std::cout << _CT << ": WARNING - inconsistent bonding around SP2 atom "
+                << pAtom1->GetFullAtomName() << std::endl;
     }
   } else {
-    cout << _CT << ": WARNING - unexpected hybridisation state for "
-         << pAtom1->GetFullAtomName() << endl;
+    std::cout << _CT << ": WARNING - unexpected hybridisation state for "
+              << pAtom1->GetFullAtomName() << std::endl;
   }
 }

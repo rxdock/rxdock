@@ -123,15 +123,15 @@ RbtGenomePtr RbtPopulation::Best() const {
   return m_pop.empty() ? RbtGenomePtr() : m_pop.front();
 }
 
-void RbtPopulation::Print(ostream &s) const {
-  s << m_pop.size() << endl;
+void RbtPopulation::Print(std::ostream &s) const {
+  s << m_pop.size() << std::endl;
   for (RbtGenomeListConstIter iter = m_pop.begin(); iter != m_pop.end();
        ++iter) {
     (*iter)->Print(s);
   }
 }
 
-ostream &operator<<(ostream &s, const RbtPopulation &p) {
+std::ostream &operator<<(std::ostream &s, const RbtPopulation &p) {
   p.Print(s);
   return s;
 }

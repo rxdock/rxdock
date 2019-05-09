@@ -67,14 +67,14 @@ public:
     if (constant)
       constant = false;
     else
-      cout << "ERROR\n";
+      std::cout << "ERROR\n";
   }
 
 private:
   bool evaluated, constant;
   std::string name;
   RbtReturnType result;
-  //    friend ostream& operator<<(ostream& s, const RbtCell &p);
+  //    friend std::ostream& operator<<(std::ostream& s, const RbtCell &p);
 };
 
 // Useful typedefs

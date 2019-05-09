@@ -73,8 +73,8 @@ public:
     return g1.Equals(g2, RbtChromElement::_THRESHOLD);
   }
 
-  void Print(ostream &) const;
-  friend ostream &operator<<(ostream &s, const RbtGenome &g);
+  void Print(std::ostream &) const;
+  friend std::ostream &operator<<(std::ostream &s, const RbtGenome &g);
 
 private:
   RbtGenome(); // Default constructor disabled

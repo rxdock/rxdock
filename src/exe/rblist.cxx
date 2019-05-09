@@ -12,11 +12,10 @@
 
 // SD file dump, listing number of atoms, bonds, interaction centers etc
 
-#include <algorithm> //for min,max
-#include <iomanip>
-using namespace std;
 #include "RbtMdlFileSink.h"
 #include "RbtMdlFileSource.h"
+#include <algorithm> //for min,max
+#include <iomanip>
 
 const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rblist.cxx#4 $)";
@@ -46,26 +45,26 @@ void ListAtoms(const RbtAtomList &atomList, std::string strTitle,
                int nMaxToPrint = 20) {
   int nSize = atomList.size();
   int nToPrint = std::min(nMaxToPrint, nSize);
-  cout << endl
-       << "1st " << nToPrint << " " << strTitle << " (out of " << nSize << ")"
-       << endl;
+  std::cout << std::endl
+            << "1st " << nToPrint << " " << strTitle << " (out of " << nSize
+            << ")" << std::endl;
   for (RbtAtomListConstIter iter = atomList.begin();
        (iter != (atomList.begin() + nMaxToPrint)) && (iter != atomList.end());
        iter++)
-    cout << (**iter) << endl;
+    std::cout << (**iter) << std::endl;
 }
 
 void ListBonds(const RbtBondList &bondList, std::string strTitle,
                int nMaxToPrint = 20) {
   int nSize = bondList.size();
   int nToPrint = std::min(nMaxToPrint, nSize);
-  cout << endl
-       << "1st " << nToPrint << " " << strTitle << " (out of " << nSize << ")"
-       << endl;
+  std::cout << std::endl
+            << "1st " << nToPrint << " " << strTitle << " (out of " << nSize
+            << ")" << std::endl;
   for (RbtBondListConstIter iter = bondList.begin();
        (iter != (bondList.begin() + nMaxToPrint)) && (iter != bondList.end());
        iter++)
-    cout << (**iter) << endl;
+    std::cout << (**iter) << std::endl;
 }
 
 // DM 7 Jun 1999 - set primary and secondary amide bonds to 180.0 deg
@@ -82,7 +81,7 @@ void CheckAmideBonds(RbtModelPtr spModel) {
   amideBondList =
       Rbt::GetBondList(amideBondList, std::not1(Rbt::isBondCyclic()));
   int nAMIDE = amideBondList.size();
-  cout << nAMIDE << " amide bonds:" << endl;
+  std::cout << nAMIDE << " amide bonds:" << std::endl;
   for (RbtBondListConstIter bIter = amideBondList.begin();
        bIter != amideBondList.end(); bIter++) {
     RbtAtomPtr spAtom2 = (*bIter)->GetAtom1Ptr();
@@ -102,26 +101,26 @@ void CheckAmideBonds(RbtModelPtr spModel) {
       RbtAtomPtr spH = (*hIter);
       RbtAtomPtr spO = (*oIter);
       double phi = Rbt::BondDihedral(spH, spN, spC, spO);
-      cout << spH->GetAtomName() << "(" << spH->GetFFType() << ") - "
-           << spN->GetAtomName() << "(" << spN->GetFFType() << ") - "
-           << spC->GetAtomName() << "(" << spC->GetFFType() << ") - "
-           << spO->GetAtomName() << "(" << spO->GetFFType() << "): " << phi
-           << " deg" << endl;
+      std::cout << spH->GetAtomName() << "(" << spH->GetFFType() << ") - "
+                << spN->GetAtomName() << "(" << spN->GetFFType() << ") - "
+                << spC->GetAtomName() << "(" << spC->GetFFType() << ") - "
+                << spO->GetAtomName() << "(" << spO->GetFFType() << "): " << phi
+                << " deg" << std::endl;
       double deltaPhi = 180.0 - phi;
-      cout << "Rotating bond by " << deltaPhi << " deg" << endl;
+      std::cout << "Rotating bond by " << deltaPhi << " deg" << std::endl;
       spModel->RotateBond(*bIter, deltaPhi);
       phi = Rbt::BondDihedral(spH, spN, spC, spO);
-      cout << "Dihedral is now " << phi << " deg" << endl;
+      std::cout << "Dihedral is now " << phi << " deg" << std::endl;
     } else {
-      cout << spN->GetAtomName() << "(" << spN->GetFFType() << ") - "
-           << spC->GetAtomName() << "(" << spC->GetFFType() << "): TERTIARY"
-           << endl;
+      std::cout << spN->GetAtomName() << "(" << spN->GetFFType() << ") - "
+                << spC->GetAtomName() << "(" << spC->GetFFType()
+                << "): TERTIARY" << std::endl;
     }
   }
 }
 
 int main(int argc, char *argv[]) {
-  cout.setf(ios_base::left, ios_base::adjustfield);
+  std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 
   // Strip off the path to the executable, leaving just the file name
   std::string strExeName(argv[0]);
@@ -130,7 +129,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
 
   // Default values for optional arguments
   std::string strInputSDFile;
@@ -144,39 +143,47 @@ int main(int argc, char *argv[]) {
 
   // Display brief help message if no args
   if (argc == 1) {
-    cout << endl
-         << strExeName
-         << " - output interaction center info for ligands in SD file (with "
-            "optional autoionisation)"
-         << endl;
-    cout << endl
-         << "Usage:\t" << strExeName
-         << " -i<InputSDFile> [-o<OutputSDFile>] [-ap] [-an] [-allH]" << endl;
-    cout << endl << "Options:\t-i<InputSDFile> - input ligand SD file" << endl;
-    cout << "\t\t-o<OutputSDFile> - output SD file with descriptors "
-            "(default=no output)"
-         << endl;
-    cout << "\t\t-ap - protonate all neutral amines, guanidines, imidazoles "
-            "(default=disabled)"
-         << endl;
-    cout << "\t\t-an - deprotonate all carboxylic, sulphur and phosphorous "
-            "acid groups (default=disabled)"
-         << endl;
-    cout << "\t\t-allH - read all hydrogens present (default=polar hydrogens "
-            "only)"
-         << endl;
-    cout << "\t\t-tr - rotate all 2ndry amides to trans (default=leave alone)"
-         << endl;
-    cout << "\t\t-l - verbose listing of ligand atoms and rotable bonds "
-            "(default = compact table format)"
-         << endl;
+    std::cout
+        << std::endl
+        << strExeName
+        << " - output interaction center info for ligands in SD file (with "
+           "optional autoionisation)"
+        << std::endl;
+    std::cout << std::endl
+              << "Usage:\t" << strExeName
+              << " -i<InputSDFile> [-o<OutputSDFile>] [-ap] [-an] [-allH]"
+              << std::endl;
+    std::cout << std::endl
+              << "Options:\t-i<InputSDFile> - input ligand SD file"
+              << std::endl;
+    std::cout << "\t\t-o<OutputSDFile> - output SD file with descriptors "
+                 "(default=no output)"
+              << std::endl;
+    std::cout
+        << "\t\t-ap - protonate all neutral amines, guanidines, imidazoles "
+           "(default=disabled)"
+        << std::endl;
+    std::cout
+        << "\t\t-an - deprotonate all carboxylic, sulphur and phosphorous "
+           "acid groups (default=disabled)"
+        << std::endl;
+    std::cout
+        << "\t\t-allH - read all hydrogens present (default=polar hydrogens "
+           "only)"
+        << std::endl;
+    std::cout
+        << "\t\t-tr - rotate all 2ndry amides to trans (default=leave alone)"
+        << std::endl;
+    std::cout << "\t\t-l - verbose listing of ligand atoms and rotable bonds "
+                 "(default = compact table format)"
+              << std::endl;
     return 1;
   }
 
   // Check command line arguments
-  cout << endl << "Command line args:" << endl;
+  std::cout << std::endl << "Command line args:" << std::endl;
   for (int iarg = 1; iarg < argc; iarg++) {
-    cout << argv[iarg];
+    std::cout << argv[iarg];
     std::string strArg(argv[iarg]);
     if (strArg.find("-i") == 0)
       strInputSDFile = strArg.substr(2);
@@ -193,20 +200,22 @@ int main(int argc, char *argv[]) {
     else if (strArg.find("-l") == 0)
       bList = true;
     else {
-      cout << " ** INVALID ARGUMENT" << endl;
+      std::cout << " ** INVALID ARGUMENT" << std::endl;
       return 1;
     }
-    cout << endl;
+    std::cout << std::endl;
   }
-  cout << endl;
+  std::cout << std::endl;
 
   bool bWriteLigand = !strOutputSDFile.empty();
 
   if (!bList) {
-    cout << setw(8) << "RECORD" << setw(30) << "NAME" << setw(8) << "#ATOMS"
-         << setw(8) << "#BONDS" << setw(8) << "MW" << setw(8) << "#ROT"
-         << setw(8) << "#HBD" << setw(8) << "#HBA" << setw(8) << "#AROM"
-         << setw(8) << "#GUAN" << setw(8) << "#LIPOC" << endl;
+    std::cout << std::setw(8) << "RECORD" << std::setw(30) << "NAME"
+              << std::setw(8) << "#ATOMS" << std::setw(8) << "#BONDS"
+              << std::setw(8) << "MW" << std::setw(8) << "#ROT" << std::setw(8)
+              << "#HBD" << std::setw(8) << "#HBA" << std::setw(8) << "#AROM"
+              << std::setw(8) << "#GUAN" << std::setw(8) << "#LIPOC"
+              << std::endl;
   }
 
   try {
@@ -229,7 +238,7 @@ int main(int argc, char *argv[]) {
          spMdlFileSource->NextRecord(), nRec++) {
       RbtError molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
-        cout << molStatus << endl;
+        std::cout << molStatus << std::endl;
         continue;
       }
 
@@ -243,10 +252,10 @@ int main(int argc, char *argv[]) {
 
       if (bList) {
         RbtAtomList atomList = spModel->GetAtomList();
-        cout << endl << "Model = " << spModel->GetName() << endl;
+        std::cout << std::endl << "Model = " << spModel->GetName() << std::endl;
         for (RbtAtomListConstIter iter = atomList.begin();
              iter != atomList.end(); iter++) {
-          cout << (**iter) << endl;
+          std::cout << (**iter) << std::endl;
         }
         // continue;
       }
@@ -304,21 +313,24 @@ int main(int argc, char *argv[]) {
       int nROT = rotatableBondList.size();
 
       if (bList) {
-        cout << nROT << " rotatable bonds:" << endl;
+        std::cout << nROT << " rotatable bonds:" << std::endl;
         for (RbtBondListConstIter bIter = rotatableBondList.begin();
              bIter != rotatableBondList.end(); bIter++) {
           RbtAtomPtr spAtom1 = (*bIter)->GetAtom1Ptr();
           RbtAtomPtr spAtom2 = (*bIter)->GetAtom2Ptr();
-          cout << spAtom1->GetAtomName() << "(" << spAtom1->GetFFType()
-               << ") - " << spAtom2->GetAtomName() << "("
-               << spAtom2->GetFFType() << ")" << endl;
+          std::cout << spAtom1->GetAtomName() << "(" << spAtom1->GetFFType()
+                    << ") - " << spAtom2->GetAtomName() << "("
+                    << spAtom2->GetFFType() << ")" << std::endl;
         }
       } else {
         // Output the ligand info
-        cout << setw(8) << nRec << setw(30) << strModelName.c_str() << setw(8)
-             << nAtoms << setw(8) << nBonds << setw(8) << dMolWt << setw(8)
-             << nROT << setw(8) << nNHBD << setw(8) << nNHBA << setw(8)
-             << nAromRings << setw(8) << nGuan << setw(8) << nLipoC << endl;
+        std::cout << std::setw(8) << nRec << std::setw(30)
+                  << strModelName.c_str() << std::setw(8) << nAtoms
+                  << std::setw(8) << nBonds << std::setw(8) << dMolWt
+                  << std::setw(8) << nROT << std::setw(8) << nNHBD
+                  << std::setw(8) << nNHBA << std::setw(8) << nAromRings
+                  << std::setw(8) << nGuan << std::setw(8) << nLipoC
+                  << std::endl;
       }
 
       // Dump model to MdlFileSink
@@ -371,12 +383,12 @@ int main(int argc, char *argv[]) {
     // END OF MAIN LOOP OVER LIGAND RECORDS
     ////////////////////////////////////////////////////
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
 
   return 0;
 }

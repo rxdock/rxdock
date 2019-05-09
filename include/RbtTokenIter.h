@@ -29,8 +29,8 @@ public:
   //  virtual RbtTokenPtr IsDone() const = 0;
   //  virtual void First() = 0;
   //  RbtBool operator==(const RbtTokenIter&) const;
-  //  ostream& Print(ostream&) const;
-  //  friend ostream& operator<<(ostream& s, const RbtTokenIter &p);
+  //  std::ostream& Print(std::ostream&) const;
+  //  friend std::ostream& operator<<(std::ostream& s, const RbtTokenIter &p);
 };
 
 // Useful typedefs

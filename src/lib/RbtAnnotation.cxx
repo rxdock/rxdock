@@ -47,7 +47,7 @@ void RbtAnnotation::SetScore(double s) { m_score = s; }
 // Full string required for SD file is:
 // strName + "," + Render();
 std::string RbtAnnotation::Render() const {
-  ostringstream ostr;
+  std::ostringstream ostr;
   // Check if either atom is a pseudoatom
   // If so, arbitrarily write the first non-bridgehead atom ID
   const RbtPseudoAtom *pseudo1 = dynamic_cast<const RbtPseudoAtom *>(m_pAtom1);
@@ -74,7 +74,7 @@ std::string RbtAnnotation::Render() const {
   } else {
     ostr << m_pAtom2->GetAtomId() << ",";
   }
-  ostr.setf(ios_base::fixed, ios_base::floatfield);
+  ostr.setf(std::ios_base::fixed, std::ios_base::floatfield);
   ostr.precision(2);
   ostr << m_dist << "," << m_score;
   std::string retVal(ostr.str());

@@ -20,14 +20,14 @@ std::string RbtBaseInterSF::_CT("RbtBaseInterSF");
 // Constructors/destructors
 RbtBaseInterSF::RbtBaseInterSF() {
 #ifdef _DEBUG
-  cout << _CT << " default constructor" << endl;
+  std::cout << _CT << " default constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtBaseInterSF::~RbtBaseInterSF() {
 #ifdef _DEBUG
-  cout << _CT << "  destructor" << endl;
+  std::cout << _CT << "  destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -51,7 +51,8 @@ void RbtBaseInterSF::Update(RbtSubject *theChangedSubject) {
       RbtModelPtr spReceptor = pWorkSpace->GetModel(0);
       if (spReceptor != m_spReceptor) {
 #ifdef _DEBUG
-        cout << "RbtBaseInterSF::Update(): Receptor has been updated" << endl;
+        std::cout << "RbtBaseInterSF::Update(): Receptor has been updated"
+                  << std::endl;
 #endif //_DEBUG
         m_spReceptor = spReceptor;
         SetupReceptor();
@@ -62,7 +63,8 @@ void RbtBaseInterSF::Update(RbtSubject *theChangedSubject) {
       RbtModelPtr spLigand = pWorkSpace->GetModel(1);
       if (spLigand != m_spLigand) {
 #ifdef _DEBUG
-        cout << "RbtBaseInterSF::Update(): Ligand has been updated" << endl;
+        std::cout << "RbtBaseInterSF::Update(): Ligand has been updated"
+                  << std::endl;
 #endif //_DEBUG
         m_spLigand = spLigand;
         SetupLigand();

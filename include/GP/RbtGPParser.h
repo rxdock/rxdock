@@ -36,10 +36,10 @@ public:
   virtual ~RbtGPParser();
 
   void Clear();
-  ostream &Print(ostream &) const;
-  friend ostream &operator<<(ostream &s, const RbtGPParser &p);
+  std::ostream &Print(std::ostream &) const;
+  friend std::ostream &operator<<(std::ostream &s, const RbtGPParser &p);
   RbtReturnTypeList Parse(RbtGPChromosomePtr, RbtReturnTypeList &);
-  std::string PrintParse(istream &, RbtGPChromosomePtr, bool, bool);
+  std::string PrintParse(std::istream &, RbtGPChromosomePtr, bool, bool);
   bool IsConstantInt(int i) { return (i == CINT); }
   bool IsConstantFloat(int i) { return (i == CFLOAT); }
 

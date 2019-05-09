@@ -14,7 +14,6 @@
 #include "RbtMdlFileSource.h"
 #include "RbtWorkSpace.h"
 #include <sstream>
-using std::istringstream;
 
 // Static data members
 std::string RbtTetherSF::_CT("RbtTetherSF");
@@ -26,14 +25,14 @@ RbtTetherSF::RbtTetherSF(const std::string &strName) : RbtBaseSF(_CT, strName) {
   // Add parameters It gets the right name in SetupReceptor
   AddParameter(_REFERENCE_FILE, "_reference.sd");
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtTetherSF::~RbtTetherSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -41,7 +40,7 @@ RbtTetherSF::~RbtTetherSF() {
 RbtIntList RbtTetherSF::ReadTetherAtoms(RbtStringList &strAtoms) {
   RbtIntList tetherAtoms;
   std::string strTetherAtoms = Rbt::ConvertListToDelimitedString(strAtoms);
-  istringstream ist(strTetherAtoms.c_str());
+  std::istringstream ist(strTetherAtoms.c_str());
   int i;
   char sep[2];
   while (ist >> i) {
@@ -85,7 +84,8 @@ void RbtTetherSF::SetupLigand() {
 
   m_ligAtomList = GetLigand()->GetAtomList();
 #ifdef _DEBUG
-  cout << _CT << "::SetupLigand(): #ATOMS = " << m_ligAtomList.size() << endl;
+  std::cout << _CT << "::SetupLigand(): #ATOMS = " << m_ligAtomList.size()
+            << std::endl;
 #endif //_DEBUG
 }
 

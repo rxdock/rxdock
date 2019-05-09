@@ -20,7 +20,6 @@
 #include "RbtGPChromosome.h"
 #include "RbtToken.h"
 #include <stack>
-using std::stack;
 
 #include "RbtTokenIter.h"
 
@@ -52,7 +51,7 @@ private:
   RbtCellTokenIter(); // Default constructor disabled
   RbtGPChromosomePtr chrom;
   RbtTokenPtr current;
-  stack<int> cells;
+  std::stack<int> cells;
   RbtContextPtr contextp;
 };
 

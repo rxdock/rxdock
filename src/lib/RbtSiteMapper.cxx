@@ -22,14 +22,14 @@ RbtSiteMapper::RbtSiteMapper(const std::string &strClass,
                              const std::string &strName)
     : RbtBaseObject(strClass, strName) {
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtSiteMapper::~RbtSiteMapper() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -46,7 +46,8 @@ void RbtSiteMapper::Update(RbtSubject *theChangedSubject) {
       if (spReceptor != m_spReceptor) {
         m_spReceptor = spReceptor;
         if (iTrace > 1) {
-          cout << _CT << "::Update(): Receptor has been updated" << endl;
+          std::cout << _CT << "::Update(): Receptor has been updated"
+                    << std::endl;
         }
       }
     }

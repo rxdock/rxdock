@@ -45,20 +45,23 @@ double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
 
 int main(int argc, char *argv[]) {
   if (argc < 3) {
-    cout << "smart_rms <ref sdfile> <input sdfile> [<output sdfile>]" << endl;
-    cout << "RMSD is calculated for each record in <input sdfile> against <ref "
-            "sdfile> (heavy atoms only)"
-         << endl;
-    cout << "If <output sdfile> is defined, records are written to output file "
-            "with RMSD data field"
-         << endl;
-    cout << endl << "NOTE:" << endl;
-    cout << "\tThis version uses the Daylight SMARTS toolkit to check all "
-            "symmetry-related atom numbering paths"
-         << endl;
-    cout << "\tto ensure that the true RMSD is reported. Will only run on "
-            "licensed machines (giles)"
-         << endl;
+    std::cout << "smart_rms <ref sdfile> <input sdfile> [<output sdfile>]"
+              << std::endl;
+    std::cout
+        << "RMSD is calculated for each record in <input sdfile> against <ref "
+           "sdfile> (heavy atoms only)"
+        << std::endl;
+    std::cout
+        << "If <output sdfile> is defined, records are written to output file "
+           "with RMSD data field"
+        << std::endl;
+    std::cout << std::endl << "NOTE:" << std::endl;
+    std::cout << "\tThis version uses the Daylight SMARTS toolkit to check all "
+                 "symmetry-related atom numbering paths"
+              << std::endl;
+    std::cout << "\tto ensure that the true RMSD is reported. Will only run on "
+                 "licensed machines (giles)"
+              << std::endl;
     return 1;
   }
 
@@ -70,7 +73,7 @@ int main(int argc, char *argv[]) {
     strOutputSDFile = argv[3];
     bOutput = true;
   }
-  std::ios_base::fmtflags oldflags = cout.flags(); // save state
+  std::ios_base::fmtflags oldflags = std::cout.flags(); // save state
 
   RbtDoubleList scoreVec;
   RbtDoubleList rmsVec;
@@ -88,8 +91,8 @@ int main(int argc, char *argv[]) {
     std::string strSmarts;
     std::string strSmiles;
     RbtAtomListList pathset = DT::QueryModel(spRefModel, strSmarts, strSmiles);
-    cout << "Reference SMILES: " << strSmiles << endl;
-    cout << "Paths found = " << pathset.size() << endl;
+    std::cout << "Reference SMILES: " << strSmiles << std::endl;
+    std::cout << "Paths found = " << pathset.size() << std::endl;
     if (pathset.empty()) {
       exit(0);
     }
@@ -106,11 +109,11 @@ int main(int argc, char *argv[]) {
     }
     int nCoords = cll.front().size();
 
-    cout << "molv_	rms rms	rmc rmc"
-         << endl; // Dummy header line to be like do_anal
+    std::cout << "molv_	rms rms	rmc rmc"
+              << std::endl; // Dummy header line to be like do_anal
 
-    cout.precision(3);
-    cout.setf(ios_base::fixed, ios_base::floatfield);
+    std::cout.precision(3);
+    std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
 
     ///////////////////////////////////
     // MAIN LOOP OVER LIGAND RECORDS
@@ -126,15 +129,15 @@ int main(int argc, char *argv[]) {
          spMdlFileSource->NextRecord(), nRec++) {
       RbtError molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
-        cout << molStatus << endl;
+        std::cout << molStatus << std::endl;
         continue;
       }
       // DM 16 June 2006 - remove any solvent fragments from each record
       spMdlFileSource->SetSegmentFilterMap(Rbt::ConvertStringToSegmentMap("H"));
       RbtModelPtr spModel(new RbtModel(spMdlFileSource));
       RbtAtomListList pathset1 = DT::QueryModel(spModel, strSmarts, strSmiles);
-      // cout << "SMILES: " << strSmiles << endl;
-      // cout << "Paths found = " << pathset1.size() << endl;
+      // std::cout << "SMILES: " << strSmiles << std::endl;
+      // std::cout << "Paths found = " << pathset1.size() << std::endl;
       if (pathset1.empty()) {
         continue;
       }
@@ -150,7 +153,7 @@ int main(int argc, char *argv[]) {
         for (RbtCoordListListConstIter cIter = cll.begin(); cIter != cll.end();
              cIter++) {
           double rms1 = rmsd(*cIter, coords);
-          // cout << "\tRMSD = " << rms1 << endl;
+          // std::cout << "\tRMSD = " << rms1 << std::endl;
           rms = std::min(rms, rms1);
         }
         spModel->SetDataValue("RMSD", rms);
@@ -160,8 +163,8 @@ int main(int argc, char *argv[]) {
         scoreVec.push_back(score);
         rmsVec.push_back(rms);
 
-        cout << nRec << "\t" << score << "\t" << scoreInter << "\t"
-             << scoreIntra << "\t" << rms << "\t" << 0.0 << endl;
+        std::cout << nRec << "\t" << score << "\t" << scoreInter << "\t"
+                  << scoreIntra << "\t" << rms << "\t" << 0.0 << std::endl;
         if (bOutput) {
           spMdlFileSink->SetModel(spModel);
           spMdlFileSink->Render();
@@ -188,17 +191,17 @@ int main(int argc, char *argv[]) {
       else
         zBad += z;
     }
-    // cout << "zGood,zPartial,zBad = " << zGood << "," << zPartial << "," <<
-    // zBad << endl;
+    // std::cout << "zGood,zPartial,zBad = " << zGood << "," << zPartial << ","
+    // << zBad << std::endl;
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  cout.flags(oldflags); // Restore state
+  std::cout.flags(oldflags); // Restore state
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
 
   return 0;
 }

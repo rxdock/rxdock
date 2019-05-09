@@ -12,7 +12,6 @@
 
 // Simple, non-adaptive simulated annealing protocol
 #include <iomanip>
-using std::setw;
 
 #include "RbtBaseSF.h"
 #include "RbtChrom.h"
@@ -86,14 +85,14 @@ RbtSimAnnTransform::RbtSimAnnTransform(const std::string &strName)
   AddParameter(_HISTORY_FREQ, 0);
   m_spStats = RbtMCStatsPtr(new RbtMCStats());
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtSimAnnTransform::~RbtSimAnnTransform() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -149,7 +148,7 @@ void RbtSimAnnTransform::Execute() {
     blockLen *= chromLength;
   }
   if (iTrace > 0) {
-    cout << _CT << ": Block length = " << blockLen << endl;
+    std::cout << _CT << ": Block length = " << blockLen << std::endl;
   }
 
   // Cooling factor (check for nBlocks=1)
@@ -173,18 +172,19 @@ void RbtSimAnnTransform::Execute() {
   double score = pSF->Score();
   m_spStats->Init(score);
 
-  cout.precision(3);
-  cout.setf(ios_base::fixed, ios_base::floatfield);
-  cout.setf(ios_base::right, ios_base::adjustfield);
+  std::cout.precision(3);
+  std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
+  std::cout.setf(std::ios_base::right, std::ios_base::adjustfield);
 
   if (iTrace > 0) {
-    cout << _CT << ": Initial score = " << score << endl;
-    cout << endl
-         << endl
-         << setw(5) << "BLOCK" << setw(10) << "TEMP" << setw(10) << "ACC.RATE"
-         << setw(10) << "STEP" << setw(10) << "INITIAL" << setw(10) << "FINAL"
-         << setw(10) << "MEAN" << setw(10) << "S.DEV" << setw(10) << "MIN"
-         << setw(10) << "MAX" << endl;
+    std::cout << _CT << ": Initial score = " << score << std::endl;
+    std::cout << std::endl
+              << std::endl
+              << std::setw(5) << "BLOCK" << std::setw(10) << "TEMP"
+              << std::setw(10) << "ACC.RATE" << std::setw(10) << "STEP"
+              << std::setw(10) << "INITIAL" << std::setw(10) << "FINAL"
+              << std::setw(10) << "MEAN" << std::setw(10) << "S.DEV"
+              << std::setw(10) << "MIN" << std::setw(10) << "MAX" << std::endl;
   }
 
   for (int iBlock = 1; iBlock <= nBlocks; iBlock++, t *= tFac) {
@@ -193,12 +193,13 @@ void RbtSimAnnTransform::Execute() {
     }
     MC(t, blockLen, stepSize);
     if (iTrace > 0) {
-      cout << setw(5) << iBlock << setw(10) << t << setw(10)
-           << m_spStats->AccRate() << setw(10) << stepSize << setw(10)
-           << m_spStats->_blockInitial << setw(10) << m_spStats->_blockFinal
-           << setw(10) << m_spStats->Mean() << setw(10)
-           << sqrt(m_spStats->Variance()) << setw(10) << m_spStats->_blockMin
-           << setw(10) << m_spStats->_blockMax << endl;
+      std::cout << std::setw(5) << iBlock << std::setw(10) << t << std::setw(10)
+                << m_spStats->AccRate() << std::setw(10) << stepSize
+                << std::setw(10) << m_spStats->_blockInitial << std::setw(10)
+                << m_spStats->_blockFinal << std::setw(10) << m_spStats->Mean()
+                << std::setw(10) << sqrt(m_spStats->Variance()) << std::setw(10)
+                << m_spStats->_blockMin << std::setw(10) << m_spStats->_blockMax
+                << std::endl;
     }
 
     // Halve the maximum step sizes for all enabled modes
@@ -218,7 +219,8 @@ void RbtSimAnnTransform::Execute() {
   RbtRequestPtr spClearPartReq(new RbtSFPartitionRequest(0.0));
   pSF->HandleRequest(spClearPartReq); // Clear any partitioning
   if (iTrace > 0) {
-    cout << endl << _CT << ": Final score = " << pSF->Score() << endl;
+    std::cout << std::endl
+              << _CT << ": Final score = " << pSF->Score() << std::endl;
   }
 }
 
@@ -277,8 +279,9 @@ void RbtSimAnnTransform::MC(double t, int blockLen, double stepSize) {
       double oldScore = score;
       score = pSF->Score();
       if (fabs(score - oldScore) > 0.001 && (iTrace > 1)) {
-        cout << "** WARNING - Interaction lists updated, change in score = "
-             << score - oldScore << endl;
+        std::cout
+            << "** WARNING - Interaction lists updated, change in score = "
+            << score - oldScore << std::endl;
       }
     }
   }

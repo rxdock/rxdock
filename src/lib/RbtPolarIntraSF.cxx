@@ -24,7 +24,7 @@ RbtPolarIntraSF::RbtPolarIntraSF(const std::string &strName)
   // Add parameters
   AddParameter(_ATTR, m_bAttr);
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -32,7 +32,7 @@ RbtPolarIntraSF::RbtPolarIntraSF(const std::string &strName)
 RbtPolarIntraSF::~RbtPolarIntraSF() {
   ClearModel();
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -117,14 +117,14 @@ void RbtPolarIntraSF::HandleRequest(RbtRequestPtr spRequest) {
   case ID_REQ_SF_PARTITION:
     if (params.size() == 1) {
       if (iTrace > 2) {
-        cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
-             << " at distance=" << params[0] << endl;
+        std::cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
+                  << " at distance=" << params[0] << std::endl;
       }
       Partition(m_posList, m_negList, m_intns, m_prtIntns, params[0]);
     } else if ((params.size() == 2) && (params[0].String() == GetFullName())) {
       if (iTrace > 2) {
-        cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
-             << " at distance=" << params[1] << endl;
+        std::cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
+                  << " at distance=" << params[1] << std::endl;
       }
       Partition(m_posList, m_negList, m_intns, m_prtIntns, params[1]);
     }
@@ -133,8 +133,8 @@ void RbtPolarIntraSF::HandleRequest(RbtRequestPtr spRequest) {
     // Pass all other requests to base handler
   default:
     if (iTrace > 2) {
-      cout << _CT << "::HandleRequest: " << GetFullName()
-           << " passing request to base handler" << endl;
+      std::cout << _CT << "::HandleRequest: " << GetFullName()
+                << " passing request to base handler" << std::endl;
     }
     RbtBaseObject::HandleRequest(spRequest);
     break;

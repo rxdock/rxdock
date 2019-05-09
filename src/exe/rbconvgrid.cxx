@@ -27,26 +27,31 @@ int main(int argc, char *argv[]) {
 
   // Brief help message
   if (argc == 1) {
-    cout << endl
-         << "rbconvgrid - converts RbtVdwGridSF binary grid file to InsightII "
-            "ascii grid file"
-         << endl;
-    cout << endl
-         << "Usage:\trbconvgrid -i<InputFile> [-o<OutputFile>] [-n<GridNum>]"
-         << endl;
-    cout << endl
-         << "Options:\t-i<InputFile> - input RbtVdwGridSF binary grid filename"
-         << endl;
-    cout << "\t\t-o<OutputFile> - output InsightII ascii grid filename" << endl;
-    cout << "\t\t-n<GridNum> - grid number to convert (default = list grids)"
-         << endl;
+    std::cout
+        << std::endl
+        << "rbconvgrid - converts RbtVdwGridSF binary grid file to InsightII "
+           "ascii grid file"
+        << std::endl;
+    std::cout
+        << std::endl
+        << "Usage:\trbconvgrid -i<InputFile> [-o<OutputFile>] [-n<GridNum>]"
+        << std::endl;
+    std::cout
+        << std::endl
+        << "Options:\t-i<InputFile> - input RbtVdwGridSF binary grid filename"
+        << std::endl;
+    std::cout << "\t\t-o<OutputFile> - output InsightII ascii grid filename"
+              << std::endl;
+    std::cout
+        << "\t\t-n<GridNum> - grid number to convert (default = list grids)"
+        << std::endl;
     return 1;
   }
 
   // Check command line arguments
-  cout << endl << "Command line args:" << endl;
+  std::cout << std::endl << "Command line args:" << std::endl;
   for (int iarg = 1; iarg < argc; iarg++) {
-    cout << argv[iarg];
+    std::cout << argv[iarg];
     std::string strArg(argv[iarg]);
     if (strArg.find("-i") == 0)
       strInputFile = strArg.substr(2);
@@ -56,23 +61,24 @@ int main(int argc, char *argv[]) {
       std::string strGridNum = strArg.substr(2);
       iGrid = atoi(strGridNum.c_str());
     } else {
-      cout << " ** INVALID ARGUMENT" << endl;
+      std::cout << " ** INVALID ARGUMENT" << std::endl;
       return 1;
     }
-    cout << endl;
+    std::cout << std::endl;
   }
 
-  cout << endl;
+  std::cout << std::endl;
 
   try {
     // Read the grid file header
 #if defined(__sgi) && !defined(__GNUC__)
-    std::ifstream istr(strInputFile.c_str(), ios_base::in);
+    std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
 #else
-    std::ifstream istr(strInputFile.c_str(), ios_base::in | ios_base::binary);
+    std::ifstream istr(strInputFile.c_str(),
+                       std::ios_base::in | std::ios_base::binary);
 #endif
     if (istr) {
-      cout << strInputFile << " opened OK" << endl;
+      std::cout << strInputFile << " opened OK" << std::endl;
     }
     // Read header string
     int length;
@@ -92,11 +98,11 @@ int main(int argc, char *argv[]) {
     // Skip the appropriate number of grids
     int nGrids;
     Rbt::ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
-    cout << "File contains " << nGrids << " grids..." << endl;
+    std::cout << "File contains " << nGrids << " grids..." << std::endl;
     if ((iGrid > nGrids) || (iGrid < 1)) {
-      cout << "Listing grids..." << endl;
+      std::cout << "Listing grids..." << std::endl;
     } else {
-      cout << "Locating grid# " << iGrid << "..." << endl;
+      std::cout << "Locating grid# " << iGrid << "..." << std::endl;
     }
     RbtRealGridPtr spGrid;
     for (int i = 1; (i <= nGrids) && (i <= iGrid); i++) {
@@ -110,26 +116,27 @@ int main(int argc, char *argv[]) {
       delete[] szType;
       RbtTriposAtomType triposType;
       RbtTriposAtomType::eType aType = triposType.Str2Type(strType);
-      cout << "Grid# " << i << "\t"
-           << "atom type=" << strType << " (type #" << aType << ")" << endl;
+      std::cout << "Grid# " << i << "\t"
+                << "atom type=" << strType << " (type #" << aType << ")"
+                << std::endl;
       spGrid = RbtRealGridPtr(new RbtRealGrid(istr));
     }
     istr.close();
     // If we are not in listing mode, write the grid
     if ((iGrid <= nGrids) && (iGrid >= 1)) {
-      cout << "Writing grid# " << iGrid << " to " << strOutputFile << "..."
-           << endl;
+      std::cout << "Writing grid# " << iGrid << " to " << strOutputFile << "..."
+                << std::endl;
       std::ofstream ostr(strOutputFile.c_str());
       spGrid->PrintInsightGrid(ostr);
       ostr.close();
     }
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
 
   return 0;
 }

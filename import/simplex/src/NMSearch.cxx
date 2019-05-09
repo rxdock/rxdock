@@ -132,7 +132,7 @@ void NMSearch::ExploratoryMoves()
 	  && functionCalls >= maxCalls) {
 	FindMinMaxIndices();
 	ReplaceSimplexPoint(maxIndex, *reflectionPt);
-        if(DEBUG) cout << "reflection\n";
+	if(DEBUG) std::cout << "reflection\n";
 	simplexValues[maxIndex] = reflectionPtValue;
 	FindMinMaxIndices(); 
 	return;
@@ -144,12 +144,12 @@ void NMSearch::ExploratoryMoves()
 	
 	if (reflectionPtValue > expansionPtValue) {
 	  ReplaceSimplexPoint(maxIndex, *expansionPt);
-          if(DEBUG) cout << "expansion\n";
+	  if(DEBUG) std::cout << "expansion\n";
 	  simplexValues[maxIndex] = expansionPtValue;
 	} // inner if
 	else {
 	  ReplaceSimplexPoint(maxIndex, *reflectionPt);
-          if(DEBUG) cout << "reflection\n";
+	  if(DEBUG) std::cout << "reflection\n";
 	  simplexValues[maxIndex] = reflectionPtValue;
 	} // else         
       } // if for possibility 1
@@ -159,7 +159,7 @@ void NMSearch::ExploratoryMoves()
       else if( (secondHighestPtValue > reflectionPtValue        ) &&
                (   reflectionPtValue >= simplexValues[minIndex]) ) {
          ReplaceSimplexPoint(maxIndex, *reflectionPt);
-         if(DEBUG) cout << "reflection\n";
+         if(DEBUG) std::cout << "reflection\n";
          simplexValues[maxIndex] = reflectionPtValue;
       } // else if for possibility 2
 
@@ -172,7 +172,7 @@ void NMSearch::ExploratoryMoves()
            } // inner if
            else {
              ReplaceSimplexPoint(maxIndex, *contractionPt);
-             if(DEBUG) cout << "contraction\n";
+             if(DEBUG) std::cout << "contraction\n";
              simplexValues[maxIndex] = contractionPtValue;
            } // inner else
          } // maxPrimePtId == 0
@@ -182,7 +182,7 @@ void NMSearch::ExploratoryMoves()
            } // inner if
            else {
              ReplaceSimplexPoint(maxIndex, *contractionPt);
-             if(DEBUG) cout << "contraction\n";
+             if(DEBUG) std::cout << "contraction\n";
              simplexValues[maxIndex] = contractionPtValue;
            } // inner else
          } // maxPrimePtId == 1
@@ -190,7 +190,7 @@ void NMSearch::ExploratoryMoves()
 
     // if we haven't taken care of the current simplex, something's wrong
       else {
-         cerr << "Error in ExploratoryMoves() - "
+         std::cerr << "Error in ExploratoryMoves() - "
               << "Unaccounted for case.\nTerminating.\n";
          return;
       }
@@ -211,7 +211,7 @@ void NMSearch::CalculateFunctionValue(int index)
      (*scratch)[i] = (*simplex).row(index)[i];
    int success;
    fcnCall(dimensions, scratch, simplexValues[index], success);
-   if(!success) cerr<<"Error calculating point in CalculateFunctionValue().\n";
+   if(!success) std::cerr << "Error calculating point in CalculateFunctionValue().\n";
 } // CalculateFunctionValue()
 
 void NMSearch::SetAlpha(double newAlpha)
@@ -381,7 +381,7 @@ void NMSearch::InitGeneralSimplex(const RbtMatrix *plex)
       for (int j = 0 ; j < scratch->size() ; j++)
          (*scratch)[j] = (*plex).row(i)[j];
       fcnCall(dimensions, scratch, simplexValues[i], success);
-      if(!success) cerr<<"Error with point #"<<i<<" in initial simplex.\n";
+      if(!success) std::cerr << "Error with point #"<<i<<" in initial simplex.\n";
    } // for
    FindMinMaxIndices();
 } // InitGeneralSimplex()
@@ -389,7 +389,7 @@ void NMSearch::InitGeneralSimplex(const RbtMatrix *plex)
 void NMSearch::ReadSimplexFile(istream& fp)
 {
    if(!fp) {
-      cerr<<"No Input Stream in ReadSimplexFile()!\n";
+      std::cerr << "No Input Stream in ReadSimplexFile()!\n";
       return; // There's no file handle!!
    }
 
@@ -454,7 +454,7 @@ int NMSearch::GetTolHit() const
 void NMSearch::FindMinMaxIndices()
 {
    if(simplexValues == NULL) {
-      cerr << "Error in FindMinMaxIndices() - "
+      std::cerr << "Error in FindMinMaxIndices() - "
            << "The vector of simplexValues is NULL!!\n";
       return;
    }
@@ -477,7 +477,7 @@ void NMSearch::FindMinMaxIndices()
 int NMSearch::SecondHighestPtIndex()
 {
    if(simplexValues == NULL) {
-      cerr << "Error in SecondHighestPtValue() - "
+      std::cerr << "Error in SecondHighestPtValue() - "
            << "The vector of simplexValues is NULL!!\n";
       return -1;
    }
@@ -518,7 +518,7 @@ void NMSearch::FindReflectionPt()
    int success;
    fcnCall(dimensions, reflectionPt, reflectionPtValue, success);
    if(!success) {
-      cerr << "Error finding f(x) for reflection point at"
+      std::cerr << "Error finding f(x) for reflection point at"
            << "function call #" << functionCalls << ".\n";
    } // if
 } // FindReflectionPt()
@@ -533,7 +533,7 @@ void NMSearch::FindExpansionPt()
    int success;
    fcnCall(dimensions, expansionPt, expansionPtValue, success);
    if(!success) {
-      cerr << "Error finding f(x) for expansion point at"
+      std::cerr << "Error finding f(x) for expansion point at"
            << "function call #" << functionCalls << ".\n";
    } // if
 } // FindExpansionPt()
@@ -569,7 +569,7 @@ void NMSearch::FindContractionPt()
    int success;
    fcnCall(dimensions, contractionPt, contractionPtValue, success);
    if(!success) {
-      cerr << "Error finding f(x) for contraction point at"
+      std::cerr << "Error finding f(x) for contraction point at"
            << "function call #" << functionCalls << ".\n";
    } // if
    delete tmpPt;//DM 27 Jun 2002 garbage collection
@@ -596,7 +596,7 @@ void NMSearch::ShrinkSimplex()
             (*simplex)[i][j] = (*tempPt)[j];
          } // inner for
          fcnCall(dimensions,tempPt,simplexValues[i],success);
-         if (!success) cerr << "Error shrinking the simplex.\n";
+         if (!success) std::cerr << "Error shrinking the simplex.\n";
          
          // stop if at maximum function calls 
 	 // changed 5/01 to reflect maxcalls = -1 possibility ---pls
@@ -610,12 +610,12 @@ void NMSearch::ShrinkSimplex()
 void NMSearch::printSimplex() const
 {
   for( int i = 0; i <= dimensions; i++ ) {
-     cout << "   Point:";
+     std::cout << "   Point:";
      for ( int j = 0; j < dimensions; j++ ) {
-        cout << (*simplex)[i][j] << "\t";
+        std::cout << (*simplex)[i][j] << "\t";
      } // inner for
-     cout << "Value:" << simplexValues[i] << "\n";
+     std::cout << "Value:" << simplexValues[i] << "\n";
   } // outer for
 
-  cout << "\nFCalls: " << functionCalls << endl << endl;
+  std::cout << "\nFCalls: " << functionCalls << std::endl << std::endl;
 }

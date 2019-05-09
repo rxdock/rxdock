@@ -15,10 +15,6 @@
 #ifndef _RBTATOM_H_
 #define _RBTATOM_H_
 
-#include <functional> //For STL function objects
-using std::bind2nd;
-using std::ptr_fun;
-
 #include "RbtConfig.h"
 #include "RbtCoord.h"
 #include "RbtPMF.h"
@@ -91,11 +87,11 @@ public:
   // Insertion operator (primarily for debugging)
   // Note: needs to be friend so can access atom private data
   // without using the accessor functions
-  friend ostream &operator<<(ostream &s, const RbtAtom &atom);
+  friend std::ostream &operator<<(std::ostream &s, const RbtAtom &atom);
 
   // Virtual function for dumping atom details to an output stream
   // Derived classes (e.g. pseudoatom) can override if required
-  virtual ostream &Print(ostream &s) const;
+  virtual std::ostream &Print(std::ostream &s) const;
 
   ///////////////////////////////////////////////
   // Public accessor functions
@@ -1251,8 +1247,9 @@ void GetCoordList(const RbtAtomList &atomList, RbtCoordList &coordList);
 // Streams an atom list in Quanta CSD file format (for easy color coding of
 // selected atoms in Quanta) nFormat  = 0 => Receptor atom format: "zone 1 #
 // pick O5T = col 2" nFormat != 0 => Ligand atom format "pick N1 .and. segm H =
-// col 2" ostream should have been opened before calling PrintQuantaCSDFormat
-void PrintQuantaCSDFormat(const RbtAtomList &atomList, ostream &s,
+// col 2" std::ostream should have been opened before calling
+// PrintQuantaCSDFormat
+void PrintQuantaCSDFormat(const RbtAtomList &atomList, std::ostream &s,
                           int nColor = 2, int nFormat = 0);
 
 // DM 25 Feb 1999

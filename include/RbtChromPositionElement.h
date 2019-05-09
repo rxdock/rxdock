@@ -46,7 +46,7 @@ public:
   virtual void SetVector(const RbtXOverList &v, int &i) throw(RbtError);
   virtual void GetStepVector(RbtDoubleList &v) const;
   virtual double CompareVector(const RbtDoubleList &v, int &i) const;
-  virtual void Print(ostream &s) const;
+  virtual void Print(std::ostream &s) const;
 
   // Returns a standardised rotation angle in the range [-M_PI, +M_PI}
   // This function operates in radians

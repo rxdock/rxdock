@@ -11,7 +11,6 @@
  ***********************************************************************/
 
 #include <iomanip>
-using std::setw;
 
 #include "NMSearch.h"
 #include "RbtChrom.h"
@@ -40,14 +39,14 @@ RbtSimplexTransform::RbtSimplexTransform(const std::string &strName)
   AddParameter(_STEP_SIZE, 0.1);
   AddParameter(_CONVERGENCE, 0.001);
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtSimplexTransform::~RbtSimplexTransform() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -121,20 +120,22 @@ void RbtSimplexTransform::Execute() {
   double delta = -convergence - 1.0;
 
   if (iTrace > 0) {
-    cout.precision(3);
-    cout.setf(ios_base::fixed, ios_base::floatfield);
-    cout.setf(ios_base::right, ios_base::adjustfield);
-    cout << endl
-         << _CT << endl
-         << setw(5) << "CYCLE" << setw(5) << "MODE" << setw(5) << "DOF"
-         << setw(10) << "CALLS" << setw(10) << "SCORE" << setw(10) << "DELTA"
-         << endl;
-    cout << endl
-         << setw(5) << "Init" << setw(5) << "-" << setw(5) << "-" << setw(10)
-         << calls << setw(10) << initScore << setw(10) << "-" << endl
-         << endl;
+    std::cout.precision(3);
+    std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
+    std::cout.setf(std::ios_base::right, std::ios_base::adjustfield);
+    std::cout << std::endl
+              << _CT << std::endl
+              << std::setw(5) << "CYCLE" << std::setw(5) << "MODE"
+              << std::setw(5) << "DOF" << std::setw(10) << "CALLS"
+              << std::setw(10) << "SCORE" << std::setw(10) << "DELTA"
+              << std::endl;
+    std::cout << std::endl
+              << std::setw(5) << "Init" << std::setw(5) << "-" << std::setw(5)
+              << "-" << std::setw(10) << calls << std::setw(10) << initScore
+              << std::setw(10) << "-" << std::endl
+              << std::endl;
     if (iTrace > 1) {
-      cout << *m_chrom << endl;
+      std::cout << *m_chrom << std::endl;
     }
   }
 
@@ -148,7 +149,8 @@ void RbtSimplexTransform::Execute() {
     ssearch = new NMSearch(m_chrom, pSF);
     ssearch->InitVariableLengthRightSimplex(&vc, steps);
     if (iTrace > 0) {
-      cout << setw(5) << i << setw(5) << "ALL" << setw(5) << vc.size();
+      std::cout << std::setw(5) << i << std::setw(5) << "ALL" << std::setw(5)
+                << vc.size();
     }
     // Do the simplex search and retrieve the minimum
     ssearch->ExploratoryMoves();
@@ -157,10 +159,10 @@ void RbtSimplexTransform::Execute() {
     calls += ssearch->GetFunctionCalls();
     m_chrom->SetVector(ssearch->GetMinPoint());
     if (iTrace > 0) {
-      cout << setw(10) << calls << setw(10) << newmin << setw(10) << delta
-           << endl;
+      std::cout << std::setw(10) << calls << std::setw(10) << newmin
+                << std::setw(10) << delta << std::endl;
       if (iTrace > 1) {
-        cout << *m_chrom << endl;
+        std::cout << *m_chrom << std::endl;
       }
     }
     delete ssearch; // DM 27 Jun 2002 - garbage collection
@@ -172,8 +174,9 @@ void RbtSimplexTransform::Execute() {
   if (iTrace > 0) {
     min = pSF->Score();
     delta = min - initScore;
-    cout << endl
-         << setw(5) << "Final" << setw(5) << "-" << setw(5) << "-" << setw(10)
-         << calls << setw(10) << min << setw(10) << delta << endl;
+    std::cout << std::endl
+              << std::setw(5) << "Final" << std::setw(5) << "-" << std::setw(5)
+              << "-" << std::setw(10) << calls << std::setw(10) << min
+              << std::setw(10) << delta << std::endl;
   }
 }

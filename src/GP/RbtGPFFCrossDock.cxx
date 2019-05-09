@@ -19,7 +19,7 @@
 
 std::string RbtGPFFCrossDock::_CT("RbtGPFFCrossDock");
 
-void RbtGPFFCrossDock::ReadTables(istream &in, RbtReturnTypeArray &it,
+void RbtGPFFCrossDock::ReadTables(std::istream &in, RbtReturnTypeArray &it,
                                   RbtReturnTypeArray &sft) {
   RbtReturnType value;
   int nip, nsfi;
@@ -60,7 +60,7 @@ void RbtGPFFCrossDock::ReadTables(istream &in, RbtReturnTypeArray &it,
     i++;
     in >> recordn;
   }
-  cout << "Read: " << inputTable[0][0] << endl;
+  std::cout << "Read: " << inputTable[0][0] << std::endl;
   it = inputTable;
   sft = SFTable;
 }
@@ -70,7 +70,7 @@ double RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
                                           RbtReturnTypeArray &sft,
                                           bool function) {
   if (function) {
-    cout << "Error, no function possible with Cross Docking\n";
+    std::cout << "Error, no function possible with Cross Docking\n";
     exit(1);
   }
   RbtGPParser p(g->GetNIP(), g->GetNIF(), g->GetNN(), g->GetNO());
@@ -91,14 +91,14 @@ double RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
     ntm = 0;
     nm = 0;
     while (hit > hitlimit) {
-      /*            cout << "input  : ";
+      /*            std::cout << "input  : ";
                   for (RbtInt j = 0 ; j < inputs.size() ; j++)
-                      cout << *(inputs[j]) << " ";
-                  cout << endl; */
+                      std::cout << *(inputs[j]) << " ";
+                  std::cout << std::endl; */
       RbtGPChromosomePtr c = g->GetChrom();
       o = p.Parse(c, inputs);
       c->Clear();
-      // cout << *(o[0]) << endl;
+      // std::cout << *(o[0]) << std::endl;
       if (*(o[0]) >= hitlimit)
         ntm++;
       nm++;
@@ -152,14 +152,14 @@ double RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
     ntm = 0;
     nm = 0;
     while (hit > hitlimit) {
-      /*            cout << "input  : ";
+      /*            std::cout << "input  : ";
                   for (RbtInt j = 0 ; j < inputs.size() ; j++)
-                      cout << *(inputs[j]) << " ";
-                  cout << endl; */
+                      std::cout << *(inputs[j]) << " ";
+                  std::cout << std::endl; */
       RbtGPChromosomePtr c = g->GetChrom();
       o = p.Parse(c, inputs);
       c->Clear();
-      // cout << *(o[0]) << endl;
+      // std::cout << *(o[0]) << std::endl;
       double limit = 0.0;
       if (*(o[0]) >= limit)
         ntm++;
@@ -182,7 +182,7 @@ double RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
     i++;
   }
   // objective value always an increasing function
-  cout << good << "\t" << neutral << "\t" << bad << endl;
+  std::cout << good << "\t" << neutral << "\t" << bad << std::endl;
   objective = good / (good + bad);
   fitness = objective;
   // g->SetFitness(fitness);
@@ -198,13 +198,13 @@ void RbtGPFFCrossDock::CreateRandomCtes(int nctes) {
     double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
-    cout << "c0 \t0.0" << endl;
-    cout << "c1 \t1.0" << endl;
+    std::cout << "c0 \t0.0" << std::endl;
+    std::cout << "c1 \t1.0" << std::endl;
     for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * pow(10, b);
-      cout << "c" << i + 2 << " \t" << c << endl;
+      std::cout << "c" << i + 2 << " \t" << c << std::endl;
       ctes.push_back(c);
     }
   }

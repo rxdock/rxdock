@@ -134,7 +134,7 @@ void RbtBaseFileSource::Read(bool aDelimiterAtEnd) throw(RbtError) {
           while ((m_fileIn.getline(m_szBuf, MAXLINELENGTH)) &&
                  (strncmp(m_szBuf, cszRecDelim, n) != 0)) {
 #ifdef _DEBUG
-            cout << m_szBuf << endl;
+            std::cout << m_szBuf << std::endl;
 #endif //_DEBUG
             m_lineRecs.push_back(m_szBuf);
           }
@@ -175,7 +175,7 @@ void RbtBaseFileSource::Read(bool aDelimiterAtEnd) throw(RbtError) {
           while ((m_fileIn.getline(m_szBuf, MAXLINELENGTH)) &&
                  (strncmp(m_szBuf, cszRecDelim, n) != 0)) {
 #ifdef _DEBUG
-            cout << m_szBuf << endl;
+            std::cout << m_szBuf << std::endl;
 #endif //_DEBUG
             m_lineRecs.push_back(m_szBuf);
           }
@@ -209,7 +209,7 @@ void RbtBaseFileSource::Open() throw(RbtError) {
   // DM 23 Mar 1999 - check if file is already open, to allow Open() to be
   // called redundantly
   if (!m_bFileOpen)
-    m_fileIn.open(m_strFileName.c_str(), ios_base::in);
+    m_fileIn.open(m_strFileName.c_str(), std::ios_base::in);
 
   // If file did not open, throw an error
   if (!m_fileIn)

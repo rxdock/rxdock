@@ -33,7 +33,7 @@ public:
         m_minCoord(Rbt::Min(coordList)), m_maxCoord(Rbt::Max(coordList)) {}
 
   // Constructor reading from binary stream
-  RbtCavity(istream &istr) { Read(istr); }
+  RbtCavity(std::istream &istr) { Read(istr); }
 
   // Destructor
   virtual ~RbtCavity() {}
@@ -43,21 +43,21 @@ public:
   ///////////////////////////////////////////////
 
   // Insertion operator
-  friend ostream &operator<<(ostream &s, const RbtCavity &cavity) {
+  friend std::ostream &operator<<(std::ostream &s, const RbtCavity &cavity) {
     cavity.Print(s);
     return s;
   }
 
   // Virtual function for dumping cavity details to an output stream
   // Derived classes can override if required
-  virtual void Print(ostream &s) const {
+  virtual void Print(std::ostream &s) const {
     s << "Size=" << m_coordList.size() << " points; Vol=" << GetVolume()
       << " A^3; Min=" << m_minCoord << "; Max=" << m_maxCoord
       << "; Center=" << m_prAxes.com << "; Extent=" << m_maxCoord - m_minCoord;
   }
 
   // Binary output (serialisation)
-  virtual void Write(ostream &ostr) const {
+  virtual void Write(std::ostream &ostr) const {
     // DM 4 Apr 2002 - Write grid step
     m_gridStep.Write(ostr);
     // Write number of coords
@@ -70,7 +70,7 @@ public:
   }
 
   // Binary input, replaces existing cavity
-  virtual void Read(istream &istr) {
+  virtual void Read(std::istream &istr) {
     // Clear the existing cavity
     m_coordList.clear();
     // DM 4 Apr 2002 - Read grid step

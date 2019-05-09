@@ -65,7 +65,7 @@ RbtGPChromosome &RbtGPChromosome::operator=(const RbtGPChromosome &c) {
   nProgramOutputs = c.nProgramOutputs;
 }
 
-istream &operator>>(istream &s, RbtGPChromosome &p) {
+std::istream &operator>>(std::istream &s, RbtGPChromosome &p) {
   for (int i = 0; i < p.chrom.size(); i++)
     s >> p.chrom[i];
   int cell;
@@ -76,7 +76,7 @@ istream &operator>>(istream &s, RbtGPChromosome &p) {
   }
 }
 
-ostream &RbtGPChromosome::Print(ostream &s) const {
+std::ostream &RbtGPChromosome::Print(std::ostream &s) const {
   int g = 0;
   for (int i = 0; i < nColumns; i++) {
     for (int j = 0; j < nRows; j++) {
@@ -84,31 +84,31 @@ ostream &RbtGPChromosome::Print(ostream &s) const {
         s << chrom[g++] << " ";
       s << "\t";
     }
-    s << endl;
+    s << std::endl;
   }
   for (int i = 0; i < nProgramOutputs; i++)
     s << chrom[g++] << " ";
-  s << endl;
+  s << std::endl;
   for (int i = 0; i < cells.size(); i++)
     if (cells[i]->Constant())
-      s << i << "\t" << cells[i]->GetResult() << endl;
+      s << i << "\t" << cells[i]->GetResult() << std::endl;
   return s;
 }
 
-ostream &operator<<(ostream &s, const RbtGPChromosome &p) {
+std::ostream &operator<<(std::ostream &s, const RbtGPChromosome &p) {
   p.Print(s);
   return s;
 }
 
 void RbtGPChromosome::SetConstant(RbtReturnType cte, int idx) {
   int cell = idx / (nFunctionsInputs + 1) + nProgramInputs;
-  //    cout << cell << endl;
+  //    std::cout << cell << std::endl;
   cells[cell]->SetConstant(cte);
 }
 
 void RbtGPChromosome::ResetConstant(int idx) {
   int cell = idx / (nFunctionsInputs + 1) + nProgramInputs;
-  //    cout << cell << endl;
+  //    std::cout << cell << std::endl;
   cells[cell]->ResetConstant();
   if (cells[cell]->Evaluated())
     cells[cell]->ResetConstant();

@@ -119,8 +119,8 @@ double RbtChromOccupancyElement::CompareVector(const RbtDoubleList &v,
   return retVal;
 }
 
-void RbtChromOccupancyElement::Print(ostream &s) const {
-  s << "OCCUPANCY " << m_value << endl;
+void RbtChromOccupancyElement::Print(std::ostream &s) const {
+  s << "OCCUPANCY " << m_value << std::endl;
 }
 
 double RbtChromOccupancyElement::StandardisedValue(double occupancy) {

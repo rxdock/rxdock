@@ -86,7 +86,7 @@ public:
   }
 
   // Insertion operator
-  friend ostream &operator<<(ostream &s, const RbtEuler &euler) {
+  friend std::ostream &operator<<(std::ostream &s, const RbtEuler &euler) {
     return s << "Heading = " << euler.m_heading
              << ", Attitude = " << euler.m_attitude
              << ", Bank = " << euler.m_bank;

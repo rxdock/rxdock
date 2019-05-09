@@ -29,14 +29,14 @@ RbtNmrSF::RbtNmrSF(const std::string &strName)
   SetRange(6.0);
   SetTrace(1);
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtNmrSF::~RbtNmrSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -67,11 +67,12 @@ void RbtNmrSF::SetupReceptor() {
   nphList = spDS->GetAtomList(nphList, 0.0, GetCorrectedRange());
 
   if (iTrace > 0) {
-    cout << _CT << "::SetupReceptor() - " << nphList.size()
-         << " nonpolar Hs and extended carbons near docking site" << endl;
+    std::cout << _CT << "::SetupReceptor() - " << nphList.size()
+              << " nonpolar Hs and extended carbons near docking site"
+              << std::endl;
     for (RbtAtomListConstIter iter = nphList.begin(); iter != nphList.end();
          iter++) {
-      cout << (**iter) << endl;
+      std::cout << (**iter) << std::endl;
     }
   }
 
@@ -120,16 +121,17 @@ void RbtNmrSF::SetupScore() {
     // the names in *rIter
     RbtNoeRestraintAtoms noe(*rIter, atomList);
     if (iTrace > 0) {
-      cout << endl << *rIter << endl << noe << endl;
+      std::cout << std::endl << *rIter << std::endl << noe << std::endl;
     }
     // Only store if NOE is OK - i.e. has found the restraint names in the atom
     // list
     if (noe.isOK()) {
       m_noeList.push_back(noe);
     } else {
-      cout << "** WARNING - unable to match NOE restraint names to atom list"
-           << endl;
-      cout << noe << " not added" << endl;
+      std::cout
+          << "** WARNING - unable to match NOE restraint names to atom list"
+          << std::endl;
+      std::cout << noe << " not added" << std::endl;
     }
   }
 
@@ -143,22 +145,24 @@ void RbtNmrSF::SetupScore() {
     // check the names against the ligand atoms
     RbtStdRestraintAtoms std(*rIter, m_ligAtomList);
     if (iTrace > 0) {
-      cout << endl << *rIter << endl << std << endl;
+      std::cout << std::endl << *rIter << std::endl << std << std::endl;
     }
     // Only store if STD is OK - i.e. has found the restraint names in the atom
     // list and maxDist is within the range of the scoring function
     if (std.maxDist > GetRange()) {
-      cout << "** WARNING - maxDist is beyond the range of the scoring "
-              "function index"
-           << endl;
-      cout << "** Increase the RANGE parameter in " << GetFullName() << endl;
-      cout << std << " not added" << endl;
+      std::cout << "** WARNING - maxDist is beyond the range of the scoring "
+                   "function index"
+                << std::endl;
+      std::cout << "** Increase the RANGE parameter in " << GetFullName()
+                << std::endl;
+      std::cout << std << " not added" << std::endl;
     } else if (std.isOK()) {
       m_stdList.push_back(std);
     } else {
-      cout << "** WARNING - unable to match STD restraint names to atom list"
-           << endl;
-      cout << std << " not added" << endl;
+      std::cout
+          << "** WARNING - unable to match STD restraint names to atom list"
+          << std::endl;
+      std::cout << std << " not added" << std::endl;
     }
   }
 }
@@ -172,8 +176,8 @@ double RbtNmrSF::RawScore() const {
       double r = NoeDistance(*iter);
       double dr = r - (*iter).maxDist; // delta(R)
       double s = (dr > 0.0) ? dr * dr : 0.0;
-      // cout << "(NOE) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << "," <<
-      // dr << "," << s << endl;
+      // std::cout << "(NOE) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << ","
+      // << dr << "," << s << std::endl;
       score += s;
     }
     for (RbtStdRestraintAtomsListConstIter iter = m_stdList.begin();
@@ -181,8 +185,8 @@ double RbtNmrSF::RawScore() const {
       double r = StdDistance(*iter);
       double dr = r - (*iter).maxDist; // delta(R)
       double s = (dr > 0.0) ? dr * dr : 0.0;
-      // cout << "(STD) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << "," <<
-      // dr << "," << s << endl;
+      // std::cout << "(STD) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << ","
+      // << dr << "," << s << std::endl;
       score += s;
     }
   }
@@ -193,8 +197,8 @@ double RbtNmrSF::RawScore() const {
       double r = NoeDistance(*iter);
       double dr = r - (*iter).maxDist; // delta(R)
       double s = (dr > 0.0) ? dr : 0.0;
-      // cout << "(NOE) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << "," <<
-      // dr << "," << s << endl;
+      // std::cout << "(NOE) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << ","
+      // << dr << "," << s << std::endl;
       score += s;
     }
     for (RbtStdRestraintAtomsListConstIter iter = m_stdList.begin();
@@ -202,8 +206,8 @@ double RbtNmrSF::RawScore() const {
       double r = StdDistance(*iter);
       double dr = r - (*iter).maxDist; // delta(R)
       double s = (dr > 0.0) ? dr : 0.0;
-      // cout << "(STD) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << "," <<
-      // dr << "," << s << endl;
+      // std::cout << "(STD) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << ","
+      // << dr << "," << s << std::endl;
       score += s;
     }
   }

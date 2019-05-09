@@ -23,14 +23,14 @@ RbtRotSF::RbtRotSF(const std::string &strName)
   AddParameter(_INCNH3, bIncNH3);
   AddParameter(_INCOH, bIncOH);
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtRotSF::~RbtRotSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }

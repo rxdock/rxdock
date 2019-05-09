@@ -76,7 +76,7 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
       // 2a Read number of title lines and check for correct title key...
       int nTitleRec;
       fileIter += 2;
-      istringstream(*fileIter) >> nTitleRec >> strKey;
+      std::istringstream(*fileIter) >> nTitleRec >> strKey;
       if (strKey != strTitleKey)
         throw RbtFileParseError(_WHERE_, "Missing " + strTitleKey +
                                              " string in " + GetFileName());
@@ -97,7 +97,7 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
       // 3a. Read number of atoms and check for correct atom key...
       int nAtomRec;
       fileIter++;
-      istringstream(*fileIter) >> nAtomRec >> strKey;
+      std::istringstream(*fileIter) >> nAtomRec >> strKey;
       if (strKey != strAtomKey)
         throw RbtFileParseError(_WHERE_, "Missing " + strAtomKey +
                                              " string in " + GetFileName());
@@ -117,7 +117,7 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
       double dAtomicMass;    // atomic mass from PSF file
 
       while ((m_atomList.size() < nAtomRec) && (fileIter != fileEnd)) {
-        istringstream istr(*fileIter++);
+        std::istringstream istr(*fileIter++);
         istr >> nAtomId >> strSegmentName >> strSubunitId >> strSubunitName >>
             strAtomName >> strFFType >> dPartialCharge >> dAtomicMass;
 
@@ -162,11 +162,12 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
       // 4a. Read number of bonds and check for correct bond key...
       int nBondRec;
       fileIter++;
-      istringstream(*fileIter) >> nBondRec >> strKey;
-      // cout << "strKey "<<strKey << " strBondKey " << strBondKey << endl;
-      // if(strBondKey.compare(strKey,0,6)) {// 6 for "!NBOND" old style API
+      std::istringstream(*fileIter) >> nBondRec >> strKey;
+      // std::cout << "strKey "<<strKey << " strBondKey " << strBondKey <<
+      // std::endl; if(strBondKey.compare(strKey,0,6)) {// 6 for "!NBOND" old
+      // style API
       int iCmp = strBondKey.compare(0, 5, strKey);
-      // cout << "iCmp = " << iCmp << endl;
+      // std::cout << "iCmp = " << iCmp << std::endl;
       if (iCmp > 0) { // 6 for "!NBOND" new API
         throw RbtFileParseError(_WHERE_, "Missing " + strBondKey +
                                              " string in " + GetFileName());
@@ -180,7 +181,7 @@ void RbtPsfFileSource::Parse() throw(RbtError) {
       unsigned int idxAtom1;
       unsigned int idxAtom2;
       while ((m_bondList.size() < nBondRec) && (fileIter != fileEnd)) {
-        istringstream istr(*fileIter++);
+        std::istringstream istr(*fileIter++);
 
         // Read bonds slightly differently to atoms as we have 4 bonds per line
         // Current method assumes atoms are numbered consectively from 1
@@ -280,8 +281,8 @@ void RbtPsfFileSource::SetupVdWRadii() throw(RbtError) {
     // masses.rtf defines hybrid state as TRI so switch here if necessary
     if ((nAtomicNo == 7) && bIsTri(*iter) && bTwoBonds(*iter)) {
       (*iter)->SetHybridState(RbtAtom::SP2);
-      // cout << "Switch from N_tri to N_sp2: " << (*iter)->GetFullAtomName() <<
-      // endl;
+      // std::cout << "Switch from N_tri to N_sp2: " <<
+      // (*iter)->GetFullAtomName() << std::endl;
     }
     RbtElementData elData = m_spElementData->GetElementData(nAtomicNo);
     double vdwRadius = elData.vdwRadius;
@@ -302,9 +303,9 @@ void RbtPsfFileSource::SetupVdWRadii() throw(RbtError) {
     // Finally we can set the radius
     (*iter)->SetVdwRadius(vdwRadius);
 #ifdef _DEBUG
-    // cout << (*iter)->GetFullAtomName() << ": #H=" << nImplH
+    // std::cout << (*iter)->GetFullAtomName() << ": #H=" << nImplH
     //<< "; vdwR=" << (*iter)->GetVdwRadius()
-    //<< "; mass=" << (*iter)->GetAtomicMass() << endl;
+    //<< "; mass=" << (*iter)->GetAtomicMass() << std::endl;
 #endif //_DEBUG
   }
 }
@@ -325,10 +326,10 @@ void RbtPsfFileSource::SetupPartialIonicGroups() {
     RbtAtomList ss;
     std::copy_if(iter, m_atomList.end(), std::back_inserter(ss),
                  isSS_eq(*iter));
-    // cout << "Psf SetupPartialIonicGroups: SS from " <<
+    // std::cout << "Psf SetupPartialIonicGroups: SS from " <<
     // ss.front()->GetFullAtomName()
     //	 << " to " << ss.back()->GetFullAtomName() << " (" << ss.size() << ")
-    // atoms" << endl; Assign group charges for this residue
+    // atoms" << std::endl; Assign group charges for this residue
     RbtBaseMolecularFileSource::SetupPartialIonicGroups(ss, m_spParamSource);
     // Mark each atom in substructure as having been processed
     std::for_each(ss.begin(), ss.end(), Rbt::SelectAtom(true));
@@ -355,8 +356,8 @@ void RbtPsfFileSource::RemoveNonPolarHydrogens() {
       (*cIter)->SetNumImplicitHydrogens((*cIter)->GetNumImplicitHydrogens() +
                                         nImplH);
 #ifdef _DEBUG
-      cout << "Removing " << nImplH << " hydrogens from "
-           << (*cIter)->GetFullAtomName() << endl;
+      std::cout << "Removing " << nImplH << " hydrogens from "
+                << (*cIter)->GetFullAtomName() << std::endl;
 #endif //_DEBUG
     }
   }

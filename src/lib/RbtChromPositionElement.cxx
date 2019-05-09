@@ -336,9 +336,9 @@ double RbtChromPositionElement::CompareVector(const RbtDoubleList &v,
   return retVal;
 }
 
-void RbtChromPositionElement::Print(ostream &s) const {
-  s << "COM " << m_com << endl;
-  s << "EULER " << m_orientation << endl;
+void RbtChromPositionElement::Print(std::ostream &s) const {
+  s << "COM " << m_com << std::endl;
+  s << "EULER " << m_orientation << std::endl;
 }
 
 double RbtChromPositionElement::StandardisedValue(double rotationAngle) {

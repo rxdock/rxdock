@@ -20,14 +20,14 @@ RbtConstSF::RbtConstSF(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_solventPenalty(0.5) {
   AddParameter(_SOLVENT_PENALTY, m_solventPenalty);
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtConstSF::~RbtConstSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }

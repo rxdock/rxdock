@@ -34,14 +34,14 @@ RbtPharmaSF::RbtPharmaSF(const std::string &strName)
   AddParameter(_WRITE_ERRORS, m_bWriteErrors);
   SetTrace(1); // Provide a bit of debug output by default
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtPharmaSF::~RbtPharmaSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -75,20 +75,21 @@ void RbtPharmaSF::SetupReceptor() {
     strOutputFile.erase(strOutputFile.find(".sd"), 3);
     strOutputFile += "_errors.sd";
     if (GetTrace() > 0) {
-      cout << _CT << ": Reading mandatory ph4 constraints from "
-           << strConstraintFile << endl;
-      cout << _CT
-           << ": Ligands missing the mandatory features will be written to "
-           << strOutputFile << endl;
+      std::cout << _CT << ": Reading mandatory ph4 constraints from "
+                << strConstraintFile << std::endl;
+      std::cout
+          << _CT
+          << ": Ligands missing the mandatory features will be written to "
+          << strOutputFile << std::endl;
     }
     m_spErrorFile = RbtMolecularFileSinkPtr(
         new RbtMdlFileSink(strOutputFile.c_str(), GetLigand()));
   }
   if (GetTrace() > 0) {
-    cout << _CT << ": Reading mandatory ph4 constraints from "
-         << strConstraintFile << endl;
+    std::cout << _CT << ": Reading mandatory ph4 constraints from "
+              << strConstraintFile << std::endl;
   }
-  ifstream constrFile(strConstraintFile.c_str(), ios_base::in);
+  std::ifstream constrFile(strConstraintFile.c_str(), std::ios_base::in);
   if (!constrFile) {
     throw RbtFileReadError(_WHERE_, "cannot open mandatory constraints file " +
                                         strConstraintFile);
@@ -98,24 +99,24 @@ void RbtPharmaSF::SetupReceptor() {
   constrFile.close();
 
   // Optional constraints
-  ifstream optFile(strOptFile.c_str(), ios_base::in);
+  std::ifstream optFile(strOptFile.c_str(), std::ios_base::in);
   if (optFile.good()) {
     if (GetTrace() > 0) {
-      cout << _CT << ": Reading optional ph4 constraints from " << strOptFile
-           << endl;
+      std::cout << _CT << ": Reading optional ph4 constraints from "
+                << strOptFile << std::endl;
     }
     Rbt::ReadConstraints(optFile, m_optList, false);
     // Keep m_nopt within range
     SetParameter(_NOPT, std::min(m_nopt, int(m_optList.size())));
     SetParameter(_NOPT, std::max(m_nopt, 0));
     if (GetTrace() > 0) {
-      cout << _CT << ": " << m_nopt
-           << " of the optional constraints are required to be satisfied"
-           << endl;
+      std::cout << _CT << ": " << m_nopt
+                << " of the optional constraints are required to be satisfied"
+                << std::endl;
     }
     optFile.close();
   } else if (GetTrace() > 0) {
-    cout << _CT << ": No optional ph4 constraints file found" << endl;
+    std::cout << _CT << ": No optional ph4 constraints file found" << std::endl;
   }
 
   // Initialise the component score vectors
@@ -128,14 +129,14 @@ void RbtPharmaSF::SetupLigand() {
     return;
   try {
     if (GetTrace() > 0) {
-      cout << _CT << ": Checking mandatory ph4 features..." << endl;
+      std::cout << _CT << ": Checking mandatory ph4 features..." << std::endl;
     }
     for (RbtConstraintListIter iter = m_constrList.begin();
          iter != m_constrList.end(); iter++) {
       (*iter)->AddAtomList(GetLigand(), true);
     }
     if (GetTrace() > 0) {
-      cout << _CT << ": All mandatory features found" << endl;
+      std::cout << _CT << ": All mandatory features found" << std::endl;
     }
   } catch (RbtLigandError &e) {
     if (m_bWriteErrors) {
@@ -176,11 +177,11 @@ double RbtPharmaSF::RawScore() const {
   RbtDoubleList lowest(m_nopt);
   std::partial_sort_copy(m_optScores.begin(), m_optScores.end(), lowest.begin(),
                          lowest.end());
-  // cout << m_nopt << " lowest optional scores:\t";
+  // std::cout << m_nopt << " lowest optional scores:\t";
   for (int i = 0; i < lowest.size(); i++) {
-    // cout << lowest[i] << "\t";
+    // std::cout << lowest[i] << "\t";
   }
-  // cout << endl;
+  // std::cout << std::endl;
   total = std::accumulate(lowest.begin(), lowest.end(), total);
   return total;
 }
@@ -206,13 +207,13 @@ void RbtPharmaSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     AddToParentMapEntry(scoreMap, rs);
     // Store the mandatory constraint scores
     for (int i = 0; i < m_conScores.size(); i++) {
-      ostringstream field;
+      std::ostringstream field;
       field << name << ".con_" << i + 1;
       scoreMap[field.str()] = m_conScores[i];
     }
     // Store the optional constraint scores (unsorted)
     for (int i = 0; i < m_optScores.size(); i++) {
-      ostringstream field;
+      std::ostringstream field;
       field << name << ".opt_" << i + 1;
       scoreMap[field.str()] = m_optScores[i];
     }

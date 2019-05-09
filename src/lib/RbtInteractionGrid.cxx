@@ -72,7 +72,7 @@ RbtInteractionGrid::RbtInteractionGrid(const RbtCoord &gridMin,
 }
 
 // Constructor reading params from binary stream
-RbtInteractionGrid::RbtInteractionGrid(istream &istr) : RbtBaseGrid(istr) {
+RbtInteractionGrid::RbtInteractionGrid(std::istream &istr) : RbtBaseGrid(istr) {
   CreateMap();
   OwnRead(istr);
   _RBTOBJECTCOUNTER_CONSTR_("RbtInteractionGrid");
@@ -130,19 +130,19 @@ RbtInteractionGrid &RbtInteractionGrid::operator=(const RbtBaseGrid &grid) {
 // Print,Write and Read methods
 
 // Text output
-void RbtInteractionGrid::Print(ostream &ostr) const {
+void RbtInteractionGrid::Print(std::ostream &ostr) const {
   RbtBaseGrid::Print(ostr);
   OwnPrint(ostr);
 }
 
 // Binary output
-void RbtInteractionGrid::Write(ostream &ostr) const {
+void RbtInteractionGrid::Write(std::ostream &ostr) const {
   RbtBaseGrid::Write(ostr);
   OwnWrite(ostr);
 }
 
 // Binary input
-void RbtInteractionGrid::Read(istream &istr) {
+void RbtInteractionGrid::Read(std::istream &istr) {
   ClearInteractionLists();
   RbtBaseGrid::Read(istr);
   OwnRead(istr);
@@ -183,7 +183,8 @@ RbtInteractionGrid::GetInteractionList(const RbtCoord &c) const {
   if (isValid(c)) {
     return m_intnMap[GetIXYZ(c)];
   } else {
-    // cout << _CT << "::GetInteractionList," << c << " is off grid" << endl;
+    // std::cout << _CT << "::GetInteractionList," << c << " is off grid" <<
+    // std::endl;
     return m_emptyList;
   }
 }
@@ -229,12 +230,12 @@ void RbtInteractionGrid::ClearInteractionLists() {
 void RbtInteractionGrid::UniqueInteractionLists() {
   for (RbtInteractionListMapIter iter = m_intnMap.begin();
        iter != m_intnMap.end(); iter++) {
-    // cout << _CT << ": before = " << (*iter).size();
+    // std::cout << _CT << ": before = " << (*iter).size();
     std::sort((*iter).begin(), (*iter).end(), Rbt::InteractionCenterCmp());
     RbtInteractionCenterListIter uniqIter =
         std::unique((*iter).begin(), (*iter).end());
     (*iter).erase(uniqIter, (*iter).end());
-    // cout << "; After = " << (*iter).size() << endl;
+    // std::cout << "; After = " << (*iter).size() << std::endl;
   }
 }
 
@@ -242,15 +243,15 @@ void RbtInteractionGrid::UniqueInteractionLists() {
 // Protected methods
 
 // Protected method for writing data members for this class to text stream
-void RbtInteractionGrid::OwnPrint(ostream &ostr) const {
-  ostr << endl << "Class\t" << _CT << endl;
-  ostr << "No. of entries in the map: " << m_intnMap.size() << endl;
+void RbtInteractionGrid::OwnPrint(std::ostream &ostr) const {
+  ostr << std::endl << "Class\t" << _CT << std::endl;
+  ostr << "No. of entries in the map: " << m_intnMap.size() << std::endl;
   // TO BE COMPLETED - no real need for dumping the interaction list info
 }
 
 // Protected method for writing data members for this class to binary stream
 //(Serialisation)
-void RbtInteractionGrid::OwnWrite(ostream &ostr) const {
+void RbtInteractionGrid::OwnWrite(std::ostream &ostr) const {
   // Write all the data members
   // NO MEANS OF WRITING THE INTERACTION LISTS IN A WAY WHICH CAN BE READ BACK
   // IN i.e. we are holding pointers to atoms which would need to be recreated
@@ -264,7 +265,7 @@ void RbtInteractionGrid::OwnWrite(ostream &ostr) const {
 // Protected method for reading data members for this class from binary stream
 // WARNING: Assumes grid data array has already been created
 // and is of the correct size
-void RbtInteractionGrid::OwnRead(istream &istr) throw(RbtError) {
+void RbtInteractionGrid::OwnRead(std::istream &istr) throw(RbtError) {
   // Read all the data members
   // NOTHING TO READ - see above
   CreateMap();

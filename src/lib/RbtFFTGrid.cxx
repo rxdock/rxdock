@@ -32,7 +32,7 @@ RbtFFTGrid::RbtFFTGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
 }
 
 // Constructor reading params from binary stream
-RbtFFTGrid::RbtFFTGrid(istream &istr) : RbtRealGrid(istr) {
+RbtFFTGrid::RbtFFTGrid(std::istream &istr) : RbtRealGrid(istr) {
   OwnRead(istr);
   _RBTOBJECTCOUNTER_CONSTR_("RbtFFTGrid");
 }
@@ -86,19 +86,19 @@ RbtFFTGrid &RbtFFTGrid::operator=(const RbtBaseGrid &grid) {
 // Print,Write and Read methods
 
 // Text output
-void RbtFFTGrid::Print(ostream &ostr) const {
+void RbtFFTGrid::Print(std::ostream &ostr) const {
   RbtRealGrid::Print(ostr);
   OwnPrint(ostr);
 }
 
 // Binary output
-void RbtFFTGrid::Write(ostream &ostr) const {
+void RbtFFTGrid::Write(std::ostream &ostr) const {
   RbtRealGrid::Write(ostr);
   OwnWrite(ostr);
 }
 
 // Binary input
-void RbtFFTGrid::Read(istream &istr) {
+void RbtFFTGrid::Read(std::istream &istr) {
   RbtRealGrid::Read(istr);
   OwnRead(istr);
 }
@@ -123,8 +123,8 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
   }
 
 #ifdef _DEBUG
-  cout << stillToProcess.size() << " data points found higher than  "
-       << threshold << endl;
+  std::cout << stillToProcess.size() << " data points found higher than  "
+            << threshold << std::endl;
 #endif //_DEBUG
 
   // Repeat while we still have data points to process
@@ -144,7 +144,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
     stillToProcess.erase(iter);
 
 #ifdef _DEBUG
-    // cout << "Seeding new peak at point " << iXYZ0 << endl;
+    // std::cout << "Seeding new peak at point " << iXYZ0 << std::endl;
 #endif //_DEBUG
 
     // Repeat while the peak keeps growing
@@ -164,7 +164,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
       // Add the point to the current peak
       currentPeak.insert(iXYZ0);
 #ifdef _DEBUG
-      // cout << "Popping point " << iXYZ0 << endl;
+      // std::cout << "Popping point " << iXYZ0 << std::endl;
 #endif //_DEBUG
 
       // Now check if any neighbours of the point can also be added to the queue
@@ -179,7 +179,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
 #ifdef _DEBUG
-          // cout << "Pushing X+1 point " << iXYZ1 << endl;
+          // std::cout << "Pushing X+1 point " << iXYZ1 << std::endl;
 #endif //_DEBUG
         }
       }
@@ -192,7 +192,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
 #ifdef _DEBUG
-          // cout << "Pushing X-1 point " << iXYZ1 << endl;
+          // std::cout << "Pushing X-1 point " << iXYZ1 << std::endl;
 #endif //_DEBUG
         }
       }
@@ -205,7 +205,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
 #ifdef _DEBUG
-          // cout << "Pushing Y+1 point " << iXYZ1 << endl;
+          // std::cout << "Pushing Y+1 point " << iXYZ1 << std::endl;
 #endif //_DEBUG
         }
       }
@@ -218,7 +218,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
 #ifdef _DEBUG
-          // cout << "Pushing Y-1 point " << iXYZ1 << endl;
+          // std::cout << "Pushing Y-1 point " << iXYZ1 << std::endl;
 #endif //_DEBUG
         }
       }
@@ -231,7 +231,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
 #ifdef _DEBUG
-          // cout << "Pushing Z+1 point " << iXYZ1 << endl;
+          // std::cout << "Pushing Z+1 point " << iXYZ1 << std::endl;
 #endif //_DEBUG
         }
       }
@@ -244,7 +244,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
 #ifdef _DEBUG
-          // cout << "Pushing Z-1 point " << iXYZ1 << endl;
+          // std::cout << "Pushing Z-1 point " << iXYZ1 << std::endl;
 #endif //_DEBUG
         }
       }
@@ -260,12 +260,12 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
       spPeak->points = currentPeak;
       peakMap.insert(std::pair<double, RbtFFTPeakPtr>(peakHeight, spPeak));
 #ifdef _DEBUG
-      cout.precision(3);
-      cout.setf(ios_base::fixed, ios_base::floatfield);
-      cout << "Finished growing peak #" << peakMap.size()
-           << ", pos=" << spPeak->coord << ", height=" << spPeak->height
-           << ", volume=" << spPeak->volume << endl
-           << endl;
+      std::cout.precision(3);
+      std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
+      std::cout << "Finished growing peak #" << peakMap.size()
+                << ", pos=" << spPeak->coord << ", height=" << spPeak->height
+                << ", volume=" << spPeak->volume << std::endl
+                << std::endl;
 #endif //_DEBUG
     }
   }
@@ -289,13 +289,13 @@ RbtFFTPeak RbtFFTGrid::FindMaxPeak() const {
 // Protected methods
 
 // Protected method for writing data members for this class to text stream
-void RbtFFTGrid::OwnPrint(ostream &ostr) const {
-  ostr << "Class\t" << _CT << endl;
+void RbtFFTGrid::OwnPrint(std::ostream &ostr) const {
+  ostr << "Class\t" << _CT << std::endl;
 }
 
 // Protected method for writing data members for this class to binary stream
 //(Serialisation)
-void RbtFFTGrid::OwnWrite(ostream &ostr) const {
+void RbtFFTGrid::OwnWrite(std::ostream &ostr) const {
   // Write the class name as a title so we can check the authenticity of streams
   // on read
   const char *const gridTitle = _CT.c_str();
@@ -305,7 +305,7 @@ void RbtFFTGrid::OwnWrite(ostream &ostr) const {
 }
 
 // Protected method for reading data members for this class from binary stream
-void RbtFFTGrid::OwnRead(istream &istr) throw(RbtError) {
+void RbtFFTGrid::OwnRead(std::istream &istr) throw(RbtError) {
   // Read title
   int length;
   Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));

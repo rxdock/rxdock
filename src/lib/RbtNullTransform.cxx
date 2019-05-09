@@ -22,14 +22,14 @@ std::string RbtNullTransform::_CT("RbtNullTransform");
 RbtNullTransform::RbtNullTransform(const std::string &strName)
     : RbtBaseTransform(_CT, strName) {
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtNullTransform::~RbtNullTransform() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -49,7 +49,7 @@ void RbtNullTransform::Execute() {
   if (iTrace == 5) {
     GetWorkSpace()->SaveHistory(true);
     double s = GetWorkSpace()->GetSF()->Score();
-    cout << "SCORE = " << s << endl;
+    std::cout << "SCORE = " << s << std::endl;
   }
   // Trace level 2 = output entire GA population to history file, unless pop
   // does not exist, in which case same as level 1

@@ -61,7 +61,7 @@ void RbtCharmmTypesFileSource::Parse() throw(RbtError) {
           // We have a match so read in the line and store in the types list
           CharmmType chrmType;
           std::string strDummy;
-          istringstream istr(*fileIter);
+          std::istringstream istr(*fileIter);
           istr >> strDummy >> chrmType.nAtomType >> chrmType.strAtomType >>
               chrmType.mass >> chrmType.element;
           //				  >> strDummy
@@ -72,8 +72,8 @@ void RbtCharmmTypesFileSource::Parse() throw(RbtError) {
           chrmType.comment = *fileIter;
           m_typesList.push_back(chrmType);
 #ifdef _DEBUG
-          //	  cout << "Type #" << chrmType.nAtomType << " = " <<
-          // chrmType.strAtomType << endl;
+          //	  std::cout << "Type #" << chrmType.nAtomType << " = " <<
+          // chrmType.strAtomType << std::endl;
 #endif //_DEBUG
         }
       }

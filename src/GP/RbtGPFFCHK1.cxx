@@ -25,7 +25,7 @@
 
 std::string RbtGPFFCHK1::_CT("RbtGPFFCHK1");
 
-void RbtGPFFCHK1::ReadTables(istream &in, RbtReturnTypeArray &it,
+void RbtGPFFCHK1::ReadTables(std::istream &in, RbtReturnTypeArray &it,
                              RbtReturnTypeArray &sft) {
   RbtReturnType value;
   int nip, nsfi;
@@ -66,7 +66,7 @@ void RbtGPFFCHK1::ReadTables(istream &in, RbtReturnTypeArray &it,
     i++;
     in >> recordn;
   }
-  cout << "Read: " << inputTable[0][0] << endl;
+  std::cout << "Read: " << inputTable[0][0] << std::endl;
   it = inputTable;
   sft = SFTable;
 }
@@ -105,7 +105,7 @@ double RbtGPFFCHK1::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
       else
         fp++; // hit predicted: False Positive
     }
-    //		cout << tp
+    //        std::cout << tp
   }
   /*
   objective = 1.0 * (tp - fn) - fp;
@@ -157,7 +157,7 @@ double RbtGPFFCHK1::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   }
   objective = (tp / (tp + fp)) * (tp / (tp + fn));
   // precision * true positive rate
-  cout << fn << "\t" << tn << "\t" << fp << "\t" << tp << endl;
+  std::cout << fn << "\t" << tn << "\t" << fp << "\t" << tp << std::endl;
   fitness = objective;
   // g->SetFitness(fitness);
   // For now, I am using tournament selection. So the fitness
@@ -172,13 +172,13 @@ void RbtGPFFCHK1::CreateRandomCtes(int nctes) {
     double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
-    cout << "c0 \t0.0" << endl;
-    cout << "c1 \t1.0" << endl;
+    std::cout << "c0 \t0.0" << std::endl;
+    std::cout << "c1 \t1.0" << std::endl;
     for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * pow(10, b);
-      cout << "c" << i + 2 << " \t" << c << endl;
+      std::cout << "c" << i + 2 << " \t" << c << std::endl;
       ctes.push_back(c);
     }
   }

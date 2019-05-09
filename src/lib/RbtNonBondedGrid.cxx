@@ -29,7 +29,7 @@ RbtNonBondedGrid::RbtNonBondedGrid(const RbtCoord &gridMin,
 }
 
 // Constructor reading params from binary stream
-RbtNonBondedGrid::RbtNonBondedGrid(istream &istr) : RbtBaseGrid(istr) {
+RbtNonBondedGrid::RbtNonBondedGrid(std::istream &istr) : RbtBaseGrid(istr) {
   CreateMap();
   OwnRead(istr);
   _RBTOBJECTCOUNTER_CONSTR_("RbtNonBondedGrid");
@@ -86,19 +86,19 @@ RbtNonBondedGrid &RbtNonBondedGrid::operator=(const RbtBaseGrid &grid) {
 // Print,Write and Read methods
 
 // Text output
-void RbtNonBondedGrid::Print(ostream &ostr) const {
+void RbtNonBondedGrid::Print(std::ostream &ostr) const {
   RbtBaseGrid::Print(ostr);
   OwnPrint(ostr);
 }
 
 // Binary output
-void RbtNonBondedGrid::Write(ostream &ostr) const {
+void RbtNonBondedGrid::Write(std::ostream &ostr) const {
   RbtBaseGrid::Write(ostr);
   OwnWrite(ostr);
 }
 
 // Binary input
-void RbtNonBondedGrid::Read(istream &istr) {
+void RbtNonBondedGrid::Read(std::istream &istr) {
   ClearAtomLists();
   RbtBaseGrid::Read(istr);
   OwnRead(istr);
@@ -174,11 +174,11 @@ void RbtNonBondedGrid::ClearAtomLists() {
 void RbtNonBondedGrid::UniqueAtomLists() {
   for (RbtAtomListMapIter iter = m_atomMap.begin(); iter != m_atomMap.end();
        iter++) {
-    // cout << _CT << ": before = " << (*iter).size();
+    // std::cout << _CT << ": before = " << (*iter).size();
     std::sort((*iter).begin(), (*iter).end(), Rbt::RbtAtomPtrCmp_Ptr());
     RbtAtomRListIter uniqIter = std::unique((*iter).begin(), (*iter).end());
     (*iter).erase(uniqIter, (*iter).end());
-    // cout << "; After = " << (*iter).size() << endl;
+    // std::cout << "; After = " << (*iter).size() << std::endl;
   }
 }
 
@@ -186,15 +186,15 @@ void RbtNonBondedGrid::UniqueAtomLists() {
 // Protected methods
 
 // Protected method for writing data members for this class to text stream
-void RbtNonBondedGrid::OwnPrint(ostream &ostr) const {
-  ostr << endl << "Class\t" << _CT << endl;
-  ostr << "No. of entries in the map: " << m_atomMap.size() << endl;
+void RbtNonBondedGrid::OwnPrint(std::ostream &ostr) const {
+  ostr << std::endl << "Class\t" << _CT << std::endl;
+  ostr << "No. of entries in the map: " << m_atomMap.size() << std::endl;
   // TO BE COMPLETED - no real need for dumping the atom list info
 }
 
 // Protected method for writing data members for this class to binary stream
 //(Serialisation)
-void RbtNonBondedGrid::OwnWrite(ostream &ostr) const {
+void RbtNonBondedGrid::OwnWrite(std::ostream &ostr) const {
   // Write all the data members
   // NO MEANS OF WRITING THE ATOM LISTS IN A WAY WHICH CAN BE READ BACK IN
   // i.e. we are holding pointers to atoms which would need to be recreated
@@ -208,7 +208,7 @@ void RbtNonBondedGrid::OwnWrite(ostream &ostr) const {
 // Protected method for reading data members for this class from binary stream
 // WARNING: Assumes grid data array has already been created
 // and is of the correct size
-void RbtNonBondedGrid::OwnRead(istream &istr) throw(RbtError) {
+void RbtNonBondedGrid::OwnRead(std::istream &istr) throw(RbtError) {
   // Read all the data members
   // NOTHING TO READ - see above
 }

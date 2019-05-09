@@ -26,8 +26,8 @@ RbtWorkSpace::RbtWorkSpace(unsigned int nModels)
     : m_models(nModels), m_SF(NULL), m_transform(NULL) {
   AddParameter(_NAME, _CT);
 #ifdef _DEBUG
-  cout << "RbtWorkSpace::RbtWorkSpace(): Created model list of size "
-       << m_models.size() << endl;
+  std::cout << "RbtWorkSpace::RbtWorkSpace(): Created model list of size "
+            << m_models.size() << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_("RbtWorkSpace");
 }

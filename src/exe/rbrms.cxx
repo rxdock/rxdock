@@ -119,8 +119,9 @@ void EnumerateSymCoords::Setup() {
         m_symBondList.push_back(spSymBond);
         bMatch = true;
 #ifdef _DEBUG
-        cout << "Matched bond ID " << (*bIter)->GetBondId() << " for atoms "
-             << atomId1 << ", " << atomId2 << ", swap=false" << endl;
+        std::cout << "Matched bond ID " << (*bIter)->GetBondId()
+                  << " for atoms " << atomId1 << ", " << atomId2
+                  << ", swap=false" << std::endl;
 #endif //_DEBUG
       } else if (((*bIter)->GetAtom1Ptr()->GetAtomId() == atomId2) &&
                  ((*bIter)->GetAtom2Ptr()->GetAtomId() == atomId1)) {
@@ -128,13 +129,15 @@ void EnumerateSymCoords::Setup() {
         m_symBondList.push_back(spSymBond);
         bMatch = true;
 #ifdef _DEBUG
-        cout << "Matched bond ID " << (*bIter)->GetBondId() << " for atoms "
-             << atomId1 << ", " << atomId2 << ", swap=true" << endl;
+        std::cout << "Matched bond ID " << (*bIter)->GetBondId()
+                  << " for atoms " << atomId1 << ", " << atomId2
+                  << ", swap=true" << std::endl;
 #endif //_DEBUG
       }
     }
     if (bMatch == false) {
-      cout << "Bond " << atomId1 << " - " << atomId2 << " not found" << endl;
+      std::cout << "Bond " << atomId1 << " - " << atomId2 << " not found"
+                << std::endl;
     }
   }
 }
@@ -156,19 +159,22 @@ double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
 
 int main(int argc, char *argv[]) {
   if (argc < 3) {
-    cout << "rbrms <ref sdfile> <input sdfile> [<output sdfile>] [<RMSD "
-            "threshold>]"
-         << endl;
-    cout << "RMSD is calculated for each record in <input sdfile> against <ref "
-            "sdfile> (heavy atoms only)"
-         << endl;
-    cout << "If <output sdfile> is defined, records are written to output file "
-            "with RMSD data field"
-         << endl;
-    cout << "If RMSD threshold is defined, records are removed which have an "
-            "RMSD < threshold with any"
-         << endl;
-    cout << "previous record in <input sdfile>" << endl;
+    std::cout << "rbrms <ref sdfile> <input sdfile> [<output sdfile>] [<RMSD "
+                 "threshold>]"
+              << std::endl;
+    std::cout
+        << "RMSD is calculated for each record in <input sdfile> against <ref "
+           "sdfile> (heavy atoms only)"
+        << std::endl;
+    std::cout
+        << "If <output sdfile> is defined, records are written to output file "
+           "with RMSD data field"
+        << std::endl;
+    std::cout
+        << "If RMSD threshold is defined, records are removed which have an "
+           "RMSD < threshold with any"
+        << std::endl;
+    std::cout << "previous record in <input sdfile>" << std::endl;
     return 1;
   }
 
@@ -187,8 +193,8 @@ int main(int argc, char *argv[]) {
     bRemoveDups = true;
   }
 
-  // ios_base::fmtflags oldflags = cout.flags();//save state
-  std::ios_base::fmtflags oldflags = cout.flags(); // save state
+  // std::ios_base::fmtflags oldflags = std::cout.flags();//save state
+  std::ios_base::fmtflags oldflags = std::cout.flags(); // save state
 
   RbtDoubleList scoreVec;
   RbtDoubleList rmsVec;
@@ -208,11 +214,11 @@ int main(int argc, char *argv[]) {
     symEnumerator.GetSymCoords(cll);
     int nCoords = cll.front().size();
 
-    cout << "molv_	rms rms	rmc rmc"
-         << endl; // Dummy header line to be like do_anal
+    std::cout << "molv_	rms rms	rmc rmc"
+              << std::endl; // Dummy header line to be like do_anal
 
-    cout.precision(3);
-    cout.setf(ios_base::fixed, ios_base::floatfield);
+    std::cout.precision(3);
+    std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
 
     ///////////////////////////////////
     // MAIN LOOP OVER LIGAND RECORDS
@@ -229,7 +235,7 @@ int main(int argc, char *argv[]) {
          spMdlFileSource->NextRecord(), nRec++) {
       RbtError molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
-        cout << molStatus << endl;
+        std::cout << molStatus << std::endl;
         continue;
       }
       // DM 16 June 2006 - remove any solvent fragments from each record
@@ -246,7 +252,7 @@ int main(int argc, char *argv[]) {
         for (RbtCoordListListConstIter cIter = cll.begin(); cIter != cll.end();
              cIter++) {
           double rms1 = rmsd(*cIter, coords);
-          // cout << "\tRMSD = " << rms1 << endl;
+          // std::cout << "\tRMSD = " << rms1 << std::endl;
           rms = std::min(rms, rms1);
         }
         spModel->SetDataValue("RMSD", rms);
@@ -274,8 +280,8 @@ int main(int argc, char *argv[]) {
         // If we are not in 'remove duplicate' mode then bIsUnique is always
         // true
         if (bIsUnique) {
-          cout << nRec << "\t" << score << "\t" << scoreInter << "\t"
-               << scoreIntra << "\t" << rms << "\t" << 0.0 << endl;
+          std::cout << nRec << "\t" << score << "\t" << scoreInter << "\t"
+                    << scoreIntra << "\t" << rms << "\t" << 0.0 << std::endl;
           if (bRemoveDups) {
             previousModels.push_back(spModel);
           }
@@ -293,7 +299,8 @@ int main(int argc, char *argv[]) {
     double zTot(0.0);
     double zMean(0.0);
     double zMean2(0.0);
-    // cout << endl << "Bolztmann-weighted RMSD calculation" << endl;
+    // std::cout << std::endl << "Bolztmann-weighted RMSD calculation" <<
+    // std::endl;
     for (; (sIter != scoreVec.end()) && (rIter != rmsVec.end());
          sIter++, rIter++) {
       double de = (*sIter) - minScore;
@@ -301,21 +308,23 @@ int main(int argc, char *argv[]) {
       zTot += z;
       zMean += (*rIter) * z;
       zMean2 += (*rIter) * (*rIter) * z;
-      // cout << *sIter << "\t" << de << "\t" << z << "\t" << zTot << "\t" <<
-      // (*rIter) << endl;
+      // std::cout << *sIter << "\t" << de << "\t" << z << "\t" << zTot << "\t"
+      // <<
+      // (*rIter) << std::endl;
     }
     zMean /= zTot;
     double zVar = zMean2 / zTot - (zMean * zMean);
-    // cout << "zRMSD," << zTot << "," << zMean << "," << sqrt(zVar) << endl;
+    // std::cout << "zRMSD," << zTot << "," << zMean << "," << sqrt(zVar) <<
+    // std::endl;
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  cout.flags(oldflags); // Restore state
+  std::cout.flags(oldflags); // Restore state
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
 
   return 0;
 }

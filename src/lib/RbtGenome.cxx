@@ -68,12 +68,13 @@ void RbtGenome::NormaliseRWFitness(double total) {
   }
 }
 
-void RbtGenome::Print(ostream &s) const {
-  s << *m_chrom << endl;
-  s << "Score: " << GetScore() << "; RWFitness: " << GetRWFitness() << endl;
+void RbtGenome::Print(std::ostream &s) const {
+  s << *m_chrom << std::endl;
+  s << "Score: " << GetScore() << "; RWFitness: " << GetRWFitness()
+    << std::endl;
 }
 
-ostream &operator<<(ostream &s, const RbtGenome &g) {
+std::ostream &operator<<(std::ostream &s, const RbtGenome &g) {
   g.Print(s);
   return s;
 }

@@ -21,14 +21,14 @@ std::string RbtVdwIntraSF::_CT("RbtVdwIntraSF");
 RbtVdwIntraSF::RbtVdwIntraSF(const std::string &strName)
     : RbtBaseSF(_CT, strName) {
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtVdwIntraSF::~RbtVdwIntraSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -48,14 +48,14 @@ void RbtVdwIntraSF::HandleRequest(RbtRequestPtr spRequest) {
   case ID_REQ_SF_PARTITION:
     if (params.size() == 1) {
       if (iTrace > 2) {
-        cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
-             << " at distance=" << params[0] << endl;
+        std::cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
+                  << " at distance=" << params[0] << std::endl;
       }
       Partition(m_ligAtomList, m_vdwIntns, m_prtIntns, params[0]);
     } else if ((params.size() == 2) && (params[0].String() == GetFullName())) {
       if (iTrace > 2) {
-        cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
-             << " at distance=" << params[1] << endl;
+        std::cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
+                  << " at distance=" << params[1] << std::endl;
       }
       Partition(m_ligAtomList, m_vdwIntns, m_prtIntns, params[1]);
     }
@@ -64,8 +64,8 @@ void RbtVdwIntraSF::HandleRequest(RbtRequestPtr spRequest) {
     // Pass all other requests to base handler
   default:
     if (iTrace > 2) {
-      cout << _CT << "::HandleRequest: " << GetFullName()
-           << " passing request to base handler" << endl;
+      std::cout << _CT << "::HandleRequest: " << GetFullName()
+                << " passing request to base handler" << std::endl;
     }
     RbtBaseObject::HandleRequest(spRequest);
     break;
@@ -89,7 +89,7 @@ void RbtVdwIntraSF::SetupScore() {
 
   int iTrace = GetTrace();
   if (iTrace > 2) {
-    cout << _CT << "::SetupScore()" << endl;
+    std::cout << _CT << "::SetupScore()" << std::endl;
   }
 
   RbtAtomList tmpList = spModel->GetAtomList();

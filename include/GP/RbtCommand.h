@@ -48,7 +48,7 @@ protected:
   }
 
 private:
-  //    friend ostream& operator<<(ostream& s, const RbtCommand &p);
+  //    friend std::ostream& operator<<(std::ostream& s, const RbtCommand &p);
 };
 
 // Useful typedefs

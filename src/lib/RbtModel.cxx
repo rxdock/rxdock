@@ -47,8 +47,8 @@ RbtModel::RbtModel(RbtAtomList &atomList, RbtBondList &bondList)
 // Default destructor
 RbtModel::~RbtModel() {
 #ifdef _DEBUG
-  cout << "~RbtModel: deleting " << m_strName << " (" << m_atomList.size()
-       << " atoms, " << m_bondList.size() << " bonds)" << endl;
+  std::cout << "~RbtModel: deleting " << m_strName << " (" << m_atomList.size()
+            << " atoms, " << m_bondList.size() << " bonds)" << std::endl;
 #endif     //_DEBUG
   Clear(); // clear the current model
   _RBTOBJECTCOUNTER_DESTR_("RbtModel");
@@ -118,38 +118,39 @@ void RbtModel::ClearAllDataFields() { m_dataMap.clear(); }
 // RbtAtomList& i.e. pseudo atom is created inside the method, and
 // RbtPseudoAtomPtr returned
 RbtPseudoAtomPtr RbtModel::AddPseudoAtom(const RbtAtomList &atomList) {
-  // cout << "AddPseudoAtom";
+  // std::cout << "AddPseudoAtom";
   // for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
   // iter++) {
-  //  cout << "\t" << (*iter)->GetFullAtomName();
+  //  std::cout << "\t" << (*iter)->GetFullAtomName();
   //}
-  // cout << endl;
+  // std::cout << std::endl;
   // Check if we have this pseudo atom already
   for (RbtPseudoAtomListConstIter pIter = m_pseudoAtomList.begin();
        pIter != m_pseudoAtomList.end(); pIter++) {
-    // cout << "Checking pseudo atom #" << (*pIter)->GetAtomId() << "\t" <<
-    // (*pIter)->GetNumAtoms() << " atoms" << endl;
+    // std::cout << "Checking pseudo atom #" << (*pIter)->GetAtomId() << "\t" <<
+    // (*pIter)->GetNumAtoms() << " atoms" << std::endl;
     RbtAtomList atomList2 = (*pIter)->GetAtomList();
     if (atomList.size() != atomList2.size()) {
-      // cout << "No match: Unequal number of atoms" << endl;
+      // std::cout << "No match: Unequal number of atoms" << std::endl;
       continue;
     }
     bool bMatch = true;
     for (RbtAtomListConstIter aIter = atomList2.begin();
          aIter != atomList2.end() && bMatch; aIter++) {
-      // cout << "Checking " << (*aIter)->GetFullAtomName() << endl;
+      // std::cout << "Checking " << (*aIter)->GetFullAtomName() << std::endl;
       bMatch = (Rbt::GetNumAtoms(
                     atomList, std::bind2nd(Rbt::isAtomPtr_eq(), *aIter)) == 1);
     }
     if (bMatch) {
-      // cout << "Match found" << endl;
+      // std::cout << "Match found" << std::endl;
       return (*pIter);
     }
   }
   int nPseudoAtomId = -1 - m_pseudoAtomList.size();
   RbtPseudoAtomPtr spPseudoAtom(new RbtPseudoAtom(atomList, nPseudoAtomId));
   m_pseudoAtomList.push_back(spPseudoAtom);
-  // cout << "No match: creating new pseudo atom #" << nPseudoAtomId << endl;
+  // std::cout << "No match: creating new pseudo atom #" << nPseudoAtomId <<
+  // std::endl;
   return spPseudoAtom;
 }
 
@@ -233,12 +234,12 @@ void RbtModel::UpdateCoords(RbtBaseMolecularFileSource *pMolSource) throw(
     int nUpdated(0);
     while (modelIter != m_atomList.end()) {
       // DM 31 Oct 2000 - hunt for next matching atom in CRD file
-      // cout << "Comparing (CRD) " << (*crdIter)->GetFullAtomName() << " with
-      // (MODEL) " << (*modelIter)->GetFullAtomName() << endl;
+      // std::cout << "Comparing (CRD) " << (*crdIter)->GetFullAtomName() << "
+      // with (MODEL) " << (*modelIter)->GetFullAtomName() << std::endl;
       while (!bIsAtomEq(*modelIter, *crdIter)) {
         //#ifdef _DEBUG
-        cout << (*crdIter)->GetFullAtomName() << " does not match "
-             << (*modelIter)->GetFullAtomName() << endl;
+        std::cout << (*crdIter)->GetFullAtomName() << " does not match "
+                  << (*modelIter)->GetFullAtomName() << std::endl;
         //#endif //_DEBUG
         crdIter++;
       }
@@ -262,9 +263,9 @@ void RbtModel::UpdateCoords(RbtBaseMolecularFileSource *pMolSource) throw(
       m_strName += "::";
       m_strName += Rbt::ConvertSegmentMapToString(segmentFilterMap);
     }
-    // cout << "RbtModel::UpdateCoords: " << nUpdated << " atoms in " <<
+    // std::cout << "RbtModel::UpdateCoords: " << nUpdated << " atoms in " <<
     // pMolSource->GetFileName()
-    // << " found that match atoms in model" << endl;
+    // << " found that match atoms in model" << std::endl;
   }
 
   catch (RbtError &error) {
@@ -451,16 +452,16 @@ void RbtModel::SaveCoords(const std::string &coordName) {
   // Look up the coord name in the map
   RbtStringIntMapConstIter iter = m_coordNames.find(coordName);
   if (iter != m_coordNames.end()) {
-    // cout << "Saving coords under name=" << iter->first << ",index=" <<
-    // iter->second << endl; If we find the name, reuse the existing index
+    // std::cout << "Saving coords under name=" << iter->first << ",index=" <<
+    // iter->second << std::endl; If we find the name, reuse the existing index
     Rbt::SaveAtomCoords(m_atomList, (*iter).second);
     m_currentCoord = (*iter).second;
   } else {
     // Add a new index to the map and save the coords using this index
     unsigned int newIdx = m_coordNames.size();
     m_coordNames[coordName] = newIdx;
-    // cout << "Saving coords under name=" << coordName << ",new index=" <<
-    // newIdx << endl;
+    // std::cout << "Saving coords under name=" << coordName << ",new index=" <<
+    // newIdx << std::endl;
     Rbt::SaveAtomCoords(m_atomList, newIdx);
     m_currentCoord = newIdx;
   }
@@ -471,16 +472,16 @@ void RbtModel::RevertCoords(const std::string &coordName) throw(RbtError) {
   RbtStringIntMapConstIter iter = m_coordNames.find(coordName);
   if (iter != m_coordNames.end()) {
     // If we find the name, revert the coords
-    // cout << "Reverting coords under name=" << iter->first << ",index=" <<
-    // iter->second << endl;
+    // std::cout << "Reverting coords under name=" << iter->first << ",index="
+    // << iter->second << std::endl;
     Rbt::RevertAtomCoords(m_atomList, (*iter).second);
     UpdatePseudoAtoms(); // DM 11 Jul 2000 - need to update pseudoatom coords by
                          // hand
     m_currentCoord = (*iter).second;
   } else {
     // Coord name not found, don't try and revert the coords
-    // cout << "Error reverting coords, name=" << coordName << " not found" <<
-    // endl;
+    // std::cout << "Error reverting coords, name=" << coordName << " not found"
+    // << std::endl;
     throw RbtInvalidRequest(_WHERE_, "RevertCoords failed on model " +
                                          GetName() +
                                          " for coord name=" + coordName);
@@ -489,7 +490,7 @@ void RbtModel::RevertCoords(const std::string &coordName) throw(RbtError) {
 
 void RbtModel::RevertCoords(int i) {
   if (i != m_currentCoord) {
-    // cout << "Model: Reverting to coords #" << i << endl;
+    // std::cout << "Model: Reverting to coords #" << i << std::endl;
     Rbt::RevertAtomCoords(m_atomList, i);
     UpdatePseudoAtoms();
     m_currentCoord = i;

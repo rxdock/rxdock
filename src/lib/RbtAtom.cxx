@@ -10,10 +10,6 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include <functional> //For STL function objects
-using std::bind2nd;
-using std::ptr_fun;
-
 #include "RbtAtom.h"
 #include "RbtBond.h"
 #include "RbtModel.h"
@@ -143,11 +139,13 @@ RbtAtom &RbtAtom::operator=(const RbtAtom &atom) {
 ///////////////////////////////////////////////
 
 // Insertion operator (primarily for debugging)
-ostream &operator<<(ostream &s, const RbtAtom &atom) { return atom.Print(s); }
+std::ostream &operator<<(std::ostream &s, const RbtAtom &atom) {
+  return atom.Print(s);
+}
 
 // Virtual function for dumping atom details to an output stream
 // Derived classes (e.g. pseudoatom) can override if required
-ostream &RbtAtom::Print(ostream &s) const {
+std::ostream &RbtAtom::Print(std::ostream &s) const {
   // Get owning model name (if any)
   std::string strModelName = "Orphan";
   if (m_pModel != NULL)
@@ -351,8 +349,8 @@ std::string Rbt::ConvertFormalChargeToString(int nCharge) {
     return "--";
   default:
     // For higher charges, return as +3,-3 etc
-    ostringstream ostr;
-    ostr.setf(ios_base::showpos);
+    std::ostringstream ostr;
+    ostr.setf(std::ios_base::showpos);
     ostr << nCharge;
     std::string strCharge(ostr.str());
     return strCharge;
@@ -699,8 +697,9 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
       matchingAtoms = Rbt::GetAtomList(
           matchingAtoms, Rbt::isSegmentName_eq(componentList[idx]));
 #ifdef _DEBUG
-      // cout << "Matching segment name=" << componentList[idx] << ", #atoms="
-      // << matchingAtoms.size() << endl;
+      // std::cout << "Matching segment name=" << componentList[idx] << ",
+      // #atoms="
+      // << matchingAtoms.size() << std::endl;
 #endif //_DEBUG
     }
     idx++;
@@ -716,8 +715,8 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
           matchingAtoms = Rbt::GetAtomList(matchingAtoms,
                                            Rbt::isSubunitId_eq(subunitList[1]));
 #ifdef _DEBUG
-          // cout << "Matching subunit id=" << subunitList[1] << ", #atoms=" <<
-          // matchingAtoms.size() << endl;
+          // std::cout << "Matching subunit id=" << subunitList[1] << ",
+          // #atoms=" << matchingAtoms.size() << std::endl;
 #endif //_DEBUG
         }
       case 1: // Fall-through!! Only the subunit name is specified
@@ -725,14 +724,16 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
           matchingAtoms = Rbt::GetAtomList(
               matchingAtoms, Rbt::isSubunitName_eq(subunitList[0]));
 #ifdef _DEBUG
-          // cout << "Matching subunit name=" << subunitList[0] << ", #atoms="
-          // << matchingAtoms.size() << endl;
+          // std::cout << "Matching subunit name=" << subunitList[0] << ",
+          // #atoms="
+          // << matchingAtoms.size() << std::endl;
 #endif //_DEBUG
         }
         break;
       default:
 #ifdef _DEBUG
-        // cout << "Invalid subunit string in " << strFullName << endl;
+        // std::cout << "Invalid subunit string in " << strFullName <<
+        // std::endl;
 #endif //_DEBUG
         break;
       }
@@ -744,15 +745,15 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
       matchingAtoms = Rbt::GetAtomList(matchingAtoms,
                                        Rbt::isAtomName_eq(componentList[idx]));
 #ifdef _DEBUG
-      // cout << "Matching atom name=" << componentList[idx] << ", #atoms=" <<
-      // matchingAtoms.size() << endl;
+      // std::cout << "Matching atom name=" << componentList[idx] << ", #atoms="
+      // << matchingAtoms.size() << std::endl;
 #endif //_DEBUG
     }
     break;
 
   default:
 #ifdef _DEBUG
-    // cout << "Too many colons (:) in " << strFullName << endl;
+    // std::cout << "Too many colons (:) in " << strFullName << std::endl;
 #endif //_DEBUG
     break;
   }
@@ -839,9 +840,9 @@ void Rbt::GetCoordList(const RbtAtomList &atomList, RbtCoordList &coordList) {
 // Streams an atom list in Quanta CSD file format (for easy color coding of
 // selected atoms in Quanta) nFormat  = 0 => Receptor atom format: "zone A:1 #
 // pick O5T = col 2" nFormat != 0 => Ligand atom format "pick N1 .and. segm H =
-// col 2" ostream should have been opened before calling QuantaCSDFileDump DM 30
-// Jul 1999 - added segment name to receptor atom format
-void Rbt::PrintQuantaCSDFormat(const RbtAtomList &atomList, ostream &s,
+// col 2" std::ostream should have been opened before calling QuantaCSDFileDump
+// DM 30 Jul 1999 - added segment name to receptor atom format
+void Rbt::PrintQuantaCSDFormat(const RbtAtomList &atomList, std::ostream &s,
                                int nColor, int nFormat) {
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
@@ -849,11 +850,12 @@ void Rbt::PrintQuantaCSDFormat(const RbtAtomList &atomList, ostream &s,
     switch (nFormat) {
     case 0:
       s << "zone " << spAtom->GetSegmentName() << ":" << spAtom->GetSubunitId()
-        << " # pick " << spAtom->GetAtomName() << " = col " << nColor << endl;
+        << " # pick " << spAtom->GetAtomName() << " = col " << nColor
+        << std::endl;
       break;
     default:
       s << "pick " << spAtom->GetAtomName() << " .and. segm "
-        << spAtom->GetSegmentName() << " = col " << nColor << endl;
+        << spAtom->GetSegmentName() << " = col " << nColor << std::endl;
     }
   }
 }
@@ -907,8 +909,8 @@ void Rbt::RemoveZwitterions(RbtAtomList &atomList) {
        iter++) {
     (*iter)->SetGroupCharge(0.0);
 #ifdef _DEBUG
-    cout << "RemoveZwitterions: Neutralising cation "
-         << (*iter)->GetFullAtomName() << endl;
+    std::cout << "RemoveZwitterions: Neutralising cation "
+              << (*iter)->GetFullAtomName() << std::endl;
 #endif //_DEBUG
   }
 
@@ -916,8 +918,8 @@ void Rbt::RemoveZwitterions(RbtAtomList &atomList) {
        iter++) {
     (*iter)->SetGroupCharge(0.0);
 #ifdef _DEBUG
-    cout << "RemoveZwitterions: Neutralising anion "
-         << (*iter)->GetFullAtomName() << endl;
+    std::cout << "RemoveZwitterions: Neutralising anion "
+              << (*iter)->GetFullAtomName() << std::endl;
 #endif //_DEBUG
   }
 }

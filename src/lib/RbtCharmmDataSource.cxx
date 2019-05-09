@@ -11,8 +11,6 @@
  ***********************************************************************/
 
 #include <sstream>
-using std::ends;
-using std::ostringstream;
 
 #include "RbtCharmmDataSource.h"
 #include "RbtCharmmTypesFileSource.h"
@@ -77,9 +75,9 @@ std::string RbtCharmmDataSource::AtomTypeString(int nAtomType) throw(RbtError) {
   if (iter != m_atomTypes.end())
     return (*iter).second;
   else {
-    ostringstream ostr;
+    std::ostringstream ostr;
     ostr << "CHARMm atom type #" << nAtomType
-         << " not found in CharmmDataSource" << ends;
+         << " not found in CharmmDataSource" << std::ends;
     std::string strError(ostr.str());
     // delete ostr.str();
     throw RbtFileMissingParameter(_WHERE_, strError);

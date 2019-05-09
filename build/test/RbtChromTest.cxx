@@ -30,7 +30,8 @@ void RbtChromTest::setUp() {
         new RbtParameterFileSource(prmFileName));
     RbtMolecularFileSourcePtr spMdlFileSource(
         new RbtMdlFileSource(ligFileName, true, true, true));
-    ifstream istr(asFileName.c_str(), ios_base::in | ios_base::binary);
+    std::ifstream istr(asFileName.c_str(),
+                       std::ios_base::in | std::ios_base::binary);
     m_site_1koc = new RbtDockingSite(istr);
     istr.close();
     RbtPRMFactory prmFactory(spPrmSource);
@@ -55,7 +56,7 @@ void RbtChromTest::setUp() {
     std::copy(recepAtomList.begin(), recepAtomList.end(),
               std::back_inserter(m_atomList));
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   }
 }
 
@@ -340,7 +341,8 @@ void RbtChromTest::testPopulationRWFitness() {
   for (RbtGenomeListConstIter iter = genomeList.begin();
        (iter != genomeList.end()) && isAscending; ++iter) {
     double value = (*iter)->GetRWFitness();
-    // cout << (*iter)->GetScore() << "\t" << (*iter)->GetRWFitness() << endl;
+    // std::cout << (*iter)->GetScore() << "\t" << (*iter)->GetRWFitness() <<
+    // std::endl;
     isAscending = (value >= lastValue);
     lastValue = value;
   }
@@ -358,11 +360,11 @@ void RbtChromTest::testPopulationRWSelect() {
     RbtGenomePtr genome = pop->RouletteWheelSelect();
     double score = genome->GetScore();
     selectionMean += score;
-    // cout << "RWSelect score=" << score << endl;
+    // std::cout << "RWSelect score=" << score << std::endl;
   }
   selectionMean /= nToSelect;
-  // cout << "popMean = " << popMean << "; selectionMean = " << selectionMean <<
-  // endl;
+  // std::cout << "popMean = " << popMean << "; selectionMean = " <<
+  // selectionMean << std::endl;
   CPPUNIT_ASSERT(selectionMean > popMean);
 }
 
@@ -388,7 +390,7 @@ void RbtChromTest::testPopulationGAstep() {
       lastScore = score;
     }
   } catch (RbtError &e) {
-    cout << e.Message() << endl;
+    std::cout << e.Message() << std::endl;
     isOK = false;
   }
   CPPUNIT_ASSERT(isOK);

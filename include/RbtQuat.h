@@ -103,7 +103,7 @@ public:
   ///////////////////
 
   // Insertion operator
-  friend ostream &operator<<(ostream &s, const RbtQuat &quat) {
+  friend std::ostream &operator<<(std::ostream &s, const RbtQuat &quat) {
     return s << quat.s << "," << quat.v;
   }
 

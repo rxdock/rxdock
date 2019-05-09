@@ -59,7 +59,7 @@ public:
   }
 
   // Constructor reading params from binary stream
-  RbtInteractionGridTemplate(istream &istr) {
+  RbtInteractionGridTemplate(std::istream &istr) {
     _CT = "RbtInteractionGridTemplate";
     CreateMap();
     OwnRead(istr);
@@ -105,15 +105,17 @@ public:
     return *this;
   }
 
-  virtual void Print(ostream &ostr) const { // Text output
+  virtual void Print(std::ostream &ostr) const { // Text output
     RbtBaseGrid::Print(ostr);
     OwnPrint(ostr);
   }
-  virtual void Write(ostream &ostr) const { // Binary output (serialisation)
+  virtual void
+  Write(std::ostream &ostr) const { // Binary output (serialisation)
     RbtBaseGrid::Write(ostr);
     OwnWrite(ostr);
   }
-  virtual void Read(istream &istr) { // Binary input, replaces existing grid
+  virtual void
+  Read(std::istream &istr) { // Binary input, replaces existing grid
     ClearInteractionLists();
     RbtBaseGrid::Read(istr);
     OwnRead(istr);
@@ -131,7 +133,8 @@ public:
     if (isValid(c)) {
       return m_intnMap[GetIXYZ(c)];
     } else {
-      // cout << _CT << "::GetInteractionList," << c << " is off grid" << endl;
+      // std::cout << _CT << "::GetInteractionList," << c << " is off grid" <<
+      // std::endl;
       return m_emptyList;
     }
   }
@@ -157,12 +160,12 @@ public:
   }
 
 protected:
-  void OwnPrint(ostream &ostr) const {
-    ostr << endl << "Class\t" << _CT << endl;
-    ostr << "No. of entries in the map: " << m_intnMap.size() << endl;
+  void OwnPrint(std::ostream &ostr) const {
+    ostr << std::endl << "Class\t" << _CT << std::endl;
+    ostr << "No. of entries in the map: " << m_intnMap.size() << std::endl;
   }
-  void OwnWrite(ostream &ostr) const {}
-  void OwnRead(istream &istr) throw(RbtError) { CreateMap(); }
+  void OwnWrite(std::ostream &ostr) const {}
+  void OwnRead(std::istream &istr) throw(RbtError) { CreateMap(); }
 
 private:
   RbtInteractionGridTemplate();

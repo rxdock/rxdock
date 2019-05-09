@@ -16,13 +16,13 @@ std::string RbtSetupPMFSF::_CT("RbtSetupPMFSF");
 
 RbtSetupPMFSF::RbtSetupPMFSF(const std::string &strName)
     : RbtBaseSF(_CT, strName) {
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
   Disable();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtSetupPMFSF::~RbtSetupPMFSF() {
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -32,10 +32,10 @@ void RbtSetupPMFSF::SetupReceptor() {
   SetupReceptorPMFTypes();
 #ifdef _DEBUG1
   for (long i = 0; i < theReceptorList.size(); i++) {
-    cout << _CT << " " << theReceptorList[i]->GetFullAtomName();
-    cout << " type " << PMFType2Str(theReceptorList[i]->GetPMFType());
-    cout << " No " << theReceptorList[i]->GetAtomicNo();
-    cout << endl;
+    std::cout << _CT << " " << theReceptorList[i]->GetFullAtomName();
+    std::cout << " type " << PMFType2Str(theReceptorList[i]->GetPMFType());
+    std::cout << " No " << theReceptorList[i]->GetAtomicNo();
+    std::cout << std::endl;
   }
 #endif //_DEBUG1
 }
@@ -47,7 +47,7 @@ double RbtSetupPMFSF::RawScore() const { return 0.0; }
 void RbtSetupPMFSF::SetupLigand() {
   theLigandList.clear();
   if (GetLigand().Null()) {
-    cout << _CT << "WARNING: ligand is not defined" << endl;
+    std::cout << _CT << "WARNING: ligand is not defined" << std::endl;
     return;
   } else {
     // theLigandList = GetLigand()->GetAtomList();
@@ -56,10 +56,11 @@ void RbtSetupPMFSF::SetupLigand() {
     SetupLigandPMFTypes();
 #ifdef _DEBUG1
     for (int i = 0; i < theLigandList.size(); i++) {
-      cout << i + 1 << " " << _CT << " " << theLigandList[i]->GetFullAtomName();
-      cout << " type " << PMFType2Str(theLigandList[i]->GetPMFType());
-      cout << " No " << theLigandList[i]->GetAtomicNo();
-      cout << endl;
+      std::cout << i + 1 << " " << _CT << " "
+                << theLigandList[i]->GetFullAtomName();
+      std::cout << " type " << PMFType2Str(theLigandList[i]->GetPMFType());
+      std::cout << " No " << theLigandList[i]->GetAtomicNo();
+      std::cout << std::endl;
     }
 #endif //_DEBUG1
   }
@@ -68,8 +69,9 @@ void RbtSetupPMFSF::SetupLigand() {
 RbtPMFType RbtSetupPMFSF::GetPMFfor_rC(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
-  cout << _CT << " " << anAtom->GetFullAtomName()
-       << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState) << endl;
+  std::cout << _CT << " " << anAtom->GetFullAtomName()
+            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << std::endl;
 #endif //_DEBUG1
 
   Rbt::isAtomicNo_eq isO(8);
@@ -113,7 +115,7 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rC(RbtAtomPtr anAtom) {
 
 RbtPMFType RbtSetupPMFSF::GetPMFfor_rO(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
-  cout << _CT << " " << anAtom->GetFullAtomName() << endl;
+  std::cout << _CT << " " << anAtom->GetFullAtomName() << std::endl;
 #endif //_DEBUG1
        // check charge
   if (anAtom->GetGroupCharge() < 0.0)
@@ -134,8 +136,9 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rO(RbtAtomPtr anAtom) {
 RbtPMFType RbtSetupPMFSF::GetPMFfor_rN(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
-  cout << _CT << " " << anAtom->GetFullAtomName()
-       << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState) << endl;
+  std::cout << _CT << " " << anAtom->GetFullAtomName()
+            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << std::endl;
 #endif //_DEBUG1
        // check for charge
   if (IsChargedNitrogen(anAtom))
@@ -155,8 +158,9 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rN(RbtAtomPtr anAtom) {
 RbtPMFType RbtSetupPMFSF::GetPMFfor_rS(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
-  cout << _CT << " " << anAtom->GetFullAtomName()
-       << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState) << endl;
+  std::cout << _CT << " " << anAtom->GetFullAtomName()
+            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << std::endl;
 #endif //_DEBUG1
   if (std::string::npos != anAtom->GetFullAtomName().find("MET"))
     return SA; // metionin H-bond acceptor
@@ -165,7 +169,8 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rS(RbtAtomPtr anAtom) {
 }
 
 void RbtSetupPMFSF::SetupReceptorPMFTypes(void) throw(RbtError) {
-  // cout << _CT << " receptor size " << theReceptorList.size() << endl;
+  // std::cout << _CT << " receptor size " << theReceptorList.size() <<
+  // std::endl;
   for (long i = 0; i < theReceptorList.size(); i++) {
     switch (theReceptorList[i]->GetAtomicNo()) {
     case 1:
@@ -197,15 +202,16 @@ void RbtSetupPMFSF::SetupReceptorPMFTypes(void) throw(RbtError) {
       break;
     }
 #ifdef _DEBUG1
-    cout << _CT
-         << " receptor type: " << PMFType2Str(theReceptorList[i]->GetPMFType())
-         << " for: " << theReceptorList[i]->GetAtomicNo() << endl;
+    std::cout << _CT << " receptor type: "
+              << PMFType2Str(theReceptorList[i]->GetPMFType())
+              << " for: " << theReceptorList[i]->GetAtomicNo() << std::endl;
 #endif //_DEBUG1
   }
 }
 
 bool RbtSetupPMFSF::IsChargedNitrogen(RbtAtomPtr anAtom) {
-  // cout << _CT << " AMINO ACID " << anAtom->GetSubunitName() << endl;
+  // std::cout << _CT << " AMINO ACID " << anAtom->GetSubunitName() <<
+  // std::endl;
   Rbt::isAtomicNo_eq bIsN(7);
   if (!bIsN(anAtom)) // is it N at all?
     return false;
@@ -230,8 +236,9 @@ bool RbtSetupPMFSF::IsChargedNitrogen(RbtAtomPtr anAtom) {
 RbtPMFType RbtSetupPMFSF::GetPMFfor_lC(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
-  cout << _CT << " " << anAtom->GetFullAtomName()
-       << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState) << endl;
+  std::cout << _CT << " " << anAtom->GetFullAtomName()
+            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << std::endl;
 #endif                                         //_DEBUG1
   if (RbtAtom::SP == anAtom->GetHybridState()) // sp has only one PMF type
     return C0;                                 // C-zero and not cee-oh
@@ -295,8 +302,9 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lC(RbtAtomPtr anAtom) {
 RbtPMFType RbtSetupPMFSF::GetPMFfor_lN(RbtAtomPtr anAtom) {
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
 #ifdef _DEBUG1
-  cout << _CT << " " << anAtom->GetFullAtomName()
-       << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState) << endl;
+  std::cout << _CT << " " << anAtom->GetFullAtomName()
+            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << std::endl;
 #endif //_DEBUG1
        // sp has only one PMF type
   if (RbtAtom::SP == theHybState)
@@ -354,8 +362,9 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lN(RbtAtomPtr anAtom) {
 RbtPMFType RbtSetupPMFSF::GetPMFfor_lO(RbtAtomPtr anAtom) {
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
 #ifdef _DEBUG1
-  cout << _CT << " " << anAtom->GetFullAtomName()
-       << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState) << endl;
+  std::cout << _CT << " " << anAtom->GetFullAtomName()
+            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << std::endl;
 #endif //_DEBUG1
   Rbt::isAtomHBondDonor isHBondDonor;
   Rbt::isAtomHBondAcceptor isHBondAcceptor;
@@ -390,8 +399,9 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lO(RbtAtomPtr anAtom) {
 RbtPMFType RbtSetupPMFSF::GetPMFfor_lS(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
-  cout << _CT << " " << anAtom->GetFullAtomName()
-       << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState) << endl;
+  std::cout << _CT << " " << anAtom->GetFullAtomName()
+            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << std::endl;
 #endif //_DEBUG1
   Rbt::isAtomHBondDonor isHBondDonor;
   RbtAtomList donorList =

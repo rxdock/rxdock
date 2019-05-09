@@ -27,7 +27,8 @@ class RbtObjectCounter {
 public:
   RbtObjectCounter();
   ~RbtObjectCounter();
-  friend ostream &operator<<(ostream &s, const RbtObjectCounter &counter);
+  friend std::ostream &operator<<(std::ostream &s,
+                                  const RbtObjectCounter &counter);
   RbtInt nConstr;
   RbtInt nCopyConstr;
   RbtInt nDestr;
@@ -50,10 +51,10 @@ extern RbtObjectCounterMap theObjectCounterMap;
   Rbt::theObjectCounterMap[(class)].nDestr++
 
 #define _RBTOBJECTCOUNTER_DUMP_(stream)                                        \
-  (stream) << endl << "RBT OBJECT COUNTERS:" << endl << endl;                  \
+  (stream) << std::endl << "RBT OBJECT COUNTERS:" << std::endl << std::endl;   \
   for (RbtObjectCounterMapIter dumpIter = Rbt::theObjectCounterMap.begin();    \
        dumpIter != Rbt::theObjectCounterMap.end(); dumpIter++) {               \
-    (stream) << (*dumpIter).first << ": " << (*dumpIter).second << endl;       \
+    (stream) << (*dumpIter).first << ": " << (*dumpIter).second << std::endl;  \
   }
 
 #else //_RBTOBJECTCOUNTER

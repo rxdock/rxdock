@@ -19,7 +19,6 @@
 #define _RBTBASEFILESINK_H_
 
 #include <fstream>
-using std::ofstream;
 
 #include "RbtConfig.h"
 
@@ -93,7 +92,7 @@ private:
   //////////////
   RbtStringList m_lineRecs;
   std::string m_strFileName;
-  ofstream m_fileOut;
+  std::ofstream m_fileOut;
   bool m_bAppend; // If true, Write() appends to file rather than overwriting
 };
 

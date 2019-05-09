@@ -29,7 +29,7 @@ RbtGPPopulation::RbtGPPopulation(int s, int nr, RbtGPFitnessFunctionPtr f,
   ff = f;
   ittrain = it;
   sfttrain = sft;
-  cout << "const: " << ittrain.size() << endl;
+  std::cout << "const: " << ittrain.size() << std::endl;
   c = 2.0; // default value for the sigma truncation multiplier
   pop = RbtGPGenomeList(popsize);
   for (RbtGPGenomeListIter iter = pop.begin(); iter != pop.end(); iter++)
@@ -76,7 +76,7 @@ void RbtGPPopulation::Initialise(double hitlimit, bool function) {
   for (int i = 0; i < popsize; i++) {
     pop[i]->Initialise();
     fit = ff->CalculateFitness(pop[i], ittrain, sfttrain, function);
-    cout << "init: " << ittrain.size() << endl;
+    std::cout << "init: " << ittrain.size() << std::endl;
     if (fit > bestFitness) {
       bestFitness = fit;
       bestInd = i;
@@ -162,7 +162,7 @@ void RbtGPPopulation::EPstep(std::string selector, double pcross, double pmut,
   *(newpop[0]) = *(pop[bestInd]);
   for (int i = 1; i < popsize; i++) {
     *(newpop[i]) = *(pop[bestInd]);
-    //        cout << "new ind\n";
+    //        std::cout << "new ind\n";
     newpop[i]->Mutate(pmut);
   }
   // calculate the objective values and
@@ -181,15 +181,17 @@ void RbtGPPopulation::EPstep(std::string selector, double pcross, double pmut,
 // the worst individual from the population are replaced by the best from p
 RbtGPGenomePtr RbtGPPopulation::Best() const { return (pop[bestInd]); }
 
-ostream &RbtGPPopulation::Print(ostream &s) const {
+std::ostream &RbtGPPopulation::Print(std::ostream &s) const {
   for (int i = 0; i < pop.size(); i++) {
     pop[i]->Print(s);
-    s << pop[i]->GetFitness() << endl;
+    s << pop[i]->GetFitness() << std::endl;
   }
   return s;
 }
 
-ostream &operator<<(ostream &s, const RbtGPPopulation &p) { return p.Print(s); }
+std::ostream &operator<<(std::ostream &s, const RbtGPPopulation &p) {
+  return p.Print(s);
+}
 
 // calculates the scaled objectives
 // of the current population. To calculate the scaled objectives, we
@@ -257,7 +259,7 @@ RbtGPGenomePtr RbtGPPopulation::RkSelect() const {
           (bias - sqrt(bias * bias - 4.0 * (bias - 1) * m_rand.GetRandom01())) /
           2.0 / (bias - 1);
   if (index < 0) {
-    cout << index << " " << max << endl;
+    std::cout << index << " " << max << std::endl;
     index = 0.0;
   }
   // DM 25/04/05 - avoid compiler warning by explicitly converting double to int
@@ -285,14 +287,14 @@ void RbtGPPopulation::MergePops()
 {
     RbtGPGenomeList mpop(popsize + newpop.size(), pop[0]);
 #ifdef _DEBUG
-    cout << "pop\n";
+    std::cout << "pop\n";
     for (RbtInt k1 = 0 ; k1 < popsize ; k1++)
-        cout << *(pop[k1]) << "  " << pop[k1]->GetFitness() << "  "
-             << pop[k1]->GetFitness() << endl;
-    cout << "newpop\n";
+        std::cout << *(pop[k1]) << "  " << pop[k1]->GetFitness() << "  "
+             << pop[k1]->GetFitness() << std::endl;
+    std::cout << "newpop\n";
     for (RbtGPGenomeListIter p = newpop.begin() ; p != newpop.end() ; p++)
-        cout << (*p) << "  " << (*p)->GetFitness()
-             << "  " << (*p)->GetFitness() << endl;
+        std::cout << (*p) << "  " << (*p)->GetFitness()
+             << "  " << (*p)->GetFitness() << std::endl;
 #endif
     merge(pop.begin(), pop.end(), newpop.begin(), newpop.end(),
           mpop.begin(), GenCmp());
@@ -300,18 +302,18 @@ void RbtGPPopulation::MergePops()
             // uses operator== , Gen_eq);
     mpop.erase(end, mpop.end());
 #ifdef _DEBUG
-    cout << "mpop\n";
+    std::cout << "mpop\n";
     for (RbtInt k1 = 0 ; k1 < mpop.size() ; k1++)
-        cout << mpop[k1] << "  " << mpop[k1]->GetFitness() << "  "
-             << mpop[k1]->GetFitness() << endl;
+        std::cout << mpop[k1] << "  " << mpop[k1]->GetFitness() << "  "
+             << mpop[k1]->GetFitness() << std::endl;
 #endif
     pop.clear();
     end = (mpop.size() > popsize) ? (mpop.begin() + popsize) : mpop.end();
     copy(mpop.begin(), end, back_inserter(pop));
 #ifdef _DEBUG
-    cout << "copied pop\n";
+    std::cout << "copied pop\n";
     for (RbtInt k1 = 0 ; k1 < popsize ; k1++)
-        cout << *(pop[k1]) << "  " << pop[k1]->GetFitness() << "  "
-             << pop[k1]->GetFitness() << endl;
+        std::cout << *(pop[k1]) << "  " << pop[k1]->GetFitness() << "  "
+             << pop[k1]->GetFitness() << std::endl;
 #endif
 }*/

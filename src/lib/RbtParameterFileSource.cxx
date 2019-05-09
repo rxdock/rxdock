@@ -168,7 +168,7 @@ void RbtParameterFileSource::Parse() throw(RbtError) {
         // Ignore blank lines and comment lines
         if (((*fileIter).length() == 0) || ((*fileIter).at(0) == '#')) {
 #ifdef _DEBUG
-          // cout << "Comment record" << endl;
+          // std::cout << "Comment record" << std::endl;
 #endif //_DEBUG
           continue;
         }
@@ -177,7 +177,7 @@ void RbtParameterFileSource::Parse() throw(RbtError) {
           m_strTitle = *fileIter;
           m_strTitle.erase(0, strTitleKey.length());
 #ifdef _DEBUG
-          // cout << "Title = " << m_strTitle << endl;
+          // std::cout << "Title = " << m_strTitle << std::endl;
 #endif //_DEBUG
         }
         // Check for Version record
@@ -185,14 +185,14 @@ void RbtParameterFileSource::Parse() throw(RbtError) {
           m_strVersion = *fileIter;
           m_strVersion.erase(0, strVersionKey.length());
 #ifdef _DEBUG
-          // cout << "Version = " << m_strVersion << endl;
+          // std::cout << "Version = " << m_strVersion << std::endl;
 #endif //_DEBUG
         }
         // Check for Section record
         else if ((*fileIter).find(strSectionKey) == 0) {
           std::string strSection;
           std::string strDummy;
-          istringstream istr(*fileIter);
+          std::istringstream istr(*fileIter);
           istr >> strDummy >> strSection;
           AddSection(strSection);
         }
@@ -208,14 +208,14 @@ void RbtParameterFileSource::Parse() throw(RbtError) {
           std::string strParamName;
           // DM 12 May 1999 - read as string then convert to variant
           std::string strParamValue;
-          istringstream istr(*fileIter);
+          std::istringstream istr(*fileIter);
           istr >> strParamName >> strParamValue;
           // Prefix the parameter name with the section name and ::
           // Hopefully, this will ensure unique parameter names between sections
           strParamName = GetFullParameterName(strParamName);
           m_paramsMap[strParamName] = RbtVariant(strParamValue);
 #ifdef _DEBUG
-          // cout << strParamName<< " = " << dParamValue << endl;
+          // std::cout << strParamName<< " = " << dParamValue << std::endl;
 #endif //_DEBUG
         }
       }

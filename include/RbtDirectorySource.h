@@ -13,14 +13,13 @@
 #ifndef _RBTDIRECTORYSOURCE_H_
 #define _RBTDIRECTORYSOURCE_H_
 
-#include <dirent.h> // for scandir()
-#include <fstream>  // ditto
+#include "RbtConfig.h"
+#include "RbtFileError.h" // for exception types
+#include <dirent.h>       // for scandir()
+#include <fstream>        // ditto
 #include <sys/dir.h>
 #include <sys/stat.h> // for stat()
 #include <sys/types.h>
-using std::ifstream;
-#include "RbtConfig.h"
-#include "RbtFileError.h" // for exception types
 
 const unsigned int PATH_SIZE = 1024; // max path width
 const unsigned int LINE_WIDTH = 256; // max num of chars in a line
@@ -45,7 +44,7 @@ protected:
 #endif                                // COMMENT
   int fNum;                           // number of files in the dir
   struct dirent **fNameList;          // file name list in directory
-  ifstream inFile;                    // an actual file to read
+  std::ifstream inFile;               // an actual file to read
   std::string thePath;                // leading path
   void CheckDirectory(std::string &); // to check directory access
 

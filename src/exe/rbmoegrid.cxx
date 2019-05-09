@@ -51,22 +51,28 @@ RbtModelList CreateProbes(std::string anAtomTypeStr) {
 }
 
 void PrintUsage(void) {
-  cout << endl << "rbmoegrid - calculates grids for a given atom type" << endl;
-  cout << endl
-       << "Usage:\trbmoegrid -o <OutputRoot> -r <ReceptorPrmFile> -p "
-          "<SFPrmFile> [-g <GridStep> -b <border> -t <tripos_type>]"
-       << endl;
-  cout << endl << "Options:\t-o <OutFileName> (.grd is suffixed)" << endl;
-  cout << "\t\t-r <ReceptorPrmFile> - receptor param file (contains active "
-          "site params)"
-       << endl;
-  cout << "\t\t-p <SFPrmFile> - scoring function param file (default "
-          "calcgrid_vdw.prm)"
-       << endl;
-  cout << "\t\t-g <GridStep> - grid step (default=0.5A)" << endl;
-  cout << "\t\t-b <Border> - grid border around docking site (default=1.0A)"
-       << endl;
-  cout << "\t\t-t <AtomType> - Tripos atom type (default is C.3)" << endl;
+  std::cout << std::endl
+            << "rbmoegrid - calculates grids for a given atom type"
+            << std::endl;
+  std::cout << std::endl
+            << "Usage:\trbmoegrid -o <OutputRoot> -r <ReceptorPrmFile> -p "
+               "<SFPrmFile> [-g <GridStep> -b <border> -t <tripos_type>]"
+            << std::endl;
+  std::cout << std::endl
+            << "Options:\t-o <OutFileName> (.grd is suffixed)" << std::endl;
+  std::cout
+      << "\t\t-r <ReceptorPrmFile> - receptor param file (contains active "
+         "site params)"
+      << std::endl;
+  std::cout << "\t\t-p <SFPrmFile> - scoring function param file (default "
+               "calcgrid_vdw.prm)"
+            << std::endl;
+  std::cout << "\t\t-g <GridStep> - grid step (default=0.5A)" << std::endl;
+  std::cout
+      << "\t\t-b <Border> - grid border around docking site (default=1.0A)"
+      << std::endl;
+  std::cout << "\t\t-t <AtomType> - Tripos atom type (default is C.3)"
+            << std::endl;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -74,7 +80,7 @@ void PrintUsage(void) {
 /////////////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]) {
-  cout.setf(ios_base::left, ios_base::adjustfield);
+  std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 
   // Strip off the path to the executable, leaving just the file name
   std::string strExeName(argv[0]);
@@ -83,7 +89,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
 
   // Command line arguments and default values
   std::string strSuffix(".grd");      // file out suffix
@@ -109,44 +115,45 @@ int main(int argc, char *argv[]) {
   while ((c = getopt(argc, argv, "o:r:p:g:b:t:")) != -1) {
     switch (c) {
     case 'o':
-      cout << "\t -o " << optarg << endl;
+      std::cout << "\t -o " << optarg << std::endl;
       strOutfName = optarg;
       break;
     case 'r':
-      cout << "\t -r " << optarg << endl;
+      std::cout << "\t -r " << optarg << std::endl;
       strReceptorPrmFiles.push_back(optarg);
       break;
     case 'p':
-      cout << "\t -p " << optarg << endl;
+      std::cout << "\t -p " << optarg << std::endl;
       strSFFile = optarg;
       break;
     case 'g':
-      cout << "\t -g " << optarg << endl;
+      std::cout << "\t -g " << optarg << std::endl;
       strGridStep = optarg;
       gs = atof(strGridStep.c_str());
       break;
     case 'b':
-      cout << "\t -b " << optarg << endl;
+      std::cout << "\t -b " << optarg << std::endl;
       strBorder = optarg;
       border = atof(strBorder.c_str());
       break;
     case 't':
-      cout << "\t -t " << optarg << endl;
+      std::cout << "\t -t " << optarg << std::endl;
       strAtomType = optarg;
       break;
     case '?':
       if (isprint(optopt)) {
         optStr += optopt;
-        std::cerr << "Unknown / missing option `-" << optStr << "'" << endl;
+        std::cerr << "Unknown / missing option `-" << optStr << "'"
+                  << std::endl;
       } else
-        std::cerr << "Garbage option character. " << endl;
+        std::cerr << "Garbage option character. " << std::endl;
       return 1;
     default:
       PrintUsage();
       exit(1);
     }
   }
-  cout << endl;
+  std::cout << std::endl;
 
   // start processing receptors
   try {
@@ -164,8 +171,8 @@ int main(int argc, char *argv[]) {
     unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
     unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
     unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
-    cout << "Constructing grid of size " << nX << " x " << nY << " x " << nZ
-         << endl;
+    std::cout << "Constructing grid of size " << nX << " x " << nY << " x "
+              << nZ << std::endl;
     vector<std::string>::iterator strReceptorPrmFilesIter;
     for (strReceptorPrmFilesIter = strReceptorPrmFiles.begin();
          strReceptorPrmFilesIter != strReceptorPrmFiles.end();
@@ -181,10 +188,10 @@ int main(int argc, char *argv[]) {
       // Read the receptor parameter file
       RbtParameterFileSourcePtr spRecepPrmSource(new RbtParameterFileSource(
           Rbt::GetRbtFileName("data/receptors", (*strReceptorPrmFilesIter))));
-      cout << endl
-           << "RECEPTOR:" << endl
-           << spRecepPrmSource->GetFileName() << endl
-           << spRecepPrmSource->GetTitle() << endl;
+      std::cout << std::endl
+                << "RECEPTOR:" << std::endl
+                << spRecepPrmSource->GetFileName() << std::endl
+                << spRecepPrmSource->GetTitle() << std::endl;
 
       // Read the scoring function file
       RbtParameterFileSourcePtr spSFSource(new RbtParameterFileSource(
@@ -195,9 +202,11 @@ int main(int argc, char *argv[]) {
           spSFSource, _ROOT_SF)); // Root SF aggregate
 
       // Register the scoring function with the workspace
-      // Dump details to cout
+      // Dump details to std::cout
       spWS->SetSF(spSF);
-      cout << endl << "SCORING FUNCTION DETAILS:" << endl << *spSF << endl;
+      std::cout << std::endl
+                << "SCORING FUNCTION DETAILS:" << std::endl
+                << *spSF << std::endl;
 
       // Create the receptor model from the file names in the receptor parameter
       // file
@@ -208,11 +217,12 @@ int main(int argc, char *argv[]) {
       // Read docking site from file and register with workspace
       std::string strASFile = spWS->GetName() + ".as";
       std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
-      // DM 26 Sep 2000 - ios_base::binary is invalid with IRIX CC
+      // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
-      ifstream istr(strInputFile.c_str(), ios_base::in);
+      std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
 #else
-      ifstream istr(strInputFile.c_str(), ios_base::in | ios_base::binary);
+      std::ifstream istr(strInputFile.c_str(),
+                         std::ios_base::in | std::ios_base::binary);
 #endif
       RbtDockingSitePtr spDS(new RbtDockingSite(istr));
       istr.close();
@@ -220,7 +230,9 @@ int main(int argc, char *argv[]) {
 
       // Register receptor with workspace
       spWS->SetReceptor(spReceptor);
-      cout << endl << "DOCKING SITE" << endl << (*spDS) << endl;
+      std::cout << std::endl
+                << "DOCKING SITE" << std::endl
+                << (*spDS) << std::endl;
 
       // Create a grid covering the docking site, plus user-defined border
       // RbtCoord minCoord = spDS->GetMinCoord()-border;
@@ -230,8 +242,8 @@ int main(int argc, char *argv[]) {
       // RbtUInt nX = int(recepExtent.x/gridStep.x)+1;
       // RbtUInt nY = int(recepExtent.y/gridStep.y)+1;
       // RbtUInt nZ = int(recepExtent.z/gridStep.z)+1;
-      // cout << "Constructing grid of size " << nX << " x " << nY << " x " <<
-      // nZ << endl;
+      // std::cout << "Constructing grid of size " << nX << " x " << nY << " x "
+      // << nZ << std::endl;
       RbtRealGridPtr spGrid(new RbtRealGrid(minCoord, gridStep, nX, nY, nZ));
       float *gridData = spGrid->GetGridData();
 
@@ -239,8 +251,8 @@ int main(int argc, char *argv[]) {
       RbtModelList probes = CreateProbes(strAtomType);
 
       // write the grid into a MOE grid file
-      cout << "==================================" << endl;
-      cout << "Generating MOE grid " << endl;
+      std::cout << "==================================" << std::endl;
+      std::cout << "Generating MOE grid " << std::endl;
       int dim = 3; // its a 3D grid
       // grid extents are in minCoord and maxCoord
       vector<double> grid_origin;
@@ -268,7 +280,7 @@ int main(int argc, char *argv[]) {
         RbtAtom *pAtom = spLigand->GetAtomList().front();
         RbtTriposAtomType::eType atomType = pAtom->GetTriposType();
         std::string strType = triposType.Type2Str(atomType);
-        cout << "Atom type=" << strType << endl;
+        std::cout << "Atom type=" << strType << std::endl;
         // Register ligand with workspace
         spWS->SetLigand(spLigand);
         // Loop over all grid coords and calculate the score at each position
@@ -282,23 +294,23 @@ int main(int argc, char *argv[]) {
       // create grid object from shape and data
       theMOEGrid.SetShape(theShape);
       theMOEGrid.SetData(theData);
-      cout << "writing grid... ";
+      std::cout << "writing grid... ";
       // if it is the very first, then override
       if (strReceptorPrmFilesIter == strReceptorPrmFiles.begin()) {
-        theMOEGrid.WriteGrid(ios_base::trunc);
+        theMOEGrid.WriteGrid(std::ios_base::trunc);
         // otherwise append
       } else {
-        theMOEGrid.WriteGrid(ios_base::app);
+        theMOEGrid.WriteGrid(std::ios_base::app);
       }
-      cout << "done." << endl;
+      std::cout << "done." << std::endl;
     }
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
 
   return 0;
 }

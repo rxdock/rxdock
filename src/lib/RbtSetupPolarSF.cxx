@@ -10,9 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include <iomanip>
-using std::setw;
 #include "RbtSetupPolarSF.h"
+#include <iomanip>
 
 // Static data members
 std::string RbtSetupPolarSF::_CT("RbtSetupPolarSF");
@@ -34,14 +33,14 @@ RbtSetupPolarSF::RbtSetupPolarSF(const std::string &strName)
   AddParameter(_GUANFACTOR, 1.0);
   Disable();
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtSetupPolarSF::~RbtSetupPolarSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -103,14 +102,15 @@ void RbtSetupPolarSF::SetupAtomList(RbtAtomList &atomList,
   Rbt::isAtomGuanidiniumCarbon bIsGuan;
   Rbt::isAtomLipophilic bIsLipo;
 
-  std::ios_base::fmtflags oldflags = cout.flags();
-  cout.precision(3);
-  cout.setf(ios_base::fixed, ios_base::floatfield);
-  cout.setf(ios_base::right, ios_base::adjustfield);
+  std::ios_base::fmtflags oldflags = std::cout.flags();
+  std::cout.precision(3);
+  std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
+  std::cout.setf(std::ios_base::right, std::ios_base::adjustfield);
   if (iTrace > traceTriggerLevel) {
-    cout << endl
-         << _CT << ": Atom\t\t, f(neighb), f(charge), isLipo,  isHBA,  isHBD"
-         << endl;
+    std::cout << std::endl
+              << _CT
+              << ": Atom\t\t, f(neighb), f(charge), isLipo,  isHBA,  isHBD"
+              << std::endl;
   }
 
   for (RbtAtomListIter iter = atomList.begin(); iter != atomList.end();
@@ -138,21 +138,23 @@ void RbtSetupPolarSF::SetupAtomList(RbtAtomList &atomList,
     // if (traceTriggerLevel == 1) {
     //  RbtDouble wxb = (*iter)->GetReweight();
     //  (*iter)->SetUser1Value(fNeighb*charge*wxb);
-    // cout << "Atom: " << (*iter)->GetAtomName() << " Polar_User1Value: " <<
-    // (*iter)->GetUser1Value() << " weigth: " << wxb << endl;
+    // std::cout << "Atom: " << (*iter)->GetAtomName() << " Polar_User1Value: "
+    // <<
+    // (*iter)->GetUser1Value() << " weigth: " << wxb << std::endl;
     //}else{
     (*iter)->SetUser1Value(fNeighb * charge);
     // }
     // XB END MODIFICATIONS
     (*iter)->SetUser1Flag(bIsLipo(*iter));
     if (iTrace > traceTriggerLevel) {
-      //   cout << _CT << ": " << (*iter)->GetFullAtomName() << "\t," <<
-      //   setw(10) << fNeighb << "," << setw(10) << charge
-      //	   << "," << setw(7) << (*iter)->GetUser1Flag() << "," <<
-      // setw(7) << bIsHBA(*iter) << "," << setw(7) << bIsHBD(*iter) << endl;
+      //   std::cout << _CT << ": " << (*iter)->GetFullAtomName() << "\t," <<
+      //   std::setw(10) << fNeighb << "," << std::setw(10) << charge
+      //	   << "," << std::setw(7) << (*iter)->GetUser1Flag() << "," <<
+      // std::setw(7) << bIsHBA(*iter) << "," << std::setw(7) << bIsHBD(*iter)
+      // << std::endl;
     }
   }
-  cout.flags(oldflags);
+  std::cout.flags(oldflags);
 }
 
 void RbtSetupPolarSF::SetupScore() {

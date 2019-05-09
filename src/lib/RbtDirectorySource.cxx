@@ -14,8 +14,6 @@
 //#include "RbtFileError.h"
 #include "RbtDirectorySource.h"
 #include <iostream>
-using std::cout;
-using std::endl;
 
 std::string RbtDirectorySource::_CT("RbtDirectorySource");
 
@@ -58,15 +56,15 @@ void RbtDirectorySource::CheckDirectory(std::string &aDir) {
   char *theDir =
       (char *)aDir.c_str(); // unbelivable annoying buglet in Solaris gcc 2.95.3
   fNum = scandir(theDir, &fNameList, 0, alphasort); // get dir entries
-  //	cout << "Not running on Slowaris" << endl;
+  //    std::cout << "Not running on Slowaris" << std::endl;
   //	exit(1);
   if (fNum < 1)
     throw RbtNoFileInDir(_WHERE_, " No files in directory. ");
   else
-    cout << _CT << " Reading files from " << aDir << endl;
+    std::cout << _CT << " Reading files from " << aDir << std::endl;
   //#endif
 }
 
 RbtDirectorySource::~RbtDirectorySource() {
-  cout << "RbtDirectorySource destructor" << endl;
+  std::cout << "RbtDirectorySource destructor" << std::endl;
 }

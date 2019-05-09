@@ -89,8 +89,8 @@ void RbtChromDihedralRefData::Setup(RbtBondPtr spBond,
                                    : Rbt::GetNumSelectedAtoms(tetheredAtoms);
   int nHalf = (nTethered == 0) ? (nAtoms - 2) / 2 : (nTethered - 2) / 2;
   if (nSelected > nHalf) {
-    // cout << "Over half the molecule selected: " << nSelected << " atoms" <<
-    // endl;
+    // std::cout << "Over half the molecule selected: " << nSelected << " atoms"
+    // << std::endl;
     Rbt::InvertAtomSelectionFlags(atomList);
     pAtom2->SetSelectionFlag(false);
     pAtom3->SetSelectionFlag(false);
@@ -98,21 +98,23 @@ void RbtChromDihedralRefData::Setup(RbtBondPtr spBond,
     m_atom2 = pAtom3;
     m_atom3 = pAtom2;
     m_atom4 = bondedAtoms2.front();
-    // cout << "Inverted: " << Rbt::GetNumSelectedAtoms(m_pModel->m_atomList) <<
-    // " atoms now selected" << endl; cout << "Dihedral spec: " <<
+    // std::cout << "Inverted: " <<
+    // Rbt::GetNumSelectedAtoms(m_pModel->m_atomList) << " atoms now selected"
+    // << std::endl; std::cout << "Dihedral spec: " <<
     // bondedAtoms3.front()->GetAtomName() << "\t" << pAtom3->GetAtomName() <<
     // "\t"
     //	   << pAtom2->GetAtomName() << "\t" <<
-    // bondedAtoms2.front()->GetAtomName() << endl;
+    // bondedAtoms2.front()->GetAtomName() << std::endl;
   } else {
     m_atom1 = bondedAtoms2.front();
     m_atom2 = pAtom2;
     m_atom3 = pAtom3;
     m_atom4 = bondedAtoms3.front();
-    // cout << "Dihedral spec: " << bondedAtoms2.front()->GetAtomName() << "\t"
+    // std::cout << "Dihedral spec: " << bondedAtoms2.front()->GetAtomName() <<
+    // "\t"
     // << pAtom2->GetAtomName() << "\t"
     //	   << pAtom3->GetAtomName() << "\t" <<
-    // bondedAtoms3.front()->GetAtomName() << endl;
+    // bondedAtoms3.front()->GetAtomName() << std::endl;
   }
 
   // Store the smaller atom list (or free atom list in tethered mode) for this

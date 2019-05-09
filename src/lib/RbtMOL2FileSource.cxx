@@ -13,7 +13,6 @@
 // XB cctype for check atom in MOL2 is number
 //#include <cctype>
 #include <sstream>
-using std::stringstream;
 
 #include "RbtAtomFuncs.h"
 #include "RbtFileError.h"
@@ -82,7 +81,7 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
            lineIter < m_lineRecs.end(); ++lineIter) {
         // Ignore blank lines and comment lines
         if ((*lineIter).empty() || ((*lineIter).at(0) == '#')) {
-          // cout << "Skipping blank/comment record" << endl;
+          // std::cout << "Skipping blank/comment record" << std::endl;
           continue;
         }
         // check wether is it a record field delimiter (tag like:
@@ -93,11 +92,11 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
           map<std::string, fcPtr>::const_iterator i =
               theSwitchBoard.find(theNewTag);
           if (i == theSwitchBoard.end()) {
-            // cout << "INFO Skipping unsupported record: " << theNewTag <<
-            // endl;
+            // std::cout << "INFO Skipping unsupported record: " << theNewTag <<
+            // std::endl;
             theCurrentParser = theSwitchBoard["UNSUPPORTED"];
           } else {
-            // cout << "Reading " << theNewTag << endl;
+            // std::cout << "Reading " << theNewTag << std::endl;
             theCurrentParser = theSwitchBoard[theNewTag];
           }
         } else { // call the parser
@@ -113,8 +112,8 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
            iter != m_ssAtoms.end(); iter++) {
         int subst_id = iter->first;
         RbtAtomList ssAtomList = iter->second;
-        // cout << "Found " << ssAtomList.size() << " atoms in SUBSTRUCTURE#" <<
-        // subst_id << endl;
+        // std::cout << "Found " << ssAtomList.size() << " atoms in
+        // SUBSTRUCTURE#" << subst_id << std::endl;
         std::copy(ssAtomList.begin(), ssAtomList.end(),
                   std::back_inserter(m_atomList));
         RbtMOL2SubstructureMapConstIter ssIter = m_ssInfo.find(subst_id);
@@ -130,22 +129,23 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
             std::string atom_sID = (*aIter)->GetSubunitId();
             std::string atom_sName = (*aIter)->GetSubunitName();
             if ((sID != atom_sID) || (sName != atom_sName)) {
-              cout << _CT << ": WARNING Mismatch between SUBSTRUCTURE ("
-                   << sName << sID << ") and ATOM (" << atom_sName << atom_sID
-                   << ") info" << endl;
+              std::cout << _CT << ": WARNING Mismatch between SUBSTRUCTURE ("
+                        << sName << sID << ") and ATOM (" << atom_sName
+                        << atom_sID << ") info" << std::endl;
             }
             if ((atom_sName == "UNK") && (sub_type != "UNK")) {
-              cout << _CT << ": INFO Could use sub_type (" << sub_type
-                   << ") to update SubunitName for "
-                   << (*aIter)->GetFullAtomName() << endl;
+              std::cout << _CT << ": INFO Could use sub_type (" << sub_type
+                        << ") to update SubunitName for "
+                        << (*aIter)->GetFullAtomName() << std::endl;
             }
             (*aIter)->SetSegmentName(chain);
-            // cout << "Updating segment name to " << chain << " for " <<
-            // (*aIter)->GetFullAtomName() << endl;
+            // std::cout << "Updating segment name to " << chain << " for " <<
+            // (*aIter)->GetFullAtomName() << std::endl;
           }
         } else {
-          // cout << _CT << ": INFO No SUBSTRUCTURE record found for subst_id="
-          // << subst_id << endl;
+          // std::cout << _CT << ": INFO No SUBSTRUCTURE record found for
+          // subst_id="
+          // << subst_id << std::endl;
         }
         // Set the group charges on a residue-by-residue basis
         // so we can check for presence or absence of all required atoms
@@ -154,16 +154,20 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
       }
 
       if (m_atomList.size() != nAtoms) {
-        cout << _CT << ": WARNING Mismatch in #ATOMS read: Expected=" << nAtoms
-             << "; Actual = " << m_atomList.size() << endl;
+        std::cout << _CT
+                  << ": WARNING Mismatch in #ATOMS read: Expected=" << nAtoms
+                  << "; Actual = " << m_atomList.size() << std::endl;
       }
       if (m_bondList.size() != nBonds) {
-        cout << _CT << ": WARNING Mismatch in #BONDS read: Expected=" << nBonds
-             << "; Actual = " << m_bondList.size() << endl;
+        std::cout << _CT
+                  << ": WARNING Mismatch in #BONDS read: Expected=" << nBonds
+                  << "; Actual = " << m_bondList.size() << std::endl;
       }
       if (m_ssInfo.size() != nSubstructures) {
-        cout << _CT << ": WARNING Mismatch in #SUBSTRUCTURES read: Expected="
-             << nSubstructures << "; Actual = " << m_ssInfo.size() << endl;
+        std::cout << _CT
+                  << ": WARNING Mismatch in #SUBSTRUCTURES read: Expected="
+                  << nSubstructures << "; Actual = " << m_ssInfo.size()
+                  << std::endl;
       }
 
       SetupAtomParams();
@@ -175,15 +179,15 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
         RbtTriposAtomType::eType tt_file = (*iter)->GetTriposType();
         RbtTriposAtomType::eType tt_auto = m_typer(*iter, true);
         if (tt_file == RbtTriposAtomType::UNDEFINED) {
-          cout << _CT << ": WARNING Undefined Tripos type for "
-               << (*iter)->GetFullAtomName() << endl;
+          std::cout << _CT << ": WARNING Undefined Tripos type for "
+                    << (*iter)->GetFullAtomName() << std::endl;
         }
         if (tt_file != tt_auto) {
 #ifdef _DEBUG
-          cout << _CT << ": INFO Disagreement in Tripos atom types for "
-               << (*iter)->GetFullAtomName();
-          cout << ": File=" << m_typer.Type2Str(tt_file)
-               << "; Auto=" << m_typer.Type2Str(tt_auto) << endl;
+          std::cout << _CT << ": INFO Disagreement in Tripos atom types for "
+                    << (*iter)->GetFullAtomName();
+          std::cout << ": File=" << m_typer.Type2Str(tt_file)
+                    << "; Auto=" << m_typer.Type2Str(tt_auto) << std::endl;
 #endif //_DEBUG
         }
       }
@@ -220,7 +224,7 @@ void RbtMOL2FileSource::Parse(void) throw(RbtError) {
 //
 void RbtMOL2FileSource::ParseRecordMOLECULE(const std::string &aLine) {
 #ifdef _DEBUG_
-  cout << "MOLECULE " << aLine << "   " << m_NL << endl;
+  std::cout << "MOLECULE " << aLine << "   " << m_NL << std::endl;
 #endif // _DEBUG_
 
   switch (m_NL) {
@@ -279,15 +283,17 @@ void RbtMOL2FileSource::ParseRecordATOM(const std::string &aLine) {
   // is to pick up the atomic number (can do this from the atom type string)
   if (tt == RbtTriposAtomType::UNDEFINED) {
     std::string el = atom_type.substr(0, 2);
-    cout << _CT
-         << ": INFO Attempting to identify element by 1st 2 chars of FFType "
-            "string: "
-         << el << endl;
+    std::cout
+        << _CT
+        << ": INFO Attempting to identify element by 1st 2 chars of FFType "
+           "string: "
+        << el << std::endl;
     if (m_spElementData->isElementNamePresent(el)) {
       atomic_number = m_spElementData->GetElementData(el).atomicNo;
-      cout << _CT << ": INFO Atomic number = " << atomic_number << endl;
+      std::cout << _CT << ": INFO Atomic number = " << atomic_number
+                << std::endl;
     } else {
-      cout << _CT << ": INFO Element not found" << endl;
+      std::cout << _CT << ": INFO Element not found" << std::endl;
     }
   }
   RbtElementData elementData = m_spElementData->GetElementData(atomic_number);
@@ -309,7 +315,7 @@ void RbtMOL2FileSource::ParseRecordATOM(const std::string &aLine) {
 
   m_atomList.push_back(newAtom);
   m_ssAtoms[subst_id].push_back(newAtom);
-  // cout << "ParseRecordATOM: " << *newAtom << endl;
+  // std::cout << "ParseRecordATOM: " << *newAtom << std::endl;
 }
 
 void RbtMOL2FileSource::ParseRecordBOND(const std::string &aLine) {
@@ -346,7 +352,7 @@ void RbtMOL2FileSource::ParseRecordBOND(const std::string &aLine) {
   RbtAtomPtr spAtom2(m_atomList[target_bond_id - 1]);
   RbtBondPtr spBond(new RbtBond(bond_id, spAtom1, spAtom2, bond_order));
   m_bondList.push_back(spBond);
-  // cout << "ParseRecordBOND: " << *spBond << endl;
+  // std::cout << "ParseRecordBOND: " << *spBond << std::endl;
 }
 
 void RbtMOL2FileSource::ParseRecordSUBSTRUCTURE(const std::string &aLine) {
@@ -370,9 +376,10 @@ void RbtMOL2FileSource::ParseRecordSUBSTRUCTURE(const std::string &aLine) {
 
   RbtMOL2Substructure ss(subst_name, root_atom, chain, sub_type);
   m_ssInfo[subst_id] = ss;
-  // cout << "ParseRecordSUBSTRUCTURE: " << subst_id << "," << subst_name << ","
+  // std::cout << "ParseRecordSUBSTRUCTURE: " << subst_id << "," << subst_name
+  // << ","
   // << root_atom << ","
-  //     << chain << "," << sub_type << endl;
+  //     << chain << "," << sub_type << std::endl;
 }
 
 void RbtMOL2FileSource::ParseRecordUNSUPPORTED(const std::string &aLine) {
@@ -389,7 +396,8 @@ std::string RbtMOL2FileSource::GetMOL2Tag(const std::string &aLine) {
     Tokenize(aLine, tokens);
     // get rid of the "@<TRIPOS>" part
     if (tokens[0].size() <= _TRIPOS_DELIM_SIZE) {
-      cout << "Corrupted MOL2: no tag identifier after @<TRIPOS>." << endl;
+      std::cout << "Corrupted MOL2: no tag identifier after @<TRIPOS>."
+                << std::endl;
       // why the heck is a segfault here?
       throw RbtFileParseError(
           _WHERE_, "Corrupted MOL2: no tag identifier after @<TRIPOS>.");
@@ -418,11 +426,11 @@ void RbtMOL2FileSource::ParseCountFields(const std::string &aLine) {
     nFeatures = atoi(tokens[3].c_str());
   if (tokens.size() > 4) // substructures
     nSets = atoi(tokens[4].c_str());
-  // cout << "nAtoms " << nAtoms << endl;
-  // cout << "nBonds " << nBonds << endl;
-  // cout << "nSubstructures " << nSubstructures << endl;
-  // cout << "nFeatures " << nFeatures << endl;
-  // cout << "nSets "<< nSets << endl;
+  // std::cout << "nAtoms " << nAtoms << std::endl;
+  // std::cout << "nBonds " << nBonds << std::endl;
+  // std::cout << "nSubstructures " << nSubstructures << std::endl;
+  // std::cout << "nFeatures " << nFeatures << std::endl;
+  // std::cout << "nSets "<< nSets << std::endl;
 }
 
 // Correct all the atom attributes that could not be set explicitly when
@@ -434,8 +442,8 @@ void RbtMOL2FileSource::SetupAtomParams() throw(RbtError) {
     // Quick fix: remove all "Lone Pair" atoms as well
     RbtAtomList lpList = Rbt::GetAtomList(m_atomList, Rbt::isFFType_eq("LP"));
     for (RbtAtomListIter iter = lpList.begin(); iter != lpList.end(); iter++) {
-      // cout << "INFO Removing Lone Pair " << (*iter)->GetFullAtomName() <<
-      // endl;
+      // std::cout << "INFO Removing Lone Pair " << (*iter)->GetFullAtomName()
+      // << std::endl;
       RemoveAtom(*iter);
     }
     RenumberAtomsAndBonds();
@@ -472,17 +480,17 @@ void RbtMOL2FileSource::FixImplicitHydrogenCount() {
     if ((hyb == RbtAtom::AROM) && (nImplH > 0)) {
       int nExplH = (*iter)->GetCoordinationNumber(1);
       if ((nImplH + nExplH) > 1) {
-        cout << _CT << ": INFO Too few bonds detected to aromatic carbon "
-             << (*iter)->GetFullAtomName() << "; #hydrogens capped at 1"
-             << endl;
+        std::cout << _CT << ": INFO Too few bonds detected to aromatic carbon "
+                  << (*iter)->GetFullAtomName() << "; #hydrogens capped at 1"
+                  << std::endl;
         nImplH = 1 - nExplH;
       }
     }
     if (nImplH > 0) {
       (*iter)->SetNumImplicitHydrogens(nImplH);
     } else if (nImplH < 0) {
-      cout << _CT << ": INFO Too many bonds detected to "
-           << (*iter)->GetFullAtomName() << endl;
+      std::cout << _CT << ": INFO Too many bonds detected to "
+                << (*iter)->GetFullAtomName() << std::endl;
     }
   }
 }
@@ -504,8 +512,8 @@ void RbtMOL2FileSource::FixHybridState() {
       if (Rbt::FindAtom(bondedAtomList, Rbt::isPiAtom()) !=
           bondedAtomList.end()) {
         (*iter)->SetHybridState(RbtAtom::TRI);
-        // cout << "Changing " << (*iter)->GetFullAtomName() << " from SP3 to
-        // TRI" << endl;
+        // std::cout << "Changing " << (*iter)->GetFullAtomName() << " from SP3
+        // to TRI" << std::endl;
       }
       break;
     default:
@@ -547,9 +555,10 @@ void RbtMOL2FileSource::FixTriposTypes() {
         break;
       }
       if (xt != t) {
-        //	cout << "Correcting Tripos type for " <<
+        //     std::cout << "Correcting Tripos type for " <<
         //(*iter)->GetFullAtomName() << " from "
-        //     << m_typer.Type2Str(t) << " to " << m_typer.Type2Str(xt) << endl;
+        //     << m_typer.Type2Str(t) << " to " << m_typer.Type2Str(xt) <<
+        //     std::endl;
         (*iter)->SetTriposType(xt);
       }
     }
@@ -559,9 +568,10 @@ void RbtMOL2FileSource::FixTriposTypes() {
     RbtTriposAtomType::eType t = (*iter)->GetTriposType();
     RbtTriposAtomType::eType xt = RbtTriposAtomType::H_P;
     if (xt != t) {
-      // cout << "Correcting Tripos type for " << (*iter)->GetFullAtomName() <<
-      // " from "
-      //   << m_typer.Type2Str(t) << " to " << m_typer.Type2Str(xt) << endl;
+      // std::cout << "Correcting Tripos type for " <<
+      // (*iter)->GetFullAtomName() << " from "
+      //   << m_typer.Type2Str(t) << " to " << m_typer.Type2Str(xt) <<
+      //   std::endl;
       (*iter)->SetTriposType(xt);
     }
   }
@@ -582,16 +592,16 @@ void RbtMOL2FileSource::RemoveNonPolarHydrogens() {
       // Adjust number of implicit hydrogens
       (*cIter)->SetNumImplicitHydrogens((*cIter)->GetNumImplicitHydrogens() +
                                         nH);
-      // cout << "Removing " << nH << " hydrogens from " <<
-      // (*cIter)->GetFullAtomName() << endl;
+      // std::cout << "Removing " << nH << " hydrogens from " <<
+      // (*cIter)->GetFullAtomName() << std::endl;
     }
   }
   // Remove orphan hydrogens (from fragmented residues for e.g.)
   RbtAtomList hList = Rbt::GetAtomList(m_atomList, Rbt::isAtomicNo_eq(1));
   hList = Rbt::GetAtomList(hList, Rbt::isCoordinationNumber_eq(0));
   for (RbtAtomListIter hIter = hList.begin(); hIter != hList.end(); hIter++) {
-    cout << _CT << ": INFO Removing orphan hydrogen "
-         << (*hIter)->GetFullAtomName() << endl;
+    std::cout << _CT << ": INFO Removing orphan hydrogen "
+              << (*hIter)->GetFullAtomName() << std::endl;
     RemoveAtom(*hIter);
   }
 }
@@ -634,9 +644,9 @@ void RbtMOL2FileSource::SetupVdWRadii() {
     // Finally we can set the radius
     (*iter)->SetVdwRadius(vdwRadius);
 #ifdef _DEBUG
-    // cout << (*iter)->GetFullAtomName() << ": #H=" << nImplH
+    // std::cout << (*iter)->GetFullAtomName() << ": #H=" << nImplH
     //<< "; vdwR=" << (*iter)->GetVdwRadius()
-    //<< "; mass=" << (*iter)->GetAtomicMass() << endl;
+    //<< "; mass=" << (*iter)->GetAtomicMass() << std::endl;
 #endif //_DEBUG
   }
 }
@@ -675,7 +685,7 @@ void RbtMOL2FileSource::GetSSIDandName(const std::string &subst_name,
 void RbtMOL2FileSource::Tokenize(const std::string &aString,
                                  RbtStringList &aTokensBuf) {
   std::string buf;
-  stringstream ss(aString);
+  std::stringstream ss(aString);
   while (ss >> buf)
     aTokensBuf.push_back(buf);
 }

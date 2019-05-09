@@ -52,15 +52,15 @@ RbtPseudoAtom::~RbtPseudoAtom() { _RBTOBJECTCOUNTER_DESTR_("RbtPseudoAtom"); }
 
 // Virtual function for dumping atom details to an output stream
 // Derived classes (e.g. pseudoatom) can override if required
-ostream &RbtPseudoAtom::Print(ostream &s) const {
+std::ostream &RbtPseudoAtom::Print(std::ostream &s) const {
   RbtAtom::Print(s); // First call base class Print on the pseudo-atom itself
-  s << endl
+  s << std::endl
     << "Pseudo-atom with " << m_atomList.size()
-    << " constituent atoms:" << endl;
+    << " constituent atoms:" << std::endl;
   // Now dump the atom details for all the constituent atoms
   for (RbtAtomListConstIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter++)
-    s << (**iter) << endl;
+    s << (**iter) << std::endl;
   return s;
 }
 

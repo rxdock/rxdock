@@ -25,7 +25,7 @@ RbtVdwSF::RbtVdwSF()
     : m_use_4_8(true), m_use_tripos(false), m_rmax(1.5), m_ecut(1.0),
       m_e0(1.5) {
 #ifdef _DEBUG
-  cout << _CT << " default constructor" << endl;
+  std::cout << _CT << " default constructor" << std::endl;
 #endif //_DEBUG
   // Add parameters
   AddParameter(_USE_4_8, m_use_4_8);
@@ -41,7 +41,7 @@ RbtVdwSF::RbtVdwSF()
 
 RbtVdwSF::~RbtVdwSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -96,10 +96,10 @@ double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
       double s = f4_8(R_sq, *iter2);
       // XB NOTE: Apply weight here
       //   RbtDouble wxb = (*iter)->GetReweight();
-      // cout << "4-8vdw " << (*iter)->GetAtomName() << " weight: " << wxb << "
-      // score " << s;
+      // std::cout << "4-8vdw " << (*iter)->GetAtomName() << " weight: " << wxb
+      // << " score " << s;
       //   s *=  wxb;
-      // cout << " score*w " << s << endl;
+      // std::cout << " score*w " << s << std::endl;
       // XB END MODIFICATIONS
       score += s;
     }
@@ -116,10 +116,10 @@ double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
       double s = f6_12(R_sq, *iter2);
       // XB NOTE: Apply weight here
       // RbtDouble wxb = (*iter)->GetReweight();
-      //   cout << "6-12vdw " << (*iter)->GetAtomName() << " weight: " << wxb <<
-      //   " score " << s;
+      //   std::cout << "6-12vdw " << (*iter)->GetAtomName() << " weight: " <<
+      //   wxb << " score " << s;
       // s *=  wxb;
-      //   cout << " score*w " << s << endl;
+      //   std::cout << " score*w " << s << std::endl;
       // XB END MODIFICATIONS
       if (s != 0.0) {
         score += s;
@@ -141,8 +141,9 @@ double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
       double s = f6_12(R_sq, *iter2);
       // XB NOTE: Apply weight here
       //   RbtDouble wxb = (*iter)->GetReweight();
-      //   cout << "6-12vdw " << (*iter)->GetAtomName() << " weight: " << wxb <<
-      //   " score " << s; s *=  wxb; cout << " score*w " << s << endl;
+      //   std::cout << "6-12vdw " << (*iter)->GetAtomName() << " weight: " <<
+      //   wxb << " score " << s; s *=  wxb; std::cout << " score*w " << s <<
+      //   std::endl;
       // XB END MODIFICATIONS
       score += s;
     }
@@ -288,8 +289,8 @@ void RbtVdwSF::Setup() {
   RbtTriposAtomType triposType;
   int iTrace = GetTrace();
   if (iTrace > 3) {
-    cout << endl << _CT << "::Setup()" << endl;
-    cout << "TYPE1,TYPE2,A,B,RMIN,KIJ,RMAX" << endl;
+    std::cout << std::endl << _CT << "::Setup()" << std::endl;
+    std::cout << "TYPE1,TYPE2,A,B,RMIN,KIJ,RMAX" << std::endl;
   }
   // Dummy read to force parsing of file, otherwise the first SetSection is
   // overridden
@@ -369,10 +370,10 @@ void RbtVdwSF::Setup() {
       m_vdwTable[i][j] = prms;
       m_vdwTable[j][i] = prms;
       if (iTrace > 3) {
-        cout << triposType.Type2Str(RbtTriposAtomType::eType(i)) << ","
-             << triposType.Type2Str(RbtTriposAtomType::eType(j)) << ","
-             << prms.A << "," << prms.B << "," << prms.rmin << "," << prms.kij
-             << "," << sqrt(prms.rmax_sq) << endl;
+        std::cout << triposType.Type2Str(RbtTriposAtomType::eType(i)) << ","
+                  << triposType.Type2Str(RbtTriposAtomType::eType(j)) << ","
+                  << prms.A << "," << prms.B << "," << prms.rmin << ","
+                  << prms.kij << "," << sqrt(prms.rmax_sq) << std::endl;
       }
     }
   }
@@ -382,7 +383,8 @@ void RbtVdwSF::Setup() {
   double range = *(std::max_element(m_maxRange.begin(), m_maxRange.end()));
   SetRange(range);
   if (iTrace > 1) {
-    cout << "Overall max range for scoring function = " << range << endl;
+    std::cout << "Overall max range for scoring function = " << range
+              << std::endl;
   }
 }
 
@@ -391,8 +393,8 @@ void RbtVdwSF::SetupCloseRange() {
   RbtTriposAtomType triposType;
   int iTrace = GetTrace();
   if (iTrace > 3) {
-    cout << endl << _CT << "::SetupCloseRange()" << endl;
-    cout << "TYPE1,TYPE2,RCUT,ECUT,SLOPE,E0" << endl;
+    std::cout << std::endl << _CT << "::SetupCloseRange()" << std::endl;
+    std::cout << "TYPE1,TYPE2,RCUT,ECUT,SLOPE,E0" << std::endl;
   }
   double x = 1.0 + sqrt(1.0 + m_ecut);
   double p = (m_use_4_8) ? pow(x, 1.0 / 4.0) : pow(x, 1.0 / 6.0);
@@ -406,13 +408,13 @@ void RbtVdwSF::SetupCloseRange() {
       (*iter2).e0 = (*iter2).ecutoff * m_e0;
       (*iter2).slope = ((*iter2).e0 - (*iter2).ecutoff) / (*iter2).rcutoff_sq;
       if (iTrace > 3) {
-        cout << triposType.Type2Str(
-                    RbtTriposAtomType::eType(iter1 - m_vdwTable.begin()))
-             << ","
-             << triposType.Type2Str(
-                    RbtTriposAtomType::eType(iter2 - (*iter1).begin()))
-             << "," << sqrt((*iter2).rcutoff_sq) << "," << (*iter2).ecutoff
-             << "," << (*iter2).slope << "," << (*iter2).e0 << endl;
+        std::cout << triposType.Type2Str(
+                         RbtTriposAtomType::eType(iter1 - m_vdwTable.begin()))
+                  << ","
+                  << triposType.Type2Str(
+                         RbtTriposAtomType::eType(iter2 - (*iter1).begin()))
+                  << "," << sqrt((*iter2).rcutoff_sq) << "," << (*iter2).ecutoff
+                  << "," << (*iter2).slope << "," << (*iter2).e0 << std::endl;
       }
     }
   }
@@ -452,12 +454,12 @@ void RbtVdwSF::BuildIntraMap(const RbtAtomRList &atomList1,
                    std::back_inserter(intns[id]), isSelected);
     }
     if (GetTrace() > 2) {
-      cout << _CT << "::BuildIntraMap: " << pAtom->GetFullAtomName();
+      std::cout << _CT << "::BuildIntraMap: " << pAtom->GetFullAtomName();
       if (!intns[id].empty()) {
-        cout << "\t" << intns[id].front()->GetFullAtomName() << " to "
-             << intns[id].back()->GetFullAtomName();
+        std::cout << "\t" << intns[id].front()->GetFullAtomName() << " to "
+                  << intns[id].back()->GetFullAtomName();
       }
-      cout << "; N = " << intns[id].size() << endl;
+      std::cout << "; N = " << intns[id].size() << std::endl;
     }
   }
 }
@@ -480,7 +482,7 @@ void RbtVdwSF::Partition(const RbtAtomRList &atomList,
        iter++)
     (*iter).clear();
   if (iTrace > 3) {
-    cout << _CT << ": Partition (dist=" << dist << ")" << endl;
+    std::cout << _CT << ": Partition (dist=" << dist << ")" << std::endl;
   }
 
   for (RbtAtomRListConstIter iter = atomList.begin(); iter != atomList.end();
@@ -496,9 +498,9 @@ void RbtVdwSF::Partition(const RbtAtomRList &atomList,
       prtIntns[id] = intns[id];
     }
     if (iTrace > 3) {
-      cout << _CT << ": " << (*iter)->GetFullAtomName()
-           << ": #vdw=" << intns[id].size() << ": #prtn=" << prtIntns[id].size()
-           << endl;
+      std::cout << _CT << ": " << (*iter)->GetFullAtomName()
+                << ": #vdw=" << intns[id].size()
+                << ": #prtn=" << prtIntns[id].size() << std::endl;
     }
   }
 }

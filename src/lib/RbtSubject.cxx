@@ -18,9 +18,9 @@ RbtSubject::RbtSubject() { _RBTOBJECTCOUNTER_CONSTR_("RbtSubject"); }
 // Destructor - notify observers of impending destruction
 RbtSubject::~RbtSubject() {
 #ifdef _DEBUG
-  cout
+  std::cout
       << "RbtSubject::~RbtSubject: Notifying observers of impending destruction"
-      << endl;
+      << std::endl;
 #endif //_DEBUG
        // We need to iterate using a while loop because call to Deleted will
        // trigger a call back to Detach, reducing the size of m_observers, hence
@@ -45,8 +45,8 @@ void RbtSubject::Attach(RbtObserver *pObserver) throw(RbtError) {
   } else {
     m_observers.push_back(pObserver);
 #ifdef _DEBUG
-    cout << "RbtSubject::Attach: Attaching new observer; #observers="
-         << m_observers.size() << endl;
+    std::cout << "RbtSubject::Attach: Attaching new observer; #observers="
+              << m_observers.size() << std::endl;
 #endif //_DEBUG
   }
 }
@@ -61,15 +61,16 @@ void RbtSubject::Detach(RbtObserver *pObserver) throw(RbtError) {
   } else {
     m_observers.erase(iter);
 #ifdef _DEBUG
-    cout << "RbtSubject::Detach: Detaching observer; #observers="
-         << m_observers.size() << endl;
+    std::cout << "RbtSubject::Detach: Detaching observer; #observers="
+              << m_observers.size() << std::endl;
 #endif //_DEBUG
   }
 }
 
 void RbtSubject::Notify() {
 #ifdef _DEBUG
-  cout << "RbtSubject::Notify: Notifying observers of change of state" << endl;
+  std::cout << "RbtSubject::Notify: Notifying observers of change of state"
+            << std::endl;
 #endif //_DEBUG
   for (RbtObserverListIter iter = m_observers.begin();
        iter != m_observers.end(); iter++) {

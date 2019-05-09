@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
       theRand.Seed(atoi(argv[2]));
     else
       theRand.SeedFromClock();
-    cout << "Seed: " << theRand.GetSeed() << endl;
+    std::cout << "Seed: " << theRand.GetSeed() << std::endl;
     RbtGPGenome::SetStructure(56, 3, 1, 1, 7, 1, 200, 100);
     ifstream desc("descnames", ios::in);
     RbtContextPtr contextp(new RbtCellContext(desc));
@@ -61,30 +61,32 @@ int main(int argc, char *argv[]) {
           count = 0;
         } else
           count++;
-        cout << b << "\t"
-             << ff->CalculateFitness(p.Best(), ittrain, sfttrain, hitlimit,
-                                     false)
-             << endl;
+        std::cout << b << "\t"
+                  << ff->CalculateFitness(p.Best(), ittrain, sfttrain, hitlimit,
+                                          false)
+                  << std::endl;
         if (count >= 7)
           break;
       }
       i++;
     }
-    cout << i << "\t" << *(p.Best()) << endl;
-    cout << "best with training: "
-         << ff->CalculateFitness(p.Best(), ittrain, sfttrain, false) << "\n"
-         << ff->CalculateFitness(p.Best(), ittrain, sfttrain, 0.0, false)
-         << endl;
-    cout << "best with test:     "
-         << ff->CalculateFitness(p.Best(), ittest, sfttest, false) << "\n"
-         << ff->CalculateFitness(p.Best(), ittest, sfttest, 0.0, false) << endl;
+    std::cout << i << "\t" << *(p.Best()) << std::endl;
+    std::cout << "best with training: "
+              << ff->CalculateFitness(p.Best(), ittrain, sfttrain, false)
+              << "\n"
+              << ff->CalculateFitness(p.Best(), ittrain, sfttrain, 0.0, false)
+              << std::endl;
+    std::cout << "best with test:     "
+              << ff->CalculateFitness(p.Best(), ittest, sfttest, false) << "\n"
+              << ff->CalculateFitness(p.Best(), ittest, sfttest, 0.0, false)
+              << std::endl;
 
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
   return 0;
 }

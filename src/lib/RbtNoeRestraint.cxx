@@ -34,7 +34,7 @@ bool RbtNoeEndNames::isOK() const {
 }
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtNoeEndNames &n) {
+std::ostream &operator<<(std::ostream &s, const RbtNoeEndNames &n) {
   if (n.names.size() == 1)
     s << n.names.front();
   else {
@@ -62,7 +62,7 @@ bool RbtNoeEndAtoms::isOK() const {
 }
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtNoeEndAtoms &n) {
+std::ostream &operator<<(std::ostream &s, const RbtNoeEndAtoms &n) {
   if (n.atoms.size() == 1)
     s << n.atoms.front()->GetFullAtomName();
   else {
@@ -89,7 +89,7 @@ ostream &operator<<(ostream &s, const RbtNoeEndAtoms &n) {
 bool RbtNoeRestraintNames::isOK() const { return from.isOK() && to.isOK(); }
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtNoeRestraintNames &noe) {
+std::ostream &operator<<(std::ostream &s, const RbtNoeRestraintNames &noe) {
   s << noe.from << " - " << noe.to << ": dist<" << noe.maxDist;
   return s;
 }
@@ -111,7 +111,7 @@ bool RbtNoeRestraintAtoms::isSimple() const {
 }
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtNoeRestraintAtoms &noe) {
+std::ostream &operator<<(std::ostream &s, const RbtNoeRestraintAtoms &noe) {
   s << noe.from << " - " << noe.to << ": dist<" << noe.maxDist;
   return s;
 }
@@ -123,7 +123,7 @@ ostream &operator<<(ostream &s, const RbtNoeRestraintAtoms &noe) {
 bool RbtStdRestraintNames::isOK() const { return from.isOK(); }
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtStdRestraintNames &std) {
+std::ostream &operator<<(std::ostream &s, const RbtStdRestraintNames &std) {
   s << std.from << " - receptor: dist<" << std.maxDist;
   return s;
 }
@@ -143,7 +143,7 @@ bool RbtStdRestraintAtoms::isOK() const { return from.isOK(); }
 bool RbtStdRestraintAtoms::isSimple() const { return (from.atoms.size() == 1); }
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtStdRestraintAtoms &std) {
+std::ostream &operator<<(std::ostream &s, const RbtStdRestraintAtoms &std) {
   s << std.from << " - receptor: dist<" << std.maxDist;
   return s;
 }

@@ -47,7 +47,7 @@ public:
 };
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtNoeEndNames &n);
+std::ostream &operator<<(std::ostream &s, const RbtNoeEndNames &n);
 
 ///////////////////////////////////////////////////////////////////////
 // As above, but with a real atom list in place of the string list
@@ -64,7 +64,7 @@ public:
 };
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtNoeEndAtoms &n);
+std::ostream &operator<<(std::ostream &s, const RbtNoeEndAtoms &n);
 
 ///////////////////////////////////////////////////////////////////////
 // Simple struct for holding a complete NOE restraint definition
@@ -80,7 +80,7 @@ public:
 };
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtNoeRestraintNames &noe);
+std::ostream &operator<<(std::ostream &s, const RbtNoeRestraintNames &noe);
 
 ///////////////////////////////////////////////////////////////////////
 // As above, but with real RbtNoeEndAtoms in place of RbtNoeEndNames
@@ -104,7 +104,7 @@ public:
 };
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtNoeRestraintAtoms &noe);
+std::ostream &operator<<(std::ostream &s, const RbtNoeRestraintAtoms &noe);
 
 ///////////////////////////////////////////////////////////////////////
 // Simple struct for holding a complete STD restraint definition
@@ -119,7 +119,7 @@ public:
 };
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtStdRestraintNames &std);
+std::ostream &operator<<(std::ostream &s, const RbtStdRestraintNames &std);
 
 ///////////////////////////////////////////////////////////////////////
 // As above, but with real RbtNoeEndAtoms in place of RbtNoeEndNames
@@ -141,7 +141,7 @@ public:
 };
 
 // Insertion operator for the above
-ostream &operator<<(ostream &s, const RbtStdRestraintAtoms &std);
+std::ostream &operator<<(std::ostream &s, const RbtStdRestraintAtoms &std);
 
 // Useful typedefs
 typedef vector<RbtNoeRestraintNames> RbtNoeRestraintNamesList;

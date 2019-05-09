@@ -24,7 +24,7 @@
 #include <sstream>
 
 std::string RbtGPFFSpike::_CT("RbtGPFFSpike");
-void RbtGPFFSpike::ReadTables(istream &in, RbtReturnTypeArray &it,
+void RbtGPFFSpike::ReadTables(std::istream &in, RbtReturnTypeArray &it,
                               RbtReturnTypeArray &sft) {
   RbtReturnType value;
   int nip, nsfi;
@@ -66,9 +66,9 @@ void RbtGPFFSpike::ReadTables(istream &in, RbtReturnTypeArray &it,
     i++;
     in >> recordn;
   }
-  cout << "Read: " << inputTable[0][0] << endl;
+  std::cout << "Read: " << inputTable[0][0] << std::endl;
   it = inputTable;
-  //	cout << it[0].size() << endl;
+  //    std::cout << it[0].size() << std::endl;
   sft = SFTable;
 }
 
@@ -100,10 +100,10 @@ double RbtGPFFSpike::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
     EvaluateVisitor visitor(contextp);
     fe->Accept(visitor);
     *(o[0]) = fe->GetValue();
-    // cout << *(o[0]) << endl;
+    // std::cout << *(o[0]) << std::endl;
     for (int j = 0; j < RbtGPGenome::GetNO(); j++)
       if (function) {
-        cout << "Error, no function possible with spike\n";
+        std::cout << "Error, no function possible with spike\n";
         exit(1);
       } else if (*(o[j]) < 0.0) {
         if (hit < hitlimit)
@@ -154,7 +154,7 @@ double RbtGPFFSpike::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
     EvaluateVisitor visitor(contextp);
     fe->Accept(visitor);
     *(o[0]) = fe->GetValue();
-    //        cout << "** " << *(o[0]) << endl;
+    //        std::cout << "** " << *(o[0]) << std::endl;
     //        assert(oldo == *(o[0]));
     double limit = 0.0;
     for (int j = 0; j < RbtGPGenome::GetNO(); j++) {
@@ -175,8 +175,8 @@ double RbtGPFFSpike::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
     //        c->Clear();
   }
   // objective value always an increasing function
-  cout << truehits << "\t" << falsehits << "\t" << truemisses << "\t"
-       << falsemisses << endl;
+  std::cout << truehits << "\t" << falsehits << "\t" << truemisses << "\t"
+            << falsemisses << std::endl;
   objective = truehits / (truehits + falsehits);
   fitness = objective;
   // g->SetFitness(fitness);
@@ -192,13 +192,13 @@ void RbtGPFFSpike::CreateRandomCtes(int nctes) {
     double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
-    cout << "c0 \t0.0" << endl;
-    cout << "c1 \t1.0" << endl;
+    std::cout << "c0 \t0.0" << std::endl;
+    std::cout << "c1 \t1.0" << std::endl;
     for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * pow(10, b);
-      cout << "c" << i + 2 << " \t" << c << endl;
+      std::cout << "c" << i + 2 << " \t" << c << std::endl;
       ctes.push_back(c);
     }
   }

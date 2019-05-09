@@ -31,14 +31,14 @@ RbtCavityGridSF::RbtCavityGridSF(const std::string &strName)
   AddParameter(_RMAX, m_rMax);
   AddParameter(_QUADRATIC, m_bQuadratic);
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtCavityGridSF::~RbtCavityGridSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }

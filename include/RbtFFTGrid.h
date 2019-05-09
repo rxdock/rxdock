@@ -53,7 +53,7 @@ public:
              unsigned int NY, unsigned int NZ, unsigned int NPad = 0);
 
   // Constructor reading all params from binary stream
-  RbtFFTGrid(istream &istr);
+  RbtFFTGrid(std::istream &istr);
 
   ~RbtFFTGrid(); // Default destructor
 
@@ -77,9 +77,9 @@ public:
   // Subclasses should provide their own private OwnPrint,OwnWrite, OwnRead
   // methods to handle subclass data members, and override the public
   // Print,Write and Read methods
-  virtual void Print(ostream &ostr) const; // Text output
-  virtual void Write(ostream &ostr) const; // Binary output (serialisation)
-  virtual void Read(istream &istr); // Binary input, replaces existing grid
+  virtual void Print(std::ostream &ostr) const; // Text output
+  virtual void Write(std::ostream &ostr) const; // Binary output (serialisation)
+  virtual void Read(std::istream &istr); // Binary input, replaces existing grid
 
   // Find the coords of all (separate) peaks above the threshold value
   // whose volumes are not less than minVol
@@ -94,11 +94,11 @@ protected:
   // Protected methods
   ///////////////////
   // Protected method for writing data members for this class to text stream
-  void OwnPrint(ostream &ostr) const;
+  void OwnPrint(std::ostream &ostr) const;
   // Protected method for writing data members for this class to binary stream
-  void OwnWrite(ostream &ostr) const;
+  void OwnWrite(std::ostream &ostr) const;
   // Protected method for reading data members for this class from binary stream
-  void OwnRead(istream &istr) throw(RbtError);
+  void OwnRead(std::istream &istr) throw(RbtError);
 
 private:
   ////////////////////////////////////////

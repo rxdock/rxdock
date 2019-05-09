@@ -31,7 +31,7 @@ public:
   }
   virtual ~RbtGPFFSpike() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
-  void ReadTables(istream &, RbtReturnTypeArray &, RbtReturnTypeArray &);
+  void ReadTables(std::istream &, RbtReturnTypeArray &, RbtReturnTypeArray &);
   double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,
                           RbtReturnTypeArray &, double, bool);
   double CalculateFitness(RbtGPGenomePtr, RbtReturnTypeArray &,

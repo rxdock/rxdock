@@ -84,7 +84,7 @@ RbtModelList CreateProbes() {
 /////////////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]) {
-  cout.setf(ios_base::left, ios_base::adjustfield);
+  std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 
   // Strip off the path to the executable, leaving just the file name
   std::string strExeName(argv[0]);
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
 
   // Command line arguments and default values
   std::string strSuffix(".grd");
@@ -104,31 +104,35 @@ int main(int argc, char *argv[]) {
 
   // Brief help message
   if (argc == 1) {
-    cout << endl
-         << "rbcalcgrid - calculates vdw grids for each atom type" << endl;
-    cout << endl
-         << "Usage:\trbcalcgrid -o<OutputRoot> -r<ReceptorPrmFile> "
-            "-p<SFPrmFile> [-g<GridStep>]"
-         << endl;
-    cout << endl
-         << "Options:\t-o<OutputSuffix> - suffix for grid (.grd IS required)"
-         << endl;
-    cout << "\t\t-r<ReceptorPrmFile> - receptor param file (contains active "
-            "site params)"
-         << endl;
-    cout << "\t\t-p<SFPrmFile> - scoring function param file (either "
-            "calcgrid_vdw1.prm or calcgrid_vdw5.prm)"
-         << endl;
-    cout << "\t\t-g<GridStep> - grid step (default=0.5A)" << endl;
-    cout << "\t\t-b<Border> - grid border around docking site (default=1.0A)"
-         << endl;
+    std::cout << std::endl
+              << "rbcalcgrid - calculates vdw grids for each atom type"
+              << std::endl;
+    std::cout << std::endl
+              << "Usage:\trbcalcgrid -o<OutputRoot> -r<ReceptorPrmFile> "
+                 "-p<SFPrmFile> [-g<GridStep>]"
+              << std::endl;
+    std::cout
+        << std::endl
+        << "Options:\t-o<OutputSuffix> - suffix for grid (.grd IS required)"
+        << std::endl;
+    std::cout
+        << "\t\t-r<ReceptorPrmFile> - receptor param file (contains active "
+           "site params)"
+        << std::endl;
+    std::cout << "\t\t-p<SFPrmFile> - scoring function param file (either "
+                 "calcgrid_vdw1.prm or calcgrid_vdw5.prm)"
+              << std::endl;
+    std::cout << "\t\t-g<GridStep> - grid step (default=0.5A)" << std::endl;
+    std::cout
+        << "\t\t-b<Border> - grid border around docking site (default=1.0A)"
+        << std::endl;
     return 1;
   }
 
   // Check command line arguments
-  cout << endl << "Command line args:" << endl;
+  std::cout << std::endl << "Command line args:" << std::endl;
   for (int iarg = 1; iarg < argc; iarg++) {
-    cout << argv[iarg];
+    std::cout << argv[iarg];
     std::string strArg(argv[iarg]);
     if (strArg.find("-o") == 0)
       strSuffix = strArg.substr(2);
@@ -143,13 +147,13 @@ int main(int argc, char *argv[]) {
       std::string strBorder = strArg.substr(2);
       border = atof(strBorder.c_str());
     } else {
-      cout << " ** INVALID ARGUMENT" << endl;
+      std::cout << " ** INVALID ARGUMENT" << std::endl;
       return 1;
     }
-    cout << endl;
+    std::cout << std::endl;
   }
 
-  cout << endl;
+  std::cout << std::endl;
 
   try {
     // Create a bimolecular workspace
@@ -163,10 +167,10 @@ int main(int argc, char *argv[]) {
     // Read the receptor parameter file
     RbtParameterFileSourcePtr spRecepPrmSource(new RbtParameterFileSource(
         Rbt::GetRbtFileName("data/receptors", strReceptorPrmFile)));
-    cout << endl
-         << "RECEPTOR:" << endl
-         << spRecepPrmSource->GetFileName() << endl
-         << spRecepPrmSource->GetTitle() << endl;
+    std::cout << std::endl
+              << "RECEPTOR:" << std::endl
+              << spRecepPrmSource->GetFileName() << std::endl
+              << spRecepPrmSource->GetTitle() << std::endl;
 
     // Read the scoring function file
     RbtParameterFileSourcePtr spSFSource(
@@ -177,9 +181,11 @@ int main(int argc, char *argv[]) {
         spSFSource, _ROOT_SF)); // Root SF aggregate
 
     // Register the scoring function with the workspace
-    // Dump details to cout
+    // Dump details to std::cout
     spWS->SetSF(spSF);
-    cout << endl << "SCORING FUNCTION DETAILS:" << endl << *spSF << endl;
+    std::cout << std::endl
+              << "SCORING FUNCTION DETAILS:" << std::endl
+              << *spSF << std::endl;
 
     // Create the receptor model from the file names in the receptor parameter
     // file
@@ -198,11 +204,12 @@ int main(int argc, char *argv[]) {
     // Read docking site from file and register with workspace
     std::string strASFile = spWS->GetName() + ".as";
     std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
-    // DM 26 Sep 2000 - ios_base::binary is invalid with IRIX CC
+    // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
-    ifstream istr(strInputFile.c_str(), ios_base::in);
+    std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
 #else
-    ifstream istr(strInputFile.c_str(), ios_base::in | ios_base::binary);
+    std::ifstream istr(strInputFile.c_str(),
+                       std::ios_base::in | std::ios_base::binary);
 #endif
     RbtDockingSitePtr spDS(new RbtDockingSite(istr));
     istr.close();
@@ -210,7 +217,9 @@ int main(int argc, char *argv[]) {
 
     // Register receptor with workspace
     spWS->SetReceptor(spReceptor);
-    cout << endl << "DOCKING SITE" << endl << (*spDS) << endl;
+    std::cout << std::endl
+              << "DOCKING SITE" << std::endl
+              << (*spDS) << std::endl;
 
     // Create a grid covering the docking site, plus user-defined border
     RbtCoord minCoord = spDS->GetMinCoord() - border;
@@ -220,8 +229,8 @@ int main(int argc, char *argv[]) {
     unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
     unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
     unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
-    cout << "Constructing grid of size " << nX << " x " << nY << " x " << nZ
-         << endl;
+    std::cout << "Constructing grid of size " << nX << " x " << nY << " x "
+              << nZ << std::endl;
     RbtRealGridPtr spGrid(new RbtRealGrid(minCoord, gridStep, nX, nY, nZ));
     float *gridData = spGrid->GetGridData();
 
@@ -231,10 +240,12 @@ int main(int argc, char *argv[]) {
     // Open output file
     std::string strOutputFile(spWS->GetName() + strSuffix);
 #if defined(__sgi) && !defined(__GNUC__)
-    ofstream ostr(strOutputFile.c_str(), ios_base::out | ios_base::trunc);
+    std::ofstream ostr(strOutputFile.c_str(),
+                       std::ios_base::out | std::ios_base::trunc);
 #else
-    ofstream ostr(strOutputFile.c_str(),
-                  ios_base::out | ios_base::binary | ios_base::trunc);
+    std::ofstream ostr(strOutputFile.c_str(), std::ios_base::out |
+                                                  std::ios_base::binary |
+                                                  std::ios_base::trunc);
 #endif
     // Write header string (RbtVdwGridSF)
     const char *const header = "RbtVdwGridSF";
@@ -256,7 +267,7 @@ int main(int argc, char *argv[]) {
       RbtAtom *pAtom = spLigand->GetAtomList().front();
       RbtTriposAtomType::eType atomType = pAtom->GetTriposType();
       std::string strType = triposType.Type2Str(atomType);
-      cout << "Atom type=" << strType << endl;
+      std::cout << "Atom type=" << strType << std::endl;
       // Register ligand with workspace
       spWS->SetLigand(spLigand);
       pGrid->SetAllValues(0.0);
@@ -274,12 +285,12 @@ int main(int argc, char *argv[]) {
     }
     ostr.close();
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   } catch (...) {
-    cout << "Unknown exception" << endl;
+    std::cout << "Unknown exception" << std::endl;
   }
 
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
 
   return 0;
 }

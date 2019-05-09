@@ -18,10 +18,6 @@
 #define _RBTVARIANT_H_
 
 #include <sstream>
-using std::cout;
-using std::ends;
-using std::istringstream;
-using std::ostringstream;
 
 #include "RbtContainers.h"
 #include "RbtCoord.h"
@@ -54,7 +50,7 @@ public:
   ///////////////////////////////////////////////
 
   // Insertion operator
-  friend ostream &operator<<(ostream &s, const RbtVariant &v) {
+  friend std::ostream &operator<<(std::ostream &s, const RbtVariant &v) {
     // Try and guess the most appropriate output format
     // Empty variant
     if (v.isEmpty())
@@ -64,10 +60,10 @@ public:
       s << v.m_sl.front();
     // String list
     else {
-      s << endl;
+      s << std::endl;
       for (RbtStringListConstIter iter = v.m_sl.begin(); iter != v.m_sl.end();
            iter++)
-        s << *iter << endl;
+        s << *iter << std::endl;
     }
     return s;
   }
@@ -135,7 +131,7 @@ public:
     if (m_sl.empty())
       return c;
     else {
-      istringstream(m_sl.front()) >> c;
+      std::istringstream(m_sl.front()) >> c;
       return c;
     }
   }
@@ -155,8 +151,8 @@ private:
   void SetDouble(double d) {
     m_d = d;
     m_sl.clear();
-    ostringstream ostr;
-    // Don't need "ends" with ostringstream apparently
+    std::ostringstream ostr;
+    // Don't need "ends" with std::ostringstream apparently
     //(was introducing a non-ASCII \0 char into log files
     // ostr << d << ends;
     ostr << d;
@@ -188,8 +184,8 @@ private:
   void SetCoord(const RbtCoord &c) {
     m_d = c.Length();
     m_sl.clear();
-    ostringstream ostr;
-    // Don't need "ends" with ostringstream apparently
+    std::ostringstream ostr;
+    // Don't need "ends" with std::ostringstream apparently
     //(was introducing a non-ASCII \0 char into log files
     // ostr << c << ends;
     ostr << c;
@@ -202,9 +198,9 @@ private:
     int nValues = dl.size();
     m_d = (nValues > 0) ? dl[0] : 0.0;
     m_sl.clear();
-    ostringstream ostr;
+    std::ostringstream ostr;
     ostr.precision(precision);
-    ostr.setf(ios_base::fixed, ios_base::floatfield);
+    ostr.setf(std::ios_base::fixed, std::ios_base::floatfield);
     int lastIndex = nValues - 1;
     for (int i = 0; i < nValues; ++i) {
       ostr << dl[i];

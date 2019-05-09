@@ -13,9 +13,6 @@
 #include "RbtBaseFileSink.h"
 #include "RbtFileError.h"
 
-using std::endl;
-using std::ios;
-
 ////////////////////////////////////////
 // Constructors/destructors
 // RbtBaseFileSink::RbtBaseFileSink(const char* fileName) :
@@ -78,8 +75,8 @@ void RbtBaseFileSink::Write(bool bClearCache) throw(RbtError) {
       // implementations so it is worth to pay this "pointless" price in
       // conversion
       std::string delimited((*iter).c_str());
-      m_fileOut << delimited << endl;
-      // m_fileOut << *iter << endl;
+      m_fileOut << delimited << std::endl;
+      // m_fileOut << *iter << std::endl;
     }
     Close();
     if (bClearCache)
@@ -113,7 +110,7 @@ void RbtBaseFileSink::ReplaceLine(const std::string &fileRec,
 void RbtBaseFileSink::Open(bool bAppend) throw(RbtError) {
   std::ios_base::openmode openMode = std::ios_base::out;
   if (bAppend)
-    openMode = openMode | ios_base::app;
+    openMode = openMode | std::ios_base::app;
   m_fileOut.open(m_strFileName.c_str(), openMode);
   if (!m_fileOut)
     throw RbtFileWriteError(_WHERE_, "Error opening " + m_strFileName);

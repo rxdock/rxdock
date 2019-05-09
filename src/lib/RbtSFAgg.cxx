@@ -22,7 +22,7 @@ std::string RbtSFAgg::_CT("RbtSFAgg");
 RbtSFAgg::RbtSFAgg(const std::string &strName)
     : RbtBaseSF(_CT, strName), m_nNonHLigandAtoms(0) {
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -30,8 +30,8 @@ RbtSFAgg::RbtSFAgg(const std::string &strName)
 RbtSFAgg::~RbtSFAgg() {
   // Delete all our children
 #ifdef _DEBUG
-  cout << _CT << "::~" << _CT << "(): Deleting child scoring functions of "
-       << GetName() << endl;
+  std::cout << _CT << "::~" << _CT << "(): Deleting child scoring functions of "
+            << GetName() << std::endl;
 #endif //_DEBUG
        // We need to iterate using a while loop because each deletion will
        // reduce the size of m_sf, hence conventional iterators would become
@@ -41,7 +41,8 @@ RbtSFAgg::~RbtSFAgg() {
     // Assertion: parent of child is this object
     Assert<RbtAssert>(!SFAGG_CHECK || pSF->m_parent == this);
 #ifdef _DEBUG
-    cout << "Deleting " << pSF->GetName() << " from " << GetName() << endl;
+    std::cout << "Deleting " << pSF->GetName() << " from " << GetName()
+              << std::endl;
 #endif //_DEBUG
     delete pSF;
   }
@@ -93,8 +94,8 @@ void RbtSFAgg::Add(RbtBaseSF *pSF) throw(RbtError) {
   pSF->Orphan();
   pSF->m_parent = this;
 #ifdef _DEBUG
-  cout << _CT << "::Add(): Adding " << pSF->GetName() << " to " << GetName()
-       << endl;
+  std::cout << _CT << "::Add(): Adding " << pSF->GetName() << " to "
+            << GetName() << std::endl;
 #endif //_DEBUG
   m_sf.push_back(pSF);
 }
@@ -108,8 +109,8 @@ void RbtSFAgg::Remove(RbtBaseSF *pSF) throw(RbtError) {
     // Assertion: parent of child is this object
     Assert<RbtAssert>(!SFAGG_CHECK || pSF->m_parent == this);
 #ifdef _DEBUG
-    cout << _CT << "::Remove(): Removing " << pSF->GetName() << " from "
-         << GetName() << endl;
+    std::cout << _CT << "::Remove(): Removing " << pSF->GetName() << " from "
+              << GetName() << std::endl;
 #endif //_DEBUG
     m_sf.erase(iter);
     pSF->m_parent =
@@ -137,8 +138,8 @@ void RbtSFAgg::Register(RbtWorkSpace *pWorkSpace) {
   // the normalised scores
   RbtBaseObject::Register(pWorkSpace);
 #ifdef _DEBUG
-  cout << _CT << "::Register(): Registering child scoring functions of "
-       << GetName() << endl;
+  std::cout << _CT << "::Register(): Registering child scoring functions of "
+            << GetName() << std::endl;
 #endif //_DEBUG
   for (RbtBaseSFListIter iter = m_sf.begin(); iter != m_sf.end(); iter++) {
     (*iter)->Register(pWorkSpace);
@@ -150,8 +151,9 @@ void RbtSFAgg::Register(RbtWorkSpace *pWorkSpace) {
 // 2005 (DM))
 void RbtSFAgg::Unregister() {
 #ifdef _DEBUG
-  cout << _CT << "::Unregister(): Unregistering child scoring functions of "
-       << GetName() << endl;
+  std::cout << _CT
+            << "::Unregister(): Unregistering child scoring functions of "
+            << GetName() << std::endl;
 #endif //_DEBUG
   for (RbtBaseSFListIter iter = m_sf.begin(); iter != m_sf.end(); iter++) {
     (*iter)->Unregister();
@@ -191,7 +193,7 @@ void RbtSFAgg::HandleRequest(RbtRequestPtr spRequest) {
 
 // Virtual function for dumping scoring function details to an output stream
 // Called by operator <<
-void RbtSFAgg::Print(ostream &s) const {
+void RbtSFAgg::Print(std::ostream &s) const {
   // First print the parameters for this aggregate
   RbtBaseObject::Print(s);
   // Now call Print() for each of the children

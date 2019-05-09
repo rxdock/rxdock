@@ -17,7 +17,7 @@ std::string RbtSetupSASF::_CT("RbtSetupSASF");
 RbtSetupSASF::RbtSetupSASF(const std::string &strName)
     : RbtBaseSF(_CT, strName) {
 #ifdef _DEBUG
-  cout << _CT << "parameterized constructor      <--------" << endl;
+  std::cout << _CT << "parameterized constructor      <--------" << std::endl;
 #endif //_DEBUG
   Disable();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
@@ -25,38 +25,39 @@ RbtSetupSASF::RbtSetupSASF(const std::string &strName)
 
 RbtSetupSASF::~RbtSetupSASF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor                    <--------" << endl;
+  std::cout << _CT << " destructor                    <--------" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
 void RbtSetupSASF::SetupReceptor() {
 #ifdef _DEBUG
-  cout << _CT << " SetupReceptor                 <--------" << endl;
+  std::cout << _CT << " SetupReceptor                 <--------" << std::endl;
 #endif //_DEBUG
        // get receptor atoms
        // theReceptorList =
        // Rbt::GetAtomList(GetReceptor()->GetAtomList(),std::not1(Rbt::isAtomicNo_eq(1)));
   theReceptorList = GetReceptor()->GetAtomList();
 #ifdef _DEBUG
-  cout << _CT << "::SetupReceptor(): #ATOMS = " << theReceptorList.size()
-       << endl;
+  std::cout << _CT << "::SetupReceptor(): #ATOMS = " << theReceptorList.size()
+            << std::endl;
 #endif //_DEBUG
 }
 
 void RbtSetupSASF::SetupScore() {
 #ifdef _DEBUG
-  cout << _CT << " SetupScore                    <--------" << endl;
+  std::cout << _CT << " SetupScore                    <--------" << std::endl;
 #endif //_DEBUG
 }
 
 void RbtSetupSASF::SetupLigand() {
 #ifdef _DEBUG
-  cout << _CT << " SetupLigand                   <--------" << endl;
+  std::cout << _CT << " SetupLigand                   <--------" << std::endl;
 #endif //_DEBUG
   theLigandList = GetLigand()->GetAtomList();
 #ifdef _DEBUG
-  cout << _CT << "::SetupLigand(): #ATOMS = " << theLigandList.size() << endl;
+  std::cout << _CT << "::SetupLigand(): #ATOMS = " << theLigandList.size()
+            << std::endl;
 #endif //_DEBUG
 }
 

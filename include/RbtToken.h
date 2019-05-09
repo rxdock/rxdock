@@ -49,8 +49,8 @@ public:
   bool IsIf();
 
   //  RbtBool operator==(const RbtToken&) const;
-  //  ostream& Print(ostream&) const;
-  //  friend ostream& operator<<(ostream& s, const RbtToken &p);
+  //  std::ostream& Print(std::ostream&) const;
+  //  friend std::ostream& operator<<(std::ostream& s, const RbtToken &p);
 
   ////////////////////
   // Private methods

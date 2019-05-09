@@ -23,7 +23,7 @@
 #include <fstream>
 #include <stack>
 
-typedef SmartPtr<istream> istreamPtr;
+typedef SmartPtr<std::istream> istreamPtr;
 class RbtStringTokenIter : public RbtTokenIter {
 public:
   static std::string _CT;
@@ -45,8 +45,9 @@ public:
   RbtTokenPtr Current();
 
   //  RbtBool operator==(const RbtStringTokenIter&) const;
-  //  ostream& Print(ostream&) const;
-  //  friend ostream& operator<<(ostream& s, const RbtStringTokenIter &p);
+  //  std::ostream& Print(std::ostream&) const;
+  //  friend std::ostream& operator<<(std::ostream& s, const RbtStringTokenIter
+  //  &p);
 
   ////////////////////
   // Private methods

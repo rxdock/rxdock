@@ -11,8 +11,6 @@
  ***********************************************************************/
 
 #include <iomanip>
-using std::setfill;
-using std::setw;
 
 #include "RbtMdlFileSink.h"
 
@@ -72,11 +70,12 @@ void RbtMdlFileSink::Render() throw(RbtError) {
             Rbt::GetBuild());
 
     // Write number of atoms and bonds
-    ostringstream ostr;
-    ostr << setw(3) << modelAtomList.size() + solventAtomList.size() << setw(3)
-         << modelBondList.size() + solventBondList.size() << setw(3) << 0
-         << setw(3) << 0 << setw(3) << 0 << setw(3) << 0 << setw(3) << 0
-         << setw(3) << 0 << setw(3) << 0 << setw(3) << 0 << setw(3) << 999
+    std::ostringstream ostr;
+    ostr << std::setw(3) << modelAtomList.size() + solventAtomList.size()
+         << std::setw(3) << modelBondList.size() + solventBondList.size()
+         << std::setw(3) << 0 << std::setw(3) << 0 << std::setw(3) << 0
+         << std::setw(3) << 0 << std::setw(3) << 0 << std::setw(3) << 0
+         << std::setw(3) << 0 << std::setw(3) << 0 << std::setw(3) << 999
          << " V2000";
     AddLine(ostr.str());
 
@@ -109,9 +108,9 @@ void RbtMdlFileSink::RenderAtomList(const RbtAtomList &atomList) {
     // DM 19 June 2006. Check if this atom has been rendered previously.
     if (m_atomIdMap.find(spAtom) == m_atomIdMap.end()) {
       unsigned int nextAtomId = m_atomIdMap.size() + 1;
-      // cout << "RenderAtom " << spAtom->GetFullAtomName() << " (actual ID=" <<
-      // spAtom->GetAtomId()
-      //	 << "); file ID=" << nextAtomId << endl;
+      // std::cout << "RenderAtom " << spAtom->GetFullAtomName() << " (actual
+      // ID=" << spAtom->GetAtomId()
+      //	 << "); file ID=" << nextAtomId << std::endl;
       m_atomIdMap.insert(make_pair(spAtom, nextAtomId));
     } else {
       // Should never happen. Probably best to throw an error at this point.
@@ -123,21 +122,22 @@ void RbtMdlFileSink::RenderAtomList(const RbtAtomList &atomList) {
     int nFormalCharge = spAtom->GetFormalCharge();
     if (nFormalCharge != 0)
       nFormalCharge = 4 - nFormalCharge;
-    ostringstream ostr;
+    std::ostringstream ostr;
     ostr.precision(4);
-    ostr.setf(ios_base::fixed, ios_base::floatfield);
-    ostr.setf(ios_base::right, ios_base::adjustfield);
-    ostr << setw(10) << spAtom->GetX() << setw(10) << spAtom->GetY() << setw(10)
-         << spAtom->GetZ(); // X,Y,Z coord
-    ostr.setf(ios_base::left, ios_base::adjustfield);
-    ostr << setw(0) << " " << setw(3) << elData.element.c_str(); // Element name
-    ostr.setf(ios_base::right, ios_base::adjustfield);
-    ostr << setw(2) << 0             // mass difference
-         << setw(3) << nFormalCharge // charge
-         << setw(3) << 0             // atom stereo parity
-         << setw(3) << 0             // hydrogen count+1 (query CTABs only)
-         << setw(3) << 0             // stereo care box (query CTABs only)
-         << setw(3) << 0;            // valence (0 = no marking)
+    ostr.setf(std::ios_base::fixed, std::ios_base::floatfield);
+    ostr.setf(std::ios_base::right, std::ios_base::adjustfield);
+    ostr << std::setw(10) << spAtom->GetX() << std::setw(10) << spAtom->GetY()
+         << std::setw(10) << spAtom->GetZ(); // X,Y,Z coord
+    ostr.setf(std::ios_base::left, std::ios_base::adjustfield);
+    ostr << std::setw(0) << " " << std::setw(3)
+         << elData.element.c_str(); // Element name
+    ostr.setf(std::ios_base::right, std::ios_base::adjustfield);
+    ostr << std::setw(2) << 0             // mass difference
+         << std::setw(3) << nFormalCharge // charge
+         << std::setw(3) << 0             // atom stereo parity
+         << std::setw(3) << 0             // hydrogen count+1 (query CTABs only)
+         << std::setw(3) << 0             // stereo care box (query CTABs only)
+         << std::setw(3) << 0;            // valence (0 = no marking)
     // Mass diff, formal charge, stereo parity, num hydrogens,
     // center
     AddLine(ostr.str());
@@ -156,16 +156,16 @@ void RbtMdlFileSink::RenderBondList(const RbtBondList &bondList) {
     if ((aIter1 != m_atomIdMap.end()) && (aIter2 != m_atomIdMap.end())) {
       unsigned int id1 = (*aIter1).second;
       unsigned int id2 = (*aIter2).second;
-      // cout << "RenderBond " << spBond->GetAtom1Ptr()->GetFullAtomName()
+      // std::cout << "RenderBond " << spBond->GetAtom1Ptr()->GetFullAtomName()
       //	 << spBond->GetAtom2Ptr()->GetFullAtomName()
       //	 << "; file ID1=" << id1
-      //	 << "; file ID2=" << id2 << endl;
-      ostringstream ostr;
-      ostr.setf(ios_base::right, ios_base::adjustfield);
-      ostr << setw(3) << id1 << setw(3) << id2 << setw(3)
-           << spBond->GetFormalBondOrder() << setw(3) << 0 << setw(3) << 0
-           << setw(3) << 0; // Atom1, Atom2, bond order, stereo
-                            // designator, unused, topology code
+      //	 << "; file ID2=" << id2 << std::endl;
+      std::ostringstream ostr;
+      ostr.setf(std::ios_base::right, std::ios_base::adjustfield);
+      ostr << std::setw(3) << id1 << std::setw(3) << id2 << std::setw(3)
+           << spBond->GetFormalBondOrder() << std::setw(3) << 0 << std::setw(3)
+           << 0 << std::setw(3) << 0; // Atom1, Atom2, bond order, stereo
+                                      // designator, unused, topology code
       AddLine(ostr.str());
     } else {
       // Should never happen. Probably best to throw an error at this point.

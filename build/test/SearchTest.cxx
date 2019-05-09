@@ -26,7 +26,8 @@ void SearchTest::setUp() {
     RbtMolecularFileSourcePtr spMdlFileSource(
         new RbtMdlFileSource(ligFileName, true, true, true));
     m_workSpace = new RbtBiMolWorkSpace();
-    ifstream istr(asFileName.c_str(), ios_base::in | ios_base::binary);
+    std::ifstream istr(asFileName.c_str(),
+                       std::ios_base::in | std::ios_base::binary);
     m_workSpace->SetDockingSite(new RbtDockingSite(istr));
     istr.close();
     RbtPRMFactory prmFactory(spPrmSource, m_workSpace->GetDockingSite());
@@ -50,7 +51,7 @@ void SearchTest::setUp() {
     m_SF->Add(sfIntra);
     m_workSpace->SetSF(m_SF);
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   }
 }
 
@@ -102,7 +103,7 @@ void SearchTest::testGA() {
   try {
     m_workSpace->Run();
   } catch (RbtError &e) {
-    cout << e.Message() << endl;
+    std::cout << e.Message() << std::endl;
     isOK = false;
   }
   CPPUNIT_ASSERT(isOK);
@@ -124,7 +125,7 @@ void SearchTest::testSimplex() {
   try {
     m_workSpace->Run();
   } catch (RbtError &e) {
-    cout << e.Message() << endl;
+    std::cout << e.Message() << std::endl;
     isOK = false;
   }
   CPPUNIT_ASSERT(isOK);
@@ -145,7 +146,7 @@ void SearchTest::testSimAnn() {
   try {
     m_workSpace->Run();
   } catch (RbtError &e) {
-    cout << e.Message() << endl;
+    std::cout << e.Message() << std::endl;
     isOK = false;
   }
   delete pSimAnn;
@@ -191,12 +192,12 @@ void SearchTest::testRestart() {
     // m_workSpace->GetSF()->ScoreMap(scoreMap);
     // for (RbtStringVariantMapConstIter iter = scoreMap.begin(); iter !=
     // scoreMap.end(); ++iter) {
-    //  cout << iter->first << " = " << iter->second << endl;
+    //  std::cout << iter->first << " = " << iter->second << std::endl;
     //}
-    cout << "Final score = " << finalScore << endl;
-    cout << "Restart score = " << restartScore << endl;
+    std::cout << "Final score = " << finalScore << std::endl;
+    std::cout << "Restart score = " << restartScore << std::endl;
   } catch (RbtError &e) {
-    cout << e.Message() << endl;
+    std::cout << e.Message() << std::endl;
     isOK = false;
   }
   CPPUNIT_ASSERT(isOK && (fabs(restartScore - finalScore) < 0.01));

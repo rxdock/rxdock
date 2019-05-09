@@ -165,20 +165,20 @@ void RbtChromFactory::VisitSolventFlexData(RbtSolventFlexData *pFlexData) {
     if ((occupancyProb > 0.0) && (occupancyProb < 1.0)) {
       double threshold = 1.0 - occupancyProb;
       m_pChrom->Add(new RbtChromOccupancyElement(pModel, stepSize, threshold));
-      // cout << "INFO Solvent model " << pModel->GetName() << " has variable
-      // occupancy" << endl;
+      // std::cout << "INFO Solvent model " << pModel->GetName() << " has
+      // variable occupancy" << std::endl;
     }
     // occupancy prob is either zero or one.
     // just need to force the model into either the enabled or disabled state
     // No need for chromosome element
     else if (occupancyProb <= 0.0) {
       pModel->SetOccupancy(0.0);
-      cout << "WARNING Solvent model " << pModel->GetName()
-           << " is permanently disabled" << endl;
+      std::cout << "WARNING Solvent model " << pModel->GetName()
+                << " is permanently disabled" << std::endl;
     } else if (occupancyProb >= 1.0) {
       pModel->SetOccupancy(1.0);
-      // cout << "INFO Solvent model " << pModel->GetName() << " is permanently
-      // enabled" << endl;
+      // std::cout << "INFO Solvent model " << pModel->GetName() << " is
+      // permanently enabled" << std::endl;
     }
   }
 }

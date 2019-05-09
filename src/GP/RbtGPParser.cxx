@@ -15,7 +15,6 @@
 #include "RbtCommand.h"
 #include <fstream>
 #include <sstream>
-using std::ostringstream;
 
 std::string RbtGPParser::_CT("RbtGPParser");
 int RbtCommand::ntabs = 0;
@@ -100,7 +99,7 @@ std::string RbtGPParser::PrintEval(RbtGPChromosomePtr chrom, int n,
                                    bool numbers, bool ins) {
   if (!(chrom->Cells(n)->Named())) {
     std::string o(PrintParse1Output(chrom, n, numbers, ins));
-    ostringstream nm;
+    std::ostringstream nm;
     if (numbers) {
       nm << "(";
       nm << n << " ";
@@ -140,8 +139,9 @@ std::string RbtGPParser::PrintParse1Output(RbtGPChromosomePtr chrom, int output,
   return (c);
 }
 
-std::string RbtGPParser::PrintParse(istream &istr, RbtGPChromosomePtr chrom,
-                                    bool numbers, bool ins) {
+std::string RbtGPParser::PrintParse(std::istream &istr,
+                                    RbtGPChromosomePtr chrom, bool numbers,
+                                    bool ins) {
   // Give the names of the inputs to the corresponding cells
   std::string name;
   int node;
@@ -161,5 +161,5 @@ std::string RbtGPParser::PrintParse(istream &istr, RbtGPChromosomePtr chrom,
   return f;
 }
 
-// ostream& Print(ostream&) const;
-// friend ostream& operator<<(ostream& s, const RbtGPParser &p);
+// std::ostream& Print(std::ostream&) const;
+// friend std::ostream& operator<<(std::ostream& s, const RbtGPParser &p);

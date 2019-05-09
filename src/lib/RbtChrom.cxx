@@ -172,8 +172,8 @@ double RbtChrom::CompareVector(const RbtDoubleList &v, int &i) const {
   return retVal;
 }
 
-void RbtChrom::Print(ostream &s) const {
-  s << "CHROM" << endl;
+void RbtChrom::Print(std::ostream &s) const {
+  s << "CHROM" << std::endl;
   int i(0);
   for (RbtChromElementListConstIter iter = m_elementList.begin();
        iter != m_elementList.end(); ++iter) {

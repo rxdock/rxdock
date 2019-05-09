@@ -27,7 +27,7 @@
 std::string RbtGPFFHSP90::_CT("RbtGPFFHSP90");
 int nInversions(int idx, RbtReturnTypeArray &list);
 
-void RbtGPFFHSP90::ReadTables(istream &in, RbtReturnTypeArray &it,
+void RbtGPFFHSP90::ReadTables(std::istream &in, RbtReturnTypeArray &it,
                               RbtReturnTypeArray &sft) {
   RbtReturnType value;
   int nip, nsfi;
@@ -104,27 +104,28 @@ double RbtGPFFHSP90::CalculateFitness(
     fe->Accept(visitor);
     pred.push_back(new RbtReturnType(fe->GetValue()));
     o.push_back(pred);
-    //        cout << *(SFValues[0]) << "\t" << *(o[i][0]) << endl;
+    //        std::cout << *(SFValues[0]) << "\t" << *(o[i][0]) << std::endl;
   }
   int ninv = nInversions(0, o);
-  //		cout << "n inversions " << ninv << endl;
+  //        std::cout << "n inversions " << ninv << std::endl;
   /*    RbtDouble sumDiff = 0.0,
                 sumSqrReal = 0.0, sumSqrPred = 0.0;
 
       meanReal = meanReal / it.size();
       meanPred = meanPred / it.size();
-  //    cout << endl;
-  //    cout << it.size() << "\t" << meanPred << "\t" << meanReal << endl;
-      for (RbtInt i = 0 ; i < it.size() ; i++)
+  //    std::cout << std::endl;
+  //    std::cout << it.size() << "\t" << meanPred << "\t" << meanReal <<
+  std::endl; for (RbtInt i = 0 ; i < it.size() ; i++)
       {
         RbtDouble t1 = *sft[i][0]; // - meanReal;
         RbtDouble t2 = *o[i][0]; // - meanPred;
         sumDiff += abs(t1 - t2);
-  //    cout << sumDiff << "\t" << sumSqrReal << "\t" << sumSqrPred << endl;
+  //    std::cout << sumDiff << "\t" << sumSqrReal << "\t" << sumSqrPred <<
+  std::endl;
       }
       objective = sumDiff / it.size();
 
-  //    cout << objective << endl; */
+  //    std::cout << objective << std::endl; */
 
   // For now, I am using tournament selection. So the fitness
   // function doesn't need to be scaled in any way
@@ -161,13 +162,13 @@ double RbtGPFFHSP90::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
     o.push_back(pred);
     meanPred += *(o[i][0]);
     meanReal += *(SFValues[0]);
-    cout << *(SFValues[0]) << "\t" << *(o[i][0]) << endl;
+    std::cout << *(SFValues[0]) << "\t" << *(o[i][0]) << std::endl;
   }
   double sumDiff = 0.0, sumSqrReal = 0.0, sumSqrPred = 0.0;
 
   meanReal = meanReal / it.size();
   meanPred = meanPred / it.size();
-  //    cout << endl;
+  //    std::cout << std::endl;
   for (int i = 0; i < it.size(); i++) {
     double t1 = *sft[i][0] - meanReal;
     double t2 = *o[i][0] - meanPred;
@@ -191,13 +192,13 @@ void RbtGPFFHSP90::CreateRandomCtes(int nctes) {
     double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
-    cout << "c0 \t0.0" << endl;
-    cout << "c1 \t1.0" << endl;
+    std::cout << "c0 \t0.0" << std::endl;
+    std::cout << "c1 \t1.0" << std::endl;
     for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * pow(10, b);
-      cout << "c" << i + 2 << " \t" << c << endl;
+      std::cout << "c" << i + 2 << " \t" << c << std::endl;
       ctes.push_back(c);
     }
   }

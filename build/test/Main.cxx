@@ -12,6 +12,6 @@ int main(int argc, char **argv) {
       CppUnit::TestFactoryRegistry::getRegistry();
   runner.addTest(registry.makeTest());
   runner.run();
-  _RBTOBJECTCOUNTER_DUMP_(cout)
+  _RBTOBJECTCOUNTER_DUMP_(std::cout)
   return 0;
 }

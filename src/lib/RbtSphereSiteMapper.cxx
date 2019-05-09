@@ -36,14 +36,14 @@ RbtSphereSiteMapper::RbtSphereSiteMapper(const std::string &strName)
   AddParameter(_MIN_VOLUME, 100.0); // Min cavity volume in A^3
   AddParameter(_MAX_CAVITIES, 99);  // Max number of cavities to return
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtSphereSiteMapper::~RbtSphereSiteMapper() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -101,13 +101,13 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   spReceptorGrid->SetSphere(center, radius + largeR, borVal, true);
   spReceptorGrid->SetSphere(center, radius, 0.0, true);
   if (iTrace > 1) {
-    cout << endl << "INITIALISATION" << endl;
-    cout << "Center=" << center << endl;
-    cout << "Radius=" << radius << endl;
-    cout << "Border=" << border << endl;
-    cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << endl;
-    cout << "N(border)=" << spReceptorGrid->Count(borVal) << endl;
-    cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << endl;
+    std::cout << std::endl << "INITIALISATION" << std::endl;
+    std::cout << "Center=" << center << std::endl;
+    std::cout << "Radius=" << radius << std::endl;
+    std::cout << "Border=" << border << std::endl;
+    std::cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << std::endl;
+    std::cout << "N(border)=" << spReceptorGrid->Count(borVal) << std::endl;
+    std::cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << std::endl;
   }
 
   // Set all vdW volume grid points to the value -1
@@ -122,11 +122,11 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   }
 
   if (iTrace > 1) {
-    cout << endl << "EXCLUDE RECEPTOR VOLUME" << endl;
-    cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << endl;
-    cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << endl;
-    cout << "N(border)=" << spReceptorGrid->Count(borVal) << endl;
-    cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << endl;
+    std::cout << std::endl << "EXCLUDE RECEPTOR VOLUME" << std::endl;
+    std::cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << std::endl;
+    std::cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << std::endl;
+    std::cout << "N(border)=" << spReceptorGrid->Count(borVal) << std::endl;
+    std::cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << std::endl;
   }
 
   // Now map the solvent accessible regions with a large sphere
@@ -135,21 +135,25 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   // preventing edge effects.
   spReceptorGrid->SetAccessible(largeR, borVal, recVal, larVal, false);
   if (iTrace > 1) {
-    cout << endl << "EXCLUDE LARGE SPHERE (Border region)" << endl;
-    cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << endl;
-    cout << "N(large sphere)=" << spReceptorGrid->Count(larVal) << endl;
-    cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << endl;
-    cout << "N(border)=" << spReceptorGrid->Count(borVal) << endl;
-    cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << endl;
+    std::cout << std::endl
+              << "EXCLUDE LARGE SPHERE (Border region)" << std::endl;
+    std::cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << std::endl;
+    std::cout << "N(large sphere)=" << spReceptorGrid->Count(larVal)
+              << std::endl;
+    std::cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << std::endl;
+    std::cout << "N(border)=" << spReceptorGrid->Count(borVal) << std::endl;
+    std::cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << std::endl;
   }
   spReceptorGrid->SetAccessible(largeR, 0.0, recVal, larVal, false);
   if (iTrace > 1) {
-    cout << endl << "EXCLUDE LARGE SPHERE (Unallocated inner region)" << endl;
-    cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << endl;
-    cout << "N(large sphere)=" << spReceptorGrid->Count(larVal) << endl;
-    cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << endl;
-    cout << "N(border)=" << spReceptorGrid->Count(borVal) << endl;
-    cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << endl;
+    std::cout << std::endl
+              << "EXCLUDE LARGE SPHERE (Unallocated inner region)" << std::endl;
+    std::cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << std::endl;
+    std::cout << "N(large sphere)=" << spReceptorGrid->Count(larVal)
+              << std::endl;
+    std::cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << std::endl;
+    std::cout << "N(border)=" << spReceptorGrid->Count(borVal) << std::endl;
+    std::cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << std::endl;
   }
 
   // Finally with a smaller radius. This is the region we want to search for
@@ -162,14 +166,15 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   spReceptorGrid->SetAccessible(smallR, 0.0, recVal, cavVal, false);
 
   if (iTrace > 1) {
-    cout << endl << "FINAL CAVITIES" << endl;
-    cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << endl;
-    cout << "N(large sphere)=" << spReceptorGrid->Count(larVal) << endl;
-    cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << endl;
-    cout << "N(border)=" << spReceptorGrid->Count(borVal) << endl;
-    cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << endl;
-    cout << "N(cavities)=" << spReceptorGrid->Count(cavVal) << endl;
-    cout << endl << "Min cavity size=" << minSize << endl;
+    std::cout << std::endl << "FINAL CAVITIES" << std::endl;
+    std::cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << std::endl;
+    std::cout << "N(large sphere)=" << spReceptorGrid->Count(larVal)
+              << std::endl;
+    std::cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << std::endl;
+    std::cout << "N(border)=" << spReceptorGrid->Count(borVal) << std::endl;
+    std::cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << std::endl;
+    std::cout << "N(cavities)=" << spReceptorGrid->Count(cavVal) << std::endl;
+    std::cout << std::endl << "Min cavity size=" << minSize << std::endl;
   }
 
   // Find the contiguous regions of cavity grid points
@@ -191,16 +196,16 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   if (iTrace > 0) {
     for (RbtCavityListConstIter cIter = cavityList.begin();
          cIter != cavityList.end(); cIter++) {
-      cout << (**cIter) << endl;
+      std::cout << (**cIter) << std::endl;
     }
   }
 
   // Limit the number of cavities if necessary
   if (cavityList.size() > maxCavities) {
     if (iTrace > 0) {
-      cout << endl
-           << cavityList.size() << " cavities identified - limit to "
-           << maxCavities << " largest cavities" << endl;
+      std::cout << std::endl
+                << cavityList.size() << " cavities identified - limit to "
+                << maxCavities << " largest cavities" << std::endl;
     }
     cavityList.erase(cavityList.begin() + maxCavities, cavityList.end());
   }

@@ -36,8 +36,8 @@ public:
   virtual ~RbtConstraint();
 
   void copy(const RbtConstraint &);
-  ostream &Print(ostream &) const;
-  friend ostream &operator<<(ostream &, const RbtConstraint &);
+  std::ostream &Print(std::ostream &) const;
+  friend std::ostream &operator<<(std::ostream &, const RbtConstraint &);
 
   RbtCoord GetCoords() const { return coord; }
   double GetTolerance() const { return tolerance; }
@@ -68,11 +68,13 @@ namespace Rbt {
 RbtConstraintPtr CreateConstraint(RbtCoord &c, double &t, std::string &n,
                                   bool bCount = true);
 void ZeroCounters();
-void ReadConstraint(istream &ifile, RbtConstraintPtr &cnt, bool bCount = true);
-void ReadConstraintFromMoe(istream &ifile, RbtConstraintPtr &cnt,
+void ReadConstraint(std::istream &ifile, RbtConstraintPtr &cnt,
+                    bool bCount = true);
+void ReadConstraintFromMoe(std::istream &ifile, RbtConstraintPtr &cnt,
                            bool bCount = true);
-void ReadStartMoe(istream &ifile);
-void ReadConstraints(istream &ii, RbtConstraintList &cl, bool bCount = true);
+void ReadStartMoe(std::istream &ifile);
+void ReadConstraints(std::istream &ii, RbtConstraintList &cl,
+                     bool bCount = true);
 } // namespace Rbt
 
 // 7 Feb 2005 (DM, Enspiral Discovery)

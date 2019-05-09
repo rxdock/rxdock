@@ -11,8 +11,6 @@
  ***********************************************************************/
 
 #include <iomanip>
-using std::setfill;
-using std::setw;
 
 #include "RbtCrdFileSink.h"
 
@@ -71,8 +69,8 @@ void RbtCrdFileSink::Render() throw(RbtError) {
       AddLine("*");
 
       // 2. Write number of atoms
-      ostringstream ostr;
-      ostr << setw(5) << spModel->GetNumAtoms();
+      std::ostringstream ostr;
+      ostr << std::setw(5) << spModel->GetNumAtoms();
       AddLine(ostr.str());
       // Remember the line number containing the number of atoms
       // as we'll need to update the total num atoms after each Render when we
@@ -104,51 +102,53 @@ void RbtCrdFileSink::Render() throw(RbtError) {
       }
 
       // Render the atom to a string stream
-      ostringstream ostr;
+      std::ostringstream ostr;
       ostr.precision(5);
-      ostr.setf(ios_base::fixed, ios_base::floatfield);
-      ostr.setf(ios_base::right, ios_base::adjustfield);
+      ostr.setf(std::ios_base::fixed, std::ios_base::floatfield);
+      ostr.setf(std::ios_base::right, std::ios_base::adjustfield);
       // In multiconf mode, use the incremental atom ID from the sink
       if (GetMultiConf())
-        ostr << setw(5) << m_nAtomId;
+        ostr << std::setw(5) << m_nAtomId;
       // Else use the atom ID from the atom itself
       else
-        ostr << setw(5) << spAtom->GetAtomId();
-      ostr << setw(5) << m_nSubunitId // This subunit ID is unique in the file
-           << setw(0) << " ";
-      ostr.setf(ios_base::left, ios_base::adjustfield);
-      ostr << setw(4) << spAtom->GetSubunitName().c_str() << setw(0) << " "
-           << setw(4) << spAtom->GetAtomName().c_str();
-      ostr.setf(ios_base::right, ios_base::adjustfield);
-      ostr << setw(10) << spAtom->GetX() << setw(10) << spAtom->GetY()
-           << setw(10) << spAtom->GetZ() << setw(0) << " ";
+        ostr << std::setw(5) << spAtom->GetAtomId();
+      ostr << std::setw(5)
+           << m_nSubunitId // This subunit ID is unique in the file
+           << std::setw(0) << " ";
+      ostr.setf(std::ios_base::left, std::ios_base::adjustfield);
+      ostr << std::setw(4) << spAtom->GetSubunitName().c_str() << std::setw(0)
+           << " " << std::setw(4) << spAtom->GetAtomName().c_str();
+      ostr.setf(std::ios_base::right, std::ios_base::adjustfield);
+      ostr << std::setw(10) << spAtom->GetX() << std::setw(10) << spAtom->GetY()
+           << std::setw(10) << spAtom->GetZ() << std::setw(0) << " ";
 
       // DM 21 Apr 1999 - if we are not using the model segment names, use the
       // incremental segment ID from the sink DM 11 Feb 1999 - output leading
       // zeros for segID, so they sort correctly when read as text
       if (!m_bUseModelSegmentNames) {
-        ostr << setw(3) << setfill('0') << m_nSegmentId << setfill(' ') << " ";
-        ostr.setf(ios_base::left, ios_base::adjustfield);
+        ostr << std::setw(3) << std::setfill('0') << m_nSegmentId
+             << std::setfill(' ') << " ";
+        ostr.setf(std::ios_base::left, std::ios_base::adjustfield);
       }
       // Else use the segment name from the atom itself
       else {
-        ostr.setf(ios_base::left, ios_base::adjustfield);
-        ostr << setw(4) << spAtom->GetSegmentName().c_str();
+        ostr.setf(std::ios_base::left, std::ios_base::adjustfield);
+        ostr << std::setw(4) << spAtom->GetSegmentName().c_str();
       }
 
-      ostr << setw(0) << " " << setw(4)
+      ostr << std::setw(0) << " " << std::setw(4)
            << spAtom->GetSubunitId()
                   .c_str(); // This subunit ID is unique in the segment
-      ostr.setf(ios_base::right, ios_base::adjustfield);
-      ostr << setw(10) << 0.0;
+      ostr.setf(std::ios_base::right, std::ios_base::adjustfield);
+      ostr << std::setw(10) << 0.0;
       AddLine(ostr.str());
     }
 
     // In multiconf mode, we need to update the total number of atoms in the
     // cache then write the file without clearing the cache
     if (GetMultiConf()) {
-      ostringstream ostr;
-      ostr << setw(5) << m_nAtomId;
+      std::ostringstream ostr;
+      ostr << std::setw(5) << m_nAtomId;
       ReplaceLine(ostr.str(), m_numAtomsLineRec);
       Write(false);
     } else

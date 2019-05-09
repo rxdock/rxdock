@@ -23,7 +23,7 @@ RbtBaseTransform::RbtBaseTransform(const std::string &strClass,
                                    const std::string &strName)
     : RbtBaseObject(strClass, strName), m_parent(NULL) {
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -31,7 +31,7 @@ RbtBaseTransform::RbtBaseTransform(const std::string &strClass,
 RbtBaseTransform::~RbtBaseTransform() {
   Orphan(); // Remove object from parent aggregate
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -85,8 +85,8 @@ RbtBaseTransform *RbtBaseTransform::GetParentTransform() const {
 void RbtBaseTransform::Orphan() {
   if (m_parent) {
 #ifdef _DEBUG
-    cout << "RbtBaseTransform::Orphan(): Removing " << GetName() << " from "
-         << m_parent->GetName() << endl;
+    std::cout << "RbtBaseTransform::Orphan(): Removing " << GetName()
+              << " from " << m_parent->GetName() << std::endl;
 #endif //_DEBUG
     m_parent->Remove(this);
   }

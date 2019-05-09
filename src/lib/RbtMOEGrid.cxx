@@ -99,7 +99,8 @@ RbtMOEGridShape::RbtMOEGridShape(vector<double> grid_origin,
   // grid origin should to be a N-dimensional point with the
   // same dimensions as the extends
   if (grid_origin.size() != grid_extents.size())
-    cout << "Warning: grid origin and extents dimension mismatch." << endl;
+    std::cout << "Warning: grid origin and extents dimension mismatch."
+              << std::endl;
   // copying ctor parameter vectors (it is not guaranteed they will
   // live forever during the code)
   vector<double>::iterator o_iter, e_iter; // for the O_rigin and the E_xtents
@@ -153,9 +154,10 @@ void RbtMOEGrid::GetDockingSiteExtents(std::string &a_strPrmFile) {
   std::string strASFile = spWS->GetName() + ".as";
   std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
 #if defined(__sgi) && !defined(__GNUC__)
-  ifstream istr(strInputFile.c_str(), ios_base::in);
+  std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
 #else
-  ifstream istr(strInputFile.c_str(), ios_base::in | ios_base::binary);
+  std::ifstream istr(strInputFile.c_str(),
+                     std::ios_base::in | std::ios_base::binary);
 #endif
   RbtDockingSitePtr dSite(new RbtDockingSite(istr));
   istr.close();
@@ -167,11 +169,11 @@ void RbtMOEGrid::GetDockingSiteExtents(std::string &a_strPrmFile) {
 // cavities to get a grid that includes them all
 void RbtMOEGrid::CalculateCommonExtents(vector<std::string> strPrmFiles) {
 
-  cout << "Receptors: " << endl;
+  std::cout << "Receptors: " << std::endl;
   vector<std::string>::iterator strPrmFilesIter;
   for (strPrmFilesIter = strPrmFiles.begin();
        strPrmFilesIter != strPrmFiles.end(); ++strPrmFilesIter) {
-    cout << "\t" << (*strPrmFilesIter) << endl;
+    std::cout << "\t" << (*strPrmFilesIter) << std::endl;
     // initialize values with the very first
     if (strPrmFilesIter == strPrmFiles.begin()) {
       GetDockingSiteExtents((*strPrmFilesIter));
@@ -201,17 +203,18 @@ void RbtMOEGrid::CalculateCommonExtents(vector<std::string> strPrmFiles) {
 // writes the (binary format) grid
 // and returns the number of gridpoints written
 // that should be the same as the number of datapoints (a_data.size() above)
-// mode stands for ios_base::trunc or ios:app
+// mode stands for std::ios_base::trunc or ios:app
 long RbtMOEGrid::WriteGrid(std::ios_base::openmode mode) {
   // file to save (binary, overidden)
-  ofstream ofstr;
-  ofstr.open(stream_name.c_str(), ios_base::out | mode | ios_base::binary);
+  std::ofstream ofstr;
+  ofstr.open(stream_name.c_str(),
+             std::ios_base::out | mode | std::ios_base::binary);
   long written = 0;                                  // data written
   long ndata = (long)(myData.size());                // data vector size
   long dimension = (long)myShape.GetOrigin().size(); // space dim
   // writing stuff
   // if we are starting a new grid, write signature
-  if (ios_base::trunc == mode)
+  if (std::ios_base::trunc == mode)
     ofstr.write(GRID_SIGNATURE.c_str(), GRID_SIGNATURE.size()); // signature
   svl::write_int4m(ofstr, VERSION);                             // VERSION
   svl::write_int4m(ofstr, ndata);     // size of data vector

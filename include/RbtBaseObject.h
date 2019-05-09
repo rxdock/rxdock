@@ -78,7 +78,7 @@ public:
 
   // Virtual function for dumping parameters to an output stream
   // Called by operator <<
-  virtual void Print(ostream &s) const;
+  virtual void Print(std::ostream &s) const;
 
 protected:
   ////////////////////////////////////////

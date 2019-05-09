@@ -35,7 +35,7 @@ RbtAromIdxSF::RbtAromIdxSF(const std::string &strName)
   AddParameter(_DAMAX, m_DAMax);
   AddParameter(_THRESHOLD, m_threshold);
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -44,7 +44,7 @@ RbtAromIdxSF::~RbtAromIdxSF() {
   ClearReceptor();
   ClearLigand();
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -128,7 +128,7 @@ void RbtAromIdxSF::SetupReceptor() {
     }
 
     for (int i = 1; i <= nCoords; i++) {
-      cout << _CT << ": Indexing receptor coords # " << i << endl;
+      std::cout << _CT << ": Indexing receptor coords # " << i << std::endl;
       GetReceptor()->RevertCoords(i);
       for (RbtInteractionCenterListConstIter iter = m_recepAromList.begin();
            iter != m_recepAromList.end(); iter++) {

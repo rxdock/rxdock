@@ -62,7 +62,7 @@ void RbtRandPopTransform::Execute() {
     popSize *= chromLength;
   }
   if (GetTrace() > 3) {
-    cout << _CT << ": popSize=" << popSize << endl;
+    std::cout << _CT << ": popSize=" << popSize << std::endl;
   }
   RbtPopulationPtr pop = new RbtPopulation(m_chrom, popSize, pSF);
   pop->Best()->GetChrom()->SyncToModel();

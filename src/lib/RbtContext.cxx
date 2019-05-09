@@ -22,7 +22,7 @@ std::string RbtVble::_CT("RbtVble");
 RbtContext::RbtContext() {
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 #ifdef _DEBUG
-  cout << _CT << "base context const\n";
+  std::cout << _CT << "base context const\n";
 #endif //_DEBUG
 }
 
@@ -43,7 +43,7 @@ RbtStringContext::RbtStringContext(const RbtStringContext &c) : vm(c.vm) {
 
 RbtStringContext::~RbtStringContext() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
-RbtStringContext::RbtStringContext(SmartPtr<ifstream> ifile) {
+RbtStringContext::RbtStringContext(SmartPtr<std::ifstream> ifile) {
   /*    RbtInt nvbles, nctes;
       (*ifile) >> nvbles >> nctes;
       std::string name;
@@ -70,7 +70,7 @@ RbtCellContext::RbtCellContext(const RbtCellContext &c) : vm(c.vm) {
 
 RbtCellContext::~RbtCellContext() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
-RbtCellContext::RbtCellContext(ifstream &ifile) {
+RbtCellContext::RbtCellContext(std::ifstream &ifile) {
   int nvbles, nctes;
   ifile >> nvbles >> nctes;
   ninputs = nvbles + nctes;
@@ -87,7 +87,7 @@ RbtCellContext::RbtCellContext(ifstream &ifile) {
   }
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 #ifdef _DEBUG
-  cout << "cell context const\n";
+  std::cout << "cell context const\n";
 #endif //_DEBUG
 }
 
@@ -203,7 +203,8 @@ double RbtStringContext::Get(RbtModelPtr spReceptor,
         recepAtomList, Rbt::isAtomInsideSphere((*iter)->GetCoords(), neighbR));
     nNeighb--;
     if (nNeighb < threshold) {
-      // cout << (*iter)->GetFullAtomName() << "\t" << nNeighb << endl;
+      // std::cout << (*iter)->GetFullAtomName() << "\t" << nNeighb <<
+      // std::endl;
       exposedAtomList.push_back(*iter);
     }
   }

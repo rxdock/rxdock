@@ -27,14 +27,14 @@ RbtVdwGridSF::RbtVdwGridSF(const std::string &strName)
   AddParameter(_GRID, ".grd");
   AddParameter(_SMOOTHED, m_bSmoothed);
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtVdwGridSF::~RbtVdwGridSF() {
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -64,12 +64,13 @@ void RbtVdwGridSF::SetupReceptor() {
   std::string strSuffix = GetParameter(_GRID);
   std::string strFile =
       Rbt::GetRbtFileName("data/grids", strWSName + strSuffix);
-  // DM 26 Sep 2000 - ios_base::binary qualifier doesn't appear to be valid
+  // DM 26 Sep 2000 - std::ios_base::binary qualifier doesn't appear to be valid
   // with IRIX CC
 #ifdef __sgi
-  ifstream istr(strFile.c_str(), ios_base::in);
+  std::ifstream istr(strFile.c_str(), std::ios_base::in);
 #else
-  ifstream istr(strFile.c_str(), ios_base::in | ios_base::binary);
+  std::ifstream istr(strFile.c_str(),
+                     std::ios_base::in | std::ios_base::binary);
 #endif
   ReadGrids(istr);
   istr.close();
@@ -114,13 +115,15 @@ void RbtVdwGridSF::SetupScore() {
 
   if (iTrace > 1) {
     if (bHasUndefined) {
-      cout << "The grid for the UNDEFINED atom type will be used if a grid is "
-              "missing for any atom type"
-           << endl;
+      std::cout
+          << "The grid for the UNDEFINED atom type will be used if a grid is "
+             "missing for any atom type"
+          << std::endl;
     } else {
-      cout << "There is no grid for the UNDEFINED atom type. An error will be "
-              "thrown if a grid is missing for any atom type"
-           << endl;
+      std::cout
+          << "There is no grid for the UNDEFINED atom type. An error will be "
+             "thrown if a grid is missing for any atom type"
+          << std::endl;
     }
   }
 
@@ -135,7 +138,7 @@ void RbtVdwGridSF::SetupScore() {
                              (*iter)->GetFullAtomName() + " (type " +
                              triposType.Type2Str(aType) + ")";
       if (iTrace > 1) {
-        cout << strError << endl;
+        std::cout << strError << std::endl;
       }
       if (bHasUndefined) {
         aType = RbtTriposAtomType::UNDEFINED;
@@ -146,8 +149,8 @@ void RbtVdwGridSF::SetupScore() {
 
     m_ligAtomTypes.push_back(aType);
     if (iTrace > 1) {
-      cout << "Using grid #" << aType << " for " << (*iter)->GetFullAtomName()
-           << endl;
+      std::cout << "Using grid #" << aType << " for "
+                << (*iter)->GetFullAtomName() << std::endl;
     }
   }
 }
@@ -176,7 +179,7 @@ double RbtVdwGridSF::RawScore() const {
 
 // Read grids from input stream, checking that header string matches
 // RbtVdwGridSF
-void RbtVdwGridSF::ReadGrids(istream &istr) throw(RbtError) {
+void RbtVdwGridSF::ReadGrids(std::istream &istr) throw(RbtError) {
   m_grids.clear();
   int iTrace = GetTrace();
 
@@ -199,7 +202,7 @@ void RbtVdwGridSF::ReadGrids(istream &istr) throw(RbtError) {
   int nGrids;
   Rbt::ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
   if (iTrace > 0) {
-    cout << _CT << ": reading " << nGrids << " grids..." << endl;
+    std::cout << _CT << ": reading " << nGrids << " grids..." << std::endl;
   }
 
   // We actually create a vector of size RbtTriposAtomType::MAXTYPES
@@ -223,8 +226,9 @@ void RbtVdwGridSF::ReadGrids(istream &istr) throw(RbtError) {
     RbtTriposAtomType triposType;
     RbtTriposAtomType::eType aType = triposType.Str2Type(strType);
     if (iTrace > 0) {
-      cout << "Grid# " << i << "\t"
-           << "atom type=" << strType << " (type #" << aType << ")" << endl;
+      std::cout << "Grid# " << i << "\t"
+                << "atom type=" << strType << " (type #" << aType << ")"
+                << std::endl;
     }
     // Now we can read the grid
     RbtRealGridPtr spGrid(new RbtRealGrid(istr));

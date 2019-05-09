@@ -23,18 +23,18 @@ RbtPMFGridSF::RbtPMFGridSF(const std::string &strName)
   AddParameter(_GRID, ".grd");
   AddParameter(_SMOOTHED, m_bSmoothed);
 
-  cout << _CT << " parameterised constructor" << endl;
+  std::cout << _CT << " parameterised constructor" << std::endl;
 
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtPMFGridSF::~RbtPMFGridSF() {
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
 void RbtPMFGridSF::SetupReceptor() {
-  cout << _CT << "::SetupReceptor()" << endl;
+  std::cout << _CT << "::SetupReceptor()" << std::endl;
   theGrids.clear();
 
   if (GetReceptor().Null())
@@ -45,8 +45,9 @@ void RbtPMFGridSF::SetupReceptor() {
   std::string strSuffix = GetParameter(_GRID);
   std::string strFile =
       Rbt::GetRbtFileName("data/grids", strWSName + strSuffix);
-  cout << _CT << " Reading PMF grid from " << strFile << endl;
-  ifstream istr(strFile.c_str(), ios_base::in | ios_base::binary);
+  std::cout << _CT << " Reading PMF grid from " << strFile << std::endl;
+  std::ifstream istr(strFile.c_str(),
+                     std::ios_base::in | std::ios_base::binary);
   ReadGrids(istr);
   istr.close();
 }
@@ -60,7 +61,8 @@ void RbtPMFGridSF::SetupLigand() {
   theLigandList = Rbt::GetAtomList(GetLigand()->GetAtomList(),
                                    std::not1(Rbt::isAtomicNo_eq(1)));
 #ifdef _DEBUG
-  cout << _CT << "::SetupLigand(): #ATOMS = " << theLigandList.size() << endl;
+  std::cout << _CT << "::SetupLigand(): #ATOMS = " << theLigandList.size()
+            << std::endl;
 #endif //_DEBUG
 }
 
@@ -88,13 +90,13 @@ double RbtPMFGridSF::RawScore() const {
   return theScore;
 }
 
-void RbtPMFGridSF::ReadGrids(istream &istr) throw(RbtError) {
-  cout << "**************************************************************"
-       << endl;
-  cout << "                    Reading grid..." << endl;
-  cout << "**************************************************************"
-       << endl;
-  cout << _CT << "::ReadGrids(istream&)" << endl;
+void RbtPMFGridSF::ReadGrids(std::istream &istr) throw(RbtError) {
+  std::cout << "**************************************************************"
+            << std::endl;
+  std::cout << "                    Reading grid..." << std::endl;
+  std::cout << "**************************************************************"
+            << std::endl;
+  std::cout << _CT << "::ReadGrids(std::istream&)" << std::endl;
   theGrids.clear();
 
   // Read header string
@@ -115,17 +117,17 @@ void RbtPMFGridSF::ReadGrids(istream &istr) throw(RbtError) {
   // Now read number of grids
   int nGrids;
   Rbt::ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
-  cout << "Reading " << nGrids << " grids..." << endl;
+  std::cout << "Reading " << nGrids << " grids..." << std::endl;
   theGrids.reserve(nGrids);
   for (int i = CF; i <= nGrids; i++) {
-    cout << "Grid# " << i << " ";
+    std::cout << "Grid# " << i << " ";
     // Read type
     RbtPMFType theType;
     Rbt::ReadWithThrow(istr, (char *)&theType, sizeof(theType));
-    cout << "type " << Rbt::PMFType2Str(theType);
+    std::cout << "type " << Rbt::PMFType2Str(theType);
     // Now we can read the grid
     RbtRealGridPtr spGrid(new RbtRealGrid(istr));
-    cout << " done" << endl;
+    std::cout << " done" << std::endl;
     theGrids.push_back(spGrid);
   }
 }

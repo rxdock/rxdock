@@ -27,7 +27,8 @@ void OccupancyTest::setUp() {
     RbtMolecularFileSourcePtr spMdlFileSource(
         new RbtMdlFileSource(ligFileName, true, true, true));
     m_workSpace = new RbtBiMolWorkSpace();
-    ifstream istr(asFileName.c_str(), ios_base::in | ios_base::binary);
+    std::ifstream istr(asFileName.c_str(),
+                       std::ios_base::in | std::ios_base::binary);
     m_workSpace->SetDockingSite(new RbtDockingSite(istr));
     istr.close();
     RbtPRMFactory prmFactory(spPrmSource, m_workSpace->GetDockingSite());
@@ -36,7 +37,7 @@ void OccupancyTest::setUp() {
     m_workSpace->SetSolvent(prmFactory.CreateSolvent());
     m_solventList = m_workSpace->GetSolvent();
   } catch (RbtError &e) {
-    cout << e << endl;
+    std::cout << e << std::endl;
   }
 }
 
@@ -116,11 +117,12 @@ void OccupancyTest::testFlexAtomFactoryReceptor() {
     int nFixed = fixedAtomList.size();
     int nTethered = tetheredAtomList.size();
     int nFree = freeAtomList.size();
-    // cout << "Receptor: #fixed = " << nFixed << "; #tethered = " << nTethered
-    // << "; #free = " << nFree << endl; for (RbtAtomRListConstIter iter =
+    // std::cout << "Receptor: #fixed = " << nFixed << "; #tethered = " <<
+    // nTethered
+    // << "; #free = " << nFree << std::endl; for (RbtAtomRListConstIter iter =
     // tetheredAtomList.begin(); iter != tetheredAtomList.end(); ++iter) {
-    //  cout << "Tethered: " << (*iter)->GetAtomName() << ": " <<
-    //  (*iter)->GetUser1Value() << endl;
+    //  std::cout << "Tethered: " << (*iter)->GetAtomName() << ": " <<
+    //  (*iter)->GetUser1Value() << std::endl;
     //}
     if ((nFixed != expected[mode][0]) || (nTethered != expected[mode][1]) ||
         (nFree != expected[mode][2])) {
@@ -204,16 +206,18 @@ bool OccupancyTest::testFlexAtomFactory(RbtModel *pModel, int expected[9][3]) {
       int nFixed = fixedAtomList.size();
       int nTethered = tetheredAtomList.size();
       int nFree = freeAtomList.size();
-      // cout << endl << "Trans = " << strTransMode << ", Rot = " << strRotMode
-      // << endl; for (RbtAtomRListConstIter iter = fixedAtomList.begin(); iter
+      // std::cout << std::endl << "Trans = " << strTransMode << ", Rot = " <<
+      // strRotMode
+      // << std::endl; for (RbtAtomRListConstIter iter = fixedAtomList.begin();
+      // iter
       // != fixedAtomList.end(); ++iter) {
-      //  cout << "Fixed: " << (*iter)->GetAtomName() << ": " <<
-      //  (*iter)->GetUser1Value() << endl;
+      //  std::cout << "Fixed: " << (*iter)->GetAtomName() << ": " <<
+      //  (*iter)->GetUser1Value() << std::endl;
       //}
       // for (RbtAtomRListConstIter iter = tetheredAtomList.begin(); iter !=
       // tetheredAtomList.end(); ++iter) {
-      //  cout << "Tethered: " << (*iter)->GetAtomName() << ": " <<
-      //  (*iter)->GetUser1Value() << endl;
+      //  std::cout << "Tethered: " << (*iter)->GetAtomName() << ": " <<
+      //  (*iter)->GetUser1Value() << std::endl;
       //}
       if ((nFixed != expected[mode][0]) || (nTethered != expected[mode][1]) ||
           (nFree != expected[mode][2])) {
@@ -247,7 +251,7 @@ double OccupancyTest::CompareScoresForSolventModes() {
       m_workSpace->RemoveSolvent();
       m_workSpace->SetSolvent(solventList);
       double score = pSF->Score();
-      // cout << "mode = " << mode << "; score = " << score << endl;
+      // std::cout << "mode = " << mode << "; score = " << score << std::endl;
       if (mode > 0) {
         double diff = fabs(score - lastScore);
         retVal = std::max(diff, retVal);
@@ -256,8 +260,8 @@ double OccupancyTest::CompareScoresForSolventModes() {
       // RbtStringVariantMap scoreMap;
       // pSF->ScoreMap(scoreMap);
       // for (RbtStringVariantMapConstIter vIter = scoreMap.begin(); vIter !=
-      // scoreMap.end(); vIter++) { cout << (*vIter).first << " = " <<
-      // (*vIter).second << endl;
+      // scoreMap.end(); vIter++) { std::cout << (*vIter).first << " = " <<
+      // (*vIter).second << std::endl;
       //}
     }
   }

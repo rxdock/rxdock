@@ -11,8 +11,6 @@
  ***********************************************************************/
 
 #include <sstream>
-using std::ends;
-using std::ostringstream;
 
 #include "RbtFilter.h"
 #include "RbtParser.h"
@@ -35,24 +33,25 @@ std::string RbtFilter::_CT("RbtFilter");
 RbtFilter::RbtFilter(std::string strfilter, bool filter)
     : RbtBaseObject(_CT, "Filter") {
 #ifdef _DEBUG
-  cout << _CT << " default constructor" << endl;
+  std::cout << _CT << " default constructor" << std::endl;
 #endif //_DEBUG
        //  std::string filterfilen = GetParameter("_FILTER_FILE");
-  SmartPtr<istream> filterfile;
+  SmartPtr<std::istream> filterfile;
   if (filter) // filterfilen is the filter
-    filterfile = new istringstream(strfilter);
+    filterfile = new std::istringstream(strfilter);
   else // assume the strfilter is the name of the file
        // where the filter is
-    filterfile = new ifstream(strfilter.c_str(), ios_base::in);
+    filterfile = new std::ifstream(strfilter.c_str(), std::ios_base::in);
   (*filterfile) >> nTermFilters;
   filteridx = 0;
   contextp = RbtContextPtr(new RbtStringContext(filterfile));
   RbtParser p;
   for (int i = 0; i < nTermFilters; i++) {
-    cout << "\n------------- Terminate filter " << i << "------------" << endl;
+    std::cout << "\n------------- Terminate filter " << i << "------------"
+              << std::endl;
     std::string s;
     getline(*filterfile, s, ',');
-    SmartPtr<istream> istrp(new istringstream(s));
+    SmartPtr<std::istream> istrp(new std::istringstream(s));
     RbtTokenIterPtr ti(new RbtStringTokenIter(istrp, contextp));
     RbtFilterExpressionPtr filter = p.Parse(ti, contextp);
     PrettyPrintVisitor visitor1(contextp);
@@ -61,10 +60,10 @@ RbtFilter::RbtFilter(std::string strfilter, bool filter)
   }
   (*filterfile) >> nWriteFilters;
   for (int i = 0; i < nWriteFilters; i++) {
-    cout << "\n------------- Write filter -----------------" << endl;
+    std::cout << "\n------------- Write filter -----------------" << std::endl;
     std::string s;
     getline(*filterfile, s, ',');
-    SmartPtr<istream> istrp(new istringstream(s));
+    SmartPtr<std::istream> istrp(new std::istringstream(s));
     RbtTokenIterPtr ti(new RbtStringTokenIter(istrp, contextp));
     RbtFilterExpressionPtr filter = p.Parse(ti, contextp);
     PrettyPrintVisitor visitor1(contextp);
@@ -72,13 +71,13 @@ RbtFilter::RbtFilter(std::string strfilter, bool filter)
     writtingFilter.push_back(filter);
   }
   maxnruns = 1000;
-  cout << endl;
+  std::cout << std::endl;
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtFilter::~RbtFilter() {
 #ifdef _DEBUG
-  cout << _CT << "  destructor" << endl;
+  std::cout << _CT << "  destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -100,7 +99,8 @@ void RbtFilter::Update(RbtSubject *theChangedSubject) {
       RbtModelPtr spReceptor = GetWorkSpace()->GetModel(0);
       if (spReceptor != m_spReceptor) {
 #ifdef _DEBUG
-        cout << "RbtBaseInterSF::Update(): Receptor has been updated" << endl;
+        std::cout << "RbtBaseInterSF::Update(): Receptor has been updated"
+                  << std::endl;
 #endif //_DEBUG
         m_spReceptor = spReceptor;
         SetupReceptor();
@@ -111,7 +111,8 @@ void RbtFilter::Update(RbtSubject *theChangedSubject) {
       RbtModelPtr spLigand = GetWorkSpace()->GetModel(1);
       if (spLigand != m_spLigand) {
 #ifdef _DEBUG
-        cout << "RbtBaseInterSF::Update(): Ligand has been updated" << endl;
+        std::cout << "RbtBaseInterSF::Update(): Ligand has been updated"
+                  << std::endl;
 #endif //_DEBUG
         m_spLigand = spLigand;
         SetupLigand();
@@ -151,13 +152,13 @@ bool RbtFilter::Terminate() {
   if (nTermFilters > 0) {
     EvaluateVisitor visitor2(contextp);
     terminationFilters[filteridx]->Accept(visitor2);
-    //    cout << filteridx << "\t"
+    //    std::cout << filteridx << "\t"
     //         << terminationFilters[filteridx]->GetValue()
-    //         << "\tnruns: " << nruns << endl;
+    //         << "\tnruns: " << nruns << std::endl;
     double val = terminationFilters[filteridx]->GetValue();
     if (val == STOP) {
       if (GetTrace() > 1) {
-        cout << "Terminate with this ligand\n";
+        std::cout << "Terminate with this ligand\n";
       }
       bTerm = true;
     } else if (val == NEXT) {
@@ -172,13 +173,13 @@ bool RbtFilter::Terminate() {
           terminationFilters[filteridx]->Accept(visitor2);
           val = terminationFilters[filteridx]->GetValue();
           if (GetTrace() > 1) {
-            cout << "Go to next phase\n";
+            std::cout << "Go to next phase\n";
           }
         }
       }
       if (filteridx == nTermFilters) {
         if (GetTrace() > 1) {
-          cout << "Terminate with this ligand\n";
+          std::cout << "Terminate with this ligand\n";
         }
         bTerm = true; // output of filter is next phase, but there are no
                       // more phases
@@ -191,21 +192,21 @@ bool RbtFilter::Terminate() {
       // finish because it's reached limit runs
       if (nruns >= maxnruns) {
         if (GetTrace() > 1) {
-          cout << "Terminate with this ligand\n";
+          std::cout << "Terminate with this ligand\n";
         }
         bTerm = true;
       } else {
         nruns++;
         contextp->Assign("SCORE.NRUNS", nruns);
         if (GetTrace() > 1) {
-          cout << "Continue in this phase\n";
+          std::cout << "Continue in this phase\n";
         }
         bTerm = false;
       }
     } else {
-      ostringstream error;
+      std::ostringstream error;
       error << "Wrong output: " << val;
-      error << "; Termination filters should return 0,1 or -1" << ends;
+      error << "; Termination filters should return 0,1 or -1" << std::ends;
       throw RbtError(_WHERE_, error.str());
     }
   } else
@@ -221,7 +222,7 @@ bool RbtFilter::Write() {
   for (int i = 0; i < nWriteFilters; i++) {
     EvaluateVisitor visitor2(contextp);
     writtingFilter[i]->Accept(visitor2);
-    //    cout << writtingFilter[i]->GetValue() << endl;
+    //    std::cout << writtingFilter[i]->GetValue() << std::endl;
     double val = writtingFilter[i]->GetValue();
     if (val >= 0.0) {
       bWrite = false;
@@ -231,8 +232,8 @@ bool RbtFilter::Write() {
     // have returned a negative value and it returns true
   }
   // if (bWrite)
-  //  cout << "write this ligand\n";
+  //  std::cout << "write this ligand\n";
   // else
-  //  cout << "Do not write this ligand\n";
+  //  std::cout << "Do not write this ligand\n";
   return bWrite;
 }

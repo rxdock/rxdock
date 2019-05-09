@@ -52,10 +52,11 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
   // Read topology and coordinates from a single molecular file source
   if (m_pParamSource->isParameterPresent(_REC_FILE)) {
     if (m_iTrace > 0) {
-      cout << endl
-           << "Using " << _REC_FILE
-           << " as combined source of topology and 3D coordinates" << endl
-           << endl;
+      std::cout << std::endl
+                << "Using " << _REC_FILE
+                << " as combined source of topology and 3D coordinates"
+                << std::endl
+                << std::endl;
     }
     std::string strFile = m_pParamSource->GetParameterValueAsString(_REC_FILE);
     RbtMolecularFileSourcePtr theSource = CreateMolFileSource(strFile);
@@ -64,17 +65,19 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
                 theSource->isCoordinatesSupported();
     if (!isOK) {
       if (m_iTrace > 0) {
-        cout << endl
-             << "Incompatible file type for " << _REC_FILE << " option" << endl;
-        cout << "File type must provide atom list, bond list and coordinates "
-                "in a single file"
-             << endl;
-        cout << "Consider using " << _REC_TOPOL_FILE << " and "
-             << _REC_COORD_FILE
-             << " to specify topology (atoms/bonds) and coordinate files "
-                "separately"
-             << endl
-             << endl;
+        std::cout << std::endl
+                  << "Incompatible file type for " << _REC_FILE << " option"
+                  << std::endl;
+        std::cout
+            << "File type must provide atom list, bond list and coordinates "
+               "in a single file"
+            << std::endl;
+        std::cout << "Consider using " << _REC_TOPOL_FILE << " and "
+                  << _REC_COORD_FILE
+                  << " to specify topology (atoms/bonds) and coordinate files "
+                     "separately"
+                  << std::endl
+                  << std::endl;
       }
       throw RbtBadReceptorFile(_WHERE_,
                                "Inappropriate molecular file type for " +
@@ -85,9 +88,10 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
   // Read topology and coordinates separately from two molecular file sources
   else {
     if (m_iTrace > 0) {
-      cout << endl
-           << "Using " << _REC_TOPOL_FILE << " as topology source" << endl
-           << endl;
+      std::cout << std::endl
+                << "Using " << _REC_TOPOL_FILE << " as topology source"
+                << std::endl
+                << std::endl;
     }
     std::string strTopolFile =
         m_pParamSource->GetParameterValueAsString(_REC_TOPOL_FILE);
@@ -97,13 +101,14 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
                 theTopolSource->isBondListSupported();
     if (!isOK) {
       if (m_iTrace > 0) {
-        cout << endl
-             << "Incompatible file type for " << _REC_TOPOL_FILE << " option"
-             << endl;
-        cout << "File type must provide topology information (atom list and "
-                "bond list)"
-             << endl
-             << endl;
+        std::cout << std::endl
+                  << "Incompatible file type for " << _REC_TOPOL_FILE
+                  << " option" << std::endl;
+        std::cout
+            << "File type must provide topology information (atom list and "
+               "bond list)"
+            << std::endl
+            << std::endl;
       }
       throw RbtBadReceptorFile(_WHERE_,
                                "Inappropriate molecular file type for " +
@@ -113,10 +118,10 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
     if (!bEnsemble) {
       // Now read coord file
       if (m_iTrace > 0) {
-        cout << endl
-             << "Using " << _REC_COORD_FILE << " as source of 3D coordinates"
-             << endl
-             << endl;
+        std::cout << std::endl
+                  << "Using " << _REC_COORD_FILE
+                  << " as source of 3D coordinates" << std::endl
+                  << std::endl;
       }
       std::string strCoordFile =
           m_pParamSource->GetParameterValueAsString(_REC_COORD_FILE);
@@ -126,13 +131,14 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
              theCoordSource->isCoordinatesSupported();
       if (!isOK) {
         if (m_iTrace > 0) {
-          cout << endl
-               << "Incompatible file type for " << _REC_COORD_FILE << " option"
-               << endl;
-          cout << "File type must provide coordinate information (atom list "
-                  "with 3D coords)"
-               << endl
-               << endl;
+          std::cout << std::endl
+                    << "Incompatible file type for " << _REC_COORD_FILE
+                    << " option" << std::endl;
+          std::cout
+              << "File type must provide coordinate information (atom list "
+                 "with 3D coords)"
+              << std::endl
+              << std::endl;
         }
         throw RbtBadReceptorFile(_WHERE_,
                                  "Inappropriate molecular file type for " +
@@ -146,19 +152,19 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
   if (bEnsemble) {
     int n = m_pParamSource->GetParameterValue(_REC_NUM_COORD_FILES);
     if (m_iTrace > 0) {
-      cout << endl
-           << "Using ensemble of " << _REC_COORD_FILE
-           << "'s as source of 3D coordinates (N=" << n << ")" << endl
-           << endl;
+      std::cout << std::endl
+                << "Using ensemble of " << _REC_COORD_FILE
+                << "'s as source of 3D coordinates (N=" << n << ")" << std::endl
+                << std::endl;
     }
     for (int i = 1; i <= n; i++) {
-      ostringstream ostr;
+      std::ostringstream ostr;
       ostr << _REC_COORD_FILE << "_" << i;
       std::string paramName(ostr.str());
       std::string strCoordFile =
           m_pParamSource->GetParameterValueAsString(paramName);
       if (m_iTrace > 0) {
-        cout << endl << "I=" << i << endl;
+        std::cout << std::endl << "I=" << i << std::endl;
       }
       RbtMolecularFileSourcePtr theCoordSource =
           CreateMolFileSource(strCoordFile);
@@ -166,13 +172,14 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
                   theCoordSource->isCoordinatesSupported();
       if (!isOK) {
         if (m_iTrace > 0) {
-          cout << endl
-               << "Incompatible file type for " << paramName << " option"
-               << endl;
-          cout << "File type must provide coordinate information (atom list "
-                  "with 3D coords)"
-               << endl
-               << endl;
+          std::cout << std::endl
+                    << "Incompatible file type for " << paramName << " option"
+                    << std::endl;
+          std::cout
+              << "File type must provide coordinate information (atom list "
+                 "with 3D coords)"
+              << std::endl
+              << std::endl;
         }
         throw RbtBadReceptorFile(_WHERE_,
                                  "Inappropriate molecular file type for " +
@@ -182,7 +189,8 @@ RbtModelPtr RbtPRMFactory::CreateReceptor() throw(RbtError) {
       retVal->SaveCoords(strCoordFile);
     }
     int nCoords = retVal->GetNumSavedCoords() - 1;
-    cout << "Total number of receptor conformations read = " << nCoords << endl;
+    std::cout << "Total number of receptor conformations read = " << nCoords
+              << std::endl;
   }
 
   // If the docking site is defined, then we can define the
@@ -213,19 +221,22 @@ RbtModelList RbtPRMFactory::CreateSolvent() throw(RbtError) {
   if (m_pParamSource->isParameterPresent(_SOLV_FILE)) {
     std::string strFile = m_pParamSource->GetParameterValueAsString(_SOLV_FILE);
     if (m_iTrace > 0) {
-      cout << endl << "Reading solvent from " << strFile << endl << endl;
+      std::cout << std::endl
+                << "Reading solvent from " << strFile << std::endl
+                << std::endl;
     }
     RbtMolecularFileSourcePtr theSource = CreateMolFileSource(strFile);
     bool isOK =
         theSource->isAtomListSupported() && theSource->isCoordinatesSupported();
     if (!isOK) {
       if (m_iTrace > 0) {
-        cout << endl
-             << "Incompatible file type for " << _SOLV_SECTION
-             << "::" << _SOLV_FILE << " option" << endl;
-        cout << "File type must provide atom list and coordinates in a single "
-                "file"
-             << endl;
+        std::cout << std::endl
+                  << "Incompatible file type for " << _SOLV_SECTION
+                  << "::" << _SOLV_FILE << " option" << std::endl;
+        std::cout
+            << "File type must provide atom list and coordinates in a single "
+               "file"
+            << std::endl;
       }
       throw RbtBadReceptorFile(
           _WHERE_, "Inappropriate molecular file type for " + _SOLV_SECTION +
@@ -246,19 +257,19 @@ RbtModelList RbtPRMFactory::CreateSolvent() throw(RbtError) {
     for (RbtAtomListConstIter iter = oAtomList.begin(); iter != oAtomList.end();
          ++iter) {
       RbtAtomPtr oAtom = (*iter);
-      // cout << "Processing " << (*oAtom) << "..." << endl;
+      // std::cout << "Processing " << (*oAtom) << "..." << std::endl;
       // Isolated oxygen atom:
       // Need to find its matching hydrogens in the file and create the bonds
       if (bIsIsolated(oAtom)) {
-        // cout << "...is isolated" << endl;
+        // std::cout << "...is isolated" << std::endl;
         Rbt::isSubunitId_eq bInSameSubunit(oAtom->GetSubunitId());
         RbtAtomList matchingH1AtomList =
             Rbt::GetAtomList(h1AtomList, bInSameSubunit);
         RbtAtomList matchingH2AtomList =
             Rbt::GetAtomList(h2AtomList, bInSameSubunit);
-        // cout << "..." << matchingH1AtomList.size() << " matching H1" << endl;
-        // cout << "..." << matchingH2AtomList.size() << " matching H2" << endl;
-        // Found a water!
+        // std::cout << "..." << matchingH1AtomList.size() << " matching H1" <<
+        // std::endl; std::cout << "..." << matchingH2AtomList.size() << "
+        // matching H2" << std::endl; Found a water!
         if ((matchingH1AtomList.size() == 1) &&
             (matchingH2AtomList.size() == 1)) {
           RbtAtomPtr h1Atom = matchingH1AtomList.front();
@@ -293,8 +304,11 @@ RbtModelList RbtPRMFactory::CreateSolvent() throw(RbtError) {
           h1Atom->SetTriposType(triposType(h1Atom, true));
           h2Atom->SetTriposType(triposType(h2Atom, true));
           if (m_iTrace > 0) {
-            cout << "Creating water model # " << retVal.size() << endl;
-            cout << (*oAtom) << endl << (*h1Atom) << endl << (*h2Atom) << endl;
+            std::cout << "Creating water model # " << retVal.size()
+                      << std::endl;
+            std::cout << (*oAtom) << std::endl
+                      << (*h1Atom) << std::endl
+                      << (*h2Atom) << std::endl;
           }
           RbtModelPtr solvent(new RbtModel(waterAtomList, waterBondList));
           // If the docking site is defined, then we can define the
@@ -318,9 +332,9 @@ void RbtPRMFactory::AttachReceptorFlexData(RbtModel *pReceptor) {
   if (m_pParamSource->isParameterPresent(_REC_FLEX_DISTANCE)) {
     double flexDist = m_pParamSource->GetParameterValue(_REC_FLEX_DISTANCE);
     if (m_iTrace > 0) {
-      cout << endl
-           << "Target OH/NH3 groups within " << flexDist
-           << " A of docking site requested as flexible" << endl;
+      std::cout << std::endl
+                << "Target OH/NH3 groups within " << flexDist
+                << " A of docking site requested as flexible" << std::endl;
     }
     RbtFlexData *pFlexData = new RbtReceptorFlexData(m_pDS);
     pFlexData->SetParameter(RbtReceptorFlexData::_FLEX_DISTANCE, flexDist);
@@ -330,14 +344,16 @@ void RbtPRMFactory::AttachReceptorFlexData(RbtModel *pReceptor) {
       pFlexData->SetParameter(RbtReceptorFlexData::_DIHEDRAL_STEP,
                               dihedralStepSize);
       if (m_iTrace > 0) {
-        cout << endl << _REC_DIHEDRAL_STEP << " = " << dihedralStepSize << endl;
+        std::cout << std::endl
+                  << _REC_DIHEDRAL_STEP << " = " << dihedralStepSize
+                  << std::endl;
       }
     }
     pReceptor->SetFlexData(pFlexData);
     if (m_iTrace > 0) {
-      cout << endl
-           << "RECEPTOR FLEXIBILITY PARAMETERS:" << endl
-           << *pFlexData << endl;
+      std::cout << std::endl
+                << "RECEPTOR FLEXIBILITY PARAMETERS:" << std::endl
+                << *pFlexData << std::endl;
     }
   }
 }
@@ -353,9 +369,9 @@ void RbtPRMFactory::AttachLigandFlexData(RbtModel *pLigand) {
   }
   pLigand->SetFlexData(pFlexData);
   if (m_iTrace > 0) {
-    cout << endl
-         << "LIGAND FLEXIBILITY PARAMETERS:" << endl
-         << *pFlexData << endl;
+    std::cout << std::endl
+              << "LIGAND FLEXIBILITY PARAMETERS:" << std::endl
+              << *pFlexData << std::endl;
   }
 }
 
@@ -407,9 +423,9 @@ void RbtPRMFactory::AttachSolventFlexData(RbtModel *pSolvent) {
   }
   pSolvent->SetFlexData(pFlexData);
   if (m_iTrace > 0) {
-    cout << endl
-         << "SOLVENT FLEXIBILITY PARAMETERS:" << endl
-         << *pFlexData << endl;
+    std::cout << std::endl
+              << "SOLVENT FLEXIBILITY PARAMETERS:" << std::endl
+              << *pFlexData << std::endl;
   }
 }
 
@@ -423,9 +439,9 @@ RbtMolecularFileSourcePtr RbtPRMFactory::CreateMolFileSource(
   std::string fullFileName = Rbt::GetRbtFileName("", fileName);
 
   if (m_iTrace > 0) {
-    cout << _CT << ": File name requested = " << fileName
-         << "; type = " << fileTypeUpper << endl;
-    cout << _CT << ": Reading file from " << fullFileName << endl;
+    std::cout << _CT << ": File name requested = " << fileName
+              << "; type = " << fileTypeUpper << std::endl;
+    std::cout << _CT << ": Reading file from " << fullFileName << std::endl;
   }
 
   bool bImplH = true;
@@ -442,8 +458,8 @@ RbtMolecularFileSourcePtr RbtPRMFactory::CreateMolFileSource(
         m_pParamSource->GetParameterValueAsString("RECEPTOR_MASSES_FILE");
     strMassesFile = Rbt::GetRbtFileName("data", strMassesFile);
     if (m_iTrace > 0) {
-      cout << _CT << ": Using file " << strMassesFile
-           << " to lookup Charmm atom type info" << endl;
+      std::cout << _CT << ": Using file " << strMassesFile
+                << " to lookup Charmm atom type info" << std::endl;
     }
     retVal = new RbtPsfFileSource(fullFileName, strMassesFile, bImplH);
   } else if (fileTypeUpper == "CRD") {
@@ -465,20 +481,20 @@ RbtMolecularFileSourcePtr RbtPRMFactory::CreateMolFileSource(
     RbtSegmentMap segmentMap = Rbt::ConvertStringToSegmentMap(strSegmentName);
     retVal->SetSegmentFilterMap(segmentMap);
     if (m_iTrace > 0) {
-      cout << _CT << ": Setting segment/chain filter to " << strSegmentName
-           << endl;
+      std::cout << _CT << ": Setting segment/chain filter to " << strSegmentName
+                << std::endl;
     }
   } else {
     if (m_iTrace > 0) {
-      cout << _CT << ": No segment/chain filter defined" << endl;
+      std::cout << _CT << ": No segment/chain filter defined" << std::endl;
     }
   }
 
   if (m_iTrace > 0) {
     if (bImplH)
-      cout << _CT << ": Removing non-polar hydrogens" << endl;
+      std::cout << _CT << ": Removing non-polar hydrogens" << std::endl;
     else
-      cout << _CT << ": Reading all hydrogens present" << endl;
+      std::cout << _CT << ": Reading all hydrogens present" << std::endl;
   }
 
   RbtError status = retVal->Status();
@@ -487,15 +503,16 @@ RbtMolecularFileSourcePtr RbtPRMFactory::CreateMolFileSource(
   int nAtoms = retVal->GetNumAtoms();
   if (nAtoms == 0) {
     if (m_iTrace > 0) {
-      cout << _CT << ": File source contains zero atoms!" << endl;
-      cout << _CT << ": Have you defined RECEPTOR_SEGMENT_NAME correctly?"
-           << endl;
+      std::cout << _CT << ": File source contains zero atoms!" << std::endl;
+      std::cout << _CT << ": Have you defined RECEPTOR_SEGMENT_NAME correctly?"
+                << std::endl;
     }
     throw RbtBadReceptorFile(_WHERE_,
                              "Zero atoms provided by " + retVal->GetFileName());
   } else {
     if (m_iTrace > 0) {
-      cout << _CT << ": File source contains " << nAtoms << " atoms" << endl;
+      std::cout << _CT << ": File source contains " << nAtoms << " atoms"
+                << std::endl;
     }
   }
   return retVal;

@@ -75,44 +75,44 @@ void RbtPdbFileSource::Parse() throw(RbtError) {
 
           RbtFileRec::size_type length = (*fileIter).size();
           if (length > 10) {
-            istringstream istr((*fileIter).substr(6, 5).c_str());
+            std::istringstream istr((*fileIter).substr(6, 5).c_str());
             istr >> nAtomId;
-            // cout << "Atom ID      =" << nAtomId << endl;
+            // std::cout << "Atom ID      =" << nAtomId << std::endl;
           }
           if (length > 15) {
-            istringstream istr((*fileIter).substr(12, 4).c_str());
+            std::istringstream istr((*fileIter).substr(12, 4).c_str());
             istr >> strAtomName;
-            // cout << "Atom name    =" << strAtomName << endl;
+            // std::cout << "Atom name    =" << strAtomName << std::endl;
           }
           if (length > 19) {
-            istringstream istr((*fileIter).substr(17, 3).c_str());
+            std::istringstream istr((*fileIter).substr(17, 3).c_str());
             istr >> strSubunitName;
-            // cout << "Subunit name =" << strSubunitName << endl;
+            // std::cout << "Subunit name =" << strSubunitName << std::endl;
           }
           if (length > 21) {
-            istringstream istr((*fileIter).substr(21, 1).c_str());
+            std::istringstream istr((*fileIter).substr(21, 1).c_str());
             istr >> strSegmentName;
-            // cout << "Segment name =" << strSegmentName << endl;
+            // std::cout << "Segment name =" << strSegmentName << std::endl;
           }
           if (length > 25) {
-            istringstream istr((*fileIter).substr(22, 4).c_str());
+            std::istringstream istr((*fileIter).substr(22, 4).c_str());
             istr >> strSubunitId;
-            // cout << "Subunit ID   =" << strSubunitId << endl;
+            // std::cout << "Subunit ID   =" << strSubunitId << std::endl;
           }
           if (length > 53) {
-            istringstream istr((*fileIter).substr(30, 24).c_str());
+            std::istringstream istr((*fileIter).substr(30, 24).c_str());
             istr >> coord.x >> coord.y >> coord.z;
-            // cout << "coord        =" << coord << endl;
+            // std::cout << "coord        =" << coord << std::endl;
           }
           if (length > 59) {
-            istringstream istr((*fileIter).substr(54, 6).c_str());
+            std::istringstream istr((*fileIter).substr(54, 6).c_str());
             istr >> occupancy;
-            // cout << "occupancy    =" << occupancy << endl;
+            // std::cout << "occupancy    =" << occupancy << std::endl;
           }
           if (length > 65) {
-            istringstream istr((*fileIter).substr(60, 6).c_str());
+            std::istringstream istr((*fileIter).substr(60, 6).c_str());
             istr >> tempFactor;
-            // cout << "tempFactor   =" << tempFactor << endl;
+            // std::cout << "tempFactor   =" << tempFactor << std::endl;
           }
 
           // Construct a new atom (constructor only accepts the 2D params)

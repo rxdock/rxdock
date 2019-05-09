@@ -37,7 +37,7 @@ public:
   // Destructor
   //////////////////
   virtual ~RbtGPFitnessFunction();
-  virtual void ReadTables(istream &, RbtReturnTypeArray &,
+  virtual void ReadTables(std::istream &, RbtReturnTypeArray &,
                           RbtReturnTypeArray &) = 0;
   double GetObjective() const;
   double GetFitness() const;

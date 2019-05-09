@@ -52,7 +52,7 @@ public:
   virtual void SetVector(const RbtXOverList &v, int &i) throw(RbtError);
   virtual void GetStepVector(RbtDoubleList &v) const;
   virtual double CompareVector(const RbtDoubleList &v, int &i) const;
-  virtual void Print(ostream &s) const;
+  virtual void Print(std::ostream &s) const;
 
   // Returns a standardised dihedral angle in the range [-180, +180}
   // This function operates in degrees

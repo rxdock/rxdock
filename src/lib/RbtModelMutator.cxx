@@ -18,10 +18,10 @@
 namespace Tmp {
 void PrintAtomList(RbtAtomRListConstIter i1, RbtAtomRListConstIter i2) {
   for (RbtAtomRListConstIter iter = i1; iter != i2; iter++) {
-    cout << "\t" << (*iter)->GetFullAtomName() << " (" << (*iter)->GetAtomId()
-         << ")";
+    std::cout << "\t" << (*iter)->GetFullAtomName() << " ("
+              << (*iter)->GetAtomId() << ")";
   }
-  cout << endl;
+  std::cout << std::endl;
 }
 } // namespace Tmp
 #endif //_DEBUG
@@ -103,8 +103,8 @@ void RbtModelMutator::Setup() {
                         : Rbt::GetNumSelectedAtoms(m_tetheredAtoms);
     int nHalf = (nTethered == 0) ? (nAtoms - 2) / 2 : (nTethered - 2) / 2;
     if (nSelected > nHalf) {
-      // cout << "Over half the molecule selected: " << nSelected << " atoms" <<
-      // endl;
+      // std::cout << "Over half the molecule selected: " << nSelected << "
+      // atoms" << std::endl;
       Rbt::InvertAtomSelectionFlags(m_pModel->m_atomList);
       pAtom2->SetSelectionFlag(false);
       pAtom3->SetSelectionFlag(false);
@@ -112,21 +112,24 @@ void RbtModelMutator::Setup() {
       m_dih2Atoms.push_back(pAtom3);
       m_dih3Atoms.push_back(pAtom2);
       m_dih4Atoms.push_back(bondedAtoms2.front());
-      // cout << "Inverted: " << Rbt::GetNumSelectedAtoms(m_pModel->m_atomList)
-      // << " atoms now selected" << endl; cout << "Dihedral spec: " <<
-      // bondedAtoms3.front()->GetAtomName() << "\t" << pAtom3->GetAtomName() <<
+      // std::cout << "Inverted: " <<
+      // Rbt::GetNumSelectedAtoms(m_pModel->m_atomList)
+      // << " atoms now selected" << std::endl; std::cout << "Dihedral spec: "
+      // << bondedAtoms3.front()->GetAtomName() << "\t" << pAtom3->GetAtomName()
+      // <<
       // "\t"
       //	   << pAtom2->GetAtomName() << "\t" <<
-      // bondedAtoms2.front()->GetAtomName() << endl;
+      // bondedAtoms2.front()->GetAtomName() << std::endl;
     } else {
       m_dih1Atoms.push_back(bondedAtoms2.front());
       m_dih2Atoms.push_back(pAtom2);
       m_dih3Atoms.push_back(pAtom3);
       m_dih4Atoms.push_back(bondedAtoms3.front());
-      // cout << "Dihedral spec: " << bondedAtoms2.front()->GetAtomName() <<
+      // std::cout << "Dihedral spec: " << bondedAtoms2.front()->GetAtomName()
+      // <<
       // "\t" << pAtom2->GetAtomName() << "\t"
       //	   << pAtom3->GetAtomName() << "\t" <<
-      // bondedAtoms3.front()->GetAtomName() << endl;
+      // bondedAtoms3.front()->GetAtomName() << std::endl;
     }
 
     // Store the smaller atom list (or free atom list in tethered mode) for this
@@ -198,13 +201,13 @@ void RbtModelMutator::Setup() {
 #ifdef _DEBUG
       int id = lIter - m_flexIntns.begin();
       RbtAtom *pAtom = m_pModel->m_atomList[id];
-      cout << "Atom " << pAtom->GetFullAtomName() << " (" << id + 1
-           << "): with dups=" << (*lIter).size();
+      std::cout << "Atom " << pAtom->GetFullAtomName() << " (" << id + 1
+                << "): with dups=" << (*lIter).size();
 #endif //_DEBUG
       // Remove duplicates
       (*lIter).erase(uniqIter, (*lIter).end());
 #ifdef _DEBUG
-      cout << "; unique=" << (*lIter).size() << endl;
+      std::cout << "; unique=" << (*lIter).size() << std::endl;
       Tmp::PrintAtomList((*lIter).begin(), (*lIter).end());
 #endif //_DEBUG
     }

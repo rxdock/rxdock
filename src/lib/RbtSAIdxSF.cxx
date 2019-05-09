@@ -142,9 +142,9 @@ void RbtSAIdxSF::SetupReceptor() {
     } else if (m_bFlexRec && isSelected(pAtom)) {
       thePeriphList.push_back(*iter);
       if (iTrace > 1) {
-        cout << _CT
-             << ": Peripheral rigid atom within range of flexible atoms: "
-             << pAtom->GetFullAtomName() << endl;
+        std::cout << _CT
+                  << ": Peripheral rigid atom within range of flexible atoms: "
+                  << pAtom->GetFullAtomName() << std::endl;
       }
     }
   }
@@ -163,10 +163,11 @@ void RbtSAIdxSF::SetupReceptor() {
   }
 
   if (iTrace > 1) {
-    cout << endl
-         << _CT << ": Rigid receptor atoms within range of docking site" << endl
-         << endl;
-    cout << _CT << ": ATOM, TYPE, ASP, SOLV" << endl;
+    std::cout << std::endl
+              << _CT << ": Rigid receptor atoms within range of docking site"
+              << std::endl
+              << std::endl;
+    std::cout << _CT << ": ATOM, TYPE, ASP, SOLV" << std::endl;
     RbtHHSType hhsType;
     for (HHS_SolvationRListConstIter iter = theCavList.begin();
          iter != theCavList.end(); iter++) {
@@ -175,16 +176,17 @@ void RbtSAIdxSF::SetupReceptor() {
       double sasa = (*iter)->GetArea();
       double asp = (*iter)->GetSigma();
       double energy = (*iter)->GetEnergy();
-      cout << _CT << ": " << pAtom->GetFullAtomName() << ", "
-           << hhsType.Type2Str(t) << ", " << sasa << ", " << asp << ", "
-           << energy << endl;
+      std::cout << _CT << ": " << pAtom->GetFullAtomName() << ", "
+                << hhsType.Type2Str(t) << ", " << sasa << ", " << asp << ", "
+                << energy << std::endl;
     }
     if (m_bFlexRec) {
-      cout << endl
-           << _CT << ": Flexible receptor atoms within range of docking site"
-           << endl
-           << endl;
-      cout << _CT << ": ATOM, TYPE, ASP, SOLV" << endl;
+      std::cout << std::endl
+                << _CT
+                << ": Flexible receptor atoms within range of docking site"
+                << std::endl
+                << std::endl;
+      std::cout << _CT << ": ATOM, TYPE, ASP, SOLV" << std::endl;
       RbtHHSType hhsType;
       for (HHS_SolvationRListConstIter iter = theFlexList.begin();
            iter != theFlexList.end(); iter++) {
@@ -193,17 +195,17 @@ void RbtSAIdxSF::SetupReceptor() {
         double sasa = (*iter)->GetArea();
         double asp = (*iter)->GetSigma();
         double energy = (*iter)->GetEnergy();
-        cout << _CT << ": " << pAtom->GetFullAtomName() << ", "
-             << hhsType.Type2Str(t) << ", " << sasa << ", " << asp << ", "
-             << energy << endl;
+        std::cout << _CT << ": " << pAtom->GetFullAtomName() << ", "
+                  << hhsType.Type2Str(t) << ", " << sasa << ", " << asp << ", "
+                  << energy << std::endl;
       }
     }
   }
 
   if (iTrace > 0) {
-    cout << endl;
-    cout << "Initial site dG(solv)        : " << m_site_0 << " kcal/mol"
-         << endl;
+    std::cout << std::endl;
+    std::cout << "Initial site dG(solv)        : " << m_site_0 << " kcal/mol"
+              << std::endl;
     // Count the number of undefined types
     Rbt::isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
     int nUndefRec =
@@ -211,12 +213,14 @@ void RbtSAIdxSF::SetupReceptor() {
     int nUndefSite =
         std::count_if(theCavList.begin(), theCavList.end(), isUndefined);
 
-    cout << "#UNDEFINED TYPES (rigid recep)  : " << nUndefRec << endl;
-    cout << "#UNDEFINED TYPES (rigid site)   : " << nUndefSite << endl;
+    std::cout << "#UNDEFINED TYPES (rigid recep)  : " << nUndefRec << std::endl;
+    std::cout << "#UNDEFINED TYPES (rigid site)   : " << nUndefSite
+              << std::endl;
     if (m_bFlexRec) {
       int nUndefFlex =
           std::count_if(theFlexList.begin(), theFlexList.end(), isUndefined);
-      cout << "#UNDEFINED TYPES (flex site)    : " << nUndefFlex << endl;
+      std::cout << "#UNDEFINED TYPES (flex site)    : " << nUndefFlex
+                << std::endl;
     }
   }
 }
@@ -245,12 +249,14 @@ void RbtSAIdxSF::SetupLigand() {
   std::string name = RbtBaseSF::_INTRA_SF + "." + GetName() + ".lig_0";
   if (spModel->isDataFieldPresent(name)) {
     if (iTrace > 0) {
-      cout << "Restoring initial ligand solvation energy from file..." << endl;
+      std::cout << "Restoring initial ligand solvation energy from file..."
+                << std::endl;
     }
     m_lig_0 = spModel->GetDataValue(name);
   } else {
     if (iTrace > 0) {
-      cout << "Calculating initial ligand solvation energy..." << endl;
+      std::cout << "Calculating initial ligand solvation energy..."
+                << std::endl;
     }
     // Variable distances
     Rbt::OverlapVariableHHS updateVariableArea;
@@ -263,13 +269,14 @@ void RbtSAIdxSF::SetupLigand() {
   }
 
   if (iTrace > 0) {
-    cout << endl;
-    cout << "Initial ligand dG(solv):     " << m_lig_0 << " kcal/mol" << endl;
+    std::cout << std::endl;
+    std::cout << "Initial ligand dG(solv):     " << m_lig_0 << " kcal/mol"
+              << std::endl;
     // Count the number of undefined types
     Rbt::isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
     int nUndef =
         std::count_if(theLSPList.begin(), theLSPList.end(), isUndefined);
-    cout << "#UNDEFINED TYPES (lig)    : " << nUndef << endl;
+    std::cout << "#UNDEFINED TYPES (lig)    : " << nUndef << std::endl;
   }
 }
 
@@ -313,14 +320,14 @@ void RbtSAIdxSF::SetupSolvent() {
   // std::for_each(theSolventList.begin(),theSolventList.end(),Rbt::OverlapVariableHHS());
   m_solvent_0 = TotalEnergy(theSolventList);
   if (iTrace > 0) {
-    cout << endl;
-    cout << "Initial solvent dG(solv):     " << m_solvent_0 << " kcal/mol"
-         << endl;
+    std::cout << std::endl;
+    std::cout << "Initial solvent dG(solv):     " << m_solvent_0 << " kcal/mol"
+              << std::endl;
     // Count the number of undefined types
     Rbt::isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
     int nUndef = std::count_if(theSolventList.begin(), theSolventList.end(),
                                isUndefined);
-    cout << "#UNDEFINED TYPES (sol)    : " << nUndef << endl;
+    std::cout << "#UNDEFINED TYPES (sol)    : " << nUndef << std::endl;
   }
 }
 
@@ -457,14 +464,14 @@ void RbtSAIdxSF::PrintWeightMatrix(void) const {
   RbtDoubleList area; // total SASA by a single atom type
 
   RbtHHSType hhsType;
-  cout << "TYPE";
+  std::cout << "TYPE";
   // go through on each atom type
   for (int i = 0; i < RbtHHSType::MAXTYPES; ++i) {
     count.push_back(0);
     area.push_back(0.0);
-    cout << "," << hhsType.Type2Str(RbtHHSType::eType(i));
+    std::cout << "," << hhsType.Type2Str(RbtHHSType::eType(i));
   }
-  cout << endl;
+  std::cout << std::endl;
   for (HHS_SolvationRListConstIter iter = theLSPList.begin();
        iter != theLSPList.end(); iter++) {
     RbtHHSType::eType hhsType = (*iter)->GetHHSType();
@@ -477,16 +484,16 @@ void RbtSAIdxSF::PrintWeightMatrix(void) const {
     }
     area[hhsType] += sa;
   }
-  cout << "CT"; // stands for Weight Matrix (and helps grepping)
+  std::cout << "CT"; // stands for Weight Matrix (and helps grepping)
   for (int i = 0; i < RbtHHSType::MAXTYPES; ++i) {
-    cout << "," << count[i];
+    std::cout << "," << count[i];
   }
-  cout << endl;
-  cout << "WM"; // stands for Weight Matrix (and helps grepping)
+  std::cout << std::endl;
+  std::cout << "WM"; // stands for Weight Matrix (and helps grepping)
   for (int i = 0; i < RbtHHSType::MAXTYPES; ++i) {
-    cout << "," << area[i];
+    std::cout << "," << area[i];
   }
-  cout << endl;
+  std::cout << std::endl;
 }
 
 void RbtSAIdxSF::ClearReceptor(void) {
@@ -588,8 +595,8 @@ void RbtSAIdxSF::Setup() {
   int iTrace = GetTrace();
   m_maxR = 0.0; // keep track of maximum radius for any atom type
   if (iTrace > 1) {
-    cout << endl << _CT << "::Setup()" << endl;
-    cout << "TYPE,R,P,ASP,CHG_SCALING" << endl;
+    std::cout << std::endl << _CT << "::Setup()" << std::endl;
+    std::cout << "TYPE,R,P,ASP,CHG_SCALING" << std::endl;
   }
   // Dummy read to force parsing of file, otherwise the first SetSection is
   // overridden
@@ -609,8 +616,8 @@ void RbtSAIdxSF::Setup() {
     bool chg_scaling = m_spSolvSource->isParameterPresent(_CHG_SCALING);
     m_solvTable.push_back(solvprms(r, p, asp, chg_scaling));
     if (iTrace > 1) {
-      cout << stri << "," << r << "," << p << "," << asp << "," << chg_scaling
-           << endl;
+      std::cout << stri << "," << r << "," << p << "," << asp << ","
+                << chg_scaling << std::endl;
     }
     m_maxR = std::max(m_maxR, r);
   }
@@ -620,9 +627,10 @@ void RbtSAIdxSF::Setup() {
   // to give the maximum range for that atom (used for indexing)
   SetParameter(_INCR, m_maxR + 2 * HHS_Solvation::r_s);
   if (iTrace > 1) {
-    cout << _CT << ": Maximum radius of any atom type = " << m_maxR << endl;
-    cout << _CT << "::RANGE = " << GetRange() << endl;
-    cout << _CT << "::INCR = " << GetParameter(_INCR) << endl;
+    std::cout << _CT << ": Maximum radius of any atom type = " << m_maxR
+              << std::endl;
+    std::cout << _CT << "::RANGE = " << GetRange() << std::endl;
+    std::cout << _CT << "::INCR = " << GetParameter(_INCR) << std::endl;
   }
 }
 
@@ -653,14 +661,14 @@ void RbtSAIdxSF::HandleRequest(RbtRequestPtr spRequest) {
   case ID_REQ_SF_PARTITION:
     if (params.size() == 1) {
       if (iTrace > 2) {
-        cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
-             << " at distance=" << params[0] << endl;
+        std::cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
+                  << " at distance=" << params[0] << std::endl;
       }
       Partition(theLSPList, params[0]);
     } else if ((params.size() == 2) && (params[0].String() == GetFullName())) {
       if (iTrace > 2) {
-        cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
-             << " at distance=" << params[1] << endl;
+        std::cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
+                  << " at distance=" << params[1] << std::endl;
       }
       Partition(theLSPList, params[1]);
     }
@@ -669,8 +677,8 @@ void RbtSAIdxSF::HandleRequest(RbtRequestPtr spRequest) {
     // Pass all other requests to base handler
   default:
     if (iTrace > 2) {
-      cout << _CT << "::HandleRequest: " << GetFullName()
-           << " passing request to base handler" << endl;
+      std::cout << _CT << "::HandleRequest: " << GetFullName()
+                << " passing request to base handler" << std::endl;
     }
     RbtBaseObject::HandleRequest(spRequest);
     break;
@@ -703,11 +711,11 @@ RbtSAIdxSF::CreateInteractionCenters(const RbtAtomList &atomList) const {
       double sigma = GetASP(t, (*iter)->GetGroupCharge());
       retList.push_back(new HHS_Solvation(t, *iter, p_i, r_i, sigma));
       if (t == RbtHHSType::UNDEFINED)
-        cout << _CT << ": WARNING - CANNOT ASSIGN SOLVATION ATOM TYPE FOR "
-             << (*iter)->GetFullAtomName() << endl;
+        std::cout << _CT << ": WARNING - CANNOT ASSIGN SOLVATION ATOM TYPE FOR "
+                  << (*iter)->GetFullAtomName() << std::endl;
     } else if (iTrace > 1)
-      cout << _CT << ": INFO - ignoring non-polar H "
-           << (*iter)->GetFullAtomName() << endl;
+      std::cout << _CT << ": INFO - ignoring non-polar H "
+                << (*iter)->GetFullAtomName() << std::endl;
   }
 
   return retList;

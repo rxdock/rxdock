@@ -60,7 +60,7 @@ public:
   ///////////////////
 
   // Insertion operator
-  friend ostream &operator<<(ostream &s, const RbtPlane &plane) {
+  friend std::ostream &operator<<(std::ostream &s, const RbtPlane &plane) {
     return s << plane.m_vnorm.x << "x + " << plane.m_vnorm.y << "y + "
              << plane.m_vnorm.z << "z + " << plane.m_d << " = 0";
   }

@@ -51,8 +51,8 @@ public:
   void EPstep(std::string, double, double, double, double, double,
               bool) throw(RbtError);
   RbtGPGenomePtr Best() const;
-  ostream &Print(ostream &) const;
-  friend ostream &operator<<(ostream &, const RbtGPPopulation &);
+  std::ostream &Print(std::ostream &) const;
+  friend std::ostream &operator<<(std::ostream &, const RbtGPPopulation &);
   void Swap(SmartPtr<RbtGPPopulation>, int);
   void QSort(RbtGPGenomeList &);
   void QSort();

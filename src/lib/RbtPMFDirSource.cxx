@@ -14,20 +14,17 @@
 // #include <stdlib>
 //#include "RbtFileError.h"
 
-using std::cout;
-using std::endl;
-
 RbtPMFDirSource::RbtPMFDirSource(const std::string &aDir) throw(RbtError)
     : RbtDirectorySource(aDir) {
 #ifdef _DEBUG
-  cout << _CT << " RbtPMFDirSource constructor" << endl;
+  std::cout << _CT << " RbtPMFDirSource constructor" << std::endl;
 #endif
 }
 
 void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
                                 vector<std::string> *aNameVect,
                                 vector<RbtPMFValue> *aSlopeVect) {
-  cout << "Reading " << fNum << " PMF files..." << endl;
+  std::cout << "Reading " << fNum << " PMF files..." << std::endl;
   std::string theFileName;           // will be the filename with full path
   std::string theLine;               // one line from the file
   vector<std::string> theStrData;    // data represented as strings in vector
@@ -35,15 +32,15 @@ void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
 
   while (fNum--) {
     theFileName += thePath + "/";
-    //		cout << "Does not work with Solaris" <<endl;
+    //         std::cout << "Does not work with Solaris" <<endl;
     //		exit(1);
     std::string theFileStr(fNameList[fNum]->d_name); // copy from C-string
     // std::string theFileStr("junk");
     if (theFileName.size() + theFileStr.size() >
         PATH_SIZE) // check size (though should be ok)
     {
-      cout << _CT << theFileName << endl;
-      cout << _CT << theFileStr << endl;
+      std::cout << _CT << theFileName << std::endl;
+      std::cout << _CT << theFileStr << std::endl;
       throw RbtStringTooLong(_WHERE_, "");
     } else
       theFileName += theFileStr; // concatenate to get final size
@@ -55,12 +52,12 @@ void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
     if (std::string::npos != theExtIdx && !stat(theFileName.c_str(), &fStat) &&
         S_ISREG(fStat.st_mode)) {
 #ifdef _DEBUG
-      cout << _CT << " Processing: " << theFileStr << endl;
+      std::cout << _CT << " Processing: " << theFileStr << std::endl;
 #endif // debug
        // get rid of .pmf and put it into the vector that will be used later to
        // figure out types
       aNameVect->push_back(theFileStr.erase(theFileStr.find_last_of("."), 4));
-      inFile.open(theFileName.c_str(), ifstream::in);
+      inFile.open(theFileName.c_str(), std::ifstream::in);
       // read file contents into vector
       while (inFile >> theLine)
         theStrData.push_back(theLine);
@@ -79,9 +76,11 @@ void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
       }
 #ifdef GETJUNK
       //#ifdef _DEBUG
-      cout << _CT << " Starting slope at: " << aSlopeVect->back() << " for ";
-      cout << theValues[i].density << " ";
-      cout << theFileStr.substr(0, 2) << " " << theFileStr.substr(2, 2) << endl;
+      std::cout << _CT << " Starting slope at: " << aSlopeVect->back()
+                << " for ";
+      std::cout << theValues[i].density << " ";
+      std::cout << theFileStr.substr(0, 2) << " " << theFileStr.substr(2, 2)
+                << std::endl;
 //#endif // _DEBUG
 #endif // GETJUNK
       theStrData.erase(theStrData.begin(),
@@ -89,13 +88,13 @@ void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
     }
 #ifdef _DEBUG
     else {
-      cout << _CT << " Skipping file: " << theFileName << endl;
+      std::cout << _CT << " Skipping file: " << theFileName << std::endl;
     }
 #endif //_DEBUG
 
     theFileName.erase();
   }
-  cout << " done." << endl;
+  std::cout << " done." << std::endl;
 }
 
 void RbtPMFDirSource::ParseLines(vector<std::string> anStrVect,

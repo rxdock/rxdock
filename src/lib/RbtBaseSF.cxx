@@ -26,7 +26,8 @@ RbtBaseSF::RbtBaseSF(const std::string &strClass, const std::string &strName)
     : RbtBaseObject(strClass, strName), m_parent(NULL), m_weight(1.0),
       m_range(10.0) {
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor for " << strClass << endl;
+  std::cout << _CT << " parameterised constructor for " << strClass
+            << std::endl;
 #endif //_DEBUG
   // Add parameters
   AddParameter(_WEIGHT, m_weight);
@@ -38,7 +39,7 @@ RbtBaseSF::RbtBaseSF(const std::string &strClass, const std::string &strName)
 // Should never get called
 RbtBaseSF::RbtBaseSF() {
 #ifdef _DEBUG
-  cout << "WARNING: " << _CT << " default constructor" << endl;
+  std::cout << "WARNING: " << _CT << " default constructor" << std::endl;
 #endif //_DEBUG
   //_RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -46,7 +47,7 @@ RbtBaseSF::RbtBaseSF() {
 RbtBaseSF::~RbtBaseSF() {
   Orphan(); // Remove object from parent aggregate
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -133,8 +134,8 @@ RbtBaseSF *RbtBaseSF::GetParentSF() const { return m_parent; }
 void RbtBaseSF::Orphan() {
   if (m_parent) {
 #ifdef _DEBUG
-    cout << _CT << "::Orphan(): Removing " << GetName() << " from "
-         << m_parent->GetName() << endl;
+    std::cout << _CT << "::Orphan(): Removing " << GetName() << " from "
+              << m_parent->GetName() << std::endl;
 #endif //_DEBUG
     m_parent->Remove(this);
   }

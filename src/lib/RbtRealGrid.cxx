@@ -13,7 +13,6 @@
 #include <algorithm> //for min, max, count
 #include <cstring>
 #include <iomanip>
-using std::setw;
 
 #include "RbtFileError.h"
 #include "RbtRealGrid.h"
@@ -37,7 +36,7 @@ RbtRealGrid::RbtRealGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
 }
 
 // Constructor reading params from binary stream
-RbtRealGrid::RbtRealGrid(istream &istr)
+RbtRealGrid::RbtRealGrid(std::istream &istr)
     : RbtBaseGrid(istr), m_grid(NULL), m_data(NULL) {
   // Base class constructor has already read the grid dimensions
   // etc, so all we have to do here is created the array
@@ -106,19 +105,19 @@ RbtRealGrid &RbtRealGrid::operator=(const RbtBaseGrid &grid) {
 // Print,Write and Read methods
 
 // Text output
-void RbtRealGrid::Print(ostream &ostr) const {
+void RbtRealGrid::Print(std::ostream &ostr) const {
   RbtBaseGrid::Print(ostr);
   OwnPrint(ostr);
 }
 
 // Binary output
-void RbtRealGrid::Write(ostream &ostr) const {
+void RbtRealGrid::Write(std::ostream &ostr) const {
   RbtBaseGrid::Write(ostr);
   OwnWrite(ostr);
 }
 
 // Binary input
-void RbtRealGrid::Read(istream &istr) {
+void RbtRealGrid::Read(std::istream &istr) {
   // Clear the current grid before reading the new grid dimensions
   ClearArrays();
   RbtBaseGrid::Read(istr); // Base class read
@@ -150,21 +149,21 @@ double RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
   unsigned int iY = int(ry * (c.y - gridMin.y) - 0.5) + 1;
   unsigned int iZ = int(rz * (c.z - gridMin.z) - 0.5) + 1;
 #ifdef _DEBUG
-  cout << "GetSmoothedValue" << c << "\tiX,iY,iZ=" << iX << "\t" << iY << "\t"
-       << iZ << endl;
+  std::cout << "GetSmoothedValue" << c << "\tiX,iY,iZ=" << iX << "\t" << iY
+            << "\t" << iZ << std::endl;
 #endif //_DEBUG
   // Check this point (iX,iY,iZ) and (iX+1,iY+1,iZ+1) are all in bounds
   // else return the unsmoothed GetValue(c)
   if (!isValid(iX, iY, iZ) || !isValid(iX + 1, iY + 1, iZ + 1)) {
 #ifdef _DEBUG
-    cout << "Out of bounds" << endl;
+    std::cout << "Out of bounds" << std::endl;
 #endif //_DEBUG
     return GetValue(c);
   }
   // p is the vector relative to the lower left corner
   RbtVector p = c - GetCoord(iX, iY, iZ);
 #ifdef _DEBUG
-  cout << "p=" << p << endl;
+  std::cout << "p=" << p << std::endl;
 #endif //_DEBUG
   // Set up B0 and B1 for each of x,y,z axes
   // RbtDoubleList bx(2);
@@ -402,30 +401,30 @@ unsigned int RbtRealGrid::FindMaxValue() const {
 /////////////////////////
 
 // Dump grid in a format readable by Insight
-void RbtRealGrid::PrintInsightGrid(ostream &s) const {
-  s << "RBT FFT GRID" << endl;
-  s << "(1F15.10)" << endl;
+void RbtRealGrid::PrintInsightGrid(std::ostream &s) const {
+  s << "RBT FFT GRID" << std::endl;
+  s << "(1F15.10)" << std::endl;
   s.precision(3);
-  s.setf(ios_base::fixed, ios_base::floatfield);
-  s.setf(ios_base::right, ios_base::adjustfield);
-  s << setw(8) << GetGridStep().x * (GetNX() - 1) << setw(8)
-    << GetGridStep().y * (GetNY() - 1) << setw(8)
-    << GetGridStep().z * (GetNZ() - 1) << setw(8) << 90.0 << setw(8) << 90.0
-    << setw(8) << 90.0 << endl;
+  s.setf(std::ios_base::fixed, std::ios_base::floatfield);
+  s.setf(std::ios_base::right, std::ios_base::adjustfield);
+  s << std::setw(8) << GetGridStep().x * (GetNX() - 1) << std::setw(8)
+    << GetGridStep().y * (GetNY() - 1) << std::setw(8)
+    << GetGridStep().z * (GetNZ() - 1) << std::setw(8) << 90.0 << std::setw(8)
+    << 90.0 << std::setw(8) << 90.0 << std::endl;
   // s.setf(0,ios_base::floatfield);
-  s << setw(5) << GetNX() - 1 << setw(5) << GetNY() - 1 << setw(5)
-    << GetNZ() - 1 << endl;
-  s << setw(5) << 1 << setw(5) << GetnXMin() << setw(5) << GetnXMax() << setw(5)
-    << GetnYMin() << setw(5) << GetnYMax() << setw(5) << GetnZMin() << setw(5)
-    << GetnZMax() << endl;
+  s << std::setw(5) << GetNX() - 1 << std::setw(5) << GetNY() - 1
+    << std::setw(5) << GetNZ() - 1 << std::endl;
+  s << std::setw(5) << 1 << std::setw(5) << GetnXMin() << std::setw(5)
+    << GetnXMax() << std::setw(5) << GetnYMin() << std::setw(5) << GetnYMax()
+    << std::setw(5) << GetnZMin() << std::setw(5) << GetnZMax() << std::endl;
   s.precision(10);
-  // s.setf(ios_base::fixed,ios_base::floatfield);
-  // s.setf(ios_base::right,ios_base::adjustfield);
+  // s.setf(std::ios_base::fixed,ios_base::floatfield);
+  // s.setf(std::ios_base::right,ios_base::adjustfield);
   // Insight expects data in [1][1][1],[2][1][1]..[NX][1][1] order
   for (unsigned int iZ = 1; iZ <= GetNZ(); iZ++) {
     for (unsigned int iY = 1; iY <= GetNY(); iY++) {
       for (unsigned int iX = 1; iX <= GetNX(); iX++) {
-        s << setw(15) << m_grid[iX][iY][iZ] << endl;
+        s << std::setw(15) << m_grid[iX][iY][iZ] << std::endl;
       }
     }
   }
@@ -435,25 +434,25 @@ void RbtRealGrid::PrintInsightGrid(ostream &s) const {
 // Protected methods
 
 // Protected method for writing data members for this class to text stream
-void RbtRealGrid::OwnPrint(ostream &ostr) const {
-  ostr << "Class\t" << _CT << endl;
+void RbtRealGrid::OwnPrint(std::ostream &ostr) const {
+  ostr << "Class\t" << _CT << std::endl;
   // Iterate over all grid points
   float tol = GetTolerance();
   for (unsigned int iX = 1; iX <= GetNX(); iX++) {
-    ostr << endl << endl << "Plane iX=" << iX << endl;
+    ostr << std::endl << std::endl << "Plane iX=" << iX << std::endl;
     for (unsigned int iY = 1; iY <= GetNY(); iY++) {
       for (unsigned int iZ = 1; iZ <= GetNZ(); iZ++) {
         float f = m_grid[iX][iY][iZ];
         ostr << ((f < -tol) ? '-' : (f > tol) ? '+' : '.');
       }
-      ostr << endl;
+      ostr << std::endl;
     }
   }
 }
 
 // Protected method for writing data members for this class to binary stream
 //(Serialisation)
-void RbtRealGrid::OwnWrite(ostream &ostr) const {
+void RbtRealGrid::OwnWrite(std::ostream &ostr) const {
   // Write the class name as a title so we can check the authenticity of streams
   // on read
   const char *const gridTitle = _CT.c_str();
@@ -471,7 +470,7 @@ void RbtRealGrid::OwnWrite(ostream &ostr) const {
 // Protected method for reading data members for this class from binary stream
 // WARNING: Assumes grid data array has already been created
 // and is of the correct size
-void RbtRealGrid::OwnRead(istream &istr) throw(RbtError) {
+void RbtRealGrid::OwnRead(std::istream &istr) throw(RbtError) {
   // Read title
   int length;
   Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));

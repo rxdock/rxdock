@@ -400,8 +400,9 @@ void HHS_Solvation::Partition(double d) {
          iter++) {
       if (Rbt::Length2((*iter)->atom->GetCoords(), atom->GetCoords()) < dd) {
         m_prt.push_back(*iter);
-        // cout << "Partitioned " << (*iter)->atom->GetFullAtomName() << " - "
-        // << atom->GetFullAtomName() << endl;
+        // std::cout << "Partitioned " << (*iter)->atom->GetFullAtomName() << "
+        // - "
+        // << atom->GetFullAtomName() << std::endl;
       }
     }
   } else {

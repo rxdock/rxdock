@@ -146,8 +146,8 @@ double RbtChromDihedralElement::CompareVector(const RbtDoubleList &v,
   return retVal;
 }
 
-void RbtChromDihedralElement::Print(ostream &s) const {
-  s << "DIHEDRAL " << m_value << endl;
+void RbtChromDihedralElement::Print(std::ostream &s) const {
+  s << "DIHEDRAL " << m_value << std::endl;
 }
 
 double RbtChromDihedralElement::StandardisedValue(double dihedralAngle) {

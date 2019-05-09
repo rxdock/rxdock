@@ -32,7 +32,8 @@ RbtBaseObject::RbtBaseObject(const std::string &strClass,
   AddParameter(_ENABLED, m_enabled);
   AddParameter(_TRACE, m_trace); // DM 1 Mar 2002 - move from RbtBaseTransform
 #ifdef _DEBUG
-  cout << _CT << " parameterised constructor for " << strClass << endl;
+  std::cout << _CT << " parameterised constructor for " << strClass
+            << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -41,7 +42,7 @@ RbtBaseObject::RbtBaseObject(const std::string &strClass,
 // Should never get called
 RbtBaseObject::RbtBaseObject() {
 #ifdef _DEBUG
-  cout << "WARNING: " << _CT << " default constructor" << endl;
+  std::cout << "WARNING: " << _CT << " default constructor" << std::endl;
 #endif //_DEBUG
   //_RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -49,7 +50,7 @@ RbtBaseObject::RbtBaseObject() {
 RbtBaseObject::~RbtBaseObject() {
   Unregister(); // Unregister object from workspace
 #ifdef _DEBUG
-  cout << _CT << " destructor" << endl;
+  std::cout << _CT << " destructor" << std::endl;
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
@@ -84,8 +85,8 @@ void RbtBaseObject::Register(RbtWorkSpace *pWorkSpace) {
   Unregister();
   m_workspace = pWorkSpace;
 #ifdef _DEBUG
-  cout << _CT << "::Register(): Registering " << GetName() << " with workspace"
-       << endl;
+  std::cout << _CT << "::Register(): Registering " << GetName()
+            << " with workspace" << std::endl;
 #endif //_DEBUG
   m_workspace->Attach(this);
 }
@@ -95,8 +96,8 @@ void RbtBaseObject::Register(RbtWorkSpace *pWorkSpace) {
 void RbtBaseObject::Unregister() {
   if (m_workspace) {
 #ifdef _DEBUG
-    cout << _CT << "::Unregister(): Unregistering " << GetName()
-         << " from workspace" << endl;
+    std::cout << _CT << "::Unregister(): Unregistering " << GetName()
+              << " from workspace" << std::endl;
 #endif //_DEBUG
     m_workspace->Detach(this);
   }
@@ -111,8 +112,8 @@ RbtWorkSpace *RbtBaseObject::GetWorkSpace() const { return m_workspace; }
 void RbtBaseObject::Deleted(RbtSubject *theDeletedSubject) {
   if (theDeletedSubject == m_workspace) {
 #ifdef _DEBUG
-    cout << _CT << "::Deleted(): " << GetName()
-         << " received notice that subject is to be deleted " << endl;
+    std::cout << _CT << "::Deleted(): " << GetName()
+              << " received notice that subject is to be deleted " << std::endl;
 #endif //_DEBUG
     Unregister();
   }
@@ -130,7 +131,8 @@ void RbtBaseObject::HandleRequest(RbtRequestPtr spRequest) {
     Assert<RbtAssert>(!REQ_CHECK || params.size() == 1);
     if (!params.empty() && (params[0].String() == GetFullName())) {
       if (m_trace > 2) {
-        cout << _CT << "::HandleRequest: Enabling " << GetFullName() << endl;
+        std::cout << _CT << "::HandleRequest: Enabling " << GetFullName()
+                  << std::endl;
       }
       Enable();
     }
@@ -142,7 +144,8 @@ void RbtBaseObject::HandleRequest(RbtRequestPtr spRequest) {
     Assert<RbtAssert>(!REQ_CHECK || params.size() == 1);
     if (!params.empty() && (params[0].String() == GetFullName())) {
       if (m_trace > 2) {
-        cout << _CT << "::HandleRequest: Disabling " << GetFullName() << endl;
+        std::cout << _CT << "::HandleRequest: Disabling " << GetFullName()
+                  << std::endl;
       }
       Disable();
     }
@@ -158,8 +161,9 @@ void RbtBaseObject::HandleRequest(RbtRequestPtr spRequest) {
     if ((params.size() == 3) && (params[0].String() == GetFullName()) &&
         isParameterValid(params[1])) {
       if (m_trace > 2) {
-        cout << _CT << "::HandleRequest: Setting parameter " << params[1]
-             << " to " << params[2] << " for " << GetFullName() << endl;
+        std::cout << _CT << "::HandleRequest: Setting parameter " << params[1]
+                  << " to " << params[2] << " for " << GetFullName()
+                  << std::endl;
       }
       SetParameter(params[1], params[2]);
     }
@@ -169,8 +173,9 @@ void RbtBaseObject::HandleRequest(RbtRequestPtr spRequest) {
     // Check if object has this named parameter before calling SetParameter
     else if ((params.size() == 2) && isParameterValid(params[0])) {
       if (m_trace > 2) {
-        cout << _CT << "::HandleRequest: Setting parameter " << params[0]
-             << " to " << params[1] << " for " << GetFullName() << endl;
+        std::cout << _CT << "::HandleRequest: Setting parameter " << params[0]
+                  << " to " << params[1] << " for " << GetFullName()
+                  << std::endl;
       }
       SetParameter(params[0], params[1]);
     }
@@ -179,16 +184,16 @@ void RbtBaseObject::HandleRequest(RbtRequestPtr spRequest) {
     // Ignore all other requests
   default:
     if (m_trace > 2) {
-      cout << _CT << "::HandleRequest: " << GetFullName()
-           << " is ignoring request" << endl;
+      std::cout << _CT << "::HandleRequest: " << GetFullName()
+                << " is ignoring request" << std::endl;
     }
     break;
   }
 }
 // Virtual function for dumping parameters to an output stream
 // Called by operator <<
-void RbtBaseObject::Print(ostream &s) const {
-  cout << endl << GetFullName() << endl;
+void RbtBaseObject::Print(std::ostream &s) const {
+  std::cout << std::endl << GetFullName() << std::endl;
   RbtParamHandler::Print(s);
 }
 

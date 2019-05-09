@@ -117,7 +117,7 @@ std::ostream &PrintStdHeader(std::ostream &s,
 
 // Helper functions to read/write chars from iostreams
 // Throws error if stream state is not Good() before and after the read/write
-// It appears the STL ios_base exception throwing is not yet implemented
+// It appears the STL std::ios_base exception throwing is not yet implemented
 // at least on RedHat 6.1, so this is a temporary workaround (yeah right)
 //
 // DM 25 Sep 2000 - with MIPSPro CC compiler, streamsize is not defined,

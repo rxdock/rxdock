@@ -30,7 +30,8 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
   for (RbtAtomListConstIter at = atomList.begin(); at != atomList.end(); at++) {
     // ignore all hydrogens
     if (isH(*at)) {
-      // cout << "Atom: " << (*at)->GetAtomName() << "; ignored" << endl;
+      // std::cout << "Atom: " << (*at)->GetAtomName() << "; ignored" <<
+      // std::endl;
       continue;
     }
     int rID = at - atomList.begin(); // The rDock atom numbering (sequence in
@@ -55,8 +56,8 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
           ((*at)->GetGroupCharge() > -1.0))) {
       dt_setcharge(atoms.back(), (*at)->GetFormalCharge());
     }
-    // cout << "Atom: " << (*at)->GetAtomName() << "; rID = " << rID << "; dID =
-    // " << dID << endl;
+    // std::cout << "Atom: " << (*at)->GetAtomName() << "; rID = " << rID << ";
+    // dID = " << dID << std::endl;
   }
 
   // Now the bonds
@@ -65,8 +66,9 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
     RbtAtomPtr at2 = (*bd)->GetAtom2Ptr();
     // ignore all bonds to hydrogen
     if (isH(at1) || isH(at2)) {
-      // cout << "Bond: " << at1->GetAtomName() << "-" << at2->GetAtomName() <<
-      // "; ignored" << endl;
+      // std::cout << "Bond: " << at1->GetAtomName() << "-" <<
+      // at2->GetAtomName() <<
+      // "; ignored" << std::endl;
       continue;
     }
     // Try and find the bonded atoms in the rDock atom list (comparison is on
@@ -86,10 +88,10 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
     // Use lookup to get the Daylight numbering
     int dID1 = r2d[rID1];
     int dID2 = r2d[rID2];
-    // cout << "Bond: " << at1->GetAtomName() << "-" << at2->GetAtomName()
+    // std::cout << "Bond: " << at1->GetAtomName() << "-" << at2->GetAtomName()
     //	 << "; rID = " << rID1 << "-" << rID2 << "; dID = " << dID1 << "-" <<
-    // dID2 << endl; Finally create the Daylight bond Define formal bond order
-    // except for terminal charged acids, see above
+    // dID2 << std::endl; Finally create the Daylight bond Define formal bond
+    // order except for terminal charged acids, see above
     dt_Handle b =
         dt_addbond(atoms[dID1], atoms[dID2], (*bd)->GetFormalBondOrder());
     if ((isO(at1) && (at1->GetGroupCharge() < 0.0) &&

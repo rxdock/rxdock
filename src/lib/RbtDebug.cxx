@@ -17,7 +17,7 @@ RbtObjectCounter::RbtObjectCounter() : nConstr(0), nCopyConstr(0), nDestr(0) {}
 
 RbtObjectCounter::~RbtObjectCounter() {}
 
-ostream &operator<<(ostream &s, const RbtObjectCounter &counter) {
+ostream &operator<<(std::ostream &s, const RbtObjectCounter &counter) {
   return s << "Constr=" << counter.nConstr
            << ", Copy constr=" << counter.nCopyConstr
            << ", Destr=" << counter.nDestr << ", Net total="

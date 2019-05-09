@@ -34,11 +34,11 @@ RbtBond::RbtBond(int nBondId, RbtAtomPtr &spAtom1, RbtAtomPtr &spAtom2,
   bool bOK2 = m_spAtom2->AddBond(this);
 #ifdef _DEBUG
   if (!bOK1)
-    cout << "FAILED to add bond " << m_nBondId << " to atom "
-         << m_spAtom1->GetAtomId() << endl;
+    std::cout << "FAILED to add bond " << m_nBondId << " to atom "
+              << m_spAtom1->GetAtomId() << std::endl;
   if (!bOK2)
-    cout << "FAILED to add bond " << m_nBondId << " to atom "
-         << m_spAtom2->GetAtomId() << endl;
+    std::cout << "FAILED to add bond " << m_nBondId << " to atom "
+              << m_spAtom2->GetAtomId() << std::endl;
 #endif //_DEBUG
 
   _RBTOBJECTCOUNTER_CONSTR_("RbtBond");
@@ -51,11 +51,11 @@ RbtBond::~RbtBond() {
   bool bOK2 = m_spAtom2->RemoveBond(this);
 #ifdef _DEBUG
   if (!bOK1)
-    cout << "FAILED to remove bond " << m_nBondId << " from atom "
-         << m_spAtom1->GetAtomId() << endl;
+    std::cout << "FAILED to remove bond " << m_nBondId << " from atom "
+              << m_spAtom1->GetAtomId() << std::endl;
   if (!bOK2)
-    cout << "FAILED to remove bond " << m_nBondId << " from atom "
-         << m_spAtom2->GetAtomId() << endl;
+    std::cout << "FAILED to remove bond " << m_nBondId << " from atom "
+              << m_spAtom2->GetAtomId() << std::endl;
 #endif //_DEBUG
 
   _RBTOBJECTCOUNTER_DESTR_("RbtBond");
@@ -96,14 +96,14 @@ RbtBond &RbtBond::operator=(const RbtBond &bond) {
 ///////////////////////////////////////////////
 
 // Insertion operator (primarily for debugging)
-ostream &operator<<(ostream &s, const RbtBond &bond) {
+std::ostream &operator<<(std::ostream &s, const RbtBond &bond) {
   RbtAtomPtr spAtom1 = bond.m_spAtom1;
   RbtAtomPtr spAtom2 = bond.m_spAtom2;
 
   return s << "Bond ID=" << bond.m_nBondId << ", Atoms " << spAtom1->GetAtomId()
            << "-" << spAtom2->GetAtomId()
            << ", Bond order=" << bond.m_nFormalBondOrder;
-  //	   << endl << *spAtom1 << endl << *spAtom2;
+  //	   << std::endl << *spAtom1 << std::endl << *spAtom2;
 }
 
 ////////////////////////////////////////
@@ -265,17 +265,17 @@ bool Rbt::isBondAmide::operator()(RbtBond *pBond) const {
     RbtAtomList oxygens =
         Rbt::GetAtomList(Rbt::GetBondedAtomList(spAtom1), isO);
     int nOSP2 = Rbt::GetNumAtoms(oxygens, isSP2);
-    // cout << "Amide check on " << spAtom1->GetFullAtomName() << " - " <<
+    // std::cout << "Amide check on " << spAtom1->GetFullAtomName() << " - " <<
     // spAtom2->GetFullAtomName()
-    //	 << " #OSP2 = " << nOSP2 << endl;
+    //	 << " #OSP2 = " << nOSP2 << std::endl;
     return (nOSP2 == 1);
   } else if (isC(spAtom2) && isSP2(spAtom2) && isN(spAtom1) && isTRI(spAtom1)) {
     RbtAtomList oxygens =
         Rbt::GetAtomList(Rbt::GetBondedAtomList(spAtom2), isO);
     int nOSP2 = Rbt::GetNumAtoms(oxygens, isSP2);
-    // cout << "Amide check on " << spAtom2->GetFullAtomName() << " - " <<
+    // std::cout << "Amide check on " << spAtom2->GetFullAtomName() << " - " <<
     // spAtom1->GetFullAtomName()
-    //	 << " #OSP2 = " << nOSP2 << endl;
+    //	 << " #OSP2 = " << nOSP2 << std::endl;
     return (nOSP2 == 1);
   } else
     return false;

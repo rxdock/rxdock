@@ -58,7 +58,7 @@ public:
   FilterVbleExp(const RbtVble &);
   virtual ~FilterVbleExp();
   void Accept(RbtFilterExpressionVisitor &visitor);
-  void Print() { cout << "v" << vble.GetName() << " "; }
+  void Print() { std::cout << "v" << vble.GetName() << " "; }
   int GetNOps() { return 0; }
   const RbtVble &GetVble() const { return vble; }
   RbtFilterExpressionPtr GetOp(int i) {
@@ -75,7 +75,7 @@ public:
   virtual ~FilterLogExp();
   void Accept(RbtFilterExpressionVisitor &visitor);
   void Print() {
-    cout << "log ";
+    std::cout << "log ";
     operand->Print();
   }
   virtual int GetNOps() { return 1; }
@@ -96,7 +96,7 @@ public:
   virtual ~FilterExpExp();
   void Accept(RbtFilterExpressionVisitor &visitor);
   void Print() {
-    cout << "exp ";
+    std::cout << "exp ";
     operand->Print();
   }
   virtual int GetNOps() { return 1; }
@@ -117,7 +117,7 @@ public:
   virtual ~FilterAddExp();
   void Accept(RbtFilterExpressionVisitor &visitor);
   void Print() {
-    cout << "add ";
+    std::cout << "add ";
     operand1->Print();
     operand2->Print();
   }
@@ -141,7 +141,7 @@ public:
   virtual ~FilterSubExp();
   void Accept(RbtFilterExpressionVisitor &visitor);
   void Print() {
-    cout << "sub ";
+    std::cout << "sub ";
     operand1->Print();
     operand2->Print();
   }
@@ -165,7 +165,7 @@ public:
   virtual ~FilterMulExp();
   void Accept(RbtFilterExpressionVisitor &visitor);
   void Print() {
-    cout << "mul ";
+    std::cout << "mul ";
     operand1->Print();
     operand2->Print();
   }
@@ -189,7 +189,7 @@ public:
   virtual ~FilterDivExp();
   void Accept(RbtFilterExpressionVisitor &visitor);
   void Print() {
-    cout << "div ";
+    std::cout << "div ";
     operand1->Print();
     operand2->Print();
   }
@@ -213,7 +213,7 @@ public:
   virtual ~FilterAndExp();
   void Accept(RbtFilterExpressionVisitor &visitor);
   void Print() {
-    cout << "and ";
+    std::cout << "and ";
     operand1->Print();
     operand2->Print();
   }
@@ -238,7 +238,7 @@ public:
   virtual ~FilterIfExp();
   void Accept(RbtFilterExpressionVisitor &visitor);
   void Print() {
-    cout << "if ";
+    std::cout << "if ";
     operand1->Print();
     operand2->Print();
     operand3->Print();

@@ -110,7 +110,7 @@ public:
   // Invalid operation in base class
   virtual void Add(RbtChromElement *pChromElement) throw(RbtError);
   // Prints details of element to stream (null implementation in base class)
-  virtual void Print(ostream &s) const {}
+  virtual void Print(std::ostream &s) const {}
   //
   // NON-VIRTUAL METHODS
   //
@@ -135,7 +135,7 @@ public:
   friend bool operator==(const RbtChromElement &c1, const RbtChromElement &c2);
   friend bool operator!=(const RbtChromElement &c1, const RbtChromElement &c2);
   // operator<< is implemented by calling Print()
-  friend ostream &operator<<(ostream &s, const RbtChromElement &c);
+  friend std::ostream &operator<<(std::ostream &s, const RbtChromElement &c);
 
 protected:
   RbtChromElement();

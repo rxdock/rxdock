@@ -123,7 +123,7 @@ bool operator!=(const RbtChromElement &c1, const RbtChromElement &c2) {
   return !(c1 == c2);
 }
 
-ostream &operator<<(ostream &s, const RbtChromElement &c) {
+std::ostream &operator<<(std::ostream &s, const RbtChromElement &c) {
   c.Print(s);
   return s;
 }
@@ -152,7 +152,8 @@ void Rbt::Crossover(RbtChromElement *pChr1, RbtChromElement *pChr2,
                   ? rand.GetRandomInt(length1 - 1) + 1
                   : rand.GetRandomInt(length1 - ixbegin) + ixbegin + 1;
 
-  // cout << "XOVER: ixbegin = " << ixbegin << ", ixend = " << ixend << endl;
+  // std::cout << "XOVER: ixbegin = " << ixbegin << ", ixend = " << ixend <<
+  // std::endl;
   std::swap_ranges(v1.begin() + ixbegin, v1.begin() + ixend,
                    v2.begin() + ixbegin);
   // Now we can update the two children

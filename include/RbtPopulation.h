@@ -73,8 +73,8 @@ public:
          ) throw(RbtError);
   RbtGenomePtr RouletteWheelSelect() const;
 
-  void Print(ostream &) const;
-  friend ostream &operator<<(ostream &, const RbtPopulation &);
+  void Print(std::ostream &) const;
+  friend std::ostream &operator<<(std::ostream &, const RbtPopulation &);
 
 private:
   // Merges the new individuals created into the main population

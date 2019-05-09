@@ -15,8 +15,6 @@
 #include "RbtGPParser.h"
 #include <fstream>
 #include <sstream>
-using std::ifstream;
-using std::ios_base;
 
 std::string RbtGPGenome::_CT("RbtGPGenome");
 int RbtGPGenome::npi;
@@ -42,7 +40,7 @@ RbtGPGenome::RbtGPGenome(const RbtGPGenome &g) : m_rand(Rbt::GetRbtRand()) {
   _RBTOBJECTCOUNTER_COPYCONSTR_(_CT);
 }
 
-RbtGPGenome::RbtGPGenome(istream &in) : m_rand(Rbt::GetRbtRand()) {
+RbtGPGenome::RbtGPGenome(std::istream &in) : m_rand(Rbt::GetRbtRand()) {
   long int seed;
   in >> seed;
   m_rand.Seed(seed);
@@ -56,7 +54,7 @@ RbtGPGenome::RbtGPGenome(istream &in) : m_rand(Rbt::GetRbtRand()) {
 }
 
 RbtGPGenome::RbtGPGenome(std::string str) : m_rand(Rbt::GetRbtRand()) {
-  istringstream ist(str);
+  std::istringstream ist(str);
   // Get structure
   ist >> npi >> nfi >> nsfi >> no >> nf >> nr >> nc >> l;
   nn = nr * nc; // number of nodes
@@ -186,16 +184,18 @@ void RbtGPGenome::UniformCrossover(const RbtGPGenome &mom,
 
 void RbtGPGenome::Crossover(RbtGPGenome &) {}
 
-ostream &RbtGPGenome::Print(ostream &s) const {
+std::ostream &RbtGPGenome::Print(std::ostream &s) const {
   int g = 0;
   // Print structure
   s << npi << " " << nfi << " " << nsfi << " " << no << " " << nf << " " << nr
-    << " " << nc << " " << l << endl;
-  s << *chrom << endl;
+    << " " << nc << " " << l << std::endl;
+  s << *chrom << std::endl;
   RbtGPParser p(npi, nfi, 0, no);
-  ifstream nstr("descnames", ios_base::in);
+  std::ifstream nstr("descnames", std::ios_base::in);
   s << p.PrintParse(nstr, chrom, true, false);
   return s;
 }
 
-ostream &operator<<(ostream &s, const RbtGPGenome &g) { return g.Print(s); }
+std::ostream &operator<<(std::ostream &s, const RbtGPGenome &g) {
+  return g.Print(s);
+}

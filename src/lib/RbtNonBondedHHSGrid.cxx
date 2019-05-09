@@ -26,7 +26,8 @@ RbtNonBondedHHSGrid::RbtNonBondedHHSGrid(const RbtCoord &gridMin,
   _RBTOBJECTCOUNTER_CONSTR_("RbtNonBondedHHSGrid");
 }
 
-RbtNonBondedHHSGrid::RbtNonBondedHHSGrid(istream &istr) : RbtBaseGrid(istr) {
+RbtNonBondedHHSGrid::RbtNonBondedHHSGrid(std::istream &istr)
+    : RbtBaseGrid(istr) {
   CreateMap();
   OwnRead(istr);
   _RBTOBJECTCOUNTER_CONSTR_("RbtNonBondedHHSGrid");
@@ -73,19 +74,19 @@ RbtNonBondedHHSGrid &RbtNonBondedHHSGrid::operator=(const RbtBaseGrid &grid) {
 }
 
 // Text output
-void RbtNonBondedHHSGrid::Print(ostream &ostr) const {
+void RbtNonBondedHHSGrid::Print(std::ostream &ostr) const {
   RbtBaseGrid::Print(ostr);
   OwnPrint(ostr);
 }
 
 // Binary output
-void RbtNonBondedHHSGrid::Write(ostream &ostr) const {
+void RbtNonBondedHHSGrid::Write(std::ostream &ostr) const {
   RbtBaseGrid::Write(ostr);
   OwnWrite(ostr);
 }
 
 // Binary input
-void RbtNonBondedHHSGrid::Read(istream &istr) {
+void RbtNonBondedHHSGrid::Read(std::istream &istr) {
   ClearHHSLists();
   RbtBaseGrid::Read(istr);
   OwnRead(istr);
@@ -129,14 +130,14 @@ void RbtNonBondedHHSGrid::ClearHHSLists() {
   }
 }
 
-void RbtNonBondedHHSGrid::OwnPrint(ostream &ostr) const {
-  ostr << endl << "Class\t" << _CT << endl;
-  ostr << "No. of entries in the map: " << m_hhsMap.size() << endl;
+void RbtNonBondedHHSGrid::OwnPrint(std::ostream &ostr) const {
+  ostr << std::endl << "Class\t" << _CT << std::endl;
+  ostr << "No. of entries in the map: " << m_hhsMap.size() << std::endl;
 }
 
-void RbtNonBondedHHSGrid::OwnWrite(ostream &ostr) const {}
+void RbtNonBondedHHSGrid::OwnWrite(std::ostream &ostr) const {}
 
-void RbtNonBondedHHSGrid::OwnRead(istream &istr) throw(RbtError) {}
+void RbtNonBondedHHSGrid::OwnRead(std::istream &istr) throw(RbtError) {}
 
 void RbtNonBondedHHSGrid::CopyGrid(const RbtNonBondedHHSGrid &grid) {
   m_hhsMap = grid.m_hhsMap;
