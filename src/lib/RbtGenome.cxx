@@ -44,7 +44,7 @@ RbtGenome::~RbtGenome() {
 RbtGenome *RbtGenome::clone() const { return new RbtGenome(*this); }
 
 void RbtGenome::SetScore(RbtBaseSF *pSF) {
-  if (pSF != NULL) {
+  if (pSF != nullptr) {
     m_chrom->SyncToModel();
     m_score = -pSF->Score();
   } else {

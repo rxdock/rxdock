@@ -23,8 +23,8 @@
 class RbtInteractionCenter {
 public:
   enum eLP { NONE, PLANE, LONEPAIR };
-  RbtInteractionCenter(RbtAtom *pAtom1 = NULL, RbtAtom *pAtom2 = NULL,
-                       RbtAtom *pAtom3 = NULL, eLP LP = NONE)
+  RbtInteractionCenter(RbtAtom *pAtom1 = nullptr, RbtAtom *pAtom2 = nullptr,
+                       RbtAtom *pAtom3 = nullptr, eLP LP = NONE)
       : m_pAtom1(pAtom1), m_pAtom2(pAtom2), m_pAtom3(pAtom3), m_LP(LP) {
     _RBTOBJECTCOUNTER_CONSTR_("RbtInteractionCenter");
   }

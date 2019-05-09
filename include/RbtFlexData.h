@@ -32,7 +32,7 @@ public:
 
 protected:
   RbtFlexData(RbtDockingSite *pDockSite)
-      : m_pModel(NULL), m_pDockSite(pDockSite) {}
+      : m_pModel(nullptr), m_pDockSite(pDockSite) {}
 
 private:
   RbtModel *m_pModel;

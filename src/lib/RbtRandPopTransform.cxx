@@ -48,11 +48,11 @@ void RbtRandPopTransform::SetupTransform() {
 // Pure virtual in RbtBaseTransform
 // Actually apply the transform
 void RbtRandPopTransform::Execute() {
-  if (m_chrom.Ptr() == NULL) {
+  if (m_chrom.Ptr() == nullptr) {
     return;
   }
   RbtBaseSF *pSF = GetWorkSpace()->GetSF();
-  if (pSF == NULL) {
+  if (pSF == nullptr) {
     return;
   }
   int popSize = GetParameter(_POP_SIZE);

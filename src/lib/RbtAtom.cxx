@@ -28,7 +28,7 @@ RbtAtom::RbtAtom()
       m_eState(UNDEFINED), // DM 8 Dec 1998 Changed from SP3 to UNDEFINED
       m_nHydrogens(0), m_nFormalCharge(0), m_coord(0.0, 0.0, 0.0),
       m_dPartialCharge(0.0), m_dGroupCharge(0.0), m_dAtomicMass(0.0),
-      m_dVdwRadius(0.0), m_strFFType(""), m_pModel(NULL), m_bCyclic(false),
+      m_dVdwRadius(0.0), m_strFFType(""), m_pModel(nullptr), m_bCyclic(false),
       m_bSelected(false), m_bUser1(false),
       m_dUser1(1.0), // DM 27 Jul 2000 - initialise user values to 1 as they are
                      // commonly used as weightings
@@ -52,7 +52,7 @@ RbtAtom::RbtAtom(int nAtomId, int nAtomicNo /*= 6*/,
       m_strSegmentName(strSegmentName), m_eState(eState),
       m_nHydrogens(nHydrogens), m_nFormalCharge(nFormalCharge),
       m_coord(0.0, 0.0, 0.0), m_dPartialCharge(0.0), m_dGroupCharge(0.0),
-      m_dAtomicMass(0.0), m_dVdwRadius(0.0), m_strFFType(""), m_pModel(NULL),
+      m_dAtomicMass(0.0), m_dVdwRadius(0.0), m_strFFType(""), m_pModel(nullptr),
       m_bCyclic(false), m_bSelected(false), m_bUser1(false),
       m_dUser1(1.0), // DM 27 Jul 2000 - initialise user values to 1 as they are
                      // commonly used as weightings
@@ -87,8 +87,8 @@ RbtAtom::RbtAtom(const RbtAtom &atom) {
   m_dUser2 = atom.m_dUser2;
   m_nPMFType = atom.m_nPMFType;
   m_triposType = atom.m_triposType;
-  // Copied atoms no longer belong to the model so set to NULL here
-  SetModelPtr(NULL);
+  // Copied atoms no longer belong to the model so set to nullptr here
+  SetModelPtr(nullptr);
   // Copied atoms no longer belong to the bonds so erase the bond map
   ClearBondMap();
   // Set the cyclic flag to false as the atom isn't bonded to anything
@@ -122,8 +122,8 @@ RbtAtom &RbtAtom::operator=(const RbtAtom &atom) {
     m_dUser2 = atom.m_dUser2;
     m_nPMFType = atom.m_nPMFType;
     m_triposType = atom.m_triposType;
-    // Copied atoms no longer belong to the model so set to NULL here
-    SetModelPtr(NULL);
+    // Copied atoms no longer belong to the model so set to nullptr here
+    SetModelPtr(nullptr);
     // Copied atoms no longer belong to the bonds so erase the bond map
     ClearBondMap();
     // Set the cyclic flag to false as the atom isn't bonded to anything
@@ -148,7 +148,7 @@ std::ostream &operator<<(std::ostream &s, const RbtAtom &atom) {
 std::ostream &RbtAtom::Print(std::ostream &s) const {
   // Get owning model name (if any)
   std::string strModelName = "Orphan";
-  if (m_pModel != NULL)
+  if (m_pModel != nullptr)
     strModelName = m_pModel->GetName();
 
   RbtTriposAtomType triposType;
@@ -616,7 +616,7 @@ unsigned int Rbt::GetNumBondedAtoms(const RbtAtom *pAtom) {
   // Attempt the dynamic cast (on the regular pointer)
   RbtPseudoAtom *pPseudoAtom =
       dynamic_cast<RbtPseudoAtom *>(const_cast<RbtAtom *>(pAtom));
-  if (pPseudoAtom != NULL)
+  if (pPseudoAtom != nullptr)
     return pPseudoAtom->GetNumAtoms();
   else
     return Rbt::GetNumBondedAtoms(pAtom->GetBondMap());
@@ -626,7 +626,7 @@ RbtAtomList Rbt::GetBondedAtomList(const RbtAtom *pAtom) {
   // Attempt the dynamic cast (on the regular pointer)
   RbtPseudoAtom *pPseudoAtom =
       dynamic_cast<RbtPseudoAtom *>(const_cast<RbtAtom *>(pAtom));
-  if (pPseudoAtom != NULL)
+  if (pPseudoAtom != nullptr)
     return pPseudoAtom->GetAtomList();
   else
     return Rbt::GetBondedAtomList(pAtom->GetBondMap());

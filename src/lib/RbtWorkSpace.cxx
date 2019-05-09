@@ -23,7 +23,7 @@ std::string RbtWorkSpace::_NAME("NAME");
 
 // Create an empty model container of the right size
 RbtWorkSpace::RbtWorkSpace(unsigned int nModels)
-    : m_models(nModels), m_SF(NULL), m_transform(NULL) {
+    : m_models(nModels), m_SF(nullptr), m_transform(nullptr) {
   AddParameter(_NAME, _CT);
 #ifdef _DEBUG
   std::cout << "RbtWorkSpace::RbtWorkSpace(): Created model list of size "

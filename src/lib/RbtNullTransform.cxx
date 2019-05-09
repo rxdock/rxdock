@@ -55,7 +55,7 @@ void RbtNullTransform::Execute() {
   // does not exist, in which case same as level 1
   else if (iTrace > 5) {
     RbtPopulationPtr pop = GetWorkSpace()->GetPopulation();
-    if (pop.Ptr() == NULL) {
+    if (pop.Ptr() == nullptr) {
       GetWorkSpace()->SaveHistory(true);
     } else {
       const RbtGenomeList &genList = pop->GetGenomeList();

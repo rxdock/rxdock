@@ -31,7 +31,7 @@ void PrintAtomList(RbtAtomRListConstIter i1, RbtAtomRListConstIter i2) {
 RbtModelMutator::RbtModelMutator(RbtModel *pModel, const RbtBondList &rotBonds,
                                  const RbtAtomList &tetheredAtoms)
     : m_pModel(pModel), m_rotBonds(rotBonds), m_tetheredAtoms(tetheredAtoms) {
-  if (m_pModel != NULL) {
+  if (m_pModel != nullptr) {
     Setup();
   }
   _RBTOBJECTCOUNTER_CONSTR_("RbtModelMutator");
@@ -66,7 +66,7 @@ void RbtModelMutator::Setup() {
   m_rotAtoms.clear();
   m_flexIntns.clear();
 
-  if (m_pModel == NULL)
+  if (m_pModel == nullptr)
     return;
 
   int nAtoms = m_pModel->GetNumAtoms();

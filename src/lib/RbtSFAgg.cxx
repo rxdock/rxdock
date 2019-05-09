@@ -113,8 +113,8 @@ void RbtSFAgg::Remove(RbtBaseSF *pSF) {
               << GetName() << std::endl;
 #endif //_DEBUG
     m_sf.erase(iter);
-    pSF->m_parent =
-        NULL; // Nullify the parent pointer of the child that has been removed
+    pSF->m_parent = nullptr; // Nullify the parent pointer of the child that has
+                             // been removed
   }
 }
 

@@ -40,7 +40,7 @@ RbtRand::~RbtRand() { _RBTOBJECTCOUNTER_DESTR_("RbtRand"); }
 void RbtRand::Seed(int seed) { m_rand.seed(seed); }
 
 // Seed the random number generator from the system clock
-void RbtRand::SeedFromClock() { m_rand.seed(::time(NULL)); }
+void RbtRand::SeedFromClock() { m_rand.seed(::time(nullptr)); }
 
 // Returns current seed
 int RbtRand::GetSeed() { return m_rand.GetSeed(); }

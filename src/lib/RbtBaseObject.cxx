@@ -25,7 +25,7 @@ std::string RbtBaseObject::_TRACE("TRACE");
 // Constructors/destructors
 RbtBaseObject::RbtBaseObject(const std::string &strClass,
                              const std::string &strName)
-    : m_workspace(NULL), m_enabled(true), m_trace(0) {
+    : m_workspace(nullptr), m_enabled(true), m_trace(0) {
   // Add parameters
   AddParameter(_CLASS, strClass);
   AddParameter(_NAME, strName);
@@ -101,7 +101,7 @@ void RbtBaseObject::Unregister() {
 #endif //_DEBUG
     m_workspace->Detach(this);
   }
-  m_workspace = NULL;
+  m_workspace = nullptr;
 }
 
 // Get workspace pointer

@@ -29,7 +29,8 @@ RbtModel::RbtModel(RbtBaseMolecularFileSource *pMolSource)
 //(Fairly) temporary constructor taking arbitrary atom and bond lists
 // Use with caution
 RbtModel::RbtModel(RbtAtomList &atomList, RbtBondList &bondList)
-    : m_pFlexData(NULL), m_pChrom(NULL), m_occupancy(1.0), m_enabled(true) {
+    : m_pFlexData(nullptr), m_pChrom(nullptr), m_occupancy(1.0),
+      m_enabled(true) {
   AddAtoms(atomList); // Register atoms with model
   m_bondList = bondList;
   // Rbt::FindRings(m_atomList,m_bondList,m_ringList);
@@ -532,11 +533,11 @@ void RbtModel::SetFlexData(RbtFlexData *pFlexData) {
   // the same RbtFlexData object before deleting the old one
   if (m_pFlexData && (m_pFlexData != pFlexData)) {
     delete m_pFlexData;
-    m_pFlexData = NULL;
+    m_pFlexData = nullptr;
   }
   if (m_pChrom) {
     delete m_pChrom;
-    m_pChrom = NULL;
+    m_pChrom = nullptr;
   }
   m_pFlexData = pFlexData;
   if (m_pFlexData) {
@@ -553,7 +554,7 @@ RbtFlexData *RbtModel::GetFlexData() const { return m_pFlexData; }
 // Returns a clone of the current chromosome for this model
 // The caller has the responsibility for mem management of the clone
 RbtChromElement *RbtModel::GetChrom() const {
-  return (m_pChrom) ? m_pChrom->clone() : NULL;
+  return (m_pChrom) ? m_pChrom->clone() : nullptr;
 }
 
 bool RbtModel::isFlexible() const { return !m_spMutator.Null(); }
@@ -862,11 +863,11 @@ void RbtModel::Clear() {
   m_strName = "";
   m_titleList.clear();
 
-  // Set the parent model pointer to NULL for each atom, before
+  // Set the parent model pointer to nullptr for each atom, before
   // clearing the atom list, in case someone has copies of the atom list
   RbtAtomListIter iter;
   for (iter = m_atomList.begin(); iter != m_atomList.end(); iter++)
-    (*iter)->SetModelPtr(NULL);
+    (*iter)->SetModelPtr(nullptr);
 
   m_atomList.clear();
   m_bondList.clear();
@@ -880,14 +881,14 @@ void RbtModel::Clear() {
   m_coordNames.clear(); // Clear map of named coords
   m_dataMap.clear();    // DM 12 May 1999 - clear associated data
   ClearPseudoAtoms();
-  SetFlexData(NULL);
+  SetFlexData(nullptr);
 }
 
 // Helper function for the constructor
 // Create a new model from a data source
 void RbtModel::Create(RbtBaseMolecularFileSource *pMolSource) {
-  m_pFlexData = NULL;
-  m_pChrom = NULL;
+  m_pFlexData = nullptr;
+  m_pChrom = nullptr;
   Clear(); // Clear previous model, if any
 
   try {
@@ -943,7 +944,7 @@ void RbtModel::Create(RbtBaseMolecularFileSource *pMolSource) {
     // 31 Oct 2000 (DM) Hack to disable ring detection
     // if $RBT_NORINGS is defined
     char *szRbtNoRings = getenv("RBT_NORINGS");
-    if (szRbtNoRings == (char *)NULL) {
+    if (szRbtNoRings == (char *)nullptr) {
       Rbt::FindRings(m_atomList, m_bondList, m_ringList);
       // than set aromatic type for pi atoms. m_ringList is RbtAtomListList
       for (RbtAtomListListIter rIter = m_ringList.begin();

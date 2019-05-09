@@ -57,7 +57,7 @@ void RbtVdwGridSF::SetupReceptor() {
 
   // Read grids
   // File names are composed of workspace name + grid suffix
-  // Reasonably safe to assume that GetWorkSpace is not NULL,
+  // Reasonably safe to assume that GetWorkSpace is not nullptr,
   // as otherwise SetupReceptor would not have been called
   std::string strWSName = GetWorkSpace()->GetName();
 

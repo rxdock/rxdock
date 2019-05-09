@@ -177,7 +177,7 @@ public:
 
   // ModelPtr - pointer to the parent model
   RbtModel *GetModelPtr() const { return m_pModel; }
-  void SetModelPtr(RbtModel *pModel = NULL) { m_pModel = pModel; }
+  void SetModelPtr(RbtModel *pModel = nullptr) { m_pModel = pModel; }
 
   // DM 04 Dec 1998  Add functions to handle bond map
   // Returns number of bonds in map

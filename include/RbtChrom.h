@@ -52,7 +52,7 @@ public:
   // Aggregate methods
   // Appends a new chromosome element to the vector
   // RbtChrom destructor is responsible for deleting the new element
-  // Null operation if pChromElement is NULL
+  // Null operation if pChromElement is nullptr
   virtual void Add(RbtChromElement *pChromElement);
 
 protected:

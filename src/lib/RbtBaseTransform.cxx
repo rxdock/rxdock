@@ -21,7 +21,7 @@ std::string RbtBaseTransform::_CT("RbtBaseTransform");
 // Constructors/destructors
 RbtBaseTransform::RbtBaseTransform(const std::string &strClass,
                                    const std::string &strName)
-    : RbtBaseObject(strClass, strName), m_parent(NULL) {
+    : RbtBaseObject(strClass, strName), m_parent(nullptr) {
 #ifdef _DEBUG
   std::cout << _CT << " parameterised constructor" << std::endl;
 #endif //_DEBUG
@@ -101,10 +101,10 @@ void RbtBaseTransform::ClearSFRequests() { m_SFRequests.clear(); }
 void RbtBaseTransform::SendSFRequests() {
   // Get the current scoring function from the workspace
   RbtWorkSpace *pWorkSpace = GetWorkSpace();
-  if (pWorkSpace == NULL) // Return if this transform is not registered
+  if (pWorkSpace == nullptr) // Return if this transform is not registered
     return;
   RbtBaseSF *pSF = pWorkSpace->GetSF();
-  if (pSF == NULL) // Return if workspace does not have a scoring function
+  if (pSF == nullptr) // Return if workspace does not have a scoring function
     return;
   // Send each request to the scoring function
   for (RbtRequestListConstIter iter = m_SFRequests.begin();

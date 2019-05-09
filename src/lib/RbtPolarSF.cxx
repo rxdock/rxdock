@@ -422,12 +422,13 @@ double RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
   RbtAtom *pAtom1_2 = pIC1->GetAtom2Ptr();
   RbtAtom *pAtom1_3 = pIC1->GetAtom3Ptr();
   RbtInteractionCenter::eLP eLP1 = pIC1->LP();
-  bool bAngle1 = ((pAtom1_2 != NULL) && (pAtom1_3 == NULL)) ? true : false;
-  bool bPlane1 = ((pAtom1_2 != NULL) && (pAtom1_3 != NULL) &&
+  bool bAngle1 =
+      ((pAtom1_2 != nullptr) && (pAtom1_3 == nullptr)) ? true : false;
+  bool bPlane1 = ((pAtom1_2 != nullptr) && (pAtom1_3 != nullptr) &&
                   (eLP1 == RbtInteractionCenter::NONE))
                      ? true
                      : false;
-  bool bLP1 = ((pAtom1_2 != NULL) && (pAtom1_3 != NULL) &&
+  bool bLP1 = ((pAtom1_2 != nullptr) && (pAtom1_3 != nullptr) &&
                (eLP1 != RbtInteractionCenter::NONE))
                   ? true
                   : false;
@@ -452,12 +453,13 @@ double RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
     RbtAtom *pAtom2_2 = (*IC2Iter)->GetAtom2Ptr();
     RbtAtom *pAtom2_3 = (*IC2Iter)->GetAtom3Ptr();
     RbtInteractionCenter::eLP eLP2 = (*IC2Iter)->LP();
-    bool bAngle2 = ((pAtom2_2 != NULL) && (pAtom2_3 == NULL)) ? true : false;
-    bool bPlane2 = ((pAtom2_2 != NULL) && (pAtom2_3 != NULL) &&
+    bool bAngle2 =
+        ((pAtom2_2 != nullptr) && (pAtom2_3 == nullptr)) ? true : false;
+    bool bPlane2 = ((pAtom2_2 != nullptr) && (pAtom2_3 != nullptr) &&
                     (eLP2 == RbtInteractionCenter::NONE))
                        ? true
                        : false;
-    bool bLP2 = ((pAtom2_2 != NULL) && (pAtom2_3 != NULL) &&
+    bool bLP2 = ((pAtom2_2 != nullptr) && (pAtom2_3 != nullptr) &&
                  (eLP2 != RbtInteractionCenter::NONE))
                     ? true
                     : false;

@@ -51,11 +51,11 @@ void RbtGATransform::SetupTransform() {}
 
 void RbtGATransform::Execute() {
   RbtWorkSpace *pWorkSpace = GetWorkSpace();
-  if (pWorkSpace == NULL) {
+  if (pWorkSpace == nullptr) {
     return;
   }
   RbtBaseSF *pSF = pWorkSpace->GetSF();
-  if (pSF == NULL) {
+  if (pSF == nullptr) {
     return;
   }
   RbtPopulationPtr pop = pWorkSpace->GetPopulation();

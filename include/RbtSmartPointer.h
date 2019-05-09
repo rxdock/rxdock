@@ -28,7 +28,8 @@
 //
 // To do: Should probably throw some other exception than std::exception if
 //       assert fails
-// NOTE: it's a BAD idea to pass a NULL pointer to the SmartPtr<T> constructor
+// NOTE: it's a BAD idea to pass a nullptr pointer to the SmartPtr<T>
+// constructor
 
 #ifndef _RBTSMARTPOINTER_H_
 #define _RBTSMARTPOINTER_H_
@@ -48,7 +49,7 @@ public:
   // CONSTRUCTORS, DESTRUCTORS, ASSIGNMENT
 
   // Default constructor, initialise both pointers to 0
-  SmartPtr() : m_pT(NULL), m_pCount(NULL) {}
+  SmartPtr() : m_pT(nullptr), m_pCount(nullptr) {}
 
   // Parameterised constructor
   // Create new counter, initialise to 1
@@ -112,7 +113,7 @@ public:
 
   // Tests if smart pointer is empty (i.e. does it have a counter?)
   // Doesn't actually tell you if the underlying pointer is null
-  bool Null() const { return m_pCount == NULL; }
+  bool Null() const { return m_pCount == nullptr; }
 
   // Returns pointer to counter
   unsigned *GetCountPtr() const { return m_pCount; }
@@ -167,8 +168,8 @@ private:
       delete m_pT;
       delete m_pCount;
     }
-    m_pT = NULL;
-    m_pCount = NULL;
+    m_pT = nullptr;
+    m_pCount = nullptr;
   }
 
   T *m_pT;            // Pointer to the underlying object

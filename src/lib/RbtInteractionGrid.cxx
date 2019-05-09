@@ -196,7 +196,7 @@ void RbtInteractionGrid::SetInteractionLists(RbtInteractionCenter *pIntn,
                                              double radius) {
   // Index using atom 1 coords - check if atom 1 is present
   RbtAtom *pAtom1 = pIntn->GetAtom1Ptr();
-  if (pAtom1 == NULL)
+  if (pAtom1 == nullptr)
     return;
 
   // DM 27 Oct 2000 - GetCoords now returns by reference

@@ -26,9 +26,9 @@ RbtFlexAtomFactory::RbtFlexAtomFactory(RbtModelList modelList) {
 }
 
 void RbtFlexAtomFactory::Visit(RbtModel *pModel) {
-  if (pModel != NULL) {
+  if (pModel != nullptr) {
     RbtFlexData *pFlexData = pModel->GetFlexData();
-    if (pFlexData != NULL) {
+    if (pFlexData != nullptr) {
       pFlexData->Accept(*this);
     } else {
       // If flex data is null, then model is rigid by default

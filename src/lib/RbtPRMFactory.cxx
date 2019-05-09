@@ -36,7 +36,7 @@ const std::string &RbtPRMFactory::_SOLV_SECTION = "SOLVENT";
 const std::string &RbtPRMFactory::_SOLV_FILE = "FILE";
 
 RbtPRMFactory::RbtPRMFactory(RbtParameterFileSource *pParamSource)
-    : m_pParamSource(pParamSource), m_pDS(NULL), m_iTrace(0) {}
+    : m_pParamSource(pParamSource), m_pDS(nullptr), m_iTrace(0) {}
 
 RbtPRMFactory::RbtPRMFactory(RbtParameterFileSource *pParamSource,
                              RbtDockingSite *pDS)

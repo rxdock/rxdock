@@ -122,9 +122,9 @@ void RbtCavityGridSF::ParameterUpdated(const std::string &strName) {
 RbtCavityGridSF::HeavyAtomFactory::HeavyAtomFactory(RbtModelList modelList) {
   for (RbtModelListConstIter iter = modelList.begin(); iter != modelList.end();
        iter++) {
-    if ((*iter).Ptr() != NULL) {
+    if ((*iter).Ptr() != nullptr) {
       RbtFlexData *pFlexData = (*iter)->GetFlexData();
-      if (pFlexData != NULL) {
+      if (pFlexData != nullptr) {
         pFlexData->Accept(*this);
       }
     }

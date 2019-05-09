@@ -103,12 +103,12 @@ double RbtChromTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
 }
 
 void RbtChromTest::testChromFactory() {
-  CPPUNIT_ASSERT(m_chrom_1koc.Ptr() != NULL);
+  CPPUNIT_ASSERT(m_chrom_1koc.Ptr() != nullptr);
 }
 
 void RbtChromTest::testCloneDestructor() {
   RbtChromElementPtr clone = m_chrom_1koc->clone();
-  CPPUNIT_ASSERT(m_chrom_1koc.Ptr() != NULL);
+  CPPUNIT_ASSERT(m_chrom_1koc.Ptr() != nullptr);
 }
 
 void RbtChromTest::testCloneLengthEquals() {
@@ -322,13 +322,13 @@ void RbtChromTest::testPopulationConstructorZeroSize() {
 void RbtChromTest::testPopulationConstructorNullChromosome() {
   setupWorkSpace();
   int popSize = 100;
-  RbtPopulationPtr pop = new RbtPopulation(NULL, popSize, m_SF);
+  RbtPopulationPtr pop = new RbtPopulation(nullptr, popSize, m_SF);
 }
 
 void RbtChromTest::testPopulationConstructorNullSF() {
   setupWorkSpace();
   int popSize = 100;
-  RbtPopulationPtr pop = new RbtPopulation(m_chrom_1koc, popSize, NULL);
+  RbtPopulationPtr pop = new RbtPopulation(m_chrom_1koc, popSize, nullptr);
 }
 
 void RbtChromTest::testPopulationRWFitness() {
@@ -404,8 +404,8 @@ void RbtChromTest::testRbtModelGetChromUndefinedFlexData() {
 }
 
 void RbtChromTest::testRbtModelGetChromNullFlexData() {
-  m_lig_1koc->SetFlexData(NULL);
-  m_recep_1koc->SetFlexData(NULL);
+  m_lig_1koc->SetFlexData(nullptr);
+  m_recep_1koc->SetFlexData(nullptr);
   RbtChromElementPtr chrom = new RbtChrom();
   chrom->Add(m_lig_1koc->GetChrom());
   chrom->Add(m_recep_1koc->GetChrom());

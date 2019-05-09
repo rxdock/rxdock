@@ -182,14 +182,14 @@ public:
 
   // DM 19 Oct 2005 - new chromosome handling
   // Sets the flexibility type for this model
-  // To revert to a rigid model, call SetFlexData(NULL)
+  // To revert to a rigid model, call SetFlexData(nullptr)
   void SetFlexData(RbtFlexData *pFlexData);
   // Gets the flexibility type of this model
-  // Returns NULL for a rigid model
+  // Returns nullptr for a rigid model
   RbtFlexData *GetFlexData() const;
   // Returns a clone of the current chromosome for this model
   // The caller has the responsibility for mem management of the clone
-  // Returns NULL for a rigid model
+  // Returns nullptr for a rigid model
   RbtChromElement *GetChrom() const;
 
   bool isFlexible() const;

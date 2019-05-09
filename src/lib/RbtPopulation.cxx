@@ -20,7 +20,7 @@ std::string RbtPopulation::_CT("RbtPopulation");
 RbtPopulation::RbtPopulation(RbtChromElement *pChr, int size, RbtBaseSF *pSF)
     : m_size(size), m_c(2.0), m_pSF(pSF), m_rand(Rbt::GetRbtRand()),
       m_scoreMean(0.0), m_scoreVariance(0.0) {
-  if (pChr == NULL) {
+  if (pChr == nullptr) {
     throw RbtBadArgument(
         _WHERE_, "Null chromosome element passed to RbtPopulation constructor");
   } else if (size <= 0) {
@@ -45,7 +45,7 @@ RbtPopulation::~RbtPopulation() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
 // Sets the scoring function used for ranking genomes
 void RbtPopulation::SetSF(RbtBaseSF *pSF) {
-  if (pSF == NULL) {
+  if (pSF == nullptr) {
     throw RbtBadArgument(_WHERE_, "Null scoring function passed to SetSF");
   }
   m_pSF = pSF;

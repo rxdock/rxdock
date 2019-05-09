@@ -381,7 +381,7 @@ void RbtVdwIdxSF::RenderAnnotationsByResidue(RbtStringList &retVal) const {
     if (resName != oldResName) {
       // Render the previous residue annotation (unless this is the first time
       // through)
-      if (spAnn.Ptr() != NULL) {
+      if (spAnn.Ptr() != nullptr) {
         // For residue summaries, we copy the score into the distance attribute.
         // The viewer 2.0 only displays distance labels so we fool it here into
         // displaying the vdw summary scores (more useful)
@@ -436,7 +436,7 @@ void RbtVdwIdxSF::RenderAnnotationsByResidue(RbtStringList &retVal) const {
   }
 
   // Render the final annotation
-  if (spAnn.Ptr() != NULL) {
+  if (spAnn.Ptr() != nullptr) {
     // For residue summaries, we copy the score into the distance attribute. The
     // viewer 2.0 only displays distance labels so we fool it here into
     // displaying the vdw summary scores (more useful)

@@ -27,7 +27,7 @@ RbtRealGrid::RbtRealGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
                          unsigned int NX, unsigned int NY, unsigned int NZ,
                          unsigned int NPad)
     : RbtBaseGrid(gridMin, gridStep, NX, NY, NZ, NPad), m_tol(0.001),
-      m_grid(NULL), m_data(NULL) {
+      m_grid(nullptr), m_data(nullptr) {
   CreateArrays();
   // Initialise the grid to zero
   SetAllValues(0.0);
@@ -37,7 +37,7 @@ RbtRealGrid::RbtRealGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
 
 // Constructor reading params from binary stream
 RbtRealGrid::RbtRealGrid(std::istream &istr)
-    : RbtBaseGrid(istr), m_grid(NULL), m_data(NULL) {
+    : RbtBaseGrid(istr), m_grid(nullptr), m_data(nullptr) {
   // Base class constructor has already read the grid dimensions
   // etc, so all we have to do here is created the array
   // and read in the grid values
@@ -54,7 +54,7 @@ RbtRealGrid::~RbtRealGrid() {
 
 // Copy constructor
 RbtRealGrid::RbtRealGrid(const RbtRealGrid &grid)
-    : RbtBaseGrid(grid), m_grid(NULL), m_data(NULL) {
+    : RbtBaseGrid(grid), m_grid(nullptr), m_data(nullptr) {
   // Base class constructor has already been called
   // so we just need to create the array and copy the array values
   CreateArrays();
@@ -65,7 +65,7 @@ RbtRealGrid::RbtRealGrid(const RbtRealGrid &grid)
 // Copy constructor taking a base class argument
 // Sets up the grid dimensions, then creates an empty data array
 RbtRealGrid::RbtRealGrid(const RbtBaseGrid &grid)
-    : RbtBaseGrid(grid), m_grid(NULL), m_data(NULL) {
+    : RbtBaseGrid(grid), m_grid(nullptr), m_data(nullptr) {
   CreateArrays();
   SetAllValues(0.0);
   _RBTOBJECTCOUNTER_COPYCONSTR_("RbtRealGrid");
@@ -524,7 +524,7 @@ void RbtRealGrid::SetValues(const RbtUIntList &iXYZList, double val,
 }
 
 void RbtRealGrid::CreateArrays() {
-  if (m_grid != NULL) { // Clear existing grid
+  if (m_grid != nullptr) { // Clear existing grid
     ClearArrays();
   }
   int nX = GetNX();
@@ -551,8 +551,8 @@ void RbtRealGrid::ClearArrays() {
   delete m_grid[1][1];
   delete m_grid[1];
   delete m_grid;
-  m_grid = NULL;
-  m_data = NULL;
+  m_grid = nullptr;
+  m_data = nullptr;
 }
 
 // Helper function called by copy constructor and assignment operator

@@ -108,7 +108,7 @@ void OccupancyTest::testFlexAtomFactoryReceptor() {
   // mode 1 is fixed receptor
   for (int mode = 0; mode < 2; ++mode) {
     if (mode == 1) {
-      spReceptor->SetFlexData(NULL);
+      spReceptor->SetFlexData(nullptr);
     }
     RbtFlexAtomFactory flexAtomFactory(spReceptor);
     RbtAtomRList fixedAtomList = flexAtomFactory.GetFixedAtomList();

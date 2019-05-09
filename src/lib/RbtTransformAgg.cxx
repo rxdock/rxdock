@@ -78,8 +78,8 @@ void RbtTransformAgg::Remove(RbtBaseTransform *pTransform) {
               << " from " << GetName() << std::endl;
 #endif //_DEBUG
     m_transforms.erase(iter);
-    pTransform->m_parent =
-        NULL; // Nullify the parent pointer of the child that has been removed
+    pTransform->m_parent = nullptr; // Nullify the parent pointer of the child
+                                    // that has been removed
   }
 }
 

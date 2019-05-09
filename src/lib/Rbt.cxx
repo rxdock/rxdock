@@ -27,7 +27,7 @@
 // GetRbtRoot - returns value of RBT_ROOT env variable
 std::string Rbt::GetRbtRoot() {
   char *szRbtRoot = getenv("RBT_ROOT");
-  if (szRbtRoot != (char *)NULL) {
+  if (szRbtRoot != (char *)nullptr) {
     return std::string(szRbtRoot);
   } else {
     return GetCurrentDirectory();
@@ -40,11 +40,11 @@ std::string Rbt::GetRbtRoot() {
 // If HOME is undefined, returns current working directory
 std::string Rbt::GetRbtHome() {
   char *szRbtHome = getenv("RBT_HOME");
-  if (szRbtHome != (char *)NULL) {
+  if (szRbtHome != (char *)nullptr) {
     return std::string(szRbtHome);
   } else {
     szRbtHome = getenv("HOME");
-    if (szRbtHome != (char *)NULL) {
+    if (szRbtHome != (char *)nullptr) {
       return std::string(szRbtHome);
     } else {
       return GetCurrentDirectory();
@@ -62,7 +62,7 @@ std::string Rbt::GetBuild() { return IDS_BUILDNUM; }
 std::string Rbt::GetProduct() { return IDS_PRODUCT; }
 // GetTime - returns current time as an RbtString
 std::string Rbt::GetTime() {
-  time_t t = ::time(NULL);                   // Get time in seconds since 1970
+  time_t t = ::time(nullptr);                // Get time in seconds since 1970
   tm *pLocalTime = ::localtime(&t);          // Convert to local time struct
   return std::string(::asctime(pLocalTime)); // Convert to ascii string
 }
@@ -70,7 +70,7 @@ std::string Rbt::GetTime() {
 std::string Rbt::GetCurrentDirectory() {
   std::string strCwd(".");
   char *szCwd = new char[PATH_MAX + 1]; // Allocate a temp char* array
-  if (::getcwd(szCwd, PATH_MAX) != (char *)NULL) { // Get the cwd
+  if (::getcwd(szCwd, PATH_MAX) != (char *)nullptr) { // Get the cwd
     strCwd = szCwd;
     // strCwd += "/";
   }
@@ -147,7 +147,7 @@ RbtStringList Rbt::GetDirList(const std::string &strDir,
                      0); // Check if we need to match on file type (suffix)
 
   DIR *pDir = opendir(strDir.c_str()); // Open directory
-  if (pDir != NULL) {
+  if (pDir != nullptr) {
 
     // DM 6 Dec 1999 - dirent_t appears to be SGI MIPSPro specific
     // At least on Linux g++, it is called dirent
@@ -157,7 +157,7 @@ RbtStringList Rbt::GetDirList(const std::string &strDir,
     dirent *pEntry;
 #endif
 
-    while ((pEntry = readdir(pDir)) != NULL) { // Read each entry
+    while ((pEntry = readdir(pDir)) != nullptr) { // Read each entry
       std::string strFile = pEntry->d_name;
       if ((strFile == ".") || (strFile == ".."))
         continue; // Don't need to consider . and ..

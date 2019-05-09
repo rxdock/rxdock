@@ -126,10 +126,10 @@ void RbtSimAnnTransform::SetupTransform() {
 void RbtSimAnnTransform::Execute() {
   // Get the current scoring function from the workspace
   RbtWorkSpace *pWorkSpace = GetWorkSpace();
-  if (pWorkSpace == NULL) // Return if this transform is not registered
+  if (pWorkSpace == nullptr) // Return if this transform is not registered
     return;
   RbtBaseSF *pSF = pWorkSpace->GetSF();
-  if (pSF == NULL) // Return if workspace does not have a scoring function
+  if (pSF == nullptr) // Return if workspace does not have a scoring function
     return;
   int iTrace = GetTrace();
 

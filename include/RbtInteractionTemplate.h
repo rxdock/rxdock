@@ -141,7 +141,7 @@ public:
 
   void SetInteractionLists(T *pIntn, double radius) {
     RbtAtom *pAtom = pIntn->GetProperty().atom;
-    if (NULL == pAtom)
+    if (nullptr == pAtom)
       return;
     const RbtCoord &c = pAtom->GetCoords();
     RbtUIntList sphereIndices;
