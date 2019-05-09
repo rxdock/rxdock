@@ -17,8 +17,7 @@
 #include "RbtFileError.h" // for exception types
 #include <dirent.h>       // for scandir()
 #include <fstream>        // ditto
-#include <sys/dir.h>
-#include <sys/stat.h> // for stat()
+#include <sys/stat.h>     // for stat()
 #include <sys/types.h>
 
 const unsigned int PATH_SIZE = 1024; // max path width
