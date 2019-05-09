@@ -108,7 +108,7 @@ public:
   void SetArg(int i, RbtReturnType f) { Arg[i] = f; }
   void SetNameArg(int i, std::string &n) { NameArg[i] = n; }
   RbtReturnType Execute() {
-    if (fabs(Arg[1]) < 0.000001)
+    if (std::fabs(Arg[1]) < 0.000001)
       return Arg[0];
     return Arg[0] / Arg[1];
   }
@@ -153,9 +153,9 @@ public:
   void SetArg(int i, RbtReturnType f) { Arg[i] = f; }
   void SetNameArg(int i, std::string &n) { NameArg[i] = n; }
   RbtReturnType Execute() {
-    if (fabs(Arg[0]) < 0.000001)
+    if (std::fabs(Arg[0]) < 0.000001)
       return 0;
-    return (log(fabs(Arg[0])));
+    return (std::log(std::fabs(Arg[0])));
   }
 
 private:
@@ -172,10 +172,10 @@ public:
   void SetNameArg(int i, std::string &n) { NameArg[i] = n; }
   RbtReturnType Execute() {
     if (Arg[0] > 200)
-      return exp(200);
+      return std::exp(200);
     if (Arg[0] < -200)
       return 0;
-    return exp(Arg[0]);
+    return std::exp(Arg[0]);
   }
 
 private:

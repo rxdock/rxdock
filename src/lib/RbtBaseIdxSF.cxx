@@ -105,7 +105,7 @@ double RbtBaseIdxSF::GetMaxError() const {
   // the ligand atom. However the actual ligand atom - receptor atom distance
   // may be maxError Angstroms closer than the grid point - receptor atom
   // distance used in the indexing.
-  return 0.5 * sqrt(3.0) * m_gridStep;
+  return 0.5 * std::sqrt(3.0) * m_gridStep;
 }
 
 // DM 12 Apr 2002

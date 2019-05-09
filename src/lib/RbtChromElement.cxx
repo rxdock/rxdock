@@ -19,8 +19,9 @@ double RbtChromElement::_THRESHOLD = 1E-4;
 RbtChromElement::eMode RbtChromElement::StrToMode(const std::string &modeStr) {
   eMode retVal;
   std::string modeStrUpper = modeStr;
+  // std::toupper will not work https://stackoverflow.com/a/7131881
   std::transform(modeStrUpper.begin(), modeStrUpper.end(), modeStrUpper.begin(),
-                 toupper);
+                 ::toupper);
   if (modeStrUpper == "FIXED") {
     retVal = FIXED;
   } else if (modeStrUpper == "TETHERED") {
@@ -82,7 +83,7 @@ bool RbtChromElement::VectorOK(const RbtXOverList &v, int i) const {
 void RbtChromElement::CauchyMutate(double mean, double variance) {
   // Need to convert the Cauchy random variable to a positive number
   // and use this as the relative step size for mutation
-  double relStepSize = fabs(m_rand.GetCauchyRandom(mean, variance));
+  double relStepSize = std::fabs(m_rand.GetCauchyRandom(mean, variance));
   Mutate(relStepSize);
 }
 

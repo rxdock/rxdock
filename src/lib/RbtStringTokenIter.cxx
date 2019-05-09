@@ -12,8 +12,8 @@
 
 #include "RbtStringTokenIter.h"
 #include "RbtCommands.h"
+#include <cerrno>
 #include <cstdlib>
-#include <errno.h>
 
 std::string RbtStringTokenIter::_CT("RbtStringTokenIter");
 
@@ -77,7 +77,7 @@ RbtTokenPtr RbtStringTokenIter::translate(std::string s) {
   {
     char *error;
     errno = 0;
-    double val = strtod(s.c_str(), &error);
+    double val = std::strtod(s.c_str(), &error);
     if (!errno && !*error) // This checks for errors
     {
       contextp->Assign(s, val);

@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
   // Brief help message
   if (argc == 1) {
     PrintUsage();
-    exit(1);
+    std::exit(1);
   }
   // parsing command-line options
   opterr = 0;
@@ -129,12 +129,12 @@ int main(int argc, char *argv[]) {
     case 'g':
       std::cout << "\t -g " << optarg << std::endl;
       strGridStep = optarg;
-      gs = atof(strGridStep.c_str());
+      gs = std::atof(strGridStep.c_str());
       break;
     case 'b':
       std::cout << "\t -b " << optarg << std::endl;
       strBorder = optarg;
-      border = atof(strBorder.c_str());
+      border = std::atof(strBorder.c_str());
       break;
     case 't':
       std::cout << "\t -t " << optarg << std::endl;
@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
       return 1;
     default:
       PrintUsage();
-      exit(1);
+      std::exit(1);
     }
   }
   std::cout << std::endl;

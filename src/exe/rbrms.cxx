@@ -152,7 +152,7 @@ double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
     for (int i = 0; i < nCoords; i++) {
       rms += Rbt::Length2(rc[i], c[i]);
     }
-    rms = sqrt(rms / float(nCoords));
+    rms = std::sqrt(rms / float(nCoords));
     return rms;
   }
 }
@@ -189,7 +189,7 @@ int main(int argc, char *argv[]) {
   bool bRemoveDups(false);
   double threshold(1.0);
   if (argc > 4) {
-    threshold = atof(argv[4]);
+    threshold = std::atof(argv[4]);
     bRemoveDups = true;
   }
 
@@ -304,7 +304,7 @@ int main(int argc, char *argv[]) {
     for (; (sIter != scoreVec.end()) && (rIter != rmsVec.end());
          sIter++, rIter++) {
       double de = (*sIter) - minScore;
-      double z = exp(-de / (8.314e-3 * 298.0));
+      double z = std::exp(-de / (8.314e-3 * 298.0));
       zTot += z;
       zMean += (*rIter) * z;
       zMean2 += (*rIter) * (*rIter) * z;
@@ -314,8 +314,8 @@ int main(int argc, char *argv[]) {
     }
     zMean /= zTot;
     double zVar = zMean2 / zTot - (zMean * zMean);
-    // std::cout << "zRMSD," << zTot << "," << zMean << "," << sqrt(zVar) <<
-    // std::endl;
+    // std::cout << "zRMSD," << zTot << "," << zMean << "," << std::sqrt(zVar)
+    // << std::endl;
   } catch (RbtError &e) {
     std::cout << e << std::endl;
   } catch (...) {

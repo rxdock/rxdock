@@ -132,7 +132,7 @@ void RbtPsfFileSource::Parse() {
         //
         // DM 4 Jan 1999 - check if force field type is numeric (parm22) or
         // string (parm19)
-        int nFFType = atoi(strFFType.c_str());
+        int nFFType = std::atoi(strFFType.c_str());
         if (nFFType > 0)
           strFFType = m_spCharmmData->AtomTypeString(
               nFFType); // Convert atom type from int to string

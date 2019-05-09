@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
       strOutputFile = strArg.substr(2);
     else if (strArg.find("-n") == 0) {
       std::string strGridNum = strArg.substr(2);
-      iGrid = atoi(strGridNum.c_str());
+      iGrid = std::atoi(strGridNum.c_str());
     } else {
       std::cout << " ** INVALID ARGUMENT" << std::endl;
       return 1;

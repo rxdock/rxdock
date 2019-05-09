@@ -50,7 +50,7 @@ void RbtMCStats::Accumulate(double score, bool bAccepted) {
 
 double RbtMCStats::Mean() const { return _total / _steps; }
 double RbtMCStats::Variance() const {
-  return _total2 / _steps - pow(Mean(), 2);
+  return _total2 / _steps - std::pow(Mean(), 2);
 }
 double RbtMCStats::AccRate() const { return float(_accepted) / float(_steps); }
 
@@ -152,7 +152,7 @@ void RbtSimAnnTransform::Execute() {
   }
 
   // Cooling factor (check for nBlocks=1)
-  double tFac = (nBlocks > 1) ? pow(tFinal / t, 1.0 / (nBlocks - 1)) : 1.0;
+  double tFac = (nBlocks > 1) ? std::pow(tFinal / t, 1.0 / (nBlocks - 1)) : 1.0;
 
   // DM 15 Feb 1999 - don't initialise the Monte Carlo stats each block
   // if we are doing a constant temperature run
@@ -197,9 +197,9 @@ void RbtSimAnnTransform::Execute() {
                 << m_spStats->AccRate() << std::setw(10) << stepSize
                 << std::setw(10) << m_spStats->_blockInitial << std::setw(10)
                 << m_spStats->_blockFinal << std::setw(10) << m_spStats->Mean()
-                << std::setw(10) << sqrt(m_spStats->Variance()) << std::setw(10)
-                << m_spStats->_blockMin << std::setw(10) << m_spStats->_blockMax
-                << std::endl;
+                << std::setw(10) << std::sqrt(m_spStats->Variance())
+                << std::setw(10) << m_spStats->_blockMin << std::setw(10)
+                << m_spStats->_blockMax << std::endl;
     }
 
     // Halve the maximum step sizes for all enabled modes
@@ -244,7 +244,7 @@ void RbtSimAnnTransform::MC(double t, int blockLen, double stepSize) {
     m_chrom->SyncToModel();
     double newScore = pSF->Score();
     double delta = newScore - score;
-    bool bMetrop = ((delta < 0.0) || (exp(-1000.0 * delta / (8.314 * t)) >
+    bool bMetrop = ((delta < 0.0) || (std::exp(-1000.0 * delta / (8.314 * t)) >
                                       m_rand.GetRandom01()));
     // PASSED
     if (bMetrop) {
@@ -278,7 +278,7 @@ void RbtSimAnnTransform::MC(double t, int blockLen, double stepSize) {
       pSF->HandleRequest(m_spPartReq);
       double oldScore = score;
       score = pSF->Score();
-      if (fabs(score - oldScore) > 0.001 && (iTrace > 1)) {
+      if (std::fabs(score - oldScore) > 0.001 && (iTrace > 1)) {
         std::cout
             << "** WARNING - Interaction lists updated, change in score = "
             << score - oldScore << std::endl;

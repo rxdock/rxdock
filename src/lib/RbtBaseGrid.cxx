@@ -93,9 +93,9 @@ void RbtBaseGrid::Read(std::istream &istr) { OwnRead(istr); }
 void RbtBaseGrid::SetGridMin(const RbtCoord &gridMin) {
   // Determine the integral min and max grid point coords (in multiples of grid
   // step from origin)
-  m_nXMin = floor(gridMin.x / m_step.x + 0.5);
-  m_nYMin = floor(gridMin.y / m_step.y + 0.5);
-  m_nZMin = floor(gridMin.z / m_step.z + 0.5);
+  m_nXMin = std::floor(gridMin.x / m_step.x + 0.5);
+  m_nYMin = std::floor(gridMin.y / m_step.y + 0.5);
+  m_nZMin = std::floor(gridMin.z / m_step.z + 0.5);
 
   // Max integral coords are just min+N-1
   m_nXMax = m_nXMin + m_NX - 1;

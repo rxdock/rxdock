@@ -18,7 +18,7 @@
 
 #ifdef _RBTOBJECTCOUNTER
 
-#include <iostream.h>
+#include <iostream>
 #include <map>
 
 // Object counter class for debugging no. of object constructions and

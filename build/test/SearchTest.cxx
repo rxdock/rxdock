@@ -71,7 +71,7 @@ double SearchTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
     for (int i = 0; i < nCoords; i++) {
       retVal += Rbt::Length2(rc[i], c[i]);
     }
-    retVal = sqrt(retVal / float(nCoords));
+    retVal = std::sqrt(retVal / float(nCoords));
   }
   return retVal;
 }
@@ -200,5 +200,5 @@ void SearchTest::testRestart() {
     std::cout << e.Message() << std::endl;
     isOK = false;
   }
-  CPPUNIT_ASSERT(isOK && (fabs(restartScore - finalScore) < 0.01));
+  CPPUNIT_ASSERT(isOK && (std::fabs(restartScore - finalScore) < 0.01));
 }

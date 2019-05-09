@@ -11,7 +11,7 @@
  ***********************************************************************/
 
 // Main docking application
-#include <errno.h>
+#include <cerrno>
 #include <iomanip>
 #include <unistd.h>
 
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
       strParamFile = optarg;
       break;
     case 'n':
-      nDockingRuns = atoi(optarg);
+      nDockingRuns = std::atoi(optarg);
       break;
     case 'P': // protonate
       bPosIonise = true;
@@ -173,7 +173,7 @@ int main(int argc, char *argv[]) {
       // threshold. Otherwise, I assume is the filter file name
       char *error;
       errno = 0;
-      val = strtod(optarg, &error);
+      val = std::strtod(optarg, &error);
       if (!errno && !*error) // Is it a number?
       {
         dTargetScore = val;
@@ -186,11 +186,11 @@ int main(int argc, char *argv[]) {
       break;
     case 's':
       bSeed = true;
-      nSeed = atoi(optarg);
+      nSeed = std::atoi(optarg);
       break;
     case 'T':
       bTrace = true;
-      iTrace = atoi(optarg);
+      iTrace = std::atoi(optarg);
       break;
     default:
       break;
@@ -204,7 +204,7 @@ int main(int argc, char *argv[]) {
   if (strLigandMdlFile.empty() || strReceptorPrmFile.empty() ||
       strParamFile.empty()) { // if any of them is missing
     std::cout << "Missing required parameter(s)" << std::endl;
-    exit(1);
+    std::exit(1);
   }
   std::cout << " -i " << strLigandMdlFile << std::endl;
   std::cout << " -r " << strReceptorPrmFile << std::endl;

@@ -353,7 +353,7 @@ void RbtMdlFileSource::SetupHybridState() {
           RbtPlane p = RbtPlane(c0 + v1.Unit(), c0 + v2.Unit(),
                                 c0 + v3.Unit()); // Plane of three substs
           // This is the signed distance from the atom to the plane
-          double dist = fabs(Rbt::DistanceFromPointToPlane(c0, p));
+          double dist = std::fabs(Rbt::DistanceFromPointToPlane(c0, p));
 #ifdef _DEBUG
           std::cout << "Distance from " << (*iter)->GetAtomName()
                     << " to plane of substituents=" << dist << std::endl;

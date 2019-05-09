@@ -71,8 +71,8 @@ double RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
     for (int j = 0; j < RbtGPGenome::GetNO(); j++)
       if (function) {
         double d = 2.5 * rmsd + scoreM - *(o[j]);
-        tot += d * d; // abs(d); // * d;
-        // if (abs(2.5 * rmsd + scoreM - *(o[j])) < range)
+        tot += d * d; // std::abs(d); // * d;
+        // if (std::abs(2.5 * rmsd + scoreM - *(o[j])) < range)
         //     tot++;
       } else if (*(o[j]) < 0.0) {
         if (rmsd < hitlimit)

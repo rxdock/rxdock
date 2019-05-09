@@ -142,7 +142,7 @@ void RbtFilter::SetupScore() {
       ->UpdateScores(GetWorkSpace()->GetSF(), GetWorkSpace()->GetModel(1));
   // write down SCORE.NRUNS to make sure is getting the
   // right value
-  //  exit(1);
+  //  std::exit(1);
 }
 
 // Finished with ligand?

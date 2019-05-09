@@ -338,7 +338,7 @@ void HHS_Solvation::Overlap(HHS_Solvation *h, double p_ij) {
     return;
   }
 
-  double d = sqrt(d2);
+  double d = std::sqrt(d2);
   double recip_d = 1.0 / d;
   double ol_minus_d = ol - d;
   double r_i_diff_over_d = recip_d * (h->r_i - r_i);

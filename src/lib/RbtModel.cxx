@@ -191,7 +191,7 @@ RbtAtomList RbtModel::GetTetheredAtomList() const {
     for (RbtStringListConstIter iter2 = strTetheredAtoms.begin();
          iter2 != strTetheredAtoms.end(); iter2++) {
       // Remember to subtract 1 from atom ID to convert to atom list index
-      int i = atoi((*iter2).c_str()) - 1;
+      int i = std::atoi((*iter2).c_str()) - 1;
       if ((i >= 0) && (i < m_atomList.size())) {
         tetheredAtomList.push_back(m_atomList[i]);
       } else {
@@ -943,7 +943,7 @@ void RbtModel::Create(RbtBaseMolecularFileSource *pMolSource) {
 
     // 31 Oct 2000 (DM) Hack to disable ring detection
     // if $RBT_NORINGS is defined
-    char *szRbtNoRings = getenv("RBT_NORINGS");
+    char *szRbtNoRings = std::getenv("RBT_NORINGS");
     if (szRbtNoRings == (char *)nullptr) {
       Rbt::FindRings(m_atomList, m_bondList, m_ringList);
       // than set aromatic type for pi atoms. m_ringList is RbtAtomListList

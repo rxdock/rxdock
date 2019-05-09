@@ -29,8 +29,9 @@ double RbtDihedral::operator()() const {
   for (int i = 0; i != m_prms.size(); ++i) {
     // Subtract the implicit hydrogen offset from the actual dihedral angle
     double dih1 = dih - m_prms[i].offset;
-    score += m_prms[i].k *
-             (1.0 + m_prms[i].sign * cos(m_prms[i].s * dih1 * M_PI / 180.0));
+    score +=
+        m_prms[i].k *
+        (1.0 + m_prms[i].sign * std::cos(m_prms[i].s * dih1 * M_PI / 180.0));
     // std::cout << m_pAtom1->GetAtomName() << "," << m_pAtom2->GetAtomName() <<
     // ","
     // << m_pAtom3->GetAtomName() << ","
@@ -255,8 +256,8 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
 
   RbtStringList paramList = Rbt::ConvertDelimitedStringToList(strParams);
   // Add checks on #params
-  double k = atof(paramList[0].c_str());
-  double s = atof(paramList[1].c_str());
+  double k = std::atof(paramList[0].c_str());
+  double s = std::atof(paramList[1].c_str());
   if (iTrace > 1) {
     std::cout << _CT << ": Assigned " << str1 << "," << str2 << "," << str3
               << "," << str4 << "\tk=" << k << ", s=" << s << std::endl;

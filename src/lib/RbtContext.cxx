@@ -56,7 +56,7 @@ RbtStringContext::RbtStringContext(SmartPtr<std::ifstream> ifile) {
       for (; i < nctes + nvbles ; i++)
       {
           (*ifile) >> name;
-          RbtDouble val = atof(name.c_str());
+          RbtDouble val = std::atof(name.c_str());
           vm[name] = new RbtVble(name, val);
       } */
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
@@ -82,7 +82,7 @@ RbtCellContext::RbtCellContext(std::ifstream &ifile) {
   }
   for (; i < nctes + nvbles; i++) {
     ifile >> key >> name;
-    double val = atof(name.c_str());
+    double val = std::atof(name.c_str());
     vm[key] = new RbtVble(name, val);
   }
   _RBTOBJECTCOUNTER_CONSTR_(_CT);

@@ -16,14 +16,14 @@
 #include "RbtGPGenome.h"
 #include "RbtGPPopulation.h"
 #include "RbtParser.h"
+#include <cstdio>
 #include <fstream>
-#include <stdio.h>
 
 int main(int argc, char *argv[]) {
   try {
     RbtRand &theRand = Rbt::GetRbtRand(); // ref to random number generator
     if (argc > 1)
-      theRand.Seed(atoi(argv[2]));
+      theRand.Seed(std::atoi(argv[2]));
     else
       theRand.SeedFromClock();
     std::cout << "Seed: " << theRand.GetSeed() << std::endl;

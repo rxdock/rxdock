@@ -96,7 +96,7 @@ void RbtBiMolWorkSpace::UpdateModelCoordsFromChromRecords(
               for (RbtStringListConstIter iter = chromValues.begin();
                    iter != chromValues.end(); ++iter) {
                 std::string chromValue(*iter);
-                chromVec.push_back(atof(chromValue.c_str()));
+                chromVec.push_back(std::atof(chromValue.c_str()));
               }
               spChrom->SetVector(chromVec);
               spChrom->SyncToModel();

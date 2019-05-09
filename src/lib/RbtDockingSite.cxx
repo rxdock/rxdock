@@ -310,6 +310,6 @@ void RbtDockingSite::CreateGrid() {
          iter != allCoords.end() && dist2 > mindist2; iter++) {
       dist2 = std::min(dist2, Rbt::Length2(c - (*iter)));
     }
-    m_spGrid->SetValue(i, sqrt(dist2));
+    m_spGrid->SetValue(i, std::sqrt(dist2));
   }
 }

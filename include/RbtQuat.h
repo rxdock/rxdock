@@ -15,7 +15,7 @@
 #ifndef _RBTQUAT_H_
 #define _RBTQUAT_H_
 
-#include <math.h> //for sqrt
+#include <cmath> //for sqrt
 
 #include "RbtCoord.h"
 
@@ -48,8 +48,8 @@ public:
   // CAUTION: Argument types are the reverse of above
   inline RbtQuat(const RbtVector &axis, double phi) {
     double halfPhi(0.5 * phi);
-    s = cos(halfPhi);
-    v = sin(halfPhi) * axis.Unit();
+    s = std::cos(halfPhi);
+    v = std::sin(halfPhi) * axis.Unit();
   }
 
   // Destructor
@@ -161,7 +161,7 @@ public:
   // Returns magnitude of quat
   // Member function (L = Q1.Length())
   inline double Length() const {
-    return sqrt(s * s + v.x * v.x + v.y * v.y + v.z * v.z);
+    return std::sqrt(s * s + v.x * v.x + v.y * v.y + v.z * v.z);
   }
 
   // Returns unit quat

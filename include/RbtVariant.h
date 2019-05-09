@@ -104,7 +104,7 @@ public:
 
   void operator+=(const RbtVariant &v) {
     std::copy(v.m_sl.begin(), v.m_sl.end(), std::back_inserter(m_sl));
-    m_d = atof(String().c_str());
+    m_d = std::atof(String().c_str());
   }
 
   // Conversion operators to convert back to basic types
@@ -165,12 +165,12 @@ private:
     m_sl.clear();
     if (!s.empty())
       m_sl.push_back(s);
-    m_d = atof(String().c_str());
+    m_d = std::atof(String().c_str());
   }
 
   void SetStringList(const RbtStringList &sl) {
     m_sl = sl;
-    m_d = atof(String().c_str());
+    m_d = std::atof(String().c_str());
   }
 
   void SetBool(bool b) {

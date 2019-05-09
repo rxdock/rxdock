@@ -105,7 +105,7 @@ namespace Rbt {
 // by the magnitude of the normal vector
 // DM 31 Mar 1999 - returned signed distance (not absolute value)
 inline double DistanceFromPointToPlane(const RbtCoord &c0, const RbtPlane &p) {
-  // return fabs( c0.Dot(p.VNorm()) + p.D() );
+  // return std::fabs( c0.Dot(p.VNorm()) + p.D() );
   return c0.Dot(p.VNorm()) + p.D();
 }
 

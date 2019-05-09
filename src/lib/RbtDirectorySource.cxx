@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-//#include <stdlib.h>				// for getenv
+//#include <cstdlib>				// for getenv
 //#include "RbtFileError.h"
 #include "RbtDirectorySource.h"
 #include <iostream>
@@ -26,8 +26,8 @@ RbtDirectorySource::RbtDirectorySource(const std::string &aDirectory) {
   //// filename without path after scandir() std::string theLine;
   //// line read
 
-  thePath = (std::string)getenv("RBT_ROOT"); // path string to the dir
-  if (thePath.empty())                       // $RBT_ROOT not defined ...
+  thePath = (std::string)std::getenv("RBT_ROOT"); // path string to the dir
+  if (thePath.empty())                            // $RBT_ROOT not defined ...
     throw RbtEnvNotDefined(_WHERE_, "$RBT_ROOT ");
   else if (aDirectory.size() > PATH_SIZE) // or string is too long
     throw RbtStringTooLong(_WHERE_, " ");
@@ -56,7 +56,7 @@ void RbtDirectorySource::CheckDirectory(std::string &aDir) {
       (char *)aDir.c_str(); // unbelivable annoying buglet in Solaris gcc 2.95.3
   fNum = scandir(theDir, &fNameList, 0, alphasort); // get dir entries
   //    std::cout << "Not running on Slowaris" << std::endl;
-  //	exit(1);
+  //    std::exit(1);
   if (fNum < 1)
     throw RbtNoFileInDir(_WHERE_, " No files in directory. ");
   else

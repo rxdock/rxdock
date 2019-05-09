@@ -434,7 +434,7 @@ double RbtPolarIdxSF::InterScore(const RbtInteractionCenterList &posList,
       s = PolarScore(*lIter, rList, Rprms, A2prms, A2prms);
     }
     s *= pLig1->GetUser1Value();
-    if (bCount && (fabs(s) > m_negThreshold)) {
+    if (bCount && (std::fabs(s) > m_negThreshold)) {
       m_nNeg++;
     }
     score += s;
@@ -459,7 +459,7 @@ double RbtPolarIdxSF::InterScore(const RbtInteractionCenterList &posList,
       s = PolarScore(*lIter, rList, Rprms, A1prms, A1prms);
     }
     s *= pLig1->GetUser1Value();
-    if (bCount && (fabs(s) > m_posThreshold)) {
+    if (bCount && (std::fabs(s) > m_posThreshold)) {
       m_nPos++;
     }
     score += s;

@@ -190,7 +190,7 @@ void RbtPMFIdxSF::SetupReceptor() {
     for (RbtAtomListIter sIter = theReceptorList.begin();
          sIter != theReceptorList.end(); ++sIter) {
       theSurround->SetAtomLists(
-          *sIter, range); // get surround at cutoff+gridstep*sqrt(3)/2
+          *sIter, range); // get surround at cutoff+gridstep*std::sqrt(3)/2
       // initialise cumulative PMF values for annotation
       (*sIter)->SetUser2Value(0.0);
     }

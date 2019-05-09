@@ -97,7 +97,7 @@ double RbtChromTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
     for (int i = 0; i < nCoords; i++) {
       retVal += Rbt::Length2(rc[i], c[i]);
     }
-    retVal = sqrt(retVal / float(nCoords));
+    retVal = std::sqrt(retVal / float(nCoords));
   }
   return retVal;
 }
@@ -346,7 +346,7 @@ void RbtChromTest::testPopulationRWFitness() {
     isAscending = (value >= lastValue);
     lastValue = value;
   }
-  CPPUNIT_ASSERT(isAscending && (fabs(lastValue - 1.0) < TINY));
+  CPPUNIT_ASSERT(isAscending && (std::fabs(lastValue - 1.0) < TINY));
 }
 
 void RbtChromTest::testPopulationRWSelect() {
@@ -608,8 +608,9 @@ void RbtChromTest::testRandomiseOccupancy() {
   minDiff *= stepSize;
   meanDiff *= stepSize;
   maxDiff *= stepSize;
-  CPPUNIT_ASSERT((fabs(minDiff) < 0.01) && (fabs(meanDiff - 0.5) < 0.01) &&
-                 (fabs(maxDiff - 1.0) < 0.01));
+  CPPUNIT_ASSERT((std::fabs(minDiff) < 0.01) &&
+                 (std::fabs(meanDiff - 0.5) < 0.01) &&
+                 (std::fabs(maxDiff - 1.0) < 0.01));
 }
 
 void RbtChromTest::testOccupancyThreshold() {
@@ -632,7 +633,7 @@ void RbtChromTest::testOccupancyThreshold() {
     }
   }
   double enabledProb = (double)nEnabled / (double)nTrials;
-  CPPUNIT_ASSERT((fabs(enabledProb - occupancyProb) < 0.01));
+  CPPUNIT_ASSERT((std::fabs(enabledProb - occupancyProb) < 0.01));
 }
 
 void RbtChromTest::measureRandOrMutateDiff(RbtChromElement *chrom, int nTrials,

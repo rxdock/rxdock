@@ -104,7 +104,7 @@ double RbtGPFFSpike::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
     for (int j = 0; j < RbtGPGenome::GetNO(); j++)
       if (function) {
         std::cout << "Error, no function possible with spike\n";
-        exit(1);
+        std::exit(1);
       } else if (*(o[j]) < 0.0) {
         if (hit < hitlimit)
           good++; // += 1.2;
@@ -197,7 +197,7 @@ void RbtGPFFSpike::CreateRandomCtes(int nctes) {
     for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
-      c = (a / 10.0) * pow(10, b);
+      c = (a / 10.0) * std::pow(10, b);
       std::cout << "c" << i + 2 << " \t" << c << std::endl;
       ctes.push_back(c);
     }

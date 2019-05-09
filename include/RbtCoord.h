@@ -18,7 +18,7 @@
 #define _RBTCOORD_H_
 
 #include <algorithm> //for min,max
-#include <math.h>    //for sqrt
+#include <cmath>     //for sqrt
 #include <numeric>   //for accumulate
 
 #include "RbtConfig.h"
@@ -296,7 +296,7 @@ public:
   inline double Length2() const { return x * x + y * y + z * z; }
 
   // Returns magnitude of vector (or distance from origin)
-  inline double Length() const { return sqrt(Length2()); }
+  inline double Length() const { return std::sqrt(Length2()); }
 
   // Returns unit vector in same direction
   // Member function (V2 = V1.Unit())
@@ -385,7 +385,7 @@ inline double Angle(const RbtVector &v1, const RbtVector &v2) {
   double sin_theta = (v1.Cross(v2)).Length() / d1d2;
 
   // Get theta and convert to degrees
-  double theta = atan2(sin_theta, cos_theta);
+  double theta = std::atan2(sin_theta, cos_theta);
   return theta * 180.0 / M_PI;
 }
 
@@ -412,7 +412,7 @@ inline double Dihedral(const RbtVector &v1, const RbtVector &v2,
   double cos_phi = A.Dot(B) / (rA * rB);
   double sin_phi = C.Dot(B) / (rC * rB);
   // Get phi and convert to degrees
-  double phi = -atan2(sin_phi, cos_phi);
+  double phi = -std::atan2(sin_phi, cos_phi);
   return phi * 180.0 / M_PI;
 }
 

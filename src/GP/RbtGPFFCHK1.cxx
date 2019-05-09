@@ -177,7 +177,7 @@ void RbtGPFFCHK1::CreateRandomCtes(int nctes) {
     for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
-      c = (a / 10.0) * pow(10, b);
+      c = (a / 10.0) * std::pow(10, b);
       std::cout << "c" << i + 2 << " \t" << c << std::endl;
       ctes.push_back(c);
     }

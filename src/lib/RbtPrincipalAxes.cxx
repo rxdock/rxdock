@@ -11,7 +11,7 @@
  ***********************************************************************/
 
 // Principal axes calculation routines (in Rbt namespace)
-#include <errno.h>
+#include <cerrno>
 #include <iomanip>
 
 #include "RbtError.h"
@@ -321,10 +321,10 @@ RbtQuat Rbt::GetQuatFromAlignVectors(const RbtVector &v, const RbtVector &ref) {
     }
     errno = 0;
     // Convert rotation axis and angle to a quaternion
-    double halfPhi = 0.5 * acos(cosPhi);
+    double halfPhi = 0.5 * std::acos(cosPhi);
     if ((halfPhi > 0.001) && (errno != EDOM)) {
       RbtVector axisUnit = axis / axisLen;
-      retVal = RbtQuat(cos(halfPhi), sin(halfPhi) * axisUnit);
+      retVal = RbtQuat(std::cos(halfPhi), std::sin(halfPhi) * axisUnit);
     }
   }
   return retVal;

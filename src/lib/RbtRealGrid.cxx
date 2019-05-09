@@ -267,19 +267,20 @@ void RbtRealGrid::CreateSurface(double oldVal, double adjVal, double newVal) {
     for (unsigned int iY = iMinY; iY <= iMaxY; iY++) {
       for (unsigned int iZ = iMinZ; iZ <= iMaxZ; iZ++) {
         // We have a match with oldVal
-        if (fabs(m_grid[iX][iY][iZ] - oldVal) < m_tol) {
+        if (std::fabs(m_grid[iX][iY][iZ] - oldVal) < m_tol) {
           // Check the six adjacent points for a match with adjVal
           if (((iX > iMinX) &&
-               (fabs(m_grid[iX - 1][iY][iZ] - adjVal) < m_tol)) ||
+               (std::fabs(m_grid[iX - 1][iY][iZ] - adjVal) < m_tol)) ||
               ((iX < iMaxX) &&
-               (fabs(m_grid[iX + 1][iY][iZ] - adjVal) < m_tol)) ||
+               (std::fabs(m_grid[iX + 1][iY][iZ] - adjVal) < m_tol)) ||
               ((iY > iMinY) &&
-               (fabs(m_grid[iX][iY - 1][iZ] - adjVal) < m_tol)) ||
+               (std::fabs(m_grid[iX][iY - 1][iZ] - adjVal) < m_tol)) ||
               ((iY < iMaxY) &&
-               (fabs(m_grid[iX][iY + 1][iZ] - adjVal) < m_tol)) ||
+               (std::fabs(m_grid[iX][iY + 1][iZ] - adjVal) < m_tol)) ||
               ((iZ > iMinZ) &&
-               (fabs(m_grid[iX][iY][iZ - 1] - adjVal) < m_tol)) ||
-              ((iZ < iMaxZ) && (fabs(m_grid[iX][iY][iZ + 1] - adjVal) < m_tol)))
+               (std::fabs(m_grid[iX][iY][iZ - 1] - adjVal) < m_tol)) ||
+              ((iZ < iMaxZ) &&
+               (std::fabs(m_grid[iX][iY][iZ + 1] - adjVal) < m_tol)))
             m_grid[iX][iY][iZ] = newVal;
         }
       }
@@ -322,7 +323,7 @@ void RbtRealGrid::SetAccessible(double radius, double oldVal, double adjVal,
     for (unsigned int iY = iMinY; iY <= iMaxY; iY++) {
       for (unsigned int iZ = iMinZ; iZ <= iMaxZ; iZ++) {
         // We have a match with oldVal
-        if (fabs(m_grid[iX][iY][iZ] - oldVal) < m_tol) {
+        if (std::fabs(m_grid[iX][iY][iZ] - oldVal) < m_tol) {
           RbtCoord c = GetCoord(iX, iY, iZ);
           // Check the sphere around this grid point
           GetSphereIndices(c, radius, sphereIndices);
@@ -502,7 +503,7 @@ void RbtRealGrid::OwnRead(std::istream &istr) {
 bool RbtRealGrid::isValueWithinList(const RbtUIntList &iXYZList, double val) {
   for (RbtUIntListConstIter iter = iXYZList.begin(); iter != iXYZList.end();
        iter++) {
-    if (fabs(m_data[*iter] - val) < m_tol) {
+    if (std::fabs(m_data[*iter] - val) < m_tol) {
       return true;
     }
   }
@@ -517,7 +518,7 @@ void RbtRealGrid::SetValues(const RbtUIntList &iXYZList, double val,
                             bool bOverwrite) {
   for (RbtUIntListConstIter iter = iXYZList.begin(); iter != iXYZList.end();
        iter++) {
-    if (bOverwrite || (fabs(m_data[*iter]) < m_tol)) {
+    if (bOverwrite || (std::fabs(m_data[*iter]) < m_tol)) {
       m_data[*iter] = val;
     }
   }

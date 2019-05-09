@@ -137,7 +137,7 @@ double RbtChromDihedralElement::CompareVector(const RbtDoubleList &v,
     double otherAngle = v[i++];
     double stepSize = m_spRefData->GetStepSize();
     if (stepSize > 0.0) {
-      double absDiff = fabs(StandardisedValue(m_value - otherAngle));
+      double absDiff = std::fabs(StandardisedValue(m_value - otherAngle));
       retVal = absDiff / stepSize;
     }
   }

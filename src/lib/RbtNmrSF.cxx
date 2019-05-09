@@ -265,7 +265,7 @@ double RbtNmrSF::NoeDistance(const RbtNoeRestraintAtoms &noe) const {
                           ? std::max(dist_sq, dist1_sq)
                           : std::min(dist_sq, dist1_sq);
     }
-    return sqrt(dist_sq);
+    return std::sqrt(dist_sq);
   }
 }
 
@@ -304,7 +304,7 @@ double RbtNmrSF::StdDistance(const RbtStdRestraintAtoms &std) const {
                                                   ? std::max(dist_sq, dist1_sq)
                                                   : std::min(dist_sq, dist1_sq);
   }
-  return sqrt(dist_sq);
+  return std::sqrt(dist_sq);
 }
 
 void RbtNmrSF::ParameterUpdated(const std::string &strName) {

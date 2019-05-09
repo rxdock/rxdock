@@ -124,7 +124,7 @@ double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
       if (s != 0.0) {
         score += s;
         RbtAnnotationPtr spAnnotation(
-            new RbtAnnotation(pAtom, *iter, sqrt(R_sq), s));
+            new RbtAnnotation(pAtom, *iter, std::sqrt(R_sq), s));
         AddAnnotation(spAnnotation);
       }
     }
@@ -194,7 +194,7 @@ double RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
         if (s != 0.0) {
           score += s;
           RbtAnnotationPtr spAnnotation(
-              new RbtAnnotation(pAtom, *iter, sqrt(R_sq), s));
+              new RbtAnnotation(pAtom, *iter, std::sqrt(R_sq), s));
           AddAnnotation(spAnnotation);
         }
       }
@@ -257,7 +257,8 @@ double RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
 //      if (s != 0.0) {
 //	score += s;
 //	RbtAnnotationPtr spAnnotation(new
-// RbtAnnotation(pAtom,*iter,sqrt(R_sq),s)); 	AddAnnotation(spAnnotation);
+// RbtAnnotation(pAtom,*iter,std::sqrt(R_sq),s));
+// AddAnnotation(spAnnotation);
 //      }
 //    }
 //  }
@@ -354,17 +355,18 @@ void RbtVdwSF::Setup() {
       // OR, use Standard L-J combination rules for well depth
       // switch to this mode if either atom is missing IP values
       else if (m_use_tripos || !hasIPi || !hasIPj) {
-        prms.kij = sqrt(Ki * Kj);
+        prms.kij = std::sqrt(Ki * Kj);
       }
       // OR, use GOLD rules based on ionisation potential and polarisability
       else {
         double D = 0.345 * Ii * Ij * alphai * alphaj / (Ii + Ij);
-        double C = 0.5 * D * pow(prms.rmin, 6);
+        double C = 0.5 * D * std::pow(prms.rmin, 6);
         prms.kij = D * D / (4.0 * C);
       }
       // Having got the well depth, we can now generate A and B for either 4-8
       // or 6-12
-      double rmin_pwr = (m_use_4_8) ? pow(prms.rmin, 4) : pow(prms.rmin, 6);
+      double rmin_pwr =
+          (m_use_4_8) ? std::pow(prms.rmin, 4) : std::pow(prms.rmin, 6);
       prms.A = prms.kij * rmin_pwr * rmin_pwr;
       prms.B = 2.0 * prms.kij * rmin_pwr;
       m_vdwTable[i][j] = prms;
@@ -373,7 +375,7 @@ void RbtVdwSF::Setup() {
         std::cout << triposType.Type2Str(RbtTriposAtomType::eType(i)) << ","
                   << triposType.Type2Str(RbtTriposAtomType::eType(j)) << ","
                   << prms.A << "," << prms.B << "," << prms.rmin << ","
-                  << prms.kij << "," << sqrt(prms.rmax_sq) << std::endl;
+                  << prms.kij << "," << std::sqrt(prms.rmax_sq) << std::endl;
       }
     }
   }
@@ -396,14 +398,14 @@ void RbtVdwSF::SetupCloseRange() {
     std::cout << std::endl << _CT << "::SetupCloseRange()" << std::endl;
     std::cout << "TYPE1,TYPE2,RCUT,ECUT,SLOPE,E0" << std::endl;
   }
-  double x = 1.0 + sqrt(1.0 + m_ecut);
-  double p = (m_use_4_8) ? pow(x, 1.0 / 4.0) : pow(x, 1.0 / 6.0);
+  double x = 1.0 + std::sqrt(1.0 + m_ecut);
+  double p = (m_use_4_8) ? std::pow(x, 1.0 / 4.0) : std::pow(x, 1.0 / 6.0);
   double c = 1.0 / p;
   for (RbtVdwTableIter iter1 = m_vdwTable.begin(); iter1 != m_vdwTable.end();
        iter1++) {
     for (RbtVdwRowIter iter2 = (*iter1).begin(); iter2 != (*iter1).end();
          iter2++) {
-      (*iter2).rcutoff_sq = pow((*iter2).rmin * c, 2);
+      (*iter2).rcutoff_sq = std::pow((*iter2).rmin * c, 2);
       (*iter2).ecutoff = (*iter2).kij * m_ecut;
       (*iter2).e0 = (*iter2).ecutoff * m_e0;
       (*iter2).slope = ((*iter2).e0 - (*iter2).ecutoff) / (*iter2).rcutoff_sq;
@@ -413,8 +415,9 @@ void RbtVdwSF::SetupCloseRange() {
                   << ","
                   << triposType.Type2Str(
                          RbtTriposAtomType::eType(iter2 - (*iter1).begin()))
-                  << "," << sqrt((*iter2).rcutoff_sq) << "," << (*iter2).ecutoff
-                  << "," << (*iter2).slope << "," << (*iter2).e0 << std::endl;
+                  << "," << std::sqrt((*iter2).rcutoff_sq) << ","
+                  << (*iter2).ecutoff << "," << (*iter2).slope << ","
+                  << (*iter2).e0 << std::endl;
       }
     }
   }

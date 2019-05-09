@@ -13,11 +13,11 @@
 // Misc non-member functions in Rbt namespace
 
 #include <algorithm> //For sort
+#include <climits>   //For PATH_MAX
+#include <cstdlib>   //For getenv
+#include <ctime>     //For time functions
 #include <dirent.h>  //For directory handling
 #include <fstream>   //For ifstream
-#include <limits.h>  //For PATH_MAX
-#include <stdlib.h>  //For getenv
-#include <time.h>    //For time functions
 #include <unistd.h>  //For POSIX getcwd
 //#include <ios>
 #include "Rbt.h"
@@ -26,7 +26,7 @@
 
 // GetRbtRoot - returns value of RBT_ROOT env variable
 std::string Rbt::GetRbtRoot() {
-  char *szRbtRoot = getenv("RBT_ROOT");
+  char *szRbtRoot = std::getenv("RBT_ROOT");
   if (szRbtRoot != (char *)nullptr) {
     return std::string(szRbtRoot);
   } else {
@@ -39,11 +39,11 @@ std::string Rbt::GetRbtRoot() {
 // or HOME if RBT_HOME is not defined
 // If HOME is undefined, returns current working directory
 std::string Rbt::GetRbtHome() {
-  char *szRbtHome = getenv("RBT_HOME");
+  char *szRbtHome = std::getenv("RBT_HOME");
   if (szRbtHome != (char *)nullptr) {
     return std::string(szRbtHome);
   } else {
-    szRbtHome = getenv("HOME");
+    szRbtHome = std::getenv("HOME");
     if (szRbtHome != (char *)nullptr) {
       return std::string(szRbtHome);
     } else {
@@ -62,9 +62,9 @@ std::string Rbt::GetBuild() { return IDS_BUILDNUM; }
 std::string Rbt::GetProduct() { return IDS_PRODUCT; }
 // GetTime - returns current time as an RbtString
 std::string Rbt::GetTime() {
-  time_t t = ::time(nullptr);                // Get time in seconds since 1970
-  tm *pLocalTime = ::localtime(&t);          // Convert to local time struct
-  return std::string(::asctime(pLocalTime)); // Convert to ascii string
+  std::time_t t = std::time(nullptr);       // Get time in seconds since 1970
+  std::tm *pLocalTime = std::localtime(&t); // Convert to local time struct
+  return std::string(std::asctime(pLocalTime)); // Convert to ascii string
 }
 // GetCurrentDirectory - returns current working directory
 std::string Rbt::GetCurrentDirectory() {

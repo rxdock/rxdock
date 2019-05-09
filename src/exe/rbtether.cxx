@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
     if ((argc == 2) && !strReferenceSDFile.empty()) {
       // smile expression found for the reference file. Nothing
       // else to be done
-      exit(0);
+      std::exit(0);
     }
     if (tetherAtoms.empty()) {
       throw RbtError(_WHERE_, "SMARTS query should have at least one match in "

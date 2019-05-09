@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include <time.h> //Time functions for initialising the random number generator from the system clock
+#include <ctime> //Time functions for initialising the random number generator from the system clock
 
 #include "RbtRand.h"
 #include "Singleton.h"
@@ -40,7 +40,7 @@ RbtRand::~RbtRand() { _RBTOBJECTCOUNTER_DESTR_("RbtRand"); }
 void RbtRand::Seed(int seed) { m_rand.seed(seed); }
 
 // Seed the random number generator from the system clock
-void RbtRand::SeedFromClock() { m_rand.seed(::time(nullptr)); }
+void RbtRand::SeedFromClock() { m_rand.seed(std::time(nullptr)); }
 
 // Returns current seed
 int RbtRand::GetSeed() { return m_rand.GetSeed(); }
@@ -55,9 +55,9 @@ int RbtRand::GetRandomInt(int nMax) {
 RbtVector RbtRand::GetRandomUnitVector() {
   double z = 2.0 * GetRandom01() - 1.0;
   double t = 2.0 * M_PI * GetRandom01();
-  double w = sqrt(1.0 - z * z);
-  double x = w * cos(t);
-  double y = w * sin(t);
+  double w = std::sqrt(1.0 - z * z);
+  double x = w * std::cos(t);
+  double y = w * std::sin(t);
   return RbtVector(x, y, z);
 }
 
@@ -70,9 +70,9 @@ double RbtRand::GetGaussianRandom(double mean, double variance) {
     double v2 = 2 * u2 - 1;
     double w = (v1 * v1) + (v2 * v2);
     if (w <= 1) {
-      double y = sqrt((-2 * log(w)) / w);
+      double y = std::sqrt((-2 * std::log(w)) / w);
       double x1 = v1 * y;
-      return (x1 * sqrt(variance) + mean);
+      return (x1 * std::sqrt(variance) + mean);
     }
   }
 }
@@ -81,7 +81,7 @@ double RbtRand::GetGaussianRandom(double mean, double variance) {
 double RbtRand::GetCauchyRandom(double mean, double variance) {
   double v1 = GetGaussianRandom(mean, variance);
   double v2 = GetGaussianRandom(mean, variance);
-  if (fabs(v2) > 0.001)
+  if (std::fabs(v2) > 0.001)
     return (v1 / v2);
   else
     return 0.0;

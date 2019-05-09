@@ -740,7 +740,7 @@ class isAtomIonic : public std::unary_function<RbtAtom *, bool> {
 public:
   explicit isAtomIonic() {}
   bool operator()(const RbtAtom *pAtom) const {
-    return (fabs(pAtom->GetGroupCharge()) > 0.001);
+    return (std::fabs(pAtom->GetGroupCharge()) > 0.001);
   }
 };
 

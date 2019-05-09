@@ -433,8 +433,9 @@ RbtPRMFactory::CreateMolFileSource(const std::string &fileName) {
   RbtMolecularFileSourcePtr retVal;
   std::string fileType = Rbt::GetFileType(fileName);
   std::string fileTypeUpper;
+  // std::toupper will not work https://stackoverflow.com/a/7131881
   std::transform(fileType.begin(), fileType.end(),
-                 std::back_inserter(fileTypeUpper), toupper);
+                 std::back_inserter(fileTypeUpper), ::toupper);
   std::string fullFileName = Rbt::GetRbtFileName("", fileName);
 
   if (m_iTrace > 0) {

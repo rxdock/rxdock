@@ -80,7 +80,7 @@ double RbtConstraint::Score() const {
   // Min distance**2
   double d2min = *(std::min_element(d2list.begin(), d2list.end()));
   // Score is zero up to the tolerance range, then quadratic beyond.
-  double dr = sqrt(d2min) - tolerance;
+  double dr = std::sqrt(d2min) - tolerance;
   return (dr > 0.0) ? dr * dr : 0.0;
 }
 

@@ -314,7 +314,7 @@ double RbtChromPositionElement::CompareVector(const RbtDoubleList &v,
       if (rotStepSize > 0.0) {
         // Determine the difference between the two orientations
         // in terms of the axis/angle needed to align them
-        // q.s = cos(phi / 2)
+        // q.s = std::cos(phi / 2)
         RbtQuat qAlign =
             otherOrientation.ToQuat() * m_orientation.ToQuat().Conj();
         double cosHalfTheta = qAlign.s;
@@ -323,7 +323,8 @@ double RbtChromPositionElement::CompareVector(const RbtDoubleList &v,
         } else if (cosHalfTheta > 1.0) {
           cosHalfTheta = 1.0;
         }
-        double absDiff = fabs(StandardisedValue(2.0 * acos(cosHalfTheta)));
+        double absDiff =
+            std::fabs(StandardisedValue(2.0 * std::acos(cosHalfTheta)));
         double relDiff = absDiff / rotStepSize;
         retVal = std::max(retVal, relDiff);
       }
@@ -375,16 +376,16 @@ void RbtChromPositionElement::CorrectTetheredOrientation() {
     cosHalfTheta = 1.0;
   }
   // Theta is the rotation angle required to realign with reference
-  double theta = StandardisedValue(2.0 * acos(cosHalfTheta));
+  double theta = StandardisedValue(2.0 * std::acos(cosHalfTheta));
   // Deal with pos and neg angles independently as we have to
   // invert the rotation axis for negative angles
   if (theta < -maxRot) {
-    RbtVector axis = -qAlign.v / sin(theta / 2.0);
+    RbtVector axis = -qAlign.v / std::sin(theta / 2.0);
     // Adjust theta to bring the orientation just inside the tethered bound
     theta += 0.999 * maxRot;
     m_orientation.Rotate(axis, theta);
   } else if (theta > maxRot) {
-    RbtVector axis = qAlign.v / sin(theta / 2.0);
+    RbtVector axis = qAlign.v / std::sin(theta / 2.0);
     // Adjust theta to bring the orientation just inside the tethered bound
     theta -= 0.999 * maxRot;
     m_orientation.Rotate(axis, theta);

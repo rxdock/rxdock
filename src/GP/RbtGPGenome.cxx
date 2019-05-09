@@ -112,7 +112,8 @@ void RbtGPGenome::Initialise() {
         int a, b;
         a = m_rand.GetRandomInt(200) - 100;
         b = m_rand.GetRandomInt(10) - 5;
-        double r = (a / 10.0) * pow(10.0, b); // m_rand.GetRandom01() * 20 - 10;
+        double r =
+            (a / 10.0) * std::pow(10.0, b); // m_rand.GetRandom01() * 20 - 10;
         chrom->SetConstant(r, g);
       }
       (*chrom)[g++] = f;
@@ -148,7 +149,8 @@ void RbtGPGenome::MutateGene(int i) {
         int a, b;
         a = m_rand.GetRandomInt(200) - 100;
         b = m_rand.GetRandomInt(10) - 5;
-        double r = (a / 10.0) * pow(10.0, b); // m_rand.GetRandom01() * 20 - 10;
+        double r =
+            (a / 10.0) * std::pow(10.0, b); // m_rand.GetRandom01() * 20 - 10;
         chrom->SetConstant(r, i);
       } else if ((*chrom)[i] == nf) {
         chrom->ResetConstant(i);

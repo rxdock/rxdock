@@ -42,7 +42,7 @@ public:
   class prms {
   public:
     prms(double ss = 3.0, double kk = 0.2, double o = 0.0)
-        : s(fabs(ss)), k(kk), sign((ss > 0.0) ? +1.0 : -1.0), offset(o) {}
+        : s(std::fabs(ss)), k(kk), sign((ss > 0.0) ? +1.0 : -1.0), offset(o) {}
     double s;      // rotational degeneracy
     double k;      // barrier height
     double sign;   //+1 or -1, to invert potential

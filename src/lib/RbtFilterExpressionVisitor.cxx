@@ -12,8 +12,8 @@
 
 #include "RbtFilterExpressionVisitor.h"
 #include <cerrno>
+#include <climits>
 #include <cmath>
-#include <limits.h>
 
 void PrintVisitor::VisitVbleExp(FilterVbleExp *fe) {
   std::string name = fe->GetVble().GetName();
@@ -118,7 +118,7 @@ void EvaluateVisitor::VisitDivExp(FilterDivExp *fe) {
   RbtReturnType v0 = fe->GetOp(0)->GetValue();
   RbtReturnType v1 = fe->GetOp(1)->GetValue();
   // std::cout << "div " << v0 <<"\t" << v1 << std::endl;
-  if (fabs(v1) < 0.000001)
+  if (std::fabs(v1) < 0.000001)
     fe->SetValue(v0);
   else
     fe->SetValue(v0 / v1);
@@ -168,10 +168,10 @@ void PrettyPrintVisitor::VisitLogExp(FilterLogExp *fe) {
 void EvaluateVisitor::VisitLogExp(FilterLogExp *fe) {
   fe->GetOp(0)->Accept(*this);
   RbtReturnType v0 = fe->GetOp(0)->GetValue();
-  if (fabs(v0) < 0.000001)
+  if (std::fabs(v0) < 0.000001)
     fe->SetValue(0.0);
   else
-    fe->SetValue(log(fabs(v0)));
+    fe->SetValue(std::log(std::fabs(v0)));
   //  std::cout << "log " << v0 << std::endl;
 }
 
@@ -196,11 +196,11 @@ void EvaluateVisitor::VisitExpExp(FilterExpExp *fe) {
   {
     //			float m = FLOAT_MAX; //numeric_limits<float>::max();
     // std::cout << "greater " << m << "\n";
-    fe->SetValue(exp(20));
+    fe->SetValue(std::exp(20));
   } else if (v0 < -200)
     fe->SetValue(0.0);
   else
-    fe->SetValue(exp(v0));
+    fe->SetValue(std::exp(v0));
   //  std::cout << "exp " << v0 <<  "\t" << fe->GetValue() <<endl;
 }
 

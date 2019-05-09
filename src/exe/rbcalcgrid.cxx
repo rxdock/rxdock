@@ -142,10 +142,10 @@ int main(int argc, char *argv[]) {
       strSFFile = strArg.substr(2);
     else if (strArg.find("-g") == 0) {
       std::string strGridStep = strArg.substr(2);
-      gs = atof(strGridStep.c_str());
+      gs = std::atof(strGridStep.c_str());
     } else if (strArg.find("-b") == 0) {
       std::string strBorder = strArg.substr(2);
-      border = atof(strBorder.c_str());
+      border = std::atof(strBorder.c_str());
     } else {
       std::cout << " ** INVALID ARGUMENT" << std::endl;
       return 1;

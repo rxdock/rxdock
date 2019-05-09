@@ -33,7 +33,7 @@ void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
   while (fNum--) {
     theFileName += thePath + "/";
     //         std::cout << "Does not work with Solaris" <<endl;
-    //		exit(1);
+    //         std::exit(1);
     std::string theFileStr(fNameList[fNum]->d_name); // copy from C-string
     // std::string theFileStr("junk");
     if (theFileName.size() + theFileStr.size() >
@@ -102,9 +102,9 @@ void RbtPMFDirSource::ParseLines(vector<std::string> anStrVect,
   RbtPMFValue theActualValue;
 
   for (int i = 0; i < anStrVect.size(); i++) {
-    theActualValue.distance = (float)atof(anStrVect[i].data());
+    theActualValue.distance = (float)std::atof(anStrVect[i].data());
     i++; // get next number
-    theActualValue.density = (float)atof(anStrVect[i].data());
+    theActualValue.density = (float)std::atof(anStrVect[i].data());
     aValueVect->push_back(theActualValue);
   }
 }

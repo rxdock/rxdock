@@ -38,7 +38,7 @@ double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
     for (int i = 0; i < nCoords; i++) {
       rms += Rbt::Length2(rc[i], c[i]);
     }
-    rms = sqrt(rms / float(nCoords));
+    rms = std::sqrt(rms / float(nCoords));
     return rms;
   }
 }
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
     std::cout << "Reference SMILES: " << strSmiles << std::endl;
     std::cout << "Paths found = " << pathset.size() << std::endl;
     if (pathset.empty()) {
-      exit(0);
+      std::exit(0);
     }
     // Use the SMILES string for the reference to query each record in the SD
     // file This has the useful side effect that the numbering scheme in the SD
@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
     for (; (sIter != scoreVec.end()) && (rIter != rmsVec.end());
          sIter++, rIter++) {
       double de = (*sIter) - minScore;
-      double z = exp(-de / (8.314e-3 * 298.0));
+      double z = std::exp(-de / (8.314e-3 * 298.0));
       double r = (*rIter);
       if (r < 2.05)
         zGood += z;

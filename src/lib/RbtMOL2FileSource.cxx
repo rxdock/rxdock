@@ -250,26 +250,27 @@ void RbtMOL2FileSource::ParseRecordATOM(const std::string &aLine) {
                             "Corrupted MOL2 file: not enough fields in ATOM ");
 
   // Compulsory fields
-  int atom_id = atoi(tokens[0].c_str());
+  int atom_id = std::atoi(tokens[0].c_str());
   std::string atom_name = tokens[1];
   RbtCoord atom_coord;
-  atom_coord.x = atof(tokens[2].c_str());
-  atom_coord.y = atof(tokens[3].c_str());
-  atom_coord.z = atof(tokens[4].c_str());
+  atom_coord.x = std::atof(tokens[2].c_str());
+  atom_coord.y = std::atof(tokens[3].c_str());
+  atom_coord.z = std::atof(tokens[4].c_str());
   std::string atom_type = tokens[5];
 
   // Optional fields.
-  int subst_id = (tokens.size() > 6) ? atoi(tokens[6].c_str()) : 1;
+  int subst_id = (tokens.size() > 6) ? std::atoi(tokens[6].c_str()) : 1;
   std::string subst_name = (tokens.size() > 7) ? tokens[7] : "****";
   std::string sID, sName;
   GetSSIDandName(subst_name, subst_id, sID, sName);
-  double charge = (tokens.size() > 8) ? atof(tokens[8].c_str()) : 0.0;
+  double charge = (tokens.size() > 8) ? std::atof(tokens[8].c_str()) : 0.0;
   // XB reweighting parameters
-  //	RbtDouble wxb = (tokens.size() > 9) ? atof(tokens[9].c_str()) : 1.0;
+  //	RbtDouble wxb = (tokens.size() > 9) ? std::atof(tokens[9].c_str())
+  //: 1.0;
   // XB mod for only doing if number, not characters
   //	RbtDouble wxb;
   //  if (tokens.size() > 9 && isdigit(tokens[9][0])){
-  //	  wxb = atof(tokens[9].c_str());
+  //	  wxb = std::atof(tokens[9].c_str());
   //	} else {
   //	  wxb = 1.0;
   //	}
@@ -327,9 +328,9 @@ void RbtMOL2FileSource::ParseRecordBOND(const std::string &aLine) {
                             "Corrupted MOL2 file: not enough fields in BOND");
 
   // Compulsory fields
-  int bond_id = atoi(tokens[0].c_str());
-  int origin_bond_id = atoi(tokens[1].c_str());
-  int target_bond_id = atoi(tokens[2].c_str());
+  int bond_id = std::atoi(tokens[0].c_str());
+  int origin_bond_id = std::atoi(tokens[1].c_str());
+  int target_bond_id = std::atoi(tokens[2].c_str());
   std::string bond_type = tokens[3];
 
   // In rDock we only have integer bond order
@@ -364,9 +365,9 @@ void RbtMOL2FileSource::ParseRecordSUBSTRUCTURE(const std::string &aLine) {
         _WHERE_, "Corrupted MOL2 file: not enough fields in SUBSTRUCTURE");
 
   // Compulsory fields
-  int subst_id = atoi(tokens[0].c_str());
+  int subst_id = std::atoi(tokens[0].c_str());
   std::string subst_name = tokens[1];
-  int root_atom = atoi(tokens[2].c_str());
+  int root_atom = std::atoi(tokens[2].c_str());
 
   // Optional fields
   std::string chain =
@@ -417,15 +418,15 @@ void RbtMOL2FileSource::ParseCountFields(const std::string &aLine) {
     throw RbtFileParseError(
         _WHERE_, "Corrupted MOL2: no atom numbers in MOLECULE record.");
   // number of atoms:
-  nAtoms = atoi(tokens[0].c_str());
+  nAtoms = std::atoi(tokens[0].c_str());
   if (tokens.size() > 1) // we have bonds number as well
-    nBonds = atoi(tokens[1].c_str());
+    nBonds = std::atoi(tokens[1].c_str());
   if (tokens.size() > 2) // substructures
-    nSubstructures = atoi(tokens[2].c_str());
+    nSubstructures = std::atoi(tokens[2].c_str());
   if (tokens.size() > 3)
-    nFeatures = atoi(tokens[3].c_str());
+    nFeatures = std::atoi(tokens[3].c_str());
   if (tokens.size() > 4) // substructures
-    nSets = atoi(tokens[4].c_str());
+    nSets = std::atoi(tokens[4].c_str());
   // std::cout << "nAtoms " << nAtoms << std::endl;
   // std::cout << "nBonds " << nBonds << std::endl;
   // std::cout << "nSubstructures " << nSubstructures << std::endl;

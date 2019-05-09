@@ -38,7 +38,7 @@ double RbtChromDihedralRefData::GetModelValue() const {
 void RbtChromDihedralRefData::SetModelValue(double dihedralAngle) {
   double delta = dihedralAngle - GetModelValue();
   // Only rotate if delta is non-zero
-  if (fabs(delta) > 0.001) {
+  if (std::fabs(delta) > 0.001) {
     // Coords of atom 1
     RbtCoord coord1(m_atom2->GetCoords());
     // Vector along the bond between atom 1 and atom 2 (rotation axis)

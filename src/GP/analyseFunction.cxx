@@ -13,9 +13,9 @@
 #include "../inc/RbtGPGenome.h"
 #include "../inc/RbtGPPopulation.h"
 #include "../inc/RbtParser.h"
+#include <cstdio>
 #include <fstream>
 #include <sstream>
-#include <stdio.h>
 
 int main(int argc, char *argv[]) {
   /*std::cout << "Genome file: \n";

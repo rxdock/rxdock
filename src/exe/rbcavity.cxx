@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
       break;
     case 'b':
       bBorderArg = true;
-      border = atof(optarg);
+      border = std::atof(optarg);
       break;
     case 'R': // also for -ras
       bReadAS = true;
@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
       break;
     case 'l':
       bList = true;
-      dist = atof(optarg);
+      dist = std::atof(optarg);
       break;
     case 'm':
       bMOEgrid = true;
@@ -157,7 +157,7 @@ int main(int argc, char *argv[]) {
   }*/
   if (strReceptorPrmFile.empty()) {
     std::cout << "Missing receptor parameter file name" << std::endl;
-    exit(1);
+    std::exit(1);
   }
   // writing command line arguments
   std::cout << "Command line arguments:" << std::endl;

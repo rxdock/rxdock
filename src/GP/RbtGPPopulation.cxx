@@ -13,7 +13,7 @@
 #include "RbtGPPopulation.h"
 #include "RbtDebug.h"
 #include <algorithm>
-#include <float.h>
+#include <cfloat>
 
 // Static data members for RbtGPPopulation
 std::string RbtGPPopulation::_CT("RbtGPPopulation");
@@ -210,7 +210,7 @@ void RbtGPPopulation::ScaleFitness() {
     ss += (pop[i]->GetFitness() - ave) * (pop[i]->GetFitness() - ave);
   }
   // standard deviation
-  stdev = sqrt(ss / (popsize - 1));
+  stdev = std::sqrt(ss / (popsize - 1));
   // calculate scaled values using sigma truncation
   // Goldberg page 124
   for (int i = 0; i < popsize; i++) {
@@ -256,14 +256,15 @@ RbtGPGenomePtr RbtGPPopulation::RkSelect() const {
   double index;
   int max = popsize; // index will be between 0 and popsize - 1
   index = max *
-          (bias - sqrt(bias * bias - 4.0 * (bias - 1) * m_rand.GetRandom01())) /
+          (bias -
+           std::sqrt(bias * bias - 4.0 * (bias - 1) * m_rand.GetRandom01())) /
           2.0 / (bias - 1);
   if (index < 0) {
     std::cout << index << " " << max << std::endl;
     index = 0.0;
   }
   // DM 25/04/05 - avoid compiler warning by explicitly converting double to int
-  int intIndex = (int)floor(index);
+  int intIndex = (int)std::floor(index);
   return (pop[intIndex]);
 }
 

@@ -189,7 +189,7 @@ void RbtPopulation::EvaluateRWFitness() {
   double popSize = m_pop.size();
   m_scoreMean = sum / popSize;
   m_scoreVariance = (sumSq / popSize) - (m_scoreMean * m_scoreMean);
-  double sigma = sqrt(m_scoreVariance);
+  double sigma = std::sqrt(m_scoreVariance);
   // calculate scaled fitness values using sigma truncation
   // Goldberg page 124
   double offset = m_scoreMean - m_c * sigma;

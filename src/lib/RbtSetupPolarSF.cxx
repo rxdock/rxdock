@@ -121,7 +121,7 @@ void RbtSetupPolarSF::SetupAtomList(RbtAtomList &atomList,
       int nNeighb = Rbt::GetNumAtoms(
           neighbourList, Rbt::isAtomInsideSphere((*iter)->GetCoords(), radius));
       nNeighb--; // Don't count the atom itself!
-      fNeighb = pow(nNeighb / norm, power);
+      fNeighb = std::pow(nNeighb / norm, power);
     }
     // Charge factor (always >= 1, sign reflects whether charge is positive or
     // negative)
@@ -129,7 +129,7 @@ void RbtSetupPolarSF::SetupAtomList(RbtAtomList &atomList,
     // DM 18 Jan 2001 - need to check for neutral HBond acceptors and set sign
     // to -1
     double sign = ((charge < 0.0) || (bIsHBA(*iter))) ? -1.0 : 1.0;
-    charge = sign * (1.0 + (fabs(charge) * chgFactor));
+    charge = sign * (1.0 + (std::fabs(charge) * chgFactor));
     if (bIsGuan(*iter)) {
       charge *= guanFactor; // Adjustable weight for "IONIC" interactions with
                             // guanidinium carbons

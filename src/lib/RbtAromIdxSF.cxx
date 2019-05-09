@@ -354,15 +354,15 @@ double RbtAromIdxSF::AromScore(const RbtInteractionCenter *pIC1,
 
     // Calculate average perp. distance from each pi center to the other ring
     // plane
-    double R = (fabs(Rbt::DistanceFromPointToPlane(cAtom1_1, pl2)) +
-                fabs(Rbt::DistanceFromPointToPlane(cAtom2_1, pl1))) /
+    double R = (std::fabs(Rbt::DistanceFromPointToPlane(cAtom1_1, pl2)) +
+                std::fabs(Rbt::DistanceFromPointToPlane(cAtom2_1, pl1))) /
                2.0;
     double f = f1(R - Rprms.R0, Rprms);
     // Only calculate average slip angle if f  > 0
     if (f > 0.0) {
       RbtVector v = cAtom2_1 - cAtom1_1;
-      double sa = (acos(fabs(Rbt::Dot(v.Unit(), pl1.VNorm()))) +
-                   acos(fabs(Rbt::Dot(v.Unit(), pl2.VNorm())))) *
+      double sa = (std::acos(std::fabs(Rbt::Dot(v.Unit(), pl1.VNorm()))) +
+                   std::acos(std::fabs(Rbt::Dot(v.Unit(), pl2.VNorm())))) *
                   90.0 / M_PI;
       f *= f1(sa, Aprms);
       if (f > 0.0) {

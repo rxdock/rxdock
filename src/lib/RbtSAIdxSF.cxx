@@ -455,7 +455,7 @@ double RbtSAIdxSF::GetR_i(RbtHHSType::eType theType) const {
 
 double RbtSAIdxSF::GetASP(RbtHHSType::eType theType, double chg) const {
   double asp = m_solvTable[theType].asp;
-  return m_solvTable[theType].chg_scaling ? asp * fabs(chg) : asp;
+  return m_solvTable[theType].chg_scaling ? asp * std::fabs(chg) : asp;
 }
 
 // helper function for parameter estimation
@@ -478,7 +478,7 @@ void RbtSAIdxSF::PrintWeightMatrix(void) const {
     count[hhsType]++;
     double sa = (*iter)->GetArea();
     if (m_solvTable[hhsType].chg_scaling) {
-      double chg = fabs((*iter)->GetAtom()->GetGroupCharge());
+      double chg = std::fabs((*iter)->GetAtom()->GetGroupCharge());
       if (chg > 0.0)
         sa *= chg;
     }

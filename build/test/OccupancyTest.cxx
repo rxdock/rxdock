@@ -181,7 +181,7 @@ double OccupancyTest::CompareScoresForDisabledAndNoSolvent() {
     }
     m_workSpace->SetSolvent(m_solventList);
     double scoreEnabledSolvent = pSF->Score();
-    retVal = fabs(scoreNoSolvent - scoreDisabledSolvent);
+    retVal = std::fabs(scoreNoSolvent - scoreDisabledSolvent);
   }
   return retVal;
 }
@@ -253,7 +253,7 @@ double OccupancyTest::CompareScoresForSolventModes() {
       double score = pSF->Score();
       // std::cout << "mode = " << mode << "; score = " << score << std::endl;
       if (mode > 0) {
-        double diff = fabs(score - lastScore);
+        double diff = std::fabs(score - lastScore);
         retVal = std::max(diff, retVal);
       }
       lastScore = score;

@@ -110,7 +110,7 @@ double RbtChromOccupancyElement::CompareVector(const RbtDoubleList &v,
     double otherOccupancy = v[i++];
     double stepSize = m_spRefData->GetStepSize();
     if (stepSize > 0.0) {
-      double absDiff = fabs(m_value - otherOccupancy);
+      double absDiff = std::fabs(m_value - otherOccupancy);
       retVal = absDiff / stepSize;
     }
   }

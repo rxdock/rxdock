@@ -133,9 +133,9 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
   if (NULL_OB != pathset) {
     dt_Handle paths = dt_stream(pathset, TYP_PATH);
     while (NULL_OB != (path = dt_next(paths))) {
-      // printf("match .......");
+      // std::printf("match .......");
       // print_atoms_in_path(path);
-      // printf("\n");
+      // std::printf("\n");
       dt_Handle atoms_in_path = dt_stream(path, TYP_ATOM);
       RbtAtomList atL;
       dt_Handle atom;
@@ -173,7 +173,7 @@ void print_atoms_in_path(dt_Handle path) {
     strncpy(symbol, str, lens);
     if (dt_aromatic(atom))
       *symbol = *symbol + 'a' - 'A';
-    printf(" %.*s(%d)", lens, str, dt_arborder(atom));
+    std::printf(" %.*s(%d)", lens, str, dt_arborder(atom));
   }
   dt_dealloc(atoms);
 }
