@@ -79,6 +79,13 @@ open-source software. This version is developed with support from the
 
 rDock is licensed under [GNU LGPL version 3.0](LICENSE.md).
 
+### Contributor concordat
+
+rDock adheres both to No Code of Conduct and Code of Merit.
+
+* [Contributor Code of Conduct](CODE_OF_CONDUCT.md)
+* [Code of Merit](CODE_OF_MERIT.md)
+
 ### References
 
 If you are using rDock in your research, please cite [rDock2014]. Former

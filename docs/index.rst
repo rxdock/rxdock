@@ -103,6 +103,17 @@ rDock is licensed under GNU LGPL version 3.0.
 
    license
 
+Contributor concordat
+^^^^^^^^^^^^^^^^^^^^^
+
+rDock adheres both to No Code of Conduct and Code of Merit.
+
+.. toctree::
+   :maxdepth: 2
+
+   code-of-counduct
+   code-of-merit
+
 References
 ^^^^^^^^^^
 
