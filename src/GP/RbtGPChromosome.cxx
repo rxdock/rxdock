@@ -63,6 +63,7 @@ RbtGPChromosome &RbtGPChromosome::operator=(const RbtGPChromosome &c) {
   nProgramInputs = c.nProgramInputs;
   nFunctionsInputs = c.nFunctionsInputs;
   nProgramOutputs = c.nProgramOutputs;
+  return *this;
 }
 
 std::istream &operator>>(std::istream &s, RbtGPChromosome &p) {
@@ -74,6 +75,7 @@ std::istream &operator>>(std::istream &s, RbtGPChromosome &p) {
     s >> cell >> value;
     p.Cells(cell)->SetConstant(value);
   }
+  return s;
 }
 
 std::ostream &RbtGPChromosome::Print(std::ostream &s) const {

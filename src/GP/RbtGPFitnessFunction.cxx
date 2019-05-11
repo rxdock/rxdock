@@ -36,6 +36,7 @@ RbtGPFitnessFunction::operator=(const RbtGPFitnessFunction &g) {
     objective = g.objective;
     fitness = g.fitness;
   }
+  return *this;
 }
 
 ///////////////////

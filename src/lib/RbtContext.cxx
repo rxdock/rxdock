@@ -181,6 +181,8 @@ double RbtStringContext::Get(RbtModelPtr lig, std::string name) {
     return negChg;
   if (name == "LIG_TOT_CHG")
     return (posChg + negChg);
+  // FIXME: throw an exception here so this is never reached
+  return 0.0;
 }
 
 double RbtStringContext::Get(RbtModelPtr spReceptor,
@@ -264,6 +266,8 @@ double RbtStringContext::Get(RbtModelPtr spReceptor,
     return negChg;
   if (name == "SITE_TOT_CHG")
     return (posChg + negChg);
+  // FIXME: throw an exception here so this is never reached
+  return 0.0;
 }
 
 double RbtStringContext::Get(RbtBaseSF *spSF, std::string name,
