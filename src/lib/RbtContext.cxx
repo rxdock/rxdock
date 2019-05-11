@@ -107,8 +107,6 @@ double RbtStringContext::Get(RbtModelPtr lig, std::string name) {
   if (name == "LIG_NATOMS")
     return lig->GetNumAtoms();
   int nAtoms = lig->GetNumAtoms();
-  int nBonds = lig->GetNumBonds();
-  int nSegs = lig->GetNumSegments();
   RbtAtomList atomList = lig->GetAtomList();
   RbtBondList bondList = lig->GetBondList();
   if (name == "LIG_NLIPOC")

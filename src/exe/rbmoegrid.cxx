@@ -245,7 +245,6 @@ int main(int argc, char *argv[]) {
       // std::cout << "Constructing grid of size " << nX << " x " << nY << " x "
       // << nZ << std::endl;
       RbtRealGridPtr spGrid(new RbtRealGrid(minCoord, gridStep, nX, nY, nZ));
-      float *gridData = spGrid->GetGridData();
 
       // Create probes
       RbtModelList probes = CreateProbes(strAtomType);
@@ -253,7 +252,6 @@ int main(int argc, char *argv[]) {
       // write the grid into a MOE grid file
       std::cout << "==================================" << std::endl;
       std::cout << "Generating MOE grid " << std::endl;
-      int dim = 3; // its a 3D grid
       // grid extents are in minCoord and maxCoord
       vector<double> grid_origin;
       grid_origin.push_back(minCoord.x);

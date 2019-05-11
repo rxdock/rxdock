@@ -100,7 +100,6 @@ void EnumerateSymCoords::Setup() {
                                      std::not1(Rbt::isAtomicNo_eq(1)));
   m_symBondList.clear();
   RbtBondList bondList = m_spModel->GetBondList();
-  int nBonds = bondList.size();
   RbtStringList symBonds = m_spModel->GetDataValue("SYMMETRIC_BONDS");
   for (RbtStringListConstIter iter = symBonds.begin(); iter != symBonds.end();
        iter++) {
@@ -314,7 +313,7 @@ int main(int argc, char *argv[]) {
       // (*rIter) << std::endl;
     }
     zMean /= zTot;
-    double zVar = zMean2 / zTot - (zMean * zMean);
+    // double zVar = zMean2 / zTot - (zMean * zMean);
     // std::cout << "zRMSD," << zTot << "," << zMean << "," << std::sqrt(zVar)
     // << std::endl;
   } catch (RbtError &e) {

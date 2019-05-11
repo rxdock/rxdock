@@ -94,7 +94,6 @@ void RbtSAIdxSF::SetupReceptor() {
     // Use a larger increment
     for (HHS_SolvationRListConstIter iter = theFlexList.begin();
          iter != theFlexList.end(); iter++) {
-      RbtAtom *pAtom = (*iter)->GetAtom();
       theIdxGrid->SetHHSLists(*iter, (*iter)->GetR_i() + flexIncr);
     }
   }
@@ -152,7 +151,6 @@ void RbtSAIdxSF::SetupReceptor() {
   // Index the rigid interaction centers within range of the docking site
   for (HHS_SolvationRListConstIter iter = theCavList.begin();
        iter != theCavList.end(); iter++) {
-    RbtAtom *pAtom = (*iter)->GetAtom();
     theIdxGrid->SetHHSLists(*iter, (*iter)->GetR_i() + idxIncr);
   }
 
@@ -549,6 +547,12 @@ void RbtSAIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // First we need to force the calculation of all the raw score components
     EnableAnnotations(true);
     double rs = RawScore();
+    int iTrace = GetTrace();
+    if (iTrace > 1) {
+      std::cout << std::endl << _CT << "::ScoreMap()" << std::endl;
+      std::cout << _CT << ": Maximum radius of any atom type =" << rs
+                << std::endl;
+    }
     EnableAnnotations(false);
     std::string name = GetFullName();
 

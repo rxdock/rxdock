@@ -267,7 +267,6 @@ int main(int argc, char *argv[]) {
       int nAtoms = spModel->GetNumAtoms();
 
       int nBonds = spModel->GetNumBonds();
-      int nSegs = spModel->GetNumSegments();
       RbtAtomList atomList = spModel->GetAtomList();
       RbtBondList bondList = spModel->GetBondList();
 

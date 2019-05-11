@@ -78,8 +78,6 @@ double RbtGPFFSpike::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   //                RbtGPGenome::GetNN(), RbtGPGenome::GetNO());
   RbtReturnTypeList o;
   o.push_back(new RbtReturnType(1.1));
-  RbtReturnType oldo;
-  double tot = 0.0;
   double good = 0.0;
   double bad = 0.0;
   double hitlimit = 0.0;
@@ -131,7 +129,7 @@ double RbtGPFFSpike::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   //    RbtGPParser p(g->GetNIP(), g->GetNIF(), g->GetNN(), g->GetNO());
   RbtReturnTypeList o;
   o.push_back(new RbtReturnType(1.1));
-  RbtReturnType oldo;
+  // RbtReturnType oldo;
   double truehits = 0.0;
   double falsehits = 0.0;
   double truemisses = 0.0;

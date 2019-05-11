@@ -85,7 +85,6 @@ double RbtGPFFCHK1::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   double hitlimit = 0.0;
   for (unsigned int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
-    RbtReturnType pred;
     for (unsigned int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
@@ -134,7 +133,6 @@ double RbtGPFFCHK1::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   double actualOutput, predictedOutput;
   for (unsigned int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
-    RbtReturnType pred;
     for (unsigned int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];

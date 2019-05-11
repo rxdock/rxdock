@@ -181,6 +181,10 @@ double OccupancyTest::CompareScoresForDisabledAndNoSolvent() {
     }
     m_workSpace->SetSolvent(m_solventList);
     double scoreEnabledSolvent = pSF->Score();
+    std::cout << "Score no solvent = " << scoreNoSolvent << std::endl;
+    std::cout << "Score enabled solvent = " << scoreEnabledSolvent << std::endl;
+    std::cout << "Score disabled solvent = " << scoreDisabledSolvent
+              << std::endl;
     retVal = std::fabs(scoreNoSolvent - scoreDisabledSolvent);
   }
   return retVal;

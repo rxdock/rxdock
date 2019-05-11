@@ -83,15 +83,11 @@ double RbtGPFFHSP90::CalculateFitness(
     bool function) {
   RbtReturnTypeArray o;
   //    o.push_back(new RbtReturnType(1.1));
-  RbtReturnType oldo;
-  double tot = 0.0;
-  double good = 0.0;
-  double bad = 0.0;
   RbtGPChromosomePtr c(g->GetChrom());
   RbtParser p2;
   RbtCellTokenIterPtr ti(new RbtCellTokenIter(c, contextp));
   RbtFilterExpressionPtr fe(p2.Parse(ti, contextp));
-  double meanReal = 0.0, meanPred = 0.0;
+  // double meanReal = 0.0, meanPred = 0.0;
   for (unsigned int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
     RbtReturnTypeList pred;
@@ -99,7 +95,6 @@ double RbtGPFFHSP90::CalculateFitness(
     for (unsigned int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
-    double hit = *(SFValues[SFValues.size() - 1]);
     EvaluateVisitor visitor(contextp);
     fe->Accept(visitor);
     pred.push_back(new RbtReturnType(fe->GetValue()));
@@ -139,10 +134,6 @@ double RbtGPFFHSP90::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
                                       RbtReturnTypeArray &sft, double limit,
                                       bool function) {
   RbtReturnTypeArray o;
-  RbtReturnType oldo;
-  double tot = 0.0;
-  double good = 0.0;
-  double bad = 0.0;
   RbtGPChromosomePtr c(g->GetChrom());
   RbtParser p2;
   RbtCellTokenIterPtr ti(new RbtCellTokenIter(c, contextp));
@@ -155,7 +146,6 @@ double RbtGPFFHSP90::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
     for (unsigned int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
-    double hit = *(SFValues[SFValues.size() - 1]);
     EvaluateVisitor visitor(contextp);
     fe->Accept(visitor);
     pred.push_back(new RbtReturnType(fe->GetValue()));

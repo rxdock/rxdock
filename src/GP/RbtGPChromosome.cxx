@@ -22,7 +22,6 @@ std::string RbtGPChromosome::_CT("RbtGPChromosome");
 RbtGPChromosome::RbtGPChromosome(int npi, int nfi, int nn, int no, int nr,
                                  int nc) {
   chrom = RbtIntList(nn * (nfi + 1) + no);
-  int i = 0, n;
   nProgramInputs = npi;
   nFunctionsInputs = nfi;
   int ncells = nn + npi; // number of nodes + inputs
