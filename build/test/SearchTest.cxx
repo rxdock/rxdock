@@ -64,11 +64,11 @@ void SearchTest::tearDown() {
 // RMSD calculation between two coordinate lists
 double SearchTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
   double retVal(0.0);
-  int nCoords = rc.size();
+  unsigned int nCoords = rc.size();
   if (c.size() != nCoords) {
     retVal = 999.9;
   } else {
-    for (int i = 0; i < nCoords; i++) {
+    for (unsigned int i = 0; i < nCoords; i++) {
       retVal += Rbt::Length2(rc[i], c[i]);
     }
     retVal = std::sqrt(retVal / float(nCoords));

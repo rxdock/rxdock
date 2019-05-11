@@ -92,11 +92,11 @@ double RbtGPFFHSP90::CalculateFitness(
   RbtCellTokenIterPtr ti(new RbtCellTokenIter(c, contextp));
   RbtFilterExpressionPtr fe(p2.Parse(ti, contextp));
   double meanReal = 0.0, meanPred = 0.0;
-  for (int i = 0; i < it.size(); i++) {
+  for (unsigned int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
     RbtReturnTypeList pred;
     pred.clear();
-    for (int j = 0; j < inputs.size(); j++)
+    for (unsigned int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
     double hit = *(SFValues[SFValues.size() - 1]);
@@ -148,11 +148,11 @@ double RbtGPFFHSP90::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   RbtCellTokenIterPtr ti(new RbtCellTokenIter(c, contextp));
   RbtFilterExpressionPtr fe(p2.Parse(ti, contextp));
   double meanReal = 0.0, meanPred = 0.0;
-  for (int i = 0; i < it.size(); i++) {
+  for (unsigned int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
     RbtReturnTypeList pred;
     pred.clear();
-    for (int j = 0; j < inputs.size(); j++)
+    for (unsigned int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
     double hit = *(SFValues[SFValues.size() - 1]);
@@ -169,7 +169,7 @@ double RbtGPFFHSP90::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   meanReal = meanReal / it.size();
   meanPred = meanPred / it.size();
   //    std::cout << std::endl;
-  for (int i = 0; i < it.size(); i++) {
+  for (unsigned int i = 0; i < it.size(); i++) {
     double t1 = *sft[i][0] - meanReal;
     double t2 = *o[i][0] - meanPred;
     sumDiff += t1 * t2;

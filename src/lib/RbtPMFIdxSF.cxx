@@ -61,7 +61,7 @@ RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
       theSlopeIndex; // contains the first value where plateau starts
   theSrcDir.ReadFiles(&thePMF, &theFileNames, &theSlopeIndex);
   // convert vector to grid
-  for (int i = 0; i < thePMF.size(); i++) {
+  for (unsigned int i = 0; i < thePMF.size(); i++) {
 #ifdef _DEBUG1
     std::cout << _CT << " " << theFileNames[i];
     std::cout << " " << theFileNames[i].substr(0, 2) << " "
@@ -72,7 +72,7 @@ RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
 #endif // _DEBUG1
 
     // iterate through each individual PMF
-    for (int j = 0; j < thePMF[i].size(); j++) {
+    for (unsigned int j = 0; j < thePMF[i].size(); j++) {
       RbtPMFType rType =
           Rbt::PMFStr2Type(theFileNames[i].substr(0, 2)); // receptor type
       RbtPMFType lType =
@@ -85,7 +85,7 @@ RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
     }
   }
   // fill slope grid
-  for (int i = 0; i < theSlopeIndex.size(); i++) {
+  for (unsigned int i = 0; i < theSlopeIndex.size(); i++) {
     RbtPMFType rType =
         Rbt::PMFStr2Type(theFileNames[i].substr(0, 2)); // receptor type
     RbtPMFType lType =

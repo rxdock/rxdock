@@ -394,7 +394,7 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     std::string mandatory =
         spParamSource->GetParameterValueAsString(_MANDATORY);
     RbtStringList mandAtoms = Rbt::ConvertDelimitedStringToList(mandatory);
-    int nPresent = Rbt::GetNumMatchingAtoms(atoms, mandAtoms);
+    unsigned int nPresent = Rbt::GetNumMatchingAtoms(atoms, mandAtoms);
     if (nPresent != mandAtoms.size()) {
 #ifdef _DEBUG
       std::cout << "INFO SetupPartialIonicGroups: Only " << nPresent

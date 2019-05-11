@@ -173,7 +173,7 @@ void RbtModelMutator::Setup() {
     // and append the unselected atom list to the interaction list for each atom
     for (RbtAtomRListConstIter sIter = sList.begin(); sIter != sList.end();
          sIter++) {
-      int id = (*sIter)->GetAtomId() - 1;
+      unsigned int id = (*sIter)->GetAtomId() - 1;
       // Assertion - check id is within range
       Assert<RbtAssert>(!MUT_CHECK || (id >= 0 && id < m_flexIntns.size()));
       RbtAtomRListListIter lIter = m_flexIntns.begin() + id;
@@ -183,7 +183,7 @@ void RbtModelMutator::Setup() {
     // Ditto for unselected atom list
     for (RbtAtomRListConstIter uIter = uList.begin(); uIter != uList.end();
          uIter++) {
-      int id = (*uIter)->GetAtomId() - 1;
+      unsigned int id = (*uIter)->GetAtomId() - 1;
       // Assertion - check id is within range
       Assert<RbtAssert>(!MUT_CHECK || (id >= 0 && id < m_flexIntns.size()));
       RbtAtomRListListIter lIter = m_flexIntns.begin() + id;

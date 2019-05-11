@@ -66,15 +66,15 @@ void RbtChromElement::Add(RbtChromElement *pChromElement) {
       "Add(RbtChromElement*) invalid for non-aggregate chromosome element");
 }
 
-bool RbtChromElement::VectorOK(const RbtDoubleList &v, int i) const {
-  int length = GetLength();
+bool RbtChromElement::VectorOK(const RbtDoubleList &v, unsigned int i) const {
+  unsigned int length = GetLength();
   // if the element is empty then any vector is valid
   return (length == 0) ||
          ((i >= 0) && (i < v.size()) && (length <= (v.size() - i)));
 }
 
-bool RbtChromElement::VectorOK(const RbtXOverList &v, int i) const {
-  int length = GetXOverLength();
+bool RbtChromElement::VectorOK(const RbtXOverList &v, unsigned int i) const {
+  unsigned int length = GetXOverLength();
   // if the element is empty then any vector is valid
   return (length == 0) ||
          ((i >= 0) && (i < v.size()) && (length <= (v.size() - i)));

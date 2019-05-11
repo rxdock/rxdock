@@ -439,7 +439,7 @@ void RbtVdwSF::BuildIntraMap(const RbtAtomRList &atomList1,
     // 1. First select all atoms in the list
     std::for_each(atomList1.begin(), atomList1.end(), selectAtom);
     RbtAtom *pAtom = (*iter);
-    int id = pAtom->GetAtomId() - 1;
+    unsigned int id = pAtom->GetAtomId() - 1;
     Assert<RbtAssert>(id >= 0 && id < intns.size());
     RbtModel *pModel = pAtom->GetModelPtr();
     // 2. Now deselect all atoms in the same model as the current atom

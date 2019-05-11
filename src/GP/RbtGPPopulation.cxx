@@ -56,7 +56,7 @@ RbtGPPopulation::RbtGPPopulation(const RbtGPPopulation &p)
   for (int i = 0; i < p.popsize; i++)
     pop[i] = p.pop[i];
   newpop = RbtGPGenomeList(p.newpop.size());
-  for (int i = 0; i < p.newpop.size(); i++)
+  for (unsigned int i = 0; i < p.newpop.size(); i++)
     newpop[i] = p.newpop[i];
   psum = new double[popsize];
   _RBTOBJECTCOUNTER_COPYCONSTR_(_CT);
@@ -146,7 +146,7 @@ void RbtGPPopulation::GAstep(std::string selector, double pcross, double pmut,
   // calculate the objective values and
   // sort newpop  newpop = RbtGPGenomeList (p.newpop.size());
   double bestFitness = -FLT_MAX, fit;
-  for (int i = 0; i < newpop.size(); i++) {
+  for (unsigned int i = 0; i < newpop.size(); i++) {
     *(pop[i]) = *(newpop[i]);
     fit = ff->CalculateFitness(pop[i], ittrain, sfttrain, function);
     if (fit > bestFitness) {
@@ -168,7 +168,7 @@ void RbtGPPopulation::EPstep(std::string selector, double pcross, double pmut,
   // calculate the objective values and
   // sort newpop  newpop = RbtGPGenomeList (p.newpop.size());
   double bestFitness = -FLT_MAX, fit;
-  for (int i = 0; i < newpop.size(); i++) {
+  for (unsigned int i = 0; i < newpop.size(); i++) {
     *(pop[i]) = *(newpop[i]);
     fit = ff->CalculateFitness(pop[i], ittrain, sfttrain, function);
     if (fit >= bestFitness) {
@@ -182,7 +182,7 @@ void RbtGPPopulation::EPstep(std::string selector, double pcross, double pmut,
 RbtGPGenomePtr RbtGPPopulation::Best() const { return (pop[bestInd]); }
 
 std::ostream &RbtGPPopulation::Print(std::ostream &s) const {
-  for (int i = 0; i < pop.size(); i++) {
+  for (unsigned int i = 0; i < pop.size(); i++) {
     pop[i]->Print(s);
     s << pop[i]->GetFitness() << std::endl;
   }

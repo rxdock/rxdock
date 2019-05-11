@@ -74,7 +74,7 @@ void RbtPsfFileSource::Parse() {
 
       //////////////////////////////////////////////////////////
       // 2a Read number of title lines and check for correct title key...
-      int nTitleRec;
+      unsigned int nTitleRec;
       fileIter += 2;
       std::istringstream(*fileIter) >> nTitleRec >> strKey;
       if (strKey != strTitleKey)
@@ -95,7 +95,7 @@ void RbtPsfFileSource::Parse() {
 
       //////////////////////////////////////////////////////////
       // 3a. Read number of atoms and check for correct atom key...
-      int nAtomRec;
+      unsigned int nAtomRec;
       fileIter++;
       std::istringstream(*fileIter) >> nAtomRec >> strKey;
       if (strKey != strAtomKey)
@@ -160,7 +160,7 @@ void RbtPsfFileSource::Parse() {
 
       //////////////////////////////////////////////////////////
       // 4a. Read number of bonds and check for correct bond key...
-      int nBondRec;
+      unsigned int nBondRec;
       fileIter++;
       std::istringstream(*fileIter) >> nBondRec >> strKey;
       // std::cout << "strKey "<<strKey << " strBondKey " << strBondKey <<

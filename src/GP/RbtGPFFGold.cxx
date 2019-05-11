@@ -60,7 +60,7 @@ double RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   double good = 0.0;
   double bad = 0.0;
   double hitlimit = 2.0;
-  for (int i = 0; i < it.size(); i++) {
+  for (unsigned int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
     RbtReturnTypeList SFValues = sft[i];
     double scoreM = *(SFValues[0]);
@@ -109,7 +109,7 @@ double RbtGPFFGold::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   double falsehits = 0.0;
   double truemisses = 0.0;
   double falsemisses = 0.0;
-  for (int i = 0; i < it.size(); i++) {
+  for (unsigned int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs = it[i];
     RbtReturnTypeList SFValues = sft[i];
     double scoreM = *(SFValues[0]);

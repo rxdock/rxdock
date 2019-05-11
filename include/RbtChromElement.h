@@ -143,11 +143,11 @@ protected:
   // Helper method to check that index i is in range [0,v.size()}
   // and that v has sufficient elements remaining to satisfy
   // GetLength()
-  bool VectorOK(const RbtDoubleList &v, int i) const;
+  bool VectorOK(const RbtDoubleList &v, unsigned int i) const;
   // Helper method to check that index i is in range [0,v.size()}
   // and that v has sufficient elements remaining to satisfy
   // GetXOverLength()
-  bool VectorOK(const RbtXOverList &v, int i) const;
+  bool VectorOK(const RbtXOverList &v, unsigned int i) const;
 
 private:
   RbtRand &m_rand; // Reference to singleton random number generator

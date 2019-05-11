@@ -80,7 +80,7 @@ std::ostream &operator<<(std::ostream &s, const RbtDockingSite &site) {
 // Derived classes can override if required
 void RbtDockingSite::Print(std::ostream &s) const {
   s << "Total volume " << GetVolume() << " A^3" << std::endl;
-  for (int i = 0; i < m_cavityList.size(); i++) {
+  for (unsigned int i = 0; i < m_cavityList.size(); i++) {
     s << "Cavity #" << i + 1 << "\t" << *(m_cavityList[i]) << std::endl;
   }
 }

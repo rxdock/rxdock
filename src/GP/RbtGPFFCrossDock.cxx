@@ -83,7 +83,7 @@ double RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
   RbtReturnTypeList inputs;
   RbtReturnTypeList SFValues;
   double hit;
-  int i = 0;
+  unsigned int i = 0;
   while (i < it.size()) {
     inputs = it[i];
     SFValues = sft[i];
@@ -144,7 +144,7 @@ double RbtGPFFCrossDock::CalculateFitness(RbtGPGenomePtr g,
   RbtReturnTypeList inputs;
   RbtReturnTypeList SFValues;
   double hit;
-  int i = 0;
+  unsigned int i = 0;
   while (i < it.size()) {
     inputs = it[i];
     SFValues = sft[i];

@@ -821,27 +821,28 @@ class isCoordinationNumber_eq : public std::unary_function<RbtAtom *, bool> {
     ATNO,
     FFTYPE,
     HYBRID
-  } eCNType; // Type of coordination number to check
-  int n;     // Coordination number value to check
+  } eCNType;      // Type of coordination number to check
+  unsigned int n; // Coordination number value to check
   int atNo;
   std::string ffType;
   RbtAtom::eHybridState hybrid;
 
 public:
   // Total coordination number
-  explicit isCoordinationNumber_eq(int nn)
+  explicit isCoordinationNumber_eq(unsigned int nn)
       : eCNType(TOTAL), n(nn), atNo(0), ffType(""), hybrid(RbtAtom::UNDEFINED) {
   }
   // Atomic number coordination number
-  explicit isCoordinationNumber_eq(int nn, int nAt)
+  explicit isCoordinationNumber_eq(unsigned int nn, int nAt)
       : eCNType(ATNO), n(nn), atNo(nAt), ffType(""),
         hybrid(RbtAtom::UNDEFINED) {}
   // Force field type coordination number
-  explicit isCoordinationNumber_eq(int nn, const std::string &strType)
+  explicit isCoordinationNumber_eq(unsigned int nn, const std::string &strType)
       : eCNType(FFTYPE), n(nn), atNo(0), ffType(strType),
         hybrid(RbtAtom::UNDEFINED) {}
   // Hybridisation state coordination number
-  explicit isCoordinationNumber_eq(int nn, RbtAtom::eHybridState eState)
+  explicit isCoordinationNumber_eq(unsigned int nn,
+                                   RbtAtom::eHybridState eState)
       : eCNType(HYBRID), n(nn), atNo(0), ffType(""), hybrid(eState) {}
   bool operator()(RbtAtom *pAtom) const {
     switch (eCNType) {

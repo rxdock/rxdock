@@ -88,9 +88,9 @@ double RbtGPFFSpike::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   RbtCellTokenIterPtr ti(new RbtCellTokenIter(c, contextp));
   RbtFilterExpressionPtr fe(p2.Parse(ti, contextp));
   //    RbtCellTokenIterPtr ti(new RbtCellTokenIter(c, contextp));
-  for (int i = 0; i < it.size(); i++) {
+  for (unsigned int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs(it[i]);
-    for (int j = 0; j < inputs.size(); j++)
+    for (unsigned int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
     double hit = *(SFValues[SFValues.size() - 1]);
@@ -140,9 +140,9 @@ double RbtGPFFSpike::CalculateFitness(RbtGPGenomePtr g, RbtReturnTypeArray &it,
   RbtParser p2;
   RbtTokenIterPtr ti(new RbtCellTokenIter(c, contextp));
   RbtFilterExpressionPtr fe(p2.Parse(ti, contextp));
-  for (int i = 0; i < it.size(); i++) {
+  for (unsigned int i = 0; i < it.size(); i++) {
     RbtReturnTypeList inputs = it[i];
-    for (int j = 0; j < inputs.size(); j++)
+    for (unsigned int j = 0; j < inputs.size(); j++)
       contextp->Assign(j, *(inputs[j]));
     RbtReturnTypeList SFValues = sft[i];
     double hit = *(SFValues[SFValues.size() - 1]);

@@ -85,7 +85,7 @@ private:
   RbtPopulation &operator=(const RbtPopulation &); // Disable
 
   RbtGenomeList m_pop;    // The population of genomes
-  int m_size;             // The maximum size of the population
+  unsigned int m_size;    // The maximum size of the population
   double m_c;             // Sigma Truncation Multiplier
   RbtBaseSF *m_pSF;       // The scoring function
   RbtRand &m_rand;        // reference to the singleton random number generator

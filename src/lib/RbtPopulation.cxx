@@ -29,7 +29,7 @@ RbtPopulation::RbtPopulation(RbtChromElement *pChr, int size, RbtBaseSF *pSF)
   }
   // Create a random population
   m_pop.reserve(m_size);
-  for (int i = 0; i < m_size; ++i) {
+  for (unsigned int i = 0; i < m_size; ++i) {
     // The RbtGenome constructor clones the chromosome to create an independent
     // copy
     RbtGenomePtr genome = new RbtGenome(pChr);

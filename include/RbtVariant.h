@@ -109,6 +109,7 @@ public:
 
   // Conversion operators to convert back to basic types
   operator int() const { return int(Double()); }
+  operator unsigned int() const { return (unsigned int)(Double()); }
   operator double() const { return Double(); }
   operator std::string() const { return String(); }
   operator RbtStringList() const { return StringList(); }

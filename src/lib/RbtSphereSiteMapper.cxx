@@ -61,7 +61,7 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   RbtCoord center = GetParameter(_CENTER);
   double radius = GetParameter(_RADIUS);
   double minVol = GetParameter(_MIN_VOLUME);
-  int maxCavities = GetParameter(_MAX_CAVITIES);
+  unsigned int maxCavities = GetParameter(_MAX_CAVITIES);
   int iTrace = GetTrace();
 
   // Grid values

@@ -58,7 +58,7 @@ void RbtCrdFileSource::Parse() {
 
       //////////////////////////////////////////////////////////
       // 3a. Read number of atoms
-      int nAtomRec;
+      unsigned int nAtomRec;
       fileIter++;
       std::istringstream(*fileIter) >> nAtomRec;
 

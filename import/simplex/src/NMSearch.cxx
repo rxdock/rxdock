@@ -207,7 +207,7 @@ void NMSearch::ReplaceSimplexPoint(int index, const vector<double>& newPoint)
 
 void NMSearch::CalculateFunctionValue(int index)
 {
-   for (int i = 0 ; i < scratch->size() ; i++)
+   for (unsigned int i = 0 ; i < scratch->size() ; i++)
      (*scratch)[i] = (*simplex).row(index)[i];
    int success;
    fcnCall(dimensions, scratch, simplexValues[index], success);
@@ -378,7 +378,7 @@ void NMSearch::InitGeneralSimplex(const RbtMatrix *plex)
 
    int success;
    for( int i = 0; i <= dimensions; i++ ) {
-      for (int j = 0 ; j < scratch->size() ; j++)
+      for (unsigned int j = 0 ; j < scratch->size() ; j++)
          (*scratch)[j] = (*plex).row(i)[j];
       fcnCall(dimensions, scratch, simplexValues[i], success);
       if(!success) std::cerr << "Error with point #"<<i<<" in initial simplex.\n";
@@ -496,23 +496,23 @@ int NMSearch::SecondHighestPtIndex()
 
 void NMSearch::FindCentroid()
 {
-   for (int i = 0 ; i < centroid->size() ; i++)
+   for (unsigned int i = 0 ; i < centroid->size() ; i++)
      (*centroid)[i] = 0.0;
    for( int i = 0; i <= dimensions; i++ ) {
       if( i != maxIndex ) {
-         for (int j = 0 ; j < centroid->size() ; j++)
+         for (unsigned int j = 0 ; j < centroid->size() ; j++)
          (*centroid)[j] = (*centroid)[j] + (*simplex).row(i)[j];
       } // if
    } // for
-   for (int i = 0 ; i < centroid->size() ; i++)
+   for (unsigned int i = 0 ; i < centroid->size() ; i++)
      (*centroid)[i] = (*centroid)[i] * ( 1.0 / (double)dimensions );
 } // FindCentroid()
 
 void NMSearch::FindReflectionPt()
 { 
-   for (int i = 0 ; i < reflectionPt->size() ; i++)
+   for (unsigned int i = 0 ; i < reflectionPt->size() ; i++)
      (*reflectionPt)[i] = 0.0;
-   for (int i = 0 ; i < centroid->size() ; i++)
+   for (unsigned int i = 0 ; i < centroid->size() ; i++)
      (*reflectionPt)[i] = ( (*centroid)[i] * (1.0 + alpha) ) -
                      ( alpha * (*simplex).row(maxIndex)[i] );
    int success;
@@ -525,9 +525,9 @@ void NMSearch::FindReflectionPt()
 
 void NMSearch::FindExpansionPt()
 {
-   for (int i = 0 ; i < expansionPt->size() ; i++)
+   for (unsigned int i = 0 ; i < expansionPt->size() ; i++)
      (*expansionPt)[i] = 0.0;
-   for (int i = 0 ; i < centroid->size() ; i++)
+   for (unsigned int i = 0 ; i < centroid->size() ; i++)
      (*expansionPt)[i] = ( (*centroid)[i] * (1.0 - gamma) ) +
                     ( gamma * (*reflectionPt)[i] );
    int success;
@@ -551,7 +551,7 @@ void NMSearch::FindContractionPt()
   if(simplexValues[maxIndex] <= reflectionPtValue) {
     tmpPt = new vector<double>(*scratch); //->size());
     maxPrimePt = tmpPt;
-    for (int i = 0 ; i < scratch->size() ; i++)
+    for (unsigned int i = 0 ; i < scratch->size() ; i++)
          (*maxPrimePt)[i] = (*simplex).row(maxIndex)[i];
       maxPrimePtValue = simplexValues[maxIndex];
       maxPrimePtId = 1;
@@ -562,7 +562,7 @@ void NMSearch::FindContractionPt()
       maxPrimePtId = 0;
    } // else
 
-   for (int i = 0 ; i < centroid->size() ; i++)
+   for (unsigned int i = 0 ; i < centroid->size() ; i++)
      (*contractionPt)[i] = ( (*centroid)[i] * (1.0 - beta) ) +
                       ( beta * (*maxPrimePt)[i] );
 
@@ -583,7 +583,7 @@ void NMSearch::ShrinkSimplex()
        && (functionCalls >= maxCalls) ) {return;}
 
    vector<double> *lowestPt= scratch;
-   for (int i = 0 ; i < scratch->size() ; i++)
+   for (unsigned int i = 0 ; i < scratch->size() ; i++)
       (*lowestPt)[i] = (*simplex).row(minIndex)[i];
    vector<double> *tempPt = scratch2;
    int success;

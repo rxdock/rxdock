@@ -16,15 +16,16 @@
 
 // initialization of the static data of RbtConstraint
 std::string RbtConstraint::_CT("RbtConstraint");
-int RbtHeavyConstraint::counter = 0; // 7 Feb 2005 (DM) new constraint type
-int RbtHBAConstraint::counter = 0;
-int RbtHBDConstraint::counter = 0;
-int RbtHydroConstraint::counter = 0;
-int RbtHydroAliphaticConstraint::counter = 0;
-int RbtHydroAromaticConstraint::counter = 0;
-int RbtNegChargeConstraint::counter = 0;
-int RbtPosChargeConstraint::counter = 0;
-int RbtRingAromaticConstraint::counter = 0;
+unsigned int RbtHeavyConstraint::counter =
+    0; // 7 Feb 2005 (DM) new constraint type
+unsigned int RbtHBAConstraint::counter = 0;
+unsigned int RbtHBDConstraint::counter = 0;
+unsigned int RbtHydroConstraint::counter = 0;
+unsigned int RbtHydroAliphaticConstraint::counter = 0;
+unsigned int RbtHydroAromaticConstraint::counter = 0;
+unsigned int RbtNegChargeConstraint::counter = 0;
+unsigned int RbtPosChargeConstraint::counter = 0;
+unsigned int RbtRingAromaticConstraint::counter = 0;
 
 RbtConstraint::RbtConstraint(RbtCoord c, double t) {
   m_atomList.clear();

@@ -101,7 +101,7 @@ void RbtPMFDirSource::ParseLines(vector<std::string> anStrVect,
                                  vector<RbtPMFValue> *aValueVect) {
   RbtPMFValue theActualValue;
 
-  for (int i = 0; i < anStrVect.size(); i++) {
+  for (unsigned int i = 0; i < anStrVect.size(); i++) {
     theActualValue.distance = (float)std::atof(anStrVect[i].data());
     i++; // get next number
     theActualValue.density = (float)std::atof(anStrVect[i].data());

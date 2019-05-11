@@ -26,7 +26,7 @@ double RbtDihedral::operator()() const {
   // std::cout.setf(std::ios_base::right,ios_base::adjustfield);
   double dih = Rbt::BondDihedral(m_pAtom1, m_pAtom2, m_pAtom3, m_pAtom4);
   double score(0.0);
-  for (int i = 0; i != m_prms.size(); ++i) {
+  for (unsigned int i = 0; i != m_prms.size(); ++i) {
     // Subtract the implicit hydrogen offset from the actual dihedral angle
     double dih1 = dih - m_prms[i].offset;
     score +=
@@ -99,7 +99,7 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
           // Add all the ghost dihedral combinations for implicit Hs on pAtom2
           // but only for the first time through the outer loop
           if (iter1 == bondedAtoms2.begin()) {
-            for (int i1 = 0; i1 != offset2.size(); i1++) {
+            for (unsigned int i1 = 0; i1 != offset2.size(); i1++) {
               dihprms = FindDihedralParams(RbtTriposAtomType::H, t2, t3, t4);
               dihprms.offset = offset2[i1];
               if (iTrace > 1) {
@@ -114,7 +114,7 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
               // pAtom2 AND on pAtom3 but only for the first time through the
               // outer loop AND inner loop
               if (iter4 == bondedAtoms3.begin()) {
-                for (int i4 = 0; i4 != offset3.size(); i4++) {
+                for (unsigned int i4 = 0; i4 != offset3.size(); i4++) {
                   dihprms = FindDihedralParams(RbtTriposAtomType::H, t2, t3,
                                                RbtTriposAtomType::H);
                   // Combined offset should be offset2 - offset3
@@ -139,7 +139,7 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
           // Add all the ghost dihedral combinations for implicit Hs on pAtom3
           // but only for the first time through the inner loop
           if (iter4 == bondedAtoms3.begin()) {
-            for (int i4 = 0; i4 != offset3.size(); i4++) {
+            for (unsigned int i4 = 0; i4 != offset3.size(); i4++) {
               dihprms = FindDihedralParams(t1, t2, t3, RbtTriposAtomType::H);
               // Offset should be -offset3
               // Remember offset3 was determined looking the other way along the

@@ -47,7 +47,7 @@ public:
   static std::string _CT;
   // record delimiter strings
   static std::string _TRIPOS_DELIM;
-  static int _TRIPOS_DELIM_SIZE;
+  static unsigned int _TRIPOS_DELIM_SIZE;
   static std::string _IDS_MOL2_RECDELIM;
 
   RbtMOL2FileSource(const std::string &fileName, bool bImplHydrogens = true);
@@ -90,13 +90,13 @@ private:
   void ParseCountFields(const std::string &aLine);
   void Tokenize(const std::string &aString, RbtStringList &aTokensBuf);
 
-  int m_NL; // No. of lines
+  unsigned int m_NL; // No. of lines
   // data fields in MOLECULE
-  int nAtoms;         // number of atoms
-  int nBonds;         //           bonds
-  int nSubstructures; // substructures
-  int nFeatures;      // features
-  int nSets;          // sets
+  unsigned int nAtoms;         // number of atoms
+  unsigned int nBonds;         //           bonds
+  unsigned int nSubstructures; // substructures
+  unsigned int nFeatures;      // features
+  unsigned int nSets;          // sets
 
   // helper data structures used to lookup chain names for each substructure
   // and to sort atom list into a more sensible order (ordered by substructure

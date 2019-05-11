@@ -178,7 +178,7 @@ double RbtPharmaSF::RawScore() const {
   std::partial_sort_copy(m_optScores.begin(), m_optScores.end(), lowest.begin(),
                          lowest.end());
   // std::cout << m_nopt << " lowest optional scores:\t";
-  for (int i = 0; i < lowest.size(); i++) {
+  for (unsigned int i = 0; i < lowest.size(); i++) {
     // std::cout << lowest[i] << "\t";
   }
   // std::cout << std::endl;
@@ -206,13 +206,13 @@ void RbtPharmaSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     scoreMap[name] = rs;
     AddToParentMapEntry(scoreMap, rs);
     // Store the mandatory constraint scores
-    for (int i = 0; i < m_conScores.size(); i++) {
+    for (unsigned int i = 0; i < m_conScores.size(); i++) {
       std::ostringstream field;
       field << name << ".con_" << i + 1;
       scoreMap[field.str()] = m_conScores[i];
     }
     // Store the optional constraint scores (unsorted)
-    for (int i = 0; i < m_optScores.size(); i++) {
+    for (unsigned int i = 0; i < m_optScores.size(); i++) {
       std::ostringstream field;
       field << name << ".opt_" << i + 1;
       scoreMap[field.str()] = m_optScores[i];

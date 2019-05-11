@@ -144,12 +144,12 @@ void EnumerateSymCoords::Setup() {
 
 // RMSD calculation between two coordinate lists
 double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
-  int nCoords = rc.size();
+  unsigned int nCoords = rc.size();
   if (c.size() != nCoords) {
     return 0.0;
   } else {
     double rms(0.0);
-    for (int i = 0; i < nCoords; i++) {
+    for (unsigned int i = 0; i < nCoords; i++) {
       rms += Rbt::Length2(rc[i], c[i]);
     }
     rms = std::sqrt(rms / float(nCoords));
@@ -212,7 +212,7 @@ int main(int argc, char *argv[]) {
     RbtCoordListList cll;
     EnumerateSymCoords symEnumerator(spRefModel);
     symEnumerator.GetSymCoords(cll);
-    int nCoords = cll.front().size();
+    unsigned int nCoords = cll.front().size();
 
     std::cout << "molv_	rms rms	rmc rmc"
               << std::endl; // Dummy header line to be like do_anal
@@ -267,7 +267,8 @@ int main(int argc, char *argv[]) {
         bool bIsUnique(true);
         // Duplicate check
         if (bRemoveDups) {
-          for (int i = 0; i < previousModels.size() && bIsUnique; i++) {
+          for (unsigned int i = 0; i < previousModels.size() && bIsUnique;
+               i++) {
             RbtCoordList prevCoords;
             Rbt::GetCoordList(
                 Rbt::GetAtomList(previousModels[i]->GetAtomList(),
