@@ -20,7 +20,6 @@
 
 const std::string GRID_SIGNATURE = "SVLgrid\n";
 const int VERSION = 100;
-const int SKIP = 0;
 
 // utility SVL-related functions that are not really OO and are not strictly
 // grid-related only. still the main purpose of these to export numbers into

@@ -11,7 +11,7 @@
  ***********************************************************************/
 
 // Chromosome element for model centre of mass and orientation
-#ifndef RBTCHROMPOSITIONLEMENT_H_
+#ifndef RBTCHROMPOSITIONELEMENT_H_
 #define RBTCHROMPOSITIONELEMENT_H_
 
 #include "RbtChromElement.h"

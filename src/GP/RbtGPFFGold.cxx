@@ -19,7 +19,8 @@
 
 std::string RbtGPFFGold::_CT("RbtGPFFGold");
 
-void RbtGPFFGold::ReadTables(std::istream &in) {
+void RbtGPFFGold::ReadTables(std::istream &in, RbtReturnTypeArray &,
+                             RbtReturnTypeArray &) {
   RbtReturnType value;
   int i = 0, j;
   in >> value;

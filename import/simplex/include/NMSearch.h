@@ -210,7 +210,6 @@ class NMSearch
 
 
 
-   double (*fun)(const vector<double> &, bool&); 
    int dimensions;                // the number of dimensions
                                   //    (the dimension of the problem)
    RbtMatrix *simplex;            // the current simplex

@@ -102,6 +102,5 @@ public:
 
 private:
   RbtContextPtr contextp;
-  RbtReturnType total;
 };
 #endif
