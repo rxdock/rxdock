@@ -102,6 +102,12 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
+# HTML logo
+html_logo = '_static/logo.png'
+
+# Favicon
+html_favicon = '_static/favicon.png'
+
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
@@ -136,6 +142,9 @@ latex_documents = [
     (master_doc, project + '.tex', project + ' Documentation',
      author, 'manual'),
 ]
+
+# LaTeX logo
+latex_logo = '_static/logo.pdf'
 
 
 # -- Options for manual page output ------------------------------------------

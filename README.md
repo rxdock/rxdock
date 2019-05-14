@@ -1,5 +1,7 @@
 # rDock: a fast, versatile, and open-source program for docking ligands to proteins and nucleic acids
 
+![rDock Logo](docs/_static/logo.png)
+
 rDock is a fast and versatile **open-source docking program** that can be used
 to dock **small molecules** against **proteins** and **nucleic acids**. It is
 designed for high-throughput virtual screening (HTVS) campaigns and binding mode
