@@ -1,0 +1,59 @@
+/*
+ * Bitter ht by Huerta Tipográfica
+ * https://huertatipografica.com/en/fonts/bitter-ht
+ *
+ */
+
+@import url('https://fonts.googleapis.com/css?family=Bitter:400,400i,700&subset=latin-ext');
+
+body {
+    font-family: Bitter, sans-serif;
+}
+
+/*
+ * Use the same purple (#643b7a) and blue (#4a73ad) as in the logo
+ *
+ */
+
+body {
+    border-right: 1px solid #4a73ad;
+    border-left: 1px solid #4a73ad;
+}
+
+div.related ul {
+    background-color: #4a73ad;
+}
+
+div.sphinxsidebar h3, div.sphinxsidebar h4 {
+    border: 1px solid #4a73ad;
+    background-color: #4a73ad;
+}
+
+div.sphinxsidebar input {
+    border: 1px solid #4a73ad;
+}
+
+div.footer {
+    color: #4a73ad;
+    border-bottom: 1px solid #4a73ad;
+}
+
+div.footer a {
+    color: #4a73ad;
+}
+
+a {
+    color: #4a73ad;
+}
+
+a:hover {
+    color: #643b7a;
+}
+
+h1, h2, h3 {
+    color: #4a73ad;
+}
+
+h2 {
+    border-bottom: 1px solid #4a73ad;
+}

@@ -108,6 +108,9 @@ html_logo = '_static/logo.png'
 # Favicon
 html_favicon = '_static/favicon.png'
 
+# Extra CSS files
+html_css_files = ['bizstyle-rdock.css']
+
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
