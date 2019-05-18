@@ -181,17 +181,23 @@ For installation details and first-users instructions, please visit
    reference-guide/atom-typing
    reference-guide/file-formats
    reference-guide/programs
-   reference-guide/use-cases
    reference-guide/appendix
 
-Tutorials
----------
+.. _user-guide:
+
+User guide
+----------
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   tutorials/index
+   user-guide/docking-in-3-steps
+   user-guide/docking-strategies
+   user-guide/multi-step-protocol-for-htvs
+   user-guide/calculating-roc-curves
+   user-guide/running-docking-jobs-in-parallel
+   user-guide/pharmacophoric-restraints
 
 .. _developer-guide:
 
