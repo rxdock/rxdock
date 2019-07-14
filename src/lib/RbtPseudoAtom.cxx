@@ -37,8 +37,7 @@ RbtPseudoAtom::RbtPseudoAtom(const RbtAtomList &atomList, int nAtomId,
   RbtAtomPtr spAtom1(atomList.front()); // 1st atom in list
   RbtAtomPtr spAtomN(atomList.back());  // Last atom in list
   // Pseudo-atom name is i the format [C1..N4]
-  strAtomName +=
-      "[" + spAtom1->GetAtomName() + ".." + spAtomN->GetAtomName() + "]";
+  strAtomName += "[" + spAtom1->GetName() + ".." + spAtomN->GetName() + "]";
   SetAtomName(strAtomName);
   SetSubunitId(spAtom1->GetSubunitId());
   SetSubunitName(spAtom1->GetSubunitName());

@@ -14,6 +14,8 @@
 #include "RbtFileError.h"
 #include "RbtWorkSpace.h"
 
+#include <functional>
+
 std::string RbtPMFGridSF::_CT("RbtPMFGridSF");
 std::string RbtPMFGridSF::_GRID("GRID");
 std::string RbtPMFGridSF::_SMOOTHED("SMOOTHED");

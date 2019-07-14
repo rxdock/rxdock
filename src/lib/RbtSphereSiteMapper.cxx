@@ -13,6 +13,8 @@
 #include "RbtSphereSiteMapper.h"
 #include "RbtFFTGrid.h"
 
+#include <functional>
+
 // Static data member for class type
 std::string RbtSphereSiteMapper::_CT("RbtSphereSiteMapper");
 std::string RbtSphereSiteMapper::_VOL_INCR("VOL_INCR");

@@ -15,6 +15,8 @@
 #include "RbtMdlFileSource.h"
 #include "RbtWorkSpace.h"
 
+#include <functional>
+
 // Static data member for class type
 std::string RbtLigandSiteMapper::_CT("RbtLigandSiteMapper");
 std::string RbtLigandSiteMapper::_REF_MOL("REF_MOL");

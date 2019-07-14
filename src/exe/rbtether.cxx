@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
          alli != tetherAtoms.end(); alli++) {
       std::cout << "Path: ";
       for (RbtAtomListIter ali = alli->begin(); ali != alli->end(); ali++) {
-        std::cout << (*ali)->GetAtomName() << "\t";
+        std::cout << (*ali)->GetName() << "\t";
       }
       std::cout << std::endl;
     }
@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
     RbtVariant vLib(Rbt::GetProduct() + " (" + Rbt::GetVersion() + ", Build" +
                     Rbt::GetBuild() + ")");
     RbtVariant vExe(strExeName + EXEVERSION);
-    RbtVariant vDir(Rbt::GetCurrentDirectory());
+    RbtVariant vDir(Rbt::GetCurrentWorkingDirectory());
     ///////////////////////////////////
     // MAIN LOOP OVER LIGAND RECORDS
     ///////////////////////////////////
@@ -246,7 +246,7 @@ int main(int argc, char *argv[]) {
            alli != tetherAtoms.end(); alli++) {
         std::cout << "Path: ";
         for (RbtAtomListIter ali = alli->begin(); ali != alli->end(); ali++) {
-          std::cout << (*ali)->GetAtomName() << "\t";
+          std::cout << (*ali)->GetName() << "\t";
         }
         std::cout << std::endl;
         /////////////////////////////////

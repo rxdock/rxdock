@@ -13,6 +13,8 @@
 #include "RbtAnnotation.h"
 #include "RbtPseudoAtom.h"
 
+#include <functional>
+
 ////////////////////////////////////////
 // Constructors/destructors
 RbtAnnotation::RbtAnnotation(const RbtAtom *pAtom1, const RbtAtom *pAtom2,

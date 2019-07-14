@@ -18,6 +18,7 @@
 #include "RbtFlexData.h"
 #include "RbtModelError.h"
 #include "RbtQuat.h"
+#include <functional>
 #include <iomanip>
 
 RbtModel::RbtModel(RbtBaseMolecularFileSource *pMolSource)

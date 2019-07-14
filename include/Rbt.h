@@ -36,8 +36,8 @@ std::string GetBuild();
 std::string GetProduct();
 // GetTime - returns current time and date as an RbtString
 std::string GetTime();
-// GetCurrentDirectory - returns current working directory
-std::string GetCurrentDirectory();
+// GetCurrentWorkingDirectory - returns current working directory
+std::string GetCurrentWorkingDirectory();
 //
 ////////////////////////////////////////////////////////////////
 

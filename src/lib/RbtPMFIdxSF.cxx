@@ -15,6 +15,8 @@
 #include "RbtPMFDirSource.h"
 #include "RbtWorkSpace.h"
 
+#include <functional>
+
 // the PMFs are defined only in this range in the Muegge database
 const double cPMFStart = 0.2; // closest PMF distance
 const double cPMFRes = 0.2;   // PMF resolution

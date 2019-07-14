@@ -14,6 +14,8 @@
 #include "RbtFlexAtomFactory.h"
 #include "RbtWorkSpace.h"
 
+#include <functional>
+
 // Static data members
 std::string RbtVdwIdxSF::_CT("RbtVdwIdxSF");
 std::string RbtVdwIdxSF::_THRESHOLD_ATTR("THRESHOLD_ATTR");

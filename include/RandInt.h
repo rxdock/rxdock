@@ -15,10 +15,10 @@ public:
   long GetSeed() { return randx; }
   // magic numbers chosen to use 31 bits of a 32-bit long:
   int abs(int x) { return x & 0x7fffffff; }
-  static double max() { return 2147483648.0; }
+  static double fintmax() { return 2147483648.0; }
   int draw() { return randx = randx * 1103515245 + 12345; }
 
-  double fdraw() { return abs(draw()) / max(); }
+  double fdraw() { return abs(draw()) / fintmax(); }
 
   int operator()() { return abs(draw()); }
 };

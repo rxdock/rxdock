@@ -17,6 +17,8 @@
 #include "RbtSolventFlexData.h"
 #include "RbtWorkSpace.h"
 
+#include <functional>
+
 // Static data members
 std::string RbtCavityGridSF::_CT("RbtCavityGridSF");
 std::string RbtCavityGridSF::_RMAX("RMAX");

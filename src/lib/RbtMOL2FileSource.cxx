@@ -12,6 +12,7 @@
 
 // XB cctype for check atom in MOL2 is number
 //#include <cctype>
+#include <functional>
 #include <sstream>
 
 #include "RbtAtomFuncs.h"
@@ -510,7 +511,7 @@ void RbtMOL2FileSource::FixHybridState() {
     case 8:  // O
     case 16: // S
       bondedAtomList = Rbt::GetBondedAtomList(*iter);
-      if (Rbt::FindAtom(bondedAtomList, Rbt::isPiAtom()) !=
+      if (Rbt::FindAtomInList(bondedAtomList, Rbt::isPiAtom()) !=
           bondedAtomList.end()) {
         (*iter)->SetHybridState(RbtAtom::TRI);
         // std::cout << "Changing " << (*iter)->GetFullAtomName() << " from SP3

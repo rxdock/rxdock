@@ -12,6 +12,8 @@
 
 #include "RbtDihedralSF.h"
 
+#include <functional>
+
 RbtDihedral::RbtDihedral(RbtAtom *pAtom1, RbtAtom *pAtom2, RbtAtom *pAtom3,
                          RbtAtom *pAtom4, const prms &dihprms)
     : m_pAtom1(pAtom1), m_pAtom2(pAtom2), m_pAtom3(pAtom3), m_pAtom4(pAtom4) {
@@ -32,10 +34,10 @@ double RbtDihedral::operator()() const {
     score +=
         m_prms[i].k *
         (1.0 + m_prms[i].sign * std::cos(m_prms[i].s * dih1 * M_PI / 180.0));
-    // std::cout << m_pAtom1->GetAtomName() << "," << m_pAtom2->GetAtomName() <<
+    // std::cout << m_pAtom1->GetName() << "," << m_pAtom2->GetName() <<
     // ","
-    // << m_pAtom3->GetAtomName() << ","
-    //	 << m_pAtom4->GetAtomName() << "\t" << m_prms[i].sign << "\t" <<
+    // << m_pAtom3->GetName() << ","
+    //	 << m_pAtom4->GetName() << "\t" << m_prms[i].sign << "\t" <<
     // m_prms[i].s << "\t" << m_prms[i].k << "\t"
     //	 << dih << "\t" << dih1 << "\t" << score << std::endl;
   }
@@ -104,9 +106,8 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
               dihprms.offset = offset2[i1];
               if (iTrace > 1) {
                 std::cout << _CT << ": <H" << i1 + 1 << ">-"
-                          << pAtom2->GetAtomName() << "-"
-                          << pAtom3->GetAtomName() << "-"
-                          << pAtom4->GetAtomName()
+                          << pAtom2->GetName() << "-" << pAtom3->GetName()
+                          << "-" << pAtom4->GetName()
                           << "\toffset = " << dihprms.offset << std::endl;
               }
               pDih->AddTerm(dihprms);
@@ -127,8 +128,8 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
                     dihprms.offset += 360.0;
                   if (iTrace > 1) {
                     std::cout << _CT << ": <H" << i1 + 1 << ">-"
-                              << pAtom2->GetAtomName() << "-"
-                              << pAtom3->GetAtomName() << "-<H" << i4 + 1
+                              << pAtom2->GetName() << "-" << pAtom3->GetName()
+                              << "-<H" << i4 + 1
                               << ">\toffset = " << dihprms.offset << std::endl;
                   }
                   pDih->AddTerm(dihprms);
@@ -146,10 +147,9 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
               // bond so sign is inverted
               dihprms.offset = offset3[i4];
               if (iTrace > 1) {
-                std::cout << _CT << ": " << pAtom1->GetAtomName() << "-"
-                          << pAtom2->GetAtomName() << "-"
-                          << pAtom3->GetAtomName() << "-"
-                          << pAtom4->GetAtomName()
+                std::cout << _CT << ": " << pAtom1->GetName() << "-"
+                          << pAtom2->GetName() << "-" << pAtom3->GetName()
+                          << "-" << pAtom4->GetName()
                           << "\toffset = " << dihprms.offset << std::endl;
               }
               pDih->AddTerm(dihprms);
@@ -281,9 +281,8 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
   if (nH == 0)
     return;
   if (GetTrace() > 2) {
-    std::cout << _CT << ": determining impl H offsets for "
-              << pAtom1->GetAtomName() << " - " << pAtom2->GetAtomName()
-              << std::endl;
+    std::cout << _CT << ": determining impl H offsets for " << pAtom1->GetName()
+              << " - " << pAtom2->GetName() << std::endl;
   }
   RbtAtom::eHybridState hybrid = pAtom1->GetHybridState();
   if (hybrid == RbtAtom::SP3) {
@@ -295,7 +294,7 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
           Rbt::BondDihedral(bondedAtoms[0], pAtom1, pAtom2, bondedAtoms[1]);
       double offset = -improper;
       if (GetTrace() > 2) {
-        std::cout << _CT << ": offset for SP3 atom " << pAtom1->GetAtomName()
+        std::cout << _CT << ": offset for SP3 atom " << pAtom1->GetName()
                   << " = " << offset << std::endl;
       }
       offsets.push_back(offset);
@@ -303,7 +302,7 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
     // SP3: 1 heavy atom plus 2 implicit H, return both offsets of +/- 120 deg
     else if ((nH == 2) && (bondedAtoms.size() == 1)) {
       if (GetTrace() > 2) {
-        std::cout << _CT << ": offsets for SP3 atom " << pAtom1->GetAtomName()
+        std::cout << _CT << ": offsets for SP3 atom " << pAtom1->GetName()
                   << " = -120,+120" << std::endl;
       }
       offsets.push_back(-120.0);
@@ -317,7 +316,7 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
     // hydrogen Offset is always 180 deg.
     if ((nH == 1) && (bondedAtoms.size() == 1)) {
       if (GetTrace() > 2) {
-        std::cout << _CT << ": offset for SP2 atom " << pAtom1->GetAtomName()
+        std::cout << _CT << ": offset for SP2 atom " << pAtom1->GetName()
                   << " = 180" << std::endl;
       }
       offsets.push_back(-180.0);

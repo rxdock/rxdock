@@ -13,7 +13,10 @@
 // Main docking application
 #include <cerrno>
 #include <iomanip>
+#ifdef _WIN32
+#else
 #include <unistd.h>
+#endif
 
 #include "RbtBiMolWorkSpace.h"
 #include "RbtCrdFileSink.h"
@@ -387,7 +390,7 @@ int main(int argc, char *argv[]) {
     RbtVariant vExe(strExeName + EXEVERSION);
     RbtVariant vRecep(spRecepPrmSource->GetFileName());
     RbtVariant vPrm(spParamSource->GetFileName());
-    RbtVariant vDir(Rbt::GetCurrentDirectory());
+    RbtVariant vDir(Rbt::GetCurrentWorkingDirectory());
 
     spRecepPrmSource->SetSection();
     // Read docking site from file and register with workspace

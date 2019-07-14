@@ -11,6 +11,7 @@
  ***********************************************************************/
 
 #include "RbtSetupPolarSF.h"
+#include <functional>
 #include <iomanip>
 
 // Static data members
@@ -138,7 +139,7 @@ void RbtSetupPolarSF::SetupAtomList(RbtAtomList &atomList,
     // if (traceTriggerLevel == 1) {
     //  RbtDouble wxb = (*iter)->GetReweight();
     //  (*iter)->SetUser1Value(fNeighb*charge*wxb);
-    // std::cout << "Atom: " << (*iter)->GetAtomName() << " Polar_User1Value: "
+    // std::cout << "Atom: " << (*iter)->GetName() << " Polar_User1Value: "
     // <<
     // (*iter)->GetUser1Value() << " weigth: " << wxb << std::endl;
     //}else{

@@ -13,6 +13,8 @@
 #include "RbtBaseMolecularFileSource.h"
 #include "RbtFileError.h"
 
+#include <functional>
+
 // Constructors
 // RbtBaseMolecularFileSource::RbtBaseMolecularFileSource(const char* fileName,
 // const char* sourceName) :
@@ -242,8 +244,8 @@ void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
     if (bIter != m_bondList.end()) {
 #ifdef _DEBUG
       std::cout << "Removing bond #" << (*bIter)->GetBondId() << " ("
-                << (*bIter)->GetAtom1Ptr()->GetAtomName() << "-"
-                << (*bIter)->GetAtom2Ptr()->GetAtomName() << ")" << std::endl;
+                << (*bIter)->GetAtom1Ptr()->GetName() << "-"
+                << (*bIter)->GetAtom2Ptr()->GetName() << ")" << std::endl;
 #endif                         //_DEBUG
       m_bondList.erase(bIter); // Erase the bond
     }
@@ -253,13 +255,13 @@ void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
   // Find the atom in the FileSource atom list
   // DM 2 Aug 1999 - search by atom  attributes, not by memory location (v
   // risky) RbtAtomListIter aIter =
-  // Rbt::FindAtom(m_atomList,std::bind2nd(Rbt::isAtomPtr_eq(),spAtom));
+  // Rbt::FindAtomInList(m_atomList,std::bind2nd(Rbt::isAtomPtr_eq(),spAtom));
   RbtAtomListIter aIter =
-      Rbt::FindAtom(m_atomList, std::bind2nd(Rbt::isAtom_eq(), spAtom));
+      Rbt::FindAtomInList(m_atomList, std::bind2nd(Rbt::isAtom_eq(), spAtom));
   if (aIter != m_atomList.end()) {
 #ifdef _DEBUG
     std::cout << "Removing atom #" << (*aIter)->GetAtomId() << ", "
-              << (*aIter)->GetAtomName() << std::endl;
+              << (*aIter)->GetName() << std::endl;
 #endif                       //_DEBUG
     m_atomList.erase(aIter); // Erase the atom
   }

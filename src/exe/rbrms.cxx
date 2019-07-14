@@ -12,6 +12,7 @@
 
 // Calculates atomic RMSD of each SD record with record #1
 
+#include <functional>
 #include <sstream>
 
 #include "RbtMdlFileSink.h"

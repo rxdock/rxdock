@@ -88,7 +88,7 @@ void RbtPsfFileSink::Render() {
           line, "%8d %-4.4s %-4.4s %-4.4s %-4.4s %-4.4s%15.3f%10.3f%12.1f",
           spAtom->GetAtomId(), spAtom->GetSegmentName().c_str(),
           spAtom->GetSubunitId().c_str(), spAtom->GetSubunitName().c_str(),
-          spAtom->GetAtomName().c_str(), spAtom->GetFFType().c_str(),
+          spAtom->GetName().c_str(), spAtom->GetFFType().c_str(),
           spAtom->GetPartialCharge(), spAtom->GetAtomicMass(), 0.0);
       AddLine(line);
       // Render the atom to a string stream
@@ -102,7 +102,7 @@ void RbtPsfFileSink::Render() {
       // ostr << std::setw(4) << spAtom->GetSegmentName() << " ";
       // ostr << std::setw(4) << spAtom->GetSubunitId() << " ";
       // ostr << std::setw(4) << spAtom->GetSubunitName() << " ";
-      // ostr << std::setw(4) << spAtom->GetAtomName() << " ";
+      // ostr << std::setw(4) << spAtom->GetName() << " ";
       // ostr << std::setw(4) << spAtom->GetFFType() << " ";
       // ostr.setf(std::ios_base::right,ios_base::adjustfield);
       // ostr << std::setw(14) << spAtom->GetPartialCharge();

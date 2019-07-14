@@ -14,6 +14,8 @@
 #include "RbtPlane.h"
 #include "RbtWorkSpace.h"
 
+#include <functional>
+
 // Static data members
 std::string RbtPolarIdxSF::_CT("RbtPolarIdxSF");
 std::string RbtPolarIdxSF::_INCR("INCR");

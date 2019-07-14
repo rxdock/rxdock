@@ -30,7 +30,7 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
   for (RbtAtomListConstIter at = atomList.begin(); at != atomList.end(); at++) {
     // ignore all hydrogens
     if (isH(*at)) {
-      // std::cout << "Atom: " << (*at)->GetAtomName() << "; ignored" <<
+      // std::cout << "Atom: " << (*at)->GetName() << "; ignored" <<
       // std::endl;
       continue;
     }
@@ -56,7 +56,7 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
           ((*at)->GetGroupCharge() > -1.0))) {
       dt_setcharge(atoms.back(), (*at)->GetFormalCharge());
     }
-    // std::cout << "Atom: " << (*at)->GetAtomName() << "; rID = " << rID << ";
+    // std::cout << "Atom: " << (*at)->GetName() << "; rID = " << rID << ";
     // dID = " << dID << std::endl;
   }
 
@@ -66,8 +66,8 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
     RbtAtomPtr at2 = (*bd)->GetAtom2Ptr();
     // ignore all bonds to hydrogen
     if (isH(at1) || isH(at2)) {
-      // std::cout << "Bond: " << at1->GetAtomName() << "-" <<
-      // at2->GetAtomName() <<
+      // std::cout << "Bond: " << at1->GetName() << "-" <<
+      // at2->GetName() <<
       // "; ignored" << std::endl;
       continue;
     }
@@ -88,7 +88,7 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
     // Use lookup to get the Daylight numbering
     int dID1 = r2d[rID1];
     int dID2 = r2d[rID2];
-    // std::cout << "Bond: " << at1->GetAtomName() << "-" << at2->GetAtomName()
+    // std::cout << "Bond: " << at1->GetName() << "-" << at2->GetName()
     //	 << "; rID = " << rID1 << "-" << rID2 << "; dID = " << dID1 << "-" <<
     // dID2 << std::endl; Finally create the Daylight bond Define formal bond
     // order except for terminal charged acids, see above

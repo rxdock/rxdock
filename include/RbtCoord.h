@@ -19,7 +19,12 @@
 
 #include <algorithm> //for min,max
 #include <cmath>     //for sqrt
+#include <iterator>  //for back_inserter
 #include <numeric>   //for accumulate
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 #include "RbtConfig.h"
 

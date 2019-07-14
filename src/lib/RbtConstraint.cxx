@@ -12,6 +12,7 @@
 
 #include "RbtConstraint.h"
 #include "RbtLigandError.h"
+#include <functional>
 #include <sstream>
 
 // initialization of the static data of RbtConstraint

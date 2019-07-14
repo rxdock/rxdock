@@ -14,6 +14,8 @@
 #include "RbtPlane.h"
 #include "RbtWorkSpace.h"
 
+#include <functional>
+
 // Static data members
 std::string RbtPolarSF::_CT("RbtPolarSF");
 std::string RbtPolarSF::_R12FACTOR("R12FACTOR");

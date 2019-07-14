@@ -12,6 +12,8 @@
 
 #include "RbtRotSF.h"
 
+#include <functional>
+
 // Static data member for class type
 std::string RbtRotSF::_CT("RbtRotSF");
 std::string RbtRotSF::_INCNH3("INCNH3");

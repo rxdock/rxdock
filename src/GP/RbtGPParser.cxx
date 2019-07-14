@@ -67,7 +67,7 @@ RbtReturnType RbtGPParser::Parse1Output(RbtGPChromosomePtr chrom, int output) {
   int startCell = (nFunctionsInputs + 1) * (output - nProgramInputs);
   int ncomm = (*chrom)[startCell + nFunctionsInputs];
   int nargs = commands[ncomm]->GetNArgs();
-  RbtReturnType args[nargs];
+  RbtReturnType *args = new RbtReturnType[nargs];
   // I had this two loops as one before, but because is a
   // recursive function, they MUST be separated, otherwise the command
   // can get the arguments from another cell
@@ -76,6 +76,7 @@ RbtReturnType RbtGPParser::Parse1Output(RbtGPChromosomePtr chrom, int output) {
   for (int i = 0; i < nargs; i++)
     commands[ncomm]->SetArg(i, args[i]);
   RbtReturnType f2 = commands[ncomm]->Execute();
+  delete[] args;
   return (commands[ncomm]->Execute());
 }
 

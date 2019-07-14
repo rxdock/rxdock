@@ -14,6 +14,8 @@
 #include "RbtSFRequest.h"
 #include "RbtWorkSpace.h"
 
+#include <functional>
+
 std::string RbtSAIdxSF::_CT("RbtSAIdxSF");
 std::string RbtSAIdxSF::_INCR("INCR");
 

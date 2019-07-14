@@ -13,6 +13,7 @@
 #include "RbtContext.h"
 #include "RbtDebug.h"
 #include <cstring>
+#include <functional>
 
 std::string RbtContext::_CT("RbtContext");
 // std::string RbtStringContext::_CT("RbtStringContext");

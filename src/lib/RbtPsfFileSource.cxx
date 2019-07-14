@@ -14,6 +14,8 @@
 #include "RbtElementFileSource.h"
 #include "RbtFileError.h"
 
+#include <functional>
+
 // Constructors
 // RbtPsfFileSource::RbtPsfFileSource(const char* fileName) :
 //  RbtBaseMolecularFileSource(fileName,"PSF_FILE_SOURCE") //Call base class

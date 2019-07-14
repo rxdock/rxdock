@@ -18,7 +18,12 @@
 #include <ctime>     //For time functions
 #include <dirent.h>  //For directory handling
 #include <fstream>   //For ifstream
-#include <unistd.h>  //For POSIX getcwd
+#ifdef _WIN32
+#include <direct.h>
+#define getcwd _getcwd //CRT library getcwd
+#else
+#include <unistd.h> //For POSIX getcwd
+#endif
 //#include <ios>
 #include "Rbt.h"
 #include "RbtFileError.h"
@@ -30,7 +35,7 @@ std::string Rbt::GetRbtRoot() {
   if (szRbtRoot != (char *)nullptr) {
     return std::string(szRbtRoot);
   } else {
-    return GetCurrentDirectory();
+    return GetCurrentWorkingDirectory();
   }
 }
 
@@ -47,7 +52,7 @@ std::string Rbt::GetRbtHome() {
     if (szRbtHome != (char *)nullptr) {
       return std::string(szRbtHome);
     } else {
-      return GetCurrentDirectory();
+      return GetCurrentWorkingDirectory();
     }
   }
 }
@@ -66,8 +71,9 @@ std::string Rbt::GetTime() {
   std::tm *pLocalTime = std::localtime(&t); // Convert to local time struct
   return std::string(std::asctime(pLocalTime)); // Convert to ascii string
 }
-// GetCurrentDirectory - returns current working directory
-std::string Rbt::GetCurrentDirectory() {
+
+// GetCurrentWorkingDirectory - returns current working directory
+std::string Rbt::GetCurrentWorkingDirectory() {
   std::string strCwd(".");
   char *szCwd = new char[PATH_MAX + 1]; // Allocate a temp char* array
   if (::getcwd(szCwd, PATH_MAX) != (char *)nullptr) { // Get the cwd
@@ -306,7 +312,7 @@ std::ostream &Rbt::PrintStdHeader(std::ostream &s,
     << std::endl;
   s << "RBT_ROOT:\t" << GetRbtRoot() << std::endl;
   s << "RBT_HOME:\t" << GetRbtHome() << std::endl;
-  s << "Current dir:\t" << GetCurrentDirectory() << std::endl;
+  s << "Current dir:\t" << GetCurrentWorkingDirectory() << std::endl;
   s << "Date:\t\t" << GetTime();
   s << "***********************************************" << std::endl;
   return s;

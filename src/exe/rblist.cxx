@@ -15,6 +15,7 @@
 #include "RbtMdlFileSink.h"
 #include "RbtMdlFileSource.h"
 #include <algorithm> //for min,max
+#include <functional>
 #include <iomanip>
 
 const std::string EXEVERSION =
@@ -94,17 +95,17 @@ void CheckAmideBonds(RbtModelPtr spModel) {
     // Find bonded O_SP2 and H (if any)
     RbtAtomList bondedAtomsN = Rbt::GetBondedAtomList(spN);
     RbtAtomList bondedAtomsC = Rbt::GetBondedAtomList(spC);
-    RbtAtomListIter oIter = Rbt::FindAtom(bondedAtomsC, bIsO_SP2);
-    RbtAtomListIter hIter = Rbt::FindAtom(bondedAtomsN, bIsH);
+    RbtAtomListIter oIter = Rbt::FindAtomInList(bondedAtomsC, bIsO_SP2);
+    RbtAtomListIter hIter = Rbt::FindAtomInList(bondedAtomsN, bIsH);
 
     if ((oIter != bondedAtomsC.end()) && (hIter != bondedAtomsN.end())) {
       RbtAtomPtr spH = (*hIter);
       RbtAtomPtr spO = (*oIter);
       double phi = Rbt::BondDihedral(spH, spN, spC, spO);
-      std::cout << spH->GetAtomName() << "(" << spH->GetFFType() << ") - "
-                << spN->GetAtomName() << "(" << spN->GetFFType() << ") - "
-                << spC->GetAtomName() << "(" << spC->GetFFType() << ") - "
-                << spO->GetAtomName() << "(" << spO->GetFFType() << "): " << phi
+      std::cout << spH->GetName() << "(" << spH->GetFFType() << ") - "
+                << spN->GetName() << "(" << spN->GetFFType() << ") - "
+                << spC->GetName() << "(" << spC->GetFFType() << ") - "
+                << spO->GetName() << "(" << spO->GetFFType() << "): " << phi
                 << " deg" << std::endl;
       double deltaPhi = 180.0 - phi;
       std::cout << "Rotating bond by " << deltaPhi << " deg" << std::endl;
@@ -112,9 +113,9 @@ void CheckAmideBonds(RbtModelPtr spModel) {
       phi = Rbt::BondDihedral(spH, spN, spC, spO);
       std::cout << "Dihedral is now " << phi << " deg" << std::endl;
     } else {
-      std::cout << spN->GetAtomName() << "(" << spN->GetFFType() << ") - "
-                << spC->GetAtomName() << "(" << spC->GetFFType()
-                << "): TERTIARY" << std::endl;
+      std::cout << spN->GetName() << "(" << spN->GetFFType() << ") - "
+                << spC->GetName() << "(" << spC->GetFFType() << "): TERTIARY"
+                << std::endl;
     }
   }
 }
@@ -317,8 +318,8 @@ int main(int argc, char *argv[]) {
              bIter != rotatableBondList.end(); bIter++) {
           RbtAtomPtr spAtom1 = (*bIter)->GetAtom1Ptr();
           RbtAtomPtr spAtom2 = (*bIter)->GetAtom2Ptr();
-          std::cout << spAtom1->GetAtomName() << "(" << spAtom1->GetFFType()
-                    << ") - " << spAtom2->GetAtomName() << "("
+          std::cout << spAtom1->GetName() << "(" << spAtom1->GetFFType()
+                    << ") - " << spAtom2->GetName() << "("
                     << spAtom2->GetFFType() << ")" << std::endl;
         }
       } else {

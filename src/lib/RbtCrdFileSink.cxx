@@ -117,7 +117,7 @@ void RbtCrdFileSink::Render() {
            << std::setw(0) << " ";
       ostr.setf(std::ios_base::left, std::ios_base::adjustfield);
       ostr << std::setw(4) << spAtom->GetSubunitName().c_str() << std::setw(0)
-           << " " << std::setw(4) << spAtom->GetAtomName().c_str();
+           << " " << std::setw(4) << spAtom->GetName().c_str();
       ostr.setf(std::ios_base::right, std::ios_base::adjustfield);
       ostr << std::setw(10) << spAtom->GetX() << std::setw(10) << spAtom->GetY()
            << std::setw(10) << spAtom->GetZ() << std::setw(0) << " ";

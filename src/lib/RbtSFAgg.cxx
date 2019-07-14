@@ -14,6 +14,8 @@
 #include "RbtModel.h"
 #include "RbtWorkSpace.h"
 
+#include <functional>
+
 // Static data member for class type
 std::string RbtSFAgg::_CT("RbtSFAgg");
 

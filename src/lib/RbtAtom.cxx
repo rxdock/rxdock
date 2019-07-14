@@ -15,6 +15,8 @@
 #include "RbtModel.h"
 #include "RbtPseudoAtom.h"
 
+#include <functional>
+
 ///////////////////////////////////////////////
 // Constructors / destructors
 ///////////////////////////////////////////////
@@ -853,11 +855,10 @@ void Rbt::PrintQuantaCSDFormat(const RbtAtomList &atomList, std::ostream &s,
     switch (nFormat) {
     case 0:
       s << "zone " << spAtom->GetSegmentName() << ":" << spAtom->GetSubunitId()
-        << " # pick " << spAtom->GetAtomName() << " = col " << nColor
-        << std::endl;
+        << " # pick " << spAtom->GetName() << " = col " << nColor << std::endl;
       break;
     default:
-      s << "pick " << spAtom->GetAtomName() << " .and. segm "
+      s << "pick " << spAtom->GetName() << " .and. segm "
         << spAtom->GetSegmentName() << " = col " << nColor << std::endl;
     }
   }

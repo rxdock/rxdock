@@ -12,6 +12,8 @@
 
 #include "RbtSetupPMFSF.h"
 
+#include <functional>
+
 std::string RbtSetupPMFSF::_CT("RbtSetupPMFSF");
 
 RbtSetupPMFSF::RbtSetupPMFSF(const std::string &strName)

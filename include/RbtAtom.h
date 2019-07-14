@@ -112,7 +112,7 @@ public:
   void SetAtomicNo(const int nAtomicNo) { m_nAtomicNo = nAtomicNo; }
 
   // AtomName
-  std::string GetAtomName() const { return m_strAtomName; }
+  std::string GetName() const { return m_strAtomName; }
   void SetAtomName(const std::string strAtomName) {
     m_strAtomName = strAtomName;
   }
@@ -545,9 +545,7 @@ class isAtomName_eq : public std::unary_function<RbtAtom *, bool> {
 
 public:
   explicit isAtomName_eq(const std::string &ss) : s(ss) {}
-  bool operator()(const RbtAtom *pAtom) const {
-    return pAtom->GetAtomName() == s;
-  }
+  bool operator()(const RbtAtom *pAtom) const { return pAtom->GetName() == s; }
 };
 
 // Is Subunit name equal to s ?
@@ -615,7 +613,7 @@ public:
   bool operator()(const RbtAtom *pAtom1, const RbtAtom *pAtom2) const {
     return ((pAtom1->GetSubunitId() == pAtom2->GetSubunitId()) &&
             (pAtom1->GetSubunitName() == pAtom2->GetSubunitName()) &&
-            (pAtom1->GetAtomName() == pAtom2->GetAtomName()));
+            (pAtom1->GetName() == pAtom2->GetName()));
   }
 };
 
@@ -886,7 +884,7 @@ public:
 class RbtAtomPtrCmp_AtomName {
 public:
   bool operator()(RbtAtom *pAtom1, RbtAtom *pAtom2) const {
-    return pAtom1->GetAtomName() < pAtom2->GetAtomName();
+    return pAtom1->GetName() < pAtom2->GetName();
   }
 };
 
@@ -1017,9 +1015,9 @@ RbtAtomList GetAtomList(const RbtAtomList &atomList, const Predicate &pred) {
   return newAtomList;
 }
 
-// Generic template version of FindAtom, passing in your own predicate
+// Generic template version of FindAtomInList, passing in your own predicate
 template <class Predicate>
-RbtAtomListIter FindAtom(RbtAtomList &atomList, const Predicate &pred) {
+RbtAtomListIter FindAtomInList(RbtAtomList &atomList, const Predicate &pred) {
   return std::find_if(atomList.begin(), atomList.end(), pred);
 }
 

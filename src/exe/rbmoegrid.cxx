@@ -11,7 +11,10 @@
  ***********************************************************************/
 #include <fstream>
 #include <iomanip>
+#ifdef _WIN32
+#else
 #include <unistd.h>
+#endif
 
 #include "RbtBiMolWorkSpace.h"
 #include "RbtMOEGrid.h"

@@ -96,7 +96,7 @@ double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
       double s = f4_8(R_sq, *iter2);
       // XB NOTE: Apply weight here
       //   RbtDouble wxb = (*iter)->GetReweight();
-      // std::cout << "4-8vdw " << (*iter)->GetAtomName() << " weight: " << wxb
+      // std::cout << "4-8vdw " << (*iter)->GetName() << " weight: " << wxb
       // << " score " << s;
       //   s *=  wxb;
       // std::cout << " score*w " << s << std::endl;
@@ -116,7 +116,7 @@ double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
       double s = f6_12(R_sq, *iter2);
       // XB NOTE: Apply weight here
       // RbtDouble wxb = (*iter)->GetReweight();
-      //   std::cout << "6-12vdw " << (*iter)->GetAtomName() << " weight: " <<
+      //   std::cout << "6-12vdw " << (*iter)->GetName() << " weight: " <<
       //   wxb << " score " << s;
       // s *=  wxb;
       //   std::cout << " score*w " << s << std::endl;
@@ -141,7 +141,7 @@ double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
       double s = f6_12(R_sq, *iter2);
       // XB NOTE: Apply weight here
       //   RbtDouble wxb = (*iter)->GetReweight();
-      //   std::cout << "6-12vdw " << (*iter)->GetAtomName() << " weight: " <<
+      //   std::cout << "6-12vdw " << (*iter)->GetName() << " weight: " <<
       //   wxb << " score " << s; s *=  wxb; std::cout << " score*w " << s <<
       //   std::endl;
       // XB END MODIFICATIONS

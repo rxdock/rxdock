@@ -14,7 +14,10 @@
 
 #include <algorithm>
 #include <iomanip>
+#ifdef _WIN32
+#else
 #include <unistd.h>
+#endif
 
 #include "RbtBiMolWorkSpace.h"
 #include "RbtCrdFileSink.h"

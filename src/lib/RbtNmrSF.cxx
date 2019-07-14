@@ -14,6 +14,8 @@
 #include "RbtNmrRestraintFileSource.h"
 #include "RbtWorkSpace.h"
 
+#include <functional>
+
 // Static data members
 std::string RbtNmrSF::_CT("RbtNmrSF");
 std::string RbtNmrSF::_FILENAME("FILENAME");
