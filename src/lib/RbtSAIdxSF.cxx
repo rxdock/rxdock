@@ -606,7 +606,7 @@ void RbtSAIdxSF::Setup() {
   // overridden
   RbtStringList secList = m_spSolvSource->GetSectionList();
   std::string _R("R");
-  std::string _P("P");
+  std::string _PARAM_P("P");
   std::string _ASP("ASP");
   std::string _CHG_SCALING("CHG_SCALING");
   m_solvTable.clear();
@@ -615,7 +615,7 @@ void RbtSAIdxSF::Setup() {
     std::string stri = hhsType.Type2Str(RbtHHSType::eType(i));
     m_spSolvSource->SetSection(stri);
     double r = m_spSolvSource->GetParameterValue(_R);
-    double p = m_spSolvSource->GetParameterValue(_P);
+    double p = m_spSolvSource->GetParameterValue(_PARAM_P);
     double asp = m_spSolvSource->GetParameterValue(_ASP);
     bool chg_scaling = m_spSolvSource->isParameterPresent(_CHG_SCALING);
     m_solvTable.push_back(solvprms(r, p, asp, chg_scaling));
