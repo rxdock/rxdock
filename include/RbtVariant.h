@@ -11,8 +11,8 @@
  ***********************************************************************/
 
 // Variant class along the lines of the Visual Basic variant data type.
-// Handles int, double, const char*, string and vector<string> types
-// Underlying value is stored as double and vector<string>
+// Handles int, double, const char*, string and std::vector<string> types
+// Underlying value is stored as double and std::vector<string>
 
 #ifndef _RBTVARIANT_H_
 #define _RBTVARIANT_H_
@@ -229,12 +229,12 @@ private:
 
 // Useful typedefs
 // typedef SharedPtr<RbtVariant> RbtVariantPtr;//Smart pointer
-typedef vector<RbtVariant> RbtVariantList; // Vector of variants
+typedef std::vector<RbtVariant> RbtVariantList; // Vector of variants
 typedef RbtVariantList::iterator RbtVariantListIter;
 typedef RbtVariantList::const_iterator RbtVariantListConstIter;
 
 // Map of (key=string, value=variant)
-typedef map<std::string, RbtVariant> RbtStringVariantMap;
+typedef std::map<std::string, RbtVariant> RbtStringVariantMap;
 typedef RbtStringVariantMap::iterator RbtStringVariantMapIter;
 typedef RbtStringVariantMap::const_iterator RbtStringVariantMapConstIter;
 

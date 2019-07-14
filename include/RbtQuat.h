@@ -191,7 +191,7 @@ public:
 };
 
 // Useful typedefs
-typedef vector<RbtQuat> RbtQuatList; // Vector of quats
+typedef std::vector<RbtQuat> RbtQuatList; // Vector of quats
 typedef RbtQuatList::iterator RbtQuatListIter;
 typedef RbtQuatList::const_iterator RbtQuatListConstIter;
 

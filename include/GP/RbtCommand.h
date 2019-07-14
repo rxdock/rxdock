@@ -52,8 +52,8 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtCommand> RbtCommandPtr;   // Smart pointer
-typedef vector<RbtCommandPtr> RbtCommandList; // Vector of smart pointers
+typedef SmartPtr<RbtCommand> RbtCommandPtr;        // Smart pointer
+typedef std::vector<RbtCommandPtr> RbtCommandList; // Vector of smart pointers
 typedef RbtCommandList::iterator RbtCommandListIter;
 typedef RbtCommandList::const_iterator RbtCommandListConstIter;
 class AddCommand : public RbtCommand {

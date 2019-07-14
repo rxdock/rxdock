@@ -45,8 +45,8 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtGPFFCHK1> RbtGPFFCHK1Ptr;   // Smart pointer
-typedef vector<RbtGPFFCHK1Ptr> RbtGPFFCHK1List; // Vector of smart pointers
+typedef SmartPtr<RbtGPFFCHK1> RbtGPFFCHK1Ptr;        // Smart pointer
+typedef std::vector<RbtGPFFCHK1Ptr> RbtGPFFCHK1List; // Vector of smart pointers
 typedef RbtGPFFCHK1List::iterator RbtGPFFCHK1ListIter;
 typedef RbtGPFFCHK1List::const_iterator RbtGPFFCHK1ListConstIter;
 #endif //_RbtGPFFCHK1

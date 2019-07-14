@@ -118,8 +118,8 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtBond> RbtBondPtr;   // Smart pointer
-typedef vector<RbtBondPtr> RbtBondList; // Vector of smart pointers
+typedef SmartPtr<RbtBond> RbtBondPtr;        // Smart pointer
+typedef std::vector<RbtBondPtr> RbtBondList; // Vector of smart pointers
 typedef RbtBondList::iterator RbtBondListIter;
 typedef RbtBondList::const_iterator RbtBondListConstIter;
 

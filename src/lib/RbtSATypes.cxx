@@ -240,7 +240,7 @@ RbtHHSType::eType RbtHHSType::Str2Type(const std::string &strType) const {
 }
 
 void RbtHHSType::SetupTypeNames() {
-  // Create a vector<string> of the right size
+  // Create a std::vector<string> of the right size
   m_typeNames = RbtStringList(RbtHHSType::MAXTYPES, std::string());
   m_typeNames[RbtHHSType::UNDEFINED] = "UNDEFINED";
   m_typeNames[RbtHHSType::C_sp3] = "C_sp3";

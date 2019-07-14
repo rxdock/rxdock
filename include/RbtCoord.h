@@ -324,16 +324,16 @@ public:
 // treated as -3D vectors from those are treated as 3-D points, use this typedef
 typedef RbtCoord RbtVector;
 
-typedef vector<RbtCoord> RbtCoordList; // Vector of coords
+typedef std::vector<RbtCoord> RbtCoordList; // Vector of coords
 typedef RbtCoordList::iterator RbtCoordListIter;
 typedef RbtCoordList::const_iterator RbtCoordListConstIter;
 
 // DM 19/1/99 typedefs for a map of key=RbtInt, value=RbtCoord
-// typedef map<RbtString,RbtCoord> RbtStringCoordMap;
+// typedef std::map<RbtString,RbtCoord> RbtStringCoordMap;
 // typedef RbtStringCoordMap::iterator RbtStringCoordMapIter;
 // typedef RbtStringCoordMap::const_iterator RbtStringCoordMapConstIter;
 // DM 08 Feb 1999 - Changed from key=string to key=int
-typedef map<unsigned int, RbtCoord> RbtUIntCoordMap;
+typedef std::map<unsigned int, RbtCoord> RbtUIntCoordMap;
 typedef RbtUIntCoordMap::iterator RbtUIntCoordMapIter;
 typedef RbtUIntCoordMap::const_iterator RbtUIntCoordMapConstIter;
 

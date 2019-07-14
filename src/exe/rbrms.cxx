@@ -19,7 +19,7 @@
 #include "RbtModel.h"
 #include "RbtModelError.h"
 
-typedef vector<RbtCoordList> RbtCoordListList;
+typedef std::vector<RbtCoordList> RbtCoordListList;
 typedef RbtCoordListList::iterator RbtCoordListListIter;
 typedef RbtCoordListList::const_iterator RbtCoordListListConstIter;
 
@@ -37,7 +37,7 @@ public:
 };
 
 typedef SmartPtr<RbtSymBond> RbtSymBondPtr;
-typedef vector<RbtSymBondPtr> RbtSymBondList;
+typedef std::vector<RbtSymBondPtr> RbtSymBondList;
 typedef RbtSymBondList::iterator RbtSymBondListIter;
 typedef RbtSymBondList::const_iterator RbtSymBondListConstIter;
 

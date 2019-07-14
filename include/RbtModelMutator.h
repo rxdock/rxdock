@@ -82,7 +82,7 @@ private:
       m_rotAtoms; // List of atom lists on smallest side of each rotable bond
   // DM 25 Apr 2002
   // m_flexIntns is a vector of size N(atoms)
-  // Each element is an RbtAtomList (i.e. vector<RbtAtomPtr>)
+  // Each element is an RbtAtomList (i.e. std::vector<RbtAtomPtr>)
   //
   //*** The vector is indexed by AtomId
   //*** We assume all atom IDs in the molecule are assigned sequentially from 1

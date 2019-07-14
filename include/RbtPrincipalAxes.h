@@ -35,7 +35,7 @@ public:
   double moment3;
 };
 
-typedef vector<RbtPrincipalAxes> RbtPrincipalAxesList;
+typedef std::vector<RbtPrincipalAxes> RbtPrincipalAxesList;
 typedef RbtPrincipalAxesList::iterator RbtPrincipalAxesListIter;
 typedef RbtPrincipalAxesList::const_iterator RbtPrincipalAxesListConstIter;
 

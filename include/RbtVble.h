@@ -60,8 +60,8 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtVble> RbtVblePtr;   // Smart pointer
-typedef vector<RbtVblePtr> RbtVbleList; // Vector of smart pointers
+typedef SmartPtr<RbtVble> RbtVblePtr;        // Smart pointer
+typedef std::vector<RbtVblePtr> RbtVbleList; // Vector of smart pointers
 typedef RbtVbleList::iterator RbtVbleListIter;
 typedef RbtVbleList::const_iterator RbtVbleListConstIter;
 

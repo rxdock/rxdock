@@ -144,22 +144,22 @@ public:
 std::ostream &operator<<(std::ostream &s, const RbtStdRestraintAtoms &std);
 
 // Useful typedefs
-typedef vector<RbtNoeRestraintNames> RbtNoeRestraintNamesList;
+typedef std::vector<RbtNoeRestraintNames> RbtNoeRestraintNamesList;
 typedef RbtNoeRestraintNamesList::iterator RbtNoeRestraintNamesListIter;
 typedef RbtNoeRestraintNamesList::const_iterator
     RbtNoeRestraintNamesListConstIter;
 
-typedef vector<RbtNoeRestraintAtoms> RbtNoeRestraintAtomsList;
+typedef std::vector<RbtNoeRestraintAtoms> RbtNoeRestraintAtomsList;
 typedef RbtNoeRestraintAtomsList::iterator RbtNoeRestraintAtomsListIter;
 typedef RbtNoeRestraintAtomsList::const_iterator
     RbtNoeRestraintAtomsListConstIter;
 
-typedef vector<RbtStdRestraintNames> RbtStdRestraintNamesList;
+typedef std::vector<RbtStdRestraintNames> RbtStdRestraintNamesList;
 typedef RbtStdRestraintNamesList::iterator RbtStdRestraintNamesListIter;
 typedef RbtStdRestraintNamesList::const_iterator
     RbtStdRestraintNamesListConstIter;
 
-typedef vector<RbtStdRestraintAtoms> RbtStdRestraintAtomsList;
+typedef std::vector<RbtStdRestraintAtoms> RbtStdRestraintAtomsList;
 typedef RbtStdRestraintAtomsList::iterator RbtStdRestraintAtomsListIter;
 typedef RbtStdRestraintAtomsList::const_iterator
     RbtStdRestraintAtomsListConstIter;

@@ -62,9 +62,9 @@ RbtMOEGridPoint::RbtMOEGridPoint() {
 
 // parameterised ctor receives an n-dimensional vector and a value as
 // input
-RbtMOEGridPoint::RbtMOEGridPoint(vector<double> a_coord, double a_value) {
+RbtMOEGridPoint::RbtMOEGridPoint(std::vector<double> a_coord, double a_value) {
   // copy everything
-  vector<double>::iterator crditer;
+  std::vector<double>::iterator crditer;
   for (crditer = a_coord.begin(); crditer != a_coord.end(); ++crditer)
     coords.push_back(*crditer);
   value = a_value;
@@ -84,16 +84,16 @@ RbtMOEGridPoint::RbtMOEGridPoint(RbtCoord &a_coord, double a_value) {
 // default ctor allocates a 1D grid starting at 0.0 to 1.0
 // with 1.0 stepsize (2 elements at least needed for MOE)
 RbtMOEGridShape::RbtMOEGridShape() {
-  vector<double> grid_origin(1, 0.0);
-  vector<double> grid_extents(1, 1.0);
+  std::vector<double> grid_origin(1, 0.0);
+  std::vector<double> grid_extents(1, 1.0);
   double grid_step = 1.0;
   RbtMOEGridShape(grid_origin, grid_extents, grid_step);
 }
 
 // parametrized ctor receives grid as the origin vector, the extent
 // vector and stepsize
-RbtMOEGridShape::RbtMOEGridShape(vector<double> grid_origin,
-                                 vector<double> grid_extents,
+RbtMOEGridShape::RbtMOEGridShape(std::vector<double> grid_origin,
+                                 std::vector<double> grid_extents,
                                  double grid_steps) {
   // grid origin should to be a N-dimensional point with the
   // same dimensions as the extends
@@ -102,7 +102,8 @@ RbtMOEGridShape::RbtMOEGridShape(vector<double> grid_origin,
               << std::endl;
   // copying ctor parameter vectors (it is not guaranteed they will
   // live forever during the code)
-  vector<double>::iterator o_iter, e_iter; // for the O_rigin and the E_xtents
+  std::vector<double>::iterator o_iter,
+      e_iter; // for the O_rigin and the E_xtents
   for (o_iter = grid_origin.begin(); o_iter != grid_origin.end(); ++o_iter)
     origin.push_back(*o_iter);
   for (e_iter = grid_extents.begin(); e_iter != grid_extents.end(); ++e_iter)
@@ -116,7 +117,7 @@ RbtMOEGridShape::RbtMOEGridShape(vector<double> grid_origin,
   }
   // calculate the total number of points (initialize multiplication by 1)
   data_size = 1;
-  for (vector<int>::const_iterator ext_iter = i_extents.begin();
+  for (std::vector<int>::const_iterator ext_iter = i_extents.begin();
        ext_iter != i_extents.end(); ++ext_iter)
     data_size *= (*ext_iter);
 }
@@ -166,10 +167,10 @@ void RbtMOEGrid::GetDockingSiteExtents(std::string &a_strPrmFile) {
 }
 // reads all the .prm files and calculates the common extents for all
 // cavities to get a grid that includes them all
-void RbtMOEGrid::CalculateCommonExtents(vector<std::string> strPrmFiles) {
+void RbtMOEGrid::CalculateCommonExtents(std::vector<std::string> strPrmFiles) {
 
   std::cout << "Receptors: " << std::endl;
-  vector<std::string>::iterator strPrmFilesIter;
+  std::vector<std::string>::iterator strPrmFilesIter;
   for (strPrmFilesIter = strPrmFiles.begin();
        strPrmFilesIter != strPrmFiles.end(); ++strPrmFilesIter) {
     std::cout << "\t" << (*strPrmFilesIter) << std::endl;
@@ -219,15 +220,15 @@ long RbtMOEGrid::WriteGrid(std::ios_base::openmode mode) {
   svl::write_int4m(ofstr, ndata);     // size of data vector
   svl::write_int4m(ofstr, dimension); // size of shape vector/origin
   svl::write_int4m(ofstr, 0);         // the number of skipped bytes (is zero)
-  vector<int> i_ext = myShape.GetIExtents();
-  for (vector<int>::iterator i_ext_iter = i_ext.begin();
+  std::vector<int> i_ext = myShape.GetIExtents();
+  for (std::vector<int>::iterator i_ext_iter = i_ext.begin();
        i_ext_iter != i_ext.end(); ++i_ext_iter) {
     svl::write_int4m(ofstr, (*i_ext_iter)); // write shape vector extents
   }
-  vector<double> grid_origin = myShape.GetOrigin(); // cat shape :
-  vector<double> grid_extents =
+  std::vector<double> grid_origin = myShape.GetOrigin(); // cat shape :
+  std::vector<double> grid_extents =
       myShape.GetExtents(); // list all the values in the shape vector
-  vector<double>::iterator o_iter, e_iter; // origin and extents
+  std::vector<double>::iterator o_iter, e_iter; // origin and extents
   for (o_iter = grid_origin.begin(), e_iter = grid_extents.begin();
        o_iter != grid_origin.end() && e_iter != grid_extents.end();
        ++o_iter, ++e_iter) {

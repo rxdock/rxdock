@@ -35,7 +35,7 @@ public:
 
 typedef SmartPtr<RbtFFTPeak> RbtFFTPeakPtr; // Smart pointer
 // Multi-map of key=peak height,value=FFTPeakPtr
-typedef multimap<double, RbtFFTPeakPtr> RbtFFTPeakMap;
+typedef std::multimap<double, RbtFFTPeakPtr> RbtFFTPeakMap;
 typedef RbtFFTPeakMap::iterator RbtFFTPeakMapIter;
 typedef RbtFFTPeakMap::reverse_iterator RbtFFTPeakMapRIter;
 typedef RbtFFTPeakMap::const_iterator RbtFFTPeakMapConstIter;

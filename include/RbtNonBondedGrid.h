@@ -24,8 +24,8 @@
 // pointer list)
 
 // DM 3 Nov 2000 - replace map by vector for faster lookup
-// typedef map<RbtUInt,RbtAtomRList> RbtAtomListMap;
-typedef vector<RbtAtomRList> RbtAtomListMap;
+// typedef std::map<RbtUInt,RbtAtomRList> RbtAtomListMap;
+typedef std::vector<RbtAtomRList> RbtAtomListMap;
 
 typedef RbtAtomListMap::iterator RbtAtomListMapIter;
 typedef RbtAtomListMap::const_iterator RbtAtomListMapConstIter;

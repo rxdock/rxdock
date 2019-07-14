@@ -58,7 +58,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtGPFitnessFunction> RbtGPFitnessFunctionPtr; // Smart pointer
-typedef vector<RbtGPFitnessFunctionPtr>
+typedef std::vector<RbtGPFitnessFunctionPtr>
     RbtGPFitnessFunctionList; // Vector of smart pointers
 typedef RbtGPFitnessFunctionList::iterator RbtGPFitnessFunctionListIter;
 typedef RbtGPFitnessFunctionList::const_iterator

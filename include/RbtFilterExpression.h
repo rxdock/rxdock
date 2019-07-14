@@ -47,7 +47,7 @@ protected:
 
 // Useful typedefs
 typedef SmartPtr<RbtFilterExpression> RbtFilterExpressionPtr; // Smart pointer
-typedef vector<RbtFilterExpressionPtr> RbtFilterExpressionList;
+typedef std::vector<RbtFilterExpressionPtr> RbtFilterExpressionList;
 // Vector of smart pointers
 typedef RbtFilterExpressionList::iterator RbtFilterExpressionListIter;
 typedef RbtFilterExpressionList::const_iterator

@@ -187,14 +187,16 @@ bool RbtAtom::AddBond(RbtBond *pBond) {
   // Case 1 - this atom is the first atom in the bond
   //(key=pBond, value = true) as this atom is atom 1
   if (pBond->GetAtom1Ptr().Ptr() == this) {
-    pair<RbtBondMapIter, bool> p = m_bondMap.insert(make_pair(pBond, true));
+    std::pair<RbtBondMapIter, bool> p =
+        m_bondMap.insert(std::make_pair(pBond, true));
     return p.second; // p.second is true if bond inserted, false if bond was
                      // already present
   }
   // Case 2 - this atom is the second atom in the bond
   //(key=pBond, value = false) as this atom is atom 2
   else if (pBond->GetAtom2Ptr().Ptr() == this) {
-    pair<RbtBondMapIter, bool> p = m_bondMap.insert(make_pair(pBond, false));
+    std::pair<RbtBondMapIter, bool> p =
+        m_bondMap.insert(std::make_pair(pBond, false));
     return p.second; // p.second is true if bond inserted, false if bond was
                      // already present
   } else
@@ -256,8 +258,9 @@ void RbtAtom::ClearBondMap() { m_bondMap.clear(); }
 // Other public methods
 ///////////////////////////////////////////////
 
-// DM 08 Feb 1999 - all saved coords are now saved in a map<RbtUInt,RbtCoord>
-// map key=0 is reserved for the default SaveCoords and RevertCoords
+// DM 08 Feb 1999 - all saved coords are now saved in a
+// std::map<RbtUInt,RbtCoord> map key=0 is reserved for the default SaveCoords
+// and RevertCoords
 void RbtAtom::SaveCoords(unsigned int coordNum) {
   m_savedCoords[coordNum] = m_coord;
 }
@@ -585,7 +588,7 @@ void Rbt::SetAtomCyclicFlags(RbtAtomList &atomList, bool bCyclic) {
 // Helper function to return the atom pointer for the "other" atom in the bond
 // i.e. return (bondPair.second) ? bondPair.first->GetAtom2Ptr() :
 // bondPair.first->GetAtom1Ptr();
-RbtAtomPtr Rbt::GetBondedAtomPtr(pair<RbtBond *, bool> bondBoolPair) {
+RbtAtomPtr Rbt::GetBondedAtomPtr(std::pair<RbtBond *, bool> bondBoolPair) {
   // If this atom is first in the bond (bondPair.second == true), get atom 2
   // ptr, else get atom 1 ptr
   return (bondBoolPair.second) ? (bondBoolPair.first)->GetAtom2Ptr()

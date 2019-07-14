@@ -66,7 +66,7 @@ private:
     bool chg_scaling;
   };
 
-  typedef vector<RbtSAIdxSF::solvprms> RbtSolvTable;
+  typedef std::vector<RbtSAIdxSF::solvprms> RbtSolvTable;
   void Setup();
   HHS_SolvationRList
   CreateInteractionCenters(const RbtAtomList &atomList) const;

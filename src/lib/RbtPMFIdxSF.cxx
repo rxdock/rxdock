@@ -54,10 +54,11 @@ RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
   // first read .pmf files from directory
   RbtPMFDirSource theSrcDir(Rbt::GetRbtRoot() + "/" +
                             (std::string)GetParameter(_PMFDIR));
-  vector<vector<RbtPMFValue>> thePMF; // vector helping to read PMF files
-  vector<std::string> theFileNames; // vector storing filenames (needed to find
-                                    // out types in thePMF)
-  vector<RbtPMFValue>
+  std::vector<std::vector<RbtPMFValue>>
+      thePMF;                            // vector helping to read PMF files
+  std::vector<std::string> theFileNames; // vector storing filenames (needed to
+                                         // find out types in thePMF)
+  std::vector<RbtPMFValue>
       theSlopeIndex; // contains the first value where plateau starts
   theSrcDir.ReadFiles(&thePMF, &theFileNames, &theSlopeIndex);
   // convert vector to grid

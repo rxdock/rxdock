@@ -76,8 +76,9 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtPseudoAtom> RbtPseudoAtomPtr;   // Smart pointer
-typedef vector<RbtPseudoAtomPtr> RbtPseudoAtomList; // Vector of smart pointers
+typedef SmartPtr<RbtPseudoAtom> RbtPseudoAtomPtr; // Smart pointer
+typedef std::vector<RbtPseudoAtomPtr>
+    RbtPseudoAtomList; // Vector of smart pointers
 typedef RbtPseudoAtomList::iterator RbtPseudoAtomListIter;
 typedef RbtPseudoAtomList::const_iterator RbtPseudoAtomListConstIter;
 

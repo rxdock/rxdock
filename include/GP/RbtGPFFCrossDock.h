@@ -39,7 +39,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtGPFFCrossDock> RbtGPFFCrossDockPtr; // Smart pointer
-typedef vector<RbtGPFFCrossDockPtr>
+typedef std::vector<RbtGPFFCrossDockPtr>
     RbtGPFFCrossDockList; // Vector of smart pointers
 typedef RbtGPFFCrossDockList::iterator RbtGPFFCrossDockListIter;
 typedef RbtGPFFCrossDockList::const_iterator RbtGPFFCrossDockListConstIter;

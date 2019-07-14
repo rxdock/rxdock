@@ -30,7 +30,7 @@ public:
   std::string comment;
 };
 
-typedef vector<CharmmType> RbtCharmmTypeList;
+typedef std::vector<CharmmType> RbtCharmmTypeList;
 typedef RbtCharmmTypeList::iterator RbtCharmmTypeListIter;
 
 class RbtCharmmTypesFileSource : public RbtBaseFileSource {

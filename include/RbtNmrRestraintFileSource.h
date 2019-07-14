@@ -97,7 +97,7 @@ private:
 // Useful typedefs
 typedef SmartPtr<RbtNmrRestraintFileSource>
     RbtNmrRestraintFileSourcePtr; // Smart pointer
-typedef vector<RbtNmrRestraintFileSourcePtr>
+typedef std::vector<RbtNmrRestraintFileSourcePtr>
     RbtNmrRestraintFileSourceList; // Vector of smart pointers
 typedef RbtNmrRestraintFileSourceList::iterator
     RbtNmrRestraintFileSourceListIter;

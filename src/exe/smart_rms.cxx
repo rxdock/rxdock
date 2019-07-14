@@ -24,7 +24,7 @@
 #include "RbtModelError.h"
 #include "RbtSmarts.h"
 
-typedef vector<RbtCoordList> RbtCoordListList;
+typedef std::vector<RbtCoordList> RbtCoordListList;
 typedef RbtCoordListList::iterator RbtCoordListListIter;
 typedef RbtCoordListList::const_iterator RbtCoordListListConstIter;
 

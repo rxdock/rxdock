@@ -59,7 +59,7 @@ void RbtMOL2FileSource::Parse(void) {
     // create a switchboard map - each member is a pointer to a function
     // (a sort of functor, but I prefer to call using a meaningful string
     // instead a number)
-    map<std::string, fcPtr> theSwitchBoard;
+    std::map<std::string, fcPtr> theSwitchBoard;
     theSwitchBoard["MOLECULE"] = &RbtMOL2FileSource::ParseRecordMOLECULE;
     theSwitchBoard["ATOM"] = &RbtMOL2FileSource::ParseRecordATOM;
     theSwitchBoard["BOND"] = &RbtMOL2FileSource::ParseRecordBOND;
@@ -89,7 +89,7 @@ void RbtMOL2FileSource::Parse(void) {
         std::string theNewTag = GetMOL2Tag((*lineIter));
         if (!theNewTag.empty()) {
           // check key existence
-          map<std::string, fcPtr>::const_iterator i =
+          std::map<std::string, fcPtr>::const_iterator i =
               theSwitchBoard.find(theNewTag);
           if (i == theSwitchBoard.end()) {
             // std::cout << "INFO Skipping unsupported record: " << theNewTag <<
@@ -108,7 +108,7 @@ void RbtMOL2FileSource::Parse(void) {
       // let's assign chain ids to atoms
       // and sort atomlist by substructure ID
       m_atomList.clear();
-      for (map<int, RbtAtomList>::const_iterator iter = m_ssAtoms.begin();
+      for (std::map<int, RbtAtomList>::const_iterator iter = m_ssAtoms.begin();
            iter != m_ssAtoms.end(); iter++) {
         int subst_id = iter->first;
         RbtAtomList ssAtomList = iter->second;

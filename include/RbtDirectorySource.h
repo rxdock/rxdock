@@ -55,8 +55,8 @@ public:
 
   /**
    * ReadFiles should be re-defined by derived classes to match argument
-   * Ie ReadFile(vector<string> anStrVect) reads file and stores result in
-   * anStrVect, or ReadFile(map< ... > aMap) in aMap, etc.
+   * Ie ReadFile(std::vector<string> anStrVect) reads file and stores result in
+   * anStrVect, or ReadFile(std::map< ... > aMap) in aMap, etc.
    *
    */
   // virtual void ReadFiles()=0;

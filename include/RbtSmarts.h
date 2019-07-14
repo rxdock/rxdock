@@ -24,7 +24,7 @@ RbtAtomListList QueryModel(RbtModelPtr spModel, const std::string &strSmart,
 }
 
 // Map of (key=integer, value=integer)
-typedef map<int, int> RbtIntIntMap;
+typedef std::map<int, int> RbtIntIntMap;
 typedef RbtIntIntMap::iterator RbtIntIntMapIter;
 typedef RbtIntIntMap::const_iterator RbtIntIntMapConstIter;
 

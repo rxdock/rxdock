@@ -46,8 +46,8 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtParser> RbtParserPtr;   // Smart pointer
-typedef vector<RbtParserPtr> RbtParserList; // Vector of smart pointers
+typedef SmartPtr<RbtParser> RbtParserPtr;        // Smart pointer
+typedef std::vector<RbtParserPtr> RbtParserList; // Vector of smart pointers
 typedef RbtParserList::iterator RbtParserListIter;
 typedef RbtParserList::const_iterator RbtParserListConstIter;
 

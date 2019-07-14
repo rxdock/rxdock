@@ -81,8 +81,9 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtAnnotation> RbtAnnotationPtr;   // Smart pointer
-typedef vector<RbtAnnotationPtr> RbtAnnotationList; // Vector of smart pointers
+typedef SmartPtr<RbtAnnotation> RbtAnnotationPtr; // Smart pointer
+typedef std::vector<RbtAnnotationPtr>
+    RbtAnnotationList; // Vector of smart pointers
 typedef RbtAnnotationList::iterator RbtAnnotationListIter;
 typedef RbtAnnotationList::const_iterator RbtAnnotationListConstIter;
 

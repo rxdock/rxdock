@@ -59,8 +59,9 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtConstraint> RbtConstraintPtr;   // Smart pointer
-typedef vector<RbtConstraintPtr> RbtConstraintList; // Vector of smart pointers
+typedef SmartPtr<RbtConstraint> RbtConstraintPtr; // Smart pointer
+typedef std::vector<RbtConstraintPtr>
+    RbtConstraintList; // Vector of smart pointers
 typedef RbtConstraintList::iterator RbtConstraintListIter;
 typedef RbtConstraintList::const_iterator RbtConstraintListConstIter;
 

@@ -20,10 +20,11 @@
 // just need to create a class called RbtGPChromosome with the
 // operator[] and size() defined on it
 typedef float RbtReturnType;
-typedef SmartPtr<RbtReturnType> RbtReturnTypePtr;   // Smart pointer
-typedef vector<RbtReturnTypePtr> RbtReturnTypeList; // Vector of smart pointers
-typedef vector<RbtReturnTypeList> RbtReturnTypeArray; // Vector of smart
-                                                      // pointers
+typedef SmartPtr<RbtReturnType> RbtReturnTypePtr; // Smart pointer
+typedef std::vector<RbtReturnTypePtr>
+    RbtReturnTypeList; // Vector of smart pointers
+typedef std::vector<RbtReturnTypeList> RbtReturnTypeArray; // Vector of smart
+                                                           // pointers
 typedef RbtReturnTypeList::iterator RbtReturnTypeListIter;
 typedef RbtReturnTypeList::const_iterator RbtReturnTypeListConstIter;
 

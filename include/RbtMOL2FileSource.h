@@ -38,7 +38,7 @@ private:
 
 // A MOL2SubstructureMap stores MOL2Substructures keyed by SUBSTRUCTURE ID
 // (subst_id)
-typedef map<int, RbtMOL2Substructure> RbtMOL2SubstructureMap;
+typedef std::map<int, RbtMOL2Substructure> RbtMOL2SubstructureMap;
 typedef RbtMOL2SubstructureMap::iterator RbtMOL2SubstructureMapIter;
 typedef RbtMOL2SubstructureMap::const_iterator RbtMOL2SubstructureMapConstIter;
 
@@ -102,7 +102,7 @@ private:
   // and to sort atom list into a more sensible order (ordered by substructure
   // ID)
   RbtMOL2SubstructureMap m_ssInfo;
-  map<int, RbtAtomList> m_ssAtoms;
+  std::map<int, RbtAtomList> m_ssAtoms;
 
   RbtElementFileSourcePtr
       m_spElementData; // Elemental data source for vdW radii etc

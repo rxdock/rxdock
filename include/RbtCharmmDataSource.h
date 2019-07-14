@@ -19,7 +19,7 @@
 #include "RbtConfig.h"
 
 // Added by DM, 8 Dec 1998 for HybridState lookup method
-typedef map<std::string, RbtAtom::eHybridState> RbtStringHybridStateMap;
+typedef std::map<std::string, RbtAtom::eHybridState> RbtStringHybridStateMap;
 typedef RbtStringHybridStateMap::iterator RbtStringHybridStateMapIter;
 typedef RbtStringHybridStateMap::const_iterator
     RbtStringHybridStateMapConstIter;

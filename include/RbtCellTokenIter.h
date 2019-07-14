@@ -57,7 +57,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtCellTokenIter> RbtCellTokenIterPtr; // Smart pointer
-typedef vector<RbtCellTokenIterPtr>
+typedef std::vector<RbtCellTokenIterPtr>
     RbtCellTokenIterList; // Vector of smart pointers
 typedef RbtCellTokenIterList::iterator RbtCellTokenIterListIter;
 typedef RbtCellTokenIterList::const_iterator RbtCellTokenIterListConstIter;

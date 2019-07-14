@@ -94,7 +94,7 @@ private:
 };
 
 typedef SmartPtr<RbtHHSType *> RbtHHSTypePtr; // Smart pointer
-typedef vector<RbtHHSType::eType> RbtHHSTypeList;
+typedef std::vector<RbtHHSType::eType> RbtHHSTypeList;
 typedef RbtHHSTypeList::iterator RbtHHSTypeListIter;
 typedef RbtHHSTypeList::const_iterator RbtHHSTypeListConstIter;
 
@@ -145,7 +145,7 @@ public:
   void Overlap(HHS_Solvation *h, double p_ij);
   // Get a list of all the current (partitioned) variable-distance interactions
   // to this center
-  const vector<HHS_Solvation *> &GetVariable() const { return m_prt; }
+  const std::vector<HHS_Solvation *> &GetVariable() const { return m_prt; }
   int GetNumVariable() const { return m_prt.size(); }
   // Add a variable-distance interaction
   void AddVariable(HHS_Solvation *anAtom);
@@ -170,24 +170,25 @@ private:
   double PI_r_i_plus_r_s; // PI*(r_i+r_s)
   double p_i_over_S_i;    // p_i / S_i
 
-  RbtHHSType::eType hhsType;     // solvation atom type
-  RbtAtom *atom;                 // the RbtAtom itself
-  vector<HHS_Solvation *> m_var; // Vector of all variable distances
-  vector<HHS_Solvation *>
+  RbtHHSType::eType hhsType;          // solvation atom type
+  RbtAtom *atom;                      // the RbtAtom itself
+  std::vector<HHS_Solvation *> m_var; // Vector of all variable distances
+  std::vector<HHS_Solvation *>
       m_prt; // Vector of current partioned variable distances
 };
 
-typedef vector<HHS_Solvation *> HHS_SolvationRList;
+typedef std::vector<HHS_Solvation *> HHS_SolvationRList;
 typedef HHS_SolvationRList::iterator HHS_SolvationRListIter;
 typedef HHS_SolvationRList::const_iterator HHS_SolvationRListConstIter;
 
-typedef vector<HHS_SolvationRList>
+typedef std::vector<HHS_SolvationRList>
     HHS_SolvationListMap; // vector of regular pointers
 typedef HHS_SolvationListMap::iterator HHS_SolvationListMapIter;
 typedef HHS_SolvationListMap::const_iterator HHS_SolvationListMapConstIter;
 
-typedef SmartPtr<HHS_Solvation> HHS_SolvationPtr;   // Smart pointer
-typedef vector<HHS_SolvationPtr> HHS_SolvationList; // Vector of smart pointers
+typedef SmartPtr<HHS_Solvation> HHS_SolvationPtr; // Smart pointer
+typedef std::vector<HHS_SolvationPtr>
+    HHS_SolvationList; // Vector of smart pointers
 typedef HHS_SolvationList::iterator HHS_SolvationListIter;
 typedef HHS_SolvationList::const_iterator HHS_SolvationListConstIter;
 

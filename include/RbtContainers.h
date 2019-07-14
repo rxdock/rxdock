@@ -15,20 +15,10 @@
 #ifndef _RBTCONTAINERS_H_
 #define _RBTCONTAINERS_H_
 
-#include <vector>
-using std::vector;
-
-#include <map>
-using std::make_pair;
-using std::map;
-using std::multimap;
-using std::pair;
-
 #include <list>
-using std::list;
-
+#include <map>
 #include <set>
-using std::set;
+#include <vector>
 
 #include <algorithm>
 // DM 9 Dec 1998 - add copy_if template to std namespace (not included in STL)
@@ -54,27 +44,27 @@ OutputIterator copy_if(InputIterator first, InputIterator last,
 // Container Typedefs
 
 // double
-typedef vector<double> RbtDoubleList;
+typedef std::vector<double> RbtDoubleList;
 typedef RbtDoubleList::iterator RbtDoubleListIter;
 typedef RbtDoubleList::const_iterator RbtDoubleListConstIter;
 
 // int
-typedef vector<int> RbtIntList;
+typedef std::vector<int> RbtIntList;
 typedef RbtIntList::iterator RbtIntListIter;
 typedef RbtIntList::const_iterator RbtIntListConstIter;
 
 // uint
-typedef vector<unsigned int> RbtUIntList;
+typedef std::vector<unsigned int> RbtUIntList;
 typedef RbtUIntList::iterator RbtUIntListIter;
 typedef RbtUIntList::const_iterator RbtUIntListConstIter;
 
 // string
-typedef vector<std::string> RbtStringList;
+typedef std::vector<std::string> RbtStringList;
 typedef RbtStringList::iterator RbtStringListIter;
 typedef RbtStringList::const_iterator RbtStringListConstIter;
 
 // bool
-typedef vector<bool> RbtBoolVec; // vector of bools
+typedef std::vector<bool> RbtBoolVec; // vector of bools
 typedef RbtBoolVec::iterator RbtBoolVecIter;
 typedef RbtBoolVec::const_iterator RbtBoolVecConstIter;
 
@@ -83,33 +73,33 @@ typedef RbtBoolVec::const_iterator RbtBoolVecConstIter;
 // RbtSegmentMap holds a map of (key=unique segment name, value=number of atoms
 // in segment)
 typedef std::string RbtSegment;
-typedef map<RbtSegment, unsigned int> RbtSegmentMap;
+typedef std::map<RbtSegment, unsigned int> RbtSegmentMap;
 typedef RbtSegmentMap::iterator RbtSegmentMapIter;
 typedef RbtSegmentMap::const_iterator RbtSegmentMapConstIter;
 
 // Map of (key=string, value=integer)
-typedef map<std::string, int> RbtStringIntMap;
+typedef std::map<std::string, int> RbtStringIntMap;
 typedef RbtStringIntMap::iterator RbtStringIntMapIter;
 typedef RbtStringIntMap::const_iterator RbtStringIntMapConstIter;
 
 // Map of (key=string, value=double)
-typedef map<std::string, double> RbtStringDoubleMap;
+typedef std::map<std::string, double> RbtStringDoubleMap;
 typedef RbtStringDoubleMap::iterator RbtStringDoubleMapIter;
 typedef RbtStringDoubleMap::const_iterator RbtStringDoubleMapConstIter;
 
 // Added by DM, 3 Dec 1998
 // Map of (key=string, value=bool)
-typedef map<std::string, bool> RbtStringBoolMap;
+typedef std::map<std::string, bool> RbtStringBoolMap;
 typedef RbtStringBoolMap::iterator RbtStringBoolMapIter;
 typedef RbtStringBoolMap::const_iterator RbtStringBoolMapConstIter;
 
 // Map of (key=int, value=string)
-typedef map<int, std::string> RbtIntStringMap;
+typedef std::map<int, std::string> RbtIntStringMap;
 typedef RbtIntStringMap::iterator RbtIntStringMapIter;
 typedef RbtIntStringMap::const_iterator RbtIntStringMapConstIter;
 
 // Set of (key=uint)
-typedef set<unsigned int> RbtUIntSet;
+typedef std::set<unsigned int> RbtUIntSet;
 typedef RbtUIntSet::iterator RbtUIntSetIter;
 typedef RbtUIntSet::const_iterator RbtUIntSetConstIter;
 

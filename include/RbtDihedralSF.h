@@ -68,11 +68,11 @@ private:
   RbtAtom *m_pAtom2;
   RbtAtom *m_pAtom3;
   RbtAtom *m_pAtom4;
-  vector<prms> m_prms;
+  std::vector<prms> m_prms;
 };
 
 // Useful typedefs
-typedef vector<RbtDihedral *> RbtDihedralList; // Vector of smart pointers
+typedef std::vector<RbtDihedral *> RbtDihedralList; // Vector of smart pointers
 typedef RbtDihedralList::iterator RbtDihedralListIter;
 typedef RbtDihedralList::const_iterator RbtDihedralListConstIter;
 

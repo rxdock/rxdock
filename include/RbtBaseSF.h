@@ -105,7 +105,7 @@ private:
 };
 
 // Useful typedefs
-typedef vector<RbtBaseSF *> RbtBaseSFList; // Vector of smart pointers
+typedef std::vector<RbtBaseSF *> RbtBaseSFList; // Vector of smart pointers
 typedef RbtBaseSFList::iterator RbtBaseSFListIter;
 typedef RbtBaseSFList::const_iterator RbtBaseSFListConstIter;
 

@@ -34,12 +34,12 @@ public:
 };
 
 // Map with element data indexed by element name
-typedef map<std::string, RbtElementData> RbtStringElementDataMap;
+typedef std::map<std::string, RbtElementData> RbtStringElementDataMap;
 typedef RbtStringElementDataMap::iterator RbtStringElementDataMapIter;
 typedef RbtStringElementDataMap::const_iterator
     RbtStringElementDataMapConstIter;
 // Map with element data indexed by atomic number
-typedef map<int, RbtElementData> RbtIntElementDataMap;
+typedef std::map<int, RbtElementData> RbtIntElementDataMap;
 typedef RbtIntElementDataMap::iterator RbtIntElementDataMapIter;
 typedef RbtIntElementDataMap::const_iterator RbtIntElementDataMapConstIter;
 

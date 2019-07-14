@@ -96,9 +96,9 @@ private:
 
 // Useful typedefs
 // typedef SmartPtr<RbtCommands> RbtCommandsPtr;  //Smart pointer
-// typedef vector<RbtCommandsPtr> RbtCommandsList;//Vector of smart pointers
-// typedef RbtCommandsList::iterator RbtCommandsListIter;
-// typedef RbtCommandsList::const_iterator RbtCommandsListConstIter;
+// typedef std::vector<RbtCommandsPtr> RbtCommandsList;//Vector of smart
+// pointers typedef RbtCommandsList::iterator RbtCommandsListIter; typedef
+// RbtCommandsList::const_iterator RbtCommandsListConstIter;
 
 // Compare class to compare different genomes inside a population
 // This is used to sort the genomes in a population depending

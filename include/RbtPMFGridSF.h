@@ -18,9 +18,9 @@
 
 class RbtPMFGridSF : public RbtBaseInterSF {
   bool m_bSmoothed;
-  RbtAtomList theLigandList;       // vector to store the ligand
-  vector<RbtPMFType> theTypeList;  // store PMF used types here
-  vector<RbtRealGridPtr> theGrids; // grids with PMF data
+  RbtAtomList theLigandList;            // vector to store the ligand
+  std::vector<RbtPMFType> theTypeList;  // store PMF used types here
+  std::vector<RbtRealGridPtr> theGrids; // grids with PMF data
 
   void ReadGrids(std::istream &istr);
 

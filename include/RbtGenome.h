@@ -90,8 +90,8 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtGenome> RbtGenomePtr;   // Smart pointer
-typedef vector<RbtGenomePtr> RbtGenomeList; // Vector of smart pointers
+typedef SmartPtr<RbtGenome> RbtGenomePtr;        // Smart pointer
+typedef std::vector<RbtGenomePtr> RbtGenomeList; // Vector of smart pointers
 typedef RbtGenomeList::iterator RbtGenomeListIter;
 typedef RbtGenomeList::const_iterator RbtGenomeListConstIter;
 

@@ -64,7 +64,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtFilter> RbtFilterPtr; // Smart pointer
-typedef vector<RbtFilterPtr> RbtFilterList;
+typedef std::vector<RbtFilterPtr> RbtFilterList;
 // Vector of smart pointers
 typedef RbtFilterList::iterator RbtFilterListIter;
 typedef RbtFilterList::const_iterator RbtFilterListConstIter;

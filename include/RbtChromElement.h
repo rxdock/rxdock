@@ -24,10 +24,10 @@
 // GetVector(RbtDoubleList&) returns a flat vector of doubles (for use by
 // Simplex) GetVector(RbtXOverList&) returns a vector of RbtXOverElements (for
 // use by crossover)
-typedef vector<double> RbtXOverElement;
+typedef std::vector<double> RbtXOverElement;
 typedef RbtXOverElement::iterator RbtXOverElementIter;
 typedef RbtXOverElement::const_iterator RbtXOverElementConstIter;
-typedef vector<RbtXOverElement> RbtXOverList;
+typedef std::vector<RbtXOverElement> RbtXOverList;
 typedef RbtXOverList::iterator RbtXOverListIter;
 typedef RbtXOverList::const_iterator RbtXOverListConstIter;
 
@@ -154,7 +154,7 @@ private:
 };
 
 typedef SmartPtr<RbtChromElement> RbtChromElementPtr;
-typedef vector<RbtChromElement *>
+typedef std::vector<RbtChromElement *>
     RbtChromElementList; // Vector of regular pointers
 typedef RbtChromElementList::iterator RbtChromElementListIter;
 typedef RbtChromElementList::const_iterator RbtChromElementListConstIter;

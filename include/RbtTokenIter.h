@@ -34,8 +34,9 @@ public:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtTokenIter> RbtTokenIterPtr;   // Smart pointer
-typedef vector<RbtTokenIterPtr> RbtTokenIterList; // Vector of smart pointers
+typedef SmartPtr<RbtTokenIter> RbtTokenIterPtr; // Smart pointer
+typedef std::vector<RbtTokenIterPtr>
+    RbtTokenIterList; // Vector of smart pointers
 typedef RbtTokenIterList::iterator RbtTokenIterListIter;
 typedef RbtTokenIterList::const_iterator RbtTokenIterListConstIter;
 

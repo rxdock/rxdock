@@ -27,7 +27,7 @@
 // Value = logical atom ID as rendered to file
 // Logical atom IDs are consecutive for all atoms rendered
 // The actual atom ID (RbtAtom::GetAtomId()) is unchanged
-typedef map<RbtAtom *, unsigned int, Rbt::RbtAtomPtrCmp_Ptr> RbtAtomIdMap;
+typedef std::map<RbtAtom *, unsigned int, Rbt::RbtAtomPtrCmp_Ptr> RbtAtomIdMap;
 
 class RbtMdlFileSink : public RbtBaseMolecularFileSink {
 public:

@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
   // Command line arguments and default values
   std::string strSuffix(".grd");      // file out suffix
   std::string strOutfName("moegrid"); // default output filename
-  vector<std::string>
+  std::vector<std::string>
       strReceptorPrmFiles; // Receptor param files (you can have more!)
   std::string strSFFile("calcgrid_vdw.prm"); // Scoring function file
   double gs(0.5);                            // grid step
@@ -173,7 +173,7 @@ int main(int argc, char *argv[]) {
     unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
     std::cout << "Constructing grid of size " << nX << " x " << nY << " x "
               << nZ << std::endl;
-    vector<std::string>::iterator strReceptorPrmFilesIter;
+    std::vector<std::string>::iterator strReceptorPrmFilesIter;
     for (strReceptorPrmFilesIter = strReceptorPrmFiles.begin();
          strReceptorPrmFilesIter != strReceptorPrmFiles.end();
          ++strReceptorPrmFilesIter) {
@@ -253,11 +253,11 @@ int main(int argc, char *argv[]) {
       std::cout << "==================================" << std::endl;
       std::cout << "Generating MOE grid " << std::endl;
       // grid extents are in minCoord and maxCoord
-      vector<double> grid_origin;
+      std::vector<double> grid_origin;
       grid_origin.push_back(minCoord.x);
       grid_origin.push_back(minCoord.y);
       grid_origin.push_back(minCoord.z);
-      vector<double> grid_extents;
+      std::vector<double> grid_extents;
       grid_extents.push_back(maxCoord.x);
       grid_extents.push_back(maxCoord.y);
       grid_extents.push_back(maxCoord.z);

@@ -81,7 +81,7 @@ private:
   RbtReturnTypeArray ittrain, sfttrain;
 };
 typedef SmartPtr<RbtGPPopulation> RbtGPPopulationPtr;
-typedef vector<RbtGPPopulationPtr> RbtGPPopulationList;
+typedef std::vector<RbtGPPopulationPtr> RbtGPPopulationList;
 typedef RbtGPPopulationList::iterator RbtGPPopulationListIter;
 
 // Compare class to compare different populations. Use to find the

@@ -124,15 +124,15 @@ private:
   ////////////////////////////////////////
   // Private data
   //////////////
-  vector<info> m_typeInfo;
+  std::vector<info> m_typeInfo;
 };
 
 // Useful typedefs
-typedef vector<RbtTriposAtomType::info> RbtTriposInfoList;
+typedef std::vector<RbtTriposAtomType::info> RbtTriposInfoList;
 typedef RbtTriposInfoList::iterator RbtTriposInfoListIter;
 typedef RbtTriposInfoList::const_iterator RbtTriposInfoListConstIter;
 
-typedef vector<RbtTriposAtomType::eType> RbtTriposAtomTypeList;
+typedef std::vector<RbtTriposAtomType::eType> RbtTriposAtomTypeList;
 typedef RbtTriposAtomTypeList::iterator RbtTriposAtomTypeListIter;
 typedef RbtTriposAtomTypeList::const_iterator RbtTriposAtomTypeListConstIter;
 

@@ -21,7 +21,7 @@
 
 // useful typedefs
 typedef std::string RbtFileRec;
-typedef vector<RbtFileRec> RbtFileRecList;
+typedef std::vector<RbtFileRec> RbtFileRecList;
 typedef RbtFileRecList::iterator RbtFileRecListIter;
 
 // Max line length expected in file

@@ -21,14 +21,14 @@ RbtPMFDirSource::RbtPMFDirSource(const std::string &aDir)
 #endif
 }
 
-void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
-                                vector<std::string> *aNameVect,
-                                vector<RbtPMFValue> *aSlopeVect) {
+void RbtPMFDirSource::ReadFiles(std::vector<std::vector<RbtPMFValue>> *aVect,
+                                std::vector<std::string> *aNameVect,
+                                std::vector<RbtPMFValue> *aSlopeVect) {
   std::cout << "Reading " << fNum << " PMF files..." << std::endl;
-  std::string theFileName;           // will be the filename with full path
-  std::string theLine;               // one line from the file
-  vector<std::string> theStrData;    // data represented as strings in vector
-  RbtPMFValue theDummy = {0.0, 0.0}; // dummy initial value for plateau
+  std::string theFileName;             // will be the filename with full path
+  std::string theLine;                 // one line from the file
+  std::vector<std::string> theStrData; // data represented as strings in vector
+  RbtPMFValue theDummy = {0.0, 0.0};   // dummy initial value for plateau
 
   while (fNum--) {
     theFileName += thePath + "/";
@@ -47,7 +47,7 @@ void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
     // get dot index in extension
     std::string::size_type theExtIdx = theFileName.find_last_of(".pmf");
     // this is for storing values from one file
-    vector<RbtPMFValue> theValues;
+    std::vector<RbtPMFValue> theValues;
     // when file has no .pmf extension, skip. Also check for existence and perm
     if (std::string::npos != theExtIdx && !stat(theFileName.c_str(), &fStat) &&
         S_ISREG(fStat.st_mode)) {
@@ -97,8 +97,8 @@ void RbtPMFDirSource::ReadFiles(vector<vector<RbtPMFValue>> *aVect,
   std::cout << " done." << std::endl;
 }
 
-void RbtPMFDirSource::ParseLines(vector<std::string> anStrVect,
-                                 vector<RbtPMFValue> *aValueVect) {
+void RbtPMFDirSource::ParseLines(std::vector<std::string> anStrVect,
+                                 std::vector<RbtPMFValue> *aValueVect) {
   RbtPMFValue theActualValue;
 
   for (unsigned int i = 0; i < anStrVect.size(); i++) {

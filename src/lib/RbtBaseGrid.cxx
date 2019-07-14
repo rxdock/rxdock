@@ -146,8 +146,8 @@ RbtCoordList RbtBaseGrid::GetCoordList(const RbtUIntSet &iXYZSet) const {
 }
 
 // DM 17 May 1999 - returns the set of valid grid points within a sphere of a
-// given center and radius DM 17 Jul 2000 - use vector<RbtUInt> and return by
-// reference, for performance boost
+// given center and radius DM 17 Jul 2000 - use std::vector<RbtUInt> and return
+// by reference, for performance boost
 void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, double radius,
                                    RbtUIntList &sIndices) const {
   sIndices.clear(); // Clear the return list

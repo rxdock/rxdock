@@ -21,11 +21,11 @@ public:
   RbtPMFDirSource(const std::string &);
   virtual ~RbtPMFDirSource() {}
 
-  virtual void ReadFiles(vector<vector<RbtPMFValue>> *aVect,
-                         vector<std::string> *aNameVect,
-                         vector<RbtPMFValue> *aSlopeVect);
-  virtual void ParseLines(vector<std::string> anStrVect,
-                          vector<RbtPMFValue> *aValueVect);
+  virtual void ReadFiles(std::vector<std::vector<RbtPMFValue>> *aVect,
+                         std::vector<std::string> *aNameVect,
+                         std::vector<RbtPMFValue> *aSlopeVect);
+  virtual void ParseLines(std::vector<std::string> anStrVect,
+                          std::vector<RbtPMFValue> *aValueVect);
 };
 
 #endif // _RBTPMFDIRSOURCE_H_

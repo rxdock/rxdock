@@ -42,7 +42,7 @@
 // single point in a multi-dimensional grid
 // the coords contains N values where N is the dimension of the grid
 class RbtMOEGridPoint {
-  vector<double> coords;
+  std::vector<double> coords;
   double value;
 
 public:
@@ -50,13 +50,13 @@ public:
   // see also default ctor for the shape and data vector below
   RbtMOEGridPoint();
   // parametrized ctor when supplying data as a vector + value pair
-  RbtMOEGridPoint(vector<double>, double);
+  RbtMOEGridPoint(std::vector<double>, double);
   // parametrized ctor getting coord values from RbtCoord (default 3D
   // grid for convenience)
   RbtMOEGridPoint(RbtCoord &, double);
   // data access methods
   double GetValue() { return value; }
-  const vector<double> &GetCoords() { return coords; }
+  const std::vector<double> &GetCoords() { return coords; }
   void SetCoords(double a_val) { coords.push_back(a_val); }
   void SetValue(double a_val) { value = a_val; }
 };
@@ -73,12 +73,12 @@ class RbtMOEGridShape {
   //				of elements than the total number of the
   //				shape vector
 
-  vector<double> origin;  // the starting point
-  vector<double> extents; // the final points
-  vector<int> i_extents;  // extents in integers: number of
-                          // points at the edges (ie 20 X 30 X 40 grid)
-  double step_size;       // grid step size
-  long data_size;         // total number of points
+  std::vector<double> origin;  // the starting point
+  std::vector<double> extents; // the final points
+  std::vector<int> i_extents;  // extents in integers: number of
+                               // points at the edges (ie 20 X 30 X 40 grid)
+  double step_size;            // grid step size
+  long data_size;              // total number of points
 
 public:
   // default ctor allocates a 1D grid starting at 0.0 to 1.0
@@ -87,16 +87,16 @@ public:
 
   // parametrized ctor receives grid as the origin vector, the extent
   // vector and stepsize
-  RbtMOEGridShape(vector<double>, vector<double>, double);
+  RbtMOEGridShape(std::vector<double>, std::vector<double>, double);
 
-  const vector<double> &GetOrigin() { return origin; }
-  const vector<double> &GetExtents() { return extents; }
-  const vector<int> &GetIExtents() { return i_extents; }
+  const std::vector<double> &GetOrigin() { return origin; }
+  const std::vector<double> &GetExtents() { return extents; }
+  const std::vector<int> &GetIExtents() { return i_extents; }
   double GetStepSize() { return step_size; }
   long GetDataSize() { return data_size; }
 };
 
-typedef vector<RbtMOEGridPoint> RbtMOEGridData;
+typedef std::vector<RbtMOEGridPoint> RbtMOEGridData;
 
 // MOE grid data class for IO
 //
@@ -119,8 +119,8 @@ public:
   void SetData(RbtMOEGridData &a_data) { myData = a_data; }
   void SetOutputFileName(std::string &a_filename) { stream_name = a_filename; }
   // methods to calculate grid extents
-  void CalculateCommonExtents(vector<std::string> strPrmFiles); // for all
-  void GetDockingSiteExtents(std::string &a_strPrmFile);        // for a single
+  void CalculateCommonExtents(std::vector<std::string> strPrmFiles); // for all
+  void GetDockingSiteExtents(std::string &a_strPrmFile); // for a single
   // get methods
   RbtCoord GetMinExtents() { return min; }
   RbtCoord GetMaxExtents() { return max; }

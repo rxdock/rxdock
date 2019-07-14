@@ -99,7 +99,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtTransformAgg> RbtTransformAggPtr; // Smart pointer
-typedef vector<RbtTransformAggPtr>
+typedef std::vector<RbtTransformAggPtr>
     RbtTransformAggList; // Vector of smart pointers
 typedef RbtTransformAggList::iterator RbtTransformAggListIter;
 typedef RbtTransformAggList::const_iterator RbtTransformAggListConstIter;

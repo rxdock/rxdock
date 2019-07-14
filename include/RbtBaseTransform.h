@@ -94,7 +94,7 @@ private:
 };
 
 // Useful typedefs
-typedef vector<RbtBaseTransform *>
+typedef std::vector<RbtBaseTransform *>
     RbtBaseTransformList; // Vector of smart pointers
 typedef RbtBaseTransformList::iterator RbtBaseTransformListIter;
 typedef RbtBaseTransformList::const_iterator RbtBaseTransformListConstIter;

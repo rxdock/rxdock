@@ -217,7 +217,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtRealGrid> RbtRealGridPtr; // Smart pointer
-typedef vector<RbtRealGridPtr> RbtRealGridList;
+typedef std::vector<RbtRealGridPtr> RbtRealGridList;
 typedef RbtRealGridList::iterator RbtRealGridListIter;
 typedef RbtRealGridList::const_iterator RbtRealGridListConstIter;
 

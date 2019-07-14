@@ -60,7 +60,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtRequest> RbtRequestPtr;
-typedef vector<RbtRequestPtr> RbtRequestList;
+typedef std::vector<RbtRequestPtr> RbtRequestList;
 typedef RbtRequestList::iterator RbtRequestListIter;
 typedef RbtRequestList::const_iterator RbtRequestListConstIter;
 

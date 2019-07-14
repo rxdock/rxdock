@@ -152,8 +152,8 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtCavity> RbtCavityPtr;   // Smart pointer
-typedef vector<RbtCavityPtr> RbtCavityList; // Vector of smart pointers
+typedef SmartPtr<RbtCavity> RbtCavityPtr;        // Smart pointer
+typedef std::vector<RbtCavityPtr> RbtCavityList; // Vector of smart pointers
 typedef RbtCavityList::iterator RbtCavityListIter;
 typedef RbtCavityList::const_iterator RbtCavityListConstIter;
 

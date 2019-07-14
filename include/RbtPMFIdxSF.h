@@ -38,12 +38,12 @@ class RbtPMFIdxSF : public RbtBaseInterSF,
   // regular lists
   RbtAtomRList theLigandRList;   // ligand
   RbtAtomRList theReceptorRList; // recepor
-  vector<RbtRealGridPtr>
+  std::vector<RbtRealGridPtr>
       theTypeGrid; // grids for PMF values for different atom types in receptor
-  vector<RbtPMFType> theLigandTypes; // type values in theTypeGrid
-  RbtNonBondedGridPtr theSurround;   // atoms arond a gridpoint
-  RbtRealGridPtr thePMFGrid;         // grid for X-distance Y
-                                     // this is the representation of the PMFs
+  std::vector<RbtPMFType> theLigandTypes; // type values in theTypeGrid
+  RbtNonBondedGridPtr theSurround;        // atoms arond a gridpoint
+  RbtRealGridPtr thePMFGrid;              // grid for X-distance Y
+                             // this is the representation of the PMFs
   RbtRealGridPtr theSlopeGrid; // grid to store values where the plateaus starts
 
 public:

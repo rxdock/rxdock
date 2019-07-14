@@ -101,8 +101,8 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtSFAgg> RbtSFAggPtr;   // Smart pointer
-typedef vector<RbtSFAggPtr> RbtSFAggList; // Vector of smart pointers
+typedef SmartPtr<RbtSFAgg> RbtSFAggPtr;        // Smart pointer
+typedef std::vector<RbtSFAggPtr> RbtSFAggList; // Vector of smart pointers
 typedef RbtSFAggList::iterator RbtSFAggListIter;
 typedef RbtSFAggList::const_iterator RbtSFAggListConstIter;
 

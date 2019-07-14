@@ -45,8 +45,9 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtGPFFSpike> RbtGPFFSpikePtr;   // Smart pointer
-typedef vector<RbtGPFFSpikePtr> RbtGPFFSpikeList; // Vector of smart pointers
+typedef SmartPtr<RbtGPFFSpike> RbtGPFFSpikePtr; // Smart pointer
+typedef std::vector<RbtGPFFSpikePtr>
+    RbtGPFFSpikeList; // Vector of smart pointers
 typedef RbtGPFFSpikeList::iterator RbtGPFFSpikeListIter;
 typedef RbtGPFFSpikeList::const_iterator RbtGPFFSpikeListConstIter;
 #endif //_RbtGPFFSpike

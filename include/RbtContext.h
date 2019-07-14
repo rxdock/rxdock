@@ -24,8 +24,8 @@
 #include "RbtVble.h"
 #include <fstream>
 
-typedef map<std::string, RbtVblePtr> RbtStringVbleMap; // Map of Vbles
-typedef map<int, RbtVblePtr> RbtIntVbleMap;            // Map of Vbles
+typedef std::map<std::string, RbtVblePtr> RbtStringVbleMap; // Map of Vbles
+typedef std::map<int, RbtVblePtr> RbtIntVbleMap;            // Map of Vbles
 typedef RbtStringVbleMap::iterator RbtStringVbleMapIter;
 typedef RbtIntVbleMap::iterator RbtIntVbleMapIter;
 
@@ -126,18 +126,18 @@ private:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtCellContext> RbtCellContextPtr;   // Smart pointer
-typedef vector<RbtCellContextPtr> RbtCellContextList; // Vector of smart
-                                                      // pointers
+typedef SmartPtr<RbtCellContext> RbtCellContextPtr;        // Smart pointer
+typedef std::vector<RbtCellContextPtr> RbtCellContextList; // Vector of smart
+                                                           // pointers
 typedef RbtCellContextList::iterator RbtCellContextListIter;
 typedef RbtCellContextList::const_iterator RbtCellContextListConstIter;
 typedef SmartPtr<RbtStringContext> RbtStringContextPtr; // Smart pointer
-typedef vector<RbtStringContextPtr>
+typedef std::vector<RbtStringContextPtr>
     RbtStringContextList; // Vector of smart pointers
 typedef RbtStringContextList::iterator RbtStringContextListIter;
 typedef RbtStringContextList::const_iterator RbtStringContextListConstIter;
-typedef SmartPtr<RbtContext> RbtContextPtr;   // Smart pointer
-typedef vector<RbtContextPtr> RbtContextList; // Vector of smart pointers
+typedef SmartPtr<RbtContext> RbtContextPtr;        // Smart pointer
+typedef std::vector<RbtContextPtr> RbtContextList; // Vector of smart pointers
 typedef RbtContextList::iterator RbtContextListIter;
 typedef RbtContextList::const_iterator RbtContextListConstIter;
 

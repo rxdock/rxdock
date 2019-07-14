@@ -36,7 +36,7 @@ public:
 // Map of bonds the atom is bonded to
 // Key is regular RbtBond*, value is RbtBool
 // RbtBool is true if this atom is atom1 in the bond, false if atom2
-typedef map<RbtBond *, bool, Rbt::RbtBondPCmp_BondId> RbtBondMap;
+typedef std::map<RbtBond *, bool, Rbt::RbtBondPCmp_BondId> RbtBondMap;
 typedef RbtBondMap::iterator RbtBondMapIter;
 typedef RbtBondMap::const_iterator RbtBondMapConstIter;
 
@@ -265,8 +265,9 @@ public:
   ///////////////////////////////////////////////
   // DM 11 Jan 1999 - give atoms the ability to save their current coords
   // and revert to the saved coords. Useful for Monte Carlo simulations.
-  // DM 08 Feb 1999 - all saved coords are now saved in a map<RbtUInt,RbtCoord>
-  // map key=0 is reserved for the default SaveCoords and RevertCoords
+  // DM 08 Feb 1999 - all saved coords are now saved in a
+  // std::map<RbtUInt,RbtCoord> map key=0 is reserved for the default SaveCoords
+  // and RevertCoords
   void SaveCoords(unsigned int coordNum = 0);
   void RevertCoords(unsigned int coordNum = 0);
 
@@ -340,30 +341,30 @@ private:
   //  RbtDouble m_dReweight; // XB reweighting factor
 
   RbtUIntCoordMap m_savedCoords; // DM 08 Feb 1999 - now store all saved coords
-                                 // in a map<RbtUInt,RbtCoord>
+                                 // in a std::map<RbtUInt,RbtCoord>
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtAtom> RbtAtomPtr;   // Smart pointer
-typedef vector<RbtAtomPtr> RbtAtomList; // Vector of smart pointers
+typedef SmartPtr<RbtAtom> RbtAtomPtr;        // Smart pointer
+typedef std::vector<RbtAtomPtr> RbtAtomList; // Vector of smart pointers
 typedef RbtAtomList::iterator RbtAtomListIter;
 typedef RbtAtomList::const_iterator RbtAtomListConstIter;
 
-typedef vector<RbtAtom *> RbtAtomRList; // Vector of regular pointers
+typedef std::vector<RbtAtom *> RbtAtomRList; // Vector of regular pointers
 typedef RbtAtomRList::iterator RbtAtomRListIter;
 typedef RbtAtomRList::const_iterator RbtAtomRListConstIter;
 
-typedef vector<RbtAtomList>
+typedef std::vector<RbtAtomList>
     RbtAtomListList; // A vector of atom vectors (e.g. for storing ring systems)
 typedef RbtAtomListList::iterator RbtAtomListListIter;
 typedef RbtAtomListList::const_iterator RbtAtomListListConstIter;
 
-typedef vector<RbtAtomRList>
+typedef std::vector<RbtAtomRList>
     RbtAtomRListList; // A vector of atom vectors (regular pointer version)
 typedef RbtAtomRListList::iterator RbtAtomRListListIter;
 typedef RbtAtomRListList::const_iterator RbtAtomRListListConstIter;
 
-typedef list<RbtAtomPtr> RbtAtomTrueList; // A real list of smart pointers
+typedef std::list<RbtAtomPtr> RbtAtomTrueList; // A real list of smart pointers
 typedef RbtAtomTrueList::iterator RbtAtomTrueListIter;
 typedef RbtAtomTrueList::const_iterator RbtAtomTrueListConstIter;
 
@@ -1115,7 +1116,7 @@ inline RbtAtomList GetPlanarAtomList(const RbtAtomList &atomList) {
 // Helper function to return the atom pointer for the "other" atom in the bond
 // i.e. return (bondPair.second) ? bondPair.first->GetAtom2Ptr() :
 // bondPair.first->GetAtom1Ptr();
-RbtAtomPtr GetBondedAtomPtr(pair<RbtBond *, bool> bondBoolPair);
+RbtAtomPtr GetBondedAtomPtr(std::pair<RbtBond *, bool> bondBoolPair);
 
 // This pair of functions is a little different to the above
 // They convert a RbtBondMap to an RbtAtomList. The BondMap is assumed to

@@ -81,10 +81,10 @@ private:
     double e0;         // Energy at zero distance
   };
 
-  typedef vector<RbtVdwSF::vdwprms> RbtVdwRow;
+  typedef std::vector<RbtVdwSF::vdwprms> RbtVdwRow;
   typedef RbtVdwRow::iterator RbtVdwRowIter;
   typedef RbtVdwRow::const_iterator RbtVdwRowConstIter;
-  typedef vector<RbtVdwRow> RbtVdwTable;
+  typedef std::vector<RbtVdwRow> RbtVdwTable;
   typedef RbtVdwTable::iterator RbtVdwTableIter;
   typedef RbtVdwTable::const_iterator RbtVdwTableConstIter;
 

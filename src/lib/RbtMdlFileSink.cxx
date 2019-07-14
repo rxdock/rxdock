@@ -111,7 +111,7 @@ void RbtMdlFileSink::RenderAtomList(const RbtAtomList &atomList) {
       // std::cout << "RenderAtom " << spAtom->GetFullAtomName() << " (actual
       // ID=" << spAtom->GetAtomId()
       //	 << "); file ID=" << nextAtomId << std::endl;
-      m_atomIdMap.insert(make_pair(spAtom, nextAtomId));
+      m_atomIdMap.insert(std::make_pair(spAtom, nextAtomId));
     } else {
       // Should never happen. Probably best to throw an error at this point.
       throw RbtBadArgument(_WHERE_, "Duplicate atom rendered: " +

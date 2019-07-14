@@ -34,8 +34,8 @@ public:
 };
 
 // Useful typedefs
-typedef SmartPtr<RbtGPFFGold> RbtGPFFGoldPtr;   // Smart pointer
-typedef vector<RbtGPFFGoldPtr> RbtGPFFGoldList; // Vector of smart pointers
+typedef SmartPtr<RbtGPFFGold> RbtGPFFGoldPtr;        // Smart pointer
+typedef std::vector<RbtGPFFGoldPtr> RbtGPFFGoldList; // Vector of smart pointers
 typedef RbtGPFFGoldList::iterator RbtGPFFGoldListIter;
 typedef RbtGPFFGoldList::const_iterator RbtGPFFGoldListConstIter;
 #endif //_RbtGPFFGold

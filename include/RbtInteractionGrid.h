@@ -49,7 +49,7 @@ private:
   eLP m_LP;
 };
 
-typedef vector<RbtInteractionCenter *>
+typedef std::vector<RbtInteractionCenter *>
     RbtInteractionCenterList; // Vector of regular pointers
 typedef RbtInteractionCenterList::iterator RbtInteractionCenterListIter;
 typedef RbtInteractionCenterList::const_iterator
@@ -106,8 +106,8 @@ public:
 // pointer list)
 
 // DM 3 Nov 2000 - replace map by vector for faster lookup
-// typedef map<RbtUInt,RbtInteractionCenterList> RbtInteractionListMap;
-typedef vector<RbtInteractionCenterList> RbtInteractionListMap;
+// typedef std::map<RbtUInt,RbtInteractionCenterList> RbtInteractionListMap;
+typedef std::vector<RbtInteractionCenterList> RbtInteractionListMap;
 
 typedef RbtInteractionListMap::iterator RbtInteractionListMapIter;
 typedef RbtInteractionListMap::const_iterator RbtInteractionListMapConstIter;
