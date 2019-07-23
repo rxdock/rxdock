@@ -80,7 +80,7 @@ libRbt = library(
   include_directories : incRbtAll
 )
 
-executable(
+rbdock = executable(
   'rbdock', 'src/exe/rbdock.cxx', link_with : libRbt,
   include_directories : incRbt
 )
@@ -141,11 +141,25 @@ if tests_opt
       'unit_test', srcTest, dependencies : cppunit_dep, link_with : libRbt,
       include_directories : [incTest, incRbt]
     )
+    rbtHomePath = '/build/test/RBT_HOME'
     test(
       'unit_test', unit_test,
       env : [
         'RBT_ROOT=' + meson.current_source_dir(),
-        'RBT_HOME=' + meson.current_source_dir() + '/build/test/RBT_HOME'
+        'RBT_HOME=' + meson.current_source_dir() + rbtHomePath
+      ],
+      timeout : 900
+    )
+    test(
+      'rbdock-1yet-test', rbdock, args : [
+        '-r', meson.current_source_dir() + rbtHomePath + '/1YET_test.prm',
+        '-i', meson.current_source_dir() + rbtHomePath + '/1YET_c.sd',
+        '-p', 'dock.prm', '-n', '1', '-s', '48151623',
+        '-o', meson.current_source_dir() + rbtHomePath + '/1YET_test_out'
+      ],
+      env : [
+        'RBT_ROOT=' + meson.current_source_dir(),
+        'RBT_HOME=' + meson.current_source_dir() + rbtHomePath
       ],
       timeout : 900
     )
