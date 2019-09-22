@@ -12,9 +12,7 @@
 #include "RbtVdwIdxSF.h"
 #include "RbtVdwIntraSF.h"
 
-CPPUNIT_TEST_SUITE_REGISTRATION(SearchTest);
-
-void SearchTest::setUp() {
+void SearchTest::SetUp() {
   try {
     // Create the docking site, receptor, ligand and solvent objects
     const std::string &wsName = "1YET";
@@ -55,7 +53,7 @@ void SearchTest::setUp() {
   }
 }
 
-void SearchTest::tearDown() {
+void SearchTest::TearDown() {
   m_atomList.clear();
   m_SF.SetNull();
   m_workSpace.SetNull();
@@ -76,21 +74,24 @@ double SearchTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
   return retVal;
 }
 
-void SearchTest::testPRMFactory() {
-  CPPUNIT_ASSERT(m_workSpace->GetNumModels() == 6);
-}
+// 1 Check that receptor, ligand and solvent models are loaded into workspace
+// Should be 6 models in total (4 solvent)
+TEST_F(SearchTest, PRMFactory) { ASSERT_EQ(m_workSpace->GetNumModels(), 6); }
 
-void SearchTest::testHeavyAtomFactory() {
+// 2 Check RbtFlexDataVisitor subclass correctly identifies movable heavy atoms
+// in cavity
+TEST_F(SearchTest, HeavyAtomFactory) {
   RbtAtomRList heavyAtomList;
   // find all the movable heavy atoms in the receptor, ligand and solvent
   if (m_workSpace) {
     RbtCavityGridSF::HeavyAtomFactory atomFactory(m_workSpace->GetModels());
     heavyAtomList = atomFactory.GetAtomList();
   }
-  CPPUNIT_ASSERT(heavyAtomList.size() == 42);
+  ASSERT_EQ(heavyAtomList.size(), 42);
 }
 
-void SearchTest::testGA() {
+// 3 Run a sample GA
+TEST_F(SearchTest, GA) {
   RbtTransformAggPtr spTransformAgg(new RbtTransformAgg());
   RbtBaseTransform *pRandPop = new RbtRandPopTransform();
   RbtBaseTransform *pGA = new RbtGATransform();
@@ -106,10 +107,11 @@ void SearchTest::testGA() {
     std::cout << e.Message() << std::endl;
     isOK = false;
   }
-  CPPUNIT_ASSERT(isOK);
+  ASSERT_TRUE(isOK);
 }
 
-void SearchTest::testSimplex() {
+// 4 Run a sample Simplex
+TEST_F(SearchTest, Simplex) {
   RbtTransformAggPtr spTransformAgg(new RbtTransformAgg());
   // RbtBaseTransform* pRandPop = new RbtRandPopTransform();
   RbtBaseTransform *pSimplex = new RbtSimplexTransform();
@@ -128,10 +130,11 @@ void SearchTest::testSimplex() {
     std::cout << e.Message() << std::endl;
     isOK = false;
   }
-  CPPUNIT_ASSERT(isOK);
+  ASSERT_TRUE(isOK);
 }
 
-void SearchTest::testSimAnn() {
+// 5 Run a sample simulated annealing
+TEST_F(SearchTest, SimAnn) {
   RbtBaseTransform *pSimAnn = new RbtSimAnnTransform();
   pSimAnn->SetParameter(RbtBaseObject::_TRACE, 2);
   pSimAnn->SetParameter(RbtSimAnnTransform::_BLOCK_LENGTH, 100);
@@ -150,10 +153,11 @@ void SearchTest::testSimAnn() {
     isOK = false;
   }
   delete pSimAnn;
-  CPPUNIT_ASSERT(isOK);
+  ASSERT_TRUE(isOK);
 }
 
-void SearchTest::testRestart() {
+// 6 Check we can reload solvent coords from ligand SD file
+TEST_F(SearchTest, Restart) {
   RbtTransformAggPtr spTransformAgg(new RbtTransformAgg());
   RbtBaseTransform *pSimplex = new RbtSimplexTransform();
   pSimplex->SetParameter(RbtBaseObject::_TRACE, 1);
@@ -200,5 +204,6 @@ void SearchTest::testRestart() {
     std::cout << e.Message() << std::endl;
     isOK = false;
   }
-  CPPUNIT_ASSERT(isOK && (std::fabs(restartScore - finalScore) < 0.01));
+  ASSERT_TRUE(isOK);
+  ASSERT_LT(std::fabs(restartScore - finalScore), 0.01);
 }

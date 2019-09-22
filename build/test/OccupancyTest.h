@@ -13,52 +13,24 @@
 #ifndef OCCUPANCY_H_
 #define OCCUPANCY_H_
 
-#include <cppunit/extensions/HelperMacros.h>
+#include <gtest/gtest.h>
 
 #include "RbtBiMolWorkSpace.h"
 #include "RbtModel.h"
 
-class OccupancyTest : public CppUnit::TestFixture {
-
-  CPPUNIT_TEST_SUITE(OccupancyTest);
-  CPPUNIT_TEST(testSolvationSF);
-  CPPUNIT_TEST(testPolarSF);
-  CPPUNIT_TEST(testVdwSF);
-  CPPUNIT_TEST(testVdwSFSolventModes);
-  CPPUNIT_TEST(testFlexAtomFactoryReceptor);
-  CPPUNIT_TEST(testFlexAtomFactorySolvent);
-  CPPUNIT_TEST(testFlexAtomFactoryLigand);
-  CPPUNIT_TEST_SUITE_END();
-
-public:
+class OccupancyTest : public ::testing::Test {
+protected:
   static double TINY;
   // TextFixture methods
-  void setUp();
-  void tearDown();
+  void SetUp() override;
+  void TearDown() override;
 
-  // 1) Check that the total desolvation score for receptor / ligand /
-  // (disabled) solvent matches the total score with no solvent present
-  void testSolvationSF();
-  // 2) Check that the total polar score for receptor / ligand / (disabled)
-  // solvent matches the total score with no solvent present
-  void testPolarSF();
-  // 3) Check that the total vdW score for receptor / ligand / (disabled)
-  // solvent matches the total score with no solvent present
-  void testVdwSF();
-  void testVdwSFSolventModes();
-  // 5) Checks the results of RbtFlexAtomFactory for receptor flexibility modes
-  void testFlexAtomFactoryReceptor();
-  // 6) Checks the results of RbtFlexAtomFactory for solvent flexibility modes
-  void testFlexAtomFactorySolvent();
-  // 7) Checks the results of RbtFlexAtomFactory for ligand flexibility modes
-  void testFlexAtomFactoryLigand();
-
-private:
   // Helper functions
   double CompareScoresForDisabledAndNoSolvent();
   double CompareScoresForSolventModes();
-  bool testFlexAtomFactory(RbtModel *pModel, int expected[9][3]);
+  bool CheckFlexAtomFactory(RbtModel *pModel, int expected[9][3]);
   RbtBiMolWorkSpacePtr m_workSpace;
   RbtModelList m_solventList;
 };
+
 #endif /*OCCUPANCY_TEST_H_*/

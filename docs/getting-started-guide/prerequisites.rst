@@ -37,8 +37,9 @@ may be required for your particular Linux distribution.
    +-------------------+----------------------------+--------------+-----------+
    | ``g++``           | GNU C++ compiler           | Compile-time | >=3.3.4   |
    +-------------------+----------------------------+--------------+-----------+
-   | ``cppunit``       | C++ unit test framework    | Compile-time | >=1.10.2  |
+   | ``gtest``         | Google's C++ unit testing  | Compile-time | >=1.8.0   |
+   |                   | framework                  |              |           |
    +-------------------+----------------------------+--------------+-----------+
-   | ``cppunit-devel`` | Development files for      | Compile-time | >=1.10.2  |
-   |                   | cppunit                    |              |           |
+   | ``gtest-devel``   | Development files for      | Compile-time | >=1.8.0   |
+   |                   | gtest                      |              |           |
    +-------------------+----------------------------+--------------+-----------+
