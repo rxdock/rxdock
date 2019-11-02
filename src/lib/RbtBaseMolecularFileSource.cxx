@@ -234,7 +234,7 @@ void RbtBaseMolecularFileSource::ClearMolCache() {
 // RenumberAtomsAndBonds should be called after all atoms have been removed
 void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
   // DM 31 Oct 2000 - return by const ref
-  const RbtBondMap &bondMap = spAtom->GetBondMap();
+  const RbtBondMap bondMap = spAtom->GetBondMap();
 
   // First remove all bonds from the atom
   for (RbtBondMapConstIter mapIter = bondMap.begin(); mapIter != bondMap.end();
