@@ -130,7 +130,9 @@ endif
 
 tests_opt = get_option('tests')
 if tests_opt
-  gtest_dep = dependency('gtest', required : false)
+  gtest_dep = dependency(
+    'gtest', fallback : ['gtest', 'gtest_dep'], required : false
+  )
   if gtest_dep.found()
     incTest = include_directories('build/test')
     srcTest = [
