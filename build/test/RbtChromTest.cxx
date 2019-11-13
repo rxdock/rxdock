@@ -73,10 +73,10 @@ void RbtChromTest::setupWorkSpace() {
   // Set up a minimal workspace and scoring function for docking
   m_SF = new RbtSFAgg("SCORE");
   RbtBaseSF *sfInter = new RbtVdwIdxSF("INTER_VDW");
-  sfInter->SetParameter(RbtVdwSF::_ECUT, 1.0);
+  sfInter->SetParameter(RbtVdwSF::GetEcut(), 1.0);
   m_SF->Add(sfInter);
   RbtBaseSF *sfIntra = new RbtVdwIntraSF("INTRA_VDW");
-  sfIntra->SetParameter(RbtVdwSF::_ECUT, 1.0);
+  sfIntra->SetParameter(RbtVdwSF::GetEcut(), 1.0);
   m_SF->Add(sfIntra);
   m_workSpace = new RbtBiMolWorkSpace();
   m_workSpace->SetSF(m_SF);
@@ -324,16 +324,17 @@ TEST_F(RbtChromTest, OperatorEqualsWithModifiedThreshold) {
   RbtChromElementPtr clone = m_chrom_1koc->clone();
   clone->SyncToModel();
   clone->SyncFromModel();
+  double &_THRESHOLD = RbtChromElement::GetThreshold();
   // Very fine threshold - should fail
-  RbtChromElement::_THRESHOLD = 1E-20;
+  _THRESHOLD = 1E-20;
   ASSERT_NE(*m_chrom_1koc, *clone);
 
   // Fine threshold, but should pass
-  RbtChromElement::_THRESHOLD = 1E-10;
+  _THRESHOLD = 1E-10;
   ASSERT_EQ(*m_chrom_1koc, *clone);
 
   // Crude threshold - should pass even after a single mutation
-  RbtChromElement::_THRESHOLD = 1.0;
+  _THRESHOLD = 1.0;
   clone->Mutate(0.5);
   ASSERT_EQ(*m_chrom_1koc, *clone);
 }

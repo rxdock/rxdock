@@ -21,6 +21,8 @@ std::string RbtVdwSF::_RMAX("RMAX");
 std::string RbtVdwSF::_ECUT("ECUT");
 std::string RbtVdwSF::_E0("E0");
 
+std::string &RbtVdwSF::GetEcut() { return _ECUT; }
+
 RbtVdwSF::RbtVdwSF()
     : m_use_4_8(true), m_use_tripos(false), m_rmax(1.5), m_ecut(1.0),
       m_e0(1.5) {

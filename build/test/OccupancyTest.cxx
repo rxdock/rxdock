@@ -68,7 +68,7 @@ TEST_F(OccupancyTest, PolarSF) {
   // For this term we have to set the interaction range and increment manually
   // These values match those in the standard scoring function
   sfPolar->SetRange(5.31);
-  sfPolar->SetParameter(RbtPolarIdxSF::_INCR, 3.36);
+  sfPolar->SetParameter(RbtPolarIdxSF::GetIncr(), 3.36);
   sfInter->Add(sfSetupPolar);
   sfInter->Add(sfPolar);
   m_workSpace->SetSF(sfAgg);
@@ -207,8 +207,8 @@ bool OccupancyTest::CheckFlexAtomFactory(RbtModel *pModel, int expected[9][3]) {
       RbtChromElement::eMode eRotMode = (RbtChromElement::eMode)(mode % 3);
       std::string strTransMode = RbtChromElement::ModeToStr(eTransMode);
       std::string strRotMode = RbtChromElement::ModeToStr(eRotMode);
-      pFlexData->SetParameter(RbtLigandFlexData::_TRANS_MODE, strTransMode);
-      pFlexData->SetParameter(RbtLigandFlexData::_ROT_MODE, strRotMode);
+      pFlexData->SetParameter(RbtLigandFlexData::GetTransMode(), strTransMode);
+      pFlexData->SetParameter(RbtLigandFlexData::GetRotMode(), strRotMode);
       pModel->SetFlexData(pFlexData);
       RbtFlexAtomFactory flexAtomFactory(pModel);
       RbtAtomRList fixedAtomList = flexAtomFactory.GetFixedAtomList();
@@ -255,8 +255,9 @@ double OccupancyTest::CompareScoresForSolventModes() {
       for (RbtModelListIter iter = solventList.begin() + 1;
            iter != solventList.end(); ++iter) {
         RbtFlexData *pFlexData = (*iter)->GetFlexData();
-        pFlexData->SetParameter(RbtLigandFlexData::_TRANS_MODE, strTransMode);
-        pFlexData->SetParameter(RbtLigandFlexData::_ROT_MODE, strRotMode);
+        pFlexData->SetParameter(RbtLigandFlexData::GetTransMode(),
+                                strTransMode);
+        pFlexData->SetParameter(RbtLigandFlexData::GetRotMode(), strRotMode);
         (*iter)->SetFlexData(pFlexData);
       }
       m_workSpace->RemoveSolvent();

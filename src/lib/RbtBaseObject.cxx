@@ -21,6 +21,8 @@ std::string RbtBaseObject::_NAME("NAME");
 std::string RbtBaseObject::_ENABLED("ENABLED");
 std::string RbtBaseObject::_TRACE("TRACE");
 
+std::string &RbtBaseObject::GetTraceStr() { return _TRACE; }
+
 ////////////////////////////////////////
 // Constructors/destructors
 RbtBaseObject::RbtBaseObject(const std::string &strClass,

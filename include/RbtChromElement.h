@@ -36,7 +36,9 @@ public:
   // Class type string
   static std::string _CT;
   // Threshold used to assess equality of two chromosome elements
-  RBTDLL_EXPORT static double _THRESHOLD;
+  static double _THRESHOLD;
+
+  RBTDLL_EXPORT static double &GetThreshold();
 
   // General enum for defining types of chromosome element flexibility.
   // For use by subclasses of RbtChromElement if desired.

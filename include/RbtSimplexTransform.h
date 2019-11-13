@@ -22,14 +22,18 @@ public:
   // Static data member for class type
   static std::string _CT;
   // Parameter names
-  RBTDLL_EXPORT static std::string _MAX_CALLS;
-  RBTDLL_EXPORT static std::string _NCYCLES;
+  static std::string _MAX_CALLS;
+  static std::string _NCYCLES;
   static std::string _STOPPING_STEP_LENGTH;
   static std::string _PARTITION_DIST;
-  RBTDLL_EXPORT static std::string _STEP_SIZE;
+  static std::string _STEP_SIZE;
   // Stop once score improves by less than convergence value
   // between cycles
   static std::string _CONVERGENCE;
+
+  RBTDLL_EXPORT static std::string &GetMaxCalls();
+  RBTDLL_EXPORT static std::string &GetNCycles();
+  RBTDLL_EXPORT static std::string &GetStepSize();
 
   ////////////////////////////////////////
   // Constructors/destructors

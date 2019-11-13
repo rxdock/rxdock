@@ -68,6 +68,20 @@ std::string RbtSimAnnTransform::_PARTITION_DIST("PARTITION_DIST");
 std::string RbtSimAnnTransform::_PARTITION_FREQ("PARTITION_FREQ");
 std::string RbtSimAnnTransform::_HISTORY_FREQ("HISTORY_FREQ");
 
+std::string &RbtSimAnnTransform::GetStartT() { return _START_T; }
+
+std::string &RbtSimAnnTransform::GetFinalT() { return _FINAL_T; }
+
+std::string &RbtSimAnnTransform::GetBlockLength() { return _BLOCK_LENGTH; }
+
+std::string &RbtSimAnnTransform::GetNumBlocks() { return _NUM_BLOCKS; }
+
+std::string &RbtSimAnnTransform::GetStepSize() { return _STEP_SIZE; }
+
+std::string &RbtSimAnnTransform::GetPartitionDist() { return _PARTITION_DIST; }
+
+std::string &RbtSimAnnTransform::GetPartitionFreq() { return _PARTITION_FREQ; }
+
 ////////////////////////////////////////
 // Constructors/destructors
 RbtSimAnnTransform::RbtSimAnnTransform(const std::string &strName)

@@ -23,6 +23,8 @@ std::string RbtPolarIdxSF::_ATTR("ATTR");
 std::string RbtPolarIdxSF::_THRESHOLD_POS("THRESHOLD_POS");
 std::string RbtPolarIdxSF::_THRESHOLD_NEG("THRESHOLD_NEG");
 
+std::string &RbtPolarIdxSF::GetIncr() { return _INCR; }
+
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
 RbtPolarIdxSF::RbtPolarIdxSF(const std::string &strName)

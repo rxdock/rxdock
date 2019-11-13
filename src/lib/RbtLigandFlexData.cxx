@@ -23,6 +23,10 @@ const std::string &RbtLigandFlexData::_MAX_TRANS = "MAX_TRANS";
 const std::string &RbtLigandFlexData::_MAX_ROT = "MAX_ROT";
 const std::string &RbtLigandFlexData::_MAX_DIHEDRAL = "MAX_DIHEDRAL";
 
+const std::string &RbtLigandFlexData::GetTransMode() { return _TRANS_MODE; }
+
+const std::string &RbtLigandFlexData::GetRotMode() { return _ROT_MODE; }
+
 RbtLigandFlexData::RbtLigandFlexData(RbtDockingSite *pDockSite)
     : RbtFlexData(pDockSite) {
   AddParameter(_TRANS_STEP, 2.0);

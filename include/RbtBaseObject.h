@@ -33,8 +33,9 @@ public:
   static std::string _CLASS;
   static std::string _NAME;
   static std::string _ENABLED;
-  RBTDLL_EXPORT static std::string
-      _TRACE; // DM 1 Mar 2002 - move from RbtBaseTransform
+  static std::string _TRACE; // DM 1 Mar 2002 - move from RbtBaseTransform
+
+  RBTDLL_EXPORT static std::string &GetTraceStr();
 
   ////////////////////////////////////////
   // Constructors/destructors

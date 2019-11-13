@@ -28,6 +28,12 @@ std::string RbtSimplexTransform::_PARTITION_DIST("PARTITION_DIST");
 std::string RbtSimplexTransform::_STEP_SIZE("STEP_SIZE");
 std::string RbtSimplexTransform::_CONVERGENCE("CONVERGENCE");
 
+std::string &RbtSimplexTransform::GetMaxCalls() { return _MAX_CALLS; }
+
+std::string &RbtSimplexTransform::GetNCycles() { return _NCYCLES; }
+
+std::string &RbtSimplexTransform::GetStepSize() { return _STEP_SIZE; }
+
 ////////////////////////////////////////
 // Constructors/destructors
 RbtSimplexTransform::RbtSimplexTransform(const std::string &strName)

@@ -42,10 +42,10 @@ void SearchTest::SetUp() {
     // Set up a minimal workspace and scoring function for docking
     m_SF = new RbtSFAgg("SCORE");
     RbtBaseSF *sfInter = new RbtVdwIdxSF("INTER_VDW");
-    sfInter->SetParameter(RbtVdwSF::_ECUT, 1.0);
+    sfInter->SetParameter(RbtVdwSF::GetEcut(), 1.0);
     m_SF->Add(sfInter);
     RbtBaseSF *sfIntra = new RbtVdwIntraSF("INTRA_VDW");
-    sfIntra->SetParameter(RbtVdwSF::_ECUT, 1.0);
+    sfIntra->SetParameter(RbtVdwSF::GetEcut(), 1.0);
     m_SF->Add(sfIntra);
     m_workSpace->SetSF(m_SF);
   } catch (RbtError &e) {
@@ -95,8 +95,8 @@ TEST_F(SearchTest, GA) {
   RbtTransformAggPtr spTransformAgg(new RbtTransformAgg());
   RbtBaseTransform *pRandPop = new RbtRandPopTransform();
   RbtBaseTransform *pGA = new RbtGATransform();
-  pRandPop->SetParameter(RbtBaseObject::_TRACE, 4);
-  pGA->SetParameter(RbtBaseObject::_TRACE, 4);
+  pRandPop->SetParameter(RbtBaseObject::GetTraceStr(), 4);
+  pGA->SetParameter(RbtBaseObject::GetTraceStr(), 4);
   spTransformAgg->Add(pRandPop);
   spTransformAgg->Add(pGA);
   m_workSpace->SetTransform(spTransformAgg);
@@ -115,11 +115,11 @@ TEST_F(SearchTest, Simplex) {
   RbtTransformAggPtr spTransformAgg(new RbtTransformAgg());
   // RbtBaseTransform* pRandPop = new RbtRandPopTransform();
   RbtBaseTransform *pSimplex = new RbtSimplexTransform();
-  // pRandPop->SetParameter(RbtBaseObject::_TRACE, 4);
-  pSimplex->SetParameter(RbtBaseObject::_TRACE, 1);
-  pSimplex->SetParameter(RbtSimplexTransform::_MAX_CALLS, 500);
-  pSimplex->SetParameter(RbtSimplexTransform::_NCYCLES, 100);
-  pSimplex->SetParameter(RbtSimplexTransform::_STEP_SIZE, 1.0);
+  // pRandPop->SetParameter(RbtBaseObject::GetTraceStr(), 4);
+  pSimplex->SetParameter(RbtBaseObject::GetTraceStr(), 1);
+  pSimplex->SetParameter(RbtSimplexTransform::GetMaxCalls(), 500);
+  pSimplex->SetParameter(RbtSimplexTransform::GetNCycles(), 100);
+  pSimplex->SetParameter(RbtSimplexTransform::GetStepSize(), 1.0);
   // spTransformAgg->Add(pRandPop);
   spTransformAgg->Add(pSimplex);
   m_workSpace->SetTransform(spTransformAgg);
@@ -136,14 +136,14 @@ TEST_F(SearchTest, Simplex) {
 // 5 Run a sample simulated annealing
 TEST_F(SearchTest, SimAnn) {
   RbtBaseTransform *pSimAnn = new RbtSimAnnTransform();
-  pSimAnn->SetParameter(RbtBaseObject::_TRACE, 2);
-  pSimAnn->SetParameter(RbtSimAnnTransform::_BLOCK_LENGTH, 100);
-  pSimAnn->SetParameter(RbtSimAnnTransform::_NUM_BLOCKS, 50);
-  pSimAnn->SetParameter(RbtSimAnnTransform::_START_T, 300.0);
-  pSimAnn->SetParameter(RbtSimAnnTransform::_FINAL_T, 50.0);
-  pSimAnn->SetParameter(RbtSimAnnTransform::_STEP_SIZE, 0.5);
-  pSimAnn->SetParameter(RbtSimAnnTransform::_PARTITION_DIST, 0.0);
-  pSimAnn->SetParameter(RbtSimAnnTransform::_PARTITION_FREQ, 0);
+  pSimAnn->SetParameter(RbtBaseObject::GetTraceStr(), 2);
+  pSimAnn->SetParameter(RbtSimAnnTransform::GetBlockLength(), 100);
+  pSimAnn->SetParameter(RbtSimAnnTransform::GetNumBlocks(), 50);
+  pSimAnn->SetParameter(RbtSimAnnTransform::GetStartT(), 300.0);
+  pSimAnn->SetParameter(RbtSimAnnTransform::GetFinalT(), 50.0);
+  pSimAnn->SetParameter(RbtSimAnnTransform::GetStepSize(), 0.5);
+  pSimAnn->SetParameter(RbtSimAnnTransform::GetPartitionDist(), 0.0);
+  pSimAnn->SetParameter(RbtSimAnnTransform::GetPartitionFreq(), 0);
   m_workSpace->SetTransform(pSimAnn);
   bool isOK(true);
   try {
@@ -160,10 +160,10 @@ TEST_F(SearchTest, SimAnn) {
 TEST_F(SearchTest, Restart) {
   RbtTransformAggPtr spTransformAgg(new RbtTransformAgg());
   RbtBaseTransform *pSimplex = new RbtSimplexTransform();
-  pSimplex->SetParameter(RbtBaseObject::_TRACE, 1);
-  pSimplex->SetParameter(RbtSimplexTransform::_MAX_CALLS, 500);
-  pSimplex->SetParameter(RbtSimplexTransform::_NCYCLES, 100);
-  pSimplex->SetParameter(RbtSimplexTransform::_STEP_SIZE, 1.0);
+  pSimplex->SetParameter(RbtBaseObject::GetTraceStr(), 1);
+  pSimplex->SetParameter(RbtSimplexTransform::GetMaxCalls(), 500);
+  pSimplex->SetParameter(RbtSimplexTransform::GetNCycles(), 100);
+  pSimplex->SetParameter(RbtSimplexTransform::GetStepSize(), 1.0);
   spTransformAgg->Add(pSimplex);
   m_workSpace->SetTransform(spTransformAgg);
   bool isOK(true);

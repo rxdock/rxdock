@@ -16,6 +16,8 @@
 std::string RbtChromElement::_CT = "RbtChromElement";
 double RbtChromElement::_THRESHOLD = 1E-4;
 
+double &RbtChromElement::GetThreshold() { return _THRESHOLD; }
+
 RbtChromElement::eMode RbtChromElement::StrToMode(const std::string &modeStr) {
   eMode retVal;
   std::string modeStrUpper = modeStr;
