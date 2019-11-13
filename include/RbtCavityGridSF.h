@@ -22,7 +22,7 @@ class RbtCavityGridSF : public RbtBaseInterSF {
 public:
   // RbtFlexDataVisitor class to generate list of movable non-hydrogen atoms
   // i.e. those atoms that have the potential to move outside of the cavity
-  class HeavyAtomFactory : public RbtFlexDataVisitor {
+  class RBTDLL_EXPORT HeavyAtomFactory : public RbtFlexDataVisitor {
   public:
     HeavyAtomFactory() {}
     HeavyAtomFactory(RbtModelList modelList);

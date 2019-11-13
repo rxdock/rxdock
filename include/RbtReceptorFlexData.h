@@ -22,7 +22,7 @@ public:
   static const std::string &_FLEX_DISTANCE;
   // Dihedral mutation step length (deg)
   static const std::string &_DIHEDRAL_STEP;
-  RbtReceptorFlexData(RbtDockingSite *pDockSite);
+  RBTDLL_EXPORT RbtReceptorFlexData(RbtDockingSite *pDockSite);
   virtual void Accept(RbtFlexDataVisitor &v) { v.VisitReceptorFlexData(this); }
 
 private:

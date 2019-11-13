@@ -30,9 +30,10 @@ public:
   static std::string
       _USE_TRIPOS; // TRUE = Tripos 5.2 well depths; FALSE = GOLD well depths
   static std::string _RMAX; // Maximum range as a multiple of rmin
-  static std::string _ECUT; // Energy cutoff for transition to short-range
-                            // quadratic, as a multiple of well depth
-  static std::string _E0;   // Energy at zero distance, as a multiple of ECUT
+  RBTDLL_EXPORT static std::string
+      _ECUT;              // Energy cutoff for transition to short-range
+                          // quadratic, as a multiple of well depth
+  static std::string _E0; // Energy at zero distance, as a multiple of ECUT
 
   virtual ~RbtVdwSF();
 

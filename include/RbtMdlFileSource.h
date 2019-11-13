@@ -24,8 +24,10 @@ class RbtMdlFileSource : public RbtBaseMolecularFileSource {
 public:
   // Constructors
   // RbtMdlFileSource(const char* fileName);
-  RbtMdlFileSource(const std::string &fileName, bool bPosIonisable = true,
-                   bool bNegIonisable = true, bool bImplHydrogens = true);
+  RBTDLL_EXPORT RbtMdlFileSource(const std::string &fileName,
+                                 bool bPosIonisable = true,
+                                 bool bNegIonisable = true,
+                                 bool bImplHydrogens = true);
 
   // Default destructor
   virtual ~RbtMdlFileSource();

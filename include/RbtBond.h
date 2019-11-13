@@ -154,7 +154,7 @@ public:
 class isBondRotatable : public RbtBondUnaryPredicate {
 public:
   explicit isBondRotatable() {}
-  bool operator()(RbtBond *) const;
+  RBTDLL_EXPORT bool operator()(RbtBond *) const;
 };
 
 // Is bond to a terminal NH3+ group?

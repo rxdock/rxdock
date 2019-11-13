@@ -57,12 +57,12 @@ public:
   // Model handling
 
   // Returns number of models in workspace
-  unsigned int GetNumModels() const;
+  RBTDLL_EXPORT unsigned int GetNumModels() const;
   // Returns vector of all models in workspace
-  RbtModelList GetModels() const;
+  RBTDLL_EXPORT RbtModelList GetModels() const;
   // Returns a specific (numbered) model
   // Throws RbtBadArgument if iModel out of range
-  RbtModelPtr GetModel(unsigned int iModel) const;
+  RBTDLL_EXPORT RbtModelPtr GetModel(unsigned int iModel) const;
 
   // Replace an existing model
   // Throws RbtBadArgument if iModel out of range
@@ -84,7 +84,7 @@ public:
   // Model I/O
   // Get/set the molecular file sink (for outputting ligands)
   RbtMolecularFileSinkPtr GetSink() const;
-  void SetSink(RbtMolecularFileSinkPtr);
+  RBTDLL_EXPORT void SetSink(RbtMolecularFileSinkPtr);
   // Saves models to file sink
   // If bSaveScores is true, write component scores also
   // Base workspace does nothing
@@ -101,13 +101,13 @@ public:
 
   // Get/Set the scoring function
   // SetSF automatically registers the scoring function with the workspace
-  RbtBaseSF *GetSF() const;
-  void SetSF(RbtBaseSF *);
+  RBTDLL_EXPORT RbtBaseSF *GetSF() const;
+  RBTDLL_EXPORT void SetSF(RbtBaseSF *);
 
   // Get/Set the transform
   // SetTransform automatically registers the transform with the workspace
   RbtBaseTransform *GetTransform() const;
-  void SetTransform(RbtBaseTransform *);
+  RBTDLL_EXPORT void SetTransform(RbtBaseTransform *);
 
   // Run the simulation!
   virtual void Run();
@@ -120,8 +120,8 @@ public:
 
   // Docking site handling
   // DM 09 Apr 2002 - workspace now manages the docking site
-  RbtDockingSitePtr GetDockingSite() const;
-  void SetDockingSite(RbtDockingSitePtr spDockSite);
+  RBTDLL_EXPORT RbtDockingSitePtr GetDockingSite() const;
+  RBTDLL_EXPORT void SetDockingSite(RbtDockingSitePtr spDockSite);
 
   // Filter handling
   // BGD 27 Jan 2003 - SetFilter automotically registers the Filter

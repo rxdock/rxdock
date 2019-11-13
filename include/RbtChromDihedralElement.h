@@ -29,7 +29,7 @@ public:
   // else if the tetheredAtoms list is not empty, then
   //  the end of the bond with the fewest tethered atoms is rotated (other half
   //  remains fixed)
-  RbtChromDihedralElement(
+  RBTDLL_EXPORT RbtChromDihedralElement(
       RbtBondPtr spBond,         // Rotatable bond
       RbtAtomList tetheredAtoms, // Tethered atom list
       double stepSize,           // maximum mutation step size (degrees)

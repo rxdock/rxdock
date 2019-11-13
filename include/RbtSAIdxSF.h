@@ -27,7 +27,7 @@ class RbtSAIdxSF : public RbtBaseInterSF,
                    public RbtBaseIdxSF,
                    public RbtAnnotationHandler {
 public:
-  RbtSAIdxSF(const std::string &strName = "SAIdxSF");
+  RBTDLL_EXPORT RbtSAIdxSF(const std::string &strName = "SAIdxSF");
   virtual ~RbtSAIdxSF();
   // write score components
   virtual void ScoreMap(RbtStringVariantMap &scoreMap) const;

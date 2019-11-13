@@ -24,7 +24,7 @@
 
 class RbtChromElement;
 
-class RbtChromFactory : public RbtFlexDataVisitor {
+class RBTDLL_EXPORT RbtChromFactory : public RbtFlexDataVisitor {
 public:
   RbtChromFactory();
   virtual void VisitReceptorFlexData(RbtReceptorFlexData *);

@@ -25,9 +25,9 @@ public:
   // Dihedral angle mutation step length (deg)
   static const std::string &_DIHEDRAL_STEP;
   // Enum for translation mode (0=FIXED, 1=TETHERED, 2=FREE)
-  static const std::string &_TRANS_MODE;
+  RBTDLL_EXPORT static const std::string &_TRANS_MODE;
   // Enum for rotation mode (0=FIXED, 1=TETHERED, 2=FREE)
-  static const std::string &_ROT_MODE;
+  RBTDLL_EXPORT static const std::string &_ROT_MODE;
   // Enum for dihedral mode (0=FIXED, 1=TETHERED, 2=FREE)
   static const std::string &_DIHEDRAL_MODE;
   // Max allowed distance from initial COM (for tethered translation only)
@@ -38,7 +38,7 @@ public:
   // Max allowed dihedral rotation from initial dihedrals
   //(for tethered dihedrals only)
   static const std::string &_MAX_DIHEDRAL;
-  RbtLigandFlexData(RbtDockingSite *pDockSite);
+  RBTDLL_EXPORT RbtLigandFlexData(RbtDockingSite *pDockSite);
   virtual void Accept(RbtFlexDataVisitor &v) { v.VisitLigandFlexData(this); }
 
 private:

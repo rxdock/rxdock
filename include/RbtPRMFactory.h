@@ -49,17 +49,18 @@ public:
   // as we assume that all parameters in SECTION SOLVENT
   // are flexibility params (except for _SOLV_FILE)
 
-  RbtPRMFactory(RbtParameterFileSource *pParamSource);
-  RbtPRMFactory(RbtParameterFileSource *pParamSource, RbtDockingSite *pDS);
+  RBTDLL_EXPORT RbtPRMFactory(RbtParameterFileSource *pParamSource);
+  RBTDLL_EXPORT RbtPRMFactory(RbtParameterFileSource *pParamSource,
+                              RbtDockingSite *pDS);
 
   int GetTrace() const { return m_iTrace; }
   void SetTrace(int iTrace) { m_iTrace = iTrace; }
   RbtDockingSite *GetDockingSite() const { return m_pDS; }
   void SetDockingSite(RbtDockingSite *pDS) { m_pDS = pDS; }
 
-  RbtModelPtr CreateReceptor();
-  RbtModelPtr CreateLigand(RbtBaseMolecularFileSource *pSource);
-  RbtModelList CreateSolvent();
+  RBTDLL_EXPORT RbtModelPtr CreateReceptor();
+  RBTDLL_EXPORT RbtModelPtr CreateLigand(RbtBaseMolecularFileSource *pSource);
+  RBTDLL_EXPORT RbtModelList CreateSolvent();
 
 private:
   // Creates the appropriate source according to the file extension

@@ -41,7 +41,7 @@ protected:
   ////////////////////////////////////////
   // Protected methods
   ///////////////////
-  RbtAnnotationHandler();
+  RBTDLL_EXPORT RbtAnnotationHandler();
   void AddAnnotation(RbtAnnotationPtr spAnnotation) const;
   void ClearAnnotationList() const;
   void EnableAnnotations(bool bEnabled) const;

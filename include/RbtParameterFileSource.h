@@ -22,7 +22,7 @@ class RbtParameterFileSource : public RbtBaseFileSource {
 public:
   // Constructors
   RbtParameterFileSource(const char *fileName);
-  RbtParameterFileSource(const std::string &fileName);
+  RBTDLL_EXPORT RbtParameterFileSource(const std::string &fileName);
 
   // Destructor
   virtual ~RbtParameterFileSource();

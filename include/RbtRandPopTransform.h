@@ -25,7 +25,7 @@ public:
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtRandPopTransform(const std::string &strName = "RANDPOP");
+  RBTDLL_EXPORT RbtRandPopTransform(const std::string &strName = "RANDPOP");
   virtual ~RbtRandPopTransform();
 
   ////////////////////////////////////////

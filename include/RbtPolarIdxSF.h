@@ -27,14 +27,14 @@ public:
   // Class type string
   static std::string _CT;
   // Parameter names
-  static std::string _INCR;
+  RBTDLL_EXPORT static std::string _INCR;
   static std::string _ATTR;
   // DM 12 Jun 2002 - score thresholds used for counting attractive and
   // repulsive interactions
   static std::string _THRESHOLD_POS;
   static std::string _THRESHOLD_NEG;
 
-  RbtPolarIdxSF(const std::string &strName = "POLAR");
+  RBTDLL_EXPORT RbtPolarIdxSF(const std::string &strName = "POLAR");
   virtual ~RbtPolarIdxSF();
 
   // Override RbtBaseSF::ScoreMap to provide additional raw descriptors

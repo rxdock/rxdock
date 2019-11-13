@@ -61,7 +61,7 @@ public:
   ///////////////////////////////////////////////
 
   // Default constructor
-  RbtAtom();
+  RBTDLL_EXPORT RbtAtom();
 
   // Constructor supplying all 2-D parameters
   RbtAtom(int nAtomId, int nAtomicNo = 6, std::string strAtomName = "C",
@@ -101,7 +101,7 @@ public:
   // DM 7 June 2006
   // atom enabled state is controlled by the parent RbtModel
   // enabled state
-  bool GetEnabled() const;
+  RBTDLL_EXPORT bool GetEnabled() const;
 
   // AtomId
   int GetAtomId() const { return m_nAtomId; }
@@ -1242,7 +1242,8 @@ RbtCoord GetCenterOfMass(const RbtAtomList &atomList);
 // DM 20 May 1999 - returns the coords of all atoms in the list
 RbtCoordList GetCoordList(const RbtAtomList &atomList);
 // DM 09 Aug 2001 - returns coordList via argument
-void GetCoordList(const RbtAtomList &atomList, RbtCoordList &coordList);
+RBTDLL_EXPORT void GetCoordList(const RbtAtomList &atomList,
+                                RbtCoordList &coordList);
 
 // Streams an atom list in Quanta CSD file format (for easy color coding of
 // selected atoms in Quanta) nFormat  = 0 => Receptor atom format: "zone 1 #

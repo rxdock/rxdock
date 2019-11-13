@@ -48,20 +48,20 @@ public:
   // Static data member for class type
   static std::string _CT;
   // Parameter names
-  static std::string _START_T;
-  static std::string _FINAL_T;
-  static std::string _BLOCK_LENGTH;
+  RBTDLL_EXPORT static std::string _START_T;
+  RBTDLL_EXPORT static std::string _FINAL_T;
+  RBTDLL_EXPORT static std::string _BLOCK_LENGTH;
   static std::string _SCALE_CHROM_LENGTH;
-  static std::string _NUM_BLOCKS;
-  static std::string _STEP_SIZE;
+  RBTDLL_EXPORT static std::string _NUM_BLOCKS;
+  RBTDLL_EXPORT static std::string _STEP_SIZE;
   static std::string _MIN_ACC_RATE;
-  static std::string _PARTITION_DIST;
-  static std::string _PARTITION_FREQ;
+  RBTDLL_EXPORT static std::string _PARTITION_DIST;
+  RBTDLL_EXPORT static std::string _PARTITION_FREQ;
   static std::string _HISTORY_FREQ;
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtSimAnnTransform(const std::string &strName = "SIMANN");
+  RBTDLL_EXPORT RbtSimAnnTransform(const std::string &strName = "SIMANN");
   virtual ~RbtSimAnnTransform();
 
   ////////////////////////////////////////

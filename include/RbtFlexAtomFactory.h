@@ -46,7 +46,7 @@
 // atom can be complex. Here we define the sphere radius that includes all
 // allowed coordinates.
 // The User2Value for fixed and free atoms is set to zero.
-class RbtFlexAtomFactory : public RbtFlexDataVisitor {
+class RBTDLL_EXPORT RbtFlexAtomFactory : public RbtFlexDataVisitor {
 public:
   RbtFlexAtomFactory() {}
   // Constructor accepting a single model

@@ -33,7 +33,7 @@ public:
   // DM 14 Nov 2001 - relative strength of guanidinium intns
   static std::string _GUANFACTOR;
 
-  RbtSetupPolarSF(const std::string &strName = "SETUP_POLAR");
+  RBTDLL_EXPORT RbtSetupPolarSF(const std::string &strName = "SETUP_POLAR");
   virtual ~RbtSetupPolarSF();
 
 protected:

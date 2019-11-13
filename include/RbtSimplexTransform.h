@@ -22,18 +22,18 @@ public:
   // Static data member for class type
   static std::string _CT;
   // Parameter names
-  static std::string _MAX_CALLS;
-  static std::string _NCYCLES;
+  RBTDLL_EXPORT static std::string _MAX_CALLS;
+  RBTDLL_EXPORT static std::string _NCYCLES;
   static std::string _STOPPING_STEP_LENGTH;
   static std::string _PARTITION_DIST;
-  static std::string _STEP_SIZE;
+  RBTDLL_EXPORT static std::string _STEP_SIZE;
   // Stop once score improves by less than convergence value
   // between cycles
   static std::string _CONVERGENCE;
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtSimplexTransform(const std::string &strName = "SIMPLEX");
+  RBTDLL_EXPORT RbtSimplexTransform(const std::string &strName = "SIMPLEX");
   virtual ~RbtSimplexTransform();
 
   ////////////////////////////////////////

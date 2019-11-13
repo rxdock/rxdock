@@ -33,7 +33,8 @@ class RbtMdlFileSink : public RbtBaseMolecularFileSink {
 public:
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtMdlFileSink(const std::string &fileName, RbtModelPtr spModel);
+  RBTDLL_EXPORT RbtMdlFileSink(const std::string &fileName,
+                               RbtModelPtr spModel);
 
   virtual ~RbtMdlFileSink(); // Default destructor
 

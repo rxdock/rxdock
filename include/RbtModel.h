@@ -123,7 +123,7 @@ public:
   double GetOccupancy() const { return m_occupancy; }
   bool GetEnabled() const { return m_enabled; }
   // Sets the occupancy and enabled state simultaneously
-  void SetOccupancy(double occupancy, double threshold = 0.5);
+  RBTDLL_EXPORT void SetOccupancy(double occupancy, double threshold = 0.5);
 
   //////////////////////
   // Public methods
@@ -183,14 +183,14 @@ public:
   // DM 19 Oct 2005 - new chromosome handling
   // Sets the flexibility type for this model
   // To revert to a rigid model, call SetFlexData(nullptr)
-  void SetFlexData(RbtFlexData *pFlexData);
+  RBTDLL_EXPORT void SetFlexData(RbtFlexData *pFlexData);
   // Gets the flexibility type of this model
   // Returns nullptr for a rigid model
-  RbtFlexData *GetFlexData() const;
+  RBTDLL_EXPORT RbtFlexData *GetFlexData() const;
   // Returns a clone of the current chromosome for this model
   // The caller has the responsibility for mem management of the clone
   // Returns nullptr for a rigid model
-  RbtChromElement *GetChrom() const;
+  RBTDLL_EXPORT RbtChromElement *GetChrom() const;
 
   bool isFlexible() const;
   const RbtAtomRList &GetFlexIntns(RbtAtom *pAtom) const;

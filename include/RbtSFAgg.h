@@ -34,7 +34,7 @@ public:
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtSFAgg(const std::string &strName = "SCORE");
+  RBTDLL_EXPORT RbtSFAgg(const std::string &strName = "SCORE");
   virtual ~RbtSFAgg();
 
   ////////////////////////////////////////

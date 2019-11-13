@@ -42,7 +42,8 @@ public:
   RbtStringVariantMap GetParameters() const;
 
   // Set named parameter to new value, throws error if name not found
-  void SetParameter(const std::string &strName, const RbtVariant &vValue);
+  RBTDLL_EXPORT void SetParameter(const std::string &strName,
+                                  const RbtVariant &vValue);
 
   // Virtual function for dumping parameters to an output stream
   // Called by operator <<

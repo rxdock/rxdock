@@ -50,10 +50,10 @@ public:
   void SetWeight(double);
 
   double GetRange() const;
-  void SetRange(double);
+  RBTDLL_EXPORT void SetRange(double);
 
   // Main public method - returns current weighted score
-  double Score() const;
+  RBTDLL_EXPORT double Score() const;
   // Returns all child component scores as a string-variant map
   // Key = fully qualified component name, value = weighted score
   //(for saving in a Model's data fields)

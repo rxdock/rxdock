@@ -41,7 +41,7 @@ typedef RbtPrincipalAxesList::const_iterator RbtPrincipalAxesListConstIter;
 
 namespace Rbt {
 // Calculates principal axes and center of mass for the atoms in the atom list
-RbtPrincipalAxes GetPrincipalAxes(const RbtAtomList &atomList);
+RBTDLL_EXPORT RbtPrincipalAxes GetPrincipalAxes(const RbtAtomList &atomList);
 // Calculates principal axes and center of mass for the coords in the coord list
 // (assumes all masses=1)
 RbtPrincipalAxes GetPrincipalAxes(const RbtCoordList &coordList);
@@ -55,8 +55,8 @@ AlignPrincipalAxes(RbtAtomList &atomList,
                    const RbtPrincipalAxes &alignAxes = RbtPrincipalAxes(),
                    bool bAlignCOM = true);
 // Returns the quaternion required to align principal axes with reference axes
-RbtQuat GetQuatFromAlignAxes(const RbtPrincipalAxes &prAxes,
-                             const RbtPrincipalAxes &refAxes);
+RBTDLL_EXPORT RbtQuat GetQuatFromAlignAxes(const RbtPrincipalAxes &prAxes,
+                                           const RbtPrincipalAxes &refAxes);
 // Returns the quaternion required to effect an alignment of v onto ref vector.
 // Vectors do not have to be unit length.
 // RbtBadArgument exception is thrown if either v or ref is zero length.

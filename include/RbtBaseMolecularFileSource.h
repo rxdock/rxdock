@@ -25,8 +25,8 @@ public:
   // Constructors
   // RbtBaseMolecularFileSource(const char* fileName, const char* sourceName);
   // Single-record version
-  RbtBaseMolecularFileSource(const std::string &fileName,
-                             const std::string &sourceName);
+  RBTDLL_EXPORT RbtBaseMolecularFileSource(const std::string &fileName,
+                                           const std::string &sourceName);
   // Multi-record version, with record delimiter passed as an argument
   RbtBaseMolecularFileSource(const std::string &fileName,
                              const std::string &strRecDelim,
@@ -64,7 +64,7 @@ public:
   // So for example, we could just read the segment named TAR from the source
   // The filter modifies the behaviour of GetAtomList, GetBondList etc
   RbtSegmentMap GetSegmentFilterMap();
-  void SetSegmentFilterMap(const RbtSegmentMap &segmentFilterMap);
+  RBTDLL_EXPORT void SetSegmentFilterMap(const RbtSegmentMap &segmentFilterMap);
   void ClearSegmentFilterMap();
   bool isSegmentFilterMapDefined();
 

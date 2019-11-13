@@ -36,7 +36,7 @@ public:
   // Class type string
   static std::string _CT;
   // Threshold used to assess equality of two chromosome elements
-  static double _THRESHOLD;
+  RBTDLL_EXPORT static double _THRESHOLD;
 
   // General enum for defining types of chromosome element flexibility.
   // For use by subclasses of RbtChromElement if desired.
@@ -44,7 +44,7 @@ public:
   enum eMode { FIXED = 0, TETHERED = 1, FREE = 2 };
   // Static methods to convert from mode enum to string and vice versa
   static eMode StrToMode(const std::string &modeStr); // case insensitive
-  static std::string
+  static std::string RBTDLL_EXPORT
   ModeToStr(eMode mode); // returns "FIXED", "TETHERED" or "FREE"ss
 
   virtual ~RbtChromElement();
@@ -118,7 +118,7 @@ public:
   // Compares two chromosome elements. Returns -1 if the comparison is invalid
   //(unequal lengths), else returns the maximum relative pair-wise difference
   // as returned by CompareVector.
-  double Compare(const RbtChromElement &c) const;
+  RBTDLL_EXPORT double Compare(const RbtChromElement &c) const;
   // Returns true if chromosome elements have near-equal values.
   // i.e. if Compare(c) < threshold
   // Returns false if comparison is invalid (unequal lengths)
@@ -131,15 +131,18 @@ public:
   void SetVector(const RbtXOverList &v);
   // operator== and operator!= are implemented by calling Equals with the
   // static _THRESHOLD value
-  friend bool operator==(const RbtChromElement &c1, const RbtChromElement &c2);
-  friend bool operator!=(const RbtChromElement &c1, const RbtChromElement &c2);
+  RBTDLL_EXPORT friend bool operator==(const RbtChromElement &c1,
+                                       const RbtChromElement &c2);
+  RBTDLL_EXPORT friend bool operator!=(const RbtChromElement &c1,
+                                       const RbtChromElement &c2);
   // operator<< is implemented by calling Print()
-  friend std::ostream &operator<<(std::ostream &s, const RbtChromElement &c);
+  RBTDLL_EXPORT friend std::ostream &operator<<(std::ostream &s,
+                                                const RbtChromElement &c);
 
 protected:
-  RbtChromElement();
-  RbtChromElement(const RbtChromElement &c);
-  RbtChromElement &operator=(const RbtChromElement &c);
+  RBTDLL_EXPORT RbtChromElement();
+  RBTDLL_EXPORT RbtChromElement(const RbtChromElement &c);
+  RBTDLL_EXPORT RbtChromElement &operator=(const RbtChromElement &c);
   // Helper method to check that index i is in range [0,v.size()}
   // and that v has sufficient elements remaining to satisfy
   // GetLength()
@@ -161,7 +164,7 @@ typedef RbtChromElementList::const_iterator RbtChromElementListConstIter;
 
 namespace Rbt {
 // 2-point crossover
-void Crossover(RbtChromElement *pChr1, RbtChromElement *pChr2,
-               RbtChromElement *pChr3, RbtChromElement *pChr4);
+RBTDLL_EXPORT void Crossover(RbtChromElement *pChr1, RbtChromElement *pChr2,
+                             RbtChromElement *pChr3, RbtChromElement *pChr4);
 } // namespace Rbt
 #endif /*RBTCHROMELEMENT_H_*/

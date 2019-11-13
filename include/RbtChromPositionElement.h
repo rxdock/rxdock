@@ -23,7 +23,7 @@ public:
   // Class type string
   static std::string _CT;
 
-  RbtChromPositionElement(
+  RBTDLL_EXPORT RbtChromPositionElement(
       const RbtModel *pModel, const RbtDockingSite *pDockSite,
       double transStepSize, // Angstroms
       double rotStepSize,   // Radians

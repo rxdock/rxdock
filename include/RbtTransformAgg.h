@@ -33,7 +33,7 @@ public:
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RbtTransformAgg(const std::string &strName = "DOCK");
+  RBTDLL_EXPORT RbtTransformAgg(const std::string &strName = "DOCK");
   virtual ~RbtTransformAgg();
 
   ////////////////////////////////////////

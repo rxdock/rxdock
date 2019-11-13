@@ -40,7 +40,7 @@ public:
   // for testing
   static std::string _FAST_SOLVENT;
 
-  RbtVdwIdxSF(const std::string &strName = "VDW");
+  RBTDLL_EXPORT RbtVdwIdxSF(const std::string &strName = "VDW");
   virtual ~RbtVdwIdxSF();
 
   // Override RbtBaseSF::ScoreMap to provide additional raw descriptors

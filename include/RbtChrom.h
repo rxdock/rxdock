@@ -26,7 +26,7 @@ public:
   // Class type string
   static std::string _CT;
   // Constructor for an empty chromosome
-  RbtChrom();
+  RBTDLL_EXPORT RbtChrom();
   // Constructor for a combined chromosome for each model
   // in the list
   RbtChrom(const RbtModelList &modelList);

@@ -74,11 +74,11 @@ public:
   // Gets the equivalent quaternion representation
   // NOTE: For performance reasons, no checks are made that the current
   // Euler angles are within range prior to the conversion.
-  RbtQuat ToQuat() const;
+  RBTDLL_EXPORT RbtQuat ToQuat() const;
   // Updates the Euler angles from a quaternion representation
   // NOTE: For performance reasons, q is assumed to be of unit length
   // and no further checks are made.
-  void FromQuat(const RbtQuat &q);
+  RBTDLL_EXPORT void FromQuat(const RbtQuat &q);
   // Convenience method to rotate orientation by a quaternion
   void Rotate(const RbtQuat &q) { FromQuat(q * ToQuat()); }
   void Rotate(const RbtVector &axis, double theta) {

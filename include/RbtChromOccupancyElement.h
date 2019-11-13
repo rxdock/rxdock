@@ -23,7 +23,8 @@ public:
   // Class type string
   static std::string _CT;
   // Sole constructor
-  RbtChromOccupancyElement(RbtModel *pModel, double stepSize, double threshold);
+  RBTDLL_EXPORT RbtChromOccupancyElement(RbtModel *pModel, double stepSize,
+                                         double threshold);
 
   virtual ~RbtChromOccupancyElement();
   virtual void Reset();

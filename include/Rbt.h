@@ -17,6 +17,27 @@
 #include "RbtContainers.h"
 #include "RbtError.h"
 
+#if defined _WIN32 || defined __CYGWIN__
+#ifdef __GNUC__
+#define RBTDLL_EXPORT __attribute__((dllexport))
+#define RBTDLL_IMPORT __attribute__((dllimport))
+#else
+#define RBTDLL_EXPORT __declspec(dllexport)
+#define RBTDLL_IMPORT __declspec(dllimport)
+#endif
+#define RBTDLL_LOCAL
+#else
+#if __GNUC__ >= 4
+#define RBTDLL_EXPORT __attribute__((visibility("default")))
+#define RBTDLL_IMPORT __attribute__((visibility("default")))
+#define RBTDLL_LOCAL __attribute__((visibility("hidden")))
+#else
+#define RBTDLL_EXPORT
+#define RBTDLL_IMPORT
+#define RBTDLL_LOCAL
+#endif
+#endif
+
 namespace Rbt {
 ////////////////////////////////////////////////////////////////
 // RESOURCE HANDLING FUNCTIONS
@@ -58,8 +79,8 @@ std::string GetRbtDirName(const std::string &strSubdir = "");
 // GetRbtFileName
 // As GetRbtDirName but returns the full path to a file in the rDock directory
 // structure
-std::string GetRbtFileName(const std::string &strSubdir,
-                           const std::string &strFile);
+RBTDLL_EXPORT std::string GetRbtFileName(const std::string &strSubdir,
+                                         const std::string &strFile);
 
 // GetFileType
 // Returns the string following the last "." in the file name.
@@ -80,8 +101,8 @@ RbtStringList GetDirList(const std::string &strDir,
 // CONVERSION ROUTINES
 //
 // Converts (comma)-delimited string of segment names to segment map
-RbtSegmentMap ConvertStringToSegmentMap(const std::string &strSegments,
-                                        const std::string &strDelimiter = ",");
+RBTDLL_EXPORT RbtSegmentMap ConvertStringToSegmentMap(
+    const std::string &strSegments, const std::string &strDelimiter = ",");
 // Converts segment map to (comma)-delimited string of segment names
 std::string ConvertSegmentMapToString(const RbtSegmentMap &segmentMap,
                                       const std::string &strDelimiter = ",");
@@ -112,8 +133,8 @@ std::string ConvertListToDelimitedString(const RbtStringList &listOfValues,
 // Print a standard header to an output stream (for log files etc)
 // Contains copyright info, library version, date, time etc
 // DM 19 Feb 1999 - include executable information
-std::ostream &PrintStdHeader(std::ostream &s,
-                             const std::string &strExecutable = "");
+RBTDLL_EXPORT std::ostream &
+PrintStdHeader(std::ostream &s, const std::string &strExecutable = "");
 
 // Helper functions to read/write chars from iostreams
 // Throws error if stream state is not Good() before and after the read/write

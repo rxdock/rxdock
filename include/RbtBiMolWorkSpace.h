@@ -31,7 +31,7 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
 
-  RbtBiMolWorkSpace();
+  RBTDLL_EXPORT RbtBiMolWorkSpace();
   virtual ~RbtBiMolWorkSpace();
 
   ////////////////////////////////////////
@@ -39,16 +39,17 @@ public:
   ////////////////
 
   // Model handling
-  RbtModelPtr GetReceptor() const;
-  RbtModelPtr GetLigand() const;
-  RbtModelList GetSolvent() const;
+  RBTDLL_EXPORT RbtModelPtr GetReceptor() const;
+  RBTDLL_EXPORT RbtModelPtr GetLigand() const;
+  RBTDLL_EXPORT RbtModelList GetSolvent() const;
   bool hasSolvent() const;
-  void SetReceptor(RbtModelPtr spReceptor);
-  void SetLigand(RbtModelPtr spLigand);
-  void SetSolvent(RbtModelList solventList);
-  void RemoveSolvent();
-  void UpdateModelCoordsFromChromRecords(RbtBaseMolecularFileSource *pSource,
-                                         int iTrace);
+  RBTDLL_EXPORT void SetReceptor(RbtModelPtr spReceptor);
+  RBTDLL_EXPORT void SetLigand(RbtModelPtr spLigand);
+  RBTDLL_EXPORT void SetSolvent(RbtModelList solventList);
+  RBTDLL_EXPORT void RemoveSolvent();
+  RBTDLL_EXPORT void
+  UpdateModelCoordsFromChromRecords(RbtBaseMolecularFileSource *pSource,
+                                    int iTrace);
 
   // Model I/O
   // Saves ligand to file sink

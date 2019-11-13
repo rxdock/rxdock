@@ -20,7 +20,7 @@
 #include <fstream>   //For ifstream
 #ifdef _WIN32
 #include <direct.h>
-#define getcwd _getcwd //CRT library getcwd
+#define getcwd _getcwd // CRT library getcwd
 #else
 #include <unistd.h> //For POSIX getcwd
 #endif

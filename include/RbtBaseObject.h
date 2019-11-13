@@ -33,7 +33,8 @@ public:
   static std::string _CLASS;
   static std::string _NAME;
   static std::string _ENABLED;
-  static std::string _TRACE; // DM 1 Mar 2002 - move from RbtBaseTransform
+  RBTDLL_EXPORT static std::string
+      _TRACE; // DM 1 Mar 2002 - move from RbtBaseTransform
 
   ////////////////////////////////////////
   // Constructors/destructors
@@ -57,7 +58,7 @@ public:
   // DM 1 Mar 2002 - move from RbtBaseTransform
   // get/set the trace level for debugging
   int GetTrace() const;
-  void SetTrace(int);
+  RBTDLL_EXPORT void SetTrace(int);
 
   // WorkSpace handling methods
   // Register scoring function with a workspace

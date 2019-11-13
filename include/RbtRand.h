@@ -56,6 +56,6 @@ private:
 
 namespace Rbt {
 // Returns reference to single instance of RbtRand class (singleton)
-RbtRand &GetRbtRand();
+RBTDLL_EXPORT RbtRand &GetRbtRand();
 } // namespace Rbt
 #endif //_RBTRAND_H_

@@ -46,7 +46,7 @@ public:
   static std::string _CT;
 
   RbtDockingSite(const RbtCavityList &cavList, double border);
-  RbtDockingSite(std::istream &istr);
+  RBTDLL_EXPORT RbtDockingSite(std::istream &istr);
 
   // Destructor
   virtual ~RbtDockingSite();

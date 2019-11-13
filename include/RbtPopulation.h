@@ -36,7 +36,7 @@ public:
   // 5) Model coords are updated to match the fittest chromosome
   // An RbtBadArgument error is thrown if size is <=0, or if pChr or pSF is
   // null.
-  RbtPopulation(RbtChromElement *pChr, int size, RbtBaseSF *pSF);
+  RBTDLL_EXPORT RbtPopulation(RbtChromElement *pChr, int size, RbtBaseSF *pSF);
   virtual ~RbtPopulation();
 
   // Gets the maximum size of the population as defined in the constructor.
@@ -44,7 +44,7 @@ public:
   // Gets the actual size of the population (may be < GetMaxSize())
   int GetActualSize() const { return m_pop.size(); }
   // Gets the best genome in the sorted population (element zero).
-  RbtGenomePtr Best() const;
+  RBTDLL_EXPORT RbtGenomePtr Best() const;
   // Gets the average raw score across entire population
   double GetScoreMean() const { return m_scoreMean; }
   // Gets the raw score variance across entire population
@@ -62,7 +62,7 @@ public:
   void SetSF(RbtBaseSF *pSF);
 
   // Main method for performing a GA iteration
-  void
+  RBTDLL_EXPORT void
   GAstep(int nReplicates,    // Number of new genomes to create in the iteration
          double relStepSize, // Relative step size for chromosome mutations
          double equalityThreshold, // Equality threshold for genomes
@@ -70,7 +70,7 @@ public:
          bool xovermut, // if true, perform cauchy mutation following crossover
          bool cmutate   // true=cauchy mutations, false=regular mutations
   );
-  RbtGenomePtr RouletteWheelSelect() const;
+  RBTDLL_EXPORT RbtGenomePtr RouletteWheelSelect() const;
 
   void Print(std::ostream &) const;
   friend std::ostream &operator<<(std::ostream &, const RbtPopulation &);

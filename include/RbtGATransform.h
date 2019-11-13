@@ -47,7 +47,7 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   ////////////////////////////////////////
-  RbtGATransform(const std::string &strName = "GAGENRW");
+  RBTDLL_EXPORT RbtGATransform(const std::string &strName = "GAGENRW");
   virtual ~RbtGATransform();
 
 protected:
