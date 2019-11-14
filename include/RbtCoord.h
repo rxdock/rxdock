@@ -482,7 +482,7 @@ inline RbtCoord GetCenterOfMass(const RbtCoordList &coordList) {
   RbtCoord com;
   com = std::accumulate(coordList.begin(), coordList.end(), com);
   // Check for divide by zero
-  return coordList.empty() ? com : com / coordList.size();
+  return coordList.empty() ? com : com / static_cast<double>(coordList.size());
 }
 
 } // namespace Rbt

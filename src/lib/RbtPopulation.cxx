@@ -186,7 +186,7 @@ void RbtPopulation::EvaluateRWFitness() {
     sum += score;
     sumSq += score * score;
   }
-  double popSize = m_pop.size();
+  double popSize = static_cast<double>(m_pop.size());
   m_scoreMean = sum / popSize;
   m_scoreVariance = (sumSq / popSize) - (m_scoreMean * m_scoreMean);
   double sigma = std::sqrt(m_scoreVariance);

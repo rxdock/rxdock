@@ -128,30 +128,30 @@ double RbtStringContext::Get(RbtModelPtr lig, std::string name) {
         Rbt::GetBondList(bondList, Rbt::isBondRotatable());
     rotatableBondList =
         Rbt::GetBondList(rotatableBondList, std::not1(Rbt::isBondToNH3()));
-    return rotatableBondList.size();
+    return static_cast<double>(rotatableBondList.size());
   }
   if (name == "LIG_PERC_LIPOC") {
-    int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomLipophilic());
+    unsigned int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomLipophilic());
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_PERC_AROMATOMS") {
-    int n = Rbt::GetNumAtoms(atomList, bIsArom);
+    unsigned int n = Rbt::GetNumAtoms(atomList, bIsArom);
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_PERC_HBD") {
-    int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondDonor());
+    unsigned int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondDonor());
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_PERC_METAL") {
-    int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomMetal());
+    unsigned int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomMetal());
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_PERC_GUAN") {
-    int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomGuanidiniumCarbon());
+    unsigned int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomGuanidiniumCarbon());
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_PERC_HBA") {
-    int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondAcceptor());
+    unsigned int n = Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondAcceptor());
     return (100.0 * n / nAtoms);
   }
   if (name == "LIG_NAROMRINGS") {
@@ -200,7 +200,7 @@ double RbtStringContext::Get(RbtModelPtr spReceptor,
   RbtAtomList exposedAtomList; // The list of exposed cavity atoms
   for (RbtAtomListConstIter iter = cavAtomList.begin();
        iter != cavAtomList.end(); iter++) {
-    int nNeighb = Rbt::GetNumAtoms(
+    unsigned int nNeighb = Rbt::GetNumAtoms(
         recepAtomList, Rbt::isAtomInsideSphere((*iter)->GetCoords(), neighbR));
     nNeighb--;
     if (nNeighb < threshold) {
@@ -209,9 +209,9 @@ double RbtStringContext::Get(RbtModelPtr spReceptor,
       exposedAtomList.push_back(*iter);
     }
   }
-  int nAtoms = exposedAtomList.size();
+  size_t nAtoms = exposedAtomList.size();
   if (name == "SITE_NATOMS")
-    return nAtoms;
+    return static_cast<double>(nAtoms);
   if (name == "SITE_NLIPOC")
     return Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomLipophilic());
   Rbt::isHybridState_eq bIsArom(RbtAtom::AROM);
@@ -226,27 +226,29 @@ double RbtStringContext::Get(RbtModelPtr spReceptor,
   if (name == "SITE_NHBA")
     return Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondAcceptor());
   if (name == "SITE_PERC_LIPOC") {
-    int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomLipophilic());
+    unsigned int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomLipophilic());
     return (100.0 * n / nAtoms);
   }
   if (name == "SITE_PERC_AROMATOMS") {
-    int n = Rbt::GetNumAtoms(exposedAtomList, bIsArom);
+    unsigned int n = Rbt::GetNumAtoms(exposedAtomList, bIsArom);
     return (100.0 * n / nAtoms);
   }
   if (name == "SITE_PERC_HBD") {
-    int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondDonor());
+    unsigned int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondDonor());
     return (100.0 * n / nAtoms);
   }
   if (name == "SITE_PERC_METAL") {
-    int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomMetal());
+    unsigned int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomMetal());
     return (100.0 * n / nAtoms);
   }
   if (name == "SITE_PERC_GUAN") {
-    int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomGuanidiniumCarbon());
+    unsigned int n =
+        Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomGuanidiniumCarbon());
     return (100.0 * n / nAtoms);
   }
   if (name == "SITE_PERC_HBA") {
-    int n = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondAcceptor());
+    unsigned int n =
+        Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondAcceptor());
     return (100.0 * n / nAtoms);
   }
   double posChg(0.0);

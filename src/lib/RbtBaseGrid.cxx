@@ -93,14 +93,14 @@ void RbtBaseGrid::Read(std::istream &istr) { OwnRead(istr); }
 void RbtBaseGrid::SetGridMin(const RbtCoord &gridMin) {
   // Determine the integral min and max grid point coords (in multiples of grid
   // step from origin)
-  m_nXMin = std::floor(gridMin.x / m_step.x + 0.5);
-  m_nYMin = std::floor(gridMin.y / m_step.y + 0.5);
-  m_nZMin = std::floor(gridMin.z / m_step.z + 0.5);
+  m_nXMin = static_cast<int>(std::floor(gridMin.x / m_step.x + 0.5));
+  m_nYMin = static_cast<int>(std::floor(gridMin.y / m_step.y + 0.5));
+  m_nZMin = static_cast<int>(std::floor(gridMin.z / m_step.z + 0.5));
 
   // Max integral coords are just min+N-1
-  m_nXMax = m_nXMin + m_NX - 1;
-  m_nYMax = m_nYMin + m_NY - 1;
-  m_nZMax = m_nZMin + m_NZ - 1;
+  m_nXMax = m_nXMin + static_cast<int>(m_NX) - 1;
+  m_nYMax = m_nYMin + static_cast<int>(m_NY) - 1;
+  m_nZMax = m_nZMin + static_cast<int>(m_NZ) - 1;
 
   // Now determine the min and max real-world coords which are covered by the
   // grid Include a border of +/-0.5*gridStep so that grid points lie in the

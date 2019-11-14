@@ -147,7 +147,7 @@ double RbtCavityFillSF::RawScore() const {
   dumpFile.close();
 
   // Find the contiguous regions of cavity grid points
-  double minSize = 50;
+  unsigned int minSize = 50;
   RbtFFTPeakMap peakMap = gridCopy->FindPeaks(2.0, minSize);
 
   // Convert peaks to cavity format

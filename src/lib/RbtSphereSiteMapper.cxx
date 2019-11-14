@@ -180,7 +180,8 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   }
 
   // Find the contiguous regions of cavity grid points
-  RbtFFTPeakMap peakMap = spReceptorGrid->FindPeaks(cavVal, minSize);
+  RbtFFTPeakMap peakMap =
+      spReceptorGrid->FindPeaks(cavVal, static_cast<unsigned int>(minSize));
 
   // Convert peaks to cavity format
   for (RbtFFTPeakMapConstIter pIter = peakMap.begin(); pIter != peakMap.end();

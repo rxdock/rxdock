@@ -79,8 +79,8 @@ void RbtGATransform::Execute() {
   int nConvergence = GetParameter(_NCONVERGENCE);
   int nHisFreq = GetParameter(_HISTORY_FREQ);
 
-  int popsize = pop->GetMaxSize();
-  int nrepl = newFraction * popsize;
+  double popsize = static_cast<double>(pop->GetMaxSize());
+  int nrepl = static_cast<int>(newFraction * popsize);
   bool bHistory = nHisFreq > 0;
   int iTrace = GetTrace();
 

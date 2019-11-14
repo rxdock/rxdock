@@ -1039,7 +1039,8 @@ void RbtMdlFileSource::SetupOTRIMinus() {
       oAtomList.insert(oAtomList.end(), otrimAtomList.begin(),
                        otrimAtomList.end());
       // Total charge is the number of O_TRI-
-      double nCharge = otrimAtomList.size(); // Total charge
+      double nCharge =
+          static_cast<double>(otrimAtomList.size()); // Total charge
       // Partial charge is total / divided by number of oxygens (O_SP2 + O_TRI-)
       double pCharge = -nCharge / (oAtomList.size()); // Partial charge
       for (RbtAtomListIter oIter = oAtomList.begin(); oIter != oAtomList.end();
