@@ -85,12 +85,6 @@ void PrintUsage(void) {
 /////////////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]) {
-  // Brief help message
-  if (argc < 2) {
-    PrintUsage();
-    return 1;
-  }
-
   // Handle obsolete arguments, if any
   for (int i = 0; i < argc; i++) {
     std::string opt = argv[i];
@@ -113,6 +107,12 @@ int main(int argc, char *argv[]) {
 
   // Print a standard header
   Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
+
+  // Brief help message
+  if (argc < 2) {
+    PrintUsage();
+    return 1;
+  }
 
   // Command line arguments and default values
   std::string strLigandMdlFile;

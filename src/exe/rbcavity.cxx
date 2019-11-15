@@ -31,11 +31,13 @@ const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbcavity.cxx#3 $)";
 
 void PrintUsage(void) {
-  std::cout << "rbcavity - calculate docking cavities" << std::endl;
-  std::cout << "Usage:\trbcavity -r <ReceptorPrmFile> [-W] [-R] [-d] [-v] [-l "
-               "<dist>] [-s] [-b <border> [-m]"
+  std::cout << std::endl
+            << "rbcavity - calculate docking cavities" << std::endl;
+  std::cout << std::endl
+            << "Usage:\trbcavity -r <ReceptorPrmFile> [-W] [-R] [-d] [-v] [-l "
+               "<dist>] [-s] [-b <border>] [-m]"
             << std::endl;
-  std::cout << "Options:" << std::endl;
+  std::cout << std::endl << "Options:" << std::endl;
   std::cout
       << "\t\t-r <PrmFile> - receptor param file (contains active site params)"
       << std::endl;
@@ -70,12 +72,6 @@ void PrintUsage(void) {
 /////////////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]) {
-  // Display brief help message if no args
-  if (argc < 2) {
-    PrintUsage();
-    return 1;
-  }
-
   // Handle obsolete arguments, if any
   for (int i = 0; i < argc; i++) {
     std::string opt = argv[i];
@@ -96,6 +92,12 @@ int main(int argc, char *argv[]) {
 
   // Print a standard header
   Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
+
+  // Display brief help message if no args
+  if (argc < 2) {
+    PrintUsage();
+    return 1;
+  }
 
   // Command line arguments and default values
   std::string strReceptorPrmFile;

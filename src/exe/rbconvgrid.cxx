@@ -15,6 +15,9 @@
 #include "RbtFileError.h"
 #include "RbtVdwGridSF.h"
 
+const std::string EXEVERSION =
+    " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbconvgrid.cxx#3 $)";
+
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
@@ -24,6 +27,15 @@ int main(int argc, char *argv[]) {
   std::string strInputFile;
   std::string strOutputFile("insight.grid");
   int iGrid = 999;
+
+  // Strip off the path to the executable, leaving just the file name
+  std::string strExeName(argv[0]);
+  std::string::size_type i = strExeName.rfind("/");
+  if (i != std::string::npos)
+    strExeName.erase(0, i + 1);
+
+  // Print a standard header
+  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
 
   // Brief help message
   if (argc == 1) {
