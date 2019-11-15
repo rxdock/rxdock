@@ -44,7 +44,7 @@ namespace Rbt {
 RBTDLL_EXPORT RbtPrincipalAxes GetPrincipalAxes(const RbtAtomList &atomList);
 // Calculates principal axes and center of mass for the coords in the coord list
 // (assumes all masses=1)
-RbtPrincipalAxes GetPrincipalAxes(const RbtCoordList &coordList);
+RBTDLL_EXPORT RbtPrincipalAxes GetPrincipalAxes(const RbtCoordList &coordList);
 // Special case for water
 RbtPrincipalAxes GetSolventPrincipalAxes(const RbtAtomPtr &oAtom,
                                          const RbtAtomPtr &h1Atom,

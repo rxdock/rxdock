@@ -27,8 +27,8 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
 
-  RbtSiteMapperFactory();          // Default constructor
-  virtual ~RbtSiteMapperFactory(); // Default destructor
+  RBTDLL_EXPORT RbtSiteMapperFactory(); // Default constructor
+  virtual ~RbtSiteMapperFactory();      // Default destructor
 
   ////////////////////////////////////////
   // Public methods

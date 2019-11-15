@@ -28,7 +28,7 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
 
-  RbtSFFactory(); // Default constructor
+  RBTDLL_EXPORT RbtSFFactory(); // Default constructor
 
   virtual ~RbtSFFactory(); // Default destructor
 

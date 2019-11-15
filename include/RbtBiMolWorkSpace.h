@@ -42,7 +42,7 @@ public:
   RBTDLL_EXPORT RbtModelPtr GetReceptor() const;
   RBTDLL_EXPORT RbtModelPtr GetLigand() const;
   RBTDLL_EXPORT RbtModelList GetSolvent() const;
-  bool hasSolvent() const;
+  RBTDLL_EXPORT bool hasSolvent() const;
   RBTDLL_EXPORT void SetReceptor(RbtModelPtr spReceptor);
   RBTDLL_EXPORT void SetLigand(RbtModelPtr spLigand);
   RBTDLL_EXPORT void SetSolvent(RbtModelList solventList);

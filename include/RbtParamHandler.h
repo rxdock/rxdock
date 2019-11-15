@@ -92,6 +92,7 @@ private:
 // Non-member functions
 
 // Insertion operator (primarily for debugging)
-std::ostream &operator<<(std::ostream &s, const RbtParamHandler &ph);
+RBTDLL_EXPORT std::ostream &operator<<(std::ostream &s,
+                                       const RbtParamHandler &ph);
 
 #endif //_RBTPARAMHANDLER_H_

@@ -33,11 +33,11 @@ public:
   // Public methods
 
   // Seed the random number generator
-  void Seed(int seed = 0);
+  RBTDLL_EXPORT void Seed(int seed = 0);
   // Seed the random number generator from the system clock
   void SeedFromClock();
   // Returns current seed
-  int GetSeed();
+  RBTDLL_EXPORT int GetSeed();
   // Get a random double between 0 and 1 (inlined)
   double GetRandom01() { return m_rand.fdraw(); }
   // Get a random integer between 0 and nMax-1

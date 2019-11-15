@@ -44,7 +44,8 @@ public:
   // DM 21 Apr 1999 - if bUseModelSegmentNames is true, the model segment names
   // are rendered if bUseModelSegmentNames is false, incremental numeric segment
   // IDs are rendered
-  void SetModel(RbtModelPtr spModel, bool bUseModelSegmentNames = false);
+  RBTDLL_EXPORT void SetModel(RbtModelPtr spModel,
+                              bool bUseModelSegmentNames = false);
 
   // DM 21 Apr 1999 - change the segment ID counter
   // Set to nSegmentId-1 as the counter gets incremented before each Render

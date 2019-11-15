@@ -22,7 +22,8 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   // RbtCrdFileSink(const char* fileName, RbtModelPtr spModel);
-  RbtCrdFileSink(const std::string &fileName, RbtModelPtr spModel);
+  RBTDLL_EXPORT RbtCrdFileSink(const std::string &fileName,
+                               RbtModelPtr spModel);
 
   virtual ~RbtCrdFileSink(); // Default destructor
 

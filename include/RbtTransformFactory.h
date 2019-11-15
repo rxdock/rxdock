@@ -29,7 +29,7 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
 
-  RbtTransformFactory(); // Default constructor
+  RBTDLL_EXPORT RbtTransformFactory(); // Default constructor
 
   virtual ~RbtTransformFactory(); // Default destructor
 

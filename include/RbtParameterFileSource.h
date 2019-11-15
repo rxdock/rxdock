@@ -29,7 +29,7 @@ public:
 
   ////////////////////////////////////////
   // Public methods
-  std::string GetTitle();
+  RBTDLL_EXPORT std::string GetTitle();
   std::string GetVersion();
   // DM 06 June 2000 - limit #parameters to those in current section
   unsigned int GetNumParameters();
@@ -37,11 +37,12 @@ public:
   // RbtStringDoubleMap GetParameterMap();
   // DM 12 Feb 1999 - only return the list of parameter names, not their values
   // DM 06 Jun 2000 - limits params to those in named section
-  RbtStringList GetParameterList();
+  RBTDLL_EXPORT RbtStringList GetParameterList();
   // DM 4 Feb 1999 Get a particular named parameter value as a double
   double GetParameterValue(const std::string &strParamName);
   // DM 12 Feb 1999 Get a particular named parameter value as a string
-  std::string GetParameterValueAsString(const std::string &strParamName);
+  RBTDLL_EXPORT std::string
+  GetParameterValueAsString(const std::string &strParamName);
   // DM 11 Feb 1999 Check if parameter is present
   bool isParameterPresent(const std::string &strParamName);
 
@@ -55,7 +56,7 @@ public:
   int GetNumSections();           // Number of named sections
   RbtStringList GetSectionList(); // List of section names
   std::string GetSection() const; // Get current section name
-  void
+  RBTDLL_EXPORT void
   SetSection(const std::string &strSection = ""); // Set current section name
 
 protected:

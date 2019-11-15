@@ -50,15 +50,15 @@ std::string GetRbtHome();
 // GetCopyright - returns legalese statement
 std::string GetCopyright();
 // GetVersion - returns current library version
-std::string GetVersion();
+RBTDLL_EXPORT std::string GetVersion();
 // GetBuildNum - returns current library build number
-std::string GetBuild();
+RBTDLL_EXPORT std::string GetBuild();
 // GetProduct - returns library product name
-std::string GetProduct();
+RBTDLL_EXPORT std::string GetProduct();
 // GetTime - returns current time and date as an RbtString
 std::string GetTime();
 // GetCurrentWorkingDirectory - returns current working directory
-std::string GetCurrentWorkingDirectory();
+RBTDLL_EXPORT std::string GetCurrentWorkingDirectory();
 //
 ////////////////////////////////////////////////////////////////
 
@@ -116,9 +116,8 @@ RbtSegmentMap SegmentDiffMap(const RbtSegmentMap &map1,
 // DM 30 Mar 1999
 // Converts (comma)-delimited string to string list (similar to
 // ConvertStringToSegmentMap, but returns list not map)
-RbtStringList
-ConvertDelimitedStringToList(const std::string &strValues,
-                             const std::string &strDelimiter = ",");
+RBTDLL_EXPORT RbtStringList ConvertDelimitedStringToList(
+    const std::string &strValues, const std::string &strDelimiter = ",");
 // Converts string list to (comma)-delimited string (inverse of above)
 std::string ConvertListToDelimitedString(const RbtStringList &listOfValues,
                                          const std::string &strDelimiter = ",");
@@ -148,8 +147,9 @@ PrintStdHeader(std::ostream &s, const std::string &strExecutable = "");
 typedef int streamsize;
 //#endif
 
-void WriteWithThrow(std::ostream &ostr, const char *p, streamsize n);
-void ReadWithThrow(std::istream &istr, char *p, streamsize n);
+RBTDLL_EXPORT void WriteWithThrow(std::ostream &ostr, const char *p,
+                                  streamsize n);
+RBTDLL_EXPORT void ReadWithThrow(std::istream &istr, char *p, streamsize n);
 
 } // namespace Rbt
 

@@ -84,8 +84,8 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
 
-  RbtTriposAtomType();
-  virtual ~RbtTriposAtomType();
+  RBTDLL_EXPORT RbtTriposAtomType();
+  RBTDLL_EXPORT virtual ~RbtTriposAtomType();
 
   ////////////////////////////////////////
   // Public methods
@@ -96,13 +96,13 @@ public:
   // are used
   eType operator()(RbtAtom *pAtom, bool useExtendedTypes = false) const;
   // Converts Tripos type to string
-  std::string Type2Str(eType) const;
+  RBTDLL_EXPORT std::string Type2Str(eType) const;
   // Get hybridisation from Tripos type
   int Type2Hybrid(eType) const;
   // Get atomic number from Tripos type
   int Type2AtomicNo(eType) const;
   // Converts string to Tripos type
-  eType Str2Type(const std::string &) const;
+  RBTDLL_EXPORT eType Str2Type(const std::string &) const;
 
 protected:
   ////////////////////////////////////////

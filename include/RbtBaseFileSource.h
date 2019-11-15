@@ -40,21 +40,21 @@ public:
 
   // Public methods
 
-  std::string GetFileName();
+  RBTDLL_EXPORT std::string GetFileName();
   // void SetFileName(const char* fileName);
   void SetFileName(const std::string &fileName);
 
   // Status and StatusOK parse the file to check for errors
   bool StatusOK();
-  RbtError Status();
+  RBTDLL_EXPORT RbtError Status();
 
   // FileStatus and FileStatusOK just try and read the file
-  bool FileStatusOK();
+  RBTDLL_EXPORT bool FileStatusOK();
   RbtError FileStatus();
 
   // Multi-record methods
   bool isMultiRecordSupported() { return m_bMultiRec; }
-  void NextRecord();
+  RBTDLL_EXPORT void NextRecord();
   void Rewind();
 
 protected:

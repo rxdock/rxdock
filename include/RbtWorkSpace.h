@@ -51,8 +51,8 @@ public:
   ////////////////
 
   // Get/set workspace name
-  std::string GetName() const;
-  void SetName(const std::string &);
+  RBTDLL_EXPORT std::string GetName() const;
+  RBTDLL_EXPORT void SetName(const std::string &);
 
   // Model handling
 
@@ -92,7 +92,7 @@ public:
   virtual void Save(bool bSaveScores = true);
   // Get/set the history file sink
   RbtMolecularFileSinkPtr GetHistorySink() const;
-  void SetHistorySink(RbtMolecularFileSinkPtr);
+  RBTDLL_EXPORT void SetHistorySink(RbtMolecularFileSinkPtr);
   // Saves models to file sink
   // If bSaveScores is true, write component scores also
   // Base workspace does nothing
@@ -127,7 +127,7 @@ public:
   // BGD 27 Jan 2003 - SetFilter automotically registers the Filter
   // with the workspace
   RbtFilterPtr GetFilter() const;
-  void SetFilter(RbtFilterPtr spFilter);
+  RBTDLL_EXPORT void SetFilter(RbtFilterPtr spFilter);
 
 protected:
   ////////////////////////////////////////

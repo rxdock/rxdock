@@ -25,12 +25,12 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution
-  RbtRealGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
-              unsigned int NX, unsigned int NY, unsigned int NZ,
-              unsigned int NPad = 0);
+  RBTDLL_EXPORT RbtRealGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
+                            unsigned int NX, unsigned int NY, unsigned int NZ,
+                            unsigned int NPad = 0);
 
   // Constructor reading all params from binary stream
-  RbtRealGrid(std::istream &istr);
+  RBTDLL_EXPORT RbtRealGrid(std::istream &istr);
 
   ~RbtRealGrid(); // Default destructor
 
@@ -85,7 +85,7 @@ public:
 
   // DM 20 Jul 2000 - get values smoothed by trilinear interpolation
   // D. Oberlin and H.A. Scheraga, J. Comp. Chem. (1998) 19, 71.
-  double GetSmoothedValue(const RbtCoord &c) const;
+  RBTDLL_EXPORT double GetSmoothedValue(const RbtCoord &c) const;
 
   void SetValue(const RbtCoord &c, double val) {
     if (isValid(c))
@@ -101,7 +101,7 @@ public:
   }
 
   // Set all grid points to the given value
-  void SetAllValues(double val);
+  RBTDLL_EXPORT void SetAllValues(double val);
   // Replaces all grid points with a given value (+/- tolerance) with newVal
   void ReplaceValue(double oldVal, double newVal) {
     ReplaceValueRange(oldVal - m_tol, oldVal + m_tol, newVal);
@@ -164,7 +164,7 @@ public:
   /////////////////////////
 
   // Dump grid in a format readable by Insight
-  void PrintInsightGrid(std::ostream &s) const;
+  RBTDLL_EXPORT void PrintInsightGrid(std::ostream &s) const;
 
 protected:
   ////////////////////////////////////////

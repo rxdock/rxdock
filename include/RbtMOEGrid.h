@@ -48,7 +48,7 @@ class RbtMOEGridPoint {
 public:
   // default ctor with a 1D gridpoint at 0.0 value 1.0
   // see also default ctor for the shape and data vector below
-  RbtMOEGridPoint();
+  RBTDLL_EXPORT RbtMOEGridPoint();
   // parametrized ctor when supplying data as a vector + value pair
   RbtMOEGridPoint(std::vector<double>, double);
   // parametrized ctor getting coord values from RbtCoord (default 3D
@@ -87,7 +87,8 @@ public:
 
   // parametrized ctor receives grid as the origin vector, the extent
   // vector and stepsize
-  RbtMOEGridShape(std::vector<double>, std::vector<double>, double);
+  RBTDLL_EXPORT RbtMOEGridShape(std::vector<double>, std::vector<double>,
+                                double);
 
   const std::vector<double> &GetOrigin() { return origin; }
   const std::vector<double> &GetExtents() { return extents; }
@@ -109,7 +110,7 @@ class RbtMOEGrid {
   RbtCoord c_min, c_max;   // current extent min and max coords
 public:
   // default ctor
-  RbtMOEGrid();
+  RBTDLL_EXPORT RbtMOEGrid();
   // parameterised ctor for a single grid
   // pass shape, data and outfilename
   RbtMOEGrid(RbtMOEGridShape &, RbtMOEGridData &, std::string);
@@ -119,14 +120,15 @@ public:
   void SetData(RbtMOEGridData &a_data) { myData = a_data; }
   void SetOutputFileName(std::string &a_filename) { stream_name = a_filename; }
   // methods to calculate grid extents
-  void CalculateCommonExtents(std::vector<std::string> strPrmFiles); // for all
-  void GetDockingSiteExtents(std::string &a_strPrmFile); // for a single
+  RBTDLL_EXPORT void
+  CalculateCommonExtents(std::vector<std::string> strPrmFiles); // for all
+  void GetDockingSiteExtents(std::string &a_strPrmFile);        // for a single
   // get methods
   RbtCoord GetMinExtents() { return min; }
   RbtCoord GetMaxExtents() { return max; }
 
   // iofstream methods
-  long WriteGrid(
+  RBTDLL_EXPORT long WriteGrid(
       std::ios_base::openmode mode); // returns the number of points written
   long ReadGrid();                   // ditto (fields read)
 };

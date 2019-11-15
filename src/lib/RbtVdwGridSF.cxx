@@ -19,6 +19,8 @@ std::string RbtVdwGridSF::_CT("RbtVdwGridSF");
 std::string RbtVdwGridSF::_GRID("GRID");
 std::string RbtVdwGridSF::_SMOOTHED("SMOOTHED");
 
+std::string &RbtVdwGridSF::GetCt() { return _CT; }
+
 // NB - Virtual base class constructor (RbtBaseSF) gets called first,
 // implicit constructor for RbtBaseInterSF is called second
 RbtVdwGridSF::RbtVdwGridSF(const std::string &strName)

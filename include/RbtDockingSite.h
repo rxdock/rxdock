@@ -45,42 +45,46 @@ public:
   // Class type string
   static std::string _CT;
 
-  RbtDockingSite(const RbtCavityList &cavList, double border);
+  RBTDLL_EXPORT RbtDockingSite(const RbtCavityList &cavList, double border);
   RBTDLL_EXPORT RbtDockingSite(std::istream &istr);
 
   // Destructor
   virtual ~RbtDockingSite();
 
   // Insertion operator
-  friend std::ostream &operator<<(std::ostream &s, const RbtDockingSite &site);
+  RBTDLL_EXPORT friend std::ostream &operator<<(std::ostream &s,
+                                                const RbtDockingSite &site);
 
   // Virtual function for dumping docking site details to an output stream
   // Derived classes can override if required
   virtual void Print(std::ostream &s) const;
 
   // Public methods
-  void Read(std::istream &istr);  // Reads docking site from binary stream
-  void Write(std::ostream &ostr); // Writes docking site to binary stream
+  void Read(std::istream &istr); // Reads docking site from binary stream
+  RBTDLL_EXPORT void
+  Write(std::ostream &ostr); // Writes docking site to binary stream
 
-  RbtRealGridPtr GetGrid();
+  RBTDLL_EXPORT RbtRealGridPtr GetGrid();
   double GetBorder() const { return m_border; }
   RbtCoord GetMinCoord() const { return m_minCoord; }
   RbtCoord GetMaxCoord() const { return m_maxCoord; }
   RbtCavityList GetCavityList() const { return m_cavityList; }
   int GetNumCavities() const { return m_cavityList.size(); }
-  double GetVolume() const; // returns total volume of all cavities in A^3
+  RBTDLL_EXPORT double
+  GetVolume() const; // returns total volume of all cavities in A^3
 
   // Returns the combined coord lists of all the cavities
   void GetCoordList(RbtCoordList &retVal) const;
 
   // Filters an atom list according to distance from the cavity coords
   // Only returns atoms within minDist and maxDist from cavity
-  RbtAtomList GetAtomList(const RbtAtomList &atomList, double minDist,
-                          double maxDist);
+  RBTDLL_EXPORT RbtAtomList GetAtomList(const RbtAtomList &atomList,
+                                        double minDist, double maxDist);
   // Filters an atom list according to distance from the cavity coords
   // Only returns atoms within maxDist from cavity
   // This version does not require the cavity grid
-  RbtAtomList GetAtomList(const RbtAtomList &atomList, double maxDist);
+  RBTDLL_EXPORT RbtAtomList GetAtomList(const RbtAtomList &atomList,
+                                        double maxDist);
   // Returns the count of atoms within minDist and maxDist from cavity
   unsigned int GetNumAtoms(const RbtAtomList &atomList, double minDist,
                            double maxDist);

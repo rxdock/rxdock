@@ -64,6 +64,7 @@ public:
   RBTDLL_EXPORT RbtAtom();
 
   // Constructor supplying all 2-D parameters
+  RBTDLL_EXPORT
   RbtAtom(int nAtomId, int nAtomicNo = 6, std::string strAtomName = "C",
           std::string strSubunitId = "1", std::string strSubunitName = "RES",
           std::string strSegmentName = "SEG1",
@@ -87,7 +88,8 @@ public:
   // Insertion operator (primarily for debugging)
   // Note: needs to be friend so can access atom private data
   // without using the accessor functions
-  friend std::ostream &operator<<(std::ostream &s, const RbtAtom &atom);
+  RBTDLL_EXPORT friend std::ostream &operator<<(std::ostream &s,
+                                                const RbtAtom &atom);
 
   // Virtual function for dumping atom details to an output stream
   // Derived classes (e.g. pseudoatom) can override if required
@@ -116,8 +118,9 @@ public:
   void SetAtomName(const std::string strAtomName) {
     m_strAtomName = strAtomName;
   }
-  std::string GetFullAtomName() const; // Returns composite of segment name,
-                                       // subunit id and name, and atom name
+  RBTDLL_EXPORT std::string
+  GetFullAtomName() const; // Returns composite of segment name,
+                           // subunit id and name, and atom name
 
   // SubunitId
   std::string GetSubunitId() const { return m_strSubunitId; }
@@ -449,7 +452,7 @@ public:
 class isAtomHBondAcceptor : public std::unary_function<RbtAtom *, bool> {
 public:
   explicit isAtomHBondAcceptor() {}
-  bool operator()(const RbtAtom *) const;
+  RBTDLL_EXPORT bool operator()(const RbtAtom *) const;
 };
 
 // Is atom a H-Bond Donor ?
@@ -458,7 +461,7 @@ public:
 class isAtomHBondDonor : public std::unary_function<RbtAtom *, bool> {
 public:
   explicit isAtomHBondDonor() {}
-  bool operator()(const RbtAtom *) const;
+  RBTDLL_EXPORT bool operator()(const RbtAtom *) const;
 };
 
 // Is atom formally charged ?
@@ -514,7 +517,7 @@ public:
 class isPiAtom : public std::unary_function<RbtAtom *, bool> {
 public:
   explicit isPiAtom() {}
-  bool operator()(const RbtAtom *) const;
+  RBTDLL_EXPORT bool operator()(const RbtAtom *) const;
 };
 
 // Is atomic number equal to n ?
@@ -785,8 +788,8 @@ public:
 // DM 19 Oct 2001 - extend to all common metals (Na,Mg,K->Zn)
 class isAtomMetal : public std::unary_function<RbtAtom *, bool> {
 public:
-  explicit isAtomMetal();
-  bool operator()(const RbtAtom *pAtom) const;
+  RBTDLL_EXPORT explicit isAtomMetal();
+  RBTDLL_EXPORT bool operator()(const RbtAtom *pAtom) const;
 };
 
 // DM 21 Jul 1999 Is atom lipophilic ?
@@ -804,7 +807,7 @@ class isAtomLipophilic : public std::unary_function<RbtAtom *, bool> {
 public:
   explicit isAtomLipophilic()
       : isSP3(RbtAtom::SP3), isSP2(RbtAtom::SP2), isO(8), isN(7) {}
-  bool operator()(RbtAtom *pAtom) const;
+  RBTDLL_EXPORT bool operator()(RbtAtom *pAtom) const;
 };
 
 //////////////////////////////
@@ -1127,7 +1130,7 @@ RbtAtomList GetBondedAtomList(const RbtBondMap &bondMap);
 // above If spAtom can be dynamically_casted to an RbtPseudoAtom, these return
 // the constituent atom list for the pseudoatom
 unsigned int GetNumBondedAtoms(const RbtAtom *pAtom);
-RbtAtomList GetBondedAtomList(const RbtAtom *pAtom);
+RBTDLL_EXPORT RbtAtomList GetBondedAtomList(const RbtAtom *pAtom);
 
 // Binary
 

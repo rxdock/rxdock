@@ -26,7 +26,7 @@ class RbtFilterExpressionVisitor;
 class RbtFilter : public RbtBaseObject {
 public:
   static std::string _CT;
-  RbtFilter(std::string strfilter, bool filter = false);
+  RBTDLL_EXPORT RbtFilter(std::string strfilter, bool filter = false);
   ///////////////////
   // Destructor
   //////////////////
@@ -35,11 +35,11 @@ public:
   // Notify observer that subject has changed
   virtual void Update(RbtSubject *theChangedSubject);
 
-  void SetupReceptor(); // Called by Update when receptor is changed
-  void SetupLigand();   // Called by Update when ligand is changed
-  void SetupScore();    // Called by Update when either model has changed
-  bool Write();         // Output conformation?
-  bool Terminate();     // Finished with ligand?
+  void SetupReceptor();       // Called by Update when receptor is changed
+  void SetupLigand();         // Called by Update when ligand is changed
+  void SetupScore();          // Called by Update when either model has changed
+  RBTDLL_EXPORT bool Write(); // Output conformation?
+  RBTDLL_EXPORT bool Terminate(); // Finished with ligand?
   RbtModelPtr GetReceptor() const;
   RbtModelPtr GetLigand() const;
   void SetMaxNRuns(int n) { maxnruns = n; }

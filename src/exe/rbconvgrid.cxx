@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
     // Add null character to end of string
     header[length] = '\0';
     // Compare title with
-    bool match = (RbtVdwGridSF::_CT == header);
+    bool match = (RbtVdwGridSF::GetCt() == header);
     delete[] header;
     if (!match) {
       throw RbtFileParseError(_WHERE_,

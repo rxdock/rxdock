@@ -22,6 +22,9 @@ class RbtVdwGridSF : public RbtBaseInterSF {
 public:
   // Class type string
   static std::string _CT;
+
+  RBTDLL_EXPORT static std::string &GetCt();
+
   // Parameter names
   static std::string _GRID;     // Suffix for grid filename
   static std::string _SMOOTHED; // Controls whether to smooth the grid values

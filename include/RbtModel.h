@@ -32,11 +32,11 @@ public:
   //////////////////////
   // Read topology from RbtMolecularFileSource, and coordinates if supported by
   // source
-  RbtModel(RbtBaseMolecularFileSource *pMolSource);
+  RBTDLL_EXPORT RbtModel(RbtBaseMolecularFileSource *pMolSource);
 
   //(Fairly) temporary constructor taking arbitrary atom and bond lists
   // Use with caution
-  RbtModel(RbtAtomList &atomList, RbtBondList &bondList);
+  RBTDLL_EXPORT RbtModel(RbtAtomList &atomList, RbtBondList &bondList);
 
   // Default destructor
   virtual ~RbtModel();
@@ -89,14 +89,14 @@ public:
   // Query as to whether a particular data field name is present
   bool isDataFieldPresent(const std::string &strDataField) const;
   // Get a particular data value
-  RbtVariant GetDataValue(const std::string &strDataField) const;
+  RBTDLL_EXPORT RbtVariant GetDataValue(const std::string &strDataField) const;
   // Set a data value (replaces existing value if field name already exists)
-  void SetDataValue(const std::string &strDataField,
-                    const RbtVariant &dataValue);
+  RBTDLL_EXPORT void SetDataValue(const std::string &strDataField,
+                                  const RbtVariant &dataValue);
   // Removes a data field completely from the data map
   void ClearDataField(const std::string &strDataField);
   // Removes all data fields starting with a given prefix from the data map
-  void ClearAllDataFields(const std::string &strDataFieldPrefix);
+  RBTDLL_EXPORT void ClearAllDataFields(const std::string &strDataFieldPrefix);
   // Removes all data fields from the data map
   void ClearAllDataFields();
 
@@ -143,22 +143,22 @@ public:
   void Rotate(const RbtVector &axis, double thetaDeg, const RbtCoord &center);
   // Rotate around a given bond by theta degrees (spins both ends of the bond in
   // opposite directions)
-  void RotateBond(RbtBondPtr spBond, double thetaDeg);
+  RBTDLL_EXPORT void RotateBond(RbtBondPtr spBond, double thetaDeg);
   // DM 09 Feb 1999 - Rotate around a given bond by theta degrees, keeping the
   // given atom fixed (only spins the other end of the bond)
   void RotateBond(RbtBondPtr spBond, double thetaDeg, RbtAtomPtr spFixedAtom);
   // DM 25 Feb 1999 - Rotate around a given bond by theta degrees, only spinning
   // one end of the bond If bSwap is false, spins the end bonded to atom2 in the
   // bond If bSwap is true, spins the end bonded to atom1 in the bond
-  void RotateBond(RbtBondPtr spBond, double thetaDeg, bool bSwap);
+  RBTDLL_EXPORT void RotateBond(RbtBondPtr spBond, double thetaDeg, bool bSwap);
 
   // DM 8 Feb 1999
   void SaveCoords(const std::string &coordName = "");
-  void RevertCoords(const std::string &coordName = "");
+  RBTDLL_EXPORT void RevertCoords(const std::string &coordName = "");
   RbtStringIntMap GetSavedCoordNames() const { return m_coordNames; }
   int GetNumSavedCoords() const { return m_coordNames.size(); }
   int GetCurrentCoords() const { return m_currentCoord; }
-  void RevertCoords(int);
+  RBTDLL_EXPORT void RevertCoords(int);
 
   // Returns center of mass of model
   RbtCoord GetCenterOfMass() const;
@@ -167,7 +167,7 @@ public:
 
   // DM 9 Nov 1999
   // Returns total atomic mass (molecular weight) for the model
-  double GetTotalAtomicMass() const;
+  RBTDLL_EXPORT double GetTotalAtomicMass() const;
 
   // DM 14 Apr 1999 - principal axes methods
   // Return principal axes and center of mass for the model

@@ -44,7 +44,8 @@ public:
   // Insertion operator (primarily for debugging)
   // Note: needs to be friend so can access bond private data
   // without using the accessor functions
-  friend std::ostream &operator<<(std::ostream &s, const RbtBond &bond);
+  RBTDLL_EXPORT friend std::ostream &operator<<(std::ostream &s,
+                                                const RbtBond &bond);
 
   ////////////////////////////////////////
   // Public accessor functions
@@ -161,14 +162,14 @@ public:
 class isBondToNH3 : public RbtBondUnaryPredicate {
 public:
   explicit isBondToNH3() {}
-  bool operator()(RbtBond *) const;
+  RBTDLL_EXPORT bool operator()(RbtBond *) const;
 };
 
 // Is bond to a terminal OH group?
 class isBondToOH : public RbtBondUnaryPredicate {
 public:
   explicit isBondToOH() {}
-  bool operator()(RbtBond *pBond) const;
+  RBTDLL_EXPORT bool operator()(RbtBond *pBond) const;
 };
 
 // DM 1 April 1999
@@ -210,7 +211,7 @@ public:
 class isBondAmide : public RbtBondUnaryPredicate {
 public:
   explicit isBondAmide() {}
-  bool operator()(RbtBond *) const;
+  RBTDLL_EXPORT bool operator()(RbtBond *) const;
 };
 
 ////////////////////////////////////////////

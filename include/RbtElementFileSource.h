@@ -54,7 +54,7 @@ public:
 
   ////////////////////////////////////////
   // Public methods
-  std::string GetTitle();
+  RBTDLL_EXPORT std::string GetTitle();
   std::string GetVersion();
   unsigned int GetNumElements();
   RbtStringList GetElementNameList(); // List of element names
