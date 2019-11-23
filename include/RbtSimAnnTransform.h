@@ -109,10 +109,10 @@ private:
   RbtRand &m_rand; // keep a reference to the singleton random number generator
   RbtRequestPtr m_spPartReq;  // Partitioning request
   RbtChromElementPtr m_chrom; // Current chromosome
-  RbtDoubleList
+  std::vector<double>
       m_minVector; // Chromosome vector corresponding to overall minimum score
-  RbtDoubleList m_lastGoodVector; // Saved chromosome before each MC mutation
-                                  // (to allow revert)
+  std::vector<double> m_lastGoodVector; // Saved chromosome before each MC
+                                        // mutation (to allow revert)
 };
 
 // Useful typedefs

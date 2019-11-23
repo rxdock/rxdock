@@ -90,7 +90,7 @@ RbtChromElement *RbtChromDihedralElement::clone() const {
   return new RbtChromDihedralElement(m_spRefData, m_value);
 }
 
-void RbtChromDihedralElement::GetVector(RbtDoubleList &v) const {
+void RbtChromDihedralElement::GetVector(std::vector<double> &v) const {
   v.push_back(m_value);
 }
 
@@ -100,7 +100,7 @@ void RbtChromDihedralElement::GetVector(RbtXOverList &v) const {
   v.push_back(dihedralElement);
 }
 
-void RbtChromDihedralElement::SetVector(const RbtDoubleList &v, int &i) {
+void RbtChromDihedralElement::SetVector(const std::vector<double> &v, int &i) {
   if (VectorOK(v, i)) {
     m_value = StandardisedValue(v[i++]);
   } else {
@@ -124,11 +124,11 @@ void RbtChromDihedralElement::SetVector(const RbtXOverList &v, int &i) {
   }
 }
 
-void RbtChromDihedralElement::GetStepVector(RbtDoubleList &v) const {
+void RbtChromDihedralElement::GetStepVector(std::vector<double> &v) const {
   v.push_back(m_spRefData->GetStepSize());
 }
 
-double RbtChromDihedralElement::CompareVector(const RbtDoubleList &v,
+double RbtChromDihedralElement::CompareVector(const std::vector<double> &v,
                                               int &i) const {
   double retVal(0.0);
   if (!VectorOK(v, i)) {

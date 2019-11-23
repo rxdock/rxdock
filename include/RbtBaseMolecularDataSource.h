@@ -55,7 +55,7 @@ public:
   virtual int GetNumBonds() = 0;
   virtual int GetNumSegments() = 0;
 
-  virtual RbtStringList GetTitleList() = 0;
+  virtual std::vector<std::string> GetTitleList() = 0;
   virtual RbtAtomList GetAtomList() = 0;
   virtual RbtBondList GetBondList() = 0;
   virtual RbtSegmentMap GetSegmentMap() = 0;
@@ -66,7 +66,7 @@ public:
   // Get number of data fields
   virtual int GetNumData() = 0;
   // Get list of field names as string list
-  virtual RbtStringList GetDataFieldList() = 0;
+  virtual std::vector<std::string> GetDataFieldList() = 0;
   // Get all data as map of key=field name, value=variant (double,string or
   // string list)
   virtual RbtStringVariantMap GetDataMap() = 0;

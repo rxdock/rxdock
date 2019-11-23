@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
                               std::ios::in | std::ios::out);
     std::string strTestFile = "/tmp/beatriz/" + strInputFile + ".test";
     std::fstream testFile(strTestFile.c_str(), std::ios::in | std::ios::out);
-    RbtUIntSet randomList;
+    std::set<unsigned int> randomList;
     std::cout << nTestSets << std::endl;
     for (int i = 0; i < nTestSets; i++) {
       bool insertb;
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
         insertb = (randomList.insert(ran)).second;
       } while (!insertb);
     }
-    RbtUIntSetIter iter = randomList.end();
+    std::set<unsigned int>::iterator iter = randomList.end();
     for (iter = randomList.begin(); iter != randomList.end(); iter++)
       std::cout << *iter << "\t";
     std::cout << std::endl;

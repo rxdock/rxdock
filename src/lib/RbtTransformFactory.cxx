@@ -75,7 +75,7 @@ RbtTransformFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
                                        const std::string &strName,
                                        const std::string &strTransformClasses) {
   // Get list of transform objects to create
-  RbtStringList transformList =
+  std::vector<std::string> transformList =
       Rbt::ConvertDelimitedStringToList(strTransformClasses);
   // If strTransformClasses is empty, then default to reading all sections of
   // the parameter file for valid transform definitions In this case we do not
@@ -90,7 +90,7 @@ RbtTransformFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
   // Create empty aggregate
   RbtTransformAgg *pTransformAgg(new RbtTransformAgg(strName));
 
-  for (RbtStringListConstIter tIter = transformList.begin();
+  for (std::vector<std::string>::const_iterator tIter = transformList.begin();
        tIter != transformList.end(); tIter++) {
     spPrmSource->SetSection(*tIter);
     // Check if this section is a valid scoring function definition
@@ -101,12 +101,12 @@ RbtTransformFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
       // parameter
       RbtBaseTransform *pTransform = Create(strTransformClass, *tIter);
       // Set all the transform parameters from the rest of the parameters listed
-      RbtStringList prmList = spPrmSource->GetParameterList();
-      for (RbtStringListConstIter prmIter = prmList.begin();
+      std::vector<std::string> prmList = spPrmSource->GetParameterList();
+      for (std::vector<std::string>::const_iterator prmIter = prmList.begin();
            prmIter != prmList.end(); prmIter++) {
         // Look for scoring function request (PARAM@SF)
         // Only SetParamRequest currently supported
-        RbtStringList compList =
+        std::vector<std::string> compList =
             Rbt::ConvertDelimitedStringToList(*prmIter, "@");
         if (compList.size() == 2) {
           RbtRequestPtr spReq(new RbtSFSetParamRequest(

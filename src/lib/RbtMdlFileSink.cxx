@@ -60,7 +60,7 @@ void RbtMdlFileSink::Render() {
     }
 
     // Title lines
-    RbtStringList titleList(spModel->GetTitleList());
+    std::vector<std::string> titleList(spModel->GetTitleList());
     if (!titleList.empty())
       AddLine(titleList[0]);
     else
@@ -181,9 +181,9 @@ void RbtMdlFileSink::RenderData(const RbtStringVariantMap &dataMap) {
     for (RbtStringVariantMapConstIter iter = dataMap.begin();
          iter != dataMap.end(); iter++) {
       AddLine(">  <" + (*iter).first + ">"); // Field name
-      RbtStringList sl = (*iter).second.StringList();
-      for (RbtStringListConstIter slIter = sl.begin(); slIter != sl.end();
-           ++slIter) {
+      std::vector<std::string> sl = (*iter).second.StringList();
+      for (std::vector<std::string>::const_iterator slIter = sl.begin();
+           slIter != sl.end(); ++slIter) {
         AddLine(*slIter); // Field values
       }
       AddLine(""); // Blank line denotes end of field values

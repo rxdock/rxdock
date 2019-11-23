@@ -143,10 +143,10 @@ std::string Rbt::GetFileType(const std::string &strFile) {
 // Returns a list of files in a directory (strDir) whose names begin with
 // strFilePrefix (optional) and whose type is strFileType (optional, as returned
 // by GetFileType)
-RbtStringList Rbt::GetDirList(const std::string &strDir,
-                              const std::string &strFilePrefix,
-                              const std::string &strFileType) {
-  RbtStringList dirList;
+std::vector<std::string> Rbt::GetDirList(const std::string &strDir,
+                                         const std::string &strFilePrefix,
+                                         const std::string &strFileType) {
+  std::vector<std::string> dirList;
   bool bMatchPrefix =
       (strFilePrefix.size() > 0); // Check if we need to match on file prefix
   bool bMatchType = (strFileType.size() >
@@ -252,11 +252,11 @@ RbtSegmentMap Rbt::SegmentDiffMap(const RbtSegmentMap &map1,
 // DM 30 Mar 1999
 // Converts (comma)-delimited string to string list (similar to
 // ConvertStringToSegmentMap, but returns list not map)
-RbtStringList
+std::vector<std::string>
 Rbt::ConvertDelimitedStringToList(const std::string &strValues,
                                   const std::string &strDelimiter) {
   std::string::size_type nDelimiterSize = strDelimiter.size();
-  RbtStringList listOfValues;
+  std::vector<std::string> listOfValues;
 
   // Check for null string or null delimiter
   if ((strValues.size() > 0) && (nDelimiterSize > 0)) {
@@ -278,13 +278,14 @@ Rbt::ConvertDelimitedStringToList(const std::string &strValues,
 }
 
 // Converts string list to (comma)-delimited string (inverse of above)
-std::string Rbt::ConvertListToDelimitedString(const RbtStringList &listOfValues,
-                                              const std::string &strDelimiter) {
+std::string
+Rbt::ConvertListToDelimitedString(const std::vector<std::string> &listOfValues,
+                                  const std::string &strDelimiter) {
   std::string strValues;
 
   // Check for empty string list
   if (!listOfValues.empty()) {
-    RbtStringListConstIter iter = listOfValues.begin();
+    std::vector<std::string>::const_iterator iter = listOfValues.begin();
     strValues += *iter++; // Add first string
     // Now loop over remaining entries, adding delimiter before each string
     while (iter != listOfValues.end()) {

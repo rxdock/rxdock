@@ -34,7 +34,7 @@ public:
 
 private:
   void CreateRandomCtes(int);
-  RbtDoubleList ctes;
+  std::vector<double> ctes;
 };
 
 // Useful typedefs

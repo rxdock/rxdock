@@ -186,12 +186,12 @@ private:
   // DM 17 Jul 2000 - analogous to isValueWithinSphere but iterates over
   // arbitrary set of IXYZ indices. Private method as there is no error checking
   // on iXYZ values out of bounds
-  bool isValueWithinList(const RbtUIntList &iXYZList, double val);
+  bool isValueWithinList(const std::vector<unsigned int> &iXYZList, double val);
   // Analogous to SetSphere but iterates over arbitrary set
   // of IXYZ indices. Private method as there is no error checking on iXYZ
   // values out of bounds If bOverwrite is false, does not replace non-zero
   // values If bOverwrite is true, all grid points are set the new value
-  void SetValues(const RbtUIntList &iXYZList, double val,
+  void SetValues(const std::vector<unsigned int> &iXYZList, double val,
                  bool bOverwrite = true);
 
   void CreateArrays();

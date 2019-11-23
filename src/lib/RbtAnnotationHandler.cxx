@@ -38,8 +38,8 @@ int RbtAnnotationHandler::GetNumAnnotations() const {
   return m_annotationList.size();
 }
 
-void RbtAnnotationHandler::RenderAnnotationList(const std::string &strName,
-                                                RbtStringList &retVal) const {
+void RbtAnnotationHandler::RenderAnnotationList(
+    const std::string &strName, std::vector<std::string> &retVal) const {
   // It is callers responsibility to clear retVal before calling
   // RenderAnnotationList Allows for appending to existing string list
   for (RbtAnnotationListConstIter iter = m_annotationList.begin();

@@ -304,7 +304,7 @@ int main(int argc, char *argv[]) {
     // Create a bimolecular workspace
     RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
     // Set the workspace name to the root of the receptor .prm filename
-    RbtStringList componentList =
+    std::vector<std::string> componentList =
         Rbt::ConvertDelimitedStringToList(strReceptorPrmFile, ".");
     std::string wsName = componentList.front();
     spWS->SetName(wsName);
@@ -340,10 +340,10 @@ int main(int argc, char *argv[]) {
         new RbtSFFactory()); // Factory class for scoring functions
     RbtSFAggPtr spSF(new RbtSFAgg(_ROOT_SF)); // Root SF aggregate
     spParamSource->SetSection(_ROOT_SF);
-    RbtStringList sfList(spParamSource->GetParameterList());
+    std::vector<std::string> sfList(spParamSource->GetParameterList());
     // Loop over all parameters in the SCORE section
-    for (RbtStringListConstIter sfIter = sfList.begin(); sfIter != sfList.end();
-         sfIter++) {
+    for (std::vector<std::string>::const_iterator sfIter = sfList.begin();
+         sfIter != sfList.end(); sfIter++) {
       // sfFile = file name for scoring function subaggregate
       std::string sfFile(Rbt::GetRbtFileName(
           "data/sf", spParamSource->GetParameterValueAsString(*sfIter)));

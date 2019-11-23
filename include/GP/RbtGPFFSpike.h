@@ -39,7 +39,7 @@ public:
 
 private:
   void CreateRandomCtes(int);
-  RbtDoubleList ctes;
+  std::vector<double> ctes;
   RbtCellContextPtr contextp;
   RbtGPFFSpike(); // default constructor disabled
 };

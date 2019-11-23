@@ -37,7 +37,7 @@ public:
   // Check if named parameter is present
   bool isParameterValid(const std::string &strName) const;
   // Get list of all parameter names
-  RbtStringList GetParameterNames() const;
+  std::vector<std::string> GetParameterNames() const;
   // Get list of all parameter
   RbtStringVariantMap GetParameters() const;
 

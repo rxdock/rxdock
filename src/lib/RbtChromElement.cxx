@@ -68,7 +68,8 @@ void RbtChromElement::Add(RbtChromElement *pChromElement) {
       "Add(RbtChromElement*) invalid for non-aggregate chromosome element");
 }
 
-bool RbtChromElement::VectorOK(const RbtDoubleList &v, unsigned int i) const {
+bool RbtChromElement::VectorOK(const std::vector<double> &v,
+                               unsigned int i) const {
   unsigned int length = GetLength();
   // if the element is empty then any vector is valid
   return (length == 0) ||
@@ -94,7 +95,7 @@ double RbtChromElement::Compare(const RbtChromElement &c) const {
   if (GetLength() != c.GetLength()) {
     retVal = -1.0;
   } else {
-    RbtDoubleList v;
+    std::vector<double> v;
     int i(0);
     c.GetVector(v);
     retVal = CompareVector(v, i);
@@ -107,7 +108,7 @@ bool RbtChromElement::Equals(const RbtChromElement &c, double threshold) const {
   return ((cmp >= 0.0) && (cmp < threshold));
 }
 
-void RbtChromElement::SetVector(const RbtDoubleList &v) {
+void RbtChromElement::SetVector(const std::vector<double> &v) {
   int i(0);
   SetVector(v, i);
 }

@@ -74,7 +74,7 @@ double RbtConstraint::Score() const {
   }
 
   // Compile a list of all the distance**2 to the constraint center
-  RbtDoubleList d2list;
+  std::vector<double> d2list;
   for (RbtAtomListConstIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter++) {
     d2list.push_back(Rbt::Length2((*iter)->GetCoords(), coord));

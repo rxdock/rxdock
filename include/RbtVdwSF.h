@@ -152,7 +152,8 @@ private:
   RbtParameterFileSourcePtr m_spVdwSource; // File source for vdw params
   RbtVdwTable m_vdwTable; // Lookup table for all vdW params (indexed by Tripos
                           // atom type)
-  RbtDoubleList m_maxRange; // Vector of max ranges for each Tripos atom type
+  std::vector<double>
+      m_maxRange; // Vector of max ranges for each Tripos atom type
 };
 
 #endif //_RBTVDWSF_H_

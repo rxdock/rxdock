@@ -54,8 +54,8 @@ RbtSiteMapperFactory::CreateFromFile(RbtParameterFileSourcePtr spPrmSource,
     // Create new site mapper according to the string value of _MAPPER parameter
     RbtSiteMapper *pSiteMapper = Create(strMapperClass, strName);
     // Set all the mapper parameters from the rest of the parameters listed
-    RbtStringList prmList = spPrmSource->GetParameterList();
-    for (RbtStringListConstIter prmIter = prmList.begin();
+    std::vector<std::string> prmList = spPrmSource->GetParameterList();
+    for (std::vector<std::string>::const_iterator prmIter = prmList.begin();
          prmIter != prmList.end(); prmIter++) {
       if ((*prmIter) != _MAPPER) { // Skip _SF parameter
         pSiteMapper->SetParameter(

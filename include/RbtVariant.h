@@ -19,7 +19,6 @@
 
 #include <sstream>
 
-#include "RbtContainers.h"
 #include "RbtCoord.h"
 
 // Strings representing TRUE and FALSE
@@ -35,12 +34,12 @@ public:
   RbtVariant(double d) { SetDouble(d); }
   RbtVariant(const std::string &s) { SetString(s); }
   RbtVariant(const char *c) { SetString(std::string(c)); }
-  RbtVariant(const RbtStringList &sl) { SetStringList(sl); }
+  RbtVariant(const std::vector<std::string> &sl) { SetStringList(sl); }
   RbtVariant(bool b) { SetBool(b); }
   RbtVariant(const RbtCoord &c) { SetCoord(c); }
   // Renders a vector of doubles into comma-separated strings of maxCols in
   // length
-  RbtVariant(const RbtDoubleList &dl, int maxCols, int precision) {
+  RbtVariant(const std::vector<double> &dl, int maxCols, int precision) {
     SetDoubleList(dl, maxCols, precision);
   }
   virtual ~RbtVariant() { m_sl.clear(); }
@@ -61,8 +60,8 @@ public:
     // String list
     else {
       s << std::endl;
-      for (RbtStringListConstIter iter = v.m_sl.begin(); iter != v.m_sl.end();
-           iter++)
+      for (std::vector<std::string>::const_iterator iter = v.m_sl.begin();
+           iter != v.m_sl.end(); iter++)
         s << *iter << std::endl;
     }
     return s;
@@ -89,7 +88,7 @@ public:
     SetString(std::string(c));
     return *this;
   }
-  RbtVariant &operator=(const RbtStringList &sl) {
+  RbtVariant &operator=(const std::vector<std::string> &sl) {
     SetStringList(sl);
     return *this;
   }
@@ -112,7 +111,7 @@ public:
   operator unsigned int() const { return (unsigned int)(Double()); }
   operator double() const { return Double(); }
   operator std::string() const { return String(); }
-  operator RbtStringList() const { return StringList(); }
+  operator std::vector<std::string>() const { return StringList(); }
   operator bool() const { return Bool(); }
   operator RbtCoord() const { return Coord(); }
 
@@ -125,7 +124,7 @@ public:
   std::string String() const {
     return m_sl.empty() ? std::string() : m_sl.front();
   }
-  RbtStringList StringList() const { return m_sl; }
+  std::vector<std::string> StringList() const { return m_sl; }
   bool Bool() const { return m_d != 0.0 || String() == _TRUE; }
   RbtCoord Coord() const {
     RbtCoord c;
@@ -169,7 +168,7 @@ private:
     m_d = std::atof(String().c_str());
   }
 
-  void SetStringList(const RbtStringList &sl) {
+  void SetStringList(const std::vector<std::string> &sl) {
     m_sl = sl;
     m_d = std::atof(String().c_str());
   }
@@ -195,7 +194,8 @@ private:
     m_sl.push_back(s);
   }
 
-  void SetDoubleList(const RbtDoubleList &dl, int maxColumns, int precision) {
+  void SetDoubleList(const std::vector<double> &dl, int maxColumns,
+                     int precision) {
     int nValues = dl.size();
     m_d = (nValues > 0) ? dl[0] : 0.0;
     m_sl.clear();
@@ -224,7 +224,7 @@ private:
   // Private data
   //////////////
   double m_d;
-  RbtStringList m_sl;
+  std::vector<std::string> m_sl;
 };
 
 // Useful typedefs

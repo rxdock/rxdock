@@ -21,7 +21,7 @@ std::string RbtGPChromosome::_CT("RbtGPChromosome");
 // Constructors
 RbtGPChromosome::RbtGPChromosome(int npi, int nfi, int nn, int no, int nr,
                                  int nc) {
-  chrom = RbtIntList(nn * (nfi + 1) + no);
+  chrom = std::vector<int>(nn * (nfi + 1) + no);
   nProgramInputs = npi;
   nFunctionsInputs = nfi;
   int ncells = nn + npi; // number of nodes + inputs
@@ -33,7 +33,7 @@ RbtGPChromosome::RbtGPChromosome(int npi, int nfi, int nn, int no, int nr,
     cells[i] = new RbtCell();
 }
 RbtGPChromosome::RbtGPChromosome(const RbtGPChromosome &c) {
-  chrom = RbtIntList(c.chrom.size());
+  chrom = std::vector<int>(c.chrom.size());
   cells = RbtCellList(c.cells.size());
   for (unsigned int i = 0; i < cells.size(); i++)
     cells[i] = c.cells[i];

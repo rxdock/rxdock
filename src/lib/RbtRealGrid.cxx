@@ -166,9 +166,9 @@ double RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
   std::cout << "p=" << p << std::endl;
 #endif //_DEBUG
   // Set up B0 and B1 for each of x,y,z axes
-  // RbtDoubleList bx(2);
-  // RbtDoubleList by(2);
-  // RbtDoubleList bz(2);
+  // std::vector<double> bx(2);
+  // std::vector<double> by(2);
+  // std::vector<double> bz(2);
   // bx[1] = rx * p.x;
   // bx[0] = 1.0 - bx[1];
   // by[1] = ry * p.y;
@@ -228,7 +228,7 @@ void RbtRealGrid::ReplaceValueRange(double oldValMin, double oldValMax,
 // If bOverwrite is true, all grid points are set to the new value
 void RbtRealGrid::SetSphere(const RbtCoord &c, double radius, double val,
                             bool bOverwrite) {
-  RbtUIntList sphereIndices;
+  std::vector<unsigned int> sphereIndices;
   GetSphereIndices(c, radius, sphereIndices);
   SetValues(sphereIndices, val, bOverwrite);
 }
@@ -238,10 +238,11 @@ void RbtRealGrid::SetSphere(const RbtCoord &c, double radius, double val,
 // is true, all grid points are set the new value
 void RbtRealGrid::SetSurface(const RbtCoord &c, double innerRad,
                              double outerRad, double val, bool bOverwrite) {
-  RbtUIntList oIndices; // List of sphere points for outer sphere
-  RbtUIntList iIndices; // List of sphere points for outer sphere
-  RbtUIntList sIndices; // List of points for surface region (points in outer
-                        // sphere, but not inner sphere)
+  std::vector<unsigned int> oIndices; // List of sphere points for outer sphere
+  std::vector<unsigned int> iIndices; // List of sphere points for outer sphere
+  std::vector<unsigned int>
+      sIndices; // List of points for surface region (points in outer
+                // sphere, but not inner sphere)
   GetSphereIndices(c, outerRad, oIndices);
   GetSphereIndices(c, innerRad, iIndices);
   // std::sort(oIndices.begin(),oIndices.end());
@@ -293,7 +294,7 @@ void RbtRealGrid::CreateSurface(double oldVal, double adjVal, double newVal) {
 // coord have the specified value
 bool RbtRealGrid::isValueWithinSphere(const RbtCoord &c, double radius,
                                       double val) {
-  RbtUIntList sphereIndices;
+  std::vector<unsigned int> sphereIndices;
   GetSphereIndices(c, radius, sphereIndices);
   return isValueWithinList(sphereIndices, val);
 }
@@ -314,7 +315,7 @@ void RbtRealGrid::SetAccessible(double radius, double oldVal, double adjVal,
   // Work out the maximum no. of grid points in the sphere and reserve enough
   // space in the indices vector. Actually, this is a considerable overestimate
   // (no. of points in the enclosing cube)
-  RbtUIntList sphereIndices;
+  std::vector<unsigned int> sphereIndices;
   unsigned int nMax = (int(radius / GetGridStep().x) + 1) *
                       (int(radius / GetGridStep().y) + 1) *
                       (int(radius / GetGridStep().z) + 1);
@@ -500,9 +501,10 @@ void RbtRealGrid::OwnRead(std::istream &istr) {
 // DM 17 Jul 2000 - analogous to isValueWithinSphere but iterates over arbitrary
 // set of IXYZ indices. Private method as there is no error checking on iXYZ
 // values out of bounds
-bool RbtRealGrid::isValueWithinList(const RbtUIntList &iXYZList, double val) {
-  for (RbtUIntListConstIter iter = iXYZList.begin(); iter != iXYZList.end();
-       iter++) {
+bool RbtRealGrid::isValueWithinList(const std::vector<unsigned int> &iXYZList,
+                                    double val) {
+  for (std::vector<unsigned int>::const_iterator iter = iXYZList.begin();
+       iter != iXYZList.end(); iter++) {
     if (std::fabs(m_data[*iter] - val) < m_tol) {
       return true;
     }
@@ -514,10 +516,10 @@ bool RbtRealGrid::isValueWithinList(const RbtUIntList &iXYZList, double val) {
 // of IXYZ indices. Private method as there is no error checking on iXYZ values
 // out of bounds If bOverwrite is false, does not replace non-zero values If
 // bOverwrite is true, all grid points are set the new value
-void RbtRealGrid::SetValues(const RbtUIntList &iXYZList, double val,
-                            bool bOverwrite) {
-  for (RbtUIntListConstIter iter = iXYZList.begin(); iter != iXYZList.end();
-       iter++) {
+void RbtRealGrid::SetValues(const std::vector<unsigned int> &iXYZList,
+                            double val, bool bOverwrite) {
+  for (std::vector<unsigned int>::const_iterator iter = iXYZList.begin();
+       iter != iXYZList.end(); iter++) {
     if (bOverwrite || (std::fabs(m_data[*iter]) < m_tol)) {
       m_data[*iter] = val;
     }

@@ -52,9 +52,9 @@ unsigned int RbtElementFileSource::GetNumElements() {
 }
 
 // List of element names
-RbtStringList RbtElementFileSource::GetElementNameList() {
+std::vector<std::string> RbtElementFileSource::GetElementNameList() {
   Parse();
-  RbtStringList elementNameList;
+  std::vector<std::string> elementNameList;
   elementNameList.reserve(m_elementNameMap.size());
   for (RbtStringElementDataMapConstIter iter = m_elementNameMap.begin();
        iter != m_elementNameMap.end(); iter++)
@@ -63,9 +63,9 @@ RbtStringList RbtElementFileSource::GetElementNameList() {
 }
 
 // List of atomic numbers
-RbtIntList RbtElementFileSource::GetAtomicNumberList() {
+std::vector<int> RbtElementFileSource::GetAtomicNumberList() {
   Parse();
-  RbtIntList atomicNumberList;
+  std::vector<int> atomicNumberList;
   atomicNumberList.reserve(m_atomicNumberMap.size());
   for (RbtIntElementDataMapConstIter iter = m_atomicNumberMap.begin();
        iter != m_atomicNumberMap.end(); iter++)

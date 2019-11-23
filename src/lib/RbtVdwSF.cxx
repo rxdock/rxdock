@@ -297,7 +297,7 @@ void RbtVdwSF::Setup() {
   }
   // Dummy read to force parsing of file, otherwise the first SetSection is
   // overridden
-  RbtStringList secList = m_spVdwSource->GetSectionList();
+  std::vector<std::string> secList = m_spVdwSource->GetSectionList();
   std::string _R("R");
   std::string _K("K");
   std::string _IP("IP");
@@ -306,7 +306,7 @@ void RbtVdwSF::Setup() {
   std::string _ISHBA("isHBA");
   m_vdwTable = RbtVdwTable(RbtTriposAtomType::MAXTYPES,
                            RbtVdwRow(RbtTriposAtomType::MAXTYPES));
-  m_maxRange = RbtDoubleList(RbtTriposAtomType::MAXTYPES, 0.0);
+  m_maxRange = std::vector<double>(RbtTriposAtomType::MAXTYPES, 0.0);
   for (int i = RbtTriposAtomType::UNDEFINED; i < RbtTriposAtomType::MAXTYPES;
        i++) {
     // Read the params for atom type i

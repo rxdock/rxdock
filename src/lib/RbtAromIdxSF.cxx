@@ -71,7 +71,7 @@ RbtAromIdxSF::~RbtAromIdxSF() {
     //scoreMap[name+".ss"] = m_ss;
     //scoreMap[name+".sp"] = m_sp;
     //scoreMap[name+".pp"] = m_pp;
-    RbtStringList annList;
+    std::vector<std::string> annList;
     RenderAnnotationList(GetName(),annList);
     scoreMap[RbtAnnotationHandler::_ANNOTATION_FIELD] += annList;
     ClearAnnotationList();

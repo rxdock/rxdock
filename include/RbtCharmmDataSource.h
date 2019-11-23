@@ -77,10 +77,10 @@ private:
   ////////////////////////////////////////
   // Private data
   //////////////
-  RbtIntStringMap m_atomTypes;
-  RbtStringIntMap m_implicitHydrogens;
-  RbtStringIntMap m_atomicNumber;
-  RbtStringIntMap m_formalCharge;
+  std::map<int, std::string> m_atomTypes;
+  std::map<std::string, int> m_implicitHydrogens;
+  std::map<std::string, int> m_atomicNumber;
+  std::map<std::string, int> m_formalCharge;
   RbtStringHybridStateMap m_hybridState; // DM 8 Dec 1998
 };
 

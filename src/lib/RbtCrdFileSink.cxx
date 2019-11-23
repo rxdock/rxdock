@@ -52,9 +52,9 @@ void RbtCrdFileSink::Render() {
     // Only write titles and number of atoms if this is the first conformer
     if (m_nAtomId == 0) {
       // 1. Write the titles
-      RbtStringList titleList(spModel->GetTitleList());
+      std::vector<std::string> titleList(spModel->GetTitleList());
       // DM 8 June 1999 - limit number of title lines output to a maximum of 1
-      RbtStringListConstIter iter;
+      std::vector<std::string>::const_iterator iter;
       int nLines;
       for (iter = titleList.begin(), nLines = 0;
            (iter != titleList.end()) && (nLines < 1); iter++, nLines++) {

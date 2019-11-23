@@ -80,7 +80,7 @@ RbtDihedralList RbtDihedralSF::CreateDihedralList(const RbtBondList &bondList) {
     RbtTriposAtomType::eType t2 = m_triposType(pAtom2);
     RbtTriposAtomType::eType t3 = m_triposType(pAtom3);
     RbtAtomList bondedAtoms2, bondedAtoms3;
-    RbtDoubleList offset2, offset3;
+    std::vector<double> offset2, offset3;
     // Get the bonded atoms and implicit hydrogen offsets required to define all
     // the dihedrals across this bond
     CalcBondedAtoms(pAtom2, pAtom3, bondedAtoms2, offset2);
@@ -254,7 +254,8 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
     }
   }
 
-  RbtStringList paramList = Rbt::ConvertDelimitedStringToList(strParams);
+  std::vector<std::string> paramList =
+      Rbt::ConvertDelimitedStringToList(strParams);
   // Add checks on #params
   double k = std::atof(paramList[0].c_str());
   double s = std::atof(paramList[1].c_str());
@@ -270,7 +271,7 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
 // bond, is excluded from the returned list of bonded atoms
 void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
                                     RbtAtomList &bondedAtoms,
-                                    RbtDoubleList &offsets) {
+                                    std::vector<double> &offsets) {
   offsets.clear();
   bondedAtoms =
       Rbt::GetAtomList(Rbt::GetBondedAtomList(pAtom1),

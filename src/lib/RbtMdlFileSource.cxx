@@ -202,7 +202,7 @@ void RbtMdlFileSource::Parse() {
           if ((ob != std::string::npos) && (cb != std::string::npos)) {
             std::string fieldName =
                 (*fileIter).substr(ob + 1, cb - ob - 1); // Data field name
-            RbtStringList sl; // String list for storing data value
+            std::vector<std::string> sl; // String list for storing data value
             while ((++fileIter != fileEnd) && !(*fileIter).empty()) {
               sl.push_back(*fileIter);
             }

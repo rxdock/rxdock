@@ -75,8 +75,8 @@ int main(int argc, char *argv[]) {
   }
   std::ios_base::fmtflags oldflags = std::cout.flags(); // save state
 
-  RbtDoubleList scoreVec;
-  RbtDoubleList rmsVec;
+  std::vector<double> scoreVec;
+  std::vector<double> rmsVec;
 
   try {
     RbtMolecularFileSourcePtr spRefFileSource(new RbtMdlFileSource(
@@ -173,8 +173,8 @@ int main(int argc, char *argv[]) {
     }
     // END OF MAIN LOOP OVER LIGAND RECORDS
     ////////////////////////////////////////////////////
-    RbtDoubleListConstIter sIter = scoreVec.begin();
-    RbtDoubleListConstIter rIter = rmsVec.begin();
+    std::vector<double>::const_iterator sIter = scoreVec.begin();
+    std::vector<double>::const_iterator rIter = rmsVec.begin();
     double minScore = *std::min_element(scoreVec.begin(), scoreVec.end());
     double zGood(0.0);
     double zPartial(0.0);

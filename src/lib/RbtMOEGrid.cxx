@@ -146,7 +146,7 @@ void RbtMOEGrid::GetDockingSiteExtents(std::string &a_strPrmFile) {
   // Create a bimolecular workspace
   RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
   // Set the workspace name to the root of the receptor .prm filename
-  RbtStringList componentList =
+  std::vector<std::string> componentList =
       Rbt::ConvertDelimitedStringToList(a_strPrmFile, ".");
   std::string wsName = componentList.front();
   spWS->SetName(wsName);

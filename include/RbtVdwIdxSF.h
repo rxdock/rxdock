@@ -63,7 +63,7 @@ protected:
   void ParameterUpdated(const std::string &strName);
 
 private:
-  void RenderAnnotationsByResidue(RbtStringList &retVal) const;
+  void RenderAnnotationsByResidue(std::vector<std::string> &retVal) const;
 
   RbtNonBondedGridPtr m_spGrid; // Indexing grid for receptor
   RbtNonBondedGridPtr

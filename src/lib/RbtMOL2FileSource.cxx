@@ -243,7 +243,7 @@ void RbtMOL2FileSource::ParseRecordMOLECULE(const std::string &aLine) {
 }
 
 void RbtMOL2FileSource::ParseRecordATOM(const std::string &aLine) {
-  RbtStringList tokens;
+  std::vector<std::string> tokens;
   Tokenize(aLine, tokens);
   // there must be at least 6 fields, rest is optional
   if (tokens.size() < 6)
@@ -321,7 +321,7 @@ void RbtMOL2FileSource::ParseRecordATOM(const std::string &aLine) {
 }
 
 void RbtMOL2FileSource::ParseRecordBOND(const std::string &aLine) {
-  RbtStringList tokens;
+  std::vector<std::string> tokens;
   Tokenize(aLine, tokens);
   // there must be at least 4 fields, rest is optional
   if (tokens.size() < 4)
@@ -358,7 +358,7 @@ void RbtMOL2FileSource::ParseRecordBOND(const std::string &aLine) {
 }
 
 void RbtMOL2FileSource::ParseRecordSUBSTRUCTURE(const std::string &aLine) {
-  RbtStringList tokens;
+  std::vector<std::string> tokens;
   Tokenize(aLine, tokens);
   // there must be at least 3 fields, rest is optional
   if (tokens.size() < 3)
@@ -394,7 +394,7 @@ std::string RbtMOL2FileSource::GetMOL2Tag(const std::string &aLine) {
   // so, look for a line starting with "@<TRIPOS>"
   if (aLine.find(_TRIPOS_DELIM) != std::string::npos) {
     // tokenize remainder line in case of garbage at the rest of line
-    RbtStringList tokens;
+    std::vector<std::string> tokens;
     Tokenize(aLine, tokens);
     // get rid of the "@<TRIPOS>" part
     if (tokens[0].size() <= _TRIPOS_DELIM_SIZE) {
@@ -413,7 +413,7 @@ std::string RbtMOL2FileSource::GetMOL2Tag(const std::string &aLine) {
 }
 
 void RbtMOL2FileSource::ParseCountFields(const std::string &aLine) {
-  RbtStringList tokens;
+  std::vector<std::string> tokens;
   Tokenize(aLine, tokens);
   if (tokens.size() < 1)
     throw RbtFileParseError(
@@ -685,7 +685,7 @@ void RbtMOL2FileSource::GetSSIDandName(const std::string &subst_name,
 
 // simple tokenizer that splits at whitspace
 void RbtMOL2FileSource::Tokenize(const std::string &aString,
-                                 RbtStringList &aTokensBuf) {
+                                 std::vector<std::string> &aTokensBuf) {
   std::string buf;
   std::stringstream ss(aString);
   while (ss >> buf)

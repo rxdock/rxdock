@@ -42,7 +42,7 @@ public:
   RbtNoeEndNames() {}
   bool isOK() const;
   // Public data
-  RbtStringList names;
+  std::vector<std::string> names;
   Rbt::eNoeType type;
 };
 

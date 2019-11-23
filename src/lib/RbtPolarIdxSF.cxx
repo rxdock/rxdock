@@ -89,7 +89,7 @@ void RbtPolarIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     // XB uncommented next 6 lines
     //    scoreMap[name+".nhbd"] = m_nPos;
     //    scoreMap[name+".nhba"] = m_nNeg;
-    //    RbtStringList annList;
+    //    std::vector<std::string> annList;
     //    RenderAnnotationList(GetName(),annList);
     //    scoreMap[RbtAnnotationHandler::_ANNOTATION_FIELD] += annList;
     //    ClearAnnotationList();

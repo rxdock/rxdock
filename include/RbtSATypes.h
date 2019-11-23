@@ -90,7 +90,7 @@ public:
 
 private:
   void SetupTypeNames();
-  RbtStringList m_typeNames;
+  std::vector<std::string> m_typeNames;
 };
 
 typedef SmartPtr<RbtHHSType *> RbtHHSTypePtr; // Smart pointer

@@ -37,7 +37,7 @@ public:
 
 private:
   void CreateRandomCtes(int);
-  RbtDoubleList ctes;
+  std::vector<double> ctes;
   RbtCellContextPtr contextp;
   RbtGPFFCHK1(); // default constructor disabled
   RbtReturnTypeArray inputTestTable, inputTrainingTable;

@@ -69,7 +69,7 @@ void RbtBaseFileSink::Write(bool bClearCache) {
   try {
     Open(m_bAppend); // DM 06 Apr 1999 - open for append or overwrite, depending
                      // on m_bAppend attribute
-    for (RbtStringListConstIter iter = m_lineRecs.begin();
+    for (std::vector<std::string>::const_iterator iter = m_lineRecs.begin();
          iter != m_lineRecs.end(); iter++) {
       // for some reason the << overload is screwed up in some sstream
       // implementations so it is worth to pay this "pointless" price in

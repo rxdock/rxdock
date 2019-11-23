@@ -24,10 +24,6 @@
 #include "RbtSmartPointer.h"
 #endif //_RBTSMARTPOINTER_H_
 
-#ifndef _RBTCONTAINERS_H_
-#include "RbtContainers.h"
-#endif //_RBTCONTAINERS_H_
-
 #ifndef _RBTDEBUG_H_
 #include "RbtDebug.h"
 #endif //_RBTDEBUG_H_

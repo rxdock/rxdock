@@ -20,6 +20,8 @@
 #include "RbtConfig.h"
 #include "RbtCoord.h"
 
+#include <set>
+
 class RbtBaseGrid {
 public:
   // Class type string
@@ -180,13 +182,13 @@ public:
     return GetCoord(GetIX(iXYZ), GetIY(iXYZ), GetIZ(iXYZ));
   }
   // Returns list of real-world coordinates for given set of iXYZ indices
-  RbtCoordList GetCoordList(const RbtUIntSet &iXYZSet) const;
+  RbtCoordList GetCoordList(const std::set<unsigned int> &iXYZSet) const;
 
   // DM 17 May 1999 - returns the set of valid grid points within a sphere of a
   // given center and radius DM 17 Jul 2000 - use std::vector<RbtUInt> and
   // return by reference, for performance boost
   void GetSphereIndices(const RbtCoord &c, double radius,
-                        RbtUIntList &sIndices) const;
+                        std::vector<unsigned int> &sIndices) const;
 
 protected:
   ////////////////////////////////////////

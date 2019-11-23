@@ -120,7 +120,7 @@ std::string RbtGPParser::PrintParse1Output(RbtGPChromosomePtr chrom, int output,
   if (ncomm == IF)
     RbtCommand::ntabs++;
   int nargs = commands[ncomm]->GetNArgs();
-  RbtStringList fs(nargs);
+  std::vector<std::string> fs(nargs);
   for (int i = 0; i < commands[ncomm]->GetNArgs(); i++)
     if ((ncomm == IF) && (i == 0)) {
       //           RbtCommand::inside = true;

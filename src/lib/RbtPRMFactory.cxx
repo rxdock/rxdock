@@ -359,10 +359,10 @@ void RbtPRMFactory::AttachReceptorFlexData(RbtModel *pReceptor) {
 
 void RbtPRMFactory::AttachLigandFlexData(RbtModel *pLigand) {
   m_pParamSource->SetSection(_LIG_SECTION);
-  RbtStringList paramList = m_pParamSource->GetParameterList();
+  std::vector<std::string> paramList = m_pParamSource->GetParameterList();
   RbtFlexData *pFlexData = new RbtLigandFlexData(m_pDS);
-  for (RbtStringListConstIter iter = paramList.begin(); iter != paramList.end();
-       ++iter) {
+  for (std::vector<std::string>::const_iterator iter = paramList.begin();
+       iter != paramList.end(); ++iter) {
     std::string strValue = m_pParamSource->GetParameterValueAsString(*iter);
     pFlexData->SetParameter(*iter, strValue);
   }
@@ -376,7 +376,7 @@ void RbtPRMFactory::AttachLigandFlexData(RbtModel *pLigand) {
 
 void RbtPRMFactory::AttachSolventFlexData(RbtModel *pSolvent) {
   m_pParamSource->SetSection(_SOLV_SECTION);
-  RbtStringList paramList = m_pParamSource->GetParameterList();
+  std::vector<std::string> paramList = m_pParamSource->GetParameterList();
   RbtFlexData *pFlexData = new RbtSolventFlexData(m_pDS);
   // Determine the occupancy and flexibility mode on a per-solvent basis
   // from the User1 and User2 values of the first atom (oxygen)
@@ -413,8 +413,8 @@ void RbtPRMFactory::AttachSolventFlexData(RbtModel *pSolvent) {
   pFlexData->SetParameter(RbtSolventFlexData::_OCCUPANCY, occupancy);
   // Set the remaining flexibility parameters from the <receptor>.prm file
   // source
-  for (RbtStringListConstIter iter = paramList.begin(); iter != paramList.end();
-       ++iter) {
+  for (std::vector<std::string>::const_iterator iter = paramList.begin();
+       iter != paramList.end(); ++iter) {
     if ((*iter) != _SOLV_FILE) {
       std::string strValue = m_pParamSource->GetParameterValueAsString(*iter);
       pFlexData->SetParameter(*iter, strValue);

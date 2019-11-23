@@ -51,9 +51,9 @@ unsigned int RbtParameterFileSource::GetNumParameters() {
 }
 
 // DM 06 June 2000 - limit parameters to those in current section
-RbtStringList RbtParameterFileSource::GetParameterList() {
+std::vector<std::string> RbtParameterFileSource::GetParameterList() {
   Parse();
-  RbtStringList paramList;
+  std::vector<std::string> paramList;
   std::string prmPrefix(GetSection() + "::");
   int prmPrefixLen = prmPrefix.size();
   for (RbtStringVariantMapConstIter iter = m_paramsMap.begin();
@@ -122,7 +122,7 @@ int RbtParameterFileSource::GetNumSections() {
 }
 
 // List of section names
-RbtStringList RbtParameterFileSource::GetSectionList() {
+std::vector<std::string> RbtParameterFileSource::GetSectionList() {
   Parse();
   return m_sectionNames;
 }

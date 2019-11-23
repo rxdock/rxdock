@@ -89,11 +89,12 @@ void RbtBiMolWorkSpace::UpdateModelCoordsFromChromRecords(
             std::string chromRecord = Rbt::ConvertListToDelimitedString(
                 pSource->GetDataValue(chromField), ",");
             // Now split into string values and convert to doubles
-            RbtStringList chromValues =
+            std::vector<std::string> chromValues =
                 Rbt::ConvertDelimitedStringToList(chromRecord, ",");
             if (chromLength == chromValues.size()) {
-              RbtDoubleList chromVec;
-              for (RbtStringListConstIter iter = chromValues.begin();
+              std::vector<double> chromVec;
+              for (std::vector<std::string>::const_iterator iter =
+                       chromValues.begin();
                    iter != chromValues.end(); ++iter) {
                 std::string chromValue(*iter);
                 chromVec.push_back(std::atof(chromValue.c_str()));
@@ -163,7 +164,7 @@ void RbtBiMolWorkSpace::SaveLigand(RbtMolecularFileSinkPtr spSink,
         RbtChromElementPtr spChrom = spModel->GetChrom();
         if (spChrom.Ptr() && (spChrom->GetLength() > 0)) {
           spChrom->SyncFromModel();
-          RbtDoubleList chromVec;
+          std::vector<double> chromVec;
           spChrom->GetVector(chromVec);
           std::ostringstream ostr;
           ostr << "CHROM." << iModel;

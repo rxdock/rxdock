@@ -65,9 +65,9 @@ private:
   // Private data
   //////////////
   RbtRand &m_rand; // keep a reference to the singleton random number generator
-  RbtCavityList m_cavities; // List of active site cavities to choose from
-  RbtIntList m_cumulSize;   // Cumulative sizes, for weighted probabilities
-  int m_totalSize;          // Total size of all cavities
+  RbtCavityList m_cavities;     // List of active site cavities to choose from
+  std::vector<int> m_cumulSize; // Cumulative sizes, for weighted probabilities
+  int m_totalSize;              // Total size of all cavities
 };
 
 // Useful typedefs

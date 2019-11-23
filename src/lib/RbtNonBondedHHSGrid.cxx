@@ -112,10 +112,11 @@ RbtNonBondedHHSGrid::GetHHSList(const RbtCoord &c) const {
 
 void RbtNonBondedHHSGrid::SetHHSLists(HHS_Solvation *pHHS, double radius) {
   const RbtCoord &c = (pHHS->GetAtom())->GetCoords();
-  RbtUIntList sphereIndices;
+  std::vector<unsigned int> sphereIndices;
   GetSphereIndices(c, radius, sphereIndices);
 
-  for (RbtUIntListConstIter sphereIter = sphereIndices.begin();
+  for (std::vector<unsigned int>::const_iterator sphereIter =
+           sphereIndices.begin();
        sphereIter != sphereIndices.end(); sphereIter++) {
     m_hhsMap[*sphereIter].push_back(pHHS);
   }

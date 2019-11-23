@@ -120,8 +120,8 @@ void RbtPharmaSF::SetupReceptor() {
   }
 
   // Initialise the component score vectors
-  m_conScores = RbtDoubleList(m_constrList.size(), 0.0);
-  m_optScores = RbtDoubleList(m_optList.size(), 0.0);
+  m_conScores = std::vector<double>(m_constrList.size(), 0.0);
+  m_optScores = std::vector<double>(m_optList.size(), 0.0);
 }
 
 void RbtPharmaSF::SetupLigand() {
@@ -174,7 +174,7 @@ double RbtPharmaSF::RawScore() const {
     m_optScores[i] = (*iter)->Score();
   }
   // partial_sort_copy copies the N lowest scores
-  RbtDoubleList lowest(m_nopt);
+  std::vector<double> lowest(m_nopt);
   std::partial_sort_copy(m_optScores.begin(), m_optScores.end(), lowest.begin(),
                          lowest.end());
   // std::cout << m_nopt << " lowest optional scores:\t";

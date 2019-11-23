@@ -71,7 +71,7 @@ RbtCharmmDataSource::~RbtCharmmDataSource() {
 // Public methods
 ////////////////
 std::string RbtCharmmDataSource::AtomTypeString(int nAtomType) {
-  RbtIntStringMapIter iter = m_atomTypes.find(nAtomType);
+  std::map<int, std::string>::iterator iter = m_atomTypes.find(nAtomType);
   if (iter != m_atomTypes.end())
     return (*iter).second;
   else {
@@ -85,7 +85,8 @@ std::string RbtCharmmDataSource::AtomTypeString(int nAtomType) {
 }
 
 int RbtCharmmDataSource::ImplicitHydrogens(const std::string &strFFType) {
-  RbtStringIntMapIter iter = m_implicitHydrogens.find(strFFType);
+  std::map<std::string, int>::iterator iter =
+      m_implicitHydrogens.find(strFFType);
   if (iter != m_implicitHydrogens.end())
     return (*iter).second;
   else
@@ -93,7 +94,7 @@ int RbtCharmmDataSource::ImplicitHydrogens(const std::string &strFFType) {
 }
 
 int RbtCharmmDataSource::AtomicNumber(const std::string &strFFType) {
-  RbtStringIntMapIter iter = m_atomicNumber.find(strFFType);
+  std::map<std::string, int>::iterator iter = m_atomicNumber.find(strFFType);
   if (iter != m_atomicNumber.end())
     return (*iter).second;
   else
@@ -103,7 +104,7 @@ int RbtCharmmDataSource::AtomicNumber(const std::string &strFFType) {
 }
 
 int RbtCharmmDataSource::FormalCharge(const std::string &strFFType) {
-  RbtStringIntMapIter iter = m_formalCharge.find(strFFType);
+  std::map<std::string, int>::iterator iter = m_formalCharge.find(strFFType);
   if (iter != m_formalCharge.end()) {
     return (*iter).second;
   } else

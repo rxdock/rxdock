@@ -92,7 +92,7 @@ void RbtVdwIdxSF::ScoreMap(RbtStringVariantMap &scoreMap) const {
     //    scoreMap[name+".nattr"] = m_nAttr;
     //    scoreMap[name+".nrep"] = m_nRep;
     //    if (m_bAnnotate) {
-    //      RbtStringList annList;
+    //      std::vector<std::string> annList;
     //      RenderAnnotationsByResidue(annList);//Summarised by residue
     //      scoreMap[RbtAnnotationHandler::_ANNOTATION_FIELD] += annList;
     //      ClearAnnotationList();
@@ -365,7 +365,8 @@ void RbtVdwIdxSF::ParameterUpdated(const std::string &strName) {
 // repulsive (+ve) pair-wise vdW interactions VDW_LIPO - all attractive (-ve)
 // pair-wise vdW interactions between apolar C/H atoms
 //           with scores better (more -ve) than ANNOTATION_LIPO parameter
-void RbtVdwIdxSF::RenderAnnotationsByResidue(RbtStringList &retVal) const {
+void RbtVdwIdxSF::RenderAnnotationsByResidue(
+    std::vector<std::string> &retVal) const {
   std::string strSum = GetName() + "_SUM";
   std::string strLipo = GetName() + "_LIPO";
   std::string strRepul = GetName() + "_REP";

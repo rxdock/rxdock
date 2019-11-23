@@ -21,7 +21,7 @@
 // To prevent splitting (for example) an orientation or position vector in two
 // during crossover, we convert the chromosome to a vector of vector of doubles
 // An orientation vector (3 Euler angles) is a single RbtXOverElement
-// GetVector(RbtDoubleList&) returns a flat vector of doubles (for use by
+// GetVector(std::vector<double>&) returns a flat vector of doubles (for use by
 // Simplex) GetVector(RbtXOverList&) returns a vector of RbtXOverElements (for
 // use by crossover)
 typedef std::vector<double> RbtXOverElement;
@@ -80,7 +80,7 @@ public:
   // Converts chromosome element to a vector of double values,
   // Number of double values appended should match GetLength().
   // v = vector of doubles to append to.
-  virtual void GetVector(RbtDoubleList &v) const = 0;
+  virtual void GetVector(std::vector<double> &v) const = 0;
   // Converts chromosome element to a vector of XOverElements
   // where each XOverElement is itself a vector of double values
   // v = vector of RbtXOverElements to append to.
@@ -89,7 +89,7 @@ public:
   // Number of double values read should match GetLength().
   // v = vector of doubles to extract from
   // i = index of next vector element to read (should be updated by method)
-  virtual void SetVector(const RbtDoubleList &v, int &i) = 0;
+  virtual void SetVector(const std::vector<double> &v, int &i) = 0;
   // Updates chromosome element from a vector of XOverElements,
   // Number of XOverElements read should match GetXOverLength().
   // v = vector of XOverElements to extract from
@@ -97,14 +97,14 @@ public:
   virtual void SetVector(const RbtXOverList &v, int &i) = 0;
   // Gets the vector of absolute step sizes that correspond to each double
   // value.
-  virtual void GetStepVector(RbtDoubleList &v) const = 0;
+  virtual void GetStepVector(std::vector<double> &v) const = 0;
   // Gets the maximum relative difference between this element and another
   // element as represented by the vector. Differences should be normalised by
   // the step size. This method is provided to allow better comparisons between
   // values that are difficult to compare by simple numerical differences. e.g.
   // Dihedral angles are cyclical, therefore -180 and + 179 only differ by 1
   // deg.
-  virtual double CompareVector(const RbtDoubleList &v, int &i) const = 0;
+  virtual double CompareVector(const std::vector<double> &v, int &i) const = 0;
   //
   // IMPLEMENTED VIRTUAL METHODS
   //
@@ -125,9 +125,9 @@ public:
   // i.e. if Compare(c) < threshold
   // Returns false if comparison is invalid (unequal lengths)
   bool Equals(const RbtChromElement &c, double threshold) const;
-  // Convenience method that calls SetVector(const RbtDoubleList& v, RbtInt& i)
-  // with i initialised to zero
-  void SetVector(const RbtDoubleList &v);
+  // Convenience method that calls SetVector(const std::vector<double>& v,
+  // RbtInt& i) with i initialised to zero
+  void SetVector(const std::vector<double> &v);
   // Convenience method that calls SetVector(const RbtXOverList& v, RbtInt& i)
   // with i initialised to zero
   void SetVector(const RbtXOverList &v);
@@ -148,7 +148,7 @@ protected:
   // Helper method to check that index i is in range [0,v.size()}
   // and that v has sufficient elements remaining to satisfy
   // GetLength()
-  bool VectorOK(const RbtDoubleList &v, unsigned int i) const;
+  bool VectorOK(const std::vector<double> &v, unsigned int i) const;
   // Helper method to check that index i is in range [0,v.size()}
   // and that v has sufficient elements remaining to satisfy
   // GetXOverLength()

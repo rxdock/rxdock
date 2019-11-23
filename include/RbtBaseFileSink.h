@@ -90,7 +90,7 @@ private:
   ////////////////////////////////////////
   // Private data
   //////////////
-  RbtStringList m_lineRecs;
+  std::vector<std::string> m_lineRecs;
   std::string m_strFileName;
   std::ofstream m_fileOut;
   bool m_bAppend; // If true, Write() appends to file rather than overwriting

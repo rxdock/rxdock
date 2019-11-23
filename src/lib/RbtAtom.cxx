@@ -691,7 +691,7 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
   RbtAtomList matchingAtoms = atomList;
 
   // Split the name into it's constituent subunit and atom names
-  RbtStringList componentList =
+  std::vector<std::string> componentList =
       Rbt::ConvertDelimitedStringToList(strFullName, ":");
   unsigned int idx(0); // Index into constituent list
   // Switch on how many constituent names are specified
@@ -712,7 +712,7 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
   case 2: // Fall-through!! We have subunit and atom names
     // Check if the subunit name also specifies a subunit ID
     if (!componentList[idx].empty()) {
-      RbtStringList subunitList =
+      std::vector<std::string> subunitList =
           Rbt::ConvertDelimitedStringToList(componentList[idx], "_");
       switch (subunitList.size()) {
       case 2: // Subunit ID and name are specified
@@ -769,15 +769,17 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
 // DM 15 Apr 1999 - as above, but match against a list of full atom name
 // specifiers Returns total list (i.e. all matches OR'd). Does not remove
 // duplicates.
-unsigned int Rbt::GetNumMatchingAtoms(const RbtAtomList &atomList,
-                                      const RbtStringList &fullNameList) {
+unsigned int
+Rbt::GetNumMatchingAtoms(const RbtAtomList &atomList,
+                         const std::vector<std::string> &fullNameList) {
   return Rbt::GetMatchingAtomList(atomList, fullNameList).size();
 }
 
-RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
-                                     const RbtStringList &fullNameList) {
+RbtAtomList
+Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
+                         const std::vector<std::string> &fullNameList) {
   RbtAtomList matchingAtoms;
-  for (RbtStringListConstIter iter = fullNameList.begin();
+  for (std::vector<std::string>::const_iterator iter = fullNameList.begin();
        iter != fullNameList.end(); iter++) {
     // Find the atoms which match the specifier string
     RbtAtomList selectedAtoms = Rbt::GetMatchingAtomList(atomList, *iter);

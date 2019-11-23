@@ -172,7 +172,7 @@ RbtChromElement *RbtChromPositionElement::clone() const {
   return new RbtChromPositionElement(m_spRefData, m_com, m_orientation);
 }
 
-void RbtChromPositionElement::GetVector(RbtDoubleList &v) const {
+void RbtChromPositionElement::GetVector(std::vector<double> &v) const {
   if (!m_spRefData->IsTransFixed()) {
     v.push_back(m_com.x);
     v.push_back(m_com.y);
@@ -202,7 +202,7 @@ void RbtChromPositionElement::GetVector(RbtXOverList &v) const {
   }
 }
 
-void RbtChromPositionElement::SetVector(const RbtDoubleList &v, int &i) {
+void RbtChromPositionElement::SetVector(const std::vector<double> &v, int &i) {
   if (VectorOK(v, i)) {
     if (!m_spRefData->IsTransFixed()) {
       // 2013Nov26 (DM) Bug fix to unsafe code.
@@ -262,7 +262,7 @@ void RbtChromPositionElement::SetVector(const RbtXOverList &v, int &i) {
   }
 }
 
-void RbtChromPositionElement::GetStepVector(RbtDoubleList &v) const {
+void RbtChromPositionElement::GetStepVector(std::vector<double> &v) const {
   if (!m_spRefData->IsTransFixed()) {
     double transStepSize = m_spRefData->GetTransStepSize();
     for (int i = 0; i < 3; ++i) {
@@ -277,7 +277,7 @@ void RbtChromPositionElement::GetStepVector(RbtDoubleList &v) const {
   }
 }
 
-double RbtChromPositionElement::CompareVector(const RbtDoubleList &v,
+double RbtChromPositionElement::CompareVector(const std::vector<double> &v,
                                               int &i) const {
   double retVal(0.0);
   if (VectorOK(v, i)) {

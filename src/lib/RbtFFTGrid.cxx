@@ -111,7 +111,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
   RbtFFTPeakMap peakMap; // Initialise the return set
 
   // First compile a list of all points higher than the threshold
-  RbtUIntSet stillToProcess;
+  std::set<unsigned int> stillToProcess;
   float *nrData = GetGridData();
 
   // DM 21 Jan 2000 - take account of tolerance when assessing threshold
@@ -131,12 +131,12 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
   while (!stillToProcess.empty()) {
 
     // Start a new peak set
-    RbtUIntSet currentPeak;
+    std::set<unsigned int> currentPeak;
     // Queue of points to be added to current peak
     std::queue<unsigned int> toAddToPeak;
 
     // Seed the queue with the first unprocessed data point
-    RbtUIntSetIter iter = stillToProcess.begin();
+    std::set<unsigned int>::iterator iter = stillToProcess.begin();
     unsigned int iXYZ0 = *iter;
     unsigned int peakPos = iXYZ0;
     float peakHeight = nrData[peakPos];
@@ -174,7 +174,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
         unsigned int iXYZ1 =
             iXYZ0 + GetStrideX(); // Add stride(X) to get to X+1
         // Is X+1 in the "still to process" set
-        RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
+        std::set<unsigned int>::iterator iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
@@ -187,7 +187,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
       if (iX0 > 1) {
         unsigned int iXYZ1 = iXYZ0 - GetStrideX();
         // Is X-1 in the "still to process" set
-        RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
+        std::set<unsigned int>::iterator iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
@@ -200,7 +200,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
       if (iY0 < GetNY()) {
         unsigned int iXYZ1 = iXYZ0 + GetStrideY();
         // Is Y+1 in the "still to process" set
-        RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
+        std::set<unsigned int>::iterator iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
@@ -213,7 +213,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
       if (iY0 > 1) {
         unsigned int iXYZ1 = iXYZ0 - GetStrideY();
         // Is Y-1 in the "still to process" set
-        RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
+        std::set<unsigned int>::iterator iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
@@ -226,7 +226,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
       if (iZ0 < GetNZ()) {
         unsigned int iXYZ1 = iXYZ0 + GetStrideZ();
         // Is Z+1 in the "still to process" set
-        RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
+        std::set<unsigned int>::iterator iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
@@ -239,7 +239,7 @@ RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
       if (iZ0 > 1) {
         unsigned int iXYZ1 = iXYZ0 - GetStrideZ();
         // Is Z-1 in the "still to process" set
-        RbtUIntSetIter iter = stillToProcess.find(iXYZ1);
+        std::set<unsigned int>::iterator iter = stillToProcess.find(iXYZ1);
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);

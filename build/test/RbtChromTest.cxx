@@ -721,7 +721,7 @@ TEST_F(RbtChromTest, OccupancyThreshold) {
 void RbtChromTest::measureRandOrMutateDiff(RbtChromElement *chrom, int nTrials,
                                            bool bMutate, double &meanDiff,
                                            double &minDiff, double &maxDiff) {
-  RbtDoubleList refVec;
+  std::vector<double> refVec;
   chrom->GetVector(refVec);
   meanDiff = 0.0;
   minDiff = 0.0;
@@ -751,7 +751,7 @@ void RbtChromTest::measureRandOrMutateDiff(RbtChromElement *chrom, int nTrials,
 void RbtChromTest::measureCrossoverDiff(RbtChromElement *chrom, int nTrials,
                                         double &meanDiff, double &minDiff,
                                         double &maxDiff) {
-  RbtDoubleList refVec;
+  std::vector<double> refVec;
   chrom->GetVector(refVec);
   meanDiff = 0.0;
   minDiff = 0.0;

@@ -230,7 +230,7 @@ std::string RbtHHSType::Type2Str(RbtHHSType::eType aType) const {
 }
 
 RbtHHSType::eType RbtHHSType::Str2Type(const std::string &strType) const {
-  RbtStringListConstIter iter =
+  std::vector<std::string>::const_iterator iter =
       std::find(m_typeNames.begin(), m_typeNames.end(), strType);
   if (iter != m_typeNames.end()) {
     return RbtHHSType::eType(iter - m_typeNames.begin());
@@ -241,7 +241,7 @@ RbtHHSType::eType RbtHHSType::Str2Type(const std::string &strType) const {
 
 void RbtHHSType::SetupTypeNames() {
   // Create a std::vector<string> of the right size
-  m_typeNames = RbtStringList(RbtHHSType::MAXTYPES, std::string());
+  m_typeNames = std::vector<std::string>(RbtHHSType::MAXTYPES, std::string());
   m_typeNames[RbtHHSType::UNDEFINED] = "UNDEFINED";
   m_typeNames[RbtHHSType::C_sp3] = "C_sp3";
   m_typeNames[RbtHHSType::CH_sp3] = "CH_sp3";

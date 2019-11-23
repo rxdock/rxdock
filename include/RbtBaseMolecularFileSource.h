@@ -42,7 +42,7 @@ public:
   int GetNumBonds();
   int GetNumSegments();
 
-  RbtStringList GetTitleList();
+  std::vector<std::string> GetTitleList();
   RbtAtomList GetAtomList();
   RbtBondList GetBondList();
   RbtSegmentMap GetSegmentMap();
@@ -51,7 +51,7 @@ public:
   // Get number of data fields
   virtual int GetNumData();
   // Get list of field names as string list
-  virtual RbtStringList GetDataFieldList();
+  virtual std::vector<std::string> GetDataFieldList();
   // Get all data as map of key=field name, value=variant (double,string or
   // string list)
   virtual RbtStringVariantMap GetDataMap();
@@ -98,7 +98,7 @@ private:
 
 protected:
   // Protected data
-  RbtStringList m_titleList;
+  std::vector<std::string> m_titleList;
   RbtAtomList m_atomList;
   RbtBondList m_bondList;
   RbtSegmentMap m_segmentMap;

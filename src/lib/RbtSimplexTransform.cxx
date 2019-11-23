@@ -104,7 +104,7 @@ void RbtSimplexTransform::Execute() {
   m_chrom->SyncFromModel();
   // If we are minimising all degrees of freedom simultaneuously
   // we have to compile a vector of variable step sizes for the NMSearch
-  RbtDoubleList sv;
+  std::vector<double> sv;
   m_chrom->GetStepVector(sv);
   int nsv = sv.size();
   double *steps = new double[nsv];
@@ -119,7 +119,7 @@ void RbtSimplexTransform::Execute() {
   int calls = 0;
   double initScore = pSF->Score(); // Current score
   double min = initScore;
-  RbtDoubleList vc; // Vector representation of chromosome
+  std::vector<double> vc; // Vector representation of chromosome
   int N = ncycles;
   // Energy change between cycles - initialise so as not to terminate loop
   // immediately

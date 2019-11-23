@@ -109,7 +109,7 @@ int RbtChrom::GetXOverLength() const {
   return retVal;
 }
 
-void RbtChrom::GetVector(RbtDoubleList &v) const {
+void RbtChrom::GetVector(std::vector<double> &v) const {
   for (RbtChromElementListConstIter iter = m_elementList.begin();
        iter != m_elementList.end(); ++iter) {
     (*iter)->GetVector(v);
@@ -123,7 +123,7 @@ void RbtChrom::GetVector(RbtXOverList &v) const {
   }
 }
 
-void RbtChrom::SetVector(const RbtDoubleList &v, int &i) {
+void RbtChrom::SetVector(const std::vector<double> &v, int &i) {
   if (VectorOK(v, i)) {
     for (RbtChromElementListIter iter = m_elementList.begin();
          iter != m_elementList.end(); ++iter) {
@@ -147,7 +147,7 @@ void RbtChrom::SetVector(const RbtXOverList &v, int &i) {
   }
 }
 
-void RbtChrom::GetStepVector(RbtDoubleList &v) const {
+void RbtChrom::GetStepVector(std::vector<double> &v) const {
   for (RbtChromElementListConstIter iter = m_elementList.begin();
        iter != m_elementList.end(); ++iter) {
     (*iter)->GetStepVector(v);
@@ -156,7 +156,7 @@ void RbtChrom::GetStepVector(RbtDoubleList &v) const {
 
 // Returns the maximum difference of any of the underlying chromosome elements
 // or -1 if there is a mismatch in vector sizes
-double RbtChrom::CompareVector(const RbtDoubleList &v, int &i) const {
+double RbtChrom::CompareVector(const std::vector<double> &v, int &i) const {
   double retVal(0.0);
   if (VectorOK(v, i)) {
     RbtChromElementListConstIter iter = m_elementList.begin();

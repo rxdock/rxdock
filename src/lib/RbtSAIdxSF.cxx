@@ -460,8 +460,8 @@ double RbtSAIdxSF::GetASP(RbtHHSType::eType theType, double chg) const {
 
 // helper function for parameter estimation
 void RbtSAIdxSF::PrintWeightMatrix(void) const {
-  RbtIntList count;   // count of atoms contributing the area
-  RbtDoubleList area; // total SASA by a single atom type
+  std::vector<int> count;   // count of atoms contributing the area
+  std::vector<double> area; // total SASA by a single atom type
 
   RbtHHSType hhsType;
   std::cout << "TYPE";
@@ -606,7 +606,7 @@ void RbtSAIdxSF::Setup() {
   }
   // Dummy read to force parsing of file, otherwise the first SetSection is
   // overridden
-  RbtStringList secList = m_spSolvSource->GetSectionList();
+  std::vector<std::string> secList = m_spSolvSource->GetSectionList();
   std::string _R("R");
   std::string _PARAM_P("P");
   std::string _ASP("ASP");

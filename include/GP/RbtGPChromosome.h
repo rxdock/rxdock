@@ -65,7 +65,7 @@ private:
   /////////////////////
   // Private data
   /////////////////////
-  RbtIntList chrom;
+  std::vector<int> chrom;
   RbtCellList cells;
   int nProgramInputs, nFunctionsInputs, nProgramOutputs, nRows, nColumns;
 };

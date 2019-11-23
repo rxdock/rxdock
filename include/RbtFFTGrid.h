@@ -30,7 +30,7 @@ public:
                        // corresponding to displacement
   double height;       // Maximum value of peak
   unsigned int volume; // Number of grid points in peak (=points.size())
-  RbtUIntSet points;   // Set of iXYZ peak indices
+  std::set<unsigned int> points; // Set of iXYZ peak indices
 };
 
 typedef SmartPtr<RbtFFTPeak> RbtFFTPeakPtr; // Smart pointer

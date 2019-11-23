@@ -50,8 +50,8 @@ private:
   RbtMolecularFileSinkPtr m_spErrorFile;
   bool m_bWriteErrors;
   // Keep track of individual constraint scores for ScoreMap
-  mutable RbtDoubleList m_conScores; // Mandatory constraint scores
-  mutable RbtDoubleList m_optScores; // Optional constraint scores
+  mutable std::vector<double> m_conScores; // Mandatory constraint scores
+  mutable std::vector<double> m_optScores; // Optional constraint scores
 };
 
 #endif //_RBTPHARMASF_H_

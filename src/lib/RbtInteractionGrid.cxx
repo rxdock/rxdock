@@ -201,10 +201,11 @@ void RbtInteractionGrid::SetInteractionLists(RbtInteractionCenter *pIntn,
 
   // DM 27 Oct 2000 - GetCoords now returns by reference
   const RbtCoord &c = pAtom1->GetCoords();
-  RbtUIntList sphereIndices;
+  std::vector<unsigned int> sphereIndices;
   GetSphereIndices(c, radius, sphereIndices);
 
-  for (RbtUIntListConstIter sphereIter = sphereIndices.begin();
+  for (std::vector<unsigned int>::const_iterator sphereIter =
+           sphereIndices.begin();
        sphereIter != sphereIndices.end(); sphereIter++) {
     // RbtInteractionListMapIter mapIter = m_intnMap.find(*sphereIter);
     // if (mapIter != m_intnMap.end()) {

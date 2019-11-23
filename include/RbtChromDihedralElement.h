@@ -46,12 +46,12 @@ public:
   virtual RbtChromElement *clone() const;
   virtual int GetLength() const { return 1; }
   virtual int GetXOverLength() const { return 1; }
-  virtual void GetVector(RbtDoubleList &v) const;
+  virtual void GetVector(std::vector<double> &v) const;
   virtual void GetVector(RbtXOverList &v) const;
-  virtual void SetVector(const RbtDoubleList &v, int &i);
+  virtual void SetVector(const std::vector<double> &v, int &i);
   virtual void SetVector(const RbtXOverList &v, int &i);
-  virtual void GetStepVector(RbtDoubleList &v) const;
-  virtual double CompareVector(const RbtDoubleList &v, int &i) const;
+  virtual void GetStepVector(std::vector<double> &v) const;
+  virtual double CompareVector(const std::vector<double> &v, int &i) const;
   virtual void Print(std::ostream &s) const;
 
   // Returns a standardised dihedral angle in the range [-180, +180}

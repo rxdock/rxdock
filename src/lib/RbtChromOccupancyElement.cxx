@@ -63,7 +63,7 @@ RbtChromElement *RbtChromOccupancyElement::clone() const {
   return new RbtChromOccupancyElement(m_spRefData, m_value);
 }
 
-void RbtChromOccupancyElement::GetVector(RbtDoubleList &v) const {
+void RbtChromOccupancyElement::GetVector(std::vector<double> &v) const {
   v.push_back(m_value);
 }
 
@@ -73,7 +73,7 @@ void RbtChromOccupancyElement::GetVector(RbtXOverList &v) const {
   v.push_back(occupancyElement);
 }
 
-void RbtChromOccupancyElement::SetVector(const RbtDoubleList &v, int &i) {
+void RbtChromOccupancyElement::SetVector(const std::vector<double> &v, int &i) {
   if (VectorOK(v, i)) {
     m_value = StandardisedValue(v[i++]);
   } else {
@@ -97,11 +97,11 @@ void RbtChromOccupancyElement::SetVector(const RbtXOverList &v, int &i) {
   }
 }
 
-void RbtChromOccupancyElement::GetStepVector(RbtDoubleList &v) const {
+void RbtChromOccupancyElement::GetStepVector(std::vector<double> &v) const {
   v.push_back(m_spRefData->GetStepSize());
 }
 
-double RbtChromOccupancyElement::CompareVector(const RbtDoubleList &v,
+double RbtChromOccupancyElement::CompareVector(const std::vector<double> &v,
                                                int &i) const {
   double retVal(0.0);
   if (!VectorOK(v, i)) {

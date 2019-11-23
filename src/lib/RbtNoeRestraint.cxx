@@ -40,8 +40,8 @@ std::ostream &operator<<(std::ostream &s, const RbtNoeEndNames &n) {
   else {
     s << Rbt::ConvertNoeRestraintTypeToString(n.type);
     s << "( ";
-    for (RbtStringListConstIter iter = n.names.begin(); iter != n.names.end();
-         iter++)
+    for (std::vector<std::string>::const_iterator iter = n.names.begin();
+         iter != n.names.end(); iter++)
       s << *iter << " ";
     s << ")";
   }

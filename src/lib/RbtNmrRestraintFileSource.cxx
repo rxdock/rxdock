@@ -101,7 +101,7 @@ void RbtNmrRestraintFileSource::Parse() {
             throw RbtFileParseError(_WHERE_,
                                     "Unmatched or misplaced brackets at line " +
                                         (*fileIter) + " in " + GetFileName());
-          RbtStringList fromList =
+          std::vector<std::string> fromList =
               Rbt::ConvertDelimitedStringToList(strAtomNames2, strDelimiter);
           restraint.from.names = fromList;
           restraint.maxDist = maxDist;
@@ -120,10 +120,10 @@ void RbtNmrRestraintFileSource::Parse() {
             throw RbtFileParseError(_WHERE_,
                                     "Unmatched or misplaced brackets at line " +
                                         (*fileIter) + " in " + GetFileName());
-          RbtStringList fromList =
+          std::vector<std::string> fromList =
               Rbt::ConvertDelimitedStringToList(strAtomNames1, strDelimiter);
           restraint.from.names = fromList;
-          RbtStringList toList =
+          std::vector<std::string> toList =
               Rbt::ConvertDelimitedStringToList(strAtomNames2, strDelimiter);
           restraint.to.names = toList;
           restraint.maxDist = maxDist;

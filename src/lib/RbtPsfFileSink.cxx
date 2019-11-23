@@ -53,13 +53,13 @@ void RbtPsfFileSink::Render() {
     // 1. Write the titles
     AddLine(strPsfKey);
     AddLine("");
-    RbtStringList titleList(spModel->GetTitleList());
+    std::vector<std::string> titleList(spModel->GetTitleList());
     std::ostringstream ostr;
     ostr << std::setw(8) << titleList.size() << std::setw(0) << " "
          << strTitleKey << std::ends;
     AddLine(ostr.str());
     // delete ostr.str();
-    for (RbtStringListConstIter iter = titleList.begin();
+    for (std::vector<std::string>::const_iterator iter = titleList.begin();
          iter != titleList.end(); iter++) {
       // Add an initial star if the title does not already commence with a star
       if ((*iter).find("*") != 0)

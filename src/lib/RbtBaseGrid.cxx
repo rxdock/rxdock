@@ -136,11 +136,12 @@ void RbtBaseGrid::SetPad(unsigned int NPad) {
 }
 
 // Returns list of real-world coordinates for given set of iXYZ indices
-RbtCoordList RbtBaseGrid::GetCoordList(const RbtUIntSet &iXYZSet) const {
+RbtCoordList
+RbtBaseGrid::GetCoordList(const std::set<unsigned int> &iXYZSet) const {
   RbtCoordList coordList;
   coordList.reserve(iXYZSet.size());
-  for (RbtUIntSetConstIter iter = iXYZSet.begin(); iter != iXYZSet.end();
-       iter++)
+  for (std::set<unsigned int>::const_iterator iter = iXYZSet.begin();
+       iter != iXYZSet.end(); iter++)
     coordList.push_back(GetCoord(*iter));
   return coordList;
 }
@@ -149,7 +150,7 @@ RbtCoordList RbtBaseGrid::GetCoordList(const RbtUIntSet &iXYZSet) const {
 // given center and radius DM 17 Jul 2000 - use std::vector<RbtUInt> and return
 // by reference, for performance boost
 void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, double radius,
-                                   RbtUIntList &sIndices) const {
+                                   std::vector<unsigned int> &sIndices) const {
   sIndices.clear(); // Clear the return list
 
   // Iterate over the cube defined by the coord and the radius

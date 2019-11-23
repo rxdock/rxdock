@@ -105,10 +105,10 @@ private:
   // offsets for any implicit hydrogens pAtom2 is the other central atom in the
   // bond, is excluded from the returned list of bonded atoms
   void CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
-                       RbtAtomList &bondedAtoms, RbtDoubleList &offsets);
+                       RbtAtomList &bondedAtoms, std::vector<double> &offsets);
 
   RbtParameterFileSourcePtr m_spDihedralSource;
-  RbtStringList m_centralPairs;
+  std::vector<std::string> m_centralPairs;
   RbtTriposAtomType m_triposType;
 };
 

@@ -146,10 +146,11 @@ const RbtAtomRList &RbtNonBondedGrid::GetAtomList(const RbtCoord &c) const {
 /////////////////////////
 void RbtNonBondedGrid::SetAtomLists(RbtAtom *pAtom, double radius) {
   const RbtCoord &c = pAtom->GetCoords();
-  RbtUIntList sphereIndices;
+  std::vector<unsigned int> sphereIndices;
   GetSphereIndices(c, radius, sphereIndices);
 
-  for (RbtUIntListConstIter sphereIter = sphereIndices.begin();
+  for (std::vector<unsigned int>::const_iterator sphereIter =
+           sphereIndices.begin();
        sphereIter != sphereIndices.end(); sphereIter++) {
     // RbtAtomListMapIter mapIter = m_atomMap.find(*sphereIter);
     // if (mapIter != m_atomMap.end()) {

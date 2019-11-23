@@ -452,7 +452,7 @@ inline RbtCoord Max(const RbtCoord &coord1, const RbtCoord &coord2) {
 // DM 28 Jul 1999 - returns component-wise min coord for coord list (i.e.min x,
 // min y, min z)
 inline RbtCoord Min(const RbtCoordList &cl) {
-  RbtDoubleList cx, cy, cz;
+  std::vector<double> cx, cy, cz;
   // Extract arrays of x,y,z components separately
   std::transform(cl.begin(), cl.end(), std::back_inserter(cx), ExtractXCoord);
   std::transform(cl.begin(), cl.end(), std::back_inserter(cy), ExtractYCoord);
@@ -466,7 +466,7 @@ inline RbtCoord Min(const RbtCoordList &cl) {
 // DM 28 Jul 1999 - returns component-wise max coord for coord list (i.e. max x,
 // max y, max z)
 inline RbtCoord Max(const RbtCoordList &cl) {
-  RbtDoubleList cx, cy, cz;
+  std::vector<double> cx, cy, cz;
   // Extract arrays of x,y,z components separately
   std::transform(cl.begin(), cl.end(), std::back_inserter(cx), ExtractXCoord);
   std::transform(cl.begin(), cl.end(), std::back_inserter(cy), ExtractYCoord);

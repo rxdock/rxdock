@@ -57,8 +57,8 @@ public:
   RBTDLL_EXPORT std::string GetTitle();
   std::string GetVersion();
   unsigned int GetNumElements();
-  RbtStringList GetElementNameList(); // List of element names
-  RbtIntList GetAtomicNumberList();   // List of atomic numbers
+  std::vector<std::string> GetElementNameList(); // List of element names
+  std::vector<int> GetAtomicNumberList();        // List of atomic numbers
   // Get element data for a given element name, throws error if not found
   RbtElementData GetElementData(const std::string &strElementName);
   // Get element data for a given atomic number, throws error if not found

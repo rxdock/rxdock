@@ -101,9 +101,10 @@ void EnumerateSymCoords::Setup() {
                                      std::not1(Rbt::isAtomicNo_eq(1)));
   m_symBondList.clear();
   RbtBondList bondList = m_spModel->GetBondList();
-  RbtStringList symBonds = m_spModel->GetDataValue("SYMMETRIC_BONDS");
-  for (RbtStringListConstIter iter = symBonds.begin(); iter != symBonds.end();
-       iter++) {
+  std::vector<std::string> symBonds =
+      m_spModel->GetDataValue("SYMMETRIC_BONDS");
+  for (std::vector<std::string>::const_iterator iter = symBonds.begin();
+       iter != symBonds.end(); iter++) {
     int atomId1(1);
     int atomId2(1);
     int nSym(1);
@@ -196,8 +197,8 @@ int main(int argc, char *argv[]) {
   // std::ios_base::fmtflags oldflags = std::cout.flags();//save state
   std::ios_base::fmtflags oldflags = std::cout.flags(); // save state
 
-  RbtDoubleList scoreVec;
-  RbtDoubleList rmsVec;
+  std::vector<double> scoreVec;
+  std::vector<double> rmsVec;
   double minScore(9999.9);
 
   try {
@@ -295,8 +296,8 @@ int main(int argc, char *argv[]) {
     }
     // END OF MAIN LOOP OVER LIGAND RECORDS
     ////////////////////////////////////////////////////
-    RbtDoubleListConstIter sIter = scoreVec.begin();
-    RbtDoubleListConstIter rIter = rmsVec.begin();
+    std::vector<double>::const_iterator sIter = scoreVec.begin();
+    std::vector<double>::const_iterator rIter = rmsVec.begin();
     double zTot(0.0);
     double zMean(0.0);
     double zMean2(0.0);

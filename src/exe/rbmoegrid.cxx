@@ -183,7 +183,7 @@ int main(int argc, char *argv[]) {
       // Create a bimolecular workspace
       RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
       // Set the workspace name to the root of the receptor .prm filename
-      RbtStringList componentList =
+      std::vector<std::string> componentList =
           Rbt::ConvertDelimitedStringToList((*strReceptorPrmFilesIter), ".");
       std::string wsName = componentList.front();
       spWS->SetName(wsName);

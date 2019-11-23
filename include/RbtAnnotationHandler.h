@@ -35,7 +35,7 @@ public:
   const RbtAnnotationList &GetAnnotationList() const;
   int GetNumAnnotations() const;
   void RenderAnnotationList(const std::string &strName,
-                            RbtStringList &retVal) const;
+                            std::vector<std::string> &retVal) const;
 
 protected:
   ////////////////////////////////////////

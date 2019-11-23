@@ -14,7 +14,9 @@
 #ifndef _RBT_H_
 #define _RBT_H_
 
-#include "RbtContainers.h"
+#include <map>
+#include <vector>
+
 #include "RbtError.h"
 
 #if defined _WIN32 || defined __CYGWIN__
@@ -37,6 +39,15 @@
 #define RBTDLL_LOCAL
 #endif
 #endif
+
+// Segment is a named part of an RbtModel (usually an intact molecule)
+// For now, a segment is defined as just an RbtString
+// RbtSegmentMap holds a map of (key=unique segment name, value=number of atoms
+// in segment)
+typedef std::string RbtSegment;
+typedef std::map<RbtSegment, unsigned int> RbtSegmentMap;
+typedef RbtSegmentMap::iterator RbtSegmentMapIter;
+typedef RbtSegmentMap::const_iterator RbtSegmentMapConstIter;
 
 namespace Rbt {
 ////////////////////////////////////////////////////////////////
@@ -91,9 +102,9 @@ std::string GetFileType(const std::string &strFile);
 // Returns a list of files in a directory (strDir) whose names begin with
 // strFilePrefix (optional) and whose type is strFileType (optional, as returned
 // by GetFileType)
-RbtStringList GetDirList(const std::string &strDir,
-                         const std::string &strFilePrefix = "",
-                         const std::string &strFileType = "");
+std::vector<std::string> GetDirList(const std::string &strDir,
+                                    const std::string &strFilePrefix = "",
+                                    const std::string &strFileType = "");
 //
 ////////////////////////////////////////////////////////////////
 
@@ -116,11 +127,13 @@ RbtSegmentMap SegmentDiffMap(const RbtSegmentMap &map1,
 // DM 30 Mar 1999
 // Converts (comma)-delimited string to string list (similar to
 // ConvertStringToSegmentMap, but returns list not map)
-RBTDLL_EXPORT RbtStringList ConvertDelimitedStringToList(
-    const std::string &strValues, const std::string &strDelimiter = ",");
+RBTDLL_EXPORT std::vector<std::string>
+ConvertDelimitedStringToList(const std::string &strValues,
+                             const std::string &strDelimiter = ",");
 // Converts string list to (comma)-delimited string (inverse of above)
-std::string ConvertListToDelimitedString(const RbtStringList &listOfValues,
-                                         const std::string &strDelimiter = ",");
+std::string
+ConvertListToDelimitedString(const std::vector<std::string> &listOfValues,
+                             const std::string &strDelimiter = ",");
 
 //
 ////////////////////////////////////////////////////////////////

@@ -149,7 +149,8 @@ RbtSFAgg *RbtSFFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
                                           const std::string &strName,
                                           const std::string &strSFClasses) {
   // Get list of scoring function objects to create
-  RbtStringList sfList = Rbt::ConvertDelimitedStringToList(strSFClasses);
+  std::vector<std::string> sfList =
+      Rbt::ConvertDelimitedStringToList(strSFClasses);
   // If strSFClasses is empty, then default to reading all sections of the
   // parameter file for valid scoring function definitions
   // In this case we do not throw an error if a particular section
@@ -163,8 +164,8 @@ RbtSFAgg *RbtSFFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
   // Create empty aggregate
   RbtSFAgg *pSFAgg(new RbtSFAgg(strName));
 
-  for (RbtStringListConstIter sfIter = sfList.begin(); sfIter != sfList.end();
-       sfIter++) {
+  for (std::vector<std::string>::const_iterator sfIter = sfList.begin();
+       sfIter != sfList.end(); sfIter++) {
     spPrmSource->SetSection(*sfIter);
     // Check if this section is a valid scoring function definition
     if (spPrmSource->isParameterPresent(_SF)) {
@@ -174,8 +175,8 @@ RbtSFAgg *RbtSFFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
       RbtBaseSF *pSF = Create(strSFClass, *sfIter);
       // Set all the scoring function parameters from the rest of the parameters
       // listed
-      RbtStringList prmList = spPrmSource->GetParameterList();
-      for (RbtStringListConstIter prmIter = prmList.begin();
+      std::vector<std::string> prmList = spPrmSource->GetParameterList();
+      for (std::vector<std::string>::const_iterator prmIter = prmList.begin();
            prmIter != prmList.end(); prmIter++) {
         if ((*prmIter) != _SF) { // Skip _SF parameter
           pSF->SetParameter(*prmIter,

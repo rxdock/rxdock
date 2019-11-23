@@ -37,8 +37,9 @@ RbtTetherSF::~RbtTetherSF() {
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
-RbtIntList RbtTetherSF::ReadTetherAtoms(RbtStringList &strAtoms) {
-  RbtIntList tetherAtoms;
+std::vector<int>
+RbtTetherSF::ReadTetherAtoms(std::vector<std::string> &strAtoms) {
+  std::vector<int> tetherAtoms;
   std::string strTetherAtoms = Rbt::ConvertListToDelimitedString(strAtoms);
   std::istringstream ist(strTetherAtoms.c_str());
   int i;
@@ -60,12 +61,12 @@ void RbtTetherSF::SetupReceptor() {
   RbtMolecularFileSourcePtr spReferenceSD(
       new RbtMdlFileSource(refFile, false, false, true));
   RbtModelPtr spReferenceMdl(new RbtModel(spReferenceSD));
-  RbtStringList strTetherAtomsL =
+  std::vector<std::string> strTetherAtomsL =
       spReferenceMdl->GetDataValue("TETHERED ATOMS");
-  RbtIntList tetherAtomsId = ReadTetherAtoms(strTetherAtomsL);
+  std::vector<int> tetherAtomsId = ReadTetherAtoms(strTetherAtomsL);
   RbtAtomList refAtoms = spReferenceMdl->GetAtomList();
-  for (RbtIntListIter iter = tetherAtomsId.begin(); iter < tetherAtomsId.end();
-       iter++) {
+  for (std::vector<int>::iterator iter = tetherAtomsId.begin();
+       iter < tetherAtomsId.end(); iter++) {
     m_tetherCoords.push_back(refAtoms[*iter]->GetCoords());
   }
 }
@@ -75,7 +76,8 @@ void RbtTetherSF::SetupLigand() {
   if (GetLigand().Null())
     return;
 
-  RbtStringList strTetherAtomsL = GetLigand()->GetDataValue("TETHERED ATOMS");
+  std::vector<std::string> strTetherAtomsL =
+      GetLigand()->GetDataValue("TETHERED ATOMS");
   m_tetherAtomList = ReadTetherAtoms(strTetherAtomsL);
   if (m_tetherAtomList.size() != m_tetherCoords.size())
     throw RbtBadArgument(_WHERE_,
@@ -96,7 +98,7 @@ void RbtTetherSF::SetupScore() {
 double RbtTetherSF::RawScore() const {
   double score(0.0);
   int i = 0;
-  for (RbtIntListConstIter iter = m_tetherAtomList.begin();
+  for (std::vector<int>::const_iterator iter = m_tetherAtomList.begin();
        iter < m_tetherAtomList.end(); iter++, i++)
     score += Rbt::Length2(m_ligAtomList[*iter]->GetCoords(), m_tetherCoords[i]);
   return score;

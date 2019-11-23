@@ -43,8 +43,8 @@ bool RbtParamHandler::isParameterValid(const std::string &strName) const {
 }
 
 // Get list of all parameter names
-RbtStringList RbtParamHandler::GetParameterNames() const {
-  RbtStringList nameList;
+std::vector<std::string> RbtParamHandler::GetParameterNames() const {
+  std::vector<std::string> nameList;
   for (RbtStringVariantMapConstIter iter = m_parameters.begin();
        iter != m_parameters.end(); iter++) {
     nameList.push_back((*iter).first);

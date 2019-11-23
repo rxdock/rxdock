@@ -90,7 +90,7 @@ int RbtBaseMolecularFileSource::GetNumSegments() {
     throw RbtInvalidRequest(_WHERE_, "Atom list not supported by " + GetName());
 }
 
-RbtStringList RbtBaseMolecularFileSource::GetTitleList() {
+std::vector<std::string> RbtBaseMolecularFileSource::GetTitleList() {
   if (isTitleListSupported()) {
     Parse();
     return m_titleList;
@@ -141,10 +141,10 @@ int RbtBaseMolecularFileSource::GetNumData() {
 }
 
 // Get list of field names as string list
-RbtStringList RbtBaseMolecularFileSource::GetDataFieldList() {
+std::vector<std::string> RbtBaseMolecularFileSource::GetDataFieldList() {
   if (isDataSupported()) {
     Parse();
-    RbtStringList dataFieldList;
+    std::vector<std::string> dataFieldList;
     dataFieldList.reserve(m_dataMap.size());
     for (RbtStringVariantMapConstIter iter = m_dataMap.begin();
          iter != m_dataMap.end(); iter++)
@@ -383,7 +383,7 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
         << leadAtom->GetFullAtomName() << std::endl;
     return;
   }
-  RbtStringList resList(spParamSource->GetSectionList());
+  std::vector<std::string> resList(spParamSource->GetSectionList());
   if (std::find(resList.begin(), resList.end(), subunitName) == resList.end()) {
     // std::cout << "INFO SetupPartialIonicGroups: No section for residue " <<
     // subunitName << std::endl;
@@ -391,11 +391,12 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
   }
 
   spParamSource->SetSection(subunitName);
-  RbtStringList atList = spParamSource->GetParameterList();
+  std::vector<std::string> atList = spParamSource->GetParameterList();
   if (std::find(atList.begin(), atList.end(), _MANDATORY) != atList.end()) {
     std::string mandatory =
         spParamSource->GetParameterValueAsString(_MANDATORY);
-    RbtStringList mandAtoms = Rbt::ConvertDelimitedStringToList(mandatory);
+    std::vector<std::string> mandAtoms =
+        Rbt::ConvertDelimitedStringToList(mandatory);
     unsigned int nPresent = Rbt::GetNumMatchingAtoms(atoms, mandAtoms);
     if (nPresent != mandAtoms.size()) {
 #ifdef _DEBUG
@@ -411,7 +412,8 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
   if (std::find(atList.begin(), atList.end(), _FORBIDDEN) != atList.end()) {
     std::string forbidden =
         spParamSource->GetParameterValueAsString(_FORBIDDEN);
-    RbtStringList forbAtoms = Rbt::ConvertDelimitedStringToList(forbidden);
+    std::vector<std::string> forbAtoms =
+        Rbt::ConvertDelimitedStringToList(forbidden);
     int nPresent = Rbt::GetNumMatchingAtoms(atoms, forbAtoms);
     if (nPresent > 0) {
 #ifdef _DEBUG
@@ -424,8 +426,8 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     std::remove(atList.begin(), atList.end(), _FORBIDDEN);
   }
 
-  for (RbtStringListConstIter aIter = atList.begin(); aIter != atList.end();
-       aIter++) {
+  for (std::vector<std::string>::const_iterator aIter = atList.begin();
+       aIter != atList.end(); aIter++) {
     double partialCharge(spParamSource->GetParameterValue(
         *aIter)); // Get the partial charge value
 #ifdef _DEBUG

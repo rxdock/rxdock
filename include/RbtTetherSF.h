@@ -37,9 +37,9 @@ protected:
   void ParameterUpdated(const std::string &strName);
 
 private:
-  RbtIntList ReadTetherAtoms(RbtStringList &);
+  std::vector<int> ReadTetherAtoms(std::vector<std::string> &);
   RbtAtomList m_ligAtomList;
-  RbtIntList m_tetherAtomList;
+  std::vector<int> m_tetherAtomList;
   RbtCoordList m_tetherCoords;
 };
 

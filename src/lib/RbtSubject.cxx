@@ -12,6 +12,8 @@
 
 #include "RbtSubject.h"
 
+#include <algorithm>
+
 // Constructor -does nothing.
 RbtSubject::RbtSubject() { _RBTOBJECTCOUNTER_CONSTR_("RbtSubject"); }
 

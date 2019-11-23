@@ -21,6 +21,8 @@
 #include "RbtQuat.h"
 #include "RbtTriposAtomType.h"
 
+#include <list>
+
 class RbtModel; // Forward declaration
 class RbtBond;  // Forward declaration
 
@@ -1197,9 +1199,9 @@ RbtAtomList GetMatchingAtomList(const RbtAtomList &atomList,
 // specifiers Returns total list (i.e. all matches OR'd). Does not remove
 // duplicates.
 unsigned int GetNumMatchingAtoms(const RbtAtomList &atomList,
-                                 const RbtStringList &fullNameList);
+                                 const std::vector<std::string> &fullNameList);
 RbtAtomList GetMatchingAtomList(const RbtAtomList &atomList,
-                                const RbtStringList &fullNameList);
+                                const std::vector<std::string> &fullNameList);
 
 /////////////////////////
 // DM 07 Jan 1999

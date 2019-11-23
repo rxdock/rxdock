@@ -88,7 +88,8 @@ private:
   std::string GetMOL2Tag(const std::string &aLine);
   // parse/tokenize second line (number of  atoms, bonds etc) in MOLECULE
   void ParseCountFields(const std::string &aLine);
-  void Tokenize(const std::string &aString, RbtStringList &aTokensBuf);
+  void Tokenize(const std::string &aString,
+                std::vector<std::string> &aTokensBuf);
 
   unsigned int m_NL; // No. of lines
   // data fields in MOLECULE

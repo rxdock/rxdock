@@ -34,10 +34,10 @@ public:
   // DM 06 June 2000 - limit #parameters to those in current section
   unsigned int GetNumParameters();
   // DM 4 Feb 1999 Renamed from GetParameters()
-  // RbtStringDoubleMap GetParameterMap();
+  // std::map<std::string, double> GetParameterMap();
   // DM 12 Feb 1999 - only return the list of parameter names, not their values
   // DM 06 Jun 2000 - limits params to those in named section
-  RBTDLL_EXPORT RbtStringList GetParameterList();
+  RBTDLL_EXPORT std::vector<std::string> GetParameterList();
   // DM 4 Feb 1999 Get a particular named parameter value as a double
   double GetParameterValue(const std::string &strParamName);
   // DM 12 Feb 1999 Get a particular named parameter value as a string
@@ -53,9 +53,9 @@ public:
   // Main use is for simulation protocols which may need to define a variable
   // number of phases - e.g. high temperature sampling, cooling phase,
   // minimisation phase and need the same parameters to appear in each
-  int GetNumSections();           // Number of named sections
-  RbtStringList GetSectionList(); // List of section names
-  std::string GetSection() const; // Get current section name
+  int GetNumSections();                      // Number of named sections
+  std::vector<std::string> GetSectionList(); // List of section names
+  std::string GetSection() const;            // Get current section name
   RBTDLL_EXPORT void
   SetSection(const std::string &strSection = ""); // Set current section name
 
@@ -89,8 +89,8 @@ private:
   std::string m_strTitle;
   std::string m_strVersion;
   RbtStringVariantMap m_paramsMap;
-  RbtStringList m_sectionNames; // List(vector) of section names
-  std::string m_strSection;     // Current section
+  std::vector<std::string> m_sectionNames; // List(vector) of section names
+  std::string m_strSection;                // Current section
 };
 
 // useful typedefs
