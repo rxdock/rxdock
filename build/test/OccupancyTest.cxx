@@ -55,6 +55,11 @@ TEST_F(OccupancyTest, SolvationSF) {
   m_workSpace->SetSF(sfAgg);
 
   ASSERT_LT(CompareScoresForDisabledAndNoSolvent(), TINY);
+  sfInter->Remove(sfSolv);
+  sfAgg->Remove(sfInter);
+  delete sfAgg;
+  delete sfInter;
+  delete sfSolv;
 }
 
 // 2) Check that the total polar score for receptor / ligand / (disabled)
@@ -74,6 +79,13 @@ TEST_F(OccupancyTest, PolarSF) {
   m_workSpace->SetSF(sfAgg);
 
   ASSERT_LT(CompareScoresForDisabledAndNoSolvent(), TINY);
+  sfInter->Remove(sfPolar);
+  sfInter->Remove(sfSetupPolar);
+  sfAgg->Remove(sfInter);
+  delete sfAgg;
+  delete sfInter;
+  delete sfSetupPolar;
+  delete sfPolar;
 }
 
 // 3) Check that the total vdW score for receptor / ligand / (disabled) solvent
@@ -87,6 +99,11 @@ TEST_F(OccupancyTest, VdwSF) {
   m_workSpace->SetSF(sfAgg);
 
   ASSERT_LT(CompareScoresForDisabledAndNoSolvent(), TINY);
+  sfInter->Remove(sfVdw);
+  sfAgg->Remove(sfInter);
+  delete sfAgg;
+  delete sfInter;
+  delete sfVdw;
 }
 
 TEST_F(OccupancyTest, VdwSFSolventModes) {
@@ -101,6 +118,13 @@ TEST_F(OccupancyTest, VdwSFSolventModes) {
   m_workSpace->SetSF(sfAgg);
 
   ASSERT_LT(CompareScoresForSolventModes(), TINY);
+  sfInter->Remove(sfVdw);
+  sfAgg->Remove(sfSystem);
+  sfAgg->Remove(sfInter);
+  delete sfAgg;
+  delete sfInter;
+  delete sfSystem;
+  delete sfVdw;
 }
 
 // 5) Checks the results of RbtFlexAtomFactory for receptor flexibility modes
