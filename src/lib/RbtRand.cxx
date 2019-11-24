@@ -10,8 +10,6 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include <ctime> //Time functions for initialising the random number generator from the system clock
-
 #include "RbtRand.h"
 #include "Singleton.h"
 
@@ -20,11 +18,11 @@
 RbtRand::RbtRand() {
   // Seed the random number generator
   // Fixed seed in debug mode
-  // Seed from system clock in release mode
+  // Seed from the random device in release mode
 #ifdef _DEBUG
   Seed();
 #else  //_DEBUG
-  SeedFromClock();
+  SeedFromRandomDevice();
 #endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_("RbtRand");
 }
@@ -37,18 +35,27 @@ RbtRand::~RbtRand() { _RBTOBJECTCOUNTER_DESTR_("RbtRand"); }
 // Public methods
 
 // Seed the random number generator
-void RbtRand::Seed(int seed) { m_rand.seed(seed); }
+void RbtRand::Seed(int seed) { m_rng.seed(seed); }
 
-// Seed the random number generator from the system clock
-void RbtRand::SeedFromClock() { m_rand.seed(std::time(nullptr)); }
+// Seed the random number generator from the random device
+void RbtRand::SeedFromRandomDevice() {
+  pcg_extras::seed_seq_from<std::random_device> seedSource;
+  m_rng.seed(seedSource);
+}
 
-// Returns current seed
-int RbtRand::GetSeed() { return m_rand.GetSeed(); }
+// Get a random double between 0 and 1
+double RbtRand::GetRandom01() {
+  std::uniform_real_distribution<> uniformDist(0.0, 1.0);
+  return uniformDist(m_rng);
+}
 
 // Get a random integer between 0 and nMax-1
 int RbtRand::GetRandomInt(int nMax) {
-  int r = nMax * m_rand.fdraw();
-  return (r == nMax) ? nMax - 1 : r;
+  if (nMax == 0) {
+    return nMax;
+  }
+  std::uniform_int_distribution<> uniformDist(0, nMax - 1);
+  return uniformDist(m_rng);
 }
 
 // Get a random unit vector distributed evenly over the surface of a sphere
@@ -63,28 +70,14 @@ RbtVector RbtRand::GetRandomUnitVector() {
 
 // Get a random number from the Normal distribution (mean, variance)
 double RbtRand::GetGaussianRandom(double mean, double variance) {
-  for (;;) {
-    double u1 = GetRandom01();
-    double u2 = GetRandom01();
-    double v1 = 2 * u1 - 1;
-    double v2 = 2 * u2 - 1;
-    double w = (v1 * v1) + (v2 * v2);
-    if (w <= 1) {
-      double y = std::sqrt((-2 * std::log(w)) / w);
-      double x1 = v1 * y;
-      return (x1 * std::sqrt(variance) + mean);
-    }
-  }
+  std::normal_distribution<> gaussianDist{mean, variance};
+  return gaussianDist(m_rng);
 }
 
 // Get a random number from the Cauchy distribution (mean, variance)
 double RbtRand::GetCauchyRandom(double mean, double variance) {
-  double v1 = GetGaussianRandom(mean, variance);
-  double v2 = GetGaussianRandom(mean, variance);
-  if (std::fabs(v2) > 0.001)
-    return (v1 / v2);
-  else
-    return 0.0;
+  std::cauchy_distribution<> cauchyDist{mean, variance};
+  return cauchyDist(m_rng);
 }
 
 ///////////////////////////////////////

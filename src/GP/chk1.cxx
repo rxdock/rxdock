@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     if (argc > 1)
       theRand.Seed(std::atoi(argv[2]));
     else
-      theRand.SeedFromClock();
+      theRand.SeedFromRandomDevice();
     std::cout << "Seed: " << theRand.GetSeed() << std::endl;
     RbtGPGenome::SetStructure(56, 3, 1, 1, 7, 1, 200, 100);
     ifstream desc("descnames", ios::in);

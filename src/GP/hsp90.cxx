@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     if (argc > 1)
       theRand.Seed(std::atoi(argv[1]));
     else
-      theRand.SeedFromClock();
+      theRand.SeedFromRandomDevice();
     std::cout << "Seed: " << theRand.GetSeed() << std::endl;
     std::cout << "Output taken from: \n";
     std::string strInputFile;

@@ -73,27 +73,29 @@ srcRbt = [
   'import/simplex/src/NMSearch.cxx'
 ]
 
+pcg_cpp_dep = dependency('pcg-cpp', fallback : ['pcg', 'pcg_cpp_dep'])
+
 library_soversion = '0'
 libRbt = library(
-  'Rbt', srcRbt, soversion : library_soversion,
+  'Rbt', srcRbt, dependencies : pcg_cpp_dep, soversion : library_soversion,
   version : library_soversion + '.' + meson.project_version(),
   include_directories : incRbtAll
 )
 
 rbdock = executable(
   'rbdock', 'src/exe/rbdock.cxx', link_with : libRbt,
-  include_directories : incRbt
+  dependencies : pcg_cpp_dep, include_directories : incRbt
 )
 rbcavity = executable(
   'rbcavity', 'src/exe/rbcavity.cxx', link_with : libRbt,
-  include_directories : incRbt
+  dependencies : pcg_cpp_dep, include_directories : incRbt
 )
 executable(
   'rbrms', 'src/exe/rbrms.cxx', link_with : libRbt, include_directories : incRbt
 )
 executable(
   'rbmoegrid', 'src/exe/rbmoegrid.cxx', link_with : libRbt,
-  include_directories : incRbt
+  dependencies : pcg_cpp_dep, include_directories : incRbt
 )
 executable(
   'rblist', 'src/exe/rblist.cxx', link_with : libRbt,
@@ -101,7 +103,7 @@ executable(
 )
 executable(
   'rbcalcgrid', 'src/exe/rbcalcgrid.cxx', link_with : libRbt,
-  include_directories : incRbt
+  dependencies : pcg_cpp_dep, include_directories : incRbt
 )
 executable(
   'rbconvgrid', 'src/exe/rbconvgrid.cxx', link_with : libRbt,
@@ -140,8 +142,8 @@ if tests_opt
       'build/test/RbtChromTest.cxx', 'build/test/SearchTest.cxx'
     ]
     unit_test = executable(
-      'unit-test', srcTest, dependencies : gtest_dep, link_with : libRbt,
-      include_directories : [incTest, incRbt]
+      'unit-test', srcTest, dependencies : [pcg_cpp_dep, gtest_dep],
+      link_with : libRbt, include_directories : [incTest, incRbt]
     )
     rbtHomePath = '/build/test/RBT_HOME'
     test(

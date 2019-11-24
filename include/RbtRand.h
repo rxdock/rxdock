@@ -17,7 +17,9 @@
 #ifndef _RBTRAND_H_
 #define _RBTRAND_H_
 
-#include "RandInt.h"
+#include <pcg_random.hpp>
+#include <random>
+
 #include "RbtCoord.h"
 
 class RbtRand {
@@ -34,12 +36,12 @@ public:
 
   // Seed the random number generator
   RBTDLL_EXPORT void Seed(int seed = 0);
-  // Seed the random number generator from the system clock
-  void SeedFromClock();
+  // Seed the random number generator from the random device
+  void SeedFromRandomDevice();
   // Returns current seed
   RBTDLL_EXPORT int GetSeed();
-  // Get a random double between 0 and 1 (inlined)
-  double GetRandom01() { return m_rand.fdraw(); }
+  // Get a random double between 0 and 1
+  RBTDLL_EXPORT double GetRandom01();
   // Get a random integer between 0 and nMax-1
   int GetRandomInt(int nMax);
   // Get a random unit vector distributed evenly over the surface of a sphere
@@ -48,7 +50,7 @@ public:
   double GetCauchyRandom(double, double);
 
 private:
-  Randint m_rand; // Random number generator
+  pcg32 m_rng; // Random number generator
 };
 
 ///////////////////////////////////////

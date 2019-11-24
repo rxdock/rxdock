@@ -76,7 +76,8 @@ void PrintUsage(void) {
   std::cout << "\t\t-T <traceLevel> - controls output level for debugging (0 = "
                "minimal, >0 = more verbose)"
             << std::endl;
-  std::cout << "\t\t-s <rndSeed> - random number seed (default=from sys clock)"
+  std::cout << "\t\t-s <rndSeed> - random number seed (default=from "
+               "std::random_device)"
             << std::endl;
 }
 
@@ -135,7 +136,7 @@ int main(int argc, char *argv[]) {
   bool bNegIonise(false);
   bool bImplH(true); // if true, read only polar hydrogens from SD file, else
                      // read all H's present
-  bool bSeed(false); // Random number seed (default = from system clock)
+  bool bSeed(false); // Random number seed (default = from std::random_device)
   int nSeed(0);
   bool bTrace(false);
   int iTrace(0); // Trace level, for debugging
@@ -507,8 +508,13 @@ int main(int argc, char *argv[]) {
         if (spMdlFileSource->isDataFieldPresent("REG_Number"))
           std::cout << "REG_Num:" << spMdlFileSource->GetDataValue("REG_Number")
                     << std::endl;
-        std::cout << std::setw(30) << "RANDOM_NUMBER_SEED:" << theRand.GetSeed()
-                  << std::endl;
+        std::cout << std::setw(30) << "RNG seed:";
+        if (bSeed) {
+          std::cout << nSeed;
+        } else {
+          std::cout << "std::random_device";
+        }
+        std::cout << std::endl;
 
         // Create and register the ligand model
         RbtModelPtr spLigand = prmFactory.CreateLigand(spMdlFileSource);
