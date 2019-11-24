@@ -586,6 +586,15 @@ int main(int argc, char *argv[]) {
     //      RbtCrdFileSink(strRunName+".crd",spReceptor));
     //      spRecepSink->Render();
     //    }
+    std::cout << std::endl;
+    Rbt::PrintBibliographyItem(std::cout, "RiboDock2004");
+    Rbt::PrintBibliographyItem(std::cout, "rDock2014");
+#if !defined(__sun) && !defined(_MSC_VER)
+    Rbt::PrintBibliographyItem(std::cout, "PCG2014");
+#endif
+    std::cout << std::endl;
+    std::cout << "Thank you for using " << Rbt::GetProgramName() << " "
+              << Rbt::GetVersion() << "." << std::endl;
   } catch (RbtError &e) {
     std::cout << e << std::endl;
   } catch (...) {

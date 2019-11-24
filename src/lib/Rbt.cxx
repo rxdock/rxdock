@@ -18,10 +18,16 @@
 #include <ctime>     //For time functions
 #include <dirent.h>  //For directory handling
 #include <fstream>   //For ifstream
+#include <sstream>   //For istringstream and ostringstream
 #ifdef _WIN32
 #include <direct.h>
+#include <windows.h>   // GetConsoleScreenBufferInfo
 #define getcwd _getcwd // CRT library getcwd
 #else
+#include <sys/ioctl.h> //For TIOCGWINSZ
+#ifdef __sun
+#include <termios.h>
+#endif
 #include <unistd.h> //For POSIX getcwd
 #endif
 //#include <ios>
@@ -57,6 +63,8 @@ std::string Rbt::GetRbtHome() {
   }
 }
 
+// Rbt::GetProgramName - returns program name
+std::string Rbt::GetProgramName() { return IDS_NAME; }
 // Rbt::GetCopyright - returns legalese statement
 std::string Rbt::GetCopyright() { return IDS_COPYRIGHT; }
 // Rbt::GetVersion - returns current library version
@@ -296,6 +304,45 @@ Rbt::ConvertListToDelimitedString(const std::vector<std::string> &listOfValues,
   return strValues;
 }
 
+// Detect terminal width and wrap text to that width
+std::string Rbt::WrapTextToTerminalWidth(const std::string &text) {
+  size_t width = 80;
+
+#ifdef _WIN32
+  HANDLE handleStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+  if (handleStdOut != INVALID_HANDLE_VALUE) {
+    CONSOLE_SCREEN_BUFFER_INFO csbInfo;
+    GetConsoleScreenBufferInfo(handleStdOut, &csbInfo);
+    width = static_cast<size_t>(csbInfo.dwSize.X);
+  }
+#else
+  winsize winsz;
+  if ((ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsz) == 0) && winsz.ws_col) {
+    width = winsz.ws_col;
+  }
+#endif
+
+  std::istringstream sourceText(text);
+  std::ostringstream wrappedText;
+  std::string word;
+
+  // Handle non-empty strings word by word
+  if (sourceText >> word) {
+    wrappedText << word;
+    size_t remaining = width - word.length();
+    while (sourceText >> word) {
+      if (remaining < word.length() + 1) {
+        wrappedText << '\n' << word;
+        remaining = width - word.length();
+      } else {
+        wrappedText << ' ' << word;
+        remaining -= word.length() + 1;
+      }
+    }
+  }
+  return wrappedText.str();
+}
+
 ////////////////////////////////////////////////////////////////
 // I/O ROUTINES
 //
@@ -316,6 +363,72 @@ std::ostream &Rbt::PrintStdHeader(std::ostream &s,
   s << "Current dir:\t" << GetCurrentWorkingDirectory() << std::endl;
   s << "Date:\t\t" << GetTime();
   s << "***********************************************" << std::endl;
+  return s;
+}
+
+std::ostream &Rbt::PrintBibliographyItem(std::ostream &s,
+                                         const std::string &publicationKey) {
+  std::map<std::string, std::map<std::string, std::string>> publications = {
+      {"RiboDock2004",
+       {{"type", "article"},
+        {"title", "Validation of an empirical RNA-ligand scoring function for "
+                  "fast flexible docking using RiboDock\u00ae"},
+        {"author", "Morley, S David and Afshar, Mohammad"},
+        {"journal", "Journal of computer-aided molecular design"},
+        {"volume", "18"},
+        {"number", "3"},
+        {"pages", "189--208"},
+        {"year", "2004"},
+        {"publisher", "Springer"}}},
+      {"rDock2014",
+       {{"type", "article"},
+        {"title", "rDock: a fast, versatile and open source program for "
+                  "docking ligands to proteins and nucleic acids"},
+        {"author", "Ruiz-Carmona, Sergio and Alvarez-Garcia, Daniel and "
+                   "Foloppe, Nicolas and Garmendia-Doval, A Beatriz and Juhos, "
+                   "Szilveszter and Schmidtke, Peter and Barril, Xavier and "
+                   "Hubbard, Roderick E and Morley, S David"},
+        {"journal", "PLoS computational biology"},
+        {"volume", "10"},
+        {"number", "4"},
+        {"pages", "e1003571"},
+        {"year", "2014"},
+        {"publisher", "Public Library of Science"}}},
+      {"PCG2014",
+       {{"type", "techreport"},
+        {"title", "PCG: A Family of Simple Fast Space-Efficient Statistically "
+                  "Good Algorithms for Random Number Generation"},
+        {"author", "Melissa E. O'Neill"},
+        {"institution", "Harvey Mudd College"},
+        {"number", "HMC-CS-2014-0905"},
+        {"year", "2014"},
+        {"month", "Sep"},
+        {"xurl", "https://www.cs.hmc.edu/tr/hmc-cs-2014-0905.pdf"}}},
+
+  };
+  std::string citation;
+  citation += "Please cite the following ";
+  citation += publications[publicationKey]["type"];
+  citation += ": ";
+  citation += publications[publicationKey]["author"];
+  citation += ". ";
+  citation += publications[publicationKey]["title"];
+  citation += ". ";
+  if (publications[publicationKey]["type"] == "article") {
+    citation += publications[publicationKey]["journal"];
+    citation += " ";
+    citation += publications[publicationKey]["volume"];
+    citation += "(";
+    citation += publications[publicationKey]["number"];
+    citation += "), ";
+    citation += publications[publicationKey]["pages"];
+  } else if (publications[publicationKey]["type"] == "techreport") {
+    citation += publications[publicationKey]["xurl"];
+  }
+  citation += " (";
+  citation += publications[publicationKey]["year"];
+  citation += ").";
+  s << WrapTextToTerminalWidth(citation) << std::endl;
   return s;
 }
 

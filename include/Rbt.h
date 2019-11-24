@@ -58,6 +58,8 @@ std::string GetRbtRoot();
 // GetRbtHome - returns value of RBT_HOME env variable
 //(or HOME if RBT_HOME is undefined)
 std::string GetRbtHome();
+// Rbt::GetProgramName - returns program name
+RBTDLL_EXPORT std::string GetProgramName();
 // GetCopyright - returns legalese statement
 std::string GetCopyright();
 // GetVersion - returns current library version
@@ -135,6 +137,9 @@ std::string
 ConvertListToDelimitedString(const std::vector<std::string> &listOfValues,
                              const std::string &strDelimiter = ",");
 
+// Detect terminal width and wrap text to that width
+std::string WrapTextToTerminalWidth(const std::string &text);
+
 //
 ////////////////////////////////////////////////////////////////
 
@@ -147,6 +152,9 @@ ConvertListToDelimitedString(const std::vector<std::string> &listOfValues,
 // DM 19 Feb 1999 - include executable information
 RBTDLL_EXPORT std::ostream &
 PrintStdHeader(std::ostream &s, const std::string &strExecutable = "");
+
+RBTDLL_EXPORT std::ostream &
+PrintBibliographyItem(std::ostream &s, const std::string &publicationKey = "");
 
 // Helper functions to read/write chars from iostreams
 // Throws error if stream state is not Good() before and after the read/write

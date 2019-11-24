@@ -18,7 +18,10 @@
 #include "VERSION"
 #include <string>
 
-const std::string IDS_COPYRIGHT = "The rDock program is licensed under "
+const std::string IDS_NAME = "rDock";
+
+const std::string IDS_COPYRIGHT = "The " + IDS_NAME +
+                                  " program is licensed under "
                                   "GNU-LGPLv3.0. http://rdock.sourceforge.net/";
 #ifdef _DEBUG
 const std::string IDS_PRODUCT = "libRbtD.so";
