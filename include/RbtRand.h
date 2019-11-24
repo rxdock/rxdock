@@ -17,7 +17,12 @@
 #ifndef _RBTRAND_H_
 #define _RBTRAND_H_
 
+// Use standard C++11 RNG on Solaris and Windows/MSVC due to PCG build failure
+// Solaris issue: https://github.com/imneme/pcg-cpp/issues/42
+// Windows/MSVC issue: https://github.com/imneme/pcg-cpp/issues/11
+#if !defined(__sun) && !(defined(_WIN32) && defined(_MSC_VER))
 #include <pcg_random.hpp>
+#endif
 #include <random>
 
 #include "RbtCoord.h"
@@ -50,7 +55,11 @@ public:
   double GetCauchyRandom(double, double);
 
 private:
+#if defined(__sun) || (defined(_WIN32) && defined(_MSC_VER))
+  std::default_random_engine m_rng;
+#else
   pcg32 m_rng; // Random number generator
+#endif
 };
 
 ///////////////////////////////////////

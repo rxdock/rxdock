@@ -73,7 +73,17 @@ srcRbt = [
   'import/simplex/src/NMSearch.cxx'
 ]
 
-pcg_cpp_dep = dependency('pcg-cpp', fallback : ['pcg', 'pcg_cpp_dep'])
+cpp_compiler = meson.get_compiler('cpp')
+
+# Use standard C++11 RNG on Solaris and Windows/MSVC due to PCG build failure
+# Solaris issue: https://github.com/imneme/pcg-cpp/issues/42
+# Windows/MSVC issue: https://github.com/imneme/pcg-cpp/issues/11
+if (host_machine.system() == 'sunos' or (host_machine.system() == 'windows' and
+                                         cpp_compiler.get_id() == 'msvc'))
+  pcg_cpp_dep = declare_dependency()
+else
+  pcg_cpp_dep = dependency('pcg-cpp', fallback : ['pcg', 'pcg_cpp_dep'])
+endif
 
 library_soversion = '0'
 libRbt = library(
