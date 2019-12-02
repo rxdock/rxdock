@@ -13,11 +13,8 @@
 // Standalone executable for generating docking site .as files for rbdock
 
 #include <algorithm>
+#include <cxxopts.hpp>
 #include <iomanip>
-#ifdef _WIN32
-#else
-#include <unistd.h>
-#endif
 
 #include "RbtBiMolWorkSpace.h"
 #include "RbtCrdFileSink.h"
@@ -29,43 +26,6 @@
 
 const std::string EXEVERSION =
     " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbcavity.cxx#3 $)";
-
-void PrintUsage(void) {
-  std::cout << std::endl
-            << "rbcavity - calculate docking cavities" << std::endl;
-  std::cout << std::endl
-            << "Usage:\trbcavity -r <ReceptorPrmFile> [-W] [-R] [-d] [-v] [-l "
-               "<dist>] [-s] [-b <border>] [-m]"
-            << std::endl;
-  std::cout << std::endl << "Options:" << std::endl;
-  std::cout
-      << "\t\t-r <PrmFile> - receptor param file (contains active site params)"
-      << std::endl;
-  std::cout
-      << "\t\t-W          - write docking cavities (plus distance grid) to "
-         ".as file"
-      << std::endl;
-  std::cout
-      << "\t\t-R          - read docking cavities (plus distance grid) from "
-         ".as file"
-      << std::endl;
-  std::cout << "\t\t-d          - dump InsightII grids for each cavity for "
-               "visualisation"
-            << std::endl;
-  std::cout << "\t\t-v          - dump target PSF/CRD files for rDock Viewer"
-            << std::endl;
-  std::cout
-      << "\t\t-l <dist>   - list receptor atoms with <dist> A of any cavity"
-      << std::endl;
-  std::cout
-      << "\t\t-s          - print SITE descriptors (counts of exposed atoms)"
-      << std::endl;
-  std::cout << "\t\t-b <border> - set the border around the cavities for the "
-               "distance grid (default=8A)"
-            << std::endl;
-  std::cout << "\t\t-m          - write active site into a MOE grid"
-            << std::endl;
-}
 
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
@@ -93,100 +53,92 @@ int main(int argc, char *argv[]) {
   // Print a standard header
   Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
 
-  // Display brief help message if no args
-  if (argc < 2) {
-    PrintUsage();
-    return 1;
-  }
+  cxxopts::Options options(strExeName, "rbcavity - calculate docking cavities");
 
   // Command line arguments and default values
-  std::string strReceptorPrmFile;
-  bool bReadAS(false);  // If true, read Active Site from file
-  bool bWriteAS(false); // If true, write Active Site to file
-  bool bDump(false);    // If true, dump cavity grids in Insight format
-  bool bViewer(false);  // If true, dump PSF/CRD files for rDock Viewer
-  bool bList(false);    // If true, list atoms within 'distance' of cavity
-  bool bSite(
-      false); // If true, print out "SITE" descriptors (counts of exposed atoms)
-  bool bMOEgrid(false); // If true, create a MOE grid file for AS visualisation
-  bool bBorderArg(false); // If true, border was specified in the command
-                          // line
-  double border(8.0);     // Border to allow around cavities for distance grid
-  double dist(5.0);
-
-  char c;
-  while ((c = getopt(argc, argv, "r:b:RWdvl:ms")) != -1) {
-    switch (c) {
-    case 'r':
-      strReceptorPrmFile = optarg;
-      break;
-    case 'b':
-      bBorderArg = true;
-      border = std::atof(optarg);
-      break;
-    case 'R': // also for -ras
-      bReadAS = true;
-      break;
-    case 'W':
-      bWriteAS = true;
-      break;
-    case 'd':
-      bDump = true;
-      break;
-    case 'v':
-      bViewer = true;
-      break;
-    case 'l':
-      bList = true;
-      dist = std::atof(optarg);
-      break;
-    case 'm':
-      bMOEgrid = true;
-      break;
-    case 's':
-      bSite = true;
-      break;
-    case '?':
-      break;
-    default:
-      std::cout << "WARNING: unknown argument: " << c << std::endl;
-      ;
-      break;
-    }
-  }
-  std::cout << std::endl;
-
-  // check for parameter file name
-  /*if(prmFile) {
-          strReceptorPrmFile	= prmFile;
-  }*/
-  if (strReceptorPrmFile.empty()) {
-    std::cout << "Missing receptor parameter file name" << std::endl;
-    std::exit(1);
-  }
-  // writing command line arguments
-  std::cout << "Command line arguments:" << std::endl;
-  std::cout << "-r " << strReceptorPrmFile << std::endl;
-  if (bList)
-    std::cout << "-l " << dist << std::endl;
-  if (bBorderArg)
-    std::cout << "-b " << border << std::endl;
-  if (bWriteAS)
-    std::cout << "-W" << std::endl;
-  if (bReadAS)
-    std::cout << "-R" << std::endl;
-  if (bMOEgrid)
-    std::cout << "-m" << std::endl;
-  if (bDump)
-    std::cout << "-d" << std::endl;
-  if (bSite)
-    std::cout << "-s" << std::endl;
-  if (bViewer)
-    std::cout << "-v" << std::endl;
-
-  std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
+  cxxopts::OptionAdder adder = options.add_options();
+  adder("r,receptor-param", "receptor param file (contains active site params)",
+        cxxopts::value<std::string>());
+  adder("W,write-docking-cavities",
+        "write docking cavities (plus distance grid) to .as file");
+  adder("R,read-docking-cavities",
+        "read docking cavities (plus distance grid) from .as file");
+  adder("d,write-insightii-grids",
+        "dump InsightII grids for each cavity for visualisation");
+  adder("v,write-psf-crd", "dump target PSF/CRD files for rDock Viewer");
+  adder("l,list-atoms-dist",
+        "list receptor atoms within specified distance of any cavity (in "
+        "angstrom)",
+        cxxopts::value<double>()->default_value("5.0"));
+  adder("s,print-site", "print SITE descriptors (counts of exposed atoms)");
+  adder(
+      "b,border",
+      "set the border around the cavities for the distance grid (in angstrom)",
+      cxxopts::value<double>()->default_value("8.0"));
+  adder("m,write-moe-grid", "write active site into a MOE grid");
+  adder("h,help", "Print help");
 
   try {
+    auto result = options.parse(argc, argv);
+
+    if (result.count("h")) {
+      std::cout << options.help() << std::endl;
+      return 0;
+    }
+
+    std::string strReceptorPrmFile;
+    if (result.count("r")) {
+      strReceptorPrmFile = result["r"].as<std::string>();
+    }
+    bool bReadAS = result.count("R");  // If true, read Active Site from file
+    bool bWriteAS = result.count("W"); // If true, write Active Site to file
+    bool bDump =
+        result.count("d"); // If true, dump cavity grids in Insight format
+    bool bViewer =
+        result.count("v"); // If true, dump PSF/CRD files for rDock Viewer
+    bool bList =
+        result.count("l"); // If true, list atoms within 'distance' of cavity
+    bool bSite = result.count(
+        "s"); // If true, print out "SITE" descriptors (counts of exposed atoms)
+    bool bMOEgrid = result.count(
+        "m"); // If true, create a MOE grid file for AS visualisation
+    bool bBorderArg = result.count("b"); // If true, border was specified in the
+                                         // command line
+    double border =
+        result["b"]
+            .as<double>(); // Border to allow around cavities for distance grid
+    double dist = result["l"].as<double>();
+
+    // check for parameter file name
+    /*if(prmFile) {
+            strReceptorPrmFile	= prmFile;
+    }*/
+    if (strReceptorPrmFile.empty()) {
+      std::cout << "Missing receptor parameter file name" << std::endl;
+      return 1;
+    }
+    // writing command line arguments
+    std::cout << "Command line arguments:" << std::endl;
+    std::cout << "-r " << strReceptorPrmFile << std::endl;
+    if (bList)
+      std::cout << "-l " << dist << std::endl;
+    if (bBorderArg)
+      std::cout << "-b " << border << std::endl;
+    if (bWriteAS)
+      std::cout << "-W" << std::endl;
+    if (bReadAS)
+      std::cout << "-R" << std::endl;
+    if (bMOEgrid)
+      std::cout << "-m" << std::endl;
+    if (bDump)
+      std::cout << "-d" << std::endl;
+    if (bSite)
+      std::cout << "-s" << std::endl;
+    if (bViewer)
+      std::cout << "-v" << std::endl;
+
+    std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
+
     // Create a bimolecular workspace
     RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
     // Set the workspace name to the root of the receptor .prm filename
@@ -401,6 +353,9 @@ int main(int argc, char *argv[]) {
       std::cout << wsName << ",SITE_NEG_CHG," << negChg << std::endl;
       std::cout << wsName << ",SITE_TOT_CHG," << posChg + negChg << std::endl;
     }
+  } catch (const cxxopts::OptionException &e) {
+    std::cout << "Error parsing options: " << e.what() << std::endl;
+    return 1;
   } catch (RbtError &e) {
     std::cout << e << std::endl;
   } catch (...) {

@@ -12,11 +12,8 @@
 
 // Main docking application
 #include <cerrno>
+#include <cxxopts.hpp>
 #include <iomanip>
-#ifdef _WIN32
-#else
-#include <unistd.h>
-#endif
 
 #include "RbtBiMolWorkSpace.h"
 #include "RbtCrdFileSink.h"
@@ -41,52 +38,14 @@ const std::string _ROOT_SF = "SCORE";
 const std::string _RESTRAINT_SF = "RESTR";
 const std::string _ROOT_TRANSFORM = "DOCK";
 
-void PrintUsage(void) {
-  std::cout << std::endl << "Usage:" << std::endl;
-  std::cout << "rbdock -i <sdFile> -o <outputRoot> -r <recepPrmFile> -p "
-               "<protoPrmFile> [-n <nRuns>] [-P] [-D] [-H]"
-            << std::endl;
-  std::cout
-      << "       [-t <targetScore|targetFilterFile>] [-c] [-T <traceLevel>] "
-         "[-s <rndSeed>]"
-      << std::endl;
-  std::cout << std::endl
-            << "Options:\t-i <sdFile> - input ligand SD file" << std::endl;
-  std::cout << "\t\t-o <outputRoot> - root name for output file(s)"
-            << std::endl;
-  std::cout << "\t\t-r <recepPrmFile> - receptor parameter file " << std::endl;
-  std::cout << "\t\t-p <protoPrmFile> - docking protocol parameter file"
-            << std::endl;
-  std::cout << "\t\t-n <nRuns> - number of runs/ligand (default=1)"
-            << std::endl;
-  std::cout << "\t\t-P - protonate all neutral amines, guanidines, imidazoles "
-               "(default=disabled)"
-            << std::endl;
-  std::cout
-      << "\t\t-D - deprotonate all carboxylic, sulphur and phosphorous acid "
-         "groups (default=disabled)"
-      << std::endl;
-  std::cout
-      << "\t\t-H - read all hydrogens present (default=polar hydrogens only)"
-      << std::endl;
-  std::cout << "\t\t-t - score threshold OR filter file name" << std::endl;
-  std::cout << "\t\t-C - continue if score threshold is met (use with -t "
-               "<targetScore>, default=terminate ligand)"
-            << std::endl;
-  std::cout << "\t\t-T <traceLevel> - controls output level for debugging (0 = "
-               "minimal, >0 = more verbose)"
-            << std::endl;
-  std::cout << "\t\t-s <rndSeed> - random number seed (default=from "
-               "std::random_device)"
-            << std::endl;
-}
-
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]) {
   // Handle obsolete arguments, if any
+  int tIndex = 0;
+  bool CFound = false;
   for (int i = 0; i < argc; i++) {
     std::string opt = argv[i];
     if (opt == "-ap" || opt == "-an" || opt == "-allH" || opt == "-cont") {
@@ -96,6 +55,17 @@ int main(int argc, char *argv[]) {
           << std::endl;
       return 2;
     }
+    if (opt == "-t") {
+      tIndex = i;
+    }
+    if (opt == "-C") {
+      CFound = true;
+    }
+  }
+  if (tIndex > 0 && !CFound) {
+    std::cout << "Option -t without -C is no longer supported; use -f instead."
+              << std::endl;
+    return 2;
   }
 
   std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
@@ -109,199 +79,193 @@ int main(int argc, char *argv[]) {
   // Print a standard header
   Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
 
-  // Brief help message
-  if (argc < 2) {
-    PrintUsage();
-    return 1;
-  }
+  cxxopts::Options options(strExeName, "rbdock - docking engine");
 
   // Command line arguments and default values
-  std::string strLigandMdlFile;
-  bool bOutput(false);
-  std::string strRunName;
-  std::string strReceptorPrmFile; // Receptor param file
-  std::string strParamFile;       // Docking run param file
-  std::string strFilterFile;      // Filter file
-  int nDockingRuns(
-      0); // Init to zero, so can detect later whether user explictly typed -n
-
-  // Params for target score
-  bool bTarget(false);
-  bool bStop(true);         // DM 25 May 2001 - if true, stop once target is met
-  bool bDockingRuns(false); // is argument -n present?
-  double dTargetScore(0.0);
-  bool bFilter(false);
-
-  bool bPosIonise(false);
-  bool bNegIonise(false);
-  bool bImplH(true); // if true, read only polar hydrogens from SD file, else
-                     // read all H's present
-  bool bSeed(false); // Random number seed (default = from std::random_device)
-  int nSeed(0);
-  bool bTrace(false);
-  int iTrace(0); // Trace level, for debugging
-
-  double val(0.0);
-  char c;
-  while ((c = getopt(argc, argv, "i:o:r:p:n:PDHtCT:s:")) != -1) {
-    switch (c) {
-    case 'i':
-      strLigandMdlFile = optarg;
-      break;
-    case 'o':
-      strRunName = optarg;
-      break;
-    case 'r':
-      strReceptorPrmFile = optarg;
-      break;
-    case 'p':
-      strParamFile = optarg;
-      break;
-    case 'n':
-      nDockingRuns = std::atoi(optarg);
-      break;
-    case 'P': // protonate
-      bPosIonise = true;
-      break;
-    case 'D': // deprotonate
-      bNegIonise = true;
-      break;
-    case 'H': // all-H model
-      bImplH = false;
-      break;
-    case 'C':
-      bStop = false;
-      break;
-    case 't':
-      // If str can be translated to an integer, I assume is a
-      // threshold. Otherwise, I assume is the filter file name
-      char *error;
-      errno = 0;
-      val = std::strtod(optarg, &error);
-      if (!errno && !*error) // Is it a number?
-      {
-        dTargetScore = val;
-        bTarget = true;
-      } else // Assume is the filter file name
-      {
-        bFilter = true;
-        strFilterFile = optarg;
-      }
-      break;
-    case 's':
-      bSeed = true;
-      nSeed = std::atoi(optarg);
-      break;
-    case 'T':
-      bTrace = true;
-      iTrace = std::atoi(optarg);
-      break;
-    default:
-      break;
-    }
-  }
-  std::cout << std::endl;
-
-  // print out arguments
-  // input ligand file, receptor and parameter is compulsory
-  std::cout << std::endl << "Command line args:" << std::endl;
-  if (strLigandMdlFile.empty() || strReceptorPrmFile.empty() ||
-      strParamFile.empty()) { // if any of them is missing
-    std::cout << "Missing required parameter(s)" << std::endl;
-    std::exit(1);
-  }
-  std::cout << " -i " << strLigandMdlFile << std::endl;
-  std::cout << " -r " << strReceptorPrmFile << std::endl;
-  std::cout << " -p " << strParamFile << std::endl;
-  // output is not that important but good to have
-  if (!strRunName.empty()) {
-    bOutput = true;
-    std::cout << " -o " << strRunName << std::endl;
-  } else {
-    std::cout << "WARNING: output file name is missing." << std::endl;
-  }
-  // docking runs
-  if (nDockingRuns >=
-      1) { // User typed -n explicitly, so set bDockingRuns to true
-    bDockingRuns = true;
-    std::cout << " -n " << nDockingRuns << std::endl;
-  } else {
-    nDockingRuns =
-        1; // User didn't type -n explicitly, so fall back to the default of n=1
-    std::cout << " -n " << nDockingRuns << " (default) " << std::endl;
-  }
-  if (bSeed) // random seed (if provided)
-    std::cout << " -s " << nSeed << std::endl;
-  if (bTrace) // random seed (if provided)
-    std::cout << " -T " << iTrace << std::endl;
-  if (bPosIonise) // protonate
-    std::cout << " -ap " << std::endl;
-  if (bNegIonise) // deprotonate
-    std::cout << " -an " << std::endl;
-  if (!bImplH) // all-H
-    std::cout << " -allH " << std::endl;
-  if (!bStop) // stop after target
-    std::cout << " -cont " << std::endl;
-  if (bTarget)
-    std::cout << " -t " << dTargetScore << std::endl;
-
-  // BGD 26 Feb 2003 - Create filters to simulate old rbdock
-  // behaviour
-  std::ostringstream strFilter;
-  if (!bFilter) {
-    if (bTarget) // -t<TS>
-    {
-      if (!bDockingRuns) // -t<TS> only
-      {
-        strFilter << "0 1 - SCORE.INTER " << dTargetScore << std::endl;
-      } else          // -t<TS> -n<N> need to check if -cont present
-                      // for all other cases it doesn't matter
-          if (!bStop) // -t<TS> -n<N> -cont
-      {
-        strFilter << "1 if - SCORE.NRUNS " << (nDockingRuns - 1)
-                  << " 0.0 -1.0,\n1 - SCORE.INTER " << dTargetScore
-                  << std::endl;
-      } else // -t<TS> -n<N>
-      {
-        strFilter << "1 if - " << dTargetScore << " SCORE.INTER 0.0 "
-                  << "if - SCORE.NRUNS " << (nDockingRuns - 1)
-                  << " 0.0 -1.0,\n1 - SCORE.INTER " << dTargetScore
-                  << std::endl;
-      }
-    }                      // no target score, no filter
-    else if (bDockingRuns) // -n<N>
-    {
-      strFilter << "1 if - SCORE.NRUNS " << (nDockingRuns - 1)
-                << " 0.0 -1.0,\n0";
-    } else // no -t no -n
-    {
-      strFilter << "0 0\n";
-    }
-  }
-
-  // DM 20 Apr 1999 - set the auto-ionise flags
-  if (bPosIonise)
-    std::cout << "Automatically protonating positive ionisable groups (amines, "
-                 "imidazoles, guanidines)"
-              << std::endl;
-  if (bNegIonise)
-    std::cout
-        << "Automatically deprotonating negative ionisable groups (carboxylic "
-           "acids, phosphates, sulphates, sulphonates)"
-        << std::endl;
-  if (bImplH)
-    std::cout << "Reading polar hydrogens only from ligand SD file"
-              << std::endl;
-  else
-    std::cout << "Reading all hydrogens from ligand SD file" << std::endl;
-
-  if (bTarget) {
-    std::cout << std::endl
-              << "Lower target intermolecular score = " << dTargetScore
-              << std::endl;
-  }
+  cxxopts::OptionAdder adder = options.add_options();
+  adder("i,input", "input ligand SD file", cxxopts::value<std::string>());
+  adder("o,output", "output file name(s) prefix",
+        cxxopts::value<std::string>());
+  adder("r,receptor-param", "receptor parameter file",
+        cxxopts::value<std::string>());
+  adder("p,docking-param", "docking protocol parameter file",
+        cxxopts::value<std::string>());
+  adder("n,number", "number of runs per ligand (0 = unlimited)",
+        cxxopts::value<unsigned int>()->default_value("0"));
+  adder("P,protonate", "protonate all neutral amines, guanidines, imidazoles");
+  adder("D,deprotonate",
+        "deprotonate all carboxylic, sulphur and phosphorous acid groups");
+  adder("H,all-hydrogens",
+        "read all hydrogens present instead of only polar hydrogens");
+  adder("t,threshold", "score threshold", cxxopts::value<double>());
+  adder("C,continue",
+        "continue if score threshold is met instead of terminating ligand");
+  adder("f,filter", "filter file name", cxxopts::value<std::string>());
+  adder("T,trace",
+        "controls output level for debugging (0 = minimal, >0 = more verbose)",
+        cxxopts::value<int>()->default_value("0"));
+  adder("s,seed", "random number seed to use instead of std::random_device",
+        cxxopts::value<unsigned int>());
+  adder("h,help", "Print help");
 
   try {
+    auto result = options.parse(argc, argv);
+
+    if (result.count("h")) {
+      std::cout << options.help() << std::endl;
+      return 0;
+    }
+
+    // Command line arguments and default values
+    std::string strLigandMdlFile;
+    if (result.count("i")) {
+      strLigandMdlFile = result["i"].as<std::string>();
+    }
+    bool bOutput = result.count("o");
+    std::string strRunName;
+    if (bOutput) {
+      strRunName = result["o"].as<std::string>();
+    }
+    std::string strReceptorPrmFile;
+    if (result.count("r")) {
+      strReceptorPrmFile = result["r"].as<std::string>(); // Receptor param file
+    }
+    std::string strParamFile;
+    if (result.count("p")) {
+      strParamFile = result["p"].as<std::string>(); // Docking run param file
+    }
+    bool bFilter = result.count("f");
+    std::string strFilterFile;
+    if (bFilter) {
+      strFilterFile = result["f"].as<std::string>(); // Filter file
+    }
+    bool bDockingRuns = result.count("n"); // is argument -n present?
+    unsigned int nDockingRuns =
+        result["n"].as<unsigned int>(); // Defaults to zero, so can detect later
+                                        // whether user explictly typed -n
+
+    bool bPosIonise = result.count("P");
+    bool bNegIonise = result.count("D");
+    bool bExplH = result.count("H"); // if true, read only polar hydrogens from
+                                     // SD file, else read all H's present
+
+    // Params for target score
+    bool bTarget = result.count("t");
+    double dTargetScore;
+    if (bTarget) {
+      dTargetScore = result["t"].as<double>();
+    }
+    bool bContinue =
+        result.count("C"); // DM 25 May 2001 - if true, stop once target is met
+
+    bool bSeed = result.count(
+        "s"); // Random number seed (default = from std::random_device)
+    unsigned int nSeed;
+    if (bSeed) {
+      nSeed = result["s"].as<unsigned int>();
+    }
+    bool bTrace = result.count("T");
+    int iTrace = result["T"].as<int>(); // Trace level, for debugging
+
+    // input ligand file, receptor and parameter is compulsory
+    if (strLigandMdlFile.empty() || strReceptorPrmFile.empty() ||
+        strParamFile.empty()) { // if any of them is missing
+      std::cout << "Missing required parameter(s): -i, -r, or -p" << std::endl;
+      return 1;
+    }
+
+    // print out arguments
+    std::cout << std::endl << "Command line args:" << std::endl;
+    std::cout << " -i " << strLigandMdlFile << std::endl;
+    std::cout << " -r " << strReceptorPrmFile << std::endl;
+    std::cout << " -p " << strParamFile << std::endl;
+    // output is not that important but good to have
+    if (!strRunName.empty()) {
+      bOutput = true;
+      std::cout << " -o " << strRunName << std::endl;
+    } else {
+      std::cout << "WARNING: output file name is missing." << std::endl;
+    }
+    // docking runs
+    if (nDockingRuns >= 1) { // User typed -n explicitly
+      std::cout << " -n " << nDockingRuns << std::endl;
+    } else {
+      nDockingRuns = 1; // User didn't type -n explicitly, so fall back to the
+                        // default of n=1
+      std::cout << " -n " << nDockingRuns << " (default) " << std::endl;
+    }
+    if (bSeed) // random seed (if provided)
+      std::cout << " -s " << nSeed << std::endl;
+    if (bTrace) // random seed (if provided)
+      std::cout << " -T " << iTrace << std::endl;
+    if (bPosIonise) // protonate
+      std::cout << " -ap " << std::endl;
+    if (bNegIonise) // deprotonate
+      std::cout << " -an " << std::endl;
+    if (bExplH) // all-H
+      std::cout << " -allH " << std::endl;
+    if (bContinue) // stop after target
+      std::cout << " -cont " << std::endl;
+    if (bTarget)
+      std::cout << " -t " << dTargetScore << std::endl;
+
+    // BGD 26 Feb 2003 - Create filters to simulate old rbdock
+    // behaviour
+    std::ostringstream strFilter;
+    if (!bFilter) {
+      if (bTarget) // -t<TS>
+      {
+        if (!bDockingRuns) // -t<TS> only
+        {
+          strFilter << "0 1 - SCORE.INTER " << dTargetScore << std::endl;
+        } else             // -t<TS> -n<N> need to check if -cont present
+                           // for all other cases it doesn't matter
+            if (bContinue) // -t<TS> -n<N> -cont
+        {
+          strFilter << "1 if - SCORE.NRUNS " << (nDockingRuns - 1)
+                    << " 0.0 -1.0,\n1 - SCORE.INTER " << dTargetScore
+                    << std::endl;
+        } else // -t<TS> -n<N>
+        {
+          strFilter << "1 if - " << dTargetScore << " SCORE.INTER 0.0 "
+                    << "if - SCORE.NRUNS " << (nDockingRuns - 1)
+                    << " 0.0 -1.0,\n1 - SCORE.INTER " << dTargetScore
+                    << std::endl;
+        }
+      }                      // no target score, no filter
+      else if (bDockingRuns) // -n<N>
+      {
+        strFilter << "1 if - SCORE.NRUNS " << (nDockingRuns - 1)
+                  << " 0.0 -1.0,\n0";
+      } else // no -t no -n
+      {
+        strFilter << "0 0\n";
+      }
+    }
+
+    // DM 20 Apr 1999 - set the auto-ionise flags
+    if (bPosIonise)
+      std::cout
+          << "Automatically protonating positive ionisable groups (amines, "
+             "imidazoles, guanidines)"
+          << std::endl;
+    if (bNegIonise)
+      std::cout << "Automatically deprotonating negative ionisable groups "
+                   "(carboxylic "
+                   "acids, phosphates, sulphates, sulphonates)"
+                << std::endl;
+    if (!bExplH)
+      std::cout << "Reading polar hydrogens only from ligand SD file"
+                << std::endl;
+    else
+      std::cout << "Reading all hydrogens from ligand SD file" << std::endl;
+
+    if (bTarget) {
+      std::cout << std::endl
+                << "Lower target intermolecular score = " << dTargetScore
+                << std::endl;
+    }
+
     // Create a bimolecular workspace
     RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
     // Set the workspace name to the root of the receptor .prm filename
@@ -477,8 +441,8 @@ int main(int argc, char *argv[]) {
     // MAIN LOOP OVER LIGAND RECORDS
     // DM 20 Apr 1999 - add explicit bPosIonise and bNegIonise flags to
     // MdlFileSource constructor
-    RbtMolecularFileSourcePtr spMdlFileSource(
-        new RbtMdlFileSource(strLigandMdlFile, bPosIonise, bNegIonise, bImplH));
+    RbtMolecularFileSourcePtr spMdlFileSource(new RbtMdlFileSource(
+        strLigandMdlFile, bPosIonise, bNegIonise, !bExplH));
     for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
       std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
@@ -595,6 +559,9 @@ int main(int argc, char *argv[]) {
     std::cout << std::endl;
     std::cout << "Thank you for using " << Rbt::GetProgramName() << " "
               << Rbt::GetVersion() << "." << std::endl;
+  } catch (const cxxopts::OptionException &e) {
+    std::cout << "Error parsing options: " << e.what() << std::endl;
+    return 1;
   } catch (RbtError &e) {
     std::cout << e << std::endl;
   } catch (...) {

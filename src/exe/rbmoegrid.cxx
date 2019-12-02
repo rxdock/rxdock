@@ -9,12 +9,10 @@
  * the University of Barcelona.
  * http://rdock.sourceforge.net/
  ***********************************************************************/
+
+#include <cxxopts.hpp>
 #include <fstream>
 #include <iomanip>
-#ifdef _WIN32
-#else
-#include <unistd.h>
-#endif
 
 #include "RbtBiMolWorkSpace.h"
 #include "RbtMOEGrid.h"
@@ -53,31 +51,6 @@ RbtModelList CreateProbes(std::string anAtomTypeStr) {
   return probes;
 }
 
-void PrintUsage(void) {
-  std::cout << std::endl
-            << "rbmoegrid - calculates grids for a given atom type"
-            << std::endl;
-  std::cout << std::endl
-            << "Usage:\trbmoegrid -o <OutputRoot> -r <ReceptorPrmFile> -p "
-               "<SFPrmFile> [-g <GridStep> -b <border> -t <tripos_type>]"
-            << std::endl;
-  std::cout << std::endl
-            << "Options:\t-o <OutFileName> (.grd is suffixed)" << std::endl;
-  std::cout
-      << "\t\t-r <ReceptorPrmFile> - receptor param file (contains active "
-         "site params)"
-      << std::endl;
-  std::cout << "\t\t-p <SFPrmFile> - scoring function param file (default "
-               "calcgrid_vdw.prm)"
-            << std::endl;
-  std::cout << "\t\t-g <GridStep> - grid step (default=0.5A)" << std::endl;
-  std::cout
-      << "\t\t-b <Border> - grid border around docking site (default=1.0A)"
-      << std::endl;
-  std::cout << "\t\t-t <AtomType> - Tripos atom type (default is C.3)"
-            << std::endl;
-}
-
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
@@ -94,72 +67,57 @@ int main(int argc, char *argv[]) {
   // Print a standard header
   Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
 
-  // Command line arguments and default values
-  std::string strSuffix(".grd");      // file out suffix
-  std::string strOutfName("moegrid"); // default output filename
-  std::vector<std::string>
-      strReceptorPrmFiles; // Receptor param files (you can have more!)
-  std::string strSFFile("calcgrid_vdw.prm"); // Scoring function file
-  double gs(0.5);                            // grid step
-  double border(1.0);                        // grid border around docking site
+  cxxopts::Options options(
+      strExeName, "rbmoegrid - calculates grids for a given atom type");
 
-  // Brief help message
-  if (argc == 1) {
-    PrintUsage();
-    std::exit(1);
-  }
-  // parsing command-line options
-  opterr = 0;
-  int c;
-  std::string optStr("");
-  std::string strGridStep; // due to switch scope better to declare here
-  std::string strBorder;
-  std::string strAtomType("C.3");
-  while ((c = getopt(argc, argv, "o:r:p:g:b:t:")) != -1) {
-    switch (c) {
-    case 'o':
-      std::cout << "\t -o " << optarg << std::endl;
-      strOutfName = optarg;
-      break;
-    case 'r':
-      std::cout << "\t -r " << optarg << std::endl;
-      strReceptorPrmFiles.push_back(optarg);
-      break;
-    case 'p':
-      std::cout << "\t -p " << optarg << std::endl;
-      strSFFile = optarg;
-      break;
-    case 'g':
-      std::cout << "\t -g " << optarg << std::endl;
-      strGridStep = optarg;
-      gs = std::atof(strGridStep.c_str());
-      break;
-    case 'b':
-      std::cout << "\t -b " << optarg << std::endl;
-      strBorder = optarg;
-      border = std::atof(strBorder.c_str());
-      break;
-    case 't':
-      std::cout << "\t -t " << optarg << std::endl;
-      strAtomType = optarg;
-      break;
-    case '?':
-      if (isprint(optopt)) {
-        optStr += optopt;
-        std::cerr << "Unknown / missing option `-" << optStr << "'"
-                  << std::endl;
-      } else
-        std::cerr << "Garbage option character. " << std::endl;
-      return 1;
-    default:
-      PrintUsage();
-      std::exit(1);
-    }
-  }
-  std::cout << std::endl;
+  // Command line arguments and default values
+  cxxopts::OptionAdder adder = options.add_options();
+  adder("o,output", "output file name prefix (.grd is suffixed)",
+        cxxopts::value<std::string>()->default_value("moegrid"));
+  adder("r,receptor-param",
+        "receptor param file(s) (contain active site params, can be specified "
+        "multiple times)",
+        cxxopts::value<std::vector<std::string>>());
+  adder("p,sf-param", "scoring function param file",
+        cxxopts::value<std::string>()->default_value("calcgrid_vdw.prm"));
+  adder("g,grid-step", "grid step (in angstrom)",
+        cxxopts::value<double>()->default_value("0.5"));
+  adder("b,grid-border", "grid border around docking site (in angstrom)",
+        cxxopts::value<double>()->default_value("1.0"));
+  adder("t,tripos-atom-type", "Tripos atom type",
+        cxxopts::value<std::string>()->default_value("C.3"));
+  adder("h,help", "Print help");
 
   // start processing receptors
   try {
+    auto result = options.parse(argc, argv);
+
+    if (result.count("h")) {
+      std::cout << options.help() << std::endl;
+      return 0;
+    }
+
+    // Command line arguments and default values
+    std::string strSuffix(".grd"); // file out suffix
+    std::string strOutfName =
+        result["o"].as<std::string>(); // default output filename
+    std::vector<std::string> strReceptorPrmFiles;
+    if (result.count("r")) {
+      strReceptorPrmFiles =
+          result["r"].as<std::vector<std::string>>(); // Receptor param files
+                                                      // (you can have more!)
+    }
+    std::string strSFFile =
+        result["p"].as<std::string>();        // Scoring function file
+    double gs = result["g"].as<double>();     // grid step
+    double border = result["b"].as<double>(); // grid border around docking site
+    std::string strAtomType = result["t"].as<std::string>();
+
+    if (strReceptorPrmFiles.empty() || strReceptorPrmFiles[0].empty()) {
+      std::cout << "Missing receptor parameter file name(s)" << std::endl;
+      return 1;
+    }
+
     // generate output file name
     std::string strOutputFile(strOutfName + strSuffix);
     RbtMOEGrid theMOEGrid;
@@ -305,6 +263,9 @@ int main(int argc, char *argv[]) {
       }
       std::cout << "done." << std::endl;
     }
+  } catch (const cxxopts::OptionException &e) {
+    std::cout << "Error parsing options: " << e.what() << std::endl;
+    return 1;
   } catch (RbtError &e) {
     std::cout << e << std::endl;
   } catch (...) {
