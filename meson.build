@@ -75,6 +75,13 @@ srcRbt = [
 
 cpp_compiler = meson.get_compiler('cpp')
 
+if host_machine.system() == 'windows'
+  tronkko_dirent_proj = subproject('tronkko-dirent')
+  tronkko_dirent_dep = tronkko_dirent_proj.get_variable('tronkko_dirent_dep')
+else
+  tronkko_dirent_dep = declare_dependency()
+endif
+
 # Use standard C++11 RNG on Solaris and Windows/MSVC due to PCG build failure
 # Solaris issue: https://github.com/imneme/pcg-cpp/issues/42
 # Windows/MSVC issue: https://github.com/imneme/pcg-cpp/issues/11
@@ -87,7 +94,8 @@ endif
 
 library_soversion = '0'
 libRbt = library(
-  'Rbt', srcRbt, dependencies : pcg_cpp_dep, soversion : library_soversion,
+  'Rbt', srcRbt, dependencies : [pcg_cpp_dep, tronkko_dirent_dep],
+  soversion : library_soversion,
   version : library_soversion + '.' + meson.project_version(),
   include_directories : incRbtAll
 )
