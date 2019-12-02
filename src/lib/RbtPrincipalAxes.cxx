@@ -11,16 +11,17 @@
  ***********************************************************************/
 
 // Principal axes calculation routines (in Rbt namespace)
+#ifdef __PGI
+#define EIGEN_DONT_VECTORIZE
+#endif
+#include <Eigen/Core>
+#include <Eigen/Eigenvalues>
 #include <cerrno>
 #include <iomanip>
 
 #include "RbtError.h"
 #include "RbtPlane.h"
 #include "RbtPrincipalAxes.h"
-
-// Template Numerical Toolkit for eigenvalue solver
-#include <jama_eig.h>
-#include <tnt.h>
 
 // Special case for water
 // Allow for symmetry
@@ -98,7 +99,7 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
   principalAxes.com = Rbt::GetCenterOfMass(atomList); // Store center of mass
 
   // Construct the moment of inertia tensor
-  TNT::Array2D<double> inertiaTensor(N, N, 0.0);
+  Eigen::MatrixXd inertiaTensor = Eigen::MatrixXd::Zero(N, N);
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
     RbtVector r = (*iter)->GetCoords() -
@@ -111,27 +112,27 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
     double dIxx = m * (ry2 + rz2); //=r^2 - x^2
     double dIyy = m * (rx2 + rz2); //=r^2 - y^2
     double dIzz = m * (rx2 + ry2); //=r^2 - z^2
-    inertiaTensor[0][0] += dIxx;
-    inertiaTensor[1][1] += dIyy;
-    inertiaTensor[2][2] += dIzz;
+    inertiaTensor(0, 0) += dIxx;
+    inertiaTensor(1, 1) += dIyy;
+    inertiaTensor(2, 2) += dIzz;
 
     // Off-diagonal elements (products of inertia) - symmetric matrix
     double dIxy = m * r.x * r.y;
     double dIxz = m * r.x * r.z;
     double dIyz = m * r.y * r.z;
-    inertiaTensor[0][1] -= dIxy;
-    inertiaTensor[1][0] -= dIxy;
-    inertiaTensor[0][2] -= dIxz;
-    inertiaTensor[2][0] -= dIxz;
-    inertiaTensor[1][2] -= dIyz;
-    inertiaTensor[2][1] -= dIyz;
+    inertiaTensor(0, 1) -= dIxy;
+    inertiaTensor(1, 0) -= dIxy;
+    inertiaTensor(0, 2) -= dIxz;
+    inertiaTensor(2, 0) -= dIxz;
+    inertiaTensor(1, 2) -= dIyz;
+    inertiaTensor(2, 1) -= dIyz;
   }
 
-  JAMA::Eigenvalue<double> eigenSolver(inertiaTensor);
-  TNT::Array1D<double> eigenValues(N);
-  TNT::Array2D<double> eigenVectors(N, N);
-  eigenSolver.getRealEigenvalues(eigenValues);
-  eigenSolver.getV(eigenVectors);
+  Eigen::EigenSolver<Eigen::MatrixXd> eigenSolver(inertiaTensor);
+  eigenSolver.compute(inertiaTensor);
+  Eigen::VectorXd eigenValues = eigenSolver.eigenvalues().real();
+  Eigen::MatrixXd eigenVectors = eigenSolver.eigenvectors().real();
+  // FIXME: assert that .imag() is Zero(N)
 
   // Load the principal axes and moments into the return parameter
   // We need to sort these so that axis1 is the first principal axis, axis2 the
@@ -140,21 +141,21 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
   unsigned int idx1 = 0;
   unsigned int idx2 = 1;
   unsigned int idx3 = 2;
-  if (eigenValues[idx1] > eigenValues[idx2])
+  if (eigenValues(idx1) > eigenValues(idx2))
     std::swap(idx1, idx2);
-  if (eigenValues[idx1] > eigenValues[idx3])
+  if (eigenValues(idx1) > eigenValues(idx3))
     std::swap(idx1, idx3);
-  if (eigenValues[idx2] > eigenValues[idx3])
+  if (eigenValues(idx2) > eigenValues(idx3))
     std::swap(idx2, idx3);
-  principalAxes.axis1 = RbtVector(eigenVectors[0][idx1], eigenVectors[1][idx1],
-                                  eigenVectors[2][idx1]);
-  principalAxes.axis2 = RbtVector(eigenVectors[0][idx2], eigenVectors[1][idx2],
-                                  eigenVectors[2][idx2]);
-  principalAxes.axis3 = RbtVector(eigenVectors[0][idx3], eigenVectors[1][idx3],
-                                  eigenVectors[2][idx3]);
-  principalAxes.moment1 = eigenValues[idx1];
-  principalAxes.moment2 = eigenValues[idx2];
-  principalAxes.moment3 = eigenValues[idx3];
+  principalAxes.axis1 = RbtVector(eigenVectors(0, idx1), eigenVectors(1, idx1),
+                                  eigenVectors(2, idx1));
+  principalAxes.axis2 = RbtVector(eigenVectors(0, idx2), eigenVectors(1, idx2),
+                                  eigenVectors(2, idx2));
+  principalAxes.axis3 = RbtVector(eigenVectors(0, idx3), eigenVectors(1, idx3),
+                                  eigenVectors(2, idx3));
+  principalAxes.moment1 = eigenValues(idx1);
+  principalAxes.moment2 = eigenValues(idx2);
+  principalAxes.moment3 = eigenValues(idx3);
 
   // DM 28 Jun 2001 - for GA crossovers in particular we need to ensure the
   // principal axes returned are always consistent for a given ligand
@@ -184,12 +185,12 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
   // std::cout << "After: d1,d2,d3=" << d1 << "\t" << d2 << "\t" << d3 <<
   // std::endl;
 
-  // std::cout << "(TNT) Axis1=" << principalAxes.axis1 << "; Moment1=" <<
-  // principalAxes.moment1 << std::endl; std::cout << "(TNT) Axis2=" <<
+  // std::cout << "(Eigen) Axis1=" << principalAxes.axis1 << "; Moment1=" <<
+  // principalAxes.moment1 << std::endl; std::cout << "(Eigen) Axis2=" <<
   // principalAxes.axis2
-  // << "; Moment2=" << principalAxes.moment2 << std::endl; std::cout << "(TNT)
-  // Axis3=" << principalAxes.axis3 << "; Moment3=" << principalAxes.moment3 <<
-  // std::endl;
+  // << "; Moment2=" << principalAxes.moment2 << std::endl; std::cout <<
+  // "(Eigen) Axis3=" << principalAxes.axis3 << "; Moment3=" <<
+  // principalAxes.moment3 << std::endl;
   return principalAxes;
 }
 
@@ -202,7 +203,7 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
   principalAxes.com = Rbt::GetCenterOfMass(coordList); // Store center of mass
 
   // Construct the moment of inertia tensor
-  TNT::Array2D<double> inertiaTensor(N, N, 0.0);
+  Eigen::MatrixXd inertiaTensor = Eigen::MatrixXd::Zero(N, N);
   for (RbtCoordListConstIter iter = coordList.begin(); iter != coordList.end();
        iter++) {
     RbtVector r =
@@ -214,27 +215,27 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
     double dIxx = ry2 + rz2; //=r^2 - x^2
     double dIyy = rx2 + rz2; //=r^2 - y^2
     double dIzz = rx2 + ry2; //=r^2 - z^2
-    inertiaTensor[0][0] += dIxx;
-    inertiaTensor[1][1] += dIyy;
-    inertiaTensor[2][2] += dIzz;
+    inertiaTensor(0, 0) += dIxx;
+    inertiaTensor(1, 1) += dIyy;
+    inertiaTensor(2, 2) += dIzz;
 
     // Off-diagonal elements (products of inertia) - symmetric matrix
     double dIxy = r.x * r.y;
     double dIxz = r.x * r.z;
     double dIyz = r.y * r.z;
-    inertiaTensor[0][1] -= dIxy;
-    inertiaTensor[1][0] -= dIxy;
-    inertiaTensor[0][2] -= dIxz;
-    inertiaTensor[2][0] -= dIxz;
-    inertiaTensor[1][2] -= dIyz;
-    inertiaTensor[2][1] -= dIyz;
+    inertiaTensor(0, 1) -= dIxy;
+    inertiaTensor(1, 0) -= dIxy;
+    inertiaTensor(0, 2) -= dIxz;
+    inertiaTensor(2, 0) -= dIxz;
+    inertiaTensor(1, 2) -= dIyz;
+    inertiaTensor(2, 1) -= dIyz;
   }
 
-  JAMA::Eigenvalue<double> eigenSolver(inertiaTensor);
-  TNT::Array1D<double> eigenValues(N);
-  TNT::Array2D<double> eigenVectors(N, N);
-  eigenSolver.getRealEigenvalues(eigenValues);
-  eigenSolver.getV(eigenVectors);
+  Eigen::EigenSolver<Eigen::MatrixXd> eigenSolver(inertiaTensor);
+  eigenSolver.compute(inertiaTensor);
+  Eigen::VectorXd eigenValues = eigenSolver.eigenvalues().real();
+  Eigen::MatrixXd eigenVectors = eigenSolver.eigenvectors().real();
+  // FIXME: assert that .imag() is Zero(N)
 
   // Load the principal axes and moments into the return parameter
   // We need to sort these so that axis1 is the first principal axis, axis2 the
@@ -243,21 +244,21 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
   unsigned int idx1 = 0;
   unsigned int idx2 = 1;
   unsigned int idx3 = 2;
-  if (eigenValues[idx1] > eigenValues[idx2])
+  if (eigenValues(idx1) > eigenValues(idx2))
     std::swap(idx1, idx2);
-  if (eigenValues[idx1] > eigenValues[idx3])
+  if (eigenValues(idx1) > eigenValues(idx3))
     std::swap(idx1, idx3);
-  if (eigenValues[idx2] > eigenValues[idx3])
+  if (eigenValues(idx2) > eigenValues(idx3))
     std::swap(idx2, idx3);
-  principalAxes.axis1 = RbtVector(eigenVectors[0][idx1], eigenVectors[1][idx1],
-                                  eigenVectors[2][idx1]);
-  principalAxes.axis2 = RbtVector(eigenVectors[0][idx2], eigenVectors[1][idx2],
-                                  eigenVectors[2][idx2]);
-  principalAxes.axis3 = RbtVector(eigenVectors[0][idx3], eigenVectors[1][idx3],
-                                  eigenVectors[2][idx3]);
-  principalAxes.moment1 = eigenValues[idx1];
-  principalAxes.moment2 = eigenValues[idx2];
-  principalAxes.moment3 = eigenValues[idx3];
+  principalAxes.axis1 = RbtVector(eigenVectors(0, idx1), eigenVectors(1, idx1),
+                                  eigenVectors(2, idx1));
+  principalAxes.axis2 = RbtVector(eigenVectors(0, idx2), eigenVectors(1, idx2),
+                                  eigenVectors(2, idx2));
+  principalAxes.axis3 = RbtVector(eigenVectors(0, idx3), eigenVectors(1, idx3),
+                                  eigenVectors(2, idx3));
+  principalAxes.moment1 = eigenValues(idx1);
+  principalAxes.moment2 = eigenValues(idx2);
+  principalAxes.moment3 = eigenValues(idx3);
 
   return principalAxes;
 }

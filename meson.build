@@ -75,6 +75,8 @@ srcRbt = [
 
 cpp_compiler = meson.get_compiler('cpp')
 
+eigen3_dep = dependency('eigen3', fallback : ['eigen', 'eigen_dep'])
+
 if host_machine.system() == 'windows'
   tronkko_dirent_proj = subproject('tronkko-dirent')
   tronkko_dirent_dep = tronkko_dirent_proj.get_variable('tronkko_dirent_dep')
@@ -94,7 +96,7 @@ endif
 
 library_soversion = '0'
 libRbt = library(
-  'Rbt', srcRbt, dependencies : [pcg_cpp_dep, tronkko_dirent_dep],
+  'Rbt', srcRbt, dependencies : [eigen3_dep, pcg_cpp_dep, tronkko_dirent_dep],
   soversion : library_soversion,
   version : library_soversion + '.' + meson.project_version(),
   include_directories : incRbtAll
