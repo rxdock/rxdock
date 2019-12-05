@@ -32,6 +32,9 @@
 // must therefore equal the product of the number of gridpoints along each
 // dimension.
 
+#ifndef _RBTMOEGRID_H_
+#define _RBTMOEGRID_H_
+
 #include "Rbt.h"
 #include "RbtCoord.h"
 #include <cstdlib>
@@ -203,3 +206,5 @@ public:
 //    fwriteb [fn, 'int4m', size];
 //    fwriteb [fn, 'IEEE8m', cat shape];
 //    fwriteb [fn, 'IEEE8m', data];
+
+#endif //_RBTMOEGRID_H_

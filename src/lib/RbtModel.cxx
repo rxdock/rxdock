@@ -196,7 +196,7 @@ RbtAtomList RbtModel::GetTetheredAtomList() const {
          iter2 != strTetheredAtoms.end(); iter2++) {
       // Remember to subtract 1 from atom ID to convert to atom list index
       unsigned int i = std::atoi((*iter2).c_str()) - 1;
-      if ((i >= 0) && (i < m_atomList.size())) {
+      if (i < m_atomList.size()) {
         tetheredAtomList.push_back(m_atomList[i]);
       } else {
         throw RbtModelError(_WHERE_,
@@ -576,7 +576,7 @@ const RbtAtomRList &RbtModel::GetFlexIntns(RbtAtom *pAtom) const {
     const RbtAtomRListList &flexIntns(m_spMutator->GetFlexIntns());
     unsigned int id = pAtom->GetAtomId() - 1;
     // Assertion - check id is within range
-    Assert<RbtAssert>(!MUT_CHECK || (id >= 0 && id < flexIntns.size()));
+    Assert<RbtAssert>(!MUT_CHECK || (id < flexIntns.size()));
     RbtAtomRListListConstIter lIter = flexIntns.begin() + id;
     return *lIter;
   } else {
@@ -604,7 +604,7 @@ void RbtModel::SelectFlexAtoms(RbtAtom *pAtom) {
     const RbtAtomRListList &flexIntns(m_spMutator->GetFlexIntns());
     unsigned int id = pAtom->GetAtomId() - 1;
     // Assertion - check id is within range
-    Assert<RbtAssert>(!MUT_CHECK || (id >= 0 && id < flexIntns.size()));
+    Assert<RbtAssert>(!MUT_CHECK || (id < flexIntns.size()));
     RbtAtomRListListConstIter lIter = flexIntns.begin() + id;
     std::for_each((*lIter).begin(), (*lIter).end(), Rbt::SelectAtom(true));
   }

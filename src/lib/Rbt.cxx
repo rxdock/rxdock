@@ -18,6 +18,7 @@
 #include <ctime>     //For time functions
 #include <dirent.h>  //For directory handling
 #include <fstream>   //For ifstream
+#include <iomanip>   //For std::put_time
 #include <sstream>   //For istringstream and ostringstream
 #ifdef _WIN32
 #include <direct.h>
@@ -77,7 +78,10 @@ std::string Rbt::GetProduct() { return IDS_PRODUCT; }
 std::string Rbt::GetTime() {
   std::time_t t = std::time(nullptr);       // Get time in seconds since 1970
   std::tm *pLocalTime = std::localtime(&t); // Convert to local time struct
-  return std::string(std::asctime(pLocalTime)); // Convert to ascii string
+
+  std::ostringstream oss;
+  oss << std::put_time(pLocalTime, "%c");
+  return oss.str(); // Convert to ascii string
 }
 
 // GetCurrentWorkingDirectory - returns current working directory
@@ -361,7 +365,7 @@ std::ostream &Rbt::PrintStdHeader(std::ostream &s,
   s << "RBT_ROOT:\t" << GetRbtRoot() << std::endl;
   s << "RBT_HOME:\t" << GetRbtHome() << std::endl;
   s << "Current dir:\t" << GetCurrentWorkingDirectory() << std::endl;
-  s << "Date:\t\t" << GetTime();
+  s << "Date:\t\t" << GetTime() << std::endl;
   s << "***********************************************" << std::endl;
   return s;
 }

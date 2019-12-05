@@ -53,10 +53,10 @@ RbtFilter::RbtFilter(std::string strfilter, bool filter)
     getline(*filterfile, s, ',');
     SmartPtr<std::istream> istrp(new std::istringstream(s));
     RbtTokenIterPtr ti(new RbtStringTokenIter(istrp, contextp));
-    RbtFilterExpressionPtr filter = p.Parse(ti, contextp);
+    RbtFilterExpressionPtr filterExpr = p.Parse(ti, contextp);
     PrettyPrintVisitor visitor1(contextp);
-    filter->Accept(visitor1);
-    terminationFilters.push_back(filter);
+    filterExpr->Accept(visitor1);
+    terminationFilters.push_back(filterExpr);
   }
   (*filterfile) >> nWriteFilters;
   for (int i = 0; i < nWriteFilters; i++) {
@@ -65,10 +65,10 @@ RbtFilter::RbtFilter(std::string strfilter, bool filter)
     getline(*filterfile, s, ',');
     SmartPtr<std::istream> istrp(new std::istringstream(s));
     RbtTokenIterPtr ti(new RbtStringTokenIter(istrp, contextp));
-    RbtFilterExpressionPtr filter = p.Parse(ti, contextp);
+    RbtFilterExpressionPtr filterExpr = p.Parse(ti, contextp);
     PrettyPrintVisitor visitor1(contextp);
-    filter->Accept(visitor1);
-    writtingFilter.push_back(filter);
+    filterExpr->Accept(visitor1);
+    writtingFilter.push_back(filterExpr);
   }
   maxnruns = 1000;
   std::cout << std::endl;

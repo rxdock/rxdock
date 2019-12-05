@@ -64,7 +64,10 @@ RbtGPPopulation::RbtGPPopulation(const RbtGPPopulation &p)
 
 // Destructor
 
-RbtGPPopulation::~RbtGPPopulation() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
+RbtGPPopulation::~RbtGPPopulation() {
+  delete[] psum;
+  _RBTOBJECTCOUNTER_DESTR_(_CT);
+}
 
 int RbtGPPopulation::GetSize() { return popsize; }
 

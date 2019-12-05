@@ -72,15 +72,13 @@ bool RbtChromElement::VectorOK(const std::vector<double> &v,
                                unsigned int i) const {
   unsigned int length = GetLength();
   // if the element is empty then any vector is valid
-  return (length == 0) ||
-         ((i >= 0) && (i < v.size()) && (length <= (v.size() - i)));
+  return (length == 0) || ((i < v.size()) && (length <= (v.size() - i)));
 }
 
 bool RbtChromElement::VectorOK(const RbtXOverList &v, unsigned int i) const {
   unsigned int length = GetXOverLength();
   // if the element is empty then any vector is valid
-  return (length == 0) ||
-         ((i >= 0) && (i < v.size()) && (length <= (v.size() - i)));
+  return (length == 0) || ((i < v.size()) && (length <= (v.size() - i)));
 }
 
 void RbtChromElement::CauchyMutate(double mean, double variance) {
