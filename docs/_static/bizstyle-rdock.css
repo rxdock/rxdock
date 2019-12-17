@@ -20,6 +20,15 @@ body {
     border-left: 1px solid #4a73ad;
 }
 
+/*
+ * Make the theme responsive on devices below 450px (down to 240px)
+ *
+ */
+
+div.body {
+    min-width: 240px;
+}
+
 div.related ul {
     background-color: #4a73ad;
 }
