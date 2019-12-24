@@ -48,6 +48,11 @@ void RbtMdlFileSource::Parse() {
       RbtFileRecListIter fileIter = m_lineRecs.begin();
       RbtFileRecListIter fileEnd = m_lineRecs.end();
 
+      if ((*fileIter).size() && (*fileIter)[(*fileIter).size() - 1] == '\r') {
+        throw RbtFileParseError(
+            _WHERE_, "Windows CRLF line endings detected in " + GetFileName());
+      }
+
       //////////////////////////////////////////////////////////
       // 1a. Store title lines (first 3)..
       unsigned int nTitleRec = 3;
