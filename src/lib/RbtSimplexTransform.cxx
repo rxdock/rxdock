@@ -10,11 +10,17 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
+#ifdef __PGI
+#define EIGEN_DONT_VECTORIZE
+#endif
+#include <Eigen/Core>
 #include <iomanip>
 
-#include "NMSearch.h"
 #include "RbtChrom.h"
+#include "RbtNMCriteria.h"
+#include "RbtNMSimplex.h"
 #include "RbtSFRequest.h"
+#include "RbtSimplexCostFunction.h"
 #include "RbtSimplexTransform.h"
 #include "RbtWorkSpace.h"
 
@@ -112,15 +118,18 @@ void RbtSimplexTransform::Execute() {
     steps[i] = sv[i] * stepSize;
   }
 
-  // Set up the Simplex search object
-  NMSearch *ssearch;
-  NMSearch::SetMaxCalls(maxcalls);
-  NMSearch::SetStoppingLength(stopping);
+  RbtSimplexCostFunction costFunction(pSF, m_chrom);
+
+  // Builder to generate the optimizer with a composite stoping criterion
+  auto optimizer = RbtNM::CreateSimplex(
+      costFunction, RbtNM::CreateAndCriteria(
+                        RbtNM::IterationCriterion(maxcalls),
+                        RbtNM::RelativeValueCriterion<double>(stopping)));
+
   int calls = 0;
   double initScore = pSF->Score(); // Current score
   double min = initScore;
   std::vector<double> vc; // Vector representation of chromosome
-  int N = ncycles;
   // Energy change between cycles - initialise so as not to terminate loop
   // immediately
   double delta = -convergence - 1.0;
@@ -145,25 +154,33 @@ void RbtSimplexTransform::Execute() {
     }
   }
 
-  for (int i = 0; (i < N) && (delta < -convergence); i++) {
+  for (int i = 0; (i < ncycles) && (delta < -convergence); i++) {
     if (partDist > 0.0) {
       pSF->HandleRequest(spPartReq);
     }
     // Use a variable length simplex
     vc.clear();
     m_chrom->GetVector(vc);
-    ssearch = new NMSearch(m_chrom, pSF);
-    ssearch->InitVariableLengthRightSimplex(&vc, steps);
+    RbtSimplexCostFunction::ParameterType start_point =
+        Eigen::Map<RbtSimplexCostFunction::ParameterType, Eigen::Unaligned>(
+            vc.data(), vc.size());
+
     if (iTrace > 0) {
       std::cout << std::setw(5) << i << std::setw(5) << "ALL" << std::setw(5)
                 << vc.size();
     }
-    // Do the simplex search and retrieve the minimum
-    ssearch->ExploratoryMoves();
-    double newmin = ssearch->GetMinVal();
+
+    optimizer.SetStartPoint(start_point); // Starting parameters
+    optimizer.SetDelta(delta);            // Simplex size
+    optimizer.Optimize(costFunction);     // Optimization start
+
+    double newmin = optimizer.GetBestValue();
     delta = newmin - min;
-    calls += ssearch->GetFunctionCalls();
-    m_chrom->SetVector(ssearch->GetMinPoint());
+    calls += costFunction.nCalls;
+    RbtSimplexCostFunction::ParameterType best = optimizer.GetBestParameters();
+    std::vector<double> best_vec(best.data(), best.data() + best.size());
+    m_chrom->SetVector(best_vec);
+
     if (iTrace > 0) {
       std::cout << std::setw(10) << calls << std::setw(10) << newmin
                 << std::setw(10) << delta << std::endl;
@@ -171,7 +188,7 @@ void RbtSimplexTransform::Execute() {
         std::cout << *m_chrom << std::endl;
       }
     }
-    delete ssearch; // DM 27 Jun 2002 - garbage collection
+
     min = newmin;
   }
   m_chrom->SyncToModel();

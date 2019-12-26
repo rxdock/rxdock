@@ -1,9 +1,6 @@
 project('rDock', 'cpp', version : '2013.1', default_options : ['cpp_std=c++11'])
 
 incRbt = include_directories('include', 'include/GP')
-incRbtAll = include_directories(
-  'include', 'include/GP', 'import/simplex/include', 'import/tnt/include'
-)
 srcRbt = [
   'src/GP/RbtGPChromosome.cxx', 'src/GP/RbtGPFFCHK1.cxx',
   'src/GP/RbtGPFFCrossDock.cxx', 'src/GP/RbtGPFFGold.cxx',
@@ -69,8 +66,7 @@ srcRbt = [
   'src/lib/RbtTransformAgg.cxx', 'src/lib/RbtTransformFactory.cxx',
   'src/lib/RbtTriposAtomType.cxx', 'src/lib/RbtVdwGridSF.cxx',
   'src/lib/RbtVdwIdxSF.cxx', 'src/lib/RbtVdwIntraSF.cxx',
-  'src/lib/RbtVdwSF.cxx', 'src/lib/RbtWorkSpace.cxx',
-  'import/simplex/src/NMSearch.cxx'
+  'src/lib/RbtVdwSF.cxx', 'src/lib/RbtWorkSpace.cxx'
 ]
 
 cpp_compiler = meson.get_compiler('cpp')
@@ -99,7 +95,7 @@ libRbt = library(
   'Rbt', srcRbt, dependencies : [eigen3_dep, pcg_cpp_dep, tronkko_dirent_dep],
   soversion : library_soversion,
   version : library_soversion + '.' + meson.project_version(),
-  include_directories : incRbtAll, install : true
+  include_directories : incRbt, install : true
 )
 
 cxxopts_dep = dependency('cxxopts', fallback : ['cxxopts', 'cxxopts_dep'])
