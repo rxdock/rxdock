@@ -106,8 +106,7 @@ void RbtFFTGrid::Read(std::istream &istr) {
 // Find the coords of all (separate) peaks above the threshold value
 // whose volumes are not less than minVol
 // Returns a map of RbtFFTPeaks
-RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold,
-                                    unsigned int minVol) const {
+RbtFFTPeakMap RbtFFTGrid::FindPeaks(double threshold, unsigned int minVol) {
   RbtFFTPeakMap peakMap; // Initialise the return set
 
   // First compile a list of all points higher than the threshold

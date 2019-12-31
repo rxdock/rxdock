@@ -161,26 +161,28 @@ void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, double radius,
   // Convert to array indices
   // DM 16 Apr 1999 - check again for indices out of range
   // If cubeMax == m_padMax, iMaxX,Y,Z would be one too high
-  unsigned int iMinX = std::max(GetIX(cubeMin), m_NPad + 1);
-  unsigned int iMinY = std::max(GetIY(cubeMin), m_NPad + 1);
-  unsigned int iMinZ = std::max(GetIZ(cubeMin), m_NPad + 1);
-  unsigned int iMaxX = std::min(GetIX(cubeMax), m_NX - m_NPad);
-  unsigned int iMaxY = std::min(GetIY(cubeMax), m_NY - m_NPad);
-  unsigned int iMaxZ = std::min(GetIZ(cubeMax), m_NZ - m_NPad);
+  unsigned int iMinX = std::max(GetIX(cubeMin), m_NPad);
+  unsigned int iMinY = std::max(GetIY(cubeMin), m_NPad);
+  unsigned int iMinZ = std::max(GetIZ(cubeMin), m_NPad);
+  unsigned int iMaxX = std::min(GetIX(cubeMax) + 1, m_NX - m_NPad);
+  unsigned int iMaxY = std::min(GetIY(cubeMax) + 1, m_NY - m_NPad);
+  unsigned int iMaxZ = std::min(GetIZ(cubeMax) + 1, m_NZ - m_NPad);
+  /*std::cout << "iMin: " << iMinX << " " << iMinY << " " << iMinZ << std::endl;
+  std::cout << "iMax: " << iMaxX << " " << iMaxY << " " << iMaxZ << std::endl;*/
 
   // Determine if points are inside sphere by checking x^2 + y^2 + z^2 <= rad^2
   double rad2 = radius * radius;
 
   double rX; // X-distance to sphere center
   unsigned int iX;
-  for (iX = iMinX, rX = GetXCoord(iMinX) - c.x; iX <= iMaxX;
+  for (iX = iMinX, rX = GetXCoord(iMinX) - c.x; iX < iMaxX;
        iX++, rX += m_step.x) {
     double rX2 = rX * rX;
     // Only bother with the Y loop if we haven't already exceeded rad2
     if (rX2 <= rad2) {
       double rY; // Y-distance to sphere center
       unsigned int iY;
-      for (iY = iMinY, rY = GetYCoord(iMinY) - c.y; iY <= iMaxY;
+      for (iY = iMinY, rY = GetYCoord(iMinY) - c.y; iY < iMaxY;
            iY++, rY += m_step.y) {
         double rXY2 = rX2 + rY * rY;
         // Only bother with the Z loop if we haven't already exceeded rad2
@@ -190,7 +192,7 @@ void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, double radius,
           unsigned int iXYZ;
           for (iZ = iMinZ, iXYZ = GetIXYZ(iX, iY, iMinZ),
               rZ = GetZCoord(iMinZ) - c.z;
-               iZ <= iMaxZ; iZ++, iXYZ++, rZ += m_step.z) {
+               iZ < iMaxZ; iZ++, iXYZ++, rZ += m_step.z) {
             double rXYZ2 = rXY2 + rZ * rZ;
             if (rXYZ2 <= rad2) {
               sIndices.push_back(iXYZ);

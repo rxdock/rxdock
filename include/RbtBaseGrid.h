@@ -111,47 +111,43 @@ public:
   }
   // When checking 3-D indices, take account of pad region
   bool isValid(unsigned int iX, unsigned int iY, unsigned int iZ) const {
-    return (iX >= m_NPad + 1) && (iX <= m_NX - m_NPad) && (iY >= m_NPad + 1) &&
-           (iY <= m_NY - m_NPad) && (iZ >= m_NPad + 1) && (iZ <= m_NZ - m_NPad);
+    return (iX >= m_NPad) && (iX < m_NX - m_NPad) && (iY >= m_NPad) &&
+           (iY < m_NY - m_NPad) && (iZ >= m_NPad) && (iZ < m_NZ - m_NPad);
   }
   // When checking 1-D index, don't take account of pad region
   bool isValid(unsigned int iXYZ) const { return (iXYZ < m_N); }
 
   // Return iX,iY,iZ indices for given coord
   unsigned int GetIX(const RbtCoord &c) const {
-    return int((c.x - m_min.x) / m_step.x) + 1;
+    return static_cast<unsigned int>((c.x - m_min.x) / m_step.x);
   }
   unsigned int GetIY(const RbtCoord &c) const {
-    return int((c.y - m_min.y) / m_step.y) + 1;
+    return static_cast<unsigned int>((c.y - m_min.y) / m_step.y);
   }
   unsigned int GetIZ(const RbtCoord &c) const {
-    return int((c.z - m_min.z) / m_step.z) + 1;
+    return static_cast<unsigned int>((c.z - m_min.z) / m_step.z);
   }
 
   // Return iX,iY,iZ indices for given coord
   unsigned int GetIX(double x) const {
-    return int((x - m_min.x) / m_step.x) + 1;
+    return static_cast<unsigned int>((x - m_min.x) / m_step.x);
   }
   unsigned int GetIY(double y) const {
-    return int((y - m_min.y) / m_step.y) + 1;
+    return static_cast<unsigned int>((y - m_min.y) / m_step.y);
   }
   unsigned int GetIZ(double z) const {
-    return int((z - m_min.z) / m_step.z) + 1;
+    return static_cast<unsigned int>((z - m_min.z) / m_step.z);
   }
 
   // Return iX,iY,iZ indices for given iXYZ index
-  unsigned int GetIX(unsigned int iXYZ) const { return iXYZ / m_SX + 1; }
-  unsigned int GetIY(unsigned int iXYZ) const {
-    return (iXYZ % m_SX) / m_SY + 1;
-  }
-  unsigned int GetIZ(unsigned int iXYZ) const {
-    return (iXYZ % m_SY) / m_SZ + 1;
-  }
+  unsigned int GetIX(unsigned int iXYZ) const { return iXYZ / m_SX; }
+  unsigned int GetIY(unsigned int iXYZ) const { return (iXYZ % m_SX) / m_SY; }
+  unsigned int GetIZ(unsigned int iXYZ) const { return (iXYZ % m_SY) / m_SZ; }
 
   // Return iXYZ index for given iX,iY,iZ indices
   unsigned int GetIXYZ(unsigned int iX, unsigned int iY,
                        unsigned int iZ) const {
-    return (iX - 1) * m_SX + (iY - 1) * m_SY + (iZ - 1) * m_SZ;
+    return iX * m_SX + iY * m_SY + iZ * m_SZ;
   }
   // Return iXYZ index for given coord
   unsigned int GetIXYZ(const RbtCoord &c) const {
@@ -160,21 +156,20 @@ public:
 
   // Returns real-world coordinate for given iX,iY,iZ indices
   RbtCoord GetCoord(unsigned int iX, unsigned int iY, unsigned int iZ) const {
-    return (RbtCoord(m_nXMin, m_nYMin, m_nZMin) +
-            RbtCoord(iX - 1, iY - 1, iZ - 1)) *
+    return (RbtCoord(m_nXMin, m_nYMin, m_nZMin) + RbtCoord(iX, iY, iZ)) *
            m_step;
   }
   // Returns real-world X coordinate for given iX index
   double GetXCoord(unsigned int iX) const {
-    return (m_nXMin + (int)iX - 1) * m_step.x;
+    return (m_nXMin + static_cast<int>(iX)) * m_step.x;
   }
   // Returns real-world Y coordinate for given iY index
   double GetYCoord(unsigned int iY) const {
-    return (m_nYMin + (int)iY - 1) * m_step.y;
+    return (m_nYMin + static_cast<int>(iY)) * m_step.y;
   }
   // Returns real-world Z coordinate for given iZ index
   double GetZCoord(unsigned int iZ) const {
-    return (m_nZMin + (int)iZ - 1) * m_step.z;
+    return (m_nZMin + static_cast<int>(iZ)) * m_step.z;
   }
 
   // Returns real-world coordinate for given iXYZ index

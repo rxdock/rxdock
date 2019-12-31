@@ -26,8 +26,7 @@ std::string RbtRealGrid::_CT("RbtRealGrid");
 RbtRealGrid::RbtRealGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
                          unsigned int NX, unsigned int NY, unsigned int NZ,
                          unsigned int NPad)
-    : RbtBaseGrid(gridMin, gridStep, NX, NY, NZ, NPad), m_grid(nullptr),
-      m_data(nullptr), m_tol(0.001) {
+    : RbtBaseGrid(gridMin, gridStep, NX, NY, NZ, NPad), m_tol(0.001) {
   CreateArrays();
   // Initialise the grid to zero
   SetAllValues(0.0);
@@ -36,8 +35,7 @@ RbtRealGrid::RbtRealGrid(const RbtCoord &gridMin, const RbtCoord &gridStep,
 }
 
 // Constructor reading params from binary stream
-RbtRealGrid::RbtRealGrid(std::istream &istr)
-    : RbtBaseGrid(istr), m_grid(nullptr), m_data(nullptr) {
+RbtRealGrid::RbtRealGrid(std::istream &istr) : RbtBaseGrid(istr) {
   // Base class constructor has already read the grid dimensions
   // etc, so all we have to do here is created the array
   // and read in the grid values
@@ -47,14 +45,10 @@ RbtRealGrid::RbtRealGrid(std::istream &istr)
 }
 
 // Default destructor
-RbtRealGrid::~RbtRealGrid() {
-  ClearArrays();
-  _RBTOBJECTCOUNTER_DESTR_("RbtRealGrid");
-}
+RbtRealGrid::~RbtRealGrid() { _RBTOBJECTCOUNTER_DESTR_("RbtRealGrid"); }
 
 // Copy constructor
-RbtRealGrid::RbtRealGrid(const RbtRealGrid &grid)
-    : RbtBaseGrid(grid), m_grid(nullptr), m_data(nullptr) {
+RbtRealGrid::RbtRealGrid(const RbtRealGrid &grid) : RbtBaseGrid(grid) {
   // Base class constructor has already been called
   // so we just need to create the array and copy the array values
   CreateArrays();
@@ -64,8 +58,7 @@ RbtRealGrid::RbtRealGrid(const RbtRealGrid &grid)
 
 // Copy constructor taking a base class argument
 // Sets up the grid dimensions, then creates an empty data array
-RbtRealGrid::RbtRealGrid(const RbtBaseGrid &grid)
-    : RbtBaseGrid(grid), m_grid(nullptr), m_data(nullptr) {
+RbtRealGrid::RbtRealGrid(const RbtBaseGrid &grid) : RbtBaseGrid(grid) {
   CreateArrays();
   SetAllValues(0.0);
   _RBTOBJECTCOUNTER_COPYCONSTR_("RbtRealGrid");
@@ -74,8 +67,6 @@ RbtRealGrid::RbtRealGrid(const RbtBaseGrid &grid)
 // Copy assignment
 RbtRealGrid &RbtRealGrid::operator=(const RbtRealGrid &grid) {
   if (this != &grid) {
-    // Clear the current grid
-    ClearArrays();
     // In this case we need to explicitly call the base class operator=
     RbtBaseGrid::operator=(grid);
     CreateArrays();
@@ -87,8 +78,6 @@ RbtRealGrid &RbtRealGrid::operator=(const RbtRealGrid &grid) {
 // Sets up the grid dimensions, then creates an empty data array
 RbtRealGrid &RbtRealGrid::operator=(const RbtBaseGrid &grid) {
   if (this != &grid) {
-    // Clear the current grid
-    ClearArrays();
     // In this case we need to explicitly call the base class operator=
     RbtBaseGrid::operator=(grid);
     CreateArrays();
@@ -118,8 +107,6 @@ void RbtRealGrid::Write(std::ostream &ostr) const {
 
 // Binary input
 void RbtRealGrid::Read(std::istream &istr) {
-  // Clear the current grid before reading the new grid dimensions
-  ClearArrays();
   RbtBaseGrid::Read(istr); // Base class read
   // Now create the new grid and read in the grid values
   CreateArrays();
@@ -145,9 +132,9 @@ double RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
   // Get lower left corner grid point
   //(not necessarily the nearest grid point as returned by GetIX() etc)
   // Need to shift the int(..) argument by half a grid step
-  unsigned int iX = int(rx * (c.x - gridMin.x) - 0.5) + 1;
-  unsigned int iY = int(ry * (c.y - gridMin.y) - 0.5) + 1;
-  unsigned int iZ = int(rz * (c.z - gridMin.z) - 0.5) + 1;
+  unsigned int iX = static_cast<unsigned int>(rx * (c.x - gridMin.x) - 0.5);
+  unsigned int iY = static_cast<unsigned int>(ry * (c.y - gridMin.y) - 0.5);
+  unsigned int iZ = static_cast<unsigned int>(rz * (c.z - gridMin.z) - 0.5);
 #ifdef _DEBUG
   std::cout << "GetSmoothedValue" << c << "\tiX,iY,iZ=" << iX << "\t" << iY
             << "\t" << iZ << std::endl;
@@ -188,14 +175,14 @@ double RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
   double bx0by1 = bx0 * by1;
   double bx1by0 = bx1 * by0;
   double bx1by1 = bx1 * by1;
-  val += m_grid[iX][iY][iZ] * bx0by0 * bz0;
-  val += m_grid[iX][iY][iZ + 1] * bx0by0 * bz1;
-  val += m_grid[iX][iY + 1][iZ] * bx0by1 * bz0;
-  val += m_grid[iX][iY + 1][iZ + 1] * bx0by1 * bz1;
-  val += m_grid[iX + 1][iY][iZ] * bx1by0 * bz0;
-  val += m_grid[iX + 1][iY][iZ + 1] * bx1by0 * bz1;
-  val += m_grid[iX + 1][iY + 1][iZ] * bx1by1 * bz0;
-  val += m_grid[iX + 1][iY + 1][iZ + 1] * bx1by1 * bz1;
+  val += m_grid(iX, iY, iZ) * bx0by0 * bz0;
+  val += m_grid(iX, iY, iZ + 1) * bx0by0 * bz1;
+  val += m_grid(iX, iY + 1, iZ) * bx0by1 * bz0;
+  val += m_grid(iX, iY + 1, iZ + 1) * bx0by1 * bz1;
+  val += m_grid(iX + 1, iY, iZ) * bx1by0 * bz0;
+  val += m_grid(iX + 1, iY, iZ + 1) * bx1by0 * bz1;
+  val += m_grid(iX + 1, iY + 1, iZ) * bx1by1 * bz0;
+  val += m_grid(iX + 1, iY + 1, iZ + 1) * bx1by1 * bz1;
   // for (RbtUInt i = 0; i < 2; i++) {
   //  for (RbtUInt j = 0; j < 2; j++) {
   //    for (RbtUInt k = 0; k < 2; k++) {
@@ -207,20 +194,15 @@ double RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
 }
 
 // Set all grid points to the given value
-void RbtRealGrid::SetAllValues(double val) {
-  for (unsigned int i = 0; i < GetN(); i++) {
-    m_data[i] = val;
-  }
-}
+void RbtRealGrid::SetAllValues(double val) { m_grid.setConstant(val); }
 
 // Replaces all grid points between oldValMin and oldValMax with newVal
 void RbtRealGrid::ReplaceValueRange(double oldValMin, double oldValMax,
                                     double newVal) {
-  for (unsigned int i = 0; i < GetN(); i++) {
-    float d = m_data[i];
-    if ((d >= oldValMin) && (d < oldValMax))
-      m_data[i] = newVal;
-  }
+  Eigen::Tensor<bool, 3, Eigen::RowMajor> bGrid =
+      m_grid >= m_grid.constant(oldValMin) &&
+      m_grid < m_grid.constant(oldValMax);
+  m_grid = bGrid.select(m_grid.constant(newVal), m_grid);
 }
 
 // Set all grid points within radius of coord to the given value
@@ -257,32 +239,33 @@ void RbtRealGrid::SetSurface(const RbtCoord &c, double innerRad,
 //+/- tolerance is applied to oldValue and adjacentValue
 void RbtRealGrid::CreateSurface(double oldVal, double adjVal, double newVal) {
   // Iterate over the cuboid defined by the pad coords
-  unsigned int iMinX = GetPad() + 1;
-  unsigned int iMinY = GetPad() + 1;
-  unsigned int iMinZ = GetPad() + 1;
+  unsigned int iMinX = GetPad();
+  unsigned int iMinY = GetPad();
+  unsigned int iMinZ = GetPad();
   unsigned int iMaxX = GetNX() - GetPad();
   unsigned int iMaxY = GetNY() - GetPad();
   unsigned int iMaxZ = GetNZ() - GetPad();
 
-  for (unsigned int iX = iMinX; iX <= iMaxX; iX++) {
-    for (unsigned int iY = iMinY; iY <= iMaxY; iY++) {
-      for (unsigned int iZ = iMinZ; iZ <= iMaxZ; iZ++) {
+  // probably could be better written
+  for (unsigned int iX = iMinX; iX < iMaxX; iX++) {
+    for (unsigned int iY = iMinY; iY < iMaxY; iY++) {
+      for (unsigned int iZ = iMinZ; iZ < iMaxZ; iZ++) {
         // We have a match with oldVal
-        if (std::fabs(m_grid[iX][iY][iZ] - oldVal) < m_tol) {
+        if (std::fabs(m_grid(iX, iY, iZ) - oldVal) < m_tol) {
           // Check the six adjacent points for a match with adjVal
           if (((iX > iMinX) &&
-               (std::fabs(m_grid[iX - 1][iY][iZ] - adjVal) < m_tol)) ||
+               (std::fabs(m_grid(iX - 1, iY, iZ) - adjVal) < m_tol)) ||
               ((iX < iMaxX) &&
-               (std::fabs(m_grid[iX + 1][iY][iZ] - adjVal) < m_tol)) ||
+               (std::fabs(m_grid(iX + 1, iY, iZ) - adjVal) < m_tol)) ||
               ((iY > iMinY) &&
-               (std::fabs(m_grid[iX][iY - 1][iZ] - adjVal) < m_tol)) ||
+               (std::fabs(m_grid(iX, iY - 1, iZ) - adjVal) < m_tol)) ||
               ((iY < iMaxY) &&
-               (std::fabs(m_grid[iX][iY + 1][iZ] - adjVal) < m_tol)) ||
+               (std::fabs(m_grid(iX, iY + 1, iZ) - adjVal) < m_tol)) ||
               ((iZ > iMinZ) &&
-               (std::fabs(m_grid[iX][iY][iZ - 1] - adjVal) < m_tol)) ||
+               (std::fabs(m_grid(iX, iY, iZ - 1) - adjVal) < m_tol)) ||
               ((iZ < iMaxZ) &&
-               (std::fabs(m_grid[iX][iY][iZ + 1] - adjVal) < m_tol)))
-            m_grid[iX][iY][iZ] = newVal;
+               (std::fabs(m_grid(iX, iY, iZ + 1) - adjVal) < m_tol)))
+            m_grid(iX, iY, iZ) = newVal;
         }
       }
     }
@@ -305,9 +288,9 @@ bool RbtRealGrid::isValueWithinSphere(const RbtCoord &c, double radius,
 void RbtRealGrid::SetAccessible(double radius, double oldVal, double adjVal,
                                 double newVal, bool bCenterOnly) {
   // Iterate over the cuboid defined by the pad coords
-  unsigned int iMinX = GetPad() + 1;
-  unsigned int iMinY = GetPad() + 1;
-  unsigned int iMinZ = GetPad() + 1;
+  unsigned int iMinX = GetPad();
+  unsigned int iMinY = GetPad();
+  unsigned int iMinZ = GetPad();
   unsigned int iMaxX = GetNX() - GetPad();
   unsigned int iMaxY = GetNY() - GetPad();
   unsigned int iMaxZ = GetNZ() - GetPad();
@@ -320,17 +303,18 @@ void RbtRealGrid::SetAccessible(double radius, double oldVal, double adjVal,
                       (int(radius / GetGridStep().y) + 1) *
                       (int(radius / GetGridStep().z) + 1);
   sphereIndices.reserve(nMax);
-  for (unsigned int iX = iMinX; iX <= iMaxX; iX++) {
-    for (unsigned int iY = iMinY; iY <= iMaxY; iY++) {
-      for (unsigned int iZ = iMinZ; iZ <= iMaxZ; iZ++) {
+  // possibly can be better written
+  for (unsigned int iX = iMinX; iX < iMaxX; iX++) {
+    for (unsigned int iY = iMinY; iY < iMaxY; iY++) {
+      for (unsigned int iZ = iMinZ; iZ < iMaxZ; iZ++) {
         // We have a match with oldVal
-        if (std::fabs(m_grid[iX][iY][iZ] - oldVal) < m_tol) {
+        if (std::fabs(m_grid(iX, iY, iZ) - oldVal) < m_tol) {
           RbtCoord c = GetCoord(iX, iY, iZ);
           // Check the sphere around this grid point
           GetSphereIndices(c, radius, sphereIndices);
           if (!isValueWithinList(sphereIndices, adjVal)) {
             if (bCenterOnly)
-              m_grid[iX][iY][iZ] = newVal; // Set just the center grid point
+              m_grid(iX, iY, iZ) = newVal; // Set just the center grid point
             else
               // SetValues(sphereIndices,newVal,false);//Set all grid points in
               // the sphere
@@ -350,39 +334,30 @@ void RbtRealGrid::SetAccessible(double radius, double oldVal, double adjVal,
 
 // Returns number of occurrences of a given value range
 unsigned int RbtRealGrid::CountRange(double valMin, double valMax) const {
-  unsigned int n(0);
-  for (unsigned int i = 0; i < GetN(); i++) {
-    float d = m_data[i];
-    if ((d >= valMin) && (d < valMax))
-      n++;
-  }
-  return n;
+  Eigen::Tensor<bool, 3, Eigen::RowMajor> bGrid =
+      m_grid >= m_grid.constant(valMin) && m_grid < m_grid.constant(valMax);
+  Eigen::Tensor<unsigned int, 0, Eigen::RowMajor> tN =
+      bGrid.cast<unsigned int>().sum();
+  return tN(0);
 }
 
 // Min/max values
 double RbtRealGrid::MinValue() const {
-  float fMin = m_data[0];
-  for (unsigned int i = 0; i < GetN(); i++) {
-    if (m_data[i] < fMin)
-      fMin = m_data[i];
-  }
-  return fMin;
+  Eigen::Tensor<float, 0, Eigen::RowMajor> tMinimum = m_grid.minimum();
+  return tMinimum(0);
 }
 
 double RbtRealGrid::MaxValue() const {
-  float fMax = m_data[0];
-  for (unsigned int i = 0; i < GetN(); i++) {
-    if (m_data[i] > fMax)
-      fMax = m_data[i];
-  }
-  return fMax;
+  Eigen::Tensor<float, 0, Eigen::RowMajor> tMaximum = m_grid.maximum();
+  return tMaximum(0);
 }
 
 // iXYZ index of grid point with minimum value
 unsigned int RbtRealGrid::FindMinValue() const {
   unsigned int iMin = 0;
+  const float *data = m_grid.data();
   for (unsigned int i = 0; i < GetN(); i++) {
-    if (m_data[i] < m_data[iMin])
+    if (data[i] < data[iMin])
       iMin = i;
   }
   return iMin;
@@ -391,8 +366,9 @@ unsigned int RbtRealGrid::FindMinValue() const {
 // iXYZ index of grid point with maximum value
 unsigned int RbtRealGrid::FindMaxValue() const {
   unsigned int iMax = 0;
+  const float *data = m_grid.data();
   for (unsigned int i = 0; i < GetN(); i++) {
-    if (m_data[i] > m_data[iMax])
+    if (data[i] > data[iMax])
       iMax = i;
   }
   return iMax;
@@ -423,10 +399,10 @@ void RbtRealGrid::PrintInsightGrid(std::ostream &s) const {
   // s.setf(std::ios_base::fixed,ios_base::floatfield);
   // s.setf(std::ios_base::right,ios_base::adjustfield);
   // Insight expects data in [1][1][1],[2][1][1]..[NX][1][1] order
-  for (unsigned int iZ = 1; iZ <= GetNZ(); iZ++) {
-    for (unsigned int iY = 1; iY <= GetNY(); iY++) {
-      for (unsigned int iX = 1; iX <= GetNX(); iX++) {
-        s << std::setw(15) << m_grid[iX][iY][iZ] << std::endl;
+  for (unsigned int iZ = 0; iZ < GetNZ(); iZ++) {
+    for (unsigned int iY = 0; iY < GetNY(); iY++) {
+      for (unsigned int iX = 0; iX < GetNX(); iX++) {
+        s << std::setw(15) << m_grid(iX, iY, iZ) << std::endl;
       }
     }
   }
@@ -440,11 +416,12 @@ void RbtRealGrid::OwnPrint(std::ostream &ostr) const {
   ostr << "Class\t" << _CT << std::endl;
   // Iterate over all grid points
   float tol = GetTolerance();
-  for (unsigned int iX = 1; iX <= GetNX(); iX++) {
+  // TODO use chip()
+  for (unsigned int iX = 0; iX < GetNX(); iX++) {
     ostr << std::endl << std::endl << "Plane iX=" << iX << std::endl;
-    for (unsigned int iY = 1; iY <= GetNY(); iY++) {
-      for (unsigned int iZ = 1; iZ <= GetNZ(); iZ++) {
-        float f = m_grid[iX][iY][iZ];
+    for (unsigned int iY = 0; iY < GetNY(); iY++) {
+      for (unsigned int iZ = 0; iZ < GetNZ(); iZ++) {
+        float f = m_grid(iX, iY, iZ);
         ostr << ((f < -tol) ? '-' : (f > tol) ? '+' : '.');
       }
       ostr << std::endl;
@@ -464,8 +441,9 @@ void RbtRealGrid::OwnWrite(std::ostream &ostr) const {
 
   // Write all the data members
   Rbt::WriteWithThrow(ostr, (const char *)&m_tol, sizeof(m_tol));
+  const float *data = m_grid.data();
   for (unsigned int i = 0; i < GetN(); i++) {
-    Rbt::WriteWithThrow(ostr, (const char *)&m_data[i], sizeof(m_data[i]));
+    Rbt::WriteWithThrow(ostr, (const char *)&data[i], sizeof(data[i]));
   }
 }
 
@@ -490,8 +468,9 @@ void RbtRealGrid::OwnRead(std::istream &istr) {
 
   // Read all the data members
   Rbt::ReadWithThrow(istr, (char *)&m_tol, sizeof(m_tol));
+  float *data = m_grid.data();
   for (unsigned int i = 0; i < GetN(); i++) {
-    Rbt::ReadWithThrow(istr, (char *)&m_data[i], sizeof(m_data[i]));
+    Rbt::ReadWithThrow(istr, (char *)&data[i], sizeof(data[i]));
   }
 }
 
@@ -503,9 +482,10 @@ void RbtRealGrid::OwnRead(std::istream &istr) {
 // values out of bounds
 bool RbtRealGrid::isValueWithinList(const std::vector<unsigned int> &iXYZList,
                                     double val) {
+  float *data = m_grid.data();
   for (std::vector<unsigned int>::const_iterator iter = iXYZList.begin();
        iter != iXYZList.end(); iter++) {
-    if (std::fabs(m_data[*iter] - val) < m_tol) {
+    if (std::fabs(data[*iter] - val) < m_tol) {
       return true;
     }
   }
@@ -518,44 +498,20 @@ bool RbtRealGrid::isValueWithinList(const std::vector<unsigned int> &iXYZList,
 // bOverwrite is true, all grid points are set the new value
 void RbtRealGrid::SetValues(const std::vector<unsigned int> &iXYZList,
                             double val, bool bOverwrite) {
+  float *data = m_grid.data();
   for (std::vector<unsigned int>::const_iterator iter = iXYZList.begin();
        iter != iXYZList.end(); iter++) {
-    if (bOverwrite || (std::fabs(m_data[*iter]) < m_tol)) {
-      m_data[*iter] = val;
+    if (bOverwrite || (std::fabs(data[*iter]) < m_tol)) {
+      data[*iter] = val;
     }
   }
 }
 
 void RbtRealGrid::CreateArrays() {
-  if (m_grid != nullptr) { // Clear existing grid
-    ClearArrays();
-  }
   int nX = GetNX();
   int nY = GetNY();
   int nZ = GetNZ();
-  m_grid = new float **[nX + 1];
-  m_grid[1] = new float *[nX * nY + 1];
-  m_grid[1][1] = new float[nX * nY * nZ + 1];
-
-  for (int iY = 2; iY <= nY; iY++) {
-    m_grid[1][iY] = m_grid[1][iY - 1] + nZ;
-  }
-  for (int iX = 2; iX <= nX; iX++) {
-    m_grid[iX] = m_grid[iX - 1] + nY;
-    m_grid[iX][1] = m_grid[iX - 1][1] + nY * nZ;
-    for (int iY = 2; iY <= nY; iY++) {
-      m_grid[iX][iY] = m_grid[iX][iY - 1] + nZ;
-    }
-  }
-  m_data = &m_grid[1][1][1];
-}
-
-void RbtRealGrid::ClearArrays() {
-  delete[] m_grid[1][1];
-  delete[] m_grid[1];
-  delete[] m_grid;
-  m_grid = nullptr;
-  m_data = nullptr;
+  m_grid = Eigen::Tensor<float, 3, Eigen::RowMajor>(nX, nY, nZ);
 }
 
 // Helper function called by copy constructor and assignment operator
@@ -563,8 +519,5 @@ void RbtRealGrid::ClearArrays() {
 // Gets called after array has been created, and base class copy has been done
 void RbtRealGrid::CopyGrid(const RbtRealGrid &grid) {
   m_tol = grid.m_tol;
-  float *gridData = grid.GetGridData();
-  for (unsigned int i = 0; i < GetN(); i++) {
-    m_data[i] = gridData[i];
-  }
+  m_grid = grid.m_grid;
 }

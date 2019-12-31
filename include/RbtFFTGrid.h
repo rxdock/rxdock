@@ -84,7 +84,7 @@ public:
   // Find the coords of all (separate) peaks above the threshold value
   // whose volumes are not less than minVol
   // Returns a map of RbtFFTPeaks
-  RbtFFTPeakMap FindPeaks(double threshold, unsigned int minVol = 1) const;
+  RbtFFTPeakMap FindPeaks(double threshold, unsigned int minVol = 1);
   // Returns the grid point with the maximum value in RbtFFTPeak format
   // Just a wrapper around FindMaxValue() (see below)
   RbtFFTPeak FindMaxPeak() const;
