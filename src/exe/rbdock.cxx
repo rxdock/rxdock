@@ -12,6 +12,7 @@
 
 // Main docking application
 #include <cerrno>
+#include <chrono>
 #include <cxxopts.hpp>
 #include <iomanip>
 
@@ -443,7 +444,9 @@ int main(int argc, char *argv[]) {
     // MdlFileSource constructor
     RbtMolecularFileSourcePtr spMdlFileSource(new RbtMdlFileSource(
         strLigandMdlFile, bPosIonise, bNegIonise, !bExplH));
-    for (int nRec = 1; spMdlFileSource->FileStatusOK();
+    std::chrono::duration<double> totalDuration(0.0);
+    std::size_t nRec;
+    for (nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
       std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
       std::cout << std::endl
@@ -458,6 +461,8 @@ int main(int argc, char *argv[]) {
                   << std::endl;
         continue;
       }
+
+      auto startTime = std::chrono::high_resolution_clock::now();
 
       // DM 26 Jul 1999 - only read the largest segment (guaranteed to be called
       // H) BGD 07 Oct 2002 - catching errors created by the ligands, so rbdock
@@ -536,14 +541,52 @@ int main(int argc, char *argv[]) {
         }
         // END OF MAIN LOOP OVER EACH SIMULATED ANNEALING RUN
         ////////////////////////////////////////////////////
+
+        // here we use iRun - 1 since iRun got incremented in the last iteration
+        std::cout << "Numer of docking runs done:   " << iRun - 1 << std::endl;
       }
       // END OF TRY
       catch (RbtLigandError &e) {
         std::cout << e << std::endl;
       }
+
+      auto endTime = std::chrono::high_resolution_clock::now();
+      std::chrono::duration<double> recordDuration = endTime - startTime;
+      std::cout << "Ligand docking duration:      " << recordDuration.count()
+                << " second(s)" << std::endl;
+      totalDuration += recordDuration;
+      // report average every 10th record starting from the 1st
+      if (nRec % 10 == 1) {
+        std::cout << std::endl
+                  << "Average duration per ligand:  "
+                  << totalDuration.count() / static_cast<double>(nRec)
+                  << " second(s)" << std::endl;
+      }
     }
     // END OF MAIN LOOP OVER LIGAND RECORDS
     ////////////////////////////////////////////////////
+
+    auto hTotal = std::chrono::duration_cast<std::chrono::hours>(totalDuration);
+    totalDuration -= hTotal;
+    auto mTotal =
+        std::chrono::duration_cast<std::chrono::minutes>(totalDuration);
+    totalDuration -= mTotal;
+
+    // here we use nRec - 1 since nRec got incremented in the iteration in which
+    // spMdlFileSource->FileStatusOK() returned false and for loop ended
+    std::cout << std::endl
+              << "**************************************************"
+              << std::endl
+              << "Docking duration for " << nRec - 1 << " ligand(s): ";
+
+    if (hTotal.count() > 0) {
+      std::cout << hTotal.count() << " hour(s), ";
+    }
+    if (hTotal.count() > 0 || mTotal.count() > 0) {
+      std::cout << mTotal.count() << " minute(s), ";
+    }
+    std::cout << totalDuration.count() << " second(s)" << std::endl;
+
     std::cout << std::endl << "END OF RUN" << std::endl;
     //    if (bOutput && flexRec) {
     //      RbtMolecularFileSinkPtr spRecepSink(new
