@@ -56,6 +56,7 @@ public:
   bool isMultiRecordSupported() { return m_bMultiRec; }
   RBTDLL_EXPORT void NextRecord();
   void Rewind();
+  RBTDLL_EXPORT std::size_t GetEstimatedNumRecords();
 
 protected:
   //////////////////////////////////////////////////////
@@ -86,7 +87,10 @@ private:
   // Private data
 private:
   std::string m_strFileName;
+  std::size_t m_fileSize;
   bool m_bReadOK; // For use by Read
+  std::size_t m_numReads;
+  std::size_t m_bytesRead;
   std::ifstream m_fileIn;
   char *m_szBuf;    // Line buffer
   bool m_bFileOpen; // Keep track of whether we've opened the file or not

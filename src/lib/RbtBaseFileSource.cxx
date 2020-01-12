@@ -13,6 +13,7 @@
 #include "RbtBaseFileSource.h"
 #include "RbtFileError.h"
 #include <cstring>
+#include <sys/stat.h>
 
 // Constructors
 // RbtBaseFileSource::RbtBaseFileSource(const char* fileName)
@@ -23,8 +24,12 @@
 //}
 
 RbtBaseFileSource::RbtBaseFileSource(const std::string &fileName)
-    : m_bFileOpen(false), m_bMultiRec(false) {
+    : m_numReads(0), m_bytesRead(0), m_bFileOpen(false), m_bMultiRec(false) {
   m_strFileName = fileName;
+  struct stat fileStat;
+  if (stat(fileName.c_str(), &fileStat) == 0) {
+    m_fileSize = fileStat.st_size;
+  }
   m_szBuf = new char[MAXLINELENGTH + 1]; // DM 24 Mar - allocate line buffer
   ClearCache();
   _RBTOBJECTCOUNTER_CONSTR_("RbtBaseFileSource");
@@ -33,8 +38,13 @@ RbtBaseFileSource::RbtBaseFileSource(const std::string &fileName)
 // Multi-record constructor
 RbtBaseFileSource::RbtBaseFileSource(const std::string &fileName,
                                      const std::string &strRecDelim)
-    : m_bFileOpen(false), m_bMultiRec(true), m_strRecDelim(strRecDelim) {
+    : m_numReads(0), m_bytesRead(0), m_bFileOpen(false), m_bMultiRec(true),
+      m_strRecDelim(strRecDelim) {
   m_strFileName = fileName;
+  struct stat fileStat;
+  if (stat(fileName.c_str(), &fileStat) == 0) {
+    m_fileSize = fileStat.st_size;
+  }
   m_szBuf = new char[MAXLINELENGTH + 1]; // DM 24 Mar - allocate line buffer
   ClearCache();
   _RBTOBJECTCOUNTER_CONSTR_("RbtBaseFileSource");
@@ -116,10 +126,26 @@ void RbtBaseFileSource::Rewind() {
   }
 }
 
+// Estimate the number of records in the file from the file size
+std::size_t RbtBaseFileSource::GetEstimatedNumRecords() {
+  if (m_bMultiRec) {
+    if (m_numReads > 0 && m_bytesRead > 0) {
+      double avgBytesRead =
+          static_cast<double>(m_bytesRead) / static_cast<double>(m_numReads);
+      double estNumRecords = static_cast<double>(m_fileSize) / avgBytesRead;
+      return static_cast<std::size_t>(estNumRecords);
+    } else {
+      return 0;
+    }
+  }
+  return 1;
+}
+
 // Protected functions
 
 void RbtBaseFileSource::Read(bool aDelimiterAtEnd) {
   // If we haven't already read the file, do it now
+  std::size_t bytesLastRead = 0;
   if (!m_bReadOK) {
     if (aDelimiterAtEnd) {
       ClearCache();
@@ -136,6 +162,9 @@ void RbtBaseFileSource::Read(bool aDelimiterAtEnd) {
 #ifdef _DEBUG
             std::cout << m_szBuf << std::endl;
 #endif //_DEBUG
+            bytesLastRead += std::strlen(m_szBuf) + 1;
+            // adding 1 byte per getline for newline (LF) character, no need
+            // to check for CRLF as they are considered unsupported
             m_lineRecs.push_back(m_szBuf);
           }
         }
@@ -143,6 +172,7 @@ void RbtBaseFileSource::Read(bool aDelimiterAtEnd) {
         // Read entire file and close immediately
         else {
           while (m_fileIn.getline(m_szBuf, MAXLINELENGTH)) {
+            bytesLastRead += std::strlen(m_szBuf) + 1;
             m_lineRecs.push_back(m_szBuf);
           }
           Close();
@@ -177,6 +207,7 @@ void RbtBaseFileSource::Read(bool aDelimiterAtEnd) {
 #ifdef _DEBUG
             std::cout << m_szBuf << std::endl;
 #endif //_DEBUG
+            bytesLastRead += std::strlen(m_szBuf) + 1;
             m_lineRecs.push_back(m_szBuf);
           }
         }
@@ -184,6 +215,7 @@ void RbtBaseFileSource::Read(bool aDelimiterAtEnd) {
         // Read entire file and close immediately
         else {
           while (m_fileIn.getline(m_szBuf, MAXLINELENGTH)) {
+            bytesLastRead += std::strlen(m_szBuf) + 1;
             m_lineRecs.push_back(m_szBuf);
           }
           Close();
@@ -201,6 +233,8 @@ void RbtBaseFileSource::Read(bool aDelimiterAtEnd) {
     }
     // If we get to here, we read the file OK
     m_bReadOK = true;
+    m_numReads++;
+    m_bytesRead += bytesLastRead;
   }
 }
 

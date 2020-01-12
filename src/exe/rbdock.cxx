@@ -445,6 +445,8 @@ int main(int argc, char *argv[]) {
     RbtMolecularFileSourcePtr spMdlFileSource(new RbtMdlFileSource(
         strLigandMdlFile, bPosIonise, bNegIonise, !bExplH));
     std::chrono::duration<double> totalDuration(0.0);
+    std::chrono::system_clock::time_point loopBegin =
+        std::chrono::system_clock::now();
     std::size_t nRec;
     for (nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
@@ -561,6 +563,20 @@ int main(int argc, char *argv[]) {
                   << "Average duration per ligand:  "
                   << totalDuration.count() / static_cast<double>(nRec)
                   << " second(s)" << std::endl;
+        std::size_t estNumRecords = spMdlFileSource->GetEstimatedNumRecords();
+        if (estNumRecords > 0) {
+          std::chrono::duration<double> estimatedTimeRemaining =
+              estNumRecords * (totalDuration / static_cast<double>(nRec));
+          std::chrono::system_clock::time_point loopEnd =
+              loopBegin + std::chrono::duration_cast<std::chrono::seconds>(
+                              estimatedTimeRemaining);
+          std::time_t loopEndTime =
+              std::chrono::system_clock::to_time_t(loopEnd);
+          std::cout << "Approximately " << estNumRecords - nRec
+                    << " record(s) remaining, will finish "
+                    << std::put_time(std::localtime(&loopEndTime), "%c")
+                    << std::endl;
+        }
       }
     }
     // END OF MAIN LOOP OVER LIGAND RECORDS
