@@ -445,6 +445,7 @@ int main(int argc, char *argv[]) {
     RbtMolecularFileSourcePtr spMdlFileSource(new RbtMdlFileSource(
         strLigandMdlFile, bPosIonise, bNegIonise, !bExplH));
     std::chrono::duration<double> totalDuration(0.0);
+    std::size_t nFailedLigands = 0;
     std::chrono::system_clock::time_point loopBegin =
         std::chrono::system_clock::now();
     std::size_t nRec;
@@ -465,6 +466,7 @@ int main(int argc, char *argv[]) {
       }
 
       auto startTime = std::chrono::high_resolution_clock::now();
+      bool bLigandError = false;
 
       // DM 26 Jul 1999 - only read the largest segment (guaranteed to be called
       // H) BGD 07 Oct 2002 - catching errors created by the ligands, so rbdock
@@ -512,6 +514,7 @@ int main(int argc, char *argv[]) {
         // Create a history file sink, just in case it's needed by any
         // of the transforms
         int iRun = 1;
+        std::size_t nErrors = 0;
         // need to check this here. The termination
         // filter is only run once at least
         // one docking run has been done.
@@ -519,6 +522,12 @@ int main(int argc, char *argv[]) {
           bTargetMet = true;
         while (!bTargetMet) {
           // Catching errors with this specific run
+          if (nErrors > 10) {
+            std::cout << "Target not met, but giving up on ligand after "
+                      << nErrors << " errors" << std::endl;
+            bLigandError = true;
+            break;
+          }
           try {
             if (bOutput) {
               std::ostringstream histr;
@@ -539,69 +548,88 @@ int main(int argc, char *argv[]) {
             iRun++;
           } catch (RbtDockingError &e) {
             std::cout << e << std::endl;
+            nErrors++;
           }
         }
         // END OF MAIN LOOP OVER EACH SIMULATED ANNEALING RUN
         ////////////////////////////////////////////////////
 
         // here we use iRun - 1 since iRun got incremented in the last iteration
-        std::cout << "Numer of docking runs done:   " << iRun - 1 << std::endl;
+        std::cout << "Numer of docking runs done:   " << iRun - 1 << " ("
+                  << nErrors << " errors)" << std::endl;
       }
       // END OF TRY
       catch (RbtLigandError &e) {
         std::cout << e << std::endl;
+        bLigandError = true;
       }
 
-      auto endTime = std::chrono::high_resolution_clock::now();
-      std::chrono::duration<double> recordDuration = endTime - startTime;
-      std::cout << "Ligand docking duration:      " << recordDuration.count()
-                << " second(s)" << std::endl;
-      totalDuration += recordDuration;
-      // report average every 10th record starting from the 1st
-      if (nRec % 10 == 1) {
-        std::cout << std::endl
-                  << "Average duration per ligand:  "
-                  << totalDuration.count() / static_cast<double>(nRec)
+      if (!bLigandError) {
+        auto endTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> recordDuration = endTime - startTime;
+        std::cout << "Ligand docking duration:      " << recordDuration.count()
                   << " second(s)" << std::endl;
-        std::size_t estNumRecords = spMdlFileSource->GetEstimatedNumRecords();
-        if (estNumRecords > 0) {
-          std::chrono::duration<double> estimatedTimeRemaining =
-              estNumRecords * (totalDuration / static_cast<double>(nRec));
-          std::chrono::system_clock::time_point loopEnd =
-              loopBegin + std::chrono::duration_cast<std::chrono::seconds>(
-                              estimatedTimeRemaining);
-          std::time_t loopEndTime =
-              std::chrono::system_clock::to_time_t(loopEnd);
-          std::cout << "Approximately " << estNumRecords - nRec
-                    << " record(s) remaining, will finish "
-                    << std::put_time(std::localtime(&loopEndTime), "%c")
-                    << std::endl;
+        totalDuration += recordDuration;
+        // report average every 10th record starting from the 1st
+        if (nRec % 10 == 1) {
+          std::cout << std::endl
+                    << "Average duration per ligand:  "
+                    << totalDuration.count() / static_cast<double>(nRec)
+                    << " second(s)" << std::endl;
+          std::size_t estNumRecords = spMdlFileSource->GetEstimatedNumRecords();
+          if (estNumRecords > 0) {
+            std::chrono::duration<double> estimatedTimeRemaining =
+                estNumRecords * (totalDuration / static_cast<double>(nRec));
+            std::chrono::system_clock::time_point loopEnd =
+                loopBegin + std::chrono::duration_cast<std::chrono::seconds>(
+                                estimatedTimeRemaining);
+            std::time_t loopEndTime =
+                std::chrono::system_clock::to_time_t(loopEnd);
+            std::cout << "Approximately " << estNumRecords - nRec
+                      << " record(s) remaining, will finish "
+                      << std::put_time(std::localtime(&loopEndTime), "%c")
+                      << std::endl;
+          }
         }
+      } else {
+        nFailedLigands++;
       }
     }
     // END OF MAIN LOOP OVER LIGAND RECORDS
     ////////////////////////////////////////////////////
 
-    auto hTotal = std::chrono::duration_cast<std::chrono::hours>(totalDuration);
-    totalDuration -= hTotal;
-    auto mTotal =
-        std::chrono::duration_cast<std::chrono::minutes>(totalDuration);
-    totalDuration -= mTotal;
-
-    // here we use nRec - 1 since nRec got incremented in the iteration in which
-    // spMdlFileSource->FileStatusOK() returned false and for loop ended
     std::cout << std::endl
               << "**************************************************"
               << std::endl
-              << "Docking duration for " << nRec - 1 << " ligand(s): ";
+              << "Total number of ligands: " << nRec - 1;
+    if (nFailedLigands > 0)
+      std::cout << ", of which" << nFailedLigands << " failed to dock"
+                << std::endl;
+    else
+      std::cout << ", all ligands docked without errors" << std::endl;
 
-    if (hTotal.count() > 0) {
-      std::cout << hTotal.count() << " hour(s), ";
+    // here we use nRec - 1 for the number of ligands since nRec got incremented
+    // in the iteration in which spMdlFileSource->FileStatusOK() returned false
+    // and for loop ended
+    if (nRec - 1 - nFailedLigands > 0) {
+      auto hTotal =
+          std::chrono::duration_cast<std::chrono::hours>(totalDuration);
+      totalDuration -= hTotal;
+      auto mTotal =
+          std::chrono::duration_cast<std::chrono::minutes>(totalDuration);
+      totalDuration -= mTotal;
+
+      std::cout << "Docking duration for " << nRec - 1 - nFailedLigands
+                << " ligand(s): ";
+
+      if (hTotal.count() > 0) {
+        std::cout << hTotal.count() << " hour(s), ";
+      }
+      if (hTotal.count() > 0 || mTotal.count() > 0) {
+        std::cout << mTotal.count() << " minute(s), ";
+      }
+      std::cout << totalDuration.count() << " second(s)" << std::endl;
     }
-    if (hTotal.count() > 0 || mTotal.count() > 0) {
-      std::cout << mTotal.count() << " minute(s), ";
-    }
-    std::cout << totalDuration.count() << " second(s)" << std::endl;
 
     std::cout << std::endl << "END OF RUN" << std::endl;
     //    if (bOutput && flexRec) {
