@@ -65,7 +65,20 @@ void RbtMdlFileSink::Render() {
       AddLine(titleList[0]);
     else
       AddLine(spModel->GetName());
-    AddLine(std::string("  rDOCK(R)          3D"));
+
+    // Molfile allows up to 8 characters for program name
+    std::string programName = Rbt::GetProgramName();
+    if (programName.length() > 8)
+      programName = programName.substr(0, 8);
+    programName.insert(programName.length(), 8 - programName.length(), ' ');
+
+    // File timestamp is 10 characters
+    std::time_t t = std::time(nullptr);
+    char ftime[11];
+    std::strftime(ftime, sizeof(ftime), "%m%d%y%H%M", std::localtime(&t));
+
+    // First two characters are user initials, leave them empty for now
+    AddLine("  " + programName + std::string(ftime) + "3D");
     AddLine(Rbt::GetProduct() + "/" + Rbt::GetVersion() + "/" +
             Rbt::GetBuild());
 
