@@ -1,7 +1,7 @@
 Coding standards
 ================
 
-rDock is written using the `LLVM style C++ code
+|Dock| is written using the `LLVM style C++ code
 <https://clang.llvm.org/docs/ClangFormatStyleOptions.html>`__ and formatted
 using `ClangFormat <https://clang.llvm.org/docs/ClangFormat.html>`__.
 
@@ -10,7 +10,7 @@ LLVM coding standards and additions
 
 The coding standards are documented in `LLVM Coding Standards
 <https://llvm.org/docs/CodingStandards.html>`__. With regards to that document,
-rDock has made the following changes in the coding standards:
+|Dock| has made the following changes in the coding standards:
 
 * Standard C++11 is used instead of C++14. In the near future the switch will
   be made to C++17.

@@ -4,9 +4,9 @@ Quick and dirty installation
 ============================
 
 In this section you will have short instructions to make a typical installation
-of rDock.
+of |Dock|.
 
-To get the full documentation of all rDock software package and methods, please
+To get the full documentation of all |Dock| software package and methods, please
 go to the :ref:`Reference guide <reference-guide>`.
 
 Moreover, you can also check the following information:
@@ -16,12 +16,12 @@ Moreover, you can also check the following information:
 * :ref:`Validation experiments <validation-experiments>`: instructions and
   examples for re-running the validation sets we have carried out.
 * :ref:`Calculating ROC curves <calculating-roc-curves>`: tutorial for
-  generating ROC curves and other statistics after running rDock docking jobs.
+  generating ROC curves and other statistics after running |Dock| docking jobs.
 
 Installation in 3 steps
 -----------------------
 
-We have been able to compile rDock in the following Linux systems:
+We have been able to compile |Dock| in the following Linux systems:
 
 * CentOS 5.5 64 bits
 * openSUSE 11.3 32 and 64 bits
@@ -33,7 +33,7 @@ Step 1
 ^^^^^^
 
 First of all, you will need to install several packages before compiling and
-running rDock:
+running |Dock|:
 
 * gcc and g++ compilers version > 3.3
 * make
@@ -43,7 +43,7 @@ running rDock:
 
    **For Ubuntu users:**
 
-   If you are trying to use rDock in Ubuntu, please note that csh shell is not
+   If you are trying to use |Dock| in Ubuntu, please note that csh shell is not
    included in a default installation. We recommend to install csh in case some
    error arises (``sudo apt-get install csh``), even with all the above-stated
    dependencies installed.
@@ -58,8 +58,8 @@ Then, run the following commands:
 
 .. code-block:: bash
 
-   $ tar -xvzf rDock_2013.1_src.tar.gz
-   $ cd rDock_2013.1_src/build/
+   $ tar -xvzf rxdock-0.1.0.tar.gz
+   $ cd rxdock-0.1.0/build/
 
 and, for 32 bits computers:
 
@@ -83,16 +83,16 @@ check that your compiled version works good and the results are correct.
 
    $ make test
 
-If the test has succeed, you are done, enjoy using rDock!
+If the test has succeed, you are done, enjoy using |Dock|!
 
 Otherwise, please check your dependencies and all the previous commands or go to
 :ref:`Support Section <support>` to ask for help.
 
 Just as a concluding remark, don't forget to set the necessary environmental
-variables for running rDock in the command line (for example, in Bash shell):
+variables for running |Dock| in the command line (for example, in Bash shell):
 
 .. code-block:: bash
 
-   $ export RBT_ROOT=/path/to/rDock/installation/
+   $ export RBT_ROOT=/path/to/rxdock/installation/
    $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RBT_ROOT/lib
    $ export PATH=$PATH:$RBT_ROOT/bin

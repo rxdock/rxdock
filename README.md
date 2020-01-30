@@ -1,23 +1,23 @@
-# rDock: a fast, versatile, and open-source program for docking ligands to proteins and nucleic acids
+# RxDock: a fast, versatile, and open-source program for docking ligands to proteins and nucleic acids
 
-![rDock Logo](docs/_static/logo.png)
+![RxDock Logo](docs/_static/logo.png)
 
-rDock is a fast and versatile **open-source docking program** that can be used
+RxDock is a fast and versatile **open-source docking program** that can be used
 to dock **small molecules** against **proteins** and **nucleic acids**. It is
 designed for high-throughput virtual screening (HTVS) campaigns and binding mode
 prediction studies.
 
-rDock is mainly written in C++ and accessory scripts and programs are written in
+RxDock is mainly written in C++ and accessory scripts and programs are written in
 C++, Perl or Python languages.
 
-The full rDock software package requires **less than 50 MB** of hard disk space
+The full RxDock software package requires **less than 50 MB** of hard disk space
 and it is compilable (at this moment, **only**) in **all Linux computers**.
 
 Thanks to its design and implementation, it can be installed on a computation
 cluster and deployed on an **unlimited number of CPUs**, allowing HTVS campaigns
 to be carried out in a **matter of days**.
 
-Besides its main Docking program, the rDock software package also provides a set
+Besides its main Docking program, the RxDock software package also provides a set
 of tools and scripts to facilitate **preparation** of the input files and
 **post-processing** and **analysis** of results.
 
@@ -51,46 +51,50 @@ internal symmetries (requires Open Babel Python bindings).
 #### Binding mode prediction
 
 Predict how a ligand will bind to a given molecule. The ASTEX non-redundant test
-set for proteins and DOCK and rDock test sets for RNA have been used for
-validating and comparing rDock with other programs.
+set for proteins and DOCK and RxDock test sets for RNA have been used for
+validating and comparing RxDock with other programs.
 
 #### High-throughput virtual screening
 
 Run for million of compounds in short time by exploiting the capabilities of
 computer calculation farms. Ease of **parallelization** in relatively unlimited
 CPUs to optimize HTVS running times. The DUD set has been used for validating
-rDock and comparing its performance to other reference docking programs.
+RxDock and comparing its performance to other reference docking programs.
 
 ![In red mesh, definition of the cavity obtained by execution of `rbcavity`
 program.](docs/_images/dock2.jpg)
 
 ### History
 
-The rDock program was developed from 1998 to 2006 by the software team at
+The RiboDock program was developed from 1998 to 2006 by the software team at
 RiboTargets (subsequently [Vernalis (R&D) Ltd](https://www.vernalis.com/)).
 In 2006, the software was licensed to the
 [University of York](http://www.ysbl.york.ac.uk/) for maintenance and
-distribution.
+distribution under the name rDock.
 
 In 2012, Vernalis and the University of York agreed to release the program as
 open-source software. This version is developed with support from the
 [University of Barcelona](http://www.ub.edu/cbdd/) --
 [sourceforge.net/projects/rdock](http://sourceforge.net/projects/rdock/).
 
+The development of rDock stalled in 2014. Since 2019,
+[RxTx](https://www.rxtx.tech/) is developing a fork of rDock under the name
+RxDock.
+
 ### License
 
-rDock is licensed under [GNU LGPL version 3.0](LICENSE.md).
+RxDock is licensed under [GNU LGPL version 3.0](LICENSE.md).
 
 ### Contributor concordat
 
-rDock adheres both to No Code of Conduct and Code of Merit.
+RxDock adheres both to No Code of Conduct and Code of Merit.
 
 * [Contributor Code of Conduct](CODE_OF_CONDUCT.md)
 * [Code of Merit](CODE_OF_MERIT.md)
 
 ### References
 
-If you are using rDock in your research, please cite [rDock2014]. Former
+If you are using RxDock in your research, please cite [rDock2014]. Former
 software reference provided for completeness is [RiboDock2004].
 
 * [rDock2014] Ruiz-Carmona, S., Alvarez-Garcia, D., Foloppe, N.,

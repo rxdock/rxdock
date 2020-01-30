@@ -22,8 +22,6 @@
 #include "RbtPRMFactory.h"
 #include "RbtParameterFileSource.h"
 #include "RbtSmarts.h"
-const std::string EXEVERSION =
-    " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbtether.cxx#5 $)";
 
 void print_atoms(RbtAtomList &atoms, std::ostringstream &ost);
 /////////////////////////////////////////////////////////////////////
@@ -40,7 +38,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName);
 
   // Command line arguments and default values
   std::string strLigandMdlFile;
@@ -190,9 +188,8 @@ int main(int argc, char *argv[]) {
     // Variants describing the library version, exe version,
     // parameter file, and current directory
     // Will be stored in the ligand SD files
-    RbtVariant vLib(Rbt::GetProduct() + " (" + Rbt::GetVersion() + ", Build" +
-                    Rbt::GetBuild() + ")");
-    RbtVariant vExe(strExeName + EXEVERSION);
+    RbtVariant vLib(Rbt::GetProduct() + "/" + Rbt::GetVersion());
+    RbtVariant vExe(strExeName + "/" + Rbt::GetVersion());
     RbtVariant vDir(Rbt::GetCurrentWorkingDirectory());
     ///////////////////////////////////
     // MAIN LOOP OVER LIGAND RECORDS

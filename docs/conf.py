@@ -19,14 +19,15 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'rDock'
-copyright = u'2012 – 2014, rDock development team'
+project = 'RxDock'
+copyright = u'2012 – 2014, rDock development team; \
+2019 – 2020, RxDock development team'
 author = project + ' development team'
 
 # The short X.Y version
-version = '2013.1'
+version = '0.1'
 # The full version, including alpha/beta/rc tags
-release = '2013.1'
+release = '0.1.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -73,6 +74,13 @@ numfig = True
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# Substitutions
+rst_epilog = """
+.. |Dock| replace:: {0}
+.. |version| replace:: {1}
+.. |release| replace:: {2}
+""".format(project, version, release)
+
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -109,7 +117,7 @@ html_logo = '_static/logo.png'
 html_favicon = '_static/favicon.png'
 
 # Extra CSS files
-html_css_files = ['bizstyle-rdock.css']
+html_css_files = ['bizstyle-dock.css']
 
 
 # -- Options for HTMLHelp output ---------------------------------------------

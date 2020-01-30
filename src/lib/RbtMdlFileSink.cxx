@@ -79,8 +79,7 @@ void RbtMdlFileSink::Render() {
 
     // First two characters are user initials, leave them empty for now
     AddLine("  " + programName + std::string(ftime) + "3D");
-    AddLine(Rbt::GetProduct() + "/" + Rbt::GetVersion() + "/" +
-            Rbt::GetBuild());
+    AddLine(Rbt::GetProduct() + "/" + Rbt::GetVersion());
 
     // Write number of atoms and bonds
     std::ostringstream ostr;

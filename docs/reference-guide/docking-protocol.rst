@@ -9,7 +9,7 @@ Protocol summary
 Pose generation
 ^^^^^^^^^^^^^^^
 
-rDock uses a combination of stochastic and deterministic search techniques to
+|Dock| uses a combination of stochastic and deterministic search techniques to
 generate low energy ligand poses. The standard docking protocol to generate a
 single ligand pose uses 3 stages of genetic algorithm search (GA1, GA2, GA3),
 followed by low temperature Monte Carlo (MC) and simplex minimisation (MIN)
@@ -135,7 +135,7 @@ Code implementation
 -------------------
 
 Docking protocols are constructed at run-time (by ``RbtTransformFactory`` class)
-from docking protocol definition files (rDock .prm format). The default location
+from docking protocol definition files (|Dock| .prm format). The default location
 for docking protocol files is ``$RBT_ROOT/data/scripts/``. The docking protocol
 definition file defines the sequence of search algorithms that constitute a
 single docking run for a single ligand record. Each search algorithm component
@@ -162,10 +162,10 @@ the flexibility parameters in the system definition file.
    |             | occupancy state    |                               | water  |
    +-------------+--------------------+-------------------------------+--------+
 
-Standard rDock docking protocol (``dock.prm``)
-----------------------------------------------
+Standard |Dock| docking protocol (``dock.prm``)
+-----------------------------------------------
 
-As stated above in this section, the standard rDock docking protocol consists of
+As stated above in this section, the standard |Dock| docking protocol consists of
 three phases of a genetic algorithm search, followed by low-temperature Monte
 Carlo and simplex minimisation.
 

@@ -50,7 +50,7 @@ all defined in the top-level namespace and should not be placed between
    +---------------------------+---------------------------------------------------------------------------+-------------------------+------------------+----------------------------------------------+
    | ``RECEPTOR_COORD_FILE``   | Name of receptor Charmm CRD file                                          | Filename string         | No default value | Valid Charmm CRD filename                    |
    +---------------------------+---------------------------------------------------------------------------+-------------------------+------------------+----------------------------------------------+
-   | ``RECEPTOR_MASSES_FILE``  | Name of rDock-annotated Charmm masses file                                | Filename string         | No default value | ``masses.rtf``, ``top_all2_prot_na.inp``     |
+   | ``RECEPTOR_MASSES_FILE``  | Name of |Dock|-annotated Charmm masses file                               | Filename string         | No default value | ``masses.rtf``, ``top_all2_prot_na.inp``     |
    +---------------------------+---------------------------------------------------------------------------+-------------------------+------------------+----------------------------------------------+
    | **General receptor parameters, applicable to either file format**                                                                                                                                 |
    +---------------------------+---------------------------------------------------------------------------+-------------------------+------------------+----------------------------------------------+

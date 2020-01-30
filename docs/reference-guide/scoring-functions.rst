@@ -4,7 +4,7 @@ Scoring functions
 Component scoring functions
 ---------------------------
 
-The rDock master scoring function (:math:`S_{\text{total}}`) is a weighted sum
+The |Dock| master scoring function (:math:`S_{\text{total}}`) is a weighted sum
 of intermolecular (:math:`S_{\text{inter}}`), ligand intramolecular
 (:math:`S_{\text{intra}}`), site intramolecular (:math:`S_{\text{site}}`), and
 external restraint terms (:math:`S_{\text{restraint}}`) :eq:`(%s) <eqnStotal>`.
@@ -213,7 +213,7 @@ function.
 Solvation potential
 ^^^^^^^^^^^^^^^^^^^
 
-The desolvation potential in rDock combines a weighted solvent-accessible
+The desolvation potential in |Dock| combines a weighted solvent-accessible
 surface area approach [WSAS2001]_ with a rapid probabilistic approximation to
 the calculation of solvent-accessible surface areas [RASASA1988]_ based on
 pairwise interatomic distances and radii (:eq:`(%s) <eqnSsolv>`, taking into
@@ -269,7 +269,7 @@ redefined the solvation atom types compared to the original work [WSAS2001]_ and
 recalibrated the weights against the same training set of experimental solvation
 free energies in water (395 molecules). The total number of atom types (50,
 including 6 specifically for ionic groups and metals) is slightly lower than in
-original work (54). Our atom types reflect the fact that rDock uses implicit
+original work (54). Our atom types reflect the fact that |Dock| uses implicit
 non-polar hydrogens. The majority of types are a combination of hybridisation
 state and the number of implicit or explicit hydrogens. All solvation parameters
 are listed in :ref:`Appendix section <user-guide-appendix>` (:numref:`Table %s
@@ -298,7 +298,7 @@ Training sets
 ^^^^^^^^^^^^^
 
 We constructed a combined set of protein-ligand and RNA-ligand complexes for
-training of rDock. Molecular data files for the protein-ligand complexes were
+training of |Dock|. Molecular data files for the protein-ligand complexes were
 extracted from the downloaded CCDC/Astex cleanlist [ASTEX2007]_ and used without
 substantive modification. The only change was to convert ligand MOL2 files to
 MDL SD format using Corina [CORINA1990]_, leaving the coordinates and
@@ -443,7 +443,7 @@ Overall, SF5 achieves optimum performance across proteins and nucleic acids
 (76.7 % within 2 Å RMSD). SF3 (no desolvation potential) and SF5 (with
 desolvation potential) were selected as the best intermolecular scoring
 functions. Finally, these two scoring functions, SF3 and SF5, were the ones
-implemented in rDock with the names of ``dock.prm`` and ``dock_solv.prm``,
+implemented in |Dock| with the names of ``dock.prm`` and ``dock_solv.prm``,
 respectively.
 
 .. note::
@@ -463,7 +463,7 @@ Code implementation
 -------------------
 
 Scoring functions for docking are constructed at run-time (by ``RbtSFFactory``
-class) from scoring function definition files (rDock ``.prm`` format). The
+class) from scoring function definition files (|Dock| ``.prm`` format). The
 default location for scoring function definition files is
 ``$RBT_ROOT/data/sf/``.
 

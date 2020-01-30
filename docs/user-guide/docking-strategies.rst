@@ -20,7 +20,7 @@ Standard docking workflow
 
 1. Prepare a MOL2 file for the protein or nucleic acid target, taking into
    account the atom typing issues described above for MOL2 file parsing. The
-   recommendation is to prepare an all-atom MOL2 file and allow rDock to remove
+   recommendation is to prepare an all-atom MOL2 file and allow |Dock| to remove
    the non-polar hydrogens on-the-fly.
 
    .. important::
@@ -28,17 +28,17 @@ Standard docking workflow
       Make sure that any non-standard atom names and substructure names are
       defined in ``$RBT_ROOT/data/sf/RbtIonicAtoms.prm`` in order for the
       assignment of distributed formal charges to work correctly. Make sure that
-      the Tripos atom types are set correctly. rDock uses the Tripos types to
+      the Tripos atom types are set correctly. |Dock| uses the Tripos types to
       derive other critical atomic properties such as atomic number and
       hybridisation state.
 
    .. note::
 
-      The rDock MOL2 parser was developed to read the CCDC/Astex protein
+      The |Dock| MOL2 parser was developed to read the CCDC/Astex protein
       ``.mol2`` files, therefore this validation set is the de facto standard
       reference. You should compare against the format of the CCDC/Astex MOL2
       files if you are in doubt as to whether a particular MOL2 file is suitable
-      for rDock.
+      for |Dock|.
 
 2. Prepare a system definition file. At a minimum, you need to define the
    receptor parameters, the cavity mapping parameters (``SECTION MAPPER``) and
@@ -53,8 +53,8 @@ Standard docking workflow
 4. Prepare the ligand SD files you wish to dock, taking into account the atom
    typing issues described above for SD file parsing. In particular, make sure
    that formal charges and formal bond order are defined coherently so that
-   there are no formal valence errors in the file. rDock will report any
-   perceived valence errors but will dock the structures anyway. Note that rDock
+   there are no formal valence errors in the file. |Dock| will report any
+   perceived valence errors but will dock the structures anyway. Note that |Dock|
    never samples bond lengths, bond angles, ring conformations, or non-rotatable
    bonds during docking so initial conformations should be reasonable.
 
@@ -66,7 +66,7 @@ Standard docking workflow
    parameters and docking protocol parameters.
 
 6. When satisfied, launch the full-scale calculations. A description of the
-   various means of launching rDock is beyond the scope of this guide.
+   various means of launching |Dock| is beyond the scope of this guide.
 
 Tethered scaffold docking
 -------------------------

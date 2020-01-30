@@ -4,7 +4,7 @@ File formats
 .prm file format
 ----------------
 
-The .prm file format is an rDock-specific text format and is used for:
+The .prm file format is an |Dock|-specific text format and is used for:
 
 * system definition files (known previously as receptor ``.prm`` files)
 * scoring function definition files
@@ -86,7 +86,7 @@ significance in the format.
 Water PDB file format
 ---------------------
 
-rDock requires explicit water PDB files to be in the style as output by the
+|Dock| requires explicit water PDB files to be in the style as output by the
 `Dowser <https://www.ks.uiuc.edu/Research/vmd/plugins/dowser/>`__ program. In
 particular:
 
@@ -130,7 +130,7 @@ particular:
    | 8           | ``FREE``      | ``FREE``     |
    +-------------+---------------+--------------+
 
-**Example** Valid rDock PDB file for explicit, flexible waters:
+**Example** Valid |Dock| PDB file for explicit, flexible waters:
 
 .. code-block:: python
 

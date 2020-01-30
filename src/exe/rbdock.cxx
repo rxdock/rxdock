@@ -32,8 +32,6 @@
 #include "RbtSFRequest.h"
 #include "RbtTransformFactory.h"
 
-const std::string EXEVERSION =
-    " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbdock.cxx#4 $)";
 // Section name in docking prm file containing scoring function definition
 const std::string _ROOT_SF = "SCORE";
 const std::string _RESTRAINT_SF = "RESTR";
@@ -78,7 +76,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName);
 
   cxxopts::Options options(strExeName, "rbdock - docking engine");
 
@@ -351,9 +349,8 @@ int main(int argc, char *argv[]) {
     // DM 18 May 1999
     // Variants describing the library version, exe version, parameter file, and
     // current directory Will be stored in the ligand SD files
-    RbtVariant vLib(Rbt::GetProduct() + " (" + Rbt::GetVersion() + ", Build" +
-                    Rbt::GetBuild() + ")");
-    RbtVariant vExe(strExeName + EXEVERSION);
+    RbtVariant vLib(Rbt::GetProduct() + "/" + Rbt::GetVersion());
+    RbtVariant vExe(strExeName + "/" + Rbt::GetVersion());
     RbtVariant vRecep(spRecepPrmSource->GetFileName());
     RbtVariant vPrm(spParamSource->GetFileName());
     RbtVariant vDir(Rbt::GetCurrentWorkingDirectory());

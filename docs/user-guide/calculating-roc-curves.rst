@@ -7,7 +7,7 @@ Calculating ROC curves
 <http://www.ub.edu/cbdd/?q=content/how-calculate-roc-curves>`__.)
 
 Here you will find a a short tutorial about how to generate receiver operating
-characteristic (ROC) curves and other statistics after running rDock molecular
+characteristic (ROC) curves and other statistics after running |Dock| molecular
 docking (for other programs such as Vina or Glide, just a little modification on
 the way ``dataforR_uq.txt`` file is interpreted will make it work, see below).
 

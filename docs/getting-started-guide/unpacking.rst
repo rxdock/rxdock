@@ -1,30 +1,30 @@
 Unpacking the distribution files
 ================================
 
-The rDock source files and test suite files are provided as independent gzipped
+The |Dock| source files and test suite files are provided as independent gzipped
 tar (.tar.gz) distributions. Depending on your requirements, the two
 distributions can be unpacked to entirely separate locations, or can be unpacked
 under the same location. In this example they are unpacked under the same
 location.
 
-.. table:: rDock distribution files
+.. table:: |Dock| distribution files
 
-   +---------------------------------+-----------------------------------+
-   | File                            | Description                       |
-   +=================================+===================================+
-   | ``rDock_[CODELINE]_src.tar.gz`` | rDock source distribution         |
-   +---------------------------------+-----------------------------------+
-   | ``[TEST]_rDock_TestSet.tar.gz`` | Test suite data files and scripts |
-   +---------------------------------+-----------------------------------+
+   +----------------------------------+-----------------------------------+
+   | File                             | Description                       |
+   +==================================+===================================+
+   | ``rxdock-[CODELINE].tar.gz``     | |Dock| source distribution        |
+   +----------------------------------+-----------------------------------+
+   | ``[TEST]_rDock_TestSet.tar.gz``  | Test suite data files and scripts |
+   +----------------------------------+-----------------------------------+
 
 Here ``[CODELINE]``, and ``[TEST]`` will vary depending on the release and test
-set. ``[CODELINE]`` represents the major version string (for example, 2013.1)
+set. ``[CODELINE]`` represents the major version string (for example, |release|)
 and ``[TEST]`` represents the given dataset (ASTEX, RNA or DUD).
 
 Example unpacking procedure
 ---------------------------
 
-Create a new directory for building rDock.
+Create a new directory for building |Dock|.
 
 .. code-block:: bash
 
@@ -37,18 +37,18 @@ Copy or download the distribution files to ``[BUILDDIR]``.
 
 .. code-block:: bash
 
-   $ cp ~/mydownloads/rDock_2013.1_src.tar.gz ~/dev/
+   $ cp ~/mydownloads/rxdock-0.1.0.tar.gz ~/dev/
 
 Extract the distributions.
 
 .. code-block:: bash
 
    $ cd ~/dev/
-   $ tar -xvzf rdock_2013.1_src.tar.gz
+   $ tar -xvzf rxdock-0.1.0.tar.gz
 
 The distributions contain files with relative path names, and you should find
-the following subdirectories created under ``rDock_[CODELINE]_src``. Note that
-the ``./rDock_2013.1_src`` subdirectory may have a different name depending on
+the following subdirectories created under ``rxdock-[CODELINE]``. Note that
+the ``./rxdock-0.1.0`` subdirectory may have a different name depending on
 the major version string (see above).
 
 .. code-block:: bash
@@ -91,6 +91,6 @@ the major version string (see above).
 
 Make a note of the following locations for later use.
 
-The rDock root directory is ``[BUILDDIR]/rDock_[CODELINE]_src`` and will be
+The |Dock| root directory is ``[BUILDDIR]/rxdock-[CODELINE]`` and will be
 referred to as ``[RBT_ROOT]`` in later instructions. In this example,
-``[RBT_ROOT]`` is ``~/dev/rDock_2013.1_src/``.
+``[RBT_ROOT]`` is ``~/dev/rxdock-0.1.0/``.

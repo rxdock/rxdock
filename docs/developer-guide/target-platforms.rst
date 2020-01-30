@@ -9,7 +9,7 @@ Primary target platforms are:
 * Linux on AMD64 (x86-64) with the GCC compiler
 * FreeBSD on AMD64 with the Clang compiler
 
-These platforms are used for rDock development on an ongoing basis.
+These platforms are used for |Dock| development on an ongoing basis.
 Specifically, the target operating system and compiler versions are the latest
 long-term supported releases of the main Linux distributions (e.g. Red Hat
 Enterprise Linux and CentOS, SUSE Linux Enterprise and openSUSE Leap, Ubuntu)

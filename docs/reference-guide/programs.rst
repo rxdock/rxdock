@@ -3,7 +3,7 @@ Programs
 
 Programs summary tables:
 
-.. table:: Core rDock C++ executables
+.. table:: Core |Dock| C++ executables
 
    +-------------------+-------------+---------------------------------------------------------------------------------+
    | Executable        | Used for    | Description                                                                     |
@@ -13,10 +13,10 @@ Programs summary tables:
    | ``rbcalcgrid``    | Preparation | Calculation of vdW grid files (usually called by ``make_grid.csh`` wrapper      |
    |                   |             | script).                                                                        |
    +-------------------+-------------+---------------------------------------------------------------------------------+
-   | ``rbdock``        | Docking     | The main rDock docking engine itself.                                           |
+   | ``rbdock``        | Docking     | The main |Dock| docking engine itself.                                          |
    +-------------------+-------------+---------------------------------------------------------------------------------+
 
-.. table:: Auxiliary rDock programs
+.. table:: Auxiliary |Dock| programs
 
    +-------------------+-------------+---------------------------------------------------------------------------------+
    | Executable        | Used for    | Description                                                                     |
@@ -33,9 +33,9 @@ Programs summary tables:
    |                   |             | (``dock_grid.prm`` and ``dock_solv_grid.prm``). Simple front-end to             |
    |                   |             | ``rbcalcgrid``.                                                                 |
    +-------------------+-------------+---------------------------------------------------------------------------------+
-   | ``rbconvgrid``    | Analysis    | Converts rDock vdW grids to InsightII grid format for visualisation.            |
+   | ``rbconvgrid``    | Analysis    | Converts |Dock| vdW grids to InsightII grid format for visualisation.           |
    +-------------------+-------------+---------------------------------------------------------------------------------+
-   | ``rbmoegrid``     | Analysis    | Converts rDock vdW grids to MOE grid format for visualisation.                  |
+   | ``rbmoegrid``     | Analysis    | Converts |Dock| vdW grids to MOE grid format for visualisation.                 |
    +-------------------+-------------+---------------------------------------------------------------------------------+
    | ``rblist``        | Analysis    | Outputs miscellaneous information for ligand SD file records.                   |
    +-------------------+-------------+---------------------------------------------------------------------------------+
@@ -63,7 +63,7 @@ Programs reference
 rbdock
 ^^^^^^
 
-``rbdock`` -- The rDock docking engine itself.
+``rbdock`` -- The |Dock| docking engine itself.
 
 .. code-block:: bash
 
@@ -124,23 +124,23 @@ The ``-ap`` option activates the automated protonation of ligand positive
 ionisable centres, notably amines, guanidines, imidazoles, and amidines. The
 ``-an`` option activates the automated deprotonation of ligand negative
 ionisable centres, notably carboxylic acids, phosphates, phosphonates,
-sulphates, and sulphonates. The precise rules used by rDock for protonation
+sulphates, and sulphonates. The precise rules used by |Dock| for protonation
 and deprotonation are quite crude, and are not user-customisable. Therefore
 these flags are not recommended for detailed validation experiments, in which
 care should be taken that the ligand protonation states are set correctly in the
-input SD file. Note that rDock is not capable of converting ionised centres back
+input SD file. Note that |Dock| is not capable of converting ionised centres back
 to the neutral form; these are unidirectional transformations.
 
 Control of ligand non-polar hydrogens
 """""""""""""""""""""""""""""""""""""
 
-By default, rDock uses an implicit non-polar hydrogen model for receptor and
+By default, |Dock| uses an implicit non-polar hydrogen model for receptor and
 ligand, and all of the scoring function validation has been performed on this
 basis. If the ``-allH`` option is not defined (recommended), all explicit
 non-polar hydrogens encountered in the ligand input SD file are removed, and
 only the polar hydrogens (bonded to O, N, or S) are retained. If the ``-allH``
 option is defined (not recommended), no hydrogens are removed from the ligand.
-Note that rDock is not capable of adding explicit non-polar hydrogens, if none
+Note that |Dock| is not capable of adding explicit non-polar hydrogens, if none
 exist. In other words, the ``-allH`` option disables hydrogen removal, it does
 not activate hydrogen addition. You should always make sure that polar hydrogens
 are defined explicitly. If the ligand input SD file contains no explicit
@@ -336,7 +336,7 @@ substructure atom indices.
   the principal axes of the matching substructure coordinates are aligned with
   the reference substructure coordinates.
 * In addition, an SD data field is added to the ligand record which lists the
-  atom indices of the substructure match, for later retrieval by rDock.
+  atom indices of the substructure match, for later retrieval by |Dock|.
 * Each transformed ligand is written to the output SD file.
 * Note that if the SMARTS query returns more than one substructure match for a
   ligand, that ligand is written multiple times to the output file, once for
@@ -509,7 +509,7 @@ An example file would look like as follows:
 
 In other (more understandable) words.
 
-First, rDock runs 3 consecutive steps:
+First, |Dock| runs 3 consecutive steps:
 
 1. Run 10 runs and check if the ``SCORE.INTER`` is lower than -10, if it is the
    case:

@@ -1,4 +1,4 @@
-project('rDock', 'cpp', version : '2013.1', default_options : ['cpp_std=c++11'])
+project('RxDock', 'cpp', version : '0.1.0', default_options : ['cpp_std=c++11'])
 
 incRbt = include_directories('include', 'include/GP')
 srcRbt = [
@@ -90,46 +90,47 @@ else
   pcg_cpp_dep = dependency('pcg-cpp', fallback : ['pcg', 'pcg_cpp_dep'])
 endif
 
-library_soversion = '0'
-libRbt = library(
-  'Rbt', srcRbt, dependencies : [eigen3_dep, pcg_cpp_dep, tronkko_dirent_dep],
+library_soversion = meson.project_version().split('.')[0]
+librxdock = library(
+  'rxdock', srcRbt,
+  dependencies : [eigen3_dep, pcg_cpp_dep, tronkko_dirent_dep],
   soversion : library_soversion,
-  version : library_soversion + '.' + meson.project_version(),
+  version : meson.project_version(),
   include_directories : incRbt, install : true
 )
 
 cxxopts_dep = dependency('cxxopts', fallback : ['cxxopts', 'cxxopts_dep'])
 
 rbdock = executable(
-  'rbdock', 'src/exe/rbdock.cxx', link_with : libRbt,
+  'rbdock', 'src/exe/rbdock.cxx', link_with : librxdock,
   dependencies : [cxxopts_dep, eigen3_dep, pcg_cpp_dep],
   include_directories : incRbt, install : true
 )
 rbcavity = executable(
-  'rbcavity', 'src/exe/rbcavity.cxx', link_with : libRbt,
+  'rbcavity', 'src/exe/rbcavity.cxx', link_with : librxdock,
   dependencies : [cxxopts_dep, eigen3_dep, pcg_cpp_dep],
   include_directories : incRbt, install : true
 )
 executable(
-  'rbrms', 'src/exe/rbrms.cxx', link_with : libRbt,
+  'rbrms', 'src/exe/rbrms.cxx', link_with : librxdock,
   include_directories : incRbt, install: true
 )
 executable(
-  'rbmoegrid', 'src/exe/rbmoegrid.cxx', link_with : libRbt,
+  'rbmoegrid', 'src/exe/rbmoegrid.cxx', link_with : librxdock,
   dependencies : [cxxopts_dep, eigen3_dep, pcg_cpp_dep],
   include_directories : incRbt, install : true
 )
 executable(
-  'rblist', 'src/exe/rblist.cxx', link_with : libRbt,
+  'rblist', 'src/exe/rblist.cxx', link_with : librxdock,
   include_directories : incRbt, install : true
 )
 executable(
-  'rbcalcgrid', 'src/exe/rbcalcgrid.cxx', link_with : libRbt,
+  'rbcalcgrid', 'src/exe/rbcalcgrid.cxx', link_with : librxdock,
   dependencies : [eigen3_dep, pcg_cpp_dep], include_directories : incRbt,
   install : true
 )
 executable(
-  'rbconvgrid', 'src/exe/rbconvgrid.cxx', link_with : libRbt,
+  'rbconvgrid', 'src/exe/rbconvgrid.cxx', link_with : librxdock,
   dependencies : eigen3_dep, include_directories : incRbt, install : true
 )
 
@@ -144,12 +145,12 @@ if dt_smarts_dep.found() and dt_smiles_dep.found()
   executable(
     'rbtether', 'src/exe/rbtether.cxx',
     dependencies : [dt_smarts_dep, dt_smiles_dep],
-    link_with : [libRbt, libRbtSmarts], include_directories : incRbt
+    link_with : [librxdock, libRbtSmarts], include_directories : incRbt
   )
   executable(
     'smart_rms', 'src/exe/smart_rms.cxx',
     dependencies : [dt_smarts_dep, dt_smiles_dep],
-    link_with : [libRbt, libRbtSmarts], include_directories : incRbt
+    link_with : [librxdock, libRbtSmarts], include_directories : incRbt
   )
 endif
 
@@ -359,7 +360,7 @@ if tests_opt
     unit_test = executable(
       'unit-test', srcTest,
       dependencies : [pcg_cpp_dep, gtest_dep, eigen3_dep],
-      link_with : libRbt, include_directories : [incTest, incRbt]
+      link_with : librxdock, include_directories : [incTest, incRbt]
     )
     rbtHomePath = '/build/test/RBT_HOME'
     test(

@@ -64,8 +64,6 @@ RBTDLL_EXPORT std::string GetProgramName();
 std::string GetCopyright();
 // GetVersion - returns current library version
 RBTDLL_EXPORT std::string GetVersion();
-// GetBuildNum - returns current library build number
-RBTDLL_EXPORT std::string GetBuild();
 // GetProduct - returns library product name
 RBTDLL_EXPORT std::string GetProduct();
 // GetTime - returns current time and date as an RbtString

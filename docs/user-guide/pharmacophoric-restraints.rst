@@ -6,14 +6,14 @@ pharmacophoric restraints.
 
 .. note::
 
-   rDock assumes the user knows how to compute and find pharmacophores. The user
+   |Dock| assumes the user knows how to compute and find pharmacophores. The user
    will need the coordinates, tolerance and type of restraint, which will be the
-   input for rDock.
+   input for |Dock|.
 
 Step 1: Pharmacophoric restraints file
 --------------------------------------
 
-The first step is to create the input file for rDock with the necessary info.
+The first step is to create the input file for |Dock| with the necessary info.
 
 As you can find in the :ref:`Reference guide <reference-guide>`, this file needs
 one line per pharmacophore with the next structure (each element separated with
@@ -23,7 +23,7 @@ a space):
 
    x y z (coords of restraint centre), tolerance radius (in Angstroms), restraint type (string)
 
-The pharmacophore types accepted by rDock are the following:
+The pharmacophore types accepted by |Dock| are the following:
 
 +--------+-------------------------+-------------------------------------------+
 | String | Description             | Matches                                   |
@@ -59,8 +59,8 @@ A sample file (``pharma.restr``) has been created containing two restraints
    -1.75 1.25 0.25 2.0 Acc
    -2.00 2.00 -3.0 2.0 Hyd
 
-Step 2: rDock system definition file
-------------------------------------
+Step 2: |Dock| system definition file
+-------------------------------------
 
 The second and final step is to modify the system definition file (``FILE.prm``)
 to take into account the defined restraints.
@@ -122,9 +122,9 @@ With the ``FILE.prm`` finally being:
 
    This ``FILE.prm`` is an example file for the sake of the tutorial. The point
    here is to clarify how to define pharmacophoric restraints and how to
-   configure rDock to take them into account.
+   configure |Dock| to take them into account.
 
-Finally, when running rDock, the user can check if the program writes similar
+Finally, when running |Dock|, the user can check if the program writes similar
 lines as the following to be sure that the restraints have been correctly
 read.
 
@@ -142,7 +142,7 @@ Step 3: Optional constraints
 
 This tutorial is an example for mandatory constraints. Optional constraints can
 also be configured in a different file (same format as pharma.restr created
-above). The ``SECTION PHARMA`` in the rDock System Configuration File should be
+above). The ``SECTION PHARMA`` in the |Dock| System Configuration File should be
 modified as follows (NOPT=1 means that only one of the optional restraints has
 to be met):
 

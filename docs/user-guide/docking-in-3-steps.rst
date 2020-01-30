@@ -1,7 +1,7 @@
 Docking in 3 steps
 ==================
 
-You will find in this page a short tutorial for running rDock.
+You will find in this page a short tutorial for running |Dock|.
 
 It has been divided in 3 steps:
 
@@ -72,7 +72,7 @@ For example, in PyMOL (after loading by: ``pymol <RECEPTOR>.mol2 <LIGAND>.sd <GR
 Step 3: Docking
 ---------------
 
-Once the cavity is defined and generated, a 50 runs-per-ligand rDock job can be run straightforwardly with the following command:
+Once the cavity is defined and generated, a 50 runs-per-ligand |Dock| job can be run straightforwardly with the following command:
 
 .. note::
 

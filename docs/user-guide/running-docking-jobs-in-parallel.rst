@@ -1,18 +1,18 @@
 Running docking jobs in parallel
 ================================
 
-In this short tutorial we will try to explain how to run rDock on a computer with multiple CPUs or a cluster with different calculation nodes.
+In this short tutorial we will try to explain how to run |Dock| on a computer with multiple CPUs or a cluster with different calculation nodes.
 
 .. note::
 
-   rDock has not an MPI version to be run in parallel on a computation cluster. The approach rDock uses to parallelize the jobs is rather simple: as each molecule can be run in an independent way, the input structure file is splitted in multiple files and each of them is run independently.
+   |Dock| has not an MPI version to be run in parallel on a computation cluster. The approach |Dock| uses to parallelize the jobs is rather simple: as each molecule can be run in an independent way, the input structure file is splitted in multiple files and each of them is run independently.
 
 For this example, we have a set of **200 molecules** (``input.sdf``) and we want to run it in **10 CPUs**.
 
 Step 1: Split molecules input file
 ----------------------------------
 
-To split an SDF file (rDock needs the input in SDF format), there is a script in rDock package called ``sdsplit`` that does this.
+To split an SDF file (|Dock| needs the input in SDF format), there is a script in |Dock| package called ``sdsplit`` that does this.
 
 .. code-block:: bash
 
@@ -68,7 +68,7 @@ We have two options:
 Option 1: Run docking jobs locally
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To run rDock (standard mode, 50 runs per ligand) in 10 CPUs, be sure that all the necessary files are located in the working directory: receptor mol2 file, prm file, cavity as file, and reference ligand for cavity definition (if used) and run the following command:
+To run |Dock| (standard mode, 50 runs per ligand) in 10 CPUs, be sure that all the necessary files are located in the working directory: receptor mol2 file, prm file, cavity as file, and reference ligand for cavity definition (if used) and run the following command:
 
 .. code-block:: bash
 

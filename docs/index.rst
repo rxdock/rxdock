@@ -1,24 +1,24 @@
-.. _rdock-documentation:
+.. _dock-documentation:
 
-rDock: a fast, versatile, and open-source program for docking ligands to proteins and nucleic acids
-===================================================================================================
+|Dock|: a fast, versatile, and open-source program for docking ligands to proteins and nucleic acids
+====================================================================================================
 
-rDock is a fast and versatile **open-source docking program** that can be used
+|Dock| is a fast and versatile **open-source docking program** that can be used
 to dock **small molecules** against **proteins** and **nucleic acids**. It is
 designed for high-throughput virtual screening (HTVS) campaigns and binding mode
 prediction studies.
 
-rDock is mainly written in C++ and accessory scripts and programs are written in
+|Dock| is mainly written in C++ and accessory scripts and programs are written in
 C++, Perl or Python languages.
 
-The full rDock software package requires **less than 50 MB** of hard disk space
+The full |Dock| software package requires **less than 50 MB** of hard disk space
 and it is compilable (at this moment, **only**) in **all Linux computers**.
 
 Thanks to its design and implementation [rDock2014]_, it can be installed on a
 computation cluster and deployed on an **unlimited number of CPUs**, allowing
 HTVS campaigns to be carried out in a **matter of days**.
 
-Besides its main Docking program, the rDock software package also provides a set
+Besides its main Docking program, the |Dock| software package also provides a set
 of tools and scripts to facilitate **preparation** of the input files and
 **post-processing** and **analysis** of results.
 
@@ -32,10 +32,10 @@ About
 Download
 ^^^^^^^^
 
-Please visit rDock SourceForge page for most up to date releases.
+Please visit RxDock GitLab page for most up to date releases.
 
-* `Download files <https://sourceforge.net/projects/rdock/files/>`__
-* `Get using SVN <https://sourceforge.net/p/rdock/code-0/HEAD/tree/>`__
+* `Download a released version <https://gitlab.com/rxdock/rxdock/-/releases>`__
+* `Get the latest code using git <https://gitlab.com/rxdock/rxdock>`__
 
 Features
 ^^^^^^^^
@@ -65,14 +65,14 @@ Post-processing and analysis of results
 
 Binding mode prediction
    Predict how a ligand will bind to a given molecule. The ASTEX non-redundant
-   test set for proteins and DOCK and rDock test sets for RNA have been used for
-   validating and comparing rDock with other programs.
+   test set for proteins and DOCK and |Dock| test sets for RNA have been used for
+   validating and comparing |Dock| with other programs.
 
 High-throughput virtual screening
    Run for million of compounds in short time by exploiting the capabilities of
    computer calculation farms. Ease of **parallelization** in relatively
    unlimited CPUs to optimize HTVS running times. The DUD set has been used for
-   validating rDock and comparing its performance to other reference docking
+   validating |Dock| and comparing its performance to other reference docking
    programs.
 
 .. figure:: _images/dock2.jpg
@@ -83,20 +83,25 @@ High-throughput virtual screening
 History
 ^^^^^^^
 
-The rDock program was developed from 1998 to 2006 by the software team at
+The RiboDock program was developed from 1998 to 2006 by the software team at
 RiboTargets (subsequently `Vernalis (R&D) Ltd <https://www.vernalis.com/>`__)
 [RiboDock2004]_. In 2006, the software was licensed to the `University of York
-<http://www.ysbl.york.ac.uk/>`__ for maintenance and distribution.
+<http://www.ysbl.york.ac.uk/>`__ for maintenance and distribution under the
+name rDock.
 
 In 2012, Vernalis and the University of York agreed to release the program as
 open-source software [rDock2014]_. This version is developed with support from
 the `University of Barcelona <http://www.ub.edu/cbdd/>`__ --
 `sourceforge.net/projects/rdock <https://sourceforge.net/projects/rdock/>`__.
 
+The development of rDock stalled in 2014. Since 2019,
+`RxTx <https://www.rxtx.tech/>`__ is developing a fork of rDock under the name
+RxDock.
+
 License
 ^^^^^^^
 
-rDock is licensed under GNU LGPL version 3.0.
+|Dock| is licensed under GNU LGPL version 3.0.
 
 .. toctree::
    :maxdepth: 2
@@ -106,7 +111,7 @@ rDock is licensed under GNU LGPL version 3.0.
 Contributor concordat
 ^^^^^^^^^^^^^^^^^^^^^
 
-rDock adheres both to No Code of Conduct and Code of Merit.
+|Dock| adheres both to No Code of Conduct and Code of Merit.
 
 .. toctree::
    :maxdepth: 2
@@ -117,7 +122,7 @@ rDock adheres both to No Code of Conduct and Code of Merit.
 References
 ^^^^^^^^^^
 
-If you are using rDock in your research, please cite [rDock2014]_. Former
+If you are using |Dock| in your research, please cite [rDock2014]_. Former
 software reference provided for completeness is [RiboDock2004]_.
 
 .. [rDock2014] Ruiz-Carmona, S., Alvarez-Garcia, D., Foloppe, N.,
@@ -160,7 +165,7 @@ Reference guide
 ---------------
 
 In this section you can find the documentation containing full explanation of
-all rDock software package and features.
+all |Dock| software package and features.
 
 For installation details and first-users instructions, please visit
 :ref:`Installation <quick-and-dirty-installation>` and :ref:`Getting started
@@ -226,12 +231,12 @@ Mailing lists
 ^^^^^^^^^^^^^
 
 If you are having any kind of trouble, you have any questions or anything
-related to general usage of the program please search and use our `mailing lists
-<https://sourceforge.net/p/rdock/mailman/>`__.
+related to general usage of the program please search and use our the discussion
+section of `RxDock channel on Telegram <https://t.me/rxdock>`__.
 
 Issue tracker
 ^^^^^^^^^^^^^
 
-Mostly for developers and code-related problems. If you find any bug, e.g.,
-please go to `tickets section in rDock SourceForge website
-<https://sourceforge.net/p/rdock/tickets/>`__.
+Mostly for developers and code-related problems. If you find a bug, please
+report it in `issues section in RxDock GitLab project
+<https://gitlab.com/rxdock/rxdock/-/issues>`__.

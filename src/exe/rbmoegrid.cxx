@@ -22,8 +22,6 @@
 #include "RbtSFFactory.h"
 #include "RbtTriposAtomType.h"
 
-const std::string EXEVERSION =
-    " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbmoegrid.cxx#4 $)";
 const std::string _ROOT_SF = "SCORE";
 
 // Creates list of probe models
@@ -65,7 +63,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName);
 
   cxxopts::Options options(
       strExeName, "rbmoegrid - calculates grids for a given atom type");

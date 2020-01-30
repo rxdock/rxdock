@@ -29,9 +29,9 @@ with the following command, which will create a folder called
 
 Here you will have the instructions for one of the systems (``1sj0``), to run
 with the rest of the systems, just change the pdb code with the one desired.
-Then, make sure that the necessary environmental variables for running rDock are
+Then, make sure that the necessary environmental variables for running |Dock| are
 well defined and run the following commands for entering to the folder and
-running rDock with the same settings that we have used:
+running |Dock| with the same settings that we have used:
 
 .. code-block:: bash
 
@@ -54,7 +54,7 @@ Binding mode prediction in RNA
 ------------------------------
 
 In a similar way of the section above, here you will find a brief tutorial on
-how to run rDock with the RNA TestSet used in the validation. As in the first
+how to run |Dock| with the RNA TestSet used in the validation. As in the first
 section, please go to `RNA set SourceForge download page
 <https://sourceforge.net/projects/rdock/files/Validation_Sets/RNA_rDock_TestSet.tar.gz/download>`__
 to download a compressed file with the necessary data.
@@ -70,9 +70,9 @@ with the following command, which will create a folder called
 
 Here you will have the instructions for one of the systems (``1nem``), to run
 with the rest of the systems, just change the pdb code with the one desired.
-Then, make sure that the necessary environmental variables for running rDock are
+Then, make sure that the necessary environmental variables for running |Dock| are
 well defined and run the following commands for entering to the folder and
-running rDock with the same settings that we have used (if you have run the
+running |Dock| with the same settings that we have used (if you have run the
 previous set, the variables should already be correctly defined):
 
 .. code-block:: bash
@@ -95,7 +95,7 @@ previous set, the variables should already be correctly defined):
 Database enrichment (actives vs. decoys -- for HTVS)
 ----------------------------------------------------
 
-In this section you will find a brief tutorial on how to run rDock with the DUD
+In this section you will find a brief tutorial on how to run |Dock| with the DUD
 test set used in the validation and how to perform different analysis of the
 results. As in the sections above, please go to `DUD set SourceForge download
 page <https://sourceforge.net/projects/rdock/files/Validation_Sets/DUD_rDock_TestSet.tar.gz/download>`__
@@ -113,8 +113,8 @@ with the following command, which will create a folder called
 Here you will have the instructions for one of the systems (``hivpr``), to run
 with the rest of the systems, just change the DUD system code with the one
 desired. Then, make sure that the necessary environmental variables for running
-rDock are well defined and run the following commands for entering to the folder
-and running rDock with the same settings that we have used (if you have run the
+|Dock| are well defined and run the following commands for entering to the folder
+and running |Dock| with the same settings that we have used (if you have run the
 previous sets, the variables should already be correctly defined):
 
 .. code-block:: bash
@@ -125,9 +125,9 @@ previous sets, the variables should already be correctly defined):
    $ rbcavity -r hivpr_rdock.prm -was > hivpr_cavity.log
 
 As the number of ligands to dock is very high, we suggest you to use any
-distributed computing environments, such as SGE or Condor, and configure rDock
+distributed computing environments, such as SGE or Condor, and configure |Dock|
 to run in multiple CPUs. Namely, split the input ligands file in as many parts
-as desired (very easy using ``sdsplit`` tool) and run independent rDock docking
+as desired (very easy using ``sdsplit`` tool) and run independent |Dock| docking
 jobs for each "splitted" input file. However, for this example purpose, you will
 have the instructions for running all set of actives and decoys in one docking
 job:
@@ -151,7 +151,7 @@ job:
    $ sdreport -t hivpr_1poseperlig.sd | awk '{print $2,$3,$4,$5,$6,$7}' > dataforR_uq.txt
 
 At this point, you should have a file called ``hivpr_docking_out.sd`` with all
-docking poses written by rDock (100 * number of input ligands), a file called
+docking poses written by |Dock| (100 * number of input ligands), a file called
 ``hivpr_1poseperlig.sd`` with the best scored docking pose for each ligand and a
 file called ``dataforR_uq.txt`` that will be used for calculating ROC curves
 using R. The next step is to calculate ROC curves and other statistics. To do

@@ -22,8 +22,6 @@
 #include <fstream>
 #include <iomanip>
 
-const std::string EXEVERSION =
-    " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbcalcgrid.cxx#3 $)";
 const std::string _ROOT_SF = "SCORE";
 
 // Creates list of probe models
@@ -93,7 +91,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName);
 
   // Command line arguments and default values
   std::string strSuffix(".grd");

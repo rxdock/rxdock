@@ -15,9 +15,6 @@
 #include "RbtFileError.h"
 #include "RbtVdwGridSF.h"
 
-const std::string EXEVERSION =
-    " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rbconvgrid.cxx#3 $)";
-
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
@@ -35,7 +32,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName);
 
   // Brief help message
   if (argc == 1) {

@@ -5,11 +5,11 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   id="svg8"
-   version="1.1"
-   viewBox="0 0 297 210"
+   width="350mm"
    height="210mm"
-   width="297mm">
+   viewBox="0 0 350 210"
+   version="1.1"
+   id="svg8">
   <defs
      id="defs2" />
   <metadata
@@ -25,27 +25,27 @@
     </rdf:RDF>
   </metadata>
   <g
-     transform="translate(-67.3121,100.78812)"
-     id="layer1">
+     id="layer1"
+     transform="translate(-67.3121,100.78812)">
     <path
-       transform="matrix(6.8507036,0,0,6.8507036,-385.55964,-656.04051)"
+       style="fill:none;stroke:#643b7a;stroke-width:0.72985202;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 89.159844,108.83383 C 78.25246,101.29215 67.345079,93.750481 67.69579,89.597812 68.046501,85.445143 79.655069,84.681627 91.263421,83.918124"
        id="path16093"
-       d="M 89.159844,108.83383 C 78.25246,101.29215 67.345079,93.750481 67.69579,89.597812 68.046501,85.445143 79.655069,84.681627 91.263421,83.918124"
-       style="fill:none;stroke:#643b7a;stroke-width:0.72985202;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       transform="matrix(6.8507036,0,0,6.8507036,-385.55964,-656.04051)" />
     <path
-       id="path16093-5"
-       d="M 89.159844,108.83383 C 78.25246,101.29215 67.345079,93.750481 67.69579,89.597812 68.046501,85.445143 79.655069,84.681627 91.263421,83.918124"
+       transform="matrix(5.4763343,0,0,5.4763343,-264.21645,-526.52182)"
        style="fill:none;stroke:#4a73ad;stroke-width:0.91301948;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(5.4763343,0,0,5.4763343,-264.21645,-526.52182)" />
+       d="M 89.159844,108.83383 C 78.25246,101.29215 67.345079,93.750481 67.69579,89.597812 68.046501,85.445143 79.655069,84.681627 91.263421,83.918124"
+       id="path16093-5" />
     <text
-       id="text16117"
-       y="6.3139834"
-       x="156.84309"
+       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:71.40579224px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#643b7a;fill-opacity:1;stroke:none;stroke-width:1.78514481"
-       xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:66.32221985px;font-family:Comfortaa;-inkscape-font-specification:Comfortaa;fill:#643b7a;fill-opacity:1;stroke-width:1.78514481"
-         y="6.3139834"
+       x="156.84309"
+       y="6.3139834"
+       id="text16117"><tspan
+         id="tspan16115"
          x="156.84309"
-         id="tspan16115">rDock</tspan></text>
+         y="6.3139834"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:66.32221985px;font-family:Comfortaa;-inkscape-font-specification:Comfortaa;fill:#643b7a;fill-opacity:1;stroke-width:1.78514481">RxDock</tspan></text>
   </g>
 </svg>

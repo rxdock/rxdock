@@ -70,8 +70,6 @@ std::string Rbt::GetProgramName() { return IDS_NAME; }
 std::string Rbt::GetCopyright() { return IDS_COPYRIGHT; }
 // Rbt::GetVersion - returns current library version
 std::string Rbt::GetVersion() { return IDS_VERSION; }
-// GetBuildNum - returns current library build number
-std::string Rbt::GetBuild() { return IDS_BUILDNUM; }
 // GetProduct - returns library product name
 std::string Rbt::GetProduct() { return IDS_PRODUCT; }
 // GetTime - returns current time as an RbtString
@@ -359,9 +357,8 @@ std::ostream &Rbt::PrintStdHeader(std::ostream &s,
   s << "***********************************************" << std::endl;
   s << GetCopyright() << std::endl;
   if (!strExecutable.empty())
-    s << "Executable:\t" << strExecutable << std::endl;
-  s << "Library:\t" << GetProduct() << "/" << GetVersion() << "/" << GetBuild()
-    << std::endl;
+    s << "Executable:\t" << strExecutable << "/" << GetVersion() << std::endl;
+  s << "Library:\t" << GetProduct() << "/" << GetVersion() << std::endl;
   s << "RBT_ROOT:\t" << GetRbtRoot() << std::endl;
   s << "RBT_HOME:\t" << GetRbtHome() << std::endl;
   s << "Current dir:\t" << GetCurrentWorkingDirectory() << std::endl;

@@ -3,17 +3,17 @@ Cavity mapping
 
 Virtual screening is very rarely conducted against entire macromolecules. The
 usual practice is to dock small molecules in a much more confined region of
-interest. rDock makes a clear distinction between the region the ligand is
+interest. |Dock| makes a clear distinction between the region the ligand is
 allowed to explore (known here as the docking site), and the receptor atoms that
 need to be included in order to calculate the score correctly. The former is
 controlled by the cavity mapping algorithm, whilst the latter is scoring
 function dependent as it depends on the distance range of each component term
 (for example, vdW range >> polar range). For this reason, it is usual practice
-with rDock to prepare intact receptor files (rather than truncated spheres
+with |Dock| to prepare intact receptor files (rather than truncated spheres
 around the region of interest), and to allow each scoring function term to
 isolate the relevant receptor atoms within range of the docking site.
 
-rDock provides two methods for defining the docking site:
+|Dock| provides two methods for defining the docking site:
 
 * Two sphere method
 * Reference ligand method
@@ -22,7 +22,7 @@ rDock provides two methods for defining the docking site:
 
    All the keywords found in capital letters in following cavity mapping methods
    explanation (e.g. ``RADIUS``), make reference to the parameters defined in
-   ``prm`` rDock configuration file. For more information, go to :ref:`Cavity
+   ``prm`` |Dock| configuration file. For more information, go to :ref:`Cavity
    mapping subsection <sdf-cavity-mapping>` in :ref:`System definition file
    section <system-definition-file>`.
 

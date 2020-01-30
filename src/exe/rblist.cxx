@@ -18,9 +18,6 @@
 #include <functional>
 #include <iomanip>
 
-const std::string EXEVERSION =
-    " ($Id: //depot/dev/client3/rdock/2013.1/src/exe/rblist.cxx#4 $)";
-
 namespace Rbt {
 class isAtomNitroN : public std::unary_function<RbtAtomPtr, bool> {
   // Useful predicates
@@ -130,7 +127,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName + EXEVERSION);
+  Rbt::PrintStdHeader(std::cout, strExeName);
 
   // Default values for optional arguments
   std::string strInputSDFile;

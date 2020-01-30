@@ -1,7 +1,7 @@
 Building
 ========
 
-rDock is written in C++ (with a small amount of C code from Numerical Recipes)
+|Dock| is written in C++ (with a small amount of C code from Numerical Recipes)
 and makes heavy use of the C++ Standard Template Library (STL). The majority of
 the source code is compiled into a single shared library (``libRbt.so``). The
 executable programs themselves are relatively light-weight command-line
@@ -39,7 +39,7 @@ localise the values to suit your compiler.
 Build procedure
 ---------------
 
-To build rDock, first go to the ``[RBT_ROOT]/build/`` directory.
+To build |Dock|, first go to the ``[RBT_ROOT]/build/`` directory.
 
 .. code-block:: bash
 
@@ -58,7 +58,7 @@ Make one of the build targets listed below.
 Test
 ^^^^
 
-Run the rDock unit tests to check build integrity. If no failed tests are reported you should be all set.
+Run the |Dock| unit tests to check build integrity. If no failed tests are reported you should be all set.
 
 .. code-block:: bash
 

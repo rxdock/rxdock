@@ -2,7 +2,7 @@ Multi-step protocol for HTVS
 ============================
 
 For high-throughput virtual screening (HTVS) applications, where computing
-performance is important, the recommended rDock protocol is to limit the search
+performance is important, the recommended |Dock| protocol is to limit the search
 space (i.e. rigid receptor), apply the grid-based scoring function and/or to use
 a multi-step protocol to stop sampling of poor scorers as soon as possible.
 
@@ -71,7 +71,7 @@ Step 1, substep 1: Exhaustive docking
 Hence, as stated, the first step is to run an **exhaustive docking** of a
 representative part of the whole desired library to dock.
 
-For rDock, exhaustive docking means doing **100 runs** for each ligand, whereas
+For |Dock|, exhaustive docking means doing **100 runs** for each ligand, whereas
 standard docking means 50 runs for each ligand:
 
 .. code-block:: bash
@@ -125,7 +125,7 @@ The script finished with two good parameters sets:
    [...]
 
 These parameters have to be adapted to a **file** with the HTVS **protocol
-format** that rDock understands.
+format** that |Dock| understands.
 
 A **template file** looks as follows (``THR1``, ``THR2``, ``N1`` and ``N2``
 are the parameters found above):
@@ -172,7 +172,7 @@ with ``***``), we will have to generate a file as follows:
 Please note that the parameters ``N1`` and ``N2`` are 7 and 25 but we write 6
 and 24, respectively, as stated in the template.
 
-Finally, **run** rDock changing the flag ``-n XX`` for ``-t PROTOCOLFILE.txt``:
+Finally, **run** |Dock| changing the flag ``-n XX`` for ``-t PROTOCOLFILE.txt``:
 
 .. code-block:: bash
 
