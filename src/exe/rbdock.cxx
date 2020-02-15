@@ -443,6 +443,7 @@ int main(int argc, char *argv[]) {
         strLigandMdlFile, bPosIonise, bNegIonise, !bExplH));
     std::chrono::duration<double> totalDuration(0.0);
     std::size_t nFailedLigands = 0;
+    std::size_t nUnnamedLigands = 0;
     std::chrono::system_clock::time_point loopBegin =
         std::chrono::system_clock::now();
     std::size_t nRec;
@@ -472,9 +473,12 @@ int main(int argc, char *argv[]) {
         spMdlFileSource->SetSegmentFilterMap(
             Rbt::ConvertStringToSegmentMap("H"));
 
-        if (spMdlFileSource->isDataFieldPresent("Name"))
-          std::cout << "NAME:   " << spMdlFileSource->GetDataValue("Name")
-                    << std::endl;
+        if (spMdlFileSource->isDataFieldPresent("Name")) {
+          RbtVariant molName = spMdlFileSource->GetDataValue("Name");
+          if (molName.isEmpty())
+            nUnnamedLigands++;
+          std::cout << "NAME:   " << molName << std::endl;
+        }
         if (spMdlFileSource->isDataFieldPresent("REG_Number"))
           std::cout << "REG_Num:" << spMdlFileSource->GetDataValue("REG_Number")
                     << std::endl;
@@ -626,6 +630,15 @@ int main(int argc, char *argv[]) {
         std::cout << mTotal.count() << " minute(s), ";
       }
       std::cout << totalDuration.count() << " second(s)" << std::endl;
+    }
+
+    if (nUnnamedLigands > 0) {
+      std::cout
+          << std::endl
+          << "WARNING: " << nUnnamedLigands
+          << " ligand(s) are unnamed. Post-processing tools might have an "
+             "issue correctly identifying different poses of the same ligand."
+          << std::endl;
     }
 
     std::cout << std::endl << "END OF RUN" << std::endl;
