@@ -27,17 +27,22 @@ public:
     name = "";
     constant = false;
   }
-  RbtCell(const RbtCell &c) {
-    evaluated = c.evaluated;
-    name = c.name;
-    constant = c.constant;
-    result = c.result;
-  }
+  RbtCell(const RbtCell &c)
+      : evaluated(c.evaluated), constant(c.constant), name(c.name),
+        result(c.result) {}
 
   ///////////////////
   // Destructor
   //////////////////
   virtual ~RbtCell() {}
+
+  RbtCell &operator=(const RbtCell &c) {
+    evaluated = c.evaluated;
+    constant = c.constant;
+    name = c.name;
+    result = c.result;
+    return *this;
+  }
 
   bool Evaluated() const { return evaluated; }
   bool Named() const { return (name != ""); }

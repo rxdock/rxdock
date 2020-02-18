@@ -46,6 +46,14 @@ public:
   }
   RbtReturnType GetValue() const { return value; }
   virtual ~RbtVble() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
+
+  RbtVble &operator=(const RbtVble &v) {
+    vt = v.vt;
+    value = v.value;
+    name = v.name;
+    return *this;
+  }
+
   void SetName(std::string nm) { name = nm; }
   std::string GetName() const { return name; }
 
