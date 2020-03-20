@@ -217,19 +217,19 @@ public:
   // Pseudo atoms must now refresh their coords each time the constituent atoms
   // move DM 27 Oct 2000 - return by reference
   const RbtCoord &GetCoords() const { return m_coord; }
-  double GetX() const { return m_coord.x; }
-  double GetY() const { return m_coord.y; }
-  double GetZ() const { return m_coord.z; }
+  double GetX() const { return m_coord.xyz(0); }
+  double GetY() const { return m_coord.xyz(1); }
+  double GetZ() const { return m_coord.xyz(2); }
 
   void SetCoords(const RbtCoord &coord) { m_coord = coord; }
   void SetCoords(const double x, const double y, const double z) {
-    m_coord.x = x;
-    m_coord.y = y;
-    m_coord.z = z;
+    m_coord.xyz(0) = x;
+    m_coord.xyz(1) = y;
+    m_coord.xyz(2) = z;
   }
-  void SetX(const double x) { m_coord.x = x; }
-  void SetY(const double y) { m_coord.y = y; }
-  void SetZ(const double z) { m_coord.z = z; }
+  void SetX(const double x) { m_coord.xyz(0) = x; }
+  void SetY(const double y) { m_coord.xyz(1) = y; }
+  void SetZ(const double z) { m_coord.xyz(2) = z; }
 
   // PartialCharge
   double GetPartialCharge() const { return m_dPartialCharge; }

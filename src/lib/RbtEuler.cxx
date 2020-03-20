@@ -27,21 +27,21 @@ RbtQuat RbtEuler::ToQuat() const {
 }
 
 void RbtEuler::FromQuat(const RbtQuat &q) {
-  double test = (q.v.x * q.v.z) + (q.v.y * q.s);
+  double test = (q.v.xyz(0) * q.v.xyz(2)) + (q.v.xyz(1) * q.s);
   if (test > 0.499999) { // singularity at north pole
-    m_heading = 2.0 * std::atan2(q.v.x, q.s);
+    m_heading = 2.0 * std::atan2(q.v.xyz(0), q.s);
     m_attitude = M_PI / 2.0;
     m_bank = 0.0;
   } else if (test < -0.499999) { // singularity at south pole
-    m_heading = -2.0 * std::atan2(q.v.x, q.s);
+    m_heading = -2.0 * std::atan2(q.v.xyz(0), q.s);
     m_attitude = -M_PI / 2.0;
     m_bank = 0.0;
   } else {
     RbtVector sq = q.v * q.v;
-    m_heading = std::atan2(2.0 * (q.v.z * q.s - q.v.x * q.v.y),
-                           1.0 - 2.0 * (sq.z + sq.y));
+    m_heading = std::atan2(2.0 * (q.v.xyz(2) * q.s - q.v.xyz(0) * q.v.xyz(1)),
+                           1.0 - 2.0 * (sq.xyz(2) + sq.xyz(1)));
     m_attitude = std::asin(2.0 * test);
-    m_bank = std::atan2(2.0 * (q.v.x * q.s - q.v.z * q.v.y),
-                        1.0 - 2.0 * (sq.x + sq.y));
+    m_bank = std::atan2(2.0 * (q.v.xyz(0) * q.s - q.v.xyz(2) * q.v.xyz(1)),
+                        1.0 - 2.0 * (sq.xyz(0) + sq.xyz(1)));
   }
 }

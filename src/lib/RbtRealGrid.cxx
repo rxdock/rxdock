@@ -126,15 +126,18 @@ void RbtRealGrid::Read(std::istream &istr) {
 double RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
   const RbtCoord &gridMin = GetGridMin();
   const RbtVector &gridStep = GetGridStep();
-  double rx = 1.0 / gridStep.x; // reciprocal of grid step (x)
-  double ry = 1.0 / gridStep.y; // reciprocal of grid step (y)
-  double rz = 1.0 / gridStep.z; // reciprocal of grid step (z)
+  Eigen::Vector3d rXYZ =
+      gridStep.xyz.Constant(1.0).array() / gridStep.xyz.array();
+  double rx = rXYZ(0); // reciprocal of grid step (x)
+  double ry = rXYZ(1); // reciprocal of grid step (y)
+  double rz = rXYZ(2); // reciprocal of grid step (z)
   // Get lower left corner grid point
   //(not necessarily the nearest grid point as returned by GetIX() etc)
   // Need to shift the int(..) argument by half a grid step
-  unsigned int iX = static_cast<unsigned int>(rx * (c.x - gridMin.x) - 0.5);
-  unsigned int iY = static_cast<unsigned int>(ry * (c.y - gridMin.y) - 0.5);
-  unsigned int iZ = static_cast<unsigned int>(rz * (c.z - gridMin.z) - 0.5);
+  Eigen::Vector3d diff = c.xyz - gridMin.xyz;
+  unsigned int iX = static_cast<unsigned int>(rx * diff(0) - 0.5);
+  unsigned int iY = static_cast<unsigned int>(ry * diff(1) - 0.5);
+  unsigned int iZ = static_cast<unsigned int>(rz * diff(2) - 0.5);
 #ifdef _DEBUG
   std::cout << "GetSmoothedValue" << c << "\tiX,iY,iZ=" << iX << "\t" << iY
             << "\t" << iZ << std::endl;
@@ -156,20 +159,20 @@ double RbtRealGrid::GetSmoothedValue(const RbtCoord &c) const {
   // std::vector<double> bx(2);
   // std::vector<double> by(2);
   // std::vector<double> bz(2);
-  // bx[1] = rx * p.x;
+  // bx[1] = rx * p.xyz(0);
   // bx[0] = 1.0 - bx[1];
-  // by[1] = ry * p.y;
+  // by[1] = ry * p.xyz(1);
   // by[0] = 1.0 - by[1];
-  // bz[1] = rz * p.z;
+  // bz[1] = rz * p.xyz(2);
   // bz[0] = 1.0 - bz[1];
 
   double val(0.0);
   // DM 3/5/2005 - fully unroll this loop
-  double bx1 = rx * p.x;
+  double bx1 = rx * p.xyz(0);
   double bx0 = 1.0 - bx1;
-  double by1 = ry * p.y;
+  double by1 = ry * p.xyz(1);
   double by0 = 1.0 - by1;
-  double bz1 = rz * p.z;
+  double bz1 = rz * p.xyz(2);
   double bz0 = 1.0 - bz1;
   double bx0by0 = bx0 * by0;
   double bx0by1 = bx0 * by1;
@@ -299,9 +302,12 @@ void RbtRealGrid::SetAccessible(double radius, double oldVal, double adjVal,
   // space in the indices vector. Actually, this is a considerable overestimate
   // (no. of points in the enclosing cube)
   std::vector<unsigned int> sphereIndices;
-  unsigned int nMax = (int(radius / GetGridStep().x) + 1) *
-                      (int(radius / GetGridStep().y) + 1) *
-                      (int(radius / GetGridStep().z) + 1);
+  Eigen::Vector3d gridStepXYZ = GetGridStep().xyz;
+  Eigen::Vector3d nXYZ =
+      gridStepXYZ.Constant(radius).array() / gridStepXYZ.array();
+  unsigned int nMax = (static_cast<unsigned int>(nXYZ(0)) + 1) *
+                      (static_cast<unsigned int>(nXYZ(1)) + 1) *
+                      (static_cast<unsigned int>(nXYZ(2)) + 1);
   sphereIndices.reserve(nMax);
   // possibly can be better written
   for (unsigned int iX = iMinX; iX < iMaxX; iX++) {
@@ -385,10 +391,10 @@ void RbtRealGrid::PrintInsightGrid(std::ostream &s) const {
   s.precision(3);
   s.setf(std::ios_base::fixed, std::ios_base::floatfield);
   s.setf(std::ios_base::right, std::ios_base::adjustfield);
-  s << std::setw(8) << GetGridStep().x * (GetNX() - 1) << std::setw(8)
-    << GetGridStep().y * (GetNY() - 1) << std::setw(8)
-    << GetGridStep().z * (GetNZ() - 1) << std::setw(8) << 90.0 << std::setw(8)
-    << 90.0 << std::setw(8) << 90.0 << std::endl;
+  s << std::setw(8) << GetGridStep().xyz(0) * (GetNX() - 1) << std::setw(8)
+    << GetGridStep().xyz(1) * (GetNY() - 1) << std::setw(8)
+    << GetGridStep().xyz(2) * (GetNZ() - 1) << std::setw(8) << 90.0
+    << std::setw(8) << 90.0 << std::setw(8) << 90.0 << std::endl;
   // s.setf(0,ios_base::floatfield);
   s << std::setw(5) << GetNX() - 1 << std::setw(5) << GetNY() - 1
     << std::setw(5) << GetNZ() - 1 << std::endl;

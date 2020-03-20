@@ -93,9 +93,10 @@ void RbtBaseGrid::Read(std::istream &istr) { OwnRead(istr); }
 void RbtBaseGrid::SetGridMin(const RbtCoord &gridMin) {
   // Determine the integral min and max grid point coords (in multiples of grid
   // step from origin)
-  m_nXMin = static_cast<int>(std::floor(gridMin.x / m_step.x + 0.5));
-  m_nYMin = static_cast<int>(std::floor(gridMin.y / m_step.y + 0.5));
-  m_nZMin = static_cast<int>(std::floor(gridMin.z / m_step.z + 0.5));
+  Eigen::Vector3d nXYZMin = gridMin.xyz.array() / m_step.xyz.array();
+  m_nXMin = static_cast<int>(std::floor(nXYZMin(0) + 0.5));
+  m_nYMin = static_cast<int>(std::floor(nXYZMin(1) + 0.5));
+  m_nZMin = static_cast<int>(std::floor(nXYZMin(2) + 0.5));
 
   // Max integral coords are just min+N-1
   m_nXMax = m_nXMin + static_cast<int>(m_NX) - 1;
@@ -175,15 +176,15 @@ void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, double radius,
 
   double rX; // X-distance to sphere center
   unsigned int iX;
-  for (iX = iMinX, rX = GetXCoord(iMinX) - c.x; iX < iMaxX;
-       iX++, rX += m_step.x) {
+  for (iX = iMinX, rX = GetXCoord(iMinX) - c.xyz(0); iX < iMaxX;
+       iX++, rX += m_step.xyz(0)) {
     double rX2 = rX * rX;
     // Only bother with the Y loop if we haven't already exceeded rad2
     if (rX2 <= rad2) {
       double rY; // Y-distance to sphere center
       unsigned int iY;
-      for (iY = iMinY, rY = GetYCoord(iMinY) - c.y; iY < iMaxY;
-           iY++, rY += m_step.y) {
+      for (iY = iMinY, rY = GetYCoord(iMinY) - c.xyz(1); iY < iMaxY;
+           iY++, rY += m_step.xyz(1)) {
         double rXY2 = rX2 + rY * rY;
         // Only bother with the Z loop if we haven't already exceeded rad2
         if (rXY2 <= rad2) {
@@ -191,8 +192,8 @@ void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, double radius,
           unsigned int iZ;
           unsigned int iXYZ;
           for (iZ = iMinZ, iXYZ = GetIXYZ(iX, iY, iMinZ),
-              rZ = GetZCoord(iMinZ) - c.z;
-               iZ < iMaxZ; iZ++, iXYZ++, rZ += m_step.z) {
+              rZ = GetZCoord(iMinZ) - c.xyz(2);
+               iZ < iMaxZ; iZ++, iXYZ++, rZ += m_step.xyz(2)) {
             double rXYZ2 = rXY2 + rZ * rZ;
             if (rXYZ2 <= rad2) {
               sIndices.push_back(iXYZ);

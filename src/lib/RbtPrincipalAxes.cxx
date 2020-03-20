@@ -105,9 +105,9 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
     RbtVector r = (*iter)->GetCoords() -
                   principalAxes.com;     // Vector from center of mass to atom
     double m = (*iter)->GetAtomicMass(); // Atomic mass
-    double rx2 = r.x * r.x;
-    double ry2 = r.y * r.y;
-    double rz2 = r.z * r.z;
+    double rx2 = r.xyz(0) * r.xyz(0);
+    double ry2 = r.xyz(1) * r.xyz(1);
+    double rz2 = r.xyz(2) * r.xyz(2);
     // Diagonal elements (moments of inertia)
     double dIxx = m * (ry2 + rz2); //=r^2 - x^2
     double dIyy = m * (rx2 + rz2); //=r^2 - y^2
@@ -117,9 +117,9 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
     inertiaTensor(2, 2) += dIzz;
 
     // Off-diagonal elements (products of inertia) - symmetric matrix
-    double dIxy = m * r.x * r.y;
-    double dIxz = m * r.x * r.z;
-    double dIyz = m * r.y * r.z;
+    double dIxy = m * r.xyz(0) * r.xyz(1);
+    double dIxz = m * r.xyz(0) * r.xyz(2);
+    double dIyz = m * r.xyz(1) * r.xyz(2);
     inertiaTensor(0, 1) -= dIxy;
     inertiaTensor(1, 0) -= dIxy;
     inertiaTensor(0, 2) -= dIxz;
@@ -208,9 +208,9 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
        iter++) {
     RbtVector r =
         (*iter) - principalAxes.com; // Vector from center of mass to coord
-    double rx2 = r.x * r.x;
-    double ry2 = r.y * r.y;
-    double rz2 = r.z * r.z;
+    double rx2 = r.xyz(0) * r.xyz(0);
+    double ry2 = r.xyz(1) * r.xyz(1);
+    double rz2 = r.xyz(2) * r.xyz(2);
     // Diagonal elements (moments of inertia)
     double dIxx = ry2 + rz2; //=r^2 - x^2
     double dIyy = rx2 + rz2; //=r^2 - y^2
@@ -220,9 +220,9 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
     inertiaTensor(2, 2) += dIzz;
 
     // Off-diagonal elements (products of inertia) - symmetric matrix
-    double dIxy = r.x * r.y;
-    double dIxz = r.x * r.z;
-    double dIyz = r.y * r.z;
+    double dIxy = r.xyz(0) * r.xyz(1);
+    double dIxz = r.xyz(0) * r.xyz(2);
+    double dIyz = r.xyz(1) * r.xyz(2);
     inertiaTensor(0, 1) -= dIxy;
     inertiaTensor(1, 0) -= dIxy;
     inertiaTensor(0, 2) -= dIxz;

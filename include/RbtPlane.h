@@ -61,8 +61,8 @@ public:
 
   // Insertion operator
   friend std::ostream &operator<<(std::ostream &s, const RbtPlane &plane) {
-    return s << plane.m_vnorm.x << "x + " << plane.m_vnorm.y << "y + "
-             << plane.m_vnorm.z << "z + " << plane.m_d << " = 0";
+    return s << plane.m_vnorm.xyz(0) << "x + " << plane.m_vnorm.xyz(1) << "y + "
+             << plane.m_vnorm.xyz(2) << "z + " << plane.m_d << " = 0";
   }
 
   ///////////////////////////////////////////////
@@ -77,17 +77,17 @@ public:
   inline void Normalise() {
     // Convert to normal form by dividing by +/- vnorm.Length()
     // where sign is opposite the sign of d when d<>0,
-    // same as sign of c (vnorm.z) when d==0 and c<>0,
-    // and same as sign of b (vnorm.y) otherwise
+    // same as sign of c (vnorm.xyz(2)) when d==0 and c<>0,
+    // and same as sign of b (vnorm.xyz(1)) otherwise
     double l = m_vnorm.Length();
-    int iSign =
-        (m_d < 0.0)
-            ? 1
-            : (m_d > 0.0)
-                  ? -1
-                  : (m_vnorm.z < 0.0)
-                        ? -1
-                        : (m_vnorm.z > 0.0) ? 1 : (m_vnorm.y < 0.0) ? -1 : 1;
+    int iSign = (m_d < 0.0)
+                    ? 1
+                    : (m_d > 0.0) ? -1
+                                  : (m_vnorm.xyz(2) < 0.0)
+                                        ? -1
+                                        : (m_vnorm.xyz(2) > 0.0)
+                                              ? 1
+                                              : (m_vnorm.xyz(1) < 0.0) ? -1 : 1;
     l *= iSign;
     // Check for divide by zero
     if (l != 0.0) {

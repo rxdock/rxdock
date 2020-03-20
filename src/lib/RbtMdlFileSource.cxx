@@ -110,8 +110,8 @@ void RbtMdlFileSource::Parse() {
 
       while ((m_atomList.size() < nAtomRec) && (fileIter != fileEnd)) {
         std::istringstream istr(*fileIter++);
-        istr >> coord.x >> coord.y >> coord.z >> strElementName >> nMassDiff >>
-            nFormalCharge;
+        istr >> coord.xyz(0) >> coord.xyz(1) >> coord.xyz(2) >>
+            strElementName >> nMassDiff >> nFormalCharge;
 
         // Look up the element data
         RbtElementData elData = m_spElementData->GetElementData(strElementName);

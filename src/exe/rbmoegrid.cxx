@@ -127,9 +127,10 @@ int main(int argc, char *argv[]) {
     RbtCoord maxCoord = theMOEGrid.GetMaxExtents() + border;
     RbtVector gridStep(gs, gs, gs);
     RbtVector recepExtent = maxCoord - minCoord;
-    unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
-    unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
-    unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
+    Eigen::Vector3d nXYZ = recepExtent.xyz.array() / gridStep.xyz.array();
+    unsigned int nX = static_cast<unsigned int>(nXYZ(0)) + 1;
+    unsigned int nY = static_cast<unsigned int>(nXYZ(1)) + 1;
+    unsigned int nZ = static_cast<unsigned int>(nXYZ(2)) + 1;
     std::cout << "Constructing grid of size " << nX << " x " << nY << " x "
               << nZ << std::endl;
     std::vector<std::string>::iterator strReceptorPrmFilesIter;
@@ -198,9 +199,10 @@ int main(int argc, char *argv[]) {
       // RbtCoord maxCoord = spDS->GetMaxCoord()+border;
       // RbtVector recepExtent = maxCoord-minCoord;
       // RbtVector gridStep(gs,gs,gs);
-      // RbtUInt nX = int(recepExtent.x/gridStep.x)+1;
-      // RbtUInt nY = int(recepExtent.y/gridStep.y)+1;
-      // RbtUInt nZ = int(recepExtent.z/gridStep.z)+1;
+      // Eigen::Vector3d nXYZ = recepExtent.xyz.array() / gridStep.xyz.array();
+      // RbtUInt nX = static_cast<unsigned int>(nXYZ(0)) + 1;
+      // RbtUInt nY = static_cast<unsigned int>(nXYZ(1)) + 1;
+      // RbtUInt nZ = static_cast<unsigned int>(nXYZ(2)) + 1;
       // std::cout << "Constructing grid of size " << nX << " x " << nY << " x "
       // << nZ << std::endl;
       RbtRealGridPtr spGrid(new RbtRealGrid(minCoord, gridStep, nX, nY, nZ));
@@ -212,14 +214,10 @@ int main(int argc, char *argv[]) {
       std::cout << "==================================" << std::endl;
       std::cout << "Generating MOE grid " << std::endl;
       // grid extents are in minCoord and maxCoord
-      std::vector<double> grid_origin;
-      grid_origin.push_back(minCoord.x);
-      grid_origin.push_back(minCoord.y);
-      grid_origin.push_back(minCoord.z);
-      std::vector<double> grid_extents;
-      grid_extents.push_back(maxCoord.x);
-      grid_extents.push_back(maxCoord.y);
-      grid_extents.push_back(maxCoord.z);
+      std::vector<double> grid_origin(
+          minCoord.xyz.data(), minCoord.xyz.data() + minCoord.xyz.size());
+      std::vector<double> grid_extents(
+          maxCoord.xyz.data(), maxCoord.xyz.data() + maxCoord.xyz.size());
       // create MOE grid shape vector
       RbtMOEGridShape theShape(grid_origin, grid_extents, gs);
       // MOE grid data vector

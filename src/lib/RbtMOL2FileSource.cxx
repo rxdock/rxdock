@@ -254,9 +254,9 @@ void RbtMOL2FileSource::ParseRecordATOM(const std::string &aLine) {
   int atom_id = std::atoi(tokens[0].c_str());
   std::string atom_name = tokens[1];
   RbtCoord atom_coord;
-  atom_coord.x = std::atof(tokens[2].c_str());
-  atom_coord.y = std::atof(tokens[3].c_str());
-  atom_coord.z = std::atof(tokens[4].c_str());
+  atom_coord.xyz(0) = std::atof(tokens[2].c_str());
+  atom_coord.xyz(1) = std::atof(tokens[3].c_str());
+  atom_coord.xyz(2) = std::atof(tokens[4].c_str());
   std::string atom_type = tokens[5];
 
   // Optional fields.

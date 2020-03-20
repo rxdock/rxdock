@@ -53,9 +53,10 @@ RbtInteractionGridPtr RbtBaseIdxSF::CreateInteractionGrid() const {
   RbtCoord maxCoord = spDS->GetMaxCoord() + m_border;
   RbtVector recepExtent = maxCoord - minCoord;
   RbtVector gridStep(m_gridStep, m_gridStep, m_gridStep);
-  unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
-  unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
-  unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
+  Eigen::Vector3d nXYZ = recepExtent.xyz.array() / gridStep.xyz.array();
+  unsigned int nX = static_cast<unsigned int>(nXYZ(0)) + 1;
+  unsigned int nY = static_cast<unsigned int>(nXYZ(1)) + 1;
+  unsigned int nZ = static_cast<unsigned int>(nXYZ(2)) + 1;
   return RbtInteractionGridPtr(
       new RbtInteractionGrid(minCoord, gridStep, nX, nY, nZ));
 }
@@ -72,9 +73,10 @@ RbtNonBondedGridPtr RbtBaseIdxSF::CreateNonBondedGrid() const {
   RbtCoord maxCoord = spDS->GetMaxCoord() + m_border;
   RbtVector recepExtent = maxCoord - minCoord;
   RbtVector gridStep(m_gridStep, m_gridStep, m_gridStep);
-  unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
-  unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
-  unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
+  Eigen::Vector3d nXYZ = recepExtent.xyz.array() / gridStep.xyz.array();
+  unsigned int nX = static_cast<unsigned int>(nXYZ(0)) + 1;
+  unsigned int nY = static_cast<unsigned int>(nXYZ(1)) + 1;
+  unsigned int nZ = static_cast<unsigned int>(nXYZ(2)) + 1;
   return RbtNonBondedGridPtr(
       new RbtNonBondedGrid(minCoord, gridStep, nX, nY, nZ));
 }
@@ -91,9 +93,10 @@ RbtNonBondedHHSGridPtr RbtBaseIdxSF::CreateNonBondedHHSGrid() const {
   RbtCoord maxCoord = spDS->GetMaxCoord() + m_border;
   RbtVector recepExtent = maxCoord - minCoord;
   RbtVector gridStep(m_gridStep, m_gridStep, m_gridStep);
-  unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
-  unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
-  unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
+  Eigen::Vector3d nXYZ = recepExtent.xyz.array() / gridStep.xyz.array();
+  unsigned int nX = static_cast<unsigned int>(nXYZ(0)) + 1;
+  unsigned int nY = static_cast<unsigned int>(nXYZ(1)) + 1;
+  unsigned int nZ = static_cast<unsigned int>(nXYZ(2)) + 1;
   return RbtNonBondedHHSGridPtr(
       new RbtNonBondedHHSGrid(minCoord, gridStep, nX, nY, nZ));
 }

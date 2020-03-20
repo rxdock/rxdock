@@ -113,6 +113,7 @@ rbcavity = executable(
 )
 executable(
   'rbrms', 'src/exe/rbrms.cxx', link_with : librxdock,
+  dependencies : eigen3_dep,
   include_directories : incRbt, install: true
 )
 executable(
@@ -122,6 +123,7 @@ executable(
 )
 executable(
   'rblist', 'src/exe/rblist.cxx', link_with : librxdock,
+  dependencies : eigen3_dep,
   include_directories : incRbt, install : true
 )
 executable(

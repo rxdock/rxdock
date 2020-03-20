@@ -119,24 +119,24 @@ public:
 
   // Return iX,iY,iZ indices for given coord
   unsigned int GetIX(const RbtCoord &c) const {
-    return static_cast<unsigned int>((c.x - m_min.x) / m_step.x);
+    return static_cast<unsigned int>((c.xyz(0) - m_min.xyz(0)) / m_step.xyz(0));
   }
   unsigned int GetIY(const RbtCoord &c) const {
-    return static_cast<unsigned int>((c.y - m_min.y) / m_step.y);
+    return static_cast<unsigned int>((c.xyz(1) - m_min.xyz(1)) / m_step.xyz(1));
   }
   unsigned int GetIZ(const RbtCoord &c) const {
-    return static_cast<unsigned int>((c.z - m_min.z) / m_step.z);
+    return static_cast<unsigned int>((c.xyz(2) - m_min.xyz(2)) / m_step.xyz(2));
   }
 
   // Return iX,iY,iZ indices for given coord
   unsigned int GetIX(double x) const {
-    return static_cast<unsigned int>((x - m_min.x) / m_step.x);
+    return static_cast<unsigned int>((x - m_min.xyz(0)) / m_step.xyz(0));
   }
   unsigned int GetIY(double y) const {
-    return static_cast<unsigned int>((y - m_min.y) / m_step.y);
+    return static_cast<unsigned int>((y - m_min.xyz(1)) / m_step.xyz(1));
   }
   unsigned int GetIZ(double z) const {
-    return static_cast<unsigned int>((z - m_min.z) / m_step.z);
+    return static_cast<unsigned int>((z - m_min.xyz(2)) / m_step.xyz(2));
   }
 
   // Return iX,iY,iZ indices for given iXYZ index
@@ -161,15 +161,15 @@ public:
   }
   // Returns real-world X coordinate for given iX index
   double GetXCoord(unsigned int iX) const {
-    return (m_nXMin + static_cast<int>(iX)) * m_step.x;
+    return (m_nXMin + static_cast<int>(iX)) * m_step.xyz(0);
   }
   // Returns real-world Y coordinate for given iY index
   double GetYCoord(unsigned int iY) const {
-    return (m_nYMin + static_cast<int>(iY)) * m_step.y;
+    return (m_nYMin + static_cast<int>(iY)) * m_step.xyz(1);
   }
   // Returns real-world Z coordinate for given iZ index
   double GetZCoord(unsigned int iZ) const {
-    return (m_nZMin + static_cast<int>(iZ)) * m_step.z;
+    return (m_nZMin + static_cast<int>(iZ)) * m_step.xyz(2);
   }
 
   // Returns real-world coordinate for given iXYZ index

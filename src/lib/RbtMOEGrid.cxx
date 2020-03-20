@@ -183,19 +183,19 @@ void RbtMOEGrid::CalculateCommonExtents(std::vector<std::string> strPrmFiles) {
     else {
       GetDockingSiteExtents((*strPrmFilesIter));
       // change min extents to current values if required
-      if (c_min.x < min.x)
-        min.x = c_min.x;
-      if (c_min.y < min.y)
-        min.y = c_min.y;
-      if (c_min.z < min.z)
-        min.z = c_min.z;
+      if (c_min.xyz(0) < min.xyz(0))
+        min.xyz(0) = c_min.xyz(0);
+      if (c_min.xyz(1) < min.xyz(1))
+        min.xyz(1) = c_min.xyz(1);
+      if (c_min.xyz(2) < min.xyz(2))
+        min.xyz(2) = c_min.xyz(2);
       // change max extents
-      if (c_max.x > max.x)
-        max.x = c_max.x;
-      if (c_max.y > max.y)
-        max.y = c_max.y;
-      if (c_max.z > max.z)
-        max.z = c_max.z;
+      if (c_max.xyz(0) > max.xyz(0))
+        max.xyz(0) = c_max.xyz(0);
+      if (c_max.xyz(1) > max.xyz(1))
+        max.xyz(1) = c_max.xyz(1);
+      if (c_max.xyz(2) > max.xyz(2))
+        max.xyz(2) = c_max.xyz(2);
     }
   }
 }

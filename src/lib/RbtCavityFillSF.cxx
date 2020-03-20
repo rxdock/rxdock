@@ -52,9 +52,10 @@ void RbtCavityFillSF::SetupReceptor() {
   RbtCoord minCoord = spDS->GetMinCoord() - border;
   RbtCoord maxCoord = spDS->GetMaxCoord() + border;
   RbtVector recepExtent = maxCoord - minCoord;
-  unsigned int nX = int(recepExtent.x / gridStep.x) + 1;
-  unsigned int nY = int(recepExtent.y / gridStep.y) + 1;
-  unsigned int nZ = int(recepExtent.z / gridStep.z) + 1;
+  Eigen::Vector3d nXYZ = recepExtent.xyz.array() / gridStep.xyz.array();
+  unsigned int nX = static_cast<unsigned int>(nXYZ(0)) + 1;
+  unsigned int nY = static_cast<unsigned int>(nXYZ(1)) + 1;
+  unsigned int nZ = static_cast<unsigned int>(nXYZ(2)) + 1;
   m_spGrid = new RbtFFTGrid(minCoord, gridStep, nX, nY, nZ);
 
   RbtAtomList atomList = GetReceptor()->GetAtomList();

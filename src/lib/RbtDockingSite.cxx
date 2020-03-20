@@ -18,13 +18,13 @@
 class RbtCoordCmp {
 public:
   bool operator()(const RbtCoord &c1, const RbtCoord &c2) const {
-    if (c1.x < c2.x)
+    if (c1.xyz(0) < c2.xyz(0))
       return true;
-    else if (c1.x == c2.x) {
-      if (c1.y < c2.y)
+    else if (c1.xyz(0) == c2.xyz(0)) {
+      if (c1.xyz(1) < c2.xyz(1))
         return true;
-      else if (c1.y == c2.y) {
-        if (c1.z < c2.z)
+      else if (c1.xyz(1) == c2.xyz(1)) {
+        if (c1.xyz(2) < c2.xyz(2))
           return true;
       }
     }
@@ -258,9 +258,10 @@ void RbtDockingSite::CreateGrid() {
   RbtCoord minCoord = m_minCoord - m_border;
   RbtCoord maxCoord = m_maxCoord + m_border;
   RbtVector extent = maxCoord - minCoord;
-  unsigned int nX = int(extent.x / gridStep.x) + 1;
-  unsigned int nY = int(extent.y / gridStep.y) + 1;
-  unsigned int nZ = int(extent.z / gridStep.z) + 1;
+  Eigen::Vector3d nXYZ = extent.xyz.array() / gridStep.xyz.array();
+  unsigned int nX = static_cast<unsigned int>(nXYZ(0)) + 1;
+  unsigned int nY = static_cast<unsigned int>(nXYZ(1)) + 1;
+  unsigned int nZ = static_cast<unsigned int>(nXYZ(2)) + 1;
   m_spGrid = RbtRealGridPtr(new RbtRealGrid(minCoord, gridStep, nX, nY, nZ));
   m_spGrid->SetAllValues(999999.9);
 
@@ -297,9 +298,7 @@ void RbtDockingSite::CreateGrid() {
   // Loop over all grid points in the distance grid
   // Can terminate when distance^2 is less than or equal to mindist^2 (shortest
   // length of grid interval)
-  double mindist2 = std::min(gridStep.x, gridStep.y);
-  mindist2 = std::min(mindist2, gridStep.z);
-  mindist2 *= mindist2;
+  double mindist2 = std::pow(gridStep.xyz.minCoeff(), 2);
   for (unsigned int i = 0; i < m_spGrid->GetN(); i++) {
     const RbtCoord &c = m_spGrid->GetCoord(i);
     // Initialise dist^2 from initial grid value (999999.9 or 0.0 for cavity

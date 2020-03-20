@@ -94,10 +94,11 @@ public:
   // DM 4 Apr 2002 - return a grid with all cavity points set to 1.0
   RbtRealGridPtr GetGrid() const {
     RbtVector extent = m_maxCoord - m_minCoord;
-    unsigned int nX =
-        int(extent.x / m_gridStep.x) + 3; //+3 to allow a small border
-    unsigned int nY = int(extent.y / m_gridStep.y) + 3;
-    unsigned int nZ = int(extent.z / m_gridStep.z) + 3;
+    // Add +3 to allow a small border
+    Eigen::Vector3d nXYZ = extent.xyz.array() / m_gridStep.xyz.array();
+    unsigned int nX = static_cast<unsigned int>(nXYZ(0)) + 3;
+    unsigned int nY = static_cast<unsigned int>(nXYZ(1)) + 3;
+    unsigned int nZ = static_cast<unsigned int>(nXYZ(2)) + 3;
     RbtRealGridPtr spGrid = RbtRealGridPtr(
         new RbtRealGrid(m_minCoord - m_gridStep, m_gridStep, nX, nY, nZ));
     for (RbtCoordListConstIter iter = m_coordList.begin();
@@ -118,7 +119,7 @@ public:
   const RbtCoord &GetMaxCoord() const { return m_maxCoord; }
   const RbtVector &GetGridStep() const { return m_gridStep; }
   double GetVolume() const {
-    return m_coordList.size() * m_gridStep.x * m_gridStep.y * m_gridStep.z;
+    return m_coordList.size() * m_gridStep.xyz.prod();
   }
 
 protected:

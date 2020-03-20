@@ -97,9 +97,10 @@ RbtCavityList RbtLigandSiteMapper::operator()() {
   RbtCoord minCoord = Rbt::Min(refCoordList) - border;
   RbtCoord maxCoord = Rbt::Max(refCoordList) + border;
   RbtVector extent = maxCoord - minCoord;
-  unsigned int nX = int(extent.x / gridStep.x) + 1;
-  unsigned int nY = int(extent.y / gridStep.y) + 1;
-  unsigned int nZ = int(extent.z / gridStep.z) + 1;
+  Eigen::Vector3d nXYZ = extent.xyz.array() / gridStep.xyz.array();
+  unsigned int nX = static_cast<unsigned int>(nXYZ(0)) + 1;
+  unsigned int nY = static_cast<unsigned int>(nXYZ(1)) + 1;
+  unsigned int nZ = static_cast<unsigned int>(nXYZ(2)) + 1;
   spGrid = RbtFFTGridPtr(new RbtFFTGrid(minCoord, gridStep, nX, nY, nZ));
   spGrid->SetAllValues(recVal);
 

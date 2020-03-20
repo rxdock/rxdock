@@ -160,9 +160,7 @@ public:
 
   // Returns magnitude of quat
   // Member function (L = Q1.Length())
-  inline double Length() const {
-    return std::sqrt(s * s + v.x * v.x + v.y * v.y + v.z * v.z);
-  }
+  inline double Length() const { return std::sqrt(s * s + v.Length2()); }
 
   // Returns unit quat
   // Member function (U1 = Q1.Unit())

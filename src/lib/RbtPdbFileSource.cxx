@@ -101,7 +101,7 @@ void RbtPdbFileSource::Parse() {
           }
           if (length > 53) {
             std::istringstream istr((*fileIter).substr(30, 24).c_str());
-            istr >> coord.x >> coord.y >> coord.z;
+            istr >> coord.xyz(0) >> coord.xyz(1) >> coord.xyz(2);
             // std::cout << "coord        =" << coord << std::endl;
           }
           if (length > 59) {

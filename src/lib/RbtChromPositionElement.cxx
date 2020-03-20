@@ -174,9 +174,7 @@ RbtChromElement *RbtChromPositionElement::clone() const {
 
 void RbtChromPositionElement::GetVector(std::vector<double> &v) const {
   if (!m_spRefData->IsTransFixed()) {
-    v.push_back(m_com.x);
-    v.push_back(m_com.y);
-    v.push_back(m_com.z);
+    v.insert(v.end(), m_com.xyz.data(), m_com.xyz.data() + m_com.xyz.size());
   }
   if (!m_spRefData->IsRotFixed()) {
     v.push_back(m_orientation.GetHeading());
@@ -187,10 +185,8 @@ void RbtChromPositionElement::GetVector(std::vector<double> &v) const {
 
 void RbtChromPositionElement::GetVector(RbtXOverList &v) const {
   if (!m_spRefData->IsTransFixed()) {
-    RbtXOverElement comElement;
-    comElement.push_back(m_com.x);
-    comElement.push_back(m_com.y);
-    comElement.push_back(m_com.z);
+    RbtXOverElement comElement(m_com.xyz.data(),
+                               m_com.xyz.data() + m_com.xyz.size());
     v.push_back(comElement);
   }
   if (!m_spRefData->IsRotFixed()) {

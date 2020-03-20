@@ -79,8 +79,8 @@ void RbtCrdFileSource::Parse() {
 
       while ((m_atomList.size() < nAtomRec) && (fileIter != fileEnd)) {
         std::istringstream(*fileIter++) >> nAtomId >> nSubunitId >>
-            strSubunitName >> strAtomName >> coord.x >> coord.y >> coord.z >>
-            strSegmentName >> strSubunitId;
+            strSubunitName >> strAtomName >> coord.xyz(0) >> coord.xyz(1) >>
+            coord.xyz(2) >> strSegmentName >> strSubunitId;
 
         // Construct a new atom (constructor only accepts the 2D params)
         RbtAtomPtr spAtom(new RbtAtom(
