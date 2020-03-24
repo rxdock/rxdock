@@ -27,6 +27,7 @@ srcRbt = [
   'src/lib/RbtChromPositionRefData.cxx', 'src/lib/RbtConstraint.cxx',
   'src/lib/RbtConstSF.cxx', 'src/lib/RbtContext.cxx',
   'src/lib/RbtCrdFileSink.cxx', 'src/lib/RbtCrdFileSource.cxx',
+  'src/lib/RbtCSVFileSink.cxx',
   'src/lib/Rbt.cxx', 'src/lib/RbtDebug.cxx', 'src/lib/RbtDihedralIntraSF.cxx',
   'src/lib/RbtDihedralSF.cxx', 'src/lib/RbtDihedralTargetSF.cxx',
   'src/lib/RbtDirectorySource.cxx', 'src/lib/RbtDockingSite.cxx',
