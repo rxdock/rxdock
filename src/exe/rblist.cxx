@@ -246,7 +246,9 @@ int main(int argc, char *argv[]) {
 
       // Create the ligand model
       RbtModelPtr spModel(new RbtModel(spMdlFileSource));
-      std::string strModelName = spModel->GetName();
+      std::string strModelName = spModel->GetTitleList()[0];
+      if (strModelName.empty())
+        strModelName = spModel->GetName();
 
       if (bList) {
         RbtAtomList atomList = spModel->GetAtomList();
