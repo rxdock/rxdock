@@ -252,10 +252,13 @@ void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
   // Now we have an isolated atom we can remove it
   // Find the atom in the FileSource atom list
   // DM 2 Aug 1999 - search by atom  attributes, not by memory location (v
-  // risky) RbtAtomListIter aIter =
-  // Rbt::FindAtomInList(m_atomList,std::bind2nd(Rbt::isAtomPtr_eq(),spAtom));
-  auto aIter =
-      Rbt::FindAtomInList(m_atomList, std::bind2nd(Rbt::isAtom_eq(), spAtom));
+  // risky)
+  // SJ 13 Apr 2020 - search by memory location (faster), make isAtomPtr_eq
+  // const on both arguments
+  auto aIter = Rbt::FindAtomInList(m_atomList,
+                                   std::bind2nd(Rbt::isAtomPtr_eq(), spAtom));
+  // auto aIter = Rbt::FindAtomInList(m_atomList, std::bind2nd(Rbt::isAtom_eq(),
+  // spAtom));
   if (aIter != m_atomList.end()) {
 #ifdef _DEBUG
     std::cout << "Removing atom #" << (*aIter)->GetAtomId() << ", "

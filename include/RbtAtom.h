@@ -603,7 +603,8 @@ public:
 // Is atom2 equal to atom1 (checks if underlying regular pointers match)
 // Note: this is a binary rather than unary predicate
 // DM 1 Feb 1999 - renamed from isAtom_eq to isAtomPtr_eq
-class isAtomPtr_eq : public std::binary_function<RbtAtom *, RbtAtom *, bool> {
+class isAtomPtr_eq
+    : public std::binary_function<const RbtAtom *, const RbtAtom *, bool> {
 public:
   explicit isAtomPtr_eq() = default;
   bool operator()(const RbtAtom *pAtom1, const RbtAtom *pAtom2) const {
