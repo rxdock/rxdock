@@ -581,30 +581,31 @@ void RbtMOL2FileSource::FixTriposTypes() {
 
 void RbtMOL2FileSource::RemoveNonPolarHydrogens() {
   RbtAtomList cList = Rbt::GetAtomList(m_atomList, Rbt::isAtomicNo_eq(6));
-  for (RbtAtomListIter cIter = cList.begin(); cIter != cList.end(); cIter++) {
+
+  RbtAtomList removeList;
+  for (auto &cIter : cList) {
     // Get list of all bonded hydrogens
     RbtAtomList hList =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(*cIter), Rbt::isAtomicNo_eq(1));
+        Rbt::GetAtomList(Rbt::GetBondedAtomList(cIter), Rbt::isAtomicNo_eq(1));
     int nH = hList.size();
     if (nH > 0) {
-      for (RbtAtomListIter hIter = hList.begin(); hIter != hList.end();
-           hIter++) {
-        RemoveAtom(*hIter);
+      for (auto &hIter : hList) {
+        RemoveAtom(hIter);
       }
       // Adjust number of implicit hydrogens
-      (*cIter)->SetNumImplicitHydrogens((*cIter)->GetNumImplicitHydrogens() +
-                                        nH);
+      cIter->SetNumImplicitHydrogens(cIter->GetNumImplicitHydrogens() + nH);
       // std::cout << "Removing " << nH << " hydrogens from " <<
       // (*cIter)->GetFullAtomName() << std::endl;
     }
   }
+
   // Remove orphan hydrogens (from fragmented residues for e.g.)
   RbtAtomList hList = Rbt::GetAtomList(m_atomList, Rbt::isAtomicNo_eq(1));
   hList = Rbt::GetAtomList(hList, Rbt::isCoordinationNumber_eq(0));
-  for (RbtAtomListIter hIter = hList.begin(); hIter != hList.end(); hIter++) {
+  for (const auto &hIter : hList) {
     std::cout << _CT << ": INFO Removing orphan hydrogen "
-              << (*hIter)->GetFullAtomName() << std::endl;
-    RemoveAtom(*hIter);
+              << hIter->GetFullAtomName() << std::endl;
+    RemoveAtom(hIter);
   }
 }
 
@@ -623,28 +624,27 @@ void RbtMOL2FileSource::SetupVdWRadii() {
   double dHBondRadius =
       elHData.vdwRadius + m_spElementData->GetHBondRadiusIncr();
 
-  for (RbtAtomListIter iter = m_atomList.begin(); iter != m_atomList.end();
-       iter++) {
+  for (auto &iter : m_atomList) {
     // Get the element data for this atom
-    int nAtomicNo = (*iter)->GetAtomicNo();
+    int nAtomicNo = iter->GetAtomicNo();
     RbtElementData elData = m_spElementData->GetElementData(nAtomicNo);
     double vdwRadius = elData.vdwRadius;
-    int nImplH = (*iter)->GetNumImplicitHydrogens();
+    int nImplH = iter->GetNumImplicitHydrogens();
     // Adjust atomic mass and vdw radius for atoms with implicit hydrogens
     if (nImplH > 0) {
-      (*iter)->SetAtomicMass(elData.mass +
-                             (nImplH * elHData.mass)); // Adjust atomic mass
-      if (bIsSP3(*iter)) {
+      iter->SetAtomicMass(elData.mass +
+                          (nImplH * elHData.mass)); // Adjust atomic mass
+      if (bIsSP3(iter)) {
         vdwRadius +=
             dImplRadIncr; // adjust vdw radius (for sp3 implicit atoms only)
       }
     }
     // Adjust vdw radius for H-bonding hydrogens
-    else if (bIsHBondDonor(*iter)) {
+    else if (bIsHBondDonor(iter)) {
       vdwRadius = dHBondRadius;
     }
     // Finally we can set the radius
-    (*iter)->SetVdwRadius(vdwRadius);
+    iter->SetVdwRadius(vdwRadius);
 #ifdef _DEBUG
     // std::cout << (*iter)->GetFullAtomName() << ": #H=" << nImplH
     //<< "; vdwR=" << (*iter)->GetVdwRadius()

@@ -108,9 +108,8 @@ void RbtDockingSite::Write(std::ostream &ostr) {
   Rbt::WriteWithThrow(ostr, (const char *)&nCav, sizeof(nCav));
 
   // Write each cavity
-  for (RbtCavityListConstIter cIter = m_cavityList.begin();
-       cIter != m_cavityList.end(); cIter++) {
-    (*cIter)->Write(ostr);
+  for (const auto &cIter : m_cavityList) {
+    cIter->Write(ostr);
   }
 
   // DM 4 Apr 2002 - write the distance grid
@@ -173,9 +172,8 @@ RbtRealGridPtr RbtDockingSite::GetGrid() {
 // returns total volume of all cavities in A^3
 double RbtDockingSite::GetVolume() const {
   double vol(0.0);
-  for (RbtCavityListConstIter iter = m_cavityList.begin();
-       iter != m_cavityList.end(); iter++) {
-    vol += (*iter)->GetVolume();
+  for (auto &iter : m_cavityList) {
+    vol += iter->GetVolume();
   }
   return vol;
 }
@@ -183,9 +181,8 @@ double RbtDockingSite::GetVolume() const {
 // Returns the combined coord lists of all the cavities
 void RbtDockingSite::GetCoordList(RbtCoordList &retVal) const {
   retVal.clear();
-  for (RbtCavityListConstIter iter = m_cavityList.begin();
-       iter != m_cavityList.end(); iter++) {
-    const RbtCoordList &cavCoords = (*iter)->GetCoordList();
+  for (auto &iter : m_cavityList) {
+    const RbtCoordList &cavCoords = iter->GetCoordList();
     retVal.reserve(retVal.size() + cavCoords.size());
     std::copy(cavCoords.begin(), cavCoords.end(), std::back_inserter(retVal));
     // Sort the coords so we can remove any dups
@@ -267,9 +264,8 @@ void RbtDockingSite::CreateGrid() {
 
   // Get the total list of cavity coords
   RbtCoordList allCoords;
-  for (RbtCavityListConstIter iter = m_cavityList.begin();
-       iter != m_cavityList.end(); iter++) {
-    const RbtCoordList cavCoords = (*iter)->GetCoordList();
+  for (auto &iter : m_cavityList) {
+    const RbtCoordList cavCoords = iter->GetCoordList();
     // Reserve enough space for appending the next cavity coord list
     allCoords.reserve(allCoords.size() + cavCoords.size());
     // Perform the append
@@ -279,11 +275,10 @@ void RbtDockingSite::CreateGrid() {
     // points nearest to each cavity coord Normally zero, but we allow the
     // possibility that the grid step may be different i.e. the cavity coords
     // may not lie directly on a grid point.
-    for (RbtCoordListConstIter cIter = cavCoords.begin();
-         cIter != cavCoords.end(); cIter++) {
+    for (auto &cIter : cavCoords) {
       unsigned int i =
-          m_spGrid->GetIXYZ(*cIter); // Grid index of nearest grid point
-      double dist2 = Rbt::Length2(*cIter, m_spGrid->GetCoord(i));
+          m_spGrid->GetIXYZ(cIter); // Grid index of nearest grid point
+      double dist2 = Rbt::Length2(cIter, m_spGrid->GetCoord(i));
       m_spGrid->SetValue(i, dist2);
     }
     // Sort the coords so we can remove any dups

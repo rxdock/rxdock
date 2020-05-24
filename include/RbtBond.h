@@ -140,35 +140,35 @@ typedef std::binary_function<RbtBond *, RbtBond *, bool> RbtBondBinaryPredicate;
 // Is bond selected ?
 class isBondSelected : public RbtBondUnaryPredicate {
 public:
-  explicit isBondSelected() {}
+  explicit isBondSelected() = default;
   bool operator()(RbtBond *pBond) const { return pBond->GetSelectionFlag(); }
 };
 
 // Is bond cyclic ?
 class isBondCyclic : public RbtBondUnaryPredicate {
 public:
-  explicit isBondCyclic() {}
+  explicit isBondCyclic() = default;
   bool operator()(RbtBond *pBond) const { return pBond->GetCyclicFlag(); }
 };
 
 // Is bond rotatable ?
 class isBondRotatable : public RbtBondUnaryPredicate {
 public:
-  explicit isBondRotatable() {}
+  explicit isBondRotatable() = default;
   RBTDLL_EXPORT bool operator()(RbtBond *) const;
 };
 
 // Is bond to a terminal NH3+ group?
 class isBondToNH3 : public RbtBondUnaryPredicate {
 public:
-  explicit isBondToNH3() {}
+  explicit isBondToNH3() = default;
   RBTDLL_EXPORT bool operator()(RbtBond *) const;
 };
 
 // Is bond to a terminal OH group?
 class isBondToOH : public RbtBondUnaryPredicate {
 public:
-  explicit isBondToOH() {}
+  explicit isBondToOH() = default;
   RBTDLL_EXPORT bool operator()(RbtBond *pBond) const;
 };
 
@@ -210,7 +210,7 @@ public:
 // Is bond an amide bond?
 class isBondAmide : public RbtBondUnaryPredicate {
 public:
-  explicit isBondAmide() {}
+  explicit isBondAmide() = default;
   RBTDLL_EXPORT bool operator()(RbtBond *) const;
 };
 
@@ -221,7 +221,8 @@ public:
 // Generic template version of GetNumBonds, passing in your own predicate
 template <class Predicate>
 unsigned int GetNumBonds(const RbtBondList &bondList, const Predicate &pred) {
-  return std::count_if(bondList.begin(), bondList.end(), pred);
+  return static_cast<unsigned int>(
+      std::count_if(bondList.begin(), bondList.end(), pred));
 }
 
 // Generic template version of GetBondList, passing in your own predicate

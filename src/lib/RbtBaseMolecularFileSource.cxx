@@ -237,10 +237,8 @@ void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
   const RbtBondMap bondMap = spAtom->GetBondMap();
 
   // First remove all bonds from the atom
-  for (RbtBondMapConstIter mapIter = bondMap.begin(); mapIter != bondMap.end();
-       mapIter++) {
-    RbtBondListIter bIter =
-        Rbt::FindBond(m_bondList, Rbt::isBond_eq((*mapIter).first));
+  for (const auto &mapIter : bondMap) {
+    auto bIter = Rbt::FindBond(m_bondList, Rbt::isBond_eq((mapIter).first));
     if (bIter != m_bondList.end()) {
 #ifdef _DEBUG
       std::cout << "Removing bond #" << (*bIter)->GetBondId() << " ("
@@ -256,7 +254,7 @@ void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
   // DM 2 Aug 1999 - search by atom  attributes, not by memory location (v
   // risky) RbtAtomListIter aIter =
   // Rbt::FindAtomInList(m_atomList,std::bind2nd(Rbt::isAtomPtr_eq(),spAtom));
-  RbtAtomListIter aIter =
+  auto aIter =
       Rbt::FindAtomInList(m_atomList, std::bind2nd(Rbt::isAtom_eq(), spAtom));
   if (aIter != m_atomList.end()) {
 #ifdef _DEBUG
