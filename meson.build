@@ -73,6 +73,7 @@ srcRbt = [
 cpp_compiler = meson.get_compiler('cpp')
 
 eigen3_dep = dependency('eigen3', fallback : ['eigen', 'eigen_dep'])
+openmp_dep = dependency('openmp', required : false)
 
 if host_machine.system() == 'windows'
   tronkko_dirent_proj = subproject('tronkko-dirent')
@@ -94,7 +95,7 @@ endif
 library_soversion = meson.project_version().split('.')[0]
 librxdock = library(
   'rxdock', srcRbt,
-  dependencies : [eigen3_dep, pcg_cpp_dep, tronkko_dirent_dep],
+  dependencies : [eigen3_dep, openmp_dep, pcg_cpp_dep, tronkko_dirent_dep],
   soversion : library_soversion,
   version : meson.project_version(),
   include_directories : incRbt, install : true

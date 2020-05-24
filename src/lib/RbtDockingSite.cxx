@@ -299,6 +299,9 @@ void RbtDockingSite::CreateGrid() {
   // Can terminate when distance^2 is less than or equal to mindist^2 (shortest
   // length of grid interval)
   double mindist2 = std::pow(gridStep.xyz.minCoeff(), 2);
+
+  // parallelize over grid cuboids for multicore handling of time critical part
+#pragma omp parallel for schedule(dynamic, 1)
   for (unsigned int i = 0; i < m_spGrid->GetN(); i++) {
     const RbtCoord &c = m_spGrid->GetCoord(i);
     // Initialise dist^2 from initial grid value (999999.9 or 0.0 for cavity
