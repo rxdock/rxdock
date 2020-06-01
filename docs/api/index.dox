@@ -1,0 +1,29 @@
+/// \mainpage Main Page
+///
+/// \image html ../_static/logo.png "RxDock logo"
+/// \image latex ../_static/logo.pdf "RxDock logo" width=8cm
+///
+/// \section main_intro Introduction
+/// RxDock is a fast and versatile **open-source docking program** that can be
+/// used to dock **small molecules** against **proteins** and **nucleic acids**.
+/// It is designed for high-throughput virtual screening (HTVS) campaigns and
+/// binding mode prediction studies.
+///
+/// RxDock is mainly written in C++ and accessory scripts and programs are
+/// written in C++, Perl or Python languages.
+///
+/// \section main_documentation Documentation
+/// This documentation describes the code that makes up RxDock, a part of which
+/// is the application programming interface (API).
+///
+/// This documentation does *not* describe the use of RxDock's command-line
+/// interface (CLI), the preparation of the input files, or the post-processing
+/// options available for the output files. For usage instructions, please see
+/// the **Getting started guide**, the **User guide**, and the **Reference
+/// manual**.
+///
+/// While intended for developers, this documentation also does *not* describe
+/// how to format the code, customize the build system, use the version control
+/// software, write the documentation and tests for the code, or test the code
+/// changes using existing tests. These  topics are, among others, covered in
+/// the **Developer guide**.
