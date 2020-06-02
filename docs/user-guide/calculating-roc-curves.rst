@@ -59,7 +59,7 @@ negative value). To do so run:
 
    ``sdsort`` and ``sdreport`` are really useful tools for managing sd formatted
    compound collections. They are very user-friendly and free to download. They
-   are provided along with rDock software in the :ref:`Download <download>`
+   are provided along with |Dock| software in the :ref:`Download <download>`
    section of the website.
 
 This ``dataforR_uq.txt`` (also in the Dropbox folder) file must contain one

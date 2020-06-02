@@ -5,7 +5,7 @@ Overview
 against proteins and nucleic acids. It is designed for high-throughput virtual
 screening (HTVS) campaigns and binding mode prediction studies.
 
-The |Dock| program was developed from 1998 to 2006 (formerly known as
+The rDock program was developed from 1998 to 2006 (formerly known as
 RiboDock [RiboDock2004]_) by the software team at RiboTargets (subsequently
 Vernalis (R&D) Ltd.). In 2006, the software was licensed to the University of
 York for maintenance and distribution under the name rDock. In 2012, Vernalis
