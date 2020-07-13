@@ -29,7 +29,7 @@ class RbtDockingSite {
 public:
   // STL predicate for selecting atoms within a defined distance range from
   // nearest cavity coords Uses precalculated distance grid
-  class isAtomInRange : public std::unary_function<RbtAtomPtr, bool> {
+  class isAtomInRange : public std::function<bool(RbtAtomPtr)> {
   public:
     explicit isAtomInRange(RbtRealGrid *pGrid, double minDist, double maxDist)
         : m_pGrid(pGrid), m_minDist(minDist), m_maxDist(maxDist) {}

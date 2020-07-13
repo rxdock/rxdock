@@ -273,9 +273,9 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
                                     RbtAtomList &bondedAtoms,
                                     std::vector<double> &offsets) {
   offsets.clear();
-  bondedAtoms =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(pAtom1),
-                       std::not1(std::bind2nd(Rbt::isAtomPtr_eq(), pAtom2)));
+  bondedAtoms = Rbt::GetAtomList(
+      Rbt::GetBondedAtomList(pAtom1),
+      std::bind(std::not2(Rbt::isAtomPtr_eq()), std::placeholders::_1, pAtom2));
   if (bondedAtoms.empty())
     return;
   int nH = pAtom1->GetNumImplicitHydrogens();

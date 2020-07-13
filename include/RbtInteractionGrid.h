@@ -66,7 +66,7 @@ public:
 };
 // Is interaction center selected ?
 class isInteractionCenterSelected
-    : public std::unary_function<RbtInteractionCenter *, bool> {
+    : public std::function<bool(RbtInteractionCenter *)> {
 public:
   explicit isInteractionCenterSelected() {}
   bool operator()(const RbtInteractionCenter *pIC) const {
@@ -76,8 +76,7 @@ public:
 
 // Is the distance between interaction centers less than a given value ?
 // Function checks d**2 to save performing a sqrt
-class isInteractionD_lt
-    : public std::unary_function<RbtInteractionCenter *, bool> {
+class isInteractionD_lt : public std::function<bool(RbtInteractionCenter *)> {
   double d_sq;
   RbtAtom *a;
 

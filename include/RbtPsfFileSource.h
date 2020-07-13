@@ -57,7 +57,7 @@ private:
   void SetupPartialIonicGroups();
   void RemoveNonPolarHydrogens();
   // Is atom in same substructure
-  class isSS_eq : public std::unary_function<RbtAtom *, bool> {
+  class isSS_eq : public std::function<bool(RbtAtom *)> {
     const RbtAtom *a1;
 
   public:

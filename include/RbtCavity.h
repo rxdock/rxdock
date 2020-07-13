@@ -187,7 +187,7 @@ public:
 // Predicate functions for RbtCavityPtr
 // For use by STL algorithms
 ////////////////////////////////////////////////////////
-class isCavityNearCoord : public std::unary_function<RbtCavityPtr, bool> {
+class isCavityNearCoord : public std::function<bool(RbtCavityPtr)> {
   const RbtCoord &c;
   double r2; // radius squared (to avoid taking square roots)
 public:

@@ -73,12 +73,12 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
     }
     // Try and find the bonded atoms in the rDock atom list (comparison is on
     // RbtAtom* pointers)
-    RbtAtomListConstIter iter1 =
-        std::find_if(atomList.begin(), atomList.end(),
-                     std::bind2nd(Rbt::isAtomPtr_eq(), at1));
-    RbtAtomListConstIter iter2 =
-        std::find_if(atomList.begin(), atomList.end(),
-                     std::bind2nd(Rbt::isAtomPtr_eq(), at2));
+    RbtAtomListConstIter iter1 = std::find_if(
+        atomList.begin(), atomList.end(),
+        std::bind(Rbt::isAtomPtr_eq(), std::placeholders::_1, at1));
+    RbtAtomListConstIter iter2 = std::find_if(
+        atomList.begin(), atomList.end(),
+        std::bind(Rbt::isAtomPtr_eq(), std::placeholders::_1, at2));
     Assert<RbtAssert>((iter1 != atomList.end()) && (iter2 != atomList.end()));
     // rDock numbering
     int rID1 = iter1 - atomList.begin();

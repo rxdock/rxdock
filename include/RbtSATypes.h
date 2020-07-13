@@ -15,6 +15,8 @@
 
 #include "RbtConfig.h"
 
+#include <functional>
+
 class RbtAtom;
 
 // Atom typing class for the solvation atom types
@@ -231,7 +233,7 @@ public:
 };
 
 // Is HHS type equal to t ?
-class isHHSType_eq : public std::unary_function<HHS_Solvation *, bool> {
+class isHHSType_eq : public std::function<bool(HHS_Solvation *)> {
   RbtHHSType::eType t;
 
 public:
@@ -242,7 +244,7 @@ public:
 };
 
 // Is HHS_Solvation selected ?
-class isHHSSelected : public std::unary_function<HHS_Solvation *, bool> {
+class isHHSSelected : public std::function<bool(HHS_Solvation *)> {
 public:
   explicit isHHSSelected() {}
   bool operator()(const HHS_Solvation *pHHS) const;

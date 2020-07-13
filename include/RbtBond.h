@@ -134,39 +134,37 @@ namespace Rbt {
 // DM 08 May 2002 - convert to regular RbtBond* functions
 // More universal as RbtBondPtr parameters will be automatically degraded to
 // regular pointers anyway
-typedef std::unary_function<RbtBond *, bool> RbtBondUnaryPredicate;
-typedef std::binary_function<RbtBond *, RbtBond *, bool> RbtBondBinaryPredicate;
 
 // Is bond selected ?
-class isBondSelected : public RbtBondUnaryPredicate {
+class isBondSelected : public std::function<bool(RbtBond *)> {
 public:
   explicit isBondSelected() = default;
   bool operator()(RbtBond *pBond) const { return pBond->GetSelectionFlag(); }
 };
 
 // Is bond cyclic ?
-class isBondCyclic : public RbtBondUnaryPredicate {
+class isBondCyclic : public std::function<bool(RbtBond *)> {
 public:
   explicit isBondCyclic() = default;
   bool operator()(RbtBond *pBond) const { return pBond->GetCyclicFlag(); }
 };
 
 // Is bond rotatable ?
-class isBondRotatable : public RbtBondUnaryPredicate {
+class isBondRotatable : public std::function<bool(RbtBond *)> {
 public:
   explicit isBondRotatable() = default;
   RBTDLL_EXPORT bool operator()(RbtBond *) const;
 };
 
 // Is bond to a terminal NH3+ group?
-class isBondToNH3 : public RbtBondUnaryPredicate {
+class isBondToNH3 : public std::function<bool(RbtBond *)> {
 public:
   explicit isBondToNH3() = default;
   RBTDLL_EXPORT bool operator()(RbtBond *) const;
 };
 
 // Is bond to a terminal OH group?
-class isBondToOH : public RbtBondUnaryPredicate {
+class isBondToOH : public std::function<bool(RbtBond *)> {
 public:
   explicit isBondToOH() = default;
   RBTDLL_EXPORT bool operator()(RbtBond *pBond) const;
@@ -175,7 +173,7 @@ public:
 // DM 1 April 1999
 // Is bond2 equal to bond1 (checks if underlying regular pointers match)
 // Note: this is a binary rather than unary predicate
-// class isBondPtr_eq : public RbtBondBinaryPredicate {
+// class isBondPtr_eq : public std::function<bool(RbtBond *, RbtBond *)> {
 // public:
 //  explicit isBondPtr_eq() {}
 //  RbtBool operator() (RbtBondPtr spBond1, RbtBondPtr spBond2) const {return
@@ -183,7 +181,7 @@ public:
 //};
 
 // Is bond.Ptr() equal to RbtBond* (checks if underlying regular pointers match)
-class isBondPtr_eq : public RbtBondUnaryPredicate {
+class isBondPtr_eq : public std::function<bool(RbtBond *)> {
   RbtBond *p;
 
 public:
@@ -193,7 +191,7 @@ public:
 
 // DM 2 Aug 1999
 // Is bond2 equal to bond1 (checks if bond ID, atom1 and atom2 match)
-class isBond_eq : public RbtBondUnaryPredicate {
+class isBond_eq : public std::function<bool(RbtBond *)> {
   RbtBond *p;
   Rbt::isAtom_eq bIsAtomEqual;
 
@@ -208,7 +206,7 @@ public:
 
 // DM 7 June 1999
 // Is bond an amide bond?
-class isBondAmide : public RbtBondUnaryPredicate {
+class isBondAmide : public std::function<bool(RbtBond *)> {
 public:
   explicit isBondAmide() = default;
   RBTDLL_EXPORT bool operator()(RbtBond *) const;

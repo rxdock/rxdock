@@ -474,10 +474,10 @@ bool Rbt::isAtom_12Connected::operator()(RbtAtom *pAtom2) const {
 
   // Checks if atom2 appears in the bonded atom list for atom1.
   // STL find_if will do the trick
-  // Need to use bind2nd to convert binary predicate to unary
+  // Need to use std::bind to convert binary predicate to unary
   return std::find_if(bondedAtomList1.begin(), bondedAtomList1.end(),
-                      std::bind2nd(Rbt::isAtomPtr_eq(), pAtom2)) !=
-         bondedAtomList1.end();
+                      std::bind(Rbt::isAtomPtr_eq(), std::placeholders::_1,
+                                pAtom2)) != bondedAtomList1.end();
 }
 
 // Is atom2 1-3 connected (i.e. via a bond angle) to atom1 ?
@@ -605,7 +605,8 @@ unsigned int Rbt::GetNumBondedAtoms(const RbtBondMap &bondMap) {
 RbtAtomList Rbt::GetBondedAtomList(const RbtBondMap &bondMap) {
   RbtAtomList atomList;
   std::transform(bondMap.begin(), bondMap.end(), std::back_inserter(atomList),
-                 std::ptr_fun(&Rbt::GetBondedAtomPtr));
+                 std::function<RbtAtomPtr(std::pair<RbtBond *, bool>)>(
+                     &Rbt::GetBondedAtomPtr));
   // DM 23 Apr 1999 - sort the bonded atom list by atom ID so we return the
   // atoms in the same order every time The problem with the bond map is that
   // the key is RbtBond* which is not guaranteed to increase in order of
@@ -651,7 +652,8 @@ unsigned int Rbt::GetNumMatchingAtoms(const RbtAtomList &atomList1,
   unsigned int nCount(0);
   for (RbtAtomListConstIter iter = atomList2.begin(); iter != atomList2.end();
        iter++) {
-    nCount += GetNumAtoms(atomList1, std::bind2nd(Rbt::isAtom_eq(), *iter));
+    nCount += GetNumAtoms(
+        atomList1, std::bind(Rbt::isAtom_eq(), std::placeholders::_1, *iter));
   }
   return nCount;
 }
@@ -661,8 +663,8 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList1,
   RbtAtomList matchingAtomList;
   for (RbtAtomListConstIter iter = atomList2.begin(); iter != atomList2.end();
        iter++) {
-    RbtAtomList tempList =
-        GetAtomList(atomList1, std::bind2nd(Rbt::isAtom_eq(), *iter));
+    RbtAtomList tempList = GetAtomList(
+        atomList1, std::bind(Rbt::isAtom_eq(), std::placeholders::_1, *iter));
     std::copy(tempList.begin(), tempList.end(),
               std::back_inserter(matchingAtomList));
   }

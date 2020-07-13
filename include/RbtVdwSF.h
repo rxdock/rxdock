@@ -132,7 +132,7 @@ private:
   // Private predicate
   // Is the distance between atoms less than a given value ?
   // Function checks d**2 to save performing a sqrt
-  class isD_lt : public std::unary_function<RbtAtom *, bool> {
+  class isD_lt : public std::function<bool(RbtAtom *)> {
     double d_sq;
     RbtAtom *a;
 

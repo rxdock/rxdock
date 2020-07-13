@@ -84,10 +84,12 @@ void RbtModelMutator::Setup() {
     // bond, taking care not to include the atoms actually in the rotable bond
     RbtAtomList bondedAtoms2 =
         Rbt::GetAtomList(Rbt::GetBondedAtomList(pAtom2),
-                         std::not1(std::bind2nd(Rbt::isAtomPtr_eq(), pAtom3)));
+                         std::bind(std::not2(Rbt::isAtomPtr_eq()),
+                                   std::placeholders::_1, pAtom3));
     RbtAtomList bondedAtoms3 =
         Rbt::GetAtomList(Rbt::GetBondedAtomList(pAtom3),
-                         std::not1(std::bind2nd(Rbt::isAtomPtr_eq(), pAtom2)));
+                         std::bind(std::not2(Rbt::isAtomPtr_eq()),
+                                   std::placeholders::_1, pAtom2));
     // Assertion - check bonded atom lists are not empty
     Assert<RbtAssert>(!MUT_CHECK ||
                       !(bondedAtoms2.empty() || bondedAtoms3.empty()));

@@ -177,9 +177,10 @@ RbtInteractionCenterList RbtPolarSF::CreateAcceptorInteractionCenters(
             (bIsC(spAcceptorParent) || bIsN(spAcceptorParent))) {
           // Get the atoms bonded to the acceptor parent (not including the
           // acceptor itself)
-          RbtAtomList grandParentList = Rbt::GetAtomList(
-              Rbt::GetBondedAtomList(spAcceptorParent),
-              std::not1(std::bind2nd(Rbt::isAtomPtr_eq(), *iter)));
+          RbtAtomList grandParentList =
+              Rbt::GetAtomList(Rbt::GetBondedAtomList(spAcceptorParent),
+                               std::bind(std::not2(Rbt::isAtomPtr_eq()),
+                                         std::placeholders::_1, *iter));
           if (!grandParentList.empty()) {
             RbtAtomPtr spGrandParent = grandParentList.front();
             // If O is -ve charged (likely carboxylate), or is in RNA, or is in

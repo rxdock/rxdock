@@ -110,8 +110,7 @@ public:
 // Tests equality based on chromosome element values.
 // Does not take score into account.
 // Uses operator== which ultimately calls RbtChromElement::Equals()
-class isGenome_eq
-    : public std::binary_function<RbtGenome *, RbtGenome *, bool> {
+class isGenome_eq : public std::function<bool(RbtGenome *, RbtGenome *)> {
 private:
   double m_threshold; // equality threshold
 public:

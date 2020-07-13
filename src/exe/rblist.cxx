@@ -19,7 +19,7 @@
 #include <iomanip>
 
 namespace Rbt {
-class isAtomNitroN : public std::unary_function<RbtAtomPtr, bool> {
+class isAtomNitroN : public std::function<bool(RbtAtomPtr)> {
   // Useful predicates
   Rbt::isFFType_eq bIsN_SP2P;
   Rbt::isFFType_eq bIsO_SP2;

@@ -140,8 +140,9 @@ RbtPseudoAtomPtr RbtModel::AddPseudoAtom(const RbtAtomList &atomList) {
     for (RbtAtomListConstIter aIter = atomList2.begin();
          aIter != atomList2.end() && bMatch; aIter++) {
       // std::cout << "Checking " << (*aIter)->GetFullAtomName() << std::endl;
-      bMatch = (Rbt::GetNumAtoms(
-                    atomList, std::bind2nd(Rbt::isAtomPtr_eq(), *aIter)) == 1);
+      bMatch = (Rbt::GetNumAtoms(atomList, std::bind(Rbt::isAtomPtr_eq(),
+                                                     std::placeholders::_1,
+                                                     *aIter)) == 1);
     }
     if (bMatch) {
       // std::cout << "Match found" << std::endl;
@@ -879,7 +880,7 @@ void RbtModel::Clear() {
   m_bondList.clear();
   m_segmentMap.clear();
   // Clear each ring atom list in the list of lists
-  // std::for_each(m_ringList.begin(),m_ringList.end(),std::mem_fun_ref(&RbtAtomList::clear));
+  // std::for_each(m_ringList.begin(),m_ringList.end(),std::mem_fn(&RbtAtomList::clear));
   for (RbtAtomListListIter liter = m_ringList.begin();
        liter != m_ringList.end(); liter++)
     (*liter).clear();
