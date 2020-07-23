@@ -21,6 +21,8 @@
 #include "RbtNonBondedGrid.h"
 #include "RbtNonBondedHHSGrid.h"
 
+namespace rxdock {
+
 class RbtBaseIdxSF : public virtual RbtBaseSF {
 public:
   // Class type string
@@ -80,5 +82,7 @@ private:
   double m_gridStep;
   double m_border;
 };
+
+} // namespace rxdock
 
 #endif //_RBTBASEIDXSF_H_

@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-// Principal axes calculation routines (in Rbt namespace)
+// Principal axes calculation routines (in rxdock namespace)
 #ifdef __PGI
 #define EIGEN_DONT_VECTORIZE
 #endif
@@ -23,11 +23,13 @@
 #include "RbtPlane.h"
 #include "RbtPrincipalAxes.h"
 
+using namespace rxdock;
+
 // Special case for water
 // Allow for symmetry
-RbtPrincipalAxes Rbt::GetSolventPrincipalAxes(const RbtAtomPtr &oAtom,
-                                              const RbtAtomPtr &h1Atom,
-                                              const RbtAtomPtr &h2Atom) {
+RbtPrincipalAxes rxdock::GetSolventPrincipalAxes(const RbtAtomPtr &oAtom,
+                                                 const RbtAtomPtr &h1Atom,
+                                                 const RbtAtomPtr &h2Atom) {
   RbtPrincipalAxes retVal;
   RbtCoord oC = oAtom->GetCoords();
   RbtCoord h1C = h1Atom->GetCoords();
@@ -41,7 +43,7 @@ RbtPrincipalAxes Rbt::GetSolventPrincipalAxes(const RbtAtomPtr &oAtom,
   // Axis 3 = normal to H-O-H plane
   retVal.axis3 = RbtPlane(oC, h1C, h2C).VNorm();
   // Axis 2 = perpendicular to first two axes
-  retVal.axis2 = Rbt::Cross(retVal.axis1, retVal.axis3);
+  retVal.axis2 = Cross(retVal.axis1, retVal.axis3);
   // Check that H1 is in the positive quadrant of axis1 and axis2
   // Guaranteed to be positive along axis1 so only need to check axis2
   // We do this to ensure canonical axes
@@ -79,7 +81,7 @@ RbtPrincipalAxes Rbt::GetSolventPrincipalAxes(const RbtAtomPtr &oAtom,
 //
 // Principal axes are eigenvectors of I, principal moments are eigenvalues of I
 //
-RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
+RbtPrincipalAxes rxdock::GetPrincipalAxesOfAtoms(const RbtAtomList &atomList) {
   const unsigned int N = 3; // Array size
 
   RbtPrincipalAxes principalAxes; // Return parameter
@@ -88,15 +90,14 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
   }
   // Special case for water
   else if (atomList.size() == 3) {
-    Rbt::isAtomicNo_eq isOxygen(8);
-    Rbt::isAtomicNo_eq isHydrogen(1);
+    isAtomicNo_eq isOxygen(8);
+    isAtomicNo_eq isHydrogen(1);
     if (isOxygen(atomList[0]) && isHydrogen(atomList[1]) &&
         isHydrogen(atomList[2])) {
-      return Rbt::GetSolventPrincipalAxes(atomList[0], atomList[1],
-                                          atomList[2]);
+      return GetSolventPrincipalAxes(atomList[0], atomList[1], atomList[2]);
     }
   }
-  principalAxes.com = Rbt::GetCenterOfMass(atomList); // Store center of mass
+  principalAxes.com = GetCenterOfAtomicMass(atomList); // Store center of mass
 
   // Construct the moment of inertia tensor
   Eigen::MatrixXd inertiaTensor = Eigen::MatrixXd::Zero(N, N);
@@ -178,7 +179,7 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
     principalAxes.axis1 = -principalAxes.axis1;
   if (d2 < 0.0)
     principalAxes.axis2 = -principalAxes.axis2;
-  principalAxes.axis3 = Rbt::Cross(principalAxes.axis1, principalAxes.axis2);
+  principalAxes.axis3 = Cross(principalAxes.axis1, principalAxes.axis2);
   // d1 = c0.Dot(principalAxes.axis1);
   // d2 = c0.Dot(principalAxes.axis2);
   // d3 = c0.Dot(principalAxes.axis3);
@@ -196,11 +197,12 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtAtomList &atomList) {
 
 // Calculates principal axes and center of mass for the coords in the coord list
 // (assumes all masses=1)
-RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
+RbtPrincipalAxes
+rxdock::GetPrincipalAxesOfAtoms(const RbtCoordList &coordList) {
   const unsigned int N = 3; // Array size
 
-  RbtPrincipalAxes principalAxes;                      // Return parameter
-  principalAxes.com = Rbt::GetCenterOfMass(coordList); // Store center of mass
+  RbtPrincipalAxes principalAxes;                       // Return parameter
+  principalAxes.com = GetCenterOfAtomicMass(coordList); // Store center of mass
 
   // Construct the moment of inertia tensor
   Eigen::MatrixXd inertiaTensor = Eigen::MatrixXd::Zero(N, N);
@@ -267,54 +269,52 @@ RbtPrincipalAxes Rbt::GetPrincipalAxes(const RbtCoordList &coordList) {
 // If required (bAlignCOM=true), also aligns the center of mass with refAxes.com
 //
 // LIMITATION: does not check for non-orthogonal alignAxes
-RbtQuat Rbt::AlignPrincipalAxes(RbtAtomList &atomList,
-                                const RbtPrincipalAxes &refAxes,
-                                bool bAlignCOM) {
-  RbtPrincipalAxes prAxes = Rbt::GetPrincipalAxes(atomList);
-  RbtQuat q = Rbt::GetQuatFromAlignAxes(prAxes, refAxes);
+RbtQuat rxdock::AlignPrincipalAxesOfAtoms(RbtAtomList &atomList,
+                                          const RbtPrincipalAxes &refAxes,
+                                          bool bAlignCOM) {
+  RbtPrincipalAxes prAxes = GetPrincipalAxesOfAtoms(atomList);
+  RbtQuat q = GetQuatFromAlignAxes(prAxes, refAxes);
 
-  std::for_each(atomList.begin(), atomList.end(),
-                Rbt::TranslateAtom(-prAxes.com));
-  std::for_each(atomList.begin(), atomList.end(), Rbt::RotateAtomUsingQuat(q));
+  std::for_each(atomList.begin(), atomList.end(), TranslateAtom(-prAxes.com));
+  std::for_each(atomList.begin(), atomList.end(), RotateAtomUsingQuat(q));
   if (bAlignCOM) {
-    std::for_each(atomList.begin(), atomList.end(),
-                  Rbt::TranslateAtom(refAxes.com));
+    std::for_each(atomList.begin(), atomList.end(), TranslateAtom(refAxes.com));
   } else {
-    std::for_each(atomList.begin(), atomList.end(),
-                  Rbt::TranslateAtom(prAxes.com));
+    std::for_each(atomList.begin(), atomList.end(), TranslateAtom(prAxes.com));
   }
   return q;
 }
 
-RbtQuat Rbt::GetQuatFromAlignAxes(const RbtPrincipalAxes &prAxes,
-                                  const RbtPrincipalAxes &refAxes) {
+RbtQuat rxdock::GetQuatFromAlignAxes(const RbtPrincipalAxes &prAxes,
+                                     const RbtPrincipalAxes &refAxes) {
   // 1) Determine the quaternion needed to align axis1 with reference
-  RbtQuat q1 = Rbt::GetQuatFromAlignVectors(prAxes.axis1, refAxes.axis1);
+  RbtQuat q1 = GetQuatFromAlignVectors(prAxes.axis1, refAxes.axis1);
   // 2) Apply the transformation to axis2
   RbtVector axis2 = q1.Rotate(prAxes.axis2);
   // 3) Determine the quaternion needed to align axis2 with reference
-  RbtQuat q2 = Rbt::GetQuatFromAlignVectors(axis2, refAxes.axis2);
+  RbtQuat q2 = GetQuatFromAlignVectors(axis2, refAxes.axis2);
   // Return the quaternion product (equivalent to both transformations combined)
   return q2 * q1;
 }
 
-RbtQuat Rbt::GetQuatFromAlignVectors(const RbtVector &v, const RbtVector &ref) {
+RbtQuat rxdock::GetQuatFromAlignVectors(const RbtVector &v,
+                                        const RbtVector &ref) {
   RbtQuat retVal;
   // Unitise the two vectors
-  double len = Rbt::Length(v);
-  double refLen = Rbt::Length(ref);
+  double len = Length(v);
+  double refLen = Length(ref);
   if ((len < 0.001) || (refLen < 0.001)) {
     throw RbtBadArgument(_WHERE_, "zero length vector (v or ref)");
   }
   RbtVector vUnit = v / len;
   RbtVector refUnit = ref / refLen;
   // Determine the rotation axis and angle needed to overlay the two vectors
-  RbtVector axis = Rbt::Cross(vUnit, refUnit);
+  RbtVector axis = Cross(vUnit, refUnit);
   // DM 15 March 2006: check for zero-length rotation axis
   // This indicates the vectors are already aligned
-  double axisLen = Rbt::Length(axis);
+  double axisLen = Length(axis);
   if (axisLen > 0.001) {
-    double cosPhi = Rbt::Dot(vUnit, refUnit);
+    double cosPhi = Dot(vUnit, refUnit);
     if (cosPhi < -1.0) {
       cosPhi = -1.0;
     } else if (cosPhi > 1.0) {

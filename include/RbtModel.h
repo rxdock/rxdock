@@ -21,6 +21,8 @@
 #include "RbtPseudoAtom.h"
 #include "RbtVariant.h"
 
+namespace rxdock {
+
 class RbtBaseMolecularFileSource;
 class RbtFlexData;
 class RbtChromElement;
@@ -167,7 +169,7 @@ public:
 
   // DM 9 Nov 1999
   // Returns total atomic mass (molecular weight) for the model
-  RBTDLL_EXPORT double GetTotalAtomicMass() const;
+  RBTDLL_EXPORT double GetTotalMass() const;
 
   // DM 14 Apr 1999 - principal axes methods
   // Return principal axes and center of mass for the model
@@ -201,9 +203,9 @@ public:
 
   ////////////////////////////////////////////
   // Atom list functions (provided for convenience, as user could just as well
-  // call the Rbt:: functions with RbtModel::GetAtomList)
-  // e.g. RbtAtomList atomList = Rbt::GetSelectedAtomList(spModel->GetAtomList);
-  // is equivalent to
+  // call the rxdock namespace functions with RbtModel::GetAtomList)
+  // e.g. RbtAtomList atomList =
+  // GetSelectedAtomList(spModel->GetAtomList); is equivalent to
   // RbtAtomList atomList = spModel->GetSelectedAtomList();
   ////////////////////////////////////////////
 
@@ -249,18 +251,18 @@ public:
   // Binary
 
   // Atoms with atomic no = nAtomicNo
-  unsigned int GetNumAtomsWithAtomicNo_eq(int nAtomicNo);
-  RbtAtomList GetAtomListWithAtomicNo_eq(int nAtomicNo);
+  unsigned int GetNumAtomsWithAtomicNo(int nAtomicNo);
+  RbtAtomList GetAtomListWithAtomicNo(int nAtomicNo);
 
   // Atoms with FFType = strFFType
-  unsigned int GetNumAtomsWithFFType_eq(std::string strFFType);
-  RbtAtomList GetAtomListWithFFType_eq(std::string strFFType);
+  unsigned int GetNumAtomsWithFFType(std::string strFFType);
+  RbtAtomList GetAtomListWithFFType(std::string strFFType);
 
   ////////////////////////////////////////////
   // Bond list functions (provided for convenience, as user could just as well
-  // call the Rbt:: functions with RbtModel::GetBondList)
-  // e.g. RbtBondList bondList = Rbt::GetSelectedBondList(spModel->GetBondList);
-  // is equivalent to
+  // call the rxdock namespace functions with RbtModel::GetBondList)
+  // e.g. RbtBondList bondList =
+  // GetSelectedBondList(spModel->GetBondList); is equivalent to
   // RbtBondList bondList = spModel->GetSelectedBondList();
   ////////////////////////////////////////////
 
@@ -282,7 +284,8 @@ public:
   RbtBondList GetCyclicBondList();
 
   // DM 10 Dec 1998 - at some point these functions should be implemented as
-  // generic Rbt:: functions operating on arbitrary atom and bond lists
+  // generic rxdock namespace functions operating on arbitrary atom and bond
+  // lists
 
   // D Morley, 2 Dec 1998 - go back to the old way, it's more convenient to get
   // all donors in the same list and separate them later void
@@ -349,5 +352,7 @@ typedef SmartPtr<RbtModel> RbtModelPtr;        // Smart pointer
 typedef std::vector<RbtModelPtr> RbtModelList; // Vector of smart pointers
 typedef RbtModelList::iterator RbtModelListIter;
 typedef RbtModelList::const_iterator RbtModelListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTMODEL_H_

@@ -12,13 +12,16 @@
 #include "RbtVdwIdxSF.h"
 #include "RbtVdwIntraSF.h"
 
+using namespace rxdock;
+using namespace rxdock::unittest;
+
 void SearchTest::SetUp() {
   try {
     // Create the docking site, receptor, ligand and solvent objects
     const std::string &wsName = "1YET";
-    std::string prmFileName = Rbt::GetRbtFileName("", wsName + ".prm");
-    std::string ligFileName = Rbt::GetRbtFileName("", wsName + "_c.sd");
-    std::string asFileName = Rbt::GetRbtFileName("", wsName + ".as");
+    std::string prmFileName = GetRbtFileName("", wsName + ".prm");
+    std::string ligFileName = GetRbtFileName("", wsName + "_c.sd");
+    std::string asFileName = GetRbtFileName("", wsName + ".as");
     RbtParameterFileSourcePtr spPrmSource(
         new RbtParameterFileSource(prmFileName));
     RbtMolecularFileSourcePtr spMdlFileSource(
@@ -67,7 +70,7 @@ double SearchTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
     retVal = 999.9;
   } else {
     for (unsigned int i = 0; i < nCoords; i++) {
-      retVal += Rbt::Length2(rc[i], c[i]);
+      retVal += Length2(rc[i], c[i]);
     }
     retVal = std::sqrt(retVal / float(nCoords));
   }
@@ -178,13 +181,13 @@ TEST_F(SearchTest, Restart) {
     m_workSpace->Save();
     finalScore = m_workSpace->GetSF()->Score();
     // Reload the receptor, minimised ligand and solvent
-    std::string prmFileName = Rbt::GetRbtFileName("", "1YET.prm");
+    std::string prmFileName = GetRbtFileName("", "1YET.prm");
     RbtParameterFileSourcePtr spPrmSource(
         new RbtParameterFileSource(prmFileName));
     RbtMolecularFileSourcePtr spMdlFileSource(
         new RbtMdlFileSource("restart.sd", true, true, true));
     // Ligand segment is always called H, solvent will be H2, H3 etc.
-    spMdlFileSource->SetSegmentFilterMap(Rbt::ConvertStringToSegmentMap("H"));
+    spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
     RbtPRMFactory prmFactory(spPrmSource, m_workSpace->GetDockingSite());
     prmFactory.SetTrace(1);
     m_workSpace->SetReceptor(prmFactory.CreateReceptor());

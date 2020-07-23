@@ -18,6 +18,8 @@
 #include "RbtBaseFileSource.h"
 #include "RbtVariant.h"
 
+namespace rxdock {
+
 class RbtParameterFileSource : public RbtBaseFileSource {
 public:
   // Constructors
@@ -96,5 +98,7 @@ private:
 // useful typedefs
 typedef SmartPtr<RbtParameterFileSource>
     RbtParameterFileSourcePtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTPARAMETERFILESOURCE_H_

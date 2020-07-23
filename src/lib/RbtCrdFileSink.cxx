@@ -14,6 +14,8 @@
 
 #include "RbtCrdFileSink.h"
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 // RbtCrdFileSink::RbtCrdFileSink(const char* fileName, RbtModelPtr spModel) :

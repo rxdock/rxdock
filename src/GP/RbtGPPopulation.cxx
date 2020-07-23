@@ -15,6 +15,9 @@
 #include <algorithm>
 #include <cfloat>
 
+using namespace rxdock;
+using namespace rxdock::geneticprogram;
+
 // Static data members for RbtGPPopulation
 std::string RbtGPPopulation::_CT("RbtGPPopulation");
 
@@ -23,7 +26,7 @@ std::string RbtGPPopulation::_CT("RbtGPPopulation");
 RbtGPPopulation::RbtGPPopulation(int s, int nr, RbtGPFitnessFunctionPtr f,
                                  RbtReturnTypeArray &it,
                                  RbtReturnTypeArray &sft)
-    : m_rand(Rbt::GetRbtRand()) {
+    : m_rand(GetRbtRand()) {
   popsize = s;
   nrepl = nr;
   ff = f;
@@ -45,7 +48,7 @@ RbtGPPopulation::RbtGPPopulation(int s, int nr, RbtGPFitnessFunctionPtr f,
 // This is copying the pointers. Do I need to change it to
 // copying the actual genomes?
 RbtGPPopulation::RbtGPPopulation(const RbtGPPopulation &p)
-    : m_rand(Rbt::GetRbtRand()) {
+    : m_rand(GetRbtRand()) {
   popsize = p.popsize;
   nrepl = p.nrepl;
   ff = p.ff;

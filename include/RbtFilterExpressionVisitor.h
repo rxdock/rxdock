@@ -19,6 +19,8 @@
 #include "RbtContext.h"
 #include "RbtFilterExpression.h"
 
+namespace rxdock {
+
 class FilterVbleExp;
 class FilterAddExp;
 class FilterSubExp;
@@ -103,4 +105,7 @@ public:
 private:
   RbtContextPtr contextp;
 };
+
+} // namespace rxdock
+
 #endif

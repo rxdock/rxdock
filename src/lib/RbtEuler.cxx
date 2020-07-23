@@ -12,6 +12,8 @@
 
 #include "RbtEuler.h"
 
+using namespace rxdock;
+
 RbtQuat RbtEuler::ToQuat() const {
   double c1 = std::cos(m_heading / 2.0);
   double s1 = std::sin(m_heading / 2.0);

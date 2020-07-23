@@ -21,6 +21,8 @@
 #include "RbtBond.h"
 #include "RbtChromElement.h"
 
+namespace rxdock {
+
 class RbtChromDihedralRefData {
 public:
   // Class type string
@@ -73,5 +75,7 @@ private:
 
 typedef SmartPtr<RbtChromDihedralRefData>
     RbtChromDihedralRefDataPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif /*RBTCHROMDIHEDRALREFDATA_H_*/

@@ -14,6 +14,8 @@
 #include "RbtBaseSF.h"
 #include "RbtChromElement.h"
 
+using namespace rxdock;
+
 std::string RbtGenome::_CT("RbtGenome");
 
 RbtGenome::RbtGenome(RbtChromElement *pChr)

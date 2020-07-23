@@ -12,6 +12,8 @@
 
 #include "RbtChromOccupancyElement.h"
 
+using namespace rxdock;
+
 std::string RbtChromOccupancyElement::_CT = "RbtChromOccupancyElement";
 
 RbtChromOccupancyElement::RbtChromOccupancyElement(RbtModel *pModel,

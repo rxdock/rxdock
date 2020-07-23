@@ -17,7 +17,8 @@
 
 #include "RbtAtom.h"
 
-namespace Rbt {
+namespace rxdock {
+
 // NOE Restraint type
 // UNDEFINED: undefined restraint type
 // OR: The distance to each of the atoms in the list is calculated separately,
@@ -32,7 +33,6 @@ enum eNoeType { NOE_UNDEFINED, NOE_OR, NOE_MEAN, NOE_AND };
 
 // Returns a string representing the NOE restraint type
 std::string ConvertNoeRestraintTypeToString(const eNoeType type);
-} // namespace Rbt
 
 ///////////////////////////////////////////////////////////////////////
 // Simple struct for holding one end of an NOE restraint
@@ -43,7 +43,7 @@ public:
   bool isOK() const;
   // Public data
   std::vector<std::string> names;
-  Rbt::eNoeType type;
+  eNoeType type;
 };
 
 // Insertion operator for the above
@@ -60,7 +60,7 @@ public:
   bool isOK() const;
   // Public data
   RbtAtomList atoms;
-  Rbt::eNoeType type;
+  eNoeType type;
 };
 
 // Insertion operator for the above
@@ -163,5 +163,7 @@ typedef std::vector<RbtStdRestraintAtoms> RbtStdRestraintAtomsList;
 typedef RbtStdRestraintAtomsList::iterator RbtStdRestraintAtomsListIter;
 typedef RbtStdRestraintAtomsList::const_iterator
     RbtStdRestraintAtomsListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTNOERESTRAINT_H_

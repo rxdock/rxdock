@@ -12,6 +12,8 @@
 
 #include "RbtAnnotationHandler.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtAnnotationHandler::_ANNOTATION_FIELD("ANNOTATIONS");
 

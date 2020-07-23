@@ -17,6 +17,8 @@
 
 #include "RbtBaseMolecularFileSource.h"
 
+namespace rxdock {
+
 class RbtCrdFileSource : public RbtBaseMolecularFileSource {
 public:
   // Constructors
@@ -48,5 +50,7 @@ private:
 
 // useful typedefs
 typedef SmartPtr<RbtCrdFileSource> RbtCrdFileSourcePtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTCRDFILESOURCE_H_

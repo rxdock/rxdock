@@ -19,6 +19,8 @@
 
 #include "RbtRequest.h"
 
+namespace rxdock {
+
 class RbtRequestHandler {
 public:
   ////////////////////////////////////////
@@ -31,5 +33,7 @@ public:
   ////////////////
   virtual void HandleRequest(RbtRequestPtr spRequest) {}
 };
+
+} // namespace rxdock
 
 #endif //_RBTREQUESTHANDLER_H_

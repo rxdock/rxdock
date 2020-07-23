@@ -21,6 +21,8 @@
 #include "RbtConfig.h"
 #include "RbtVariant.h"
 
+namespace rxdock {
+
 class RbtParamHandler {
 public:
   ////////////////////////////////////////
@@ -94,5 +96,7 @@ private:
 // Insertion operator (primarily for debugging)
 RBTDLL_EXPORT std::ostream &operator<<(std::ostream &s,
                                        const RbtParamHandler &ph);
+
+} // namespace rxdock
 
 #endif //_RBTPARAMHANDLER_H_

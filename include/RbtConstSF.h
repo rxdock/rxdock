@@ -19,6 +19,8 @@
 
 #include "RbtBaseInterSF.h"
 
+namespace rxdock {
+
 class RbtConstSF : public RbtBaseInterSF {
 public:
   // Static data member for class type (i.e. "RbtConstSF")
@@ -44,5 +46,7 @@ private:
   double SystemScore() const;
   double m_solventPenalty;
 };
+
+} // namespace rxdock
 
 #endif //_RBTCONSTSF_H_

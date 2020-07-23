@@ -32,10 +32,16 @@
 #include "RbtSFRequest.h"
 #include "RbtTransformFactory.h"
 
+using namespace rxdock;
+
+namespace rxdock {
+
 // Section name in docking prm file containing scoring function definition
 const std::string _ROOT_SF = "SCORE";
 const std::string _RESTRAINT_SF = "RESTR";
 const std::string _ROOT_TRANSFORM = "DOCK";
+
+} // namespace rxdock
 
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
@@ -76,7 +82,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName);
+  PrintStdHeader(std::cout, strExeName);
 
   cxxopts::Options options(strExeName, "rbdock - docking engine");
 
@@ -269,16 +275,16 @@ int main(int argc, char *argv[]) {
     RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
     // Set the workspace name to the root of the receptor .prm filename
     std::vector<std::string> componentList =
-        Rbt::ConvertDelimitedStringToList(strReceptorPrmFile, ".");
+        ConvertDelimitedStringToList(strReceptorPrmFile, ".");
     std::string wsName = componentList.front();
     spWS->SetName(wsName);
 
     // Read the docking protocol parameter file
     RbtParameterFileSourcePtr spParamSource(new RbtParameterFileSource(
-        Rbt::GetRbtFileName("data/scripts", strParamFile)));
+        GetRbtFileName("data/scripts", strParamFile)));
     // Read the receptor parameter file
     RbtParameterFileSourcePtr spRecepPrmSource(new RbtParameterFileSource(
-        Rbt::GetRbtFileName("data/receptors", strReceptorPrmFile)));
+        GetRbtFileName("data/receptors", strReceptorPrmFile)));
     std::cout << std::endl
               << "DOCKING PROTOCOL:" << std::endl
               << spParamSource->GetFileName() << std::endl
@@ -309,7 +315,7 @@ int main(int argc, char *argv[]) {
     for (std::vector<std::string>::const_iterator sfIter = sfList.begin();
          sfIter != sfList.end(); sfIter++) {
       // sfFile = file name for scoring function subaggregate
-      std::string sfFile(Rbt::GetRbtFileName(
+      std::string sfFile(GetRbtFileName(
           "data/sf", spParamSource->GetParameterValueAsString(*sfIter)));
       RbtParameterFileSourcePtr spSFSource(new RbtParameterFileSource(sfFile));
       // Create and add the subaggregate
@@ -349,16 +355,16 @@ int main(int argc, char *argv[]) {
     // DM 18 May 1999
     // Variants describing the library version, exe version, parameter file, and
     // current directory Will be stored in the ligand SD files
-    RbtVariant vLib(Rbt::GetProduct() + "/" + Rbt::GetVersion());
-    RbtVariant vExe(strExeName + "/" + Rbt::GetVersion());
+    RbtVariant vLib(GetProduct() + "/" + GetProgramVersion());
+    RbtVariant vExe(strExeName + "/" + GetProgramVersion());
     RbtVariant vRecep(spRecepPrmSource->GetFileName());
     RbtVariant vPrm(spParamSource->GetFileName());
-    RbtVariant vDir(Rbt::GetCurrentWorkingDirectory());
+    RbtVariant vDir(GetCurrentWorkingDirectory());
 
     spRecepPrmSource->SetSection();
     // Read docking site from file and register with workspace
     std::string strASFile = spWS->GetName() + ".as";
-    std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
+    std::string strInputFile = GetRbtFileName("data/grids", strASFile);
     // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
     std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
@@ -413,7 +419,7 @@ int main(int argc, char *argv[]) {
     // WRITEERRORS TRUE
 
     // Seed the random number generator
-    RbtRand &theRand = Rbt::GetRbtRand(); // ref to random number generator
+    RbtRand &theRand = GetRbtRand(); // ref to random number generator
     if (bSeed) {
       theRand.Seed(nSeed);
     }
@@ -470,8 +476,7 @@ int main(int argc, char *argv[]) {
       // H) BGD 07 Oct 2002 - catching errors created by the ligands, so rbdock
       // continues with the next one, instead of completely stopping
       try {
-        spMdlFileSource->SetSegmentFilterMap(
-            Rbt::ConvertStringToSegmentMap("H"));
+        spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
 
         if (spMdlFileSource->isDataFieldPresent("Name")) {
           RbtVariant molName = spMdlFileSource->GetDataValue("Name");
@@ -648,14 +653,14 @@ int main(int argc, char *argv[]) {
     //      spRecepSink->Render();
     //    }
     std::cout << std::endl;
-    Rbt::PrintBibliographyItem(std::cout, "RiboDock2004");
-    Rbt::PrintBibliographyItem(std::cout, "rDock2014");
+    PrintBibliographyItem(std::cout, "RiboDock2004");
+    PrintBibliographyItem(std::cout, "rDock2014");
 #if !defined(__sun) && !defined(_MSC_VER)
-    Rbt::PrintBibliographyItem(std::cout, "PCG2014");
+    PrintBibliographyItem(std::cout, "PCG2014");
 #endif
     std::cout << std::endl;
-    std::cout << "Thank you for using " << Rbt::GetProgramName() << " "
-              << Rbt::GetVersion() << "." << std::endl;
+    std::cout << "Thank you for using " << GetProgramName() << " "
+              << GetProgramVersion() << "." << std::endl;
   } catch (const cxxopts::OptionException &e) {
     std::cout << "Error parsing options: " << e.what() << std::endl;
     return 1;

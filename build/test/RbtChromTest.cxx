@@ -14,16 +14,18 @@
 #include "RbtVdwIdxSF.h"
 #include "RbtVdwIntraSF.h"
 
+using namespace rxdock;
+using namespace rxdock::unittest;
+
 double RbtChromTest::TINY = 1E-4;
 
 void RbtChromTest::SetUp() {
   try {
     // Create a receptor model, ligand model, and docking site
     const std::string &wsName = "1koc";
-    std::string prmFileName =
-        Rbt::GetRbtFileName("data/receptors", wsName + ".prm");
-    std::string ligFileName = Rbt::GetRbtFileName("", wsName + "_c.sd");
-    std::string asFileName = Rbt::GetRbtFileName("data/grids", wsName + ".as");
+    std::string prmFileName = GetRbtFileName("data/receptors", wsName + ".prm");
+    std::string ligFileName = GetRbtFileName("", wsName + "_c.sd");
+    std::string asFileName = GetRbtFileName("data/grids", wsName + ".as");
     RbtParameterFileSourcePtr spPrmSource(
         new RbtParameterFileSource(prmFileName));
     RbtMolecularFileSourcePtr spMdlFileSource(
@@ -93,7 +95,7 @@ double RbtChromTest::rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
     retVal = 999.9;
   } else {
     for (unsigned int i = 0; i < nCoords; i++) {
-      retVal += Rbt::Length2(rc[i], c[i]);
+      retVal += Length2(rc[i], c[i]);
     }
     retVal = std::sqrt(retVal / float(nCoords));
   }
@@ -133,9 +135,9 @@ TEST_F(RbtChromTest, ChromOperatorEqualsAfterMutate) {
 // not been mutated?
 TEST_F(RbtChromTest, SyncToModel) {
   RbtCoordList coordsBefore, coordsAfter;
-  Rbt::GetCoordList(m_atomList, coordsBefore);
+  GetCoordList(m_atomList, coordsBefore);
   m_chrom_1koc->SyncToModel();
-  Rbt::GetCoordList(m_atomList, coordsAfter);
+  GetCoordList(m_atomList, coordsAfter);
   double rms = rmsd(coordsBefore, coordsAfter);
   ASSERT_LT(rms, TINY);
 }
@@ -143,10 +145,10 @@ TEST_F(RbtChromTest, SyncToModel) {
 // 7) Does SyncToModel change the model coords after a mutation?
 TEST_F(RbtChromTest, SyncToModelAfterMutate) {
   RbtCoordList coordsBefore, coordsAfter;
-  Rbt::GetCoordList(m_atomList, coordsBefore);
+  GetCoordList(m_atomList, coordsBefore);
   m_chrom_1koc->Mutate(1.0);
   m_chrom_1koc->SyncToModel();
-  Rbt::GetCoordList(m_atomList, coordsAfter);
+  GetCoordList(m_atomList, coordsAfter);
   double rms = rmsd(coordsBefore, coordsAfter);
   ASSERT_GT(rms, TINY);
 }
@@ -155,12 +157,12 @@ TEST_F(RbtChromTest, SyncToModelAfterMutate) {
 // been mutated then reset?
 TEST_F(RbtChromTest, SyncToModelAfterReset) {
   RbtCoordList coordsBefore, coordsAfter;
-  Rbt::GetCoordList(m_atomList, coordsBefore);
+  GetCoordList(m_atomList, coordsBefore);
   m_chrom_1koc->Mutate(1.0);
   m_chrom_1koc->SyncToModel();
   m_chrom_1koc->Reset();
   m_chrom_1koc->SyncToModel();
-  Rbt::GetCoordList(m_atomList, coordsAfter);
+  GetCoordList(m_atomList, coordsAfter);
   double rms = rmsd(coordsBefore, coordsAfter);
   ASSERT_LT(rms, TINY);
 }
@@ -169,13 +171,13 @@ TEST_F(RbtChromTest, SyncToModelAfterReset) {
 // Reset() on the clone will reset to the original (unmutated) model coords
 TEST_F(RbtChromTest, CloneReset) {
   RbtCoordList coordsBefore, coordsAfter;
-  Rbt::GetCoordList(m_atomList, coordsBefore);
+  GetCoordList(m_atomList, coordsBefore);
   RbtChromElementPtr clone = m_chrom_1koc->clone();
   clone->Mutate(1.0);
   clone->SyncToModel();
   clone->Reset();
   clone->SyncToModel();
-  Rbt::GetCoordList(m_atomList, coordsAfter);
+  GetCoordList(m_atomList, coordsAfter);
   double rms = rmsd(coordsBefore, coordsAfter);
   ASSERT_LT(rms, TINY);
 }
@@ -184,7 +186,7 @@ TEST_F(RbtChromTest, CloneReset) {
 // Reset() on the clone still resets to the original (unmutated) model coords
 TEST_F(RbtChromTest, MutatedCloneReset) {
   RbtCoordList coordsBefore, coordsAfter;
-  Rbt::GetCoordList(m_atomList, coordsBefore);
+  GetCoordList(m_atomList, coordsBefore);
   // Mutate the original before creating the clone
   m_chrom_1koc->Mutate(1.0);
   m_chrom_1koc->SyncToModel();
@@ -193,7 +195,7 @@ TEST_F(RbtChromTest, MutatedCloneReset) {
   clone->SyncToModel();
   clone->Reset();
   clone->SyncToModel();
-  Rbt::GetCoordList(m_atomList, coordsAfter);
+  GetCoordList(m_atomList, coordsAfter);
   double rms = rmsd(coordsBefore, coordsAfter);
   ASSERT_LT(rms, TINY);
   delete clone;
@@ -209,10 +211,10 @@ TEST_F(RbtChromTest, ChromOperatorEqualsAfterRandomise) {
 // 12) Does SyncToModel change the model coords after a randomisation?
 TEST_F(RbtChromTest, SyncToModelAfterRandomise) {
   RbtCoordList coordsBefore, coordsAfter;
-  Rbt::GetCoordList(m_atomList, coordsBefore);
+  GetCoordList(m_atomList, coordsBefore);
   m_chrom_1koc->Randomise();
   m_chrom_1koc->SyncToModel();
-  Rbt::GetCoordList(m_atomList, coordsAfter);
+  GetCoordList(m_atomList, coordsAfter);
   double rms = rmsd(coordsBefore, coordsAfter);
   ASSERT_GT(rms, TINY);
 }
@@ -221,12 +223,12 @@ TEST_F(RbtChromTest, SyncToModelAfterRandomise) {
 // been randomised then reset?
 TEST_F(RbtChromTest, SyncToModelAfterRandomiseReset) {
   RbtCoordList coordsBefore, coordsAfter;
-  Rbt::GetCoordList(m_atomList, coordsBefore);
+  GetCoordList(m_atomList, coordsBefore);
   m_chrom_1koc->Randomise();
   m_chrom_1koc->SyncToModel();
   m_chrom_1koc->Reset();
   m_chrom_1koc->SyncToModel();
-  Rbt::GetCoordList(m_atomList, coordsAfter);
+  GetCoordList(m_atomList, coordsAfter);
   double rms = rmsd(coordsBefore, coordsAfter);
   ASSERT_LT(rms, TINY);
 }
@@ -257,7 +259,7 @@ TEST_F(RbtChromTest, NullCrossover) {
   RbtChromElementPtr clone4 = m_chrom_1koc->clone();
   bool isEqualBeforeXOver =
       (*clone1 == *clone2) && (*clone1 == *clone3) && (*clone1 == *clone4);
-  Rbt::Crossover(clone1, clone2, clone3, clone4);
+  Crossover(clone1, clone2, clone3, clone4);
   bool isEqualAfterXOver =
       (*clone1 == *clone2) && (*clone1 == *clone3) && (*clone1 == *clone4);
   ASSERT_TRUE(isEqualBeforeXOver);
@@ -269,12 +271,12 @@ TEST_F(RbtChromTest, NullCrossover) {
 TEST_F(RbtChromTest, Euler) {
   RbtChromElementPtr clone = m_chrom_1koc->clone();
   RbtAtomList atomList = m_lig_1koc->GetAtomList();
-  RbtPrincipalAxes prAxes = Rbt::GetPrincipalAxes(atomList);
+  RbtPrincipalAxes prAxes = GetPrincipalAxesOfAtoms(atomList);
   RbtPrincipalAxes cartesianAxes;
-  RbtQuat q = Rbt::GetQuatFromAlignAxes(cartesianAxes, prAxes);
+  RbtQuat q = GetQuatFromAlignAxes(cartesianAxes, prAxes);
   RbtEuler euler(q);
   RbtQuat q1 = euler.ToQuat();
-  ASSERT_LT(Rbt::Length(q1 - q), TINY);
+  ASSERT_LT(Length(q1 - q), TINY);
 }
 
 // 18) Check that repeated sync to/from model leaves the genotype and phenotype
@@ -283,12 +285,12 @@ TEST_F(RbtChromTest, RepeatedSync) {
   // Keep clone unchanged as a reference
   RbtChromElementPtr clone = m_chrom_1koc->clone();
   RbtCoordList coordsBefore, coordsAfter;
-  Rbt::GetCoordList(m_atomList, coordsBefore);
+  GetCoordList(m_atomList, coordsBefore);
   for (int i = 0; i < 100; i++) {
     m_chrom_1koc->SyncToModel();
     m_chrom_1koc->SyncFromModel();
   }
-  Rbt::GetCoordList(m_atomList, coordsAfter);
+  GetCoordList(m_atomList, coordsAfter);
   double rms = rmsd(coordsBefore, coordsAfter);
   double cmp = m_chrom_1koc->Compare(*clone);
   ASSERT_LT(rms, TINY);
@@ -308,7 +310,7 @@ TEST_F(RbtChromTest, CompareWithNullChrom) {
 // the relative mutation distance (loops over 10000 repeats)
 TEST_F(RbtChromTest, CompareAfterMutate) {
   bool isOK(true);
-  RbtRand &rand = Rbt::GetRbtRand();
+  RbtRand &rand = GetRbtRand();
   for (int i = 0; (i < 10000) && isOK; i++) {
     RbtChromElementPtr clone = m_chrom_1koc->clone();
     double mutationDistance = rand.GetRandom01();
@@ -541,7 +543,7 @@ TEST_F(RbtChromTest, RandomiseTetheredDihedral) {
   RbtChromElement::eMode mode = RbtChromElement::TETHERED;
   double maxDelta = 45.0;
   RbtBondList rotBondList =
-      Rbt::GetBondList(m_lig_1koc->GetBondList(), Rbt::isBondRotatable());
+      GetBondListWithPredicate(m_lig_1koc->GetBondList(), isBondRotatable());
   RbtAtomList noTetheredAtoms;
   RbtBondListConstIter iter = rotBondList.begin();
   RbtChromElementPtr chrom = new RbtChromDihedralElement(
@@ -607,7 +609,7 @@ TEST_F(RbtChromTest, MutateTetheredDihedral) {
   RbtChromElement::eMode mode = RbtChromElement::TETHERED;
   double maxDelta = 45.0;
   RbtBondList rotBondList =
-      Rbt::GetBondList(m_lig_1koc->GetBondList(), Rbt::isBondRotatable());
+      GetBondListWithPredicate(m_lig_1koc->GetBondList(), isBondRotatable());
   RbtAtomList noTetheredAtoms;
   RbtBondListConstIter iter = rotBondList.begin();
   RbtChromElementPtr chrom = new RbtChromDihedralElement(
@@ -665,7 +667,7 @@ TEST_F(RbtChromTest, CrossoverTetheredDihedral) {
   RbtChromElement::eMode mode = RbtChromElement::TETHERED;
   double maxDelta = 45.0;
   RbtBondList rotBondList =
-      Rbt::GetBondList(m_lig_1koc->GetBondList(), Rbt::isBondRotatable());
+      GetBondListWithPredicate(m_lig_1koc->GetBondList(), isBondRotatable());
   RbtAtomList noTetheredAtoms;
   RbtBondListConstIter iter = rotBondList.begin();
   RbtChromElementPtr chrom = new RbtChromDihedralElement(
@@ -762,7 +764,7 @@ void RbtChromTest::measureCrossoverDiff(RbtChromElement *chrom, int nTrials,
   for (int iTrial = 0; iTrial < nTrials; iTrial++) {
     chrom->Randomise();
     chrom2->Randomise();
-    Rbt::Crossover(chrom, chrom2, chrom3, chrom4);
+    Crossover(chrom, chrom2, chrom3, chrom4);
     int i(0);
     double diff3 = chrom3->CompareVector(refVec, i);
     i = 0;

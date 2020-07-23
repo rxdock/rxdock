@@ -19,6 +19,8 @@
 #include "RbtBaseUniMolTransform.h"
 #include "RbtRand.h"
 
+namespace rxdock {
+
 class RbtRandLigTransform : public RbtBaseUniMolTransform {
 public:
   // Static data member for class type
@@ -66,5 +68,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtRandLigTransform> RbtRandLigTransformPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTRANDLIGTRANSFORM_H_

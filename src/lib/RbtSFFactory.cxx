@@ -53,6 +53,8 @@
 
 #include "RbtFileError.h"
 
+using namespace rxdock;
+
 // Parameter name which identifies a scoring function definition
 std::string RbtSFFactory::_SF("SCORING_FUNCTION");
 
@@ -149,8 +151,7 @@ RbtSFAgg *RbtSFFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
                                           const std::string &strName,
                                           const std::string &strSFClasses) {
   // Get list of scoring function objects to create
-  std::vector<std::string> sfList =
-      Rbt::ConvertDelimitedStringToList(strSFClasses);
+  std::vector<std::string> sfList = ConvertDelimitedStringToList(strSFClasses);
   // If strSFClasses is empty, then default to reading all sections of the
   // parameter file for valid scoring function definitions
   // In this case we do not throw an error if a particular section

@@ -18,6 +18,8 @@
 
 #include "RbtRealGrid.h"
 
+namespace rxdock {
+
 // struct for holding FFT Peak info
 class RbtFFTPeak {
 public:
@@ -122,5 +124,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtFFTGrid> RbtFFTGridPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTFFTGRID_H_

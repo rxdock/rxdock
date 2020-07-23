@@ -23,22 +23,22 @@
 
 #include <list>
 
+namespace rxdock {
+
 class RbtModel; // Forward declaration
 class RbtBond;  // Forward declaration
 
-namespace Rbt {
 // DM 23 Apr 1999 - provide custom comparison function
 // to bond map, so that map is sorted by bond ID, not by pointer
 class RbtBondPCmp_BondId {
 public:
   bool operator()(RbtBond *pBond1, RbtBond *pBond2) const;
 };
-} // namespace Rbt
 
 // Map of bonds the atom is bonded to
 // Key is regular RbtBond*, value is RbtBool
 // RbtBool is true if this atom is atom1 in the bond, false if atom2
-typedef std::map<RbtBond *, bool, Rbt::RbtBondPCmp_BondId> RbtBondMap;
+typedef std::map<RbtBond *, bool, RbtBondPCmp_BondId> RbtBondMap;
 typedef RbtBondMap::iterator RbtBondMapIter;
 typedef RbtBondMap::const_iterator RbtBondMapConstIter;
 
@@ -376,9 +376,11 @@ typedef RbtAtomTrueList::iterator RbtAtomTrueListIter;
 typedef RbtAtomTrueList::const_iterator RbtAtomTrueListConstIter;
 
 ///////////////////////////////////////////////
-// Non-member functions (in Rbt namespace)
+// Non-member functions (in rxdock namespace)
 //////////////////////////////////////////
-namespace Rbt {
+
+std::ostream &operator<<(std::ostream &s, const RbtAtom &atom);
+
 ////////////////////////////////////////////
 // Calculation functions
 ///////////////////////
@@ -387,22 +389,21 @@ namespace Rbt {
 // Returns the "bond" length in Angstroms between 2 atoms
 // Note: atoms do not have to be bonded
 inline double BondLength(RbtAtom *pAtom1, RbtAtom *pAtom2) {
-  return Rbt::Length(pAtom1->GetCoords(), pAtom2->GetCoords());
+  return Length(pAtom1->GetCoords(), pAtom2->GetCoords());
 }
 
 // Returns the "bond" angle in degrees between 3 atoms
 // Note: atoms do not have to be bonded
 inline double BondAngle(RbtAtom *pAtom1, RbtAtom *pAtom2, RbtAtom *pAtom3) {
-  return Rbt::Angle(pAtom1->GetCoords(), pAtom2->GetCoords(),
-                    pAtom3->GetCoords());
+  return Angle(pAtom1->GetCoords(), pAtom2->GetCoords(), pAtom3->GetCoords());
 }
 
 // Returns the "bond" dihedral in degrees between 4 atoms
 // Note: atoms do not have to be bonded
 inline double BondDihedral(RbtAtom *pAtom1, RbtAtom *pAtom2, RbtAtom *pAtom3,
                            RbtAtom *pAtom4) {
-  return Rbt::Dihedral(pAtom1->GetCoords(), pAtom2->GetCoords(),
-                       pAtom3->GetCoords(), pAtom4->GetCoords());
+  return Dihedral(pAtom1->GetCoords(), pAtom2->GetCoords(), pAtom3->GetCoords(),
+                  pAtom4->GetCoords());
 }
 
 ////////////////////////////////////////////
@@ -644,7 +645,7 @@ public:
   explicit isAtomInsideSphere(const RbtCoord &cc, double rr)
       : c(cc), r2(rr * rr) {}
   bool operator()(const RbtAtom *pAtom) const {
-    return Rbt::Length2(pAtom->GetCoords() - c) <= r2;
+    return Length2(pAtom->GetCoords() - c) <= r2;
   }
 };
 
@@ -774,10 +775,10 @@ public:
 // Checks for cationic sp2/arom carbon
 // DM 27 Jan 2000 - also check is acyclic
 class isAtomGuanidiniumCarbon : public std::function<bool(RbtAtom *)> {
-  Rbt::isAtomicNo_eq bIsCarbon;
-  Rbt::isAtomCationic bIsCationic;
-  Rbt::isPiAtom bIsPi;
-  Rbt::isAtomCyclic bIsCyclic;
+  isAtomicNo_eq bIsCarbon;
+  isAtomCationic bIsCationic;
+  isPiAtom bIsPi;
+  isAtomCyclic bIsCyclic;
 
 public:
   explicit isAtomGuanidiniumCarbon() : bIsCarbon(6) {}
@@ -799,14 +800,14 @@ public:
 // DM 21 Jul 1999 Is atom lipophilic ?
 // DM 16 May 2003 Total rewrite to be much more comprehensive
 class isAtomLipophilic : public std::function<bool(RbtAtom *)> {
-  Rbt::isAtomIonic isIonic;
-  Rbt::isAtomHBondDonor isHBD;
-  Rbt::isAtomHBondAcceptor isHBA;
-  Rbt::isAtomMetal isMetal;
-  Rbt::isHybridState_eq isSP3;
-  Rbt::isHybridState_eq isSP2;
-  Rbt::isAtomicNo_eq isO;
-  Rbt::isAtomicNo_eq isN;
+  isAtomIonic isIonic;
+  isAtomHBondDonor isHBD;
+  isAtomHBondAcceptor isHBA;
+  isAtomMetal isMetal;
+  isHybridState_eq isSP3;
+  isHybridState_eq isSP2;
+  isAtomicNo_eq isO;
+  isAtomicNo_eq isN;
 
 public:
   explicit isAtomLipophilic()
@@ -1009,13 +1010,15 @@ public:
 
 // Generic template version of GetNumAtoms, passing in your own predicate
 template <class Predicate>
-unsigned int GetNumAtoms(const RbtAtomList &atomList, const Predicate &pred) {
+unsigned int GetNumAtomsWithPredicate(const RbtAtomList &atomList,
+                                      const Predicate &pred) {
   return std::count_if(atomList.begin(), atomList.end(), pred);
 }
 
 // Generic template version of GetAtomList, passing in your own predicate
 template <class Predicate>
-RbtAtomList GetAtomList(const RbtAtomList &atomList, const Predicate &pred) {
+RbtAtomList GetAtomListWithPredicate(const RbtAtomList &atomList,
+                                     const Predicate &pred) {
   RbtAtomList newAtomList;
   std::copy_if(atomList.begin(), atomList.end(),
                std::back_inserter(newAtomList), pred);
@@ -1029,92 +1032,101 @@ RbtAtomListIter FindAtomInList(RbtAtomList &atomList, const Predicate &pred) {
 }
 
 // Selected atoms
-void SetAtomSelectionFlags(RbtAtomList &atomList, bool bSelected = true);
+void SetAtomSelectionFlagsInList(RbtAtomList &atomList, bool bSelected = true);
 void InvertAtomSelectionFlags(RbtAtomList &atomList); // DM 08 Jan 1999
 
-inline unsigned int GetNumSelectedAtoms(const RbtAtomList &atomList) {
-  return Rbt::GetNumAtoms(atomList, Rbt::isAtomSelected());
+inline unsigned int GetNumSelectedAtomsInList(const RbtAtomList &atomList) {
+  return GetNumAtomsWithPredicate(atomList, isAtomSelected());
 }
 
-inline RbtAtomList GetSelectedAtomList(const RbtAtomList &atomList) {
-  return Rbt::GetAtomList(atomList, Rbt::isAtomSelected());
+inline RbtAtomList GetSelectedAtomsFromList(const RbtAtomList &atomList) {
+  return GetAtomListWithPredicate(atomList, isAtomSelected());
 }
 
 // Cyclic atoms
-void SetAtomCyclicFlags(RbtAtomList &atomList, bool bCyclic = true);
+void SetAtomCyclicFlagsInList(RbtAtomList &atomList, bool bCyclic = true);
 
-inline unsigned int GetNumCyclicAtoms(const RbtAtomList &atomList) {
-  return Rbt::GetNumAtoms(atomList, Rbt::isAtomCyclic());
+inline unsigned int GetNumCyclicAtomsInList(const RbtAtomList &atomList) {
+  return GetNumAtomsWithPredicate(atomList, isAtomCyclic());
 }
-inline RbtAtomList GetCyclicAtomList(const RbtAtomList &atomList) {
-  return Rbt::GetAtomList(atomList, Rbt::isAtomCyclic());
+inline RbtAtomList GetCyclicAtomsFromList(const RbtAtomList &atomList) {
+  return GetAtomListWithPredicate(atomList, isAtomCyclic());
 }
 
 // Hydrogen bond acceptor atoms
-inline unsigned int GetNumHBondAcceptorAtoms(const RbtAtomList &atomList) {
-  return Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondAcceptor());
+inline unsigned int
+GetNumHBondAcceptorAtomsInList(const RbtAtomList &atomList) {
+  return GetNumAtomsWithPredicate(atomList, isAtomHBondAcceptor());
 }
-inline RbtAtomList GetHBondAcceptorAtomList(const RbtAtomList &atomList) {
-  return Rbt::GetAtomList(atomList, Rbt::isAtomHBondAcceptor());
+inline RbtAtomList GetHBondAcceptorAtomsFromList(const RbtAtomList &atomList) {
+  return GetAtomListWithPredicate(atomList, isAtomHBondAcceptor());
 }
 
 // Hydrogen bond donor atoms
-inline unsigned int GetNumHBondDonorAtoms(const RbtAtomList &atomList) {
-  return Rbt::GetNumAtoms(atomList, Rbt::isAtomHBondDonor());
+inline unsigned int GetNumHBondDonorAtomsInList(const RbtAtomList &atomList) {
+  return GetNumAtomsWithPredicate(atomList, isAtomHBondDonor());
 }
-inline RbtAtomList GetHBondDonorAtomList(const RbtAtomList &atomList) {
-  return Rbt::GetAtomList(atomList, Rbt::isAtomHBondDonor());
+inline RbtAtomList GetHBondDonorAtomsFromList(const RbtAtomList &atomList) {
+  return GetAtomListWithPredicate(atomList, isAtomHBondDonor());
 }
 
 //(Formally) charged atoms
-inline unsigned int GetNumChargedAtoms(const RbtAtomList &atomList) {
-  return Rbt::GetNumAtoms(atomList, Rbt::isAtomCharged());
+inline unsigned int GetNumChargedAtomsInList(const RbtAtomList &atomList) {
+  return GetNumAtomsWithPredicate(atomList, isAtomCharged());
 }
-inline RbtAtomList GetChargedAtomList(const RbtAtomList &atomList) {
-  return Rbt::GetAtomList(atomList, Rbt::isAtomCharged());
+inline RbtAtomList GetChargedAtomsFromList(const RbtAtomList &atomList) {
+  return GetAtomListWithPredicate(atomList, isAtomCharged());
 }
 
 // Planar atoms
-inline unsigned int GetNumPlanarAtoms(const RbtAtomList &atomList) {
-  return Rbt::GetNumAtoms(atomList, Rbt::isAtomPlanar());
+inline unsigned int GetNumPlanarAtomsInList(const RbtAtomList &atomList) {
+  return GetNumAtomsWithPredicate(atomList, isAtomPlanar());
 }
-inline RbtAtomList GetPlanarAtomList(const RbtAtomList &atomList) {
-  return Rbt::GetAtomList(atomList, Rbt::isAtomPlanar());
+inline RbtAtomList GetPlanarAtomsFromList(const RbtAtomList &atomList) {
+  return GetAtomListWithPredicate(atomList, isAtomPlanar());
 }
 
 // RNA anionic atoms
 // inline RbtUInt GetNumRNAAnionicAtoms(const RbtAtomList& atomList) {
-//  return Rbt::GetNumAtoms(atomList,Rbt::isAtomRNAAnionic());
+//  return
+//  GetNumAtomsWithPredicate(atomList,isAtomRNAAnionic());
 //}
 // inline RbtAtomList GetRNAAnionicAtomList(const RbtAtomList& atomList) {
-//  return Rbt::GetAtomList(atomList,Rbt::isAtomRNAAnionic());
+//  return
+//  GetAtomListWithPredicate(atomList,isAtomRNAAnionic());
 //}
 
 // Ligand anionic atoms
 // DM 22 Dec 1998
 // inline RbtUInt GetNumLigandAnionicAtoms(const RbtAtomList& atomList) {
-//  return Rbt::GetNumAtoms(atomList,Rbt::isAtomLigandAnionic());
+//  return
+//  GetNumAtomsWithPredicate(atomList,isAtomLigandAnionic());
 //}
 // inline RbtAtomList GetLigandAnionicAtomList(const RbtAtomList& atomList) {
-//  return Rbt::GetAtomList(atomList,Rbt::isAtomLigandAnionic());
+//  return
+//  GetAtomListWithPredicate(atomList,isAtomLigandAnionic());
 //}
 
 // Ligand cationic atoms
 // DM 22 Dec 1998 -renamed from Get..RNACationic..
 // inline RbtUInt GetNumLigandCationicAtoms(const RbtAtomList& atomList) {
-//  return Rbt::GetNumAtoms(atomList,Rbt::isAtomLigandCationic());
+//  return
+//  GetNumAtomsWithPredicate(atomList,isAtomLigandCationic());
 //}
 // inline RbtAtomList GetLigandCationicAtomList(const RbtAtomList& atomList) {
-//  return Rbt::GetAtomList(atomList,Rbt::isAtomLigandCationic());
+//  return
+//  GetAtomListWithPredicate(atomList,isAtomLigandCationic());
 //}
 
 // Guanidinium carbons
 // inline RbtUInt GetNumGuanidiniumCarbonAtoms(const RbtAtomList& atomList) {
-//  return Rbt::GetNumAtoms(atomList,Rbt::isAtomGuanidiniumCarbon());
+//  return
+//  GetNumAtomsWithPredicate(atomList,isAtomGuanidiniumCarbon());
 //}
 // inline RbtAtomList GetGuanidiniumCarbonAtomList(const RbtAtomList& atomList)
 // {
-//  return Rbt::GetAtomList(atomList,Rbt::isAtomGuanidiniumCarbon());
+//  return
+//  GetAtomListWithPredicate(atomList,isAtomGuanidiniumCarbon());
 //}
 
 // BondedAtoms
@@ -1141,31 +1153,33 @@ RBTDLL_EXPORT RbtAtomList GetBondedAtomList(const RbtAtom *pAtom);
 // Atoms with atomic no = nAtomicNo
 inline unsigned int GetNumAtomsWithAtomicNo_eq(const RbtAtomList &atomList,
                                                int nAtomicNo) {
-  return Rbt::GetNumAtoms(atomList, Rbt::isAtomicNo_eq(nAtomicNo));
+  return GetNumAtomsWithPredicate(atomList, isAtomicNo_eq(nAtomicNo));
 }
 inline RbtAtomList GetAtomListWithAtomicNo_eq(const RbtAtomList &atomList,
                                               int nAtomicNo) {
-  return Rbt::GetAtomList(atomList, Rbt::isAtomicNo_eq(nAtomicNo));
+  return GetAtomListWithPredicate(atomList, isAtomicNo_eq(nAtomicNo));
 }
 
 // Atoms with FFType = strFFType
 inline unsigned int GetNumAtomsWithFFType_eq(const RbtAtomList &atomList,
                                              std::string strFFType) {
-  return Rbt::GetNumAtoms(atomList, Rbt::isFFType_eq(std::move(strFFType)));
+  return GetNumAtomsWithPredicate(atomList, isFFType_eq(std::move(strFFType)));
 }
 inline RbtAtomList GetAtomListWithFFType_eq(const RbtAtomList &atomList,
                                             std::string strFFType) {
-  return Rbt::GetAtomList(atomList, Rbt::isFFType_eq(std::move(strFFType)));
+  return GetAtomListWithPredicate(atomList, isFFType_eq(std::move(strFFType)));
 }
 
 // Atoms with AtomName = strAtomName
 inline unsigned int GetNumAtomsWithAtomName_eq(const RbtAtomList &atomList,
                                                std::string strAtomName) {
-  return Rbt::GetNumAtoms(atomList, Rbt::isAtomName_eq(std::move(strAtomName)));
+  return GetNumAtomsWithPredicate(atomList,
+                                  isAtomName_eq(std::move(strAtomName)));
 }
 inline RbtAtomList GetAtomListWithAtomName_eq(const RbtAtomList &atomList,
                                               std::string strAtomName) {
-  return Rbt::GetAtomList(atomList, Rbt::isAtomName_eq(std::move(strAtomName)));
+  return GetAtomListWithPredicate(atomList,
+                                  isAtomName_eq(std::move(strAtomName)));
 }
 
 // DM 1 Feb 1999
@@ -1211,27 +1225,26 @@ RbtAtomList GetMatchingAtomList(const RbtAtomList &atomList,
 /////////////////////////
 // Translate all atoms in the list by the supplied vector
 inline void TranslateAtoms(const RbtAtomList &atomList, const RbtVector &v) {
-  std::for_each(atomList.begin(), atomList.end(), Rbt::TranslateAtom(v));
+  std::for_each(atomList.begin(), atomList.end(), TranslateAtom(v));
 }
 
 // Translate all selected atoms in the list by the supplied vector
 inline void TranslateSelectedAtoms(const RbtAtomList &atomList,
                                    const RbtVector &v) {
-  std::for_each(atomList.begin(), atomList.end(),
-                Rbt::TranslateAtomIfSelected(v));
+  std::for_each(atomList.begin(), atomList.end(), TranslateAtomIfSelected(v));
 }
 
 // Rotate all atoms in the list by the supplied quaternion
 inline void RotateAtomsUsingQuat(const RbtAtomList &atomList,
                                  const RbtQuat &q) {
-  std::for_each(atomList.begin(), atomList.end(), Rbt::RotateAtomUsingQuat(q));
+  std::for_each(atomList.begin(), atomList.end(), RotateAtomUsingQuat(q));
 }
 
 // Rotate all selected atoms in the list by the supplied quaternion
 inline void RotateSelectedAtomsUsingQuat(const RbtAtomList &atomList,
                                          const RbtQuat &q) {
   std::for_each(atomList.begin(), atomList.end(),
-                Rbt::RotateAtomUsingQuatIfSelected(q));
+                RotateAtomUsingQuatIfSelected(q));
 }
 
 // Save coords by number for all atoms in the list
@@ -1244,7 +1257,7 @@ void RevertAtomCoords(const RbtAtomList &atomList, unsigned int coordNum = 0);
 double GetTotalAtomicMass(const RbtAtomList &atomList);
 
 // Returns center of mass of atoms in the list
-RbtCoord GetCenterOfMass(const RbtAtomList &atomList);
+RbtCoord GetCenterOfAtomicMass(const RbtAtomList &atomList);
 
 // DM 20 May 1999 - returns the coords of all atoms in the list
 RbtCoordList GetCoordList(const RbtAtomList &atomList);
@@ -1266,6 +1279,7 @@ void PrintQuantaCSDFormat(const RbtAtomList &atomList, std::ostream &s,
 // cationic-ionic pairs which are 1-2 or 1-3 connected
 //(e.g. on -OOC.CR.NH3+ would zero the C and N)
 void RemoveZwitterions(RbtAtomList &atomList);
-} // namespace Rbt
+
+} // namespace rxdock
 
 #endif //_RBTATOM_H_

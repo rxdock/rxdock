@@ -19,6 +19,8 @@
 #include "RbtContext.h"
 #include "RbtToken.h"
 
+namespace rxdock {
+
 class RbtTokenIter {
 public:
   //  virtual void copy(const RbtTokenIter &) = 0;
@@ -39,5 +41,7 @@ typedef std::vector<RbtTokenIterPtr>
     RbtTokenIterList; // Vector of smart pointers
 typedef RbtTokenIterList::iterator RbtTokenIterListIter;
 typedef RbtTokenIterList::const_iterator RbtTokenIterListConstIter;
+
+} // namespace rxdock
 
 #endif //_RbtTokenIter_H_

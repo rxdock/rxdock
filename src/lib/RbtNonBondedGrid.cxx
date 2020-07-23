@@ -13,6 +13,8 @@
 #include "RbtNonBondedGrid.h"
 #include "RbtFileError.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtNonBondedGrid::_CT("RbtNonBondedGrid");
 
@@ -176,7 +178,7 @@ void RbtNonBondedGrid::UniqueAtomLists() {
   for (RbtAtomListMapIter iter = m_atomMap.begin(); iter != m_atomMap.end();
        iter++) {
     // std::cout << _CT << ": before = " << (*iter).size();
-    std::sort((*iter).begin(), (*iter).end(), Rbt::RbtAtomPtrCmp_Ptr());
+    std::sort((*iter).begin(), (*iter).end(), RbtAtomPtrCmp_Ptr());
     RbtAtomRListIter uniqIter = std::unique((*iter).begin(), (*iter).end());
     (*iter).erase(uniqIter, (*iter).end());
     // std::cout << "; After = " << (*iter).size() << std::endl;

@@ -18,6 +18,8 @@
 #include "RbtBaseMolecularFileSink.h"
 #include "RbtElementFileSource.h"
 
+namespace rxdock {
+
 // DM 19 June 2006
 // Map to keep track of logical atom IDs as they are rendered to file
 // This avoids the need for the atoms in the RbtModel to have consecutive
@@ -27,7 +29,7 @@
 // Value = logical atom ID as rendered to file
 // Logical atom IDs are consecutive for all atoms rendered
 // The actual atom ID (RbtAtom::GetAtomId()) is unchanged
-typedef std::map<RbtAtom *, unsigned int, Rbt::RbtAtomPtrCmp_Ptr> RbtAtomIdMap;
+typedef std::map<RbtAtom *, unsigned int, RbtAtomPtrCmp_Ptr> RbtAtomIdMap;
 
 class RbtMdlFileSink : public RbtBaseMolecularFileSink {
 public:
@@ -86,8 +88,8 @@ private:
 // Useful typedefs
 typedef SmartPtr<RbtMdlFileSink> RbtMdlFileSinkPtr; // Smart pointer
 
-namespace Rbt {
 void RenumberScaffold(RbtAtomList &atomList);
-}
+
+} // namespace rxdock
 
 #endif //_RBTMDLFILESINK_H_

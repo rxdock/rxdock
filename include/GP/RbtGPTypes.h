@@ -15,6 +15,8 @@
 
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 // As the chromosome is a list of integers, I don't think I need a
 // new class to define it. If later I find out it is necessary, I
 // just need to create a class called RbtGPChromosome with the
@@ -27,5 +29,7 @@ typedef std::vector<RbtReturnTypeList> RbtReturnTypeArray; // Vector of smart
                                                            // pointers
 typedef RbtReturnTypeList::iterator RbtReturnTypeListIter;
 typedef RbtReturnTypeList::const_iterator RbtReturnTypeListConstIter;
+
+} // namespace rxdock
 
 #endif

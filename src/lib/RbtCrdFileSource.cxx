@@ -13,6 +13,8 @@
 #include "RbtCrdFileSource.h"
 #include "RbtFileError.h"
 
+using namespace rxdock;
+
 // Constructors
 RbtCrdFileSource::RbtCrdFileSource(const char *fileName)
     : RbtBaseMolecularFileSource(

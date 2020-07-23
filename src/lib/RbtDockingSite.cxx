@@ -14,6 +14,10 @@
 #include "RbtFileError.h"
 #include <cstring>
 
+using namespace rxdock;
+
+namespace rxdock {
+
 // Less than operator for sorting coords
 class RbtCoordCmp {
 public:
@@ -31,6 +35,8 @@ public:
     return false;
   }
 };
+
+} // namespace rxdock
 
 // Static data members
 std::string RbtDockingSite::_CT("RbtDockingSite");
@@ -54,11 +60,11 @@ RbtDockingSite::RbtDockingSite(const RbtCavityList &cavList, double border)
     RbtCoordList minCoords;
     RbtCoordList maxCoords;
     std::transform(m_cavityList.begin(), m_cavityList.end(),
-                   std::back_inserter(minCoords), Rbt::ExtractCavityMinCoord);
+                   std::back_inserter(minCoords), ExtractCavityMinCoord);
     std::transform(m_cavityList.begin(), m_cavityList.end(),
-                   std::back_inserter(maxCoords), Rbt::ExtractCavityMaxCoord);
-    m_minCoord = Rbt::Min(minCoords);
-    m_maxCoord = Rbt::Max(maxCoords);
+                   std::back_inserter(maxCoords), ExtractCavityMaxCoord);
+    m_minCoord = Min(minCoords);
+    m_maxCoord = Max(maxCoords);
     _RBTOBJECTCOUNTER_CONSTR_(_CT);
   }
 }
@@ -71,7 +77,7 @@ RbtDockingSite::RbtDockingSite(std::istream &istr) {
 RbtDockingSite::~RbtDockingSite() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
 // Insertion operator
-std::ostream &operator<<(std::ostream &s, const RbtDockingSite &site) {
+std::ostream &rxdock::operator<<(std::ostream &s, const RbtDockingSite &site) {
   site.Print(s);
   return s;
 }
@@ -95,17 +101,17 @@ void RbtDockingSite::Write(std::ostream &ostr) {
   // on read
   const char *const header = _CT.c_str();
   int length = strlen(header);
-  Rbt::WriteWithThrow(ostr, (const char *)&length, sizeof(length));
-  Rbt::WriteWithThrow(ostr, header, length);
+  WriteWithThrow(ostr, (const char *)&length, sizeof(length));
+  WriteWithThrow(ostr, header, length);
 
   // DM 4 Apr 2002 - write overall min, max coords of all cavities, plus border
   m_minCoord.Write(ostr);
   m_maxCoord.Write(ostr);
-  Rbt::WriteWithThrow(ostr, (const char *)&m_border, sizeof(m_border));
+  WriteWithThrow(ostr, (const char *)&m_border, sizeof(m_border));
 
   // Write the number of cavities
   int nCav = m_cavityList.size();
-  Rbt::WriteWithThrow(ostr, (const char *)&nCav, sizeof(nCav));
+  WriteWithThrow(ostr, (const char *)&nCav, sizeof(nCav));
 
   // Write each cavity
   for (const auto &cIter : m_cavityList) {
@@ -127,9 +133,9 @@ void RbtDockingSite::Read(std::istream &istr) {
 
   // Read title
   int length;
-  Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
+  ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *header = new char[length + 1];
-  Rbt::ReadWithThrow(istr, header, length);
+  ReadWithThrow(istr, header, length);
   // Add null character to end of string
   header[length] = '\0';
   // Compare title with class name
@@ -143,11 +149,11 @@ void RbtDockingSite::Read(std::istream &istr) {
   // DM 4 Apr 2002 - read overall min, max coords of all cavities, plus border
   m_minCoord.Read(istr);
   m_maxCoord.Read(istr);
-  Rbt::ReadWithThrow(istr, (char *)&m_border, sizeof(m_border));
+  ReadWithThrow(istr, (char *)&m_border, sizeof(m_border));
 
   // Read the number of cavities
   int nCav;
-  Rbt::ReadWithThrow(istr, (char *)&nCav, sizeof(nCav));
+  ReadWithThrow(istr, (char *)&nCav, sizeof(nCav));
   m_cavityList.reserve(nCav);
   // Read each cavity
   for (int i = 0; i < nCav; i++) {
@@ -222,7 +228,7 @@ RbtAtomList RbtDockingSite::GetAtomList(const RbtAtomList &atomList,
   RbtAtomList newAtomList;
   RbtCoordList allCoords;
   GetCoordList(allCoords);
-  Rbt::isAtomNearCoordList bInRange(allCoords, maxDist);
+  isAtomNearCoordList bInRange(allCoords, maxDist);
   std::copy_if(atomList.begin(), atomList.end(),
                std::back_inserter(newAtomList), bInRange);
   return newAtomList;
@@ -278,7 +284,7 @@ void RbtDockingSite::CreateGrid() {
     for (auto &cIter : cavCoords) {
       unsigned int i =
           m_spGrid->GetIXYZ(cIter); // Grid index of nearest grid point
-      double dist2 = Rbt::Length2(cIter, m_spGrid->GetCoord(i));
+      double dist2 = Length2(cIter, m_spGrid->GetCoord(i));
       m_spGrid->SetValue(i, dist2);
     }
     // Sort the coords so we can remove any dups
@@ -305,7 +311,7 @@ void RbtDockingSite::CreateGrid() {
     // Determine min distance to any of the cavity coords
     for (RbtCoordListConstIter iter = allCoords.begin();
          iter != allCoords.end() && dist2 > mindist2; iter++) {
-      dist2 = std::min(dist2, Rbt::Length2(c - (*iter)));
+      dist2 = std::min(dist2, Length2(c - (*iter)));
     }
     m_spGrid->SetValue(i, std::sqrt(dist2));
   }

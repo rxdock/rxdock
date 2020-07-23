@@ -18,6 +18,8 @@
 #include "RbtBaseInterSF.h"
 #include "RbtVdwSF.h"
 
+namespace rxdock {
+
 class RbtVdwIdxSF : public RbtBaseInterSF,
                     public RbtBaseIdxSF,
                     public RbtVdwSF {
@@ -95,5 +97,7 @@ private:
   bool m_bFlexRec;
   bool m_bFastSolvent;
 };
+
+} // namespace rxdock
 
 #endif //_RBTVDWIDXSF_H_

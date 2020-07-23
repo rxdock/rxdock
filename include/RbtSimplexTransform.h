@@ -17,6 +17,8 @@
 #include "RbtBaseBiMolTransform.h"
 #include "RbtChromElement.h"
 
+namespace rxdock {
+
 class RbtSimplexTransform : public RbtBaseBiMolTransform {
 public:
   // Static data member for class type
@@ -77,5 +79,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtSimplexTransform> RbtSimplexTransformPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTSIMPLEXTRANSFORM_H_

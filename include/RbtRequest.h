@@ -20,6 +20,8 @@
 
 #include "RbtVariant.h"
 
+namespace rxdock {
+
 typedef int RbtRequestID;
 
 // Only check request assertions in debug build
@@ -63,5 +65,7 @@ typedef SmartPtr<RbtRequest> RbtRequestPtr;
 typedef std::vector<RbtRequestPtr> RbtRequestList;
 typedef RbtRequestList::iterator RbtRequestListIter;
 typedef RbtRequestList::const_iterator RbtRequestListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTREQUEST_H_

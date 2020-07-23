@@ -18,7 +18,8 @@
 #include "RbtAtom.h"
 #include "RbtBond.h"
 
-namespace Rbt {
+namespace rxdock {
+
 // DM 31 Oct 2000
 // Given a bond, determines if it is in a ring (cutdown version of ToSpin)
 bool FindCyclic(RbtBondPtr spBond, RbtAtomList &atomList,
@@ -47,6 +48,7 @@ RbtAtomList FindRing(RbtAtomPtr spAtom, RbtBondList &bondList);
 // 30 Oct 2000 (DM) - Find all rings, standalone version
 void FindRings(RbtAtomList &atomList, RbtBondList &bondList,
                RbtAtomListList &ringList);
-} // namespace Rbt
+
+} // namespace rxdock
 
 #endif //_RBTATOMFUNCS_H_

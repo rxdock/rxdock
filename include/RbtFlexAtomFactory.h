@@ -18,6 +18,8 @@
 #include "RbtFlexDataVisitor.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
 // The main use of RbtFlexAtomFactory is to aid with scoring function
 // performance enhancements by partitioning model atoms into subsets that are:
 // - fixed (never move)
@@ -71,4 +73,7 @@ private:
   RbtAtomRList m_tetheredAtomList;
   RbtAtomRList m_freeAtomList;
 };
+
+} // namespace rxdock
+
 #endif //_RBTFLEXATOMFACTORY_H_

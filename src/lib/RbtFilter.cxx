@@ -17,6 +17,8 @@
 #include "RbtStringTokenIter.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 const int STOP = 0;
 const int CONT = -1;
 const int NEXT = 1;

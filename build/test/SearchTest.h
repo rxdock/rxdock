@@ -21,6 +21,10 @@
 #include "RbtModel.h"
 #include "RbtSFAgg.h"
 
+namespace rxdock {
+
+namespace unittest {
+
 class SearchTest : public ::testing::Test {
 protected:
   // TextFixture methods
@@ -35,5 +39,9 @@ protected:
   RbtBiMolWorkSpacePtr m_workSpace; // simple workspace
   RbtSFAggPtr m_SF;                 // simple scoring function
 };
+
+} // namespace unittest
+
+} // namespace rxdock
 
 #endif /*SEARCHTEST_H_*/

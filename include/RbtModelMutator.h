@@ -21,6 +21,8 @@
 #include "RbtBond.h"
 #include "RbtPrincipalAxes.h"
 
+namespace rxdock {
+
 class RbtModel; // forward declaration
 
 // Only check request assertions in debug build
@@ -107,5 +109,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtModelMutator> RbtModelMutatorPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTMODELMUTATOR_H_

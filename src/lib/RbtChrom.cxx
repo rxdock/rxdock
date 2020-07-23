@@ -12,6 +12,8 @@
 
 #include "RbtChrom.h"
 
+using namespace rxdock;
+
 std::string RbtChrom::_CT = "RbtChrom";
 
 RbtChrom::RbtChrom() : RbtChromElement() { _RBTOBJECTCOUNTER_CONSTR_(_CT); }

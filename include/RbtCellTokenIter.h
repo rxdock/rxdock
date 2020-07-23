@@ -23,6 +23,8 @@
 
 #include "RbtTokenIter.h"
 
+namespace rxdock {
+
 class RbtCellTokenIter : public RbtTokenIter {
 public:
   static std::string _CT;
@@ -30,7 +32,7 @@ public:
   // Constructors
   ///////////////////
   RbtCellTokenIter(const RbtCellTokenIter &);
-  RbtCellTokenIter(const RbtGPChromosomePtr, RbtContextPtr);
+  RbtCellTokenIter(const geneticprogram::RbtGPChromosomePtr, RbtContextPtr);
 
   ///////////////////
   // Destructor
@@ -49,7 +51,7 @@ public:
 
 private:
   RbtCellTokenIter(); // Default constructor disabled
-  RbtGPChromosomePtr chrom;
+  geneticprogram::RbtGPChromosomePtr chrom;
   RbtTokenPtr current;
   std::stack<int> cells;
   RbtContextPtr contextp;
@@ -61,5 +63,7 @@ typedef std::vector<RbtCellTokenIterPtr>
     RbtCellTokenIterList; // Vector of smart pointers
 typedef RbtCellTokenIterList::iterator RbtCellTokenIterListIter;
 typedef RbtCellTokenIterList::const_iterator RbtCellTokenIterListConstIter;
+
+} // namespace rxdock
 
 #endif //_RbtCellTokenIter_H_

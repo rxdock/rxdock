@@ -15,6 +15,8 @@
 #include "RbtFileError.h"
 #include "RbtVdwGridSF.h"
 
+using namespace rxdock;
+
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
@@ -32,7 +34,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName);
+  PrintStdHeader(std::cout, strExeName);
 
   // Brief help message
   if (argc == 1) {
@@ -91,9 +93,9 @@ int main(int argc, char *argv[]) {
     }
     // Read header string
     int length;
-    Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
+    ReadWithThrow(istr, (char *)&length, sizeof(length));
     char *header = new char[length + 1];
-    Rbt::ReadWithThrow(istr, header, length);
+    ReadWithThrow(istr, header, length);
     // Add null character to end of string
     header[length] = '\0';
     // Compare title with
@@ -106,7 +108,7 @@ int main(int argc, char *argv[]) {
 
     // Skip the appropriate number of grids
     int nGrids;
-    Rbt::ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
+    ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
     std::cout << "File contains " << nGrids << " grids..." << std::endl;
     if ((iGrid > nGrids) || (iGrid < 1)) {
       std::cout << "Listing grids..." << std::endl;
@@ -116,9 +118,9 @@ int main(int argc, char *argv[]) {
     RbtRealGridPtr spGrid;
     for (int i = 1; (i <= nGrids) && (i <= iGrid); i++) {
       // Read the atom type string
-      Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
+      ReadWithThrow(istr, (char *)&length, sizeof(length));
       char *szType = new char[length + 1];
-      Rbt::ReadWithThrow(istr, szType, length);
+      ReadWithThrow(istr, szType, length);
       // Add null character to end of string
       szType[length] = '\0';
       std::string strType(szType);

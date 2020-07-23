@@ -12,14 +12,16 @@
 
 #include "RbtNoeRestraint.h"
 
+using namespace rxdock;
+
 // Returns a string representing the NOE restraint type
-std::string Rbt::ConvertNoeRestraintTypeToString(const eNoeType type) {
+std::string rxdock::ConvertNoeRestraintTypeToString(const eNoeType type) {
   switch (type) {
-  case Rbt::NOE_OR:
+  case NOE_OR:
     return "OR";
-  case Rbt::NOE_MEAN:
+  case NOE_MEAN:
     return "MEAN";
-  case Rbt::NOE_AND:
+  case NOE_AND:
     return "AND";
   default:
     return "UNDEFINED";
@@ -30,15 +32,15 @@ std::string Rbt::ConvertNoeRestraintTypeToString(const eNoeType type) {
 // Simple struct for holding one end of an NOE restraint
 // Has an atom name string list and a restraint type
 bool RbtNoeEndNames::isOK() const {
-  return (!names.empty() && (type != Rbt::NOE_UNDEFINED));
+  return (!names.empty() && (type != NOE_UNDEFINED));
 }
 
 // Insertion operator for the above
-std::ostream &operator<<(std::ostream &s, const RbtNoeEndNames &n) {
+std::ostream &rxdock::operator<<(std::ostream &s, const RbtNoeEndNames &n) {
   if (n.names.size() == 1)
     s << n.names.front();
   else {
-    s << Rbt::ConvertNoeRestraintTypeToString(n.type);
+    s << ConvertNoeRestraintTypeToString(n.type);
     s << "( ";
     for (std::vector<std::string>::const_iterator iter = n.names.begin();
          iter != n.names.end(); iter++)
@@ -54,19 +56,19 @@ std::ostream &operator<<(std::ostream &s, const RbtNoeEndNames &n) {
 // Constructor accepting an RbtNoeEndNames and an atom list to match against
 RbtNoeEndAtoms::RbtNoeEndAtoms(const RbtNoeEndNames &n,
                                const RbtAtomList &atomList) {
-  atoms = Rbt::GetMatchingAtomList(atomList, n.names);
+  atoms = GetMatchingAtomList(atomList, n.names);
   type = n.type;
 }
 bool RbtNoeEndAtoms::isOK() const {
-  return (!atoms.empty() && (type != Rbt::NOE_UNDEFINED));
+  return (!atoms.empty() && (type != NOE_UNDEFINED));
 }
 
 // Insertion operator for the above
-std::ostream &operator<<(std::ostream &s, const RbtNoeEndAtoms &n) {
+std::ostream &rxdock::operator<<(std::ostream &s, const RbtNoeEndAtoms &n) {
   if (n.atoms.size() == 1)
     s << n.atoms.front()->GetFullAtomName();
   else {
-    s << Rbt::ConvertNoeRestraintTypeToString(n.type);
+    s << ConvertNoeRestraintTypeToString(n.type);
     s << "( ";
     if (n.atoms.size() <= 4) {
       for (RbtAtomListConstIter iter = n.atoms.begin(); iter != n.atoms.end();
@@ -89,7 +91,8 @@ std::ostream &operator<<(std::ostream &s, const RbtNoeEndAtoms &n) {
 bool RbtNoeRestraintNames::isOK() const { return from.isOK() && to.isOK(); }
 
 // Insertion operator for the above
-std::ostream &operator<<(std::ostream &s, const RbtNoeRestraintNames &noe) {
+std::ostream &rxdock::operator<<(std::ostream &s,
+                                 const RbtNoeRestraintNames &noe) {
   s << noe.from << " - " << noe.to << ": dist<" << noe.maxDist;
   return s;
 }
@@ -111,7 +114,8 @@ bool RbtNoeRestraintAtoms::isSimple() const {
 }
 
 // Insertion operator for the above
-std::ostream &operator<<(std::ostream &s, const RbtNoeRestraintAtoms &noe) {
+std::ostream &rxdock::operator<<(std::ostream &s,
+                                 const RbtNoeRestraintAtoms &noe) {
   s << noe.from << " - " << noe.to << ": dist<" << noe.maxDist;
   return s;
 }
@@ -123,7 +127,8 @@ std::ostream &operator<<(std::ostream &s, const RbtNoeRestraintAtoms &noe) {
 bool RbtStdRestraintNames::isOK() const { return from.isOK(); }
 
 // Insertion operator for the above
-std::ostream &operator<<(std::ostream &s, const RbtStdRestraintNames &std) {
+std::ostream &rxdock::operator<<(std::ostream &s,
+                                 const RbtStdRestraintNames &std) {
   s << std.from << " - receptor: dist<" << std.maxDist;
   return s;
 }
@@ -143,7 +148,8 @@ bool RbtStdRestraintAtoms::isOK() const { return from.isOK(); }
 bool RbtStdRestraintAtoms::isSimple() const { return (from.atoms.size() == 1); }
 
 // Insertion operator for the above
-std::ostream &operator<<(std::ostream &s, const RbtStdRestraintAtoms &std) {
+std::ostream &rxdock::operator<<(std::ostream &s,
+                                 const RbtStdRestraintAtoms &std) {
   s << std.from << " - receptor: dist<" << std.maxDist;
   return s;
 }

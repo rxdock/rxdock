@@ -17,16 +17,19 @@
 #include <fstream>
 #include <sstream>
 
+using namespace rxdock;
+using namespace rxdock::geneticprogram;
+
 std::string RbtGPFitnessFunction::_CT("RbtGPFitnessFunction");
 
 // Constructors
 RbtGPFitnessFunction::RbtGPFitnessFunction()
-    : m_rand(Rbt::GetRbtRand()), objective(0.0), fitness(0.0) {
+    : m_rand(GetRbtRand()), objective(0.0), fitness(0.0) {
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RbtGPFitnessFunction::RbtGPFitnessFunction(const RbtGPFitnessFunction &g)
-    : m_rand(Rbt::GetRbtRand()), objective(g.objective), fitness(g.fitness) {
+    : m_rand(GetRbtRand()), objective(g.objective), fitness(g.fitness) {
   _RBTOBJECTCOUNTER_COPYCONSTR_(_CT);
 }
 

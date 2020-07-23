@@ -16,6 +16,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 std::string RbtSAIdxSF::_CT("RbtSAIdxSF");
 std::string RbtSAIdxSF::_INCR("INCR");
 
@@ -30,7 +32,7 @@ RbtSAIdxSF::RbtSAIdxSF(const std::string &aName)
   // atom type r_s = solvent probe radius (constant 0.6)
   AddParameter(_INCR, m_maxR + 2 * HHS_Solvation::r_s);
   m_spSolvSource = RbtParameterFileSourcePtr(new RbtParameterFileSource(
-      Rbt::GetRbtFileName("data/sf", "solvation_asp.prm")));
+      GetRbtFileName("data/sf", "solvation_asp.prm")));
   Setup();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -82,7 +84,7 @@ void RbtSAIdxSF::SetupReceptor() {
   if (m_bFlexRec) {
     GetReceptor()->SetAtomSelectionFlags(false);
     GetReceptor()->SelectFlexAtoms(); // This leaves all moveable atoms selected
-    Rbt::isHHSSelected isSel;
+    isHHSSelected isSel;
     HHS_SolvationRListIter fIter = std::stable_partition(
         theRSPList.begin(), theRSPList.end(), std::not1(isSel));
     std::copy(fIter, theRSPList.end(), std::back_inserter(theFlexList));
@@ -90,7 +92,7 @@ void RbtSAIdxSF::SetupReceptor() {
     BuildIntraMap(theFlexList);             // flexible-flexible
     BuildIntraMap(theFlexList, theRSPList); // flexible-rigid
     // Store the per-atom invariant free areas for later retrieval
-    Rbt::SaveHHS saveInvariantArea;
+    SaveHHS saveInvariantArea;
     std::for_each(theFlexList.begin(), theFlexList.end(), saveInvariantArea);
     // Index the flexible interaction centers within range of the docking site
     // Use a larger increment
@@ -102,7 +104,7 @@ void RbtSAIdxSF::SetupReceptor() {
 
   BuildIntraMap(theRSPList); // rigid-rigid
   // Store the per-atom invariant free areas for later retrieval
-  Rbt::SaveHHS saveInvariantArea;
+  SaveHHS saveInvariantArea;
   std::for_each(theRSPList.begin(), theRSPList.end(), saveInvariantArea);
 
   if (m_bFlexRec) {
@@ -112,7 +114,7 @@ void RbtSAIdxSF::SetupReceptor() {
     double dist =
         GetR_i(RbtHHSType::HNp) + GetParameter(_INCR).Double() + flexDist;
     Partition(theFlexList, dist);
-    Rbt::OverlapVariableHHS updateVariableArea;
+    OverlapVariableHHS updateVariableArea;
     std::for_each(theFlexList.begin(), theFlexList.end(), updateVariableArea);
     // This nasty piece of code sets the selection flag to true for all atoms
     // that are on the receiving end of a stored variable interaction
@@ -134,7 +136,7 @@ void RbtSAIdxSF::SetupReceptor() {
   // ligands
   RbtDockingSite::isAtomInRange isNearCavity(
       GetWorkSpace()->GetDockingSite()->GetGrid(), 0.0, GetCorrectedRange());
-  Rbt::isAtomSelected isSelected;
+  isAtomSelected isSelected;
   for (HHS_SolvationRListConstIter iter = theRSPList.begin();
        iter != theRSPList.end(); iter++) {
     RbtAtom *pAtom = (*iter)->GetAtom();
@@ -207,7 +209,7 @@ void RbtSAIdxSF::SetupReceptor() {
     std::cout << "Initial site dG(solv)        : " << m_site_0 << " kcal/mol"
               << std::endl;
     // Count the number of undefined types
-    Rbt::isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
+    isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
     int nUndefRec =
         std::count_if(theRSPList.begin(), theRSPList.end(), isUndefined);
     int nUndefSite =
@@ -238,7 +240,7 @@ void RbtSAIdxSF::SetupLigand() {
   theLSPList = CreateInteractionCenters(theLigandList);
   BuildIntraMap(theLSPList);
   // Store the per-atom invariant free areas for later retrieval
-  Rbt::SaveHHS saveInvariantArea;
+  SaveHHS saveInvariantArea;
   std::for_each(theLSPList.begin(), theLSPList.end(), saveInvariantArea);
   int iTrace = GetTrace();
   // The solvation term also describes the intramolecular solvation energy of
@@ -259,7 +261,7 @@ void RbtSAIdxSF::SetupLigand() {
                 << std::endl;
     }
     // Variable distances
-    Rbt::OverlapVariableHHS updateVariableArea;
+    OverlapVariableHHS updateVariableArea;
     std::for_each(theLSPList.begin(), theLSPList.end(), updateVariableArea);
     // Total solv energy for initial ligand conf
     m_lig_0 = TotalEnergy(theLSPList);
@@ -273,7 +275,7 @@ void RbtSAIdxSF::SetupLigand() {
     std::cout << "Initial ligand dG(solv):     " << m_lig_0 << " kcal/mol"
               << std::endl;
     // Count the number of undefined types
-    Rbt::isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
+    isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
     int nUndef =
         std::count_if(theLSPList.begin(), theLSPList.end(), isUndefined);
     std::cout << "#UNDEFINED TYPES (lig)    : " << nUndef << std::endl;
@@ -292,7 +294,7 @@ void RbtSAIdxSF::SetupSolvent() {
         CreateInteractionCenters((*iter)->GetAtomList());
     BuildIntraMap(intnList);
     // Store the per-atom invariant free areas for later retrieval
-    std::for_each(intnList.begin(), intnList.end(), Rbt::SaveHHS());
+    std::for_each(intnList.begin(), intnList.end(), SaveHHS());
     // Variable distances to previous solvent models already processed
     // These are strictly intermolecular distances, but as we consider the total
     // set of solvent models as a single entity for the purposes of partitioning
@@ -317,14 +319,14 @@ void RbtSAIdxSF::SetupSolvent() {
   // the need for the additional solvent penalty term in RbtConstSF. The
   // zero-point score now just represents the desolvation score for isolated
   // solvent models.
-  // std::for_each(theSolventList.begin(),theSolventList.end(),Rbt::OverlapVariableHHS());
+  // std::for_each(theSolventList.begin(),theSolventList.end(),OverlapVariableHHS());
   m_solvent_0 = TotalEnergy(theSolventList);
   if (iTrace > 0) {
     std::cout << std::endl;
     std::cout << "Initial solvent dG(solv):     " << m_solvent_0 << " kcal/mol"
               << std::endl;
     // Count the number of undefined types
-    Rbt::isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
+    isHHSType_eq isUndefined(RbtHHSType::UNDEFINED);
     int nUndef = std::count_if(theSolventList.begin(), theSolventList.end(),
                                isUndefined);
     std::cout << "#UNDEFINED TYPES (sol)    : " << nUndef << std::endl;
@@ -644,7 +646,7 @@ void RbtSAIdxSF::Setup() {
 // interaction centers energy and area are the return values (by reference)
 double RbtSAIdxSF::TotalEnergy(const HHS_SolvationRList &intnCenters) const {
   // return
-  // std::accumulate(intnCenters.begin(),intnCenters.end(),0.0,Rbt::AccumHHSEnergy);
+  // std::accumulate(intnCenters.begin(),intnCenters.end(),0.0,AccumHHSEnergy);
   double energy(0.0);
   for (HHS_SolvationRListConstIter iter = intnCenters.begin();
        iter != intnCenters.end(); ++iter)
@@ -691,7 +693,7 @@ void RbtSAIdxSF::HandleRequest(RbtRequestPtr spRequest) {
   }
 }
 void RbtSAIdxSF::Partition(HHS_SolvationRList &intnCenters, double dist) {
-  // Rbt::PartitionHHS partition(dist);
+  // PartitionHHS partition(dist);
   // std::for_each(intnCenters.begin(),intnCenters.end(),partition);
   for (HHS_SolvationRListIter iter = intnCenters.begin();
        iter != intnCenters.end(); ++iter)
@@ -735,9 +737,9 @@ void RbtSAIdxSF::BuildIntraMap(HHS_SolvationRList &ICList) const {
   for (HHS_SolvationRListIter iIter = ICList.begin(); iIter != ICList.end();
        iIter++) {
     RbtAtom *pAtom1 = (*iIter)->GetAtom();
-    Rbt::isAtom_12Connected is12(pAtom1);
-    Rbt::isAtom_13Connected is13(pAtom1);
-    Rbt::isAtomSelected is14variable;
+    isAtom_12Connected is12(pAtom1);
+    isAtom_13Connected is13(pAtom1);
+    isAtomSelected is14variable;
     // Set the selection flags for all flexible interactions to this atom (1-4
     // variable)
     RbtModel *pModel = pAtom1->GetModelPtr();
@@ -765,9 +767,9 @@ void RbtSAIdxSF::BuildIntraMap(HHS_SolvationRList &ICList1,
   for (HHS_SolvationRListIter iIter = ICList1.begin(); iIter != ICList1.end();
        iIter++) {
     RbtAtom *pAtom1 = (*iIter)->GetAtom();
-    Rbt::isAtom_12Connected is12(pAtom1);
-    Rbt::isAtom_13Connected is13(pAtom1);
-    Rbt::isAtomSelected is14variable;
+    isAtom_12Connected is12(pAtom1);
+    isAtom_13Connected is13(pAtom1);
+    isAtomSelected is14variable;
     // Set the selection flags for all flexible interactions to this atom (1-4
     // variable)
     RbtModel *pModel = pAtom1->GetModelPtr();

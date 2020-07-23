@@ -20,6 +20,8 @@
 #include "RbtError.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
 class RbtConstraint {
 public:
   static std::string _CT;
@@ -65,7 +67,6 @@ typedef std::vector<RbtConstraintPtr>
 typedef RbtConstraintList::iterator RbtConstraintListIter;
 typedef RbtConstraintList::const_iterator RbtConstraintListConstIter;
 
-namespace Rbt {
 RbtConstraintPtr CreateConstraint(RbtCoord &c, double &t, std::string &n,
                                   bool bCount = true);
 void ZeroCounters();
@@ -76,7 +77,6 @@ void ReadConstraintFromMoe(std::istream &ifile, RbtConstraintPtr &cnt,
 void ReadStartMoe(std::istream &ifile);
 void ReadConstraints(std::istream &ii, RbtConstraintList &cl,
                      bool bCount = true);
-} // namespace Rbt
 
 // 7 Feb 2005 (DM, Enspiral Discovery)
 // New constraint type - any heavy atom
@@ -144,5 +144,7 @@ public:
   void AddAtomList(RbtModelPtr, bool bCheck = true);
   static unsigned int counter;
 };
+
+} // namespace rxdock
 
 #endif //_RbtConstraint_H_

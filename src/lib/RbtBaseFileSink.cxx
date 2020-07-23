@@ -13,6 +13,8 @@
 #include "RbtBaseFileSink.h"
 #include "RbtFileError.h"
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 // RbtBaseFileSink::RbtBaseFileSink(const char* fileName) :

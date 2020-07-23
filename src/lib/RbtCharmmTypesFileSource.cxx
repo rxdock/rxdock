@@ -12,6 +12,8 @@
 
 #include "RbtCharmmTypesFileSource.h"
 
+using namespace rxdock;
+
 // Constructors
 RbtCharmmTypesFileSource::RbtCharmmTypesFileSource(const char *fileName)
     : RbtBaseFileSource(fileName) {

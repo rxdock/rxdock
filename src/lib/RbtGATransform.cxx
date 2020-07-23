@@ -16,6 +16,8 @@
 #include "RbtWorkSpace.h"
 #include <iomanip>
 
+using namespace rxdock;
+
 std::string RbtGATransform::_CT("RbtGATransform");
 std::string RbtGATransform::_NEW_FRACTION("NEW_FRACTION");
 std::string RbtGATransform::_PCROSSOVER("PCROSSOVER");
@@ -28,7 +30,7 @@ std::string RbtGATransform::_NCONVERGENCE("NCONVERGENCE");
 std::string RbtGATransform::_HISTORY_FREQ("HISTORY_FREQ");
 
 RbtGATransform::RbtGATransform(const std::string &strName)
-    : RbtBaseBiMolTransform(_CT, strName), m_rand(Rbt::GetRbtRand()) {
+    : RbtBaseBiMolTransform(_CT, strName), m_rand(GetRbtRand()) {
   AddParameter(_NEW_FRACTION, 0.5);
   AddParameter(_PCROSSOVER, 0.4);
   AddParameter(_XOVERMUT, true);

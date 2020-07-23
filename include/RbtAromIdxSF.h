@@ -20,6 +20,8 @@
 #include "RbtBaseInterSF.h"
 #include "RbtPlane.h"
 
+namespace rxdock {
+
 class RbtAromIdxSF : public RbtBaseInterSF,
                      public RbtBaseIdxSF,
                      public RbtAnnotationHandler {
@@ -117,5 +119,7 @@ private:
   mutable double m_pp; // pi-pi score
   double m_threshold;
 };
+
+} // namespace rxdock
 
 #endif //_RBTAROMIDXSF_H_

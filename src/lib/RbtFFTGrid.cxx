@@ -18,6 +18,8 @@
 #include "RbtFFTGrid.h"
 #include "RbtFileError.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtFFTGrid::_CT("RbtFFTGrid");
 
@@ -299,17 +301,17 @@ void RbtFFTGrid::OwnWrite(std::ostream &ostr) const {
   // on read
   const char *const gridTitle = _CT.c_str();
   int length = strlen(gridTitle);
-  Rbt::WriteWithThrow(ostr, (const char *)&length, sizeof(length));
-  Rbt::WriteWithThrow(ostr, gridTitle, length);
+  WriteWithThrow(ostr, (const char *)&length, sizeof(length));
+  WriteWithThrow(ostr, gridTitle, length);
 }
 
 // Protected method for reading data members for this class from binary stream
 void RbtFFTGrid::OwnRead(std::istream &istr) {
   // Read title
   int length;
-  Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
+  ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *gridTitle = new char[length + 1];
-  Rbt::ReadWithThrow(istr, gridTitle, length);
+  ReadWithThrow(istr, gridTitle, length);
   // Add null character to end of string
   gridTitle[length] = '\0';
   // Compare title with class name

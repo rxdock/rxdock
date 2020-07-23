@@ -16,6 +16,8 @@
 #include "RbtBaseGrid.h"
 #include "RbtSATypes.h"
 
+namespace rxdock {
+
 // typedefs are in RbtSATypes.h
 // rest of the class architecture from RbtNonBondedGrid.h
 // but instead RbtAtom HHS_Solvation is used as operand
@@ -60,4 +62,7 @@ private:
 };
 
 typedef SmartPtr<RbtNonBondedHHSGrid> RbtNonBondedHHSGridPtr;
+
+} // namespace rxdock
+
 #endif // _RBTNONBONDEDHHSGRID_H_

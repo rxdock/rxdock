@@ -18,6 +18,8 @@
 
 #include "RbtBaseSF.h"
 
+namespace rxdock {
+
 // Only check SF aggregate assertions in debug build
 #ifdef _NDEBUG
 const RbtBool SFAGG_CHECK = false;
@@ -105,5 +107,7 @@ typedef SmartPtr<RbtSFAgg> RbtSFAggPtr;        // Smart pointer
 typedef std::vector<RbtSFAggPtr> RbtSFAggList; // Vector of smart pointers
 typedef RbtSFAggList::iterator RbtSFAggListIter;
 typedef RbtSFAggList::const_iterator RbtSFAggListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTSFAGG_H_

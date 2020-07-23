@@ -17,6 +17,8 @@
 #include "RbtBaseGrid.h"
 #include "RbtFileError.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtBaseGrid::_CT("RbtBaseGrid");
 
@@ -156,8 +158,8 @@ void RbtBaseGrid::GetSphereIndices(const RbtCoord &c, double radius,
 
   // Iterate over the cube defined by the coord and the radius
   // without exceeding the limits of the pad region
-  RbtCoord cubeMin = Rbt::Max(c - radius, m_padMin);
-  RbtCoord cubeMax = Rbt::Min(c + radius, m_padMax);
+  RbtCoord cubeMin = Max(c - radius, m_padMin);
+  RbtCoord cubeMax = Min(c + radius, m_padMax);
 
   // Convert to array indices
   // DM 16 Apr 1999 - check again for indices out of range
@@ -232,8 +234,8 @@ void RbtBaseGrid::OwnWrite(std::ostream &ostr) const {
   // on read
   const char *const gridTitle = _CT.c_str();
   int length = strlen(gridTitle);
-  Rbt::WriteWithThrow(ostr, (const char *)&length, sizeof(length));
-  Rbt::WriteWithThrow(ostr, gridTitle, length);
+  WriteWithThrow(ostr, (const char *)&length, sizeof(length));
+  WriteWithThrow(ostr, gridTitle, length);
 
   // Write all the data members
   // The RbtCoord::Write method doesn't throw an error, but we can live with
@@ -243,29 +245,29 @@ void RbtBaseGrid::OwnWrite(std::ostream &ostr) const {
   m_step.Write(ostr);
   m_padMin.Write(ostr);
   m_padMax.Write(ostr);
-  Rbt::WriteWithThrow(ostr, (const char *)&m_NX, sizeof(m_NX));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_NY, sizeof(m_NY));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_NZ, sizeof(m_NZ));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_N, sizeof(m_N));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_SX, sizeof(m_SX));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_SY, sizeof(m_SY));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_SZ, sizeof(m_SZ));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_NPad, sizeof(m_NPad));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_nXMin, sizeof(m_nXMin));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_nXMax, sizeof(m_nXMax));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_nYMin, sizeof(m_nYMin));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_nYMax, sizeof(m_nYMax));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_nZMin, sizeof(m_nZMin));
-  Rbt::WriteWithThrow(ostr, (const char *)&m_nZMax, sizeof(m_nZMax));
+  WriteWithThrow(ostr, (const char *)&m_NX, sizeof(m_NX));
+  WriteWithThrow(ostr, (const char *)&m_NY, sizeof(m_NY));
+  WriteWithThrow(ostr, (const char *)&m_NZ, sizeof(m_NZ));
+  WriteWithThrow(ostr, (const char *)&m_N, sizeof(m_N));
+  WriteWithThrow(ostr, (const char *)&m_SX, sizeof(m_SX));
+  WriteWithThrow(ostr, (const char *)&m_SY, sizeof(m_SY));
+  WriteWithThrow(ostr, (const char *)&m_SZ, sizeof(m_SZ));
+  WriteWithThrow(ostr, (const char *)&m_NPad, sizeof(m_NPad));
+  WriteWithThrow(ostr, (const char *)&m_nXMin, sizeof(m_nXMin));
+  WriteWithThrow(ostr, (const char *)&m_nXMax, sizeof(m_nXMax));
+  WriteWithThrow(ostr, (const char *)&m_nYMin, sizeof(m_nYMin));
+  WriteWithThrow(ostr, (const char *)&m_nYMax, sizeof(m_nYMax));
+  WriteWithThrow(ostr, (const char *)&m_nZMin, sizeof(m_nZMin));
+  WriteWithThrow(ostr, (const char *)&m_nZMax, sizeof(m_nZMax));
 }
 
 // Protected method for reading data members for this class from binary stream
 void RbtBaseGrid::OwnRead(std::istream &istr) {
   // Read title
   int length;
-  Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
+  ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *gridTitle = new char[length + 1];
-  Rbt::ReadWithThrow(istr, gridTitle, length);
+  ReadWithThrow(istr, gridTitle, length);
   // Add null character to end of string
   gridTitle[length] = '\0';
   // Compare title with class name
@@ -284,20 +286,20 @@ void RbtBaseGrid::OwnRead(std::istream &istr) {
   m_step.Read(istr);
   m_padMin.Read(istr);
   m_padMax.Read(istr);
-  Rbt::ReadWithThrow(istr, (char *)&m_NX, sizeof(m_NX));
-  Rbt::ReadWithThrow(istr, (char *)&m_NY, sizeof(m_NY));
-  Rbt::ReadWithThrow(istr, (char *)&m_NZ, sizeof(m_NZ));
-  Rbt::ReadWithThrow(istr, (char *)&m_N, sizeof(m_N));
-  Rbt::ReadWithThrow(istr, (char *)&m_SX, sizeof(m_SX));
-  Rbt::ReadWithThrow(istr, (char *)&m_SY, sizeof(m_SY));
-  Rbt::ReadWithThrow(istr, (char *)&m_SZ, sizeof(m_SZ));
-  Rbt::ReadWithThrow(istr, (char *)&m_NPad, sizeof(m_NPad));
-  Rbt::ReadWithThrow(istr, (char *)&m_nXMin, sizeof(m_nXMin));
-  Rbt::ReadWithThrow(istr, (char *)&m_nXMax, sizeof(m_nXMax));
-  Rbt::ReadWithThrow(istr, (char *)&m_nYMin, sizeof(m_nYMin));
-  Rbt::ReadWithThrow(istr, (char *)&m_nYMax, sizeof(m_nYMax));
-  Rbt::ReadWithThrow(istr, (char *)&m_nZMin, sizeof(m_nZMin));
-  Rbt::ReadWithThrow(istr, (char *)&m_nZMax, sizeof(m_nZMax));
+  ReadWithThrow(istr, (char *)&m_NX, sizeof(m_NX));
+  ReadWithThrow(istr, (char *)&m_NY, sizeof(m_NY));
+  ReadWithThrow(istr, (char *)&m_NZ, sizeof(m_NZ));
+  ReadWithThrow(istr, (char *)&m_N, sizeof(m_N));
+  ReadWithThrow(istr, (char *)&m_SX, sizeof(m_SX));
+  ReadWithThrow(istr, (char *)&m_SY, sizeof(m_SY));
+  ReadWithThrow(istr, (char *)&m_SZ, sizeof(m_SZ));
+  ReadWithThrow(istr, (char *)&m_NPad, sizeof(m_NPad));
+  ReadWithThrow(istr, (char *)&m_nXMin, sizeof(m_nXMin));
+  ReadWithThrow(istr, (char *)&m_nXMax, sizeof(m_nXMax));
+  ReadWithThrow(istr, (char *)&m_nYMin, sizeof(m_nYMin));
+  ReadWithThrow(istr, (char *)&m_nYMax, sizeof(m_nYMax));
+  ReadWithThrow(istr, (char *)&m_nZMin, sizeof(m_nZMin));
+  ReadWithThrow(istr, (char *)&m_nZMax, sizeof(m_nZMax));
 }
 
 ///////////////////////////////////////////////////////////////////////////

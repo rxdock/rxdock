@@ -15,6 +15,8 @@
 #include <cerrno>
 #include <cstdlib>
 
+using namespace rxdock;
+
 std::string RbtStringTokenIter::_CT("RbtStringTokenIter");
 
 ///////////////////

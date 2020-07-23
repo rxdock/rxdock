@@ -20,6 +20,8 @@
 #include "RbtConfig.h"
 #include "RbtVariant.h"
 
+namespace rxdock {
+
 class RbtBaseMolecularDataSource {
 public:
   ////////////////////////////////////////
@@ -92,5 +94,7 @@ private:
   //////////////
   std::string m_strName; // Source identifier string
 };
+
+} // namespace rxdock
 
 #endif //_RBTBASEMOLECULARDATASOURCE_H_

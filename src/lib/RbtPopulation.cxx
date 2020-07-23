@@ -15,10 +15,12 @@
 #include "RbtDockingError.h"
 #include <algorithm>
 
+using namespace rxdock;
+
 std::string RbtPopulation::_CT("RbtPopulation");
 
 RbtPopulation::RbtPopulation(RbtChromElement *pChr, int size, RbtBaseSF *pSF)
-    : m_size(size), m_c(2.0), m_pSF(pSF), m_rand(Rbt::GetRbtRand()),
+    : m_size(size), m_c(2.0), m_pSF(pSF), m_rand(GetRbtRand()),
       m_scoreMean(0.0), m_scoreVariance(0.0) {
   if (pChr == nullptr) {
     throw RbtBadArgument(
@@ -52,7 +54,7 @@ void RbtPopulation::SetSF(RbtBaseSF *pSF) {
   for (RbtGenomeListIter iter = m_pop.begin(); iter != m_pop.end(); ++iter) {
     (*iter)->SetScore(m_pSF);
   }
-  std::stable_sort(m_pop.begin(), m_pop.end(), Rbt::GenomeCmp_Score());
+  std::stable_sort(m_pop.begin(), m_pop.end(), GenomeCmp_Score());
   EvaluateRWFitness();
 }
 
@@ -83,8 +85,8 @@ void RbtPopulation::GAstep(int nReplicates, double relStepSize,
     RbtGenomePtr child2 = new RbtGenome(*father);
     // Crossover
     if (m_rand.GetRandom01() < pcross) {
-      Rbt::Crossover(father->GetChrom(), mother->GetChrom(), child1->GetChrom(),
-                     child2->GetChrom());
+      Crossover(father->GetChrom(), mother->GetChrom(), child1->GetChrom(),
+                child2->GetChrom());
       // Cauchy mutation following crossover
       if (xovermut) {
         child1->GetChrom()->CauchyMutate(0.0, relStepSize);
@@ -159,16 +161,16 @@ void RbtPopulation::MergeNewPop(RbtGenomeList &newPop,
   for (RbtGenomeListIter iter = newPop.begin(); iter != newPop.end(); ++iter) {
     (*iter)->SetScore(m_pSF);
   }
-  std::stable_sort(newPop.begin(), newPop.end(), Rbt::GenomeCmp_Score());
+  std::stable_sort(newPop.begin(), newPop.end(), GenomeCmp_Score());
 
   RbtGenomeList mergedPop;
   mergedPop.reserve(m_pop.size() + newPop.size());
   // Merge pops by score
   std::merge(m_pop.begin(), m_pop.end(), newPop.begin(), newPop.end(),
-             std::back_inserter(mergedPop), Rbt::GenomeCmp_Score());
+             std::back_inserter(mergedPop), GenomeCmp_Score());
   // Remove neighbouring duplicates by equality of chromosome element values
   RbtGenomeListIter end = std::unique(mergedPop.begin(), mergedPop.end(),
-                                      Rbt::isGenome_eq(equalityThreshold));
+                                      isGenome_eq(equalityThreshold));
   mergedPop.erase(end, mergedPop.end());
   m_pop.clear();
   end = (mergedPop.size() > m_size) ? (mergedPop.begin() + m_size)

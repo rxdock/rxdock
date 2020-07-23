@@ -19,6 +19,8 @@
 #include "RbtAtom.h"
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 class RbtAnnotation {
 public:
   ////////////////////////////////////////
@@ -88,9 +90,9 @@ typedef RbtAnnotationList::iterator RbtAnnotationListIter;
 typedef RbtAnnotationList::const_iterator RbtAnnotationListConstIter;
 
 ///////////////////////////////////////////////
-// Non-member functions (in Rbt namespace)
+// Non-member functions (in rxdock namespace)
 //////////////////////////////////////////
-namespace Rbt {
+
 ////////////////////////////////////////////////////////
 // Comparison functions for sorting RbtAnnotation* containers
 // For use by STL sort algorithms
@@ -105,5 +107,7 @@ public:
            pAnn2->GetAtom2Ptr()->GetAtomId();
   }
 };
-} // namespace Rbt
+
+} // namespace rxdock
+
 #endif //_RBTANNOTATION_H_

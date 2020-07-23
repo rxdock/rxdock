@@ -19,6 +19,8 @@
 
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 // useful typedefs
 typedef std::string RbtFileRec;
 typedef std::vector<RbtFileRec> RbtFileRecList;
@@ -97,5 +99,7 @@ private:
   bool m_bMultiRec; // Is file multi-record ?
   std::string m_strRecDelim; // Record delimiter
 };
+
+} // namespace rxdock
 
 #endif //_RBTBASEFILESOURCE_H_

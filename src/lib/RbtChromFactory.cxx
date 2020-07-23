@@ -20,6 +20,8 @@
 #include "RbtReceptorFlexData.h"
 #include "RbtSolventFlexData.h"
 
+using namespace rxdock;
+
 RbtChromFactory::RbtChromFactory() { m_pChrom = new RbtChrom(); }
 
 RbtChromElement *RbtChromFactory::GetChrom() const { return m_pChrom; }
@@ -43,11 +45,11 @@ void RbtChromFactory::VisitReceptorFlexData(RbtReceptorFlexData *pFlexData) {
 
     // Find all the terminal OH and NH3+ bonds within range of the docking
     // volume
-    RbtBondList rotBondList = Rbt::GetRotatableBondList(pModel->GetBondList());
+    RbtBondList rotBondList = GetRotatableBondList(pModel->GetBondList());
     RbtDockingSite::isAtomInRange bIsInRange(pDockSite->GetGrid(), 0.0,
                                              flexDistance);
-    Rbt::isBondToOH isOH;
-    Rbt::isBondToNH3 isNH3;
+    isBondToOH isOH;
+    isBondToNH3 isNH3;
     RbtBondList modelMutatorBondList;
     RbtAtomList noTetheredAtoms;
     for (RbtBondListConstIter iter = rotBondList.begin();
@@ -101,7 +103,7 @@ void RbtChromFactory::VisitLigandFlexData(RbtLigandFlexData *pFlexData) {
 
     RbtAtomList tetheredAtoms = pModel->GetTetheredAtomList();
     RbtBondList rotBondList =
-        Rbt::GetBondList(pModel->GetBondList(), Rbt::isBondRotatable());
+        GetBondListWithPredicate(pModel->GetBondList(), isBondRotatable());
 
     // If we are in tethered mode, ensure the step size is not larger than the
     // tethered range

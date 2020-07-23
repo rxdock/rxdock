@@ -23,7 +23,14 @@
 #include "RbtParameterFileSource.h"
 #include "RbtSmarts.h"
 
+using namespace rxdock;
+
+namespace rxdock {
+
 void print_atoms(RbtAtomList &atoms, std::ostringstream &ost);
+
+} // namespace rxdock
+
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
@@ -38,7 +45,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName);
+  PrintStdHeader(std::cout, strExeName);
 
   // Command line arguments and default values
   std::string strLigandMdlFile;
@@ -169,7 +176,7 @@ int main(int argc, char *argv[]) {
     // for the reference structure. Use to prealign each ligand with the
     // reference.
     RbtAtomList tetheredAtomList(*(tetherAtoms.begin()));
-    RbtPrincipalAxes refAxes = Rbt::GetPrincipalAxes(tetheredAtomList);
+    RbtPrincipalAxes refAxes = GetPrincipalAxesOfAtoms(tetheredAtomList);
 
     // Prepare the SD file sink for saving the docked conformations
     // for each ligand
@@ -188,9 +195,9 @@ int main(int argc, char *argv[]) {
     // Variants describing the library version, exe version,
     // parameter file, and current directory
     // Will be stored in the ligand SD files
-    RbtVariant vLib(Rbt::GetProduct() + "/" + Rbt::GetVersion());
-    RbtVariant vExe(strExeName + "/" + Rbt::GetVersion());
-    RbtVariant vDir(Rbt::GetCurrentWorkingDirectory());
+    RbtVariant vLib(GetProduct() + "/" + GetProgramVersion());
+    RbtVariant vExe(strExeName + "/" + GetProgramVersion());
+    RbtVariant vDir(GetCurrentWorkingDirectory());
     ///////////////////////////////////
     // MAIN LOOP OVER LIGAND RECORDS
     ///////////////////////////////////
@@ -218,7 +225,7 @@ int main(int argc, char *argv[]) {
 
       // DM 26 Jul 1999 - only read the largest segment
       //(guaranteed to be called H)
-      spMdlFileSource->SetSegmentFilterMap(Rbt::ConvertStringToSegmentMap("H"));
+      spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
 
       if (spMdlFileSource->isDataFieldPresent("Name"))
         std::cout << "NAME:   " << spMdlFileSource->GetDataValue("Name")
@@ -250,18 +257,18 @@ int main(int argc, char *argv[]) {
         // DM 1 Jul 2002 - prealign each ligand with the reference tether
         // Calculate quat needed to overlay principal axes of tethered fragment
         // with reference tether
-        RbtPrincipalAxes prAxes = Rbt::GetPrincipalAxes(*alli);
-        RbtQuat q = Rbt::GetQuatFromAlignAxes(prAxes, refAxes);
+        RbtPrincipalAxes prAxes = GetPrincipalAxesOfAtoms(*alli);
+        RbtQuat q = GetQuatFromAlignAxes(prAxes, refAxes);
         // Apply the transformation to the whole ligand
         // 1. Translate COM of tethered fragment to the origin
         // 2. Perform the rotation
         // 3. Translate COM of tethered fragment to reference tether COM
         std::for_each(ligAtomList.begin(), ligAtomList.end(),
-                      Rbt::TranslateAtom(-prAxes.com));
+                      TranslateAtom(-prAxes.com));
         std::for_each(ligAtomList.begin(), ligAtomList.end(),
-                      Rbt::RotateAtomUsingQuat(q));
+                      RotateAtomUsingQuat(q));
         std::for_each(ligAtomList.begin(), ligAtomList.end(),
-                      Rbt::TranslateAtom(refAxes.com));
+                      TranslateAtom(refAxes.com));
         ///////////////////////////////////
 
         std::ostringstream ost;
@@ -293,7 +300,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void print_atoms(RbtAtomList &atoms, std::ostringstream &ost) {
+void rxdock::print_atoms(RbtAtomList &atoms, std::ostringstream &ost) {
   ost.clear();
   for (int iter = 0; iter < atoms.size(); iter++) {
     ost << atoms[iter]->GetAtomId();

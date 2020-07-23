@@ -16,6 +16,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtNmrSF::_CT("RbtNmrSF");
 std::string RbtNmrSF::_FILENAME("FILENAME");
@@ -60,9 +62,11 @@ void RbtNmrSF::SetupReceptor() {
   // If we are using an implicit hydrogen model, need to include extended
   // carbons (xc) also
   RbtAtomList recepAtomList = GetReceptor()->GetAtomList();
-  RbtAtomList nphList = Rbt::GetAtomList(recepAtomList, Rbt::isAtomicNo_eq(1));
-  nphList = Rbt::GetAtomList(nphList, std::not1(Rbt::isAtomHBondDonor()));
-  RbtAtomList xcList = Rbt::GetAtomList(recepAtomList, Rbt::isAtomExtended());
+  RbtAtomList nphList =
+      GetAtomListWithPredicate(recepAtomList, isAtomicNo_eq(1));
+  nphList = GetAtomListWithPredicate(nphList, std::not1(isAtomHBondDonor()));
+  RbtAtomList xcList =
+      GetAtomListWithPredicate(recepAtomList, isAtomExtended());
   std::copy(xcList.begin(), xcList.end(), std::back_inserter(nphList));
 
   // Now limit the list to those atoms in the vicinity of the docking site
@@ -102,7 +106,7 @@ void RbtNmrSF::SetupScore() {
 
   // Create a restraint filesource with the appropriate filename
   std::string strRestrFile =
-      Rbt::GetRbtFileName("data/receptors", GetParameter(_FILENAME));
+      GetRbtFileName("data/receptors", GetParameter(_FILENAME));
   RbtNmrRestraintFileSourcePtr spRestrSource(
       new RbtNmrRestraintFileSource(strRestrFile));
   std::string strName = GetName();
@@ -219,7 +223,7 @@ double RbtNmrSF::RawScore() const {
 double RbtNmrSF::NoeDistance(const RbtNoeRestraintAtoms &noe) const {
   // Simple, unambiguous restraint - just return the interatomic distance
   if (noe.isSimple()) {
-    return Rbt::BondLength(noe.from.atoms.front(), noe.to.atoms.front());
+    return BondLength(noe.from.atoms.front(), noe.to.atoms.front());
   }
   // More complex cases
   // Compile the list of coords at each end
@@ -228,16 +232,16 @@ double RbtNmrSF::NoeDistance(const RbtNoeRestraintAtoms &noe) const {
   // store all coords
   else {
     RbtCoordList fromCoords;
-    if (noe.from.type == Rbt::NOE_MEAN)
-      fromCoords.push_back(Rbt::GetCenterOfMass(noe.from.atoms));
+    if (noe.from.type == NOE_MEAN)
+      fromCoords.push_back(GetCenterOfAtomicMass(noe.from.atoms));
     else
-      fromCoords = Rbt::GetCoordList(noe.from.atoms);
+      fromCoords = GetCoordList(noe.from.atoms);
 
     RbtCoordList toCoords;
-    if (noe.to.type == Rbt::NOE_MEAN)
-      toCoords.push_back(Rbt::GetCenterOfMass(noe.to.atoms));
+    if (noe.to.type == NOE_MEAN)
+      toCoords.push_back(GetCenterOfAtomicMass(noe.to.atoms));
     else
-      toCoords = Rbt::GetCoordList(noe.to.atoms);
+      toCoords = GetCoordList(noe.to.atoms);
 
     double dist_sq(0.0); // Keep track of minimum distance**2
     // Iterate over coords in each list and return the appropriate distance**2
@@ -251,21 +255,19 @@ double RbtNmrSF::NoeDistance(const RbtNoeRestraintAtoms &noe) const {
       double dist1_sq(0.0);
       for (RbtCoordListConstIter tIter = toCoords.begin();
            tIter != toCoords.end(); tIter++) {
-        double r12_sq = Rbt::Length2(*fIter, *tIter);
+        double r12_sq = Length2(*fIter, *tIter);
         dist1_sq = (tIter == toCoords.begin())
                        ? r12_sq
-                       : (noe.to.type == Rbt::NOE_AND)
-                             ? std::max(dist1_sq, r12_sq)
-                             : std::min(dist1_sq, r12_sq);
+                       : (noe.to.type == NOE_AND) ? std::max(dist1_sq, r12_sq)
+                                                  : std::min(dist1_sq, r12_sq);
       }
       // dist_sq is the appropriate overall distance**2 for all the calculated
       // dist1_sq's i.e. if from.type==NOE_AND, dist_sq is the max of all the
       // dist1_sq's else dist_sq is the min of all the dist1_sq's
       dist_sq = (fIter == fromCoords.begin())
                     ? dist1_sq
-                    : (noe.from.type == Rbt::NOE_AND)
-                          ? std::max(dist_sq, dist1_sq)
-                          : std::min(dist_sq, dist1_sq);
+                    : (noe.from.type == NOE_AND) ? std::max(dist_sq, dist1_sq)
+                                                 : std::min(dist_sq, dist1_sq);
     }
     return std::sqrt(dist_sq);
   }
@@ -277,10 +279,10 @@ double RbtNmrSF::StdDistance(const RbtStdRestraintAtoms &std) const {
   // of the atoms in the list If the restraint end is defined of type OR or AND,
   // store all coords
   RbtCoordList fromCoords;
-  if (std.from.type == Rbt::NOE_MEAN)
-    fromCoords.push_back(Rbt::GetCenterOfMass(std.from.atoms));
+  if (std.from.type == NOE_MEAN)
+    fromCoords.push_back(GetCenterOfAtomicMass(std.from.atoms));
   else
-    fromCoords = Rbt::GetCoordList(std.from.atoms);
+    fromCoords = GetCoordList(std.from.atoms);
 
   double dist_sq(999.9); // Keep track of minimum distance**2
   // Iterate over coords in each list and return the appropriate distance**2
@@ -294,17 +296,17 @@ double RbtNmrSF::StdDistance(const RbtStdRestraintAtoms &std) const {
     const RbtAtomRList &toAtoms = m_spGrid->GetAtomList(*fIter);
     for (RbtAtomRListConstIter tIter = toAtoms.begin(); tIter != toAtoms.end();
          tIter++) {
-      double r12_sq = Rbt::Length2(*fIter, (*tIter)->GetCoords());
+      double r12_sq = Length2(*fIter, (*tIter)->GetCoords());
       dist1_sq =
           (tIter == toAtoms.begin()) ? r12_sq : std::min(dist1_sq, r12_sq);
     }
     // dist_sq is the appropriate overall distance**2 for all the calculated
     // dist1_sq's i.e. if from.type==NOE_AND, dist_sq is the max of all the
     // dist1_sq's else dist_sq is the min of all the dist1_sq's
-    dist_sq = (fIter == fromCoords.begin()) ? dist1_sq
-                                            : (std.from.type == Rbt::NOE_AND)
-                                                  ? std::max(dist_sq, dist1_sq)
-                                                  : std::min(dist_sq, dist1_sq);
+    dist_sq = (fIter == fromCoords.begin())
+                  ? dist1_sq
+                  : (std.from.type == NOE_AND) ? std::max(dist_sq, dist1_sq)
+                                               : std::min(dist_sq, dist1_sq);
   }
   return std::sqrt(dist_sq);
 }

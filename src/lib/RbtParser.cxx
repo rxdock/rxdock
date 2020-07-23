@@ -13,6 +13,8 @@
 #include "RbtParser.h"
 #include "RbtDebug.h"
 
+using namespace rxdock;
+
 std::string RbtParser::_CT("RbtParser");
 RbtParser::RbtParser(const RbtParser &p) { _RBTOBJECTCOUNTER_COPYCONSTR_(_CT); }
 

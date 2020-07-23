@@ -13,6 +13,8 @@
 #include "RbtBaseIntraSF.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtBaseIntraSF::_CT("RbtBaseIntraSF");
 

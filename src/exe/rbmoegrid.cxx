@@ -22,6 +22,10 @@
 #include "RbtSFFactory.h"
 #include "RbtTriposAtomType.h"
 
+using namespace rxdock;
+
+namespace rxdock {
+
 const std::string _ROOT_SF = "SCORE";
 
 // Creates list of probe models
@@ -49,6 +53,8 @@ RbtModelList CreateProbes(std::string anAtomTypeStr) {
   return probes;
 }
 
+} // namespace rxdock
+
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
@@ -63,7 +69,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName);
+  PrintStdHeader(std::cout, strExeName);
 
   cxxopts::Options options(
       strExeName, "rbmoegrid - calculates grids for a given atom type");
@@ -141,21 +147,21 @@ int main(int argc, char *argv[]) {
       RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
       // Set the workspace name to the root of the receptor .prm filename
       std::vector<std::string> componentList =
-          Rbt::ConvertDelimitedStringToList((*strReceptorPrmFilesIter), ".");
+          ConvertDelimitedStringToList((*strReceptorPrmFilesIter), ".");
       std::string wsName = componentList.front();
       spWS->SetName(wsName);
 
       // Read the receptor parameter file
       RbtParameterFileSourcePtr spRecepPrmSource(new RbtParameterFileSource(
-          Rbt::GetRbtFileName("data/receptors", (*strReceptorPrmFilesIter))));
+          GetRbtFileName("data/receptors", (*strReceptorPrmFilesIter))));
       std::cout << std::endl
                 << "RECEPTOR:" << std::endl
                 << spRecepPrmSource->GetFileName() << std::endl
                 << spRecepPrmSource->GetTitle() << std::endl;
 
       // Read the scoring function file
-      RbtParameterFileSourcePtr spSFSource(new RbtParameterFileSource(
-          Rbt::GetRbtFileName("data/sf", strSFFile)));
+      RbtParameterFileSourcePtr spSFSource(
+          new RbtParameterFileSource(GetRbtFileName("data/sf", strSFFile)));
       RbtSFFactoryPtr spSFFactory(
           new RbtSFFactory()); // Factory class for scoring functions
       RbtSFAggPtr spSF(spSFFactory->CreateAggFromFile(
@@ -176,7 +182,7 @@ int main(int argc, char *argv[]) {
 
       // Read docking site from file and register with workspace
       std::string strASFile = spWS->GetName() + ".as";
-      std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
+      std::string strInputFile = GetRbtFileName("data/grids", strASFile);
       // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
       std::ifstream istr(strInputFile.c_str(), std::ios_base::in);

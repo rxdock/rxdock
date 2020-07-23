@@ -25,6 +25,8 @@
 
 #include "RbtBaseGrid.h"
 
+namespace rxdock {
+
 class RbtRealGrid : public RbtBaseGrid {
 public:
   // Class type string
@@ -235,5 +237,7 @@ typedef SmartPtr<RbtRealGrid> RbtRealGridPtr; // Smart pointer
 typedef std::vector<RbtRealGridPtr> RbtRealGridList;
 typedef RbtRealGridList::iterator RbtRealGridListIter;
 typedef RbtRealGridList::const_iterator RbtRealGridListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTREALGRID_H_

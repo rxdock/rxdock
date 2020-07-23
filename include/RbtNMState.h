@@ -13,7 +13,10 @@
 #ifndef _RBTNMSTATE_H_
 #define _RBTNMSTATE_H_
 
-namespace RbtNM {
+namespace rxdock {
+
+namespace neldermead {
+
 /**
  * Optimization state for an optimizer
  */
@@ -29,6 +32,9 @@ template <class DataType, class ParameterType> struct State {
 
   long iteration;
 };
-} // namespace RbtNM
+
+} // namespace neldermead
+
+} // namespace rxdock
 
 #endif /* _RBTNMSTATE_H_ */

@@ -19,6 +19,8 @@
 
 #include "RbtCoord.h"
 
+namespace rxdock {
+
 class RbtQuat {
   ///////////////////////////////////////////////
   // Data members
@@ -194,9 +196,9 @@ typedef RbtQuatList::iterator RbtQuatListIter;
 typedef RbtQuatList::const_iterator RbtQuatListConstIter;
 
 ///////////////////////////////////////////////
-// Non-member functions (in Rbt namespace)
+// Non-member functions (in rxdock namespace)
 //////////////////////////////////////////
-namespace Rbt {
+
 // Returns magnitude of quat (L = Length(Q1))
 inline double Length(const RbtQuat &quat) { return quat.Length(); }
 
@@ -210,6 +212,7 @@ inline double Dot(const RbtQuat &quat1, const RbtQuat &quat2) {
 
 // Returns conjugate (Q1* = Conj(Q1))
 inline RbtQuat Conj(const RbtQuat &quat) { return quat.Conj(); }
-} // namespace Rbt
+
+} // namespace rxdock
 
 #endif //_RBTQUAT_H_

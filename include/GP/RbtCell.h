@@ -17,6 +17,8 @@
 
 #include "RbtGPTypes.h"
 
+namespace rxdock {
+
 class RbtCell {
 public:
   ///////////////////
@@ -87,5 +89,7 @@ typedef SmartPtr<RbtCell> RbtCellPtr;        // Smart pointer
 typedef std::vector<RbtCellPtr> RbtCellList; // Vector of smart pointers
 typedef RbtCellList::iterator RbtCellListIter;
 typedef RbtCellList::const_iterator RbtCellListConstIter;
+
+} // namespace rxdock
 
 #endif //_RbtCell_H_

@@ -18,6 +18,8 @@
 
 #include "RbtBaseInterSF.h"
 
+namespace rxdock {
+
 class RbtRotSF : public RbtBaseInterSF {
 public:
   // Static data member for class type
@@ -43,5 +45,7 @@ private:
   bool bIncNH3;
   bool bIncOH;
 };
+
+} // namespace rxdock
 
 #endif //_RBTROTSF_H_

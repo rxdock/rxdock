@@ -12,6 +12,8 @@
 
 #include "RbtRandLigTransform.h"
 
+using namespace rxdock;
+
 // Static data member for class type
 std::string RbtRandLigTransform::_CT("RbtRandLigTransform");
 // Parameter names
@@ -20,7 +22,7 @@ std::string RbtRandLigTransform::_TORS_STEP("TORS_STEP");
 ////////////////////////////////////////
 // Constructors/destructors
 RbtRandLigTransform::RbtRandLigTransform(const std::string &strName)
-    : RbtBaseUniMolTransform(_CT, strName), m_rand(Rbt::GetRbtRand()) {
+    : RbtBaseUniMolTransform(_CT, strName), m_rand(GetRbtRand()) {
   // Add parameters
   AddParameter(_TORS_STEP, 180);
 #ifdef _DEBUG
@@ -45,7 +47,7 @@ void RbtRandLigTransform::SetupTransform() {
   // Check for undefined ligand
   if (GetLigand().Null())
     return;
-  m_rotableBonds = Rbt::GetRotatableBondList(GetLigand()->GetBondList());
+  m_rotableBonds = GetRotatableBondList(GetLigand()->GetBondList());
 }
 
 ////////////////////////////////////////

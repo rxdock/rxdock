@@ -12,6 +12,8 @@
 
 #include "RbtSolventFlexData.h"
 
+using namespace rxdock;
+
 const std::string &RbtSolventFlexData::_OCCUPANCY = "OCCUPANCY";
 const std::string &RbtSolventFlexData::_OCCUPANCY_STEP = "OCCUPANCY_STEP";
 

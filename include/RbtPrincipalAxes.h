@@ -10,13 +10,15 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-// Principal axes calculation routines (in Rbt namespace)
+// Principal axes calculation routines (in rxdock namespace)
 
 #ifndef _RBTPRINCIPALAXES_H_
 #define _RBTPRINCIPALAXES_H_
 
 #include "RbtAtom.h"
 #include "RbtConfig.h"
+
+namespace rxdock {
 
 // Struct for holding principal axes info
 // Center of mass, three principal axis vectors, three principal moments
@@ -39,21 +41,22 @@ typedef std::vector<RbtPrincipalAxes> RbtPrincipalAxesList;
 typedef RbtPrincipalAxesList::iterator RbtPrincipalAxesListIter;
 typedef RbtPrincipalAxesList::const_iterator RbtPrincipalAxesListConstIter;
 
-namespace Rbt {
 // Calculates principal axes and center of mass for the atoms in the atom list
-RBTDLL_EXPORT RbtPrincipalAxes GetPrincipalAxes(const RbtAtomList &atomList);
+RBTDLL_EXPORT RbtPrincipalAxes
+GetPrincipalAxesOfAtoms(const RbtAtomList &atomList);
 // Calculates principal axes and center of mass for the coords in the coord list
 // (assumes all masses=1)
-RBTDLL_EXPORT RbtPrincipalAxes GetPrincipalAxes(const RbtCoordList &coordList);
+RBTDLL_EXPORT RbtPrincipalAxes
+GetPrincipalAxesOfAtoms(const RbtCoordList &coordList);
 // Special case for water
 RbtPrincipalAxes GetSolventPrincipalAxes(const RbtAtomPtr &oAtom,
                                          const RbtAtomPtr &h1Atom,
                                          const RbtAtomPtr &h2Atom);
 // DM 17 Jul 2001 - returns the quaternion used to effect the transformation
-RbtQuat
-AlignPrincipalAxes(RbtAtomList &atomList,
-                   const RbtPrincipalAxes &alignAxes = RbtPrincipalAxes(),
-                   bool bAlignCOM = true);
+RbtQuat AlignPrincipalAxesOfAtoms(
+    RbtAtomList &atomList,
+    const RbtPrincipalAxes &alignAxes = RbtPrincipalAxes(),
+    bool bAlignCOM = true);
 // Returns the quaternion required to align principal axes with reference axes
 RBTDLL_EXPORT RbtQuat GetQuatFromAlignAxes(const RbtPrincipalAxes &prAxes,
                                            const RbtPrincipalAxes &refAxes);
@@ -61,6 +64,7 @@ RBTDLL_EXPORT RbtQuat GetQuatFromAlignAxes(const RbtPrincipalAxes &prAxes,
 // Vectors do not have to be unit length.
 // RbtBadArgument exception is thrown if either v or ref is zero length.
 RbtQuat GetQuatFromAlignVectors(const RbtVector &v, const RbtVector &ref);
-} // namespace Rbt
+
+} // namespace rxdock
 
 #endif //_RBTPRINCIPALAXES_H_

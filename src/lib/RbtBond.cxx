@@ -12,6 +12,8 @@
 
 #include "RbtBond.h"
 
+using namespace rxdock;
+
 // Default constructor
 // Doesn't make much sense to have a 'default' bond
 // but allow it for the time being.
@@ -96,7 +98,7 @@ RbtBond &RbtBond::operator=(const RbtBond &bond) {
 ///////////////////////////////////////////////
 
 // Insertion operator (primarily for debugging)
-std::ostream &operator<<(std::ostream &s, const RbtBond &bond) {
+std::ostream &rxdock::operator<<(std::ostream &s, const RbtBond &bond) {
   RbtAtomPtr spAtom1 = bond.m_spAtom1;
   RbtAtomPtr spAtom2 = bond.m_spAtom2;
 
@@ -115,20 +117,20 @@ std::ostream &operator<<(std::ostream &s, const RbtBond &bond) {
 ////////////////
 
 // Returns bond length
-double RbtBond::Length() const { return Rbt::BondLength(m_spAtom1, m_spAtom2); }
+double RbtBond::Length() const { return BondLength(m_spAtom1, m_spAtom2); }
 
 //////////////////////////////////////////
-// Non-member functions (in Rbt namespace)
+// Non-member functions (in rxdock namespace)
 //////////////////////////////////////////
 
 // Is bond rotatable ?
-bool Rbt::isBondRotatable::operator()(RbtBond *pBond) const {
+bool rxdock::isBondRotatable::operator()(RbtBond *pBond) const {
   // Useful predicates
-  Rbt::isFFType_eq bIsC_SP2("C_SP2");
-  Rbt::isFFType_eq bIsC_SP("C_SP");
-  Rbt::isFFType_eq bIsN_TRI("N_TRI");
-  Rbt::isFFType_eq bIsN_SP2P("N_SP2+");
-  Rbt::isFFType_eq bIsM_SP("N_SP");
+  isFFType_eq bIsC_SP2("C_SP2");
+  isFFType_eq bIsC_SP("C_SP");
+  isFFType_eq bIsN_TRI("N_TRI");
+  isFFType_eq bIsN_SP2P("N_SP2+");
+  isFFType_eq bIsM_SP("N_SP");
 
   // Eliminate cyclic bonds
   if (pBond->GetCyclicFlag())
@@ -208,7 +210,7 @@ bool Rbt::isBondRotatable::operator()(RbtBond *pBond) const {
 // DM 24 Sep 2001
 // Is bond to a terminal NH3+ group?
 // Use to filter rotable bond list for scoring function purposes
-bool Rbt::isBondToNH3::operator()(RbtBond *pBond) const {
+bool rxdock::isBondToNH3::operator()(RbtBond *pBond) const {
   RbtAtomPtr spAtom1(pBond->GetAtom1Ptr());
   RbtAtomPtr spAtom2(pBond->GetAtom2Ptr());
   if (((spAtom1->GetAtomicNo() == 7) &&
@@ -225,7 +227,7 @@ bool Rbt::isBondToNH3::operator()(RbtBond *pBond) const {
 }
 
 // Is bond to a terminal OH group?
-bool Rbt::isBondToOH::operator()(RbtBond *pBond) const {
+bool rxdock::isBondToOH::operator()(RbtBond *pBond) const {
   RbtAtomPtr spAtom1(pBond->GetAtom1Ptr());
   RbtAtomPtr spAtom2(pBond->GetAtom2Ptr());
   if (((spAtom1->GetAtomicNo() == 8) &&
@@ -243,15 +245,15 @@ bool Rbt::isBondToOH::operator()(RbtBond *pBond) const {
 
 // DM 7 June 1999
 // Is bond an amide bond?
-bool Rbt::isBondAmide::operator()(RbtBond *pBond) const {
+bool rxdock::isBondAmide::operator()(RbtBond *pBond) const {
   // Useful predicates
-  // Rbt::isFFType_eq bIsC_SP2("C_SP2");
-  // Rbt::isFFType_eq bIsN_TRI("N_TRI");
-  Rbt::isAtomicNo_eq isC(6);
-  Rbt::isAtomicNo_eq isN(7);
-  Rbt::isAtomicNo_eq isO(8);
-  Rbt::isHybridState_eq isSP2(RbtAtom::SP2);
-  Rbt::isHybridState_eq isTRI(RbtAtom::TRI);
+  // isFFType_eq bIsC_SP2("C_SP2");
+  // isFFType_eq bIsN_TRI("N_TRI");
+  isAtomicNo_eq isC(6);
+  isAtomicNo_eq isN(7);
+  isAtomicNo_eq isO(8);
+  isHybridState_eq isSP2(RbtAtom::SP2);
+  isHybridState_eq isTRI(RbtAtom::TRI);
 
   // 07 Nov 2003 (DM) - return false for all cyclic bonds
   // even if they are "amide-like" (e.g. in thymine)
@@ -263,16 +265,16 @@ bool Rbt::isBondAmide::operator()(RbtBond *pBond) const {
 
   if (isC(spAtom1) && isSP2(spAtom1) && isN(spAtom2) && isTRI(spAtom2)) {
     RbtAtomList oxygens =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(spAtom1), isO);
-    int nOSP2 = Rbt::GetNumAtoms(oxygens, isSP2);
+        GetAtomListWithPredicate(GetBondedAtomList(spAtom1), isO);
+    int nOSP2 = GetNumAtomsWithPredicate(oxygens, isSP2);
     // std::cout << "Amide check on " << spAtom1->GetFullAtomName() << " - " <<
     // spAtom2->GetFullAtomName()
     //	 << " #OSP2 = " << nOSP2 << std::endl;
     return (nOSP2 == 1);
   } else if (isC(spAtom2) && isSP2(spAtom2) && isN(spAtom1) && isTRI(spAtom1)) {
     RbtAtomList oxygens =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(spAtom2), isO);
-    int nOSP2 = Rbt::GetNumAtoms(oxygens, isSP2);
+        GetAtomListWithPredicate(GetBondedAtomList(spAtom2), isO);
+    int nOSP2 = GetNumAtomsWithPredicate(oxygens, isSP2);
     // std::cout << "Amide check on " << spAtom2->GetFullAtomName() << " - " <<
     // spAtom1->GetFullAtomName()
     //	 << " #OSP2 = " << nOSP2 << std::endl;
@@ -286,13 +288,14 @@ bool Rbt::isBondAmide::operator()(RbtBond *pBond) const {
 ////////////////////////////////////////////
 
 // Selected bonds
-void Rbt::SetBondSelectionFlags(RbtBondList &bondList, bool bSelected) {
+void rxdock::SetBondSelectionFlagsInList(RbtBondList &bondList,
+                                         bool bSelected) {
   for (RbtBondListIter iter = bondList.begin(); iter != bondList.end(); iter++)
     (*iter)->SetSelectionFlag(bSelected);
 }
 
 // Cyclic bonds
-void Rbt::SetBondCyclicFlags(RbtBondList &bondList, bool bCyclic) {
+void rxdock::SetBondCyclicFlagsInList(RbtBondList &bondList, bool bCyclic) {
   for (RbtBondListIter iter = bondList.begin(); iter != bondList.end(); iter++)
     (*iter)->SetCyclicFlag(bCyclic);
 }

@@ -12,6 +12,8 @@
 
 #include "RbtPdbFileSource.h"
 
+using namespace rxdock;
+
 // Constructors
 RbtPdbFileSource::RbtPdbFileSource(const char *fileName)
     : RbtBaseMolecularFileSource(

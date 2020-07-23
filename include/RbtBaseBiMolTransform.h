@@ -18,6 +18,8 @@
 #include "RbtBaseTransform.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
 class RbtBaseBiMolTransform : public RbtBaseTransform {
 public:
   // Class type string
@@ -70,5 +72,7 @@ private:
   RbtModelPtr m_spLigand;
   RbtModelList m_solventList;
 };
+
+} // namespace rxdock
 
 #endif //_RBTBASEBIMOLTRANSFORM_H_

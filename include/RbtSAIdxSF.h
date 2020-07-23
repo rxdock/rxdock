@@ -23,6 +23,8 @@
 #include "RbtParameterFileSource.h"
 #include "RbtSATypes.h"
 
+namespace rxdock {
+
 class RbtSAIdxSF : public RbtBaseInterSF,
                    public RbtBaseIdxSF,
                    public RbtAnnotationHandler {
@@ -118,5 +120,7 @@ private:
   mutable double m_solvent_bound; // Solvation energy of the bound explicit
                                   // solvent (current conformation)
 };
+
+} // namespace rxdock
 
 #endif // _RBTSAIDXSF_H_

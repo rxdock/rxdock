@@ -22,6 +22,8 @@
 
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 class RbtBaseFileSink {
 public:
   ////////////////////////////////////////
@@ -98,5 +100,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtBaseFileSink> RbtBaseFileSinkPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTBASEFILESINK_H_

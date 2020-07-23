@@ -24,6 +24,8 @@
 #include "RbtVble.h"
 #include <fstream>
 
+namespace rxdock {
+
 typedef std::map<std::string, RbtVblePtr> RbtStringVbleMap; // Map of Vbles
 typedef std::map<int, RbtVblePtr> RbtIntVbleMap;            // Map of Vbles
 typedef RbtStringVbleMap::iterator RbtStringVbleMapIter;
@@ -140,5 +142,7 @@ typedef SmartPtr<RbtContext> RbtContextPtr;        // Smart pointer
 typedef std::vector<RbtContextPtr> RbtContextList; // Vector of smart pointers
 typedef RbtContextList::iterator RbtContextListIter;
 typedef RbtContextList::const_iterator RbtContextListConstIter;
+
+} // namespace rxdock
 
 #endif //_RbtContext_H_

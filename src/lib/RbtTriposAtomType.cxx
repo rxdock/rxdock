@@ -14,6 +14,8 @@
 #include "RbtAtom.h"
 #include "RbtBond.h"
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 
@@ -34,9 +36,9 @@ RbtTriposAtomType::operator()(RbtAtom *pAtom, bool useExtendedTypes) const {
   RbtAtom::eHybridState eState = pAtom->GetHybridState();
   int nImplH = pAtom->GetNumImplicitHydrogens();
   RbtBondMap bondMap;
-  Rbt::isBondAmide bIsAmide;
-  Rbt::isAtomHBondDonor bIsDonor;
-  Rbt::isAtomGuanidiniumCarbon bIsGuan;
+  isBondAmide bIsAmide;
+  isAtomHBondDonor bIsDonor;
+  isAtomGuanidiniumCarbon bIsGuan;
 
   switch (nAtomicNo) {
 

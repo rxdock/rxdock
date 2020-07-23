@@ -14,6 +14,8 @@
 #include "RbtSFRequest.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtBaseObject::_CT("RbtBaseObject");
 std::string RbtBaseObject::_CLASS("CLASS");

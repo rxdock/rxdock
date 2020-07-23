@@ -13,6 +13,8 @@
 #include "RbtLigandFlexData.h"
 #include "RbtChromElement.h"
 
+using namespace rxdock;
+
 const std::string &RbtLigandFlexData::_TRANS_STEP = "TRANS_STEP";
 const std::string &RbtLigandFlexData::_ROT_STEP = "ROT_STEP";
 const std::string &RbtLigandFlexData::_DIHEDRAL_STEP = "DIHEDRAL_STEP";

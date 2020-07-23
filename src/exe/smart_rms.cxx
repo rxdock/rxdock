@@ -24,6 +24,10 @@
 #include "RbtModelError.h"
 #include "RbtSmarts.h"
 
+using namespace rxdock;
+
+namespace rxdock {
+
 typedef std::vector<RbtCoordList> RbtCoordListList;
 typedef RbtCoordListList::iterator RbtCoordListListIter;
 typedef RbtCoordListList::const_iterator RbtCoordListListConstIter;
@@ -36,12 +40,14 @@ double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
   } else {
     double rms(0.0);
     for (int i = 0; i < nCoords; i++) {
-      rms += Rbt::Length2(rc[i], c[i]);
+      rms += Length2(rc[i], c[i]);
     }
     rms = std::sqrt(rms / float(nCoords));
     return rms;
   }
 }
+
+} // namespace rxdock
 
 int main(int argc, char *argv[]) {
   if (argc < 3) {
@@ -80,11 +86,11 @@ int main(int argc, char *argv[]) {
 
   try {
     RbtMolecularFileSourcePtr spRefFileSource(new RbtMdlFileSource(
-        Rbt::GetRbtFileName("data/ligands", strRefSDFile), false, false, true));
+        GetRbtFileName("data/ligands", strRefSDFile), false, false, true));
     // DM 16 June 2006 - remove any solvent fragments from reference
     // The largest fragment in each SD record always has segment name="H"
     // for reasons lost in the mists of rDock history
-    spRefFileSource->SetSegmentFilterMap(Rbt::ConvertStringToSegmentMap("H"));
+    spRefFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
     // Get reference ligand (first record)
     RbtModelPtr spRefModel(new RbtModel(spRefFileSource));
     RbtCoordListList cll;
@@ -104,7 +110,7 @@ int main(int argc, char *argv[]) {
     for (RbtAtomListListConstIter iter = pathset.begin(); iter != pathset.end();
          iter++) {
       RbtCoordList coords;
-      Rbt::GetCoordList(*iter, coords);
+      GetCoordList(*iter, coords);
       cll.push_back(coords);
     }
     int nCoords = cll.front().size();
@@ -119,8 +125,7 @@ int main(int argc, char *argv[]) {
     // MAIN LOOP OVER LIGAND RECORDS
     ///////////////////////////////////
     RbtMolecularFileSourcePtr spMdlFileSource(new RbtMdlFileSource(
-        Rbt::GetRbtFileName("data/ligands", strInputSDFile), false, false,
-        true));
+        GetRbtFileName("data/ligands", strInputSDFile), false, false, true));
     RbtMolecularFileSinkPtr spMdlFileSink;
     if (bOutput) {
       spMdlFileSink = new RbtMdlFileSink(strOutputSDFile, RbtModelPtr());
@@ -133,7 +138,7 @@ int main(int argc, char *argv[]) {
         continue;
       }
       // DM 16 June 2006 - remove any solvent fragments from each record
-      spMdlFileSource->SetSegmentFilterMap(Rbt::ConvertStringToSegmentMap("H"));
+      spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
       RbtModelPtr spModel(new RbtModel(spMdlFileSource));
       RbtAtomListList pathset1 = DT::QueryModel(spModel, strSmarts, strSmiles);
       // std::cout << "SMILES: " << strSmiles << std::endl;
@@ -145,7 +150,7 @@ int main(int argc, char *argv[]) {
       // atom numbering path as we have already stored all the alternative
       // numbering schemes for the reference structure
       RbtCoordList coords;
-      Rbt::GetCoordList(pathset1.front(), coords);
+      GetCoordList(pathset1.front(), coords);
 
       if (coords.size() ==
           nCoords) { // Only calculate RMSD if atom count is same as reference

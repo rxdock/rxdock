@@ -19,6 +19,8 @@
 
 #include <cmath>
 
+namespace rxdock {
+
 class RbtCommand {
 public:
   virtual RbtReturnType Execute() = 0;
@@ -182,4 +184,7 @@ private:
   RbtReturnType Arg[2];
   std::string NameArg[2];
 };
+
+} // namespace rxdock
+
 #endif //_RbtCommand_H_

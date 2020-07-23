@@ -20,6 +20,8 @@
 #include "RbtPopulation.h"
 #include "RbtWorkSpace.h"
 
+namespace rxdock {
+
 class RbtBiMolWorkSpace : public RbtWorkSpace {
   enum eModelID {
     RECEPTOR = 0,
@@ -85,5 +87,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtBiMolWorkSpace> RbtBiMolWorkSpacePtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTBIMOLWORKSPACE_H_

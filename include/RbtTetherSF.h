@@ -17,6 +17,8 @@
 
 #include "RbtBaseInterSF.h"
 
+namespace rxdock {
+
 class RbtTetherSF : public RbtBaseInterSF {
 public:
   // Class type string
@@ -42,5 +44,7 @@ private:
   std::vector<int> m_tetherAtomList;
   RbtCoordList m_tetherCoords;
 };
+
+} // namespace rxdock
 
 #endif //_RBTTETHERSF_H_

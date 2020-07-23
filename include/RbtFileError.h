@@ -17,6 +17,8 @@
 
 #include "RbtError.h"
 
+namespace rxdock {
+
 const std::string IDS_FILE_ERROR = "RBT_FILE_ERROR";
 const std::string IDS_FILE_READ_ERROR = "RBT_FILE_READ_ERROR";
 const std::string IDS_FILE_WRITE_ERROR = "RBT_FILE_WRITE_ERROR";
@@ -107,5 +109,7 @@ public:
                    const std::string &strMessage = "")
       : RbtFileError(IDS_STRINGTOOLONG, strFile, nLine, strMessage) {}
 };
+
+} // namespace rxdock
 
 #endif //_RBTFILEERROR_H_

@@ -20,6 +20,8 @@
 #include "RbtError.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
 class RbtParameterFileSource;
 class RbtDockingSite;
 
@@ -72,4 +74,7 @@ private:
   RbtDockingSite *m_pDS;
   int m_iTrace;
 };
+
+} // namespace rxdock
+
 #endif /*RBTPRMFACTORY_H_*/

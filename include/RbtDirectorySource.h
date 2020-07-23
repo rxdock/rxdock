@@ -20,6 +20,8 @@
 #include <sys/stat.h>     // for stat()
 #include <sys/types.h>
 
+namespace rxdock {
+
 const unsigned int PATH_SIZE = 1024; // max path width
 const unsigned int LINE_WIDTH = 256; // max num of chars in a line
 const unsigned int ALL = 0;          // read all files in directory
@@ -62,5 +64,7 @@ public:
   // virtual void ReadFiles()=0;
   // virtual void ParseLines()=0;
 };
+
+} // namespace rxdock
 
 #endif // _RBTDIRECTORYSOURCE_H_

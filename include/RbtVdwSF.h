@@ -21,6 +21,8 @@
 #include "RbtParameterFileSource.h"
 #include "RbtTriposAtomType.h"
 
+namespace rxdock {
+
 class RbtVdwSF : public virtual RbtBaseSF, public virtual RbtAnnotationHandler {
 public:
   // Class type string
@@ -139,7 +141,7 @@ private:
   public:
     explicit isD_lt(RbtAtom *aa, double dd) : d_sq(dd * dd), a(aa) {}
     bool operator()(RbtAtom *aa) const {
-      return Rbt::Length2(aa->GetCoords(), a->GetCoords()) < d_sq;
+      return Length2(aa->GetCoords(), a->GetCoords()) < d_sq;
     }
   };
 
@@ -155,5 +157,7 @@ private:
   std::vector<double>
       m_maxRange; // Vector of max ranges for each Tripos atom type
 };
+
+} // namespace rxdock
 
 #endif //_RBTVDWSF_H_

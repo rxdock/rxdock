@@ -16,6 +16,9 @@
 
 #include <fstream>
 
+using namespace rxdock;
+using namespace rxdock::geneticprogram;
+
 std::string RbtGPChromosome::_CT("RbtGPChromosome");
 
 // Constructors
@@ -65,7 +68,8 @@ RbtGPChromosome &RbtGPChromosome::operator=(const RbtGPChromosome &c) {
   return *this;
 }
 
-std::istream &operator>>(std::istream &s, RbtGPChromosome &p) {
+std::istream &rxdock::geneticprogram::operator>>(std::istream &s,
+                                                 RbtGPChromosome &p) {
   for (unsigned int i = 0; i < p.chrom.size(); i++)
     s >> p.chrom[i];
   int cell;
@@ -96,7 +100,8 @@ std::ostream &RbtGPChromosome::Print(std::ostream &s) const {
   return s;
 }
 
-std::ostream &operator<<(std::ostream &s, const RbtGPChromosome &p) {
+std::ostream &rxdock::geneticprogram::operator<<(std::ostream &s,
+                                                 const RbtGPChromosome &p) {
   p.Print(s);
   return s;
 }

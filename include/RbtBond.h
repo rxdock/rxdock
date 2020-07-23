@@ -18,6 +18,8 @@
 #include "RbtAtom.h"
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 class RbtBond {
 public:
   ////////////////////////////////////////
@@ -125,9 +127,11 @@ typedef RbtBondList::iterator RbtBondListIter;
 typedef RbtBondList::const_iterator RbtBondListConstIter;
 
 ///////////////////////////////////////////////
-// Non-member functions (in Rbt namespace)
+// Non-member functions (in rxdock namespace)
 //////////////////////////////////////////
-namespace Rbt {
+
+std::ostream &operator<<(std::ostream &s, const RbtBond &bond);
+
 ////////////////////////////////////////////
 // Predicates (for use by STL algorithms)
 ////////////////////////////////////////////
@@ -193,7 +197,7 @@ public:
 // Is bond2 equal to bond1 (checks if bond ID, atom1 and atom2 match)
 class isBond_eq : public std::function<bool(RbtBond *)> {
   RbtBond *p;
-  Rbt::isAtom_eq bIsAtomEqual;
+  isAtom_eq bIsAtomEqual;
 
 public:
   explicit isBond_eq(RbtBond *pp) : p(pp) {}
@@ -218,14 +222,16 @@ public:
 
 // Generic template version of GetNumBonds, passing in your own predicate
 template <class Predicate>
-unsigned int GetNumBonds(const RbtBondList &bondList, const Predicate &pred) {
+unsigned int GetNumBondsWithPredicate(const RbtBondList &bondList,
+                                      const Predicate &pred) {
   return static_cast<unsigned int>(
       std::count_if(bondList.begin(), bondList.end(), pred));
 }
 
 // Generic template version of GetBondList, passing in your own predicate
 template <class Predicate>
-RbtBondList GetBondList(const RbtBondList &bondList, const Predicate &pred) {
+RbtBondList GetBondListWithPredicate(const RbtBondList &bondList,
+                                     const Predicate &pred) {
   RbtBondList newBondList;
   std::copy_if(bondList.begin(), bondList.end(),
                std::back_inserter(newBondList), pred);
@@ -239,31 +245,32 @@ RbtBondListIter FindBond(RbtBondList &bondList, const Predicate &pred) {
 }
 
 // Selected bonds
-void SetBondSelectionFlags(RbtBondList &bondList, bool bSelected = true);
-inline unsigned int GetNumSelectedBonds(const RbtBondList &bondList) {
-  return GetNumBonds(bondList, Rbt::isBondSelected());
+void SetBondSelectionFlagsInList(RbtBondList &bondList, bool bSelected = true);
+inline unsigned int GetNumSelectedBondsInList(const RbtBondList &bondList) {
+  return GetNumBondsWithPredicate(bondList, isBondSelected());
 }
 
-inline RbtBondList GetSelectedBondList(const RbtBondList &bondList) {
-  return GetBondList(bondList, Rbt::isBondSelected());
+inline RbtBondList GetSelectedBondsFromList(const RbtBondList &bondList) {
+  return GetBondListWithPredicate(bondList, isBondSelected());
 }
 
 // Cyclic bonds
-void SetBondCyclicFlags(RbtBondList &bondList, bool bCyclic = true);
-inline unsigned int GetNumCyclicBonds(const RbtBondList &bondList) {
-  return GetNumBonds(bondList, Rbt::isBondCyclic());
+void SetBondCyclicFlagsInList(RbtBondList &bondList, bool bCyclic = true);
+inline unsigned int GetNumCyclicBondsInList(const RbtBondList &bondList) {
+  return GetNumBondsWithPredicate(bondList, isBondCyclic());
 }
-inline RbtBondList GetCyclicBondList(const RbtBondList &bondList) {
-  return GetBondList(bondList, Rbt::isBondCyclic());
+inline RbtBondList GetCyclicBondsFromList(const RbtBondList &bondList) {
+  return GetBondListWithPredicate(bondList, isBondCyclic());
 }
 
 // Rotatable bonds
 inline unsigned int GetNumRotatableBonds(const RbtBondList &bondList) {
-  return GetNumBonds(bondList, Rbt::isBondRotatable());
+  return GetNumBondsWithPredicate(bondList, isBondRotatable());
 }
 inline RbtBondList GetRotatableBondList(const RbtBondList &bondList) {
-  return GetBondList(bondList, Rbt::isBondRotatable());
+  return GetBondListWithPredicate(bondList, isBondRotatable());
 }
-} // namespace Rbt
+
+} // namespace rxdock
 
 #endif //_RBTBOND_H_

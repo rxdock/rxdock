@@ -15,6 +15,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 RbtAnnotation::RbtAnnotation(const RbtAtom *pAtom1, const RbtAtom *pAtom2,
@@ -57,7 +59,7 @@ std::string RbtAnnotation::Render() const {
   if (pseudo1) {
     RbtAtomList tmpList = pseudo1->GetAtomList();
     RbtAtomList al1 =
-        Rbt::GetAtomList(tmpList, std::not1(Rbt::isAtomBridgehead()));
+        GetAtomListWithPredicate(tmpList, std::not1(isAtomBridgehead()));
     // Check for rare case of multifused rings, where all constituent ring atoms
     // are bridgeheads In this case, just use the first atom in the ring list
     RbtAtomPtr spAt1 = (al1.empty()) ? tmpList.front() : al1.front();
@@ -68,7 +70,7 @@ std::string RbtAnnotation::Render() const {
   if (pseudo2) {
     RbtAtomList tmpList = pseudo2->GetAtomList();
     RbtAtomList al2 =
-        Rbt::GetAtomList(tmpList, std::not1(Rbt::isAtomBridgehead()));
+        GetAtomListWithPredicate(tmpList, std::not1(isAtomBridgehead()));
     // Check for rare case of multifused rings, where all constituent ring atoms
     // are bridgeheads In this case, just use the first atom in the ring list
     RbtAtomPtr spAt2 = (al2.empty()) ? tmpList.front() : al2.front();

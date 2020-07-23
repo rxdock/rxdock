@@ -18,6 +18,8 @@
 #include "RbtBaseInterSF.h"
 #include "RbtRealGrid.h"
 
+namespace rxdock {
+
 class RbtVdwGridSF : public RbtBaseInterSF {
 public:
   // Class type string
@@ -51,5 +53,7 @@ private:
   RbtTriposAtomTypeList m_ligAtomTypes;
   bool m_bSmoothed;
 };
+
+} // namespace rxdock
 
 #endif //_RBTVDWGRIDSF_H_

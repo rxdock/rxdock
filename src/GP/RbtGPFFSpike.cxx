@@ -23,6 +23,9 @@
 #include <fstream>
 #include <sstream>
 
+using namespace rxdock;
+using namespace rxdock::geneticprogram;
+
 std::string RbtGPFFSpike::_CT("RbtGPFFSpike");
 void RbtGPFFSpike::ReadTables(std::istream &in, RbtReturnTypeArray &it,
                               RbtReturnTypeArray &sft) {

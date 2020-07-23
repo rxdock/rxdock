@@ -16,6 +16,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Static data member for class type
 std::string RbtSFAgg::_CT("RbtSFAgg");
 
@@ -175,8 +177,8 @@ void RbtSFAgg::Update(RbtSubject *theChangedSubject) {
     if (pWorkSpace->GetNumModels() >= 2) {
       RbtModelPtr spLigand = pWorkSpace->GetModel(1);
       if (spLigand.Ptr()) {
-        m_nNonHLigandAtoms = Rbt::GetNumAtoms(spLigand->GetAtomList(),
-                                              std::not1(Rbt::isAtomicNo_eq(1)));
+        m_nNonHLigandAtoms = GetNumAtomsWithPredicate(
+            spLigand->GetAtomList(), std::not1(isAtomicNo_eq(1)));
       } else {
         m_nNonHLigandAtoms = 0;
       }

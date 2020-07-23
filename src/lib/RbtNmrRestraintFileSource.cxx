@@ -13,6 +13,8 @@
 #include "RbtNmrRestraintFileSource.h"
 #include "RbtFileError.h"
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 RbtNmrRestraintFileSource::RbtNmrRestraintFileSource(
@@ -97,12 +99,12 @@ void RbtNmrRestraintFileSource::Parse() {
           RbtStdRestraintNames restraint;
           restraint.from.type = NoeRestraintType(strAtomNames2);
           // Check for bad syntax (restraint type=UNDEFINED)
-          if (restraint.from.type == Rbt::NOE_UNDEFINED)
+          if (restraint.from.type == NOE_UNDEFINED)
             throw RbtFileParseError(_WHERE_,
                                     "Unmatched or misplaced brackets at line " +
                                         (*fileIter) + " in " + GetFileName());
           std::vector<std::string> fromList =
-              Rbt::ConvertDelimitedStringToList(strAtomNames2, strDelimiter);
+              ConvertDelimitedStringToList(strAtomNames2, strDelimiter);
           restraint.from.names = fromList;
           restraint.maxDist = maxDist;
           m_stdRestraintList.push_back(restraint);
@@ -115,16 +117,16 @@ void RbtNmrRestraintFileSource::Parse() {
           restraint.from.type = NoeRestraintType(strAtomNames1);
           restraint.to.type = NoeRestraintType(strAtomNames2);
           // Check for bad syntax (restraint type=UNDEFINED)
-          if ((restraint.from.type == Rbt::NOE_UNDEFINED) ||
-              (restraint.to.type == Rbt::NOE_UNDEFINED))
+          if ((restraint.from.type == NOE_UNDEFINED) ||
+              (restraint.to.type == NOE_UNDEFINED))
             throw RbtFileParseError(_WHERE_,
                                     "Unmatched or misplaced brackets at line " +
                                         (*fileIter) + " in " + GetFileName());
           std::vector<std::string> fromList =
-              Rbt::ConvertDelimitedStringToList(strAtomNames1, strDelimiter);
+              ConvertDelimitedStringToList(strAtomNames1, strDelimiter);
           restraint.from.names = fromList;
           std::vector<std::string> toList =
-              Rbt::ConvertDelimitedStringToList(strAtomNames2, strDelimiter);
+              ConvertDelimitedStringToList(strAtomNames2, strDelimiter);
           restraint.to.names = toList;
           restraint.maxDist = maxDist;
           m_noeRestraintList.push_back(restraint);
@@ -149,9 +151,9 @@ void RbtNmrRestraintFileSource::ClearRestraintCache() {
 
 // Returns NOE restraint type and modifies the atom name string accordingly
 // Returns UNDEFINED if the atom name string has bad syntax
-Rbt::eNoeType
+eNoeType
 RbtNmrRestraintFileSource::NoeRestraintType(std::string &strAtomNames) {
-  Rbt::eNoeType restraintType(Rbt::NOE_UNDEFINED);
+  eNoeType restraintType(NOE_UNDEFINED);
 
   // Restraint type: NOE_MEAN
   // Syntax: (at1,at2,at3...)
@@ -163,7 +165,7 @@ RbtNmrRestraintFileSource::NoeRestraintType(std::string &strAtomNames) {
   if ((ob == 0) && (cb == iLast)) {
     strAtomNames.erase(iLast, 1);
     strAtomNames.erase(0, 1);
-    restraintType = Rbt::NOE_MEAN;
+    restraintType = NOE_MEAN;
   } else if ((ob == std::string::npos) && (cb == std::string::npos)) {
     // Restraint type: NOE_AND
     // Syntax: [at1,at2,at3...]
@@ -174,13 +176,13 @@ RbtNmrRestraintFileSource::NoeRestraintType(std::string &strAtomNames) {
     if ((osqb == 0) && (csqb == iLast)) {
       strAtomNames.erase(iLast, 1);
       strAtomNames.erase(0, 1);
-      restraintType = Rbt::NOE_AND;
+      restraintType = NOE_AND;
     }
     // Restraint type: NOE_OR
     // Syntax: at1,at2,at3...
     // Check for no brackets present
     else if ((osqb == std::string::npos) && (csqb == std::string::npos)) {
-      restraintType = Rbt::NOE_OR;
+      restraintType = NOE_OR;
     }
   }
   return restraintType;

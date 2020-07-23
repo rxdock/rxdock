@@ -14,6 +14,8 @@
 #include <functional>
 #include <iomanip>
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtSetupPolarSF::_CT("RbtSetupPolarSF");
 std::string RbtSetupPolarSF::_RADIUS("RADIUS");
@@ -51,7 +53,7 @@ void RbtSetupPolarSF::SetupReceptor() {
     return;
   RbtAtomList atomList = GetReceptor()->GetAtomList();
   RbtAtomList heavyAtomList =
-      Rbt::GetAtomList(atomList, std::not1(Rbt::isAtomicNo_eq(1)));
+      GetAtomListWithPredicate(atomList, std::not1(isAtomicNo_eq(1)));
   int traceTriggerLevel = 1;
   SetupAtomList(atomList, heavyAtomList, traceTriggerLevel);
 }
@@ -98,10 +100,10 @@ void RbtSetupPolarSF::SetupAtomList(RbtAtomList &atomList,
   double chgFactor = GetParameter(_CHGFACTOR);
   double guanFactor = GetParameter(_GUANFACTOR);
 
-  Rbt::isAtomHBondAcceptor bIsHBA;
-  Rbt::isAtomHBondDonor bIsHBD;
-  Rbt::isAtomGuanidiniumCarbon bIsGuan;
-  Rbt::isAtomLipophilic bIsLipo;
+  isAtomHBondAcceptor bIsHBA;
+  isAtomHBondDonor bIsHBD;
+  isAtomGuanidiniumCarbon bIsGuan;
+  isAtomLipophilic bIsLipo;
 
   std::ios_base::fmtflags oldflags = std::cout.flags();
   std::cout.precision(3);
@@ -119,8 +121,8 @@ void RbtSetupPolarSF::SetupAtomList(RbtAtomList &atomList,
     double fNeighb = 1.0;
     if (bCalcNeighbourDensity) {
       // Neighbour density function
-      int nNeighb = Rbt::GetNumAtoms(
-          neighbourList, Rbt::isAtomInsideSphere((*iter)->GetCoords(), radius));
+      int nNeighb = GetNumAtomsWithPredicate(
+          neighbourList, isAtomInsideSphere((*iter)->GetCoords(), radius));
       nNeighb--; // Don't count the atom itself!
       fNeighb = std::pow(nNeighb / norm, power);
     }

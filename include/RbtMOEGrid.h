@@ -42,6 +42,9 @@
 #include <vector>
 
 #include "RbtBiMolWorkSpace.h"
+
+namespace rxdock {
+
 // single point in a multi-dimensional grid
 // the coords contains N values where N is the dimension of the grid
 class RbtMOEGridPoint {
@@ -206,5 +209,7 @@ public:
 //    fwriteb [fn, 'int4m', size];
 //    fwriteb [fn, 'IEEE8m', cat shape];
 //    fwriteb [fn, 'IEEE8m', data];
+
+} // namespace rxdock
 
 #endif //_RBTMOEGRID_H_

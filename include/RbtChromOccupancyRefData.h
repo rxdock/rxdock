@@ -18,6 +18,8 @@
 
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 class RbtModel;
 
 class RbtChromOccupancyRefData {
@@ -45,5 +47,7 @@ private:
 
 typedef SmartPtr<RbtChromOccupancyRefData>
     RbtChromOccupancyRefDataPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif /*RBTCHROMOCCUPANCYREFDATA_H_*/

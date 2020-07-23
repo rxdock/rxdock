@@ -16,6 +16,8 @@
 
 #include "RbtFlexData.h"
 
+namespace rxdock {
+
 class RbtLigandFlexData : public RbtFlexData {
 public:
   // Translation mutation step length (A)
@@ -48,4 +50,7 @@ public:
 private:
   RbtLigandFlexData();
 };
+
+} // namespace rxdock
+
 #endif //_RBTLIGANDFLEXDATA_

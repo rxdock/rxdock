@@ -13,6 +13,8 @@
 #include "RbtBaseSF.h"
 #include "RbtSFRequest.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtBaseSF::_CT("RbtBaseSF");
 std::string RbtBaseSF::_WEIGHT("WEIGHT");

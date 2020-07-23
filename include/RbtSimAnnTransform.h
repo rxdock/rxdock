@@ -18,6 +18,8 @@
 #include "RbtChromElement.h"
 #include "RbtRand.h"
 
+namespace rxdock {
+
 // Simple class to keep track of Monte Carlo sampling statistics
 class RbtMCStats {
 public:
@@ -117,5 +119,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtSimAnnTransform> RbtSimAnnTransformPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTSIMANNTRANSFORM_H_

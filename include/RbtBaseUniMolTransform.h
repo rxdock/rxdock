@@ -18,6 +18,8 @@
 #include "RbtBaseTransform.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
 class RbtBaseUniMolTransform : public RbtBaseTransform {
 public:
   // Class type string
@@ -62,5 +64,7 @@ private:
   //////////////
   RbtModelPtr m_spLigand;
 };
+
+} // namespace rxdock
 
 #endif //_RBTBASEUNIMOLTRANSFORM_H_

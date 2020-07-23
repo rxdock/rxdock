@@ -18,6 +18,8 @@
 #include "RbtPopulation.h"
 #include "RbtRand.h"
 
+namespace rxdock {
+
 class RbtGATransform : public RbtBaseBiMolTransform {
 public:
   static std::string _CT;
@@ -72,5 +74,7 @@ private:
 private:
   RbtRand &m_rand;
 };
+
+} // namespace rxdock
 
 #endif //_RBTGATRANSFORM_H_

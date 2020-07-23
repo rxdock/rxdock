@@ -18,6 +18,8 @@
 #include "RbtError.h"
 #include "RbtGenome.h"
 
+namespace rxdock {
+
 class RbtBaseSF; // forward definition
 
 class RbtPopulation {
@@ -94,5 +96,7 @@ private:
 };
 
 typedef SmartPtr<RbtPopulation> RbtPopulationPtr;
+
+} // namespace rxdock
 
 #endif //_RBTPOPULATION_H_

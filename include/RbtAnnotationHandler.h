@@ -19,6 +19,8 @@
 
 #include "RbtAnnotation.h"
 
+namespace rxdock {
+
 class RbtAnnotationHandler {
 public:
   static std::string _ANNOTATION_FIELD;
@@ -67,5 +69,7 @@ private:
   mutable bool m_bEnabled;
   mutable RbtAnnotationList m_annotationList;
 };
+
+} // namespace rxdock
 
 #endif //_RBTANNOTATIONHANDLER_H_

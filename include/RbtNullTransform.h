@@ -18,6 +18,8 @@
 
 #include "RbtBaseTransform.h"
 
+namespace rxdock {
+
 class RbtNullTransform : public RbtBaseTransform {
 public:
   // Static data member for class type
@@ -62,5 +64,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtNullTransform> RbtNullTransformPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTNULLTRANSFORM_H_

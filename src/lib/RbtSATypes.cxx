@@ -14,6 +14,8 @@
 #include "RbtAtom.h"
 #include "RbtBond.h"
 
+using namespace rxdock;
+
 RbtHHSType::RbtHHSType() { SetupTypeNames(); }
 
 RbtHHSType::~RbtHHSType() {}
@@ -22,15 +24,15 @@ RbtHHSType::eType RbtHHSType::operator()(RbtAtom *anAtom) const {
   RbtAtomList bondedAtomList;
   RbtAtomPtr bondedAtom;
   bool polar(false);
-  Rbt::isAtomCationic bIsCat;
-  Rbt::isAtomAnionic bIsAni;
-  Rbt::isAtomMetal bIsMet;
-  Rbt::isAtomLipophilic bIsLipo;
+  isAtomCationic bIsCat;
+  isAtomAnionic bIsAni;
+  isAtomMetal bIsMet;
+  isAtomLipophilic bIsLipo;
   int nH = anAtom->GetNumImplicitHydrogens() + anAtom->GetCoordinationNumber(1);
   switch (anAtom->GetAtomicNo()) {
 
   case 1: // Hydrogen
-    bondedAtomList = Rbt::GetBondedAtomList(anAtom);
+    bondedAtomList = GetBondedAtomList(anAtom);
     if (bondedAtomList.empty())
       return H; // Isolated hydrogen atom
     bondedAtom = bondedAtomList.front();
@@ -107,13 +109,13 @@ RbtHHSType::eType RbtHHSType::operator()(RbtAtom *anAtom) const {
     }
 
   case 7: // Nitrogen
-    bondedAtomList = Rbt::GetBondedAtomList(anAtom);
+    bondedAtomList = GetBondedAtomList(anAtom);
     // Deal with charged nitrogens first. Defined as:
     // i) N carrying +ve charge, OR
     // ii) N bonded to 4 atoms, OR
     // iii) N bonded to +ve charged atom (more likely)
     if (bIsCat(anAtom) || (bondedAtomList.size() == 4) ||
-        (Rbt::GetNumAtoms(bondedAtomList, bIsCat) > 0)) {
+        (GetNumAtomsWithPredicate(bondedAtomList, bIsCat) > 0)) {
       switch (anAtom->GetHybridState()) {
       case RbtAtom::SP3:
         return N_sp3p;
@@ -187,8 +189,8 @@ RbtHHSType::eType RbtHHSType::operator()(RbtAtom *anAtom) const {
       // MdlFileSource converts the O_SP3 to O_TRI but for solvation purposes
       // they are best considered as O_sp3
       // We check for O_TRI bonded to only lipophilic atoms or hydrogen
-      bondedAtomList = Rbt::GetBondedAtomList(anAtom);
-      if ((Rbt::GetNumAtoms(bondedAtomList, bIsLipo) + nH) == 2)
+      bondedAtomList = GetBondedAtomList(anAtom);
+      if ((GetNumAtomsWithPredicate(bondedAtomList, bIsLipo) + nH) == 2)
         return (nH > 0) ? OH_sp3 : O_sp3;
       // O_tri is reserved for esters, OH_tri for acids
       return (nH > 0) ? OH_tri : O_tri;
@@ -332,7 +334,7 @@ void HHS_Solvation::Init() {
 
 void HHS_Solvation::Overlap(HHS_Solvation *h, double p_ij) {
   // check is there an overlap at all
-  double d2 = Rbt::Length2(atom->GetCoords(), h->atom->GetCoords());
+  double d2 = Length2(atom->GetCoords(), h->atom->GetCoords());
   double ol = r_i + h->r_i + 2.0 * r_s;
   if (ol * ol < d2) {
     return;
@@ -371,7 +373,7 @@ void HHS_Solvation::AddVariable(HHS_Solvation *anAtom) {
 // Helper function to calculate the overlap for all the variable interactions to
 // this center All are 1-4+ by definition
 void HHS_Solvation::OverlapVariable() {
-  // Rbt::OverlapHHS overlap(this,HHS_Solvation::Pij_14);
+  // OverlapHHS overlap(this,HHS_Solvation::Pij_14);
   // std::for_each(m_prt.begin(),m_prt.end(),overlap);
   for (HHS_SolvationRListIter iter = m_prt.begin(); iter != m_prt.end(); ++iter)
     Overlap(*iter, HHS_Solvation::Pij_14);
@@ -398,7 +400,7 @@ void HHS_Solvation::Partition(double d) {
     m_prt.clear();
     for (HHS_SolvationRListConstIter iter = m_var.begin(); iter != m_var.end();
          iter++) {
-      if (Rbt::Length2((*iter)->atom->GetCoords(), atom->GetCoords()) < dd) {
+      if (Length2((*iter)->atom->GetCoords(), atom->GetCoords()) < dd) {
         m_prt.push_back(*iter);
         // std::cout << "Partitioned " << (*iter)->atom->GetFullAtomName() << "
         // - "
@@ -410,6 +412,6 @@ void HHS_Solvation::Partition(double d) {
   }
 }
 
-bool Rbt::isHHSSelected::operator()(const HHS_Solvation *pHHS) const {
+bool rxdock::isHHSSelected::operator()(const HHS_Solvation *pHHS) const {
   return pHHS->GetAtom()->GetSelectionFlag();
 }

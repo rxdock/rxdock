@@ -12,6 +12,8 @@
 
 #include "RbtReceptorFlexData.h"
 
+using namespace rxdock;
+
 const std::string &RbtReceptorFlexData::_FLEX_DISTANCE = "FLEX_DISTANCE";
 const std::string &RbtReceptorFlexData::_DIHEDRAL_STEP = "DIHEDRAL_STEP";
 

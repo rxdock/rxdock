@@ -14,6 +14,8 @@
 
 #include "RbtMdlFileSink.h"
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 RbtMdlFileSink::RbtMdlFileSink(const std::string &fileName, RbtModelPtr spModel)
@@ -23,7 +25,7 @@ RbtMdlFileSink::RbtMdlFileSink(const std::string &fileName, RbtModelPtr spModel)
   SetAppend(false);
   // Open an Element data source
   m_spElementData = RbtElementFileSourcePtr(
-      new RbtElementFileSource(Rbt::GetRbtFileName("data", "RbtElements.dat")));
+      new RbtElementFileSource(GetRbtFileName("data", "RbtElements.dat")));
   _RBTOBJECTCOUNTER_CONSTR_("RbtMdlFileSink");
 }
 
@@ -67,7 +69,7 @@ void RbtMdlFileSink::Render() {
       AddLine(spModel->GetName());
 
     // Molfile allows up to 8 characters for program name
-    std::string programName = Rbt::GetProgramName();
+    std::string programName = GetProgramName();
     if (programName.length() > 8)
       programName = programName.substr(0, 8);
     programName.insert(programName.length(), 8 - programName.length(), ' ');
@@ -79,7 +81,7 @@ void RbtMdlFileSink::Render() {
 
     // First two characters are user initials, leave them empty for now
     AddLine("  " + programName + std::string(ftime) + "3D");
-    AddLine(Rbt::GetProduct() + "/" + Rbt::GetVersion());
+    AddLine(GetProduct() + "/" + GetProgramVersion());
 
     // Write number of atoms and bonds
     std::ostringstream ostr;

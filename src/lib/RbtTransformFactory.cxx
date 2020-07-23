@@ -23,6 +23,8 @@
 #include "RbtFileError.h"
 #include "RbtSFRequest.h"
 
+using namespace rxdock;
+
 // Parameter name which identifies a scoring function definition
 std::string RbtTransformFactory::_TRANSFORM("TRANSFORM");
 
@@ -76,7 +78,7 @@ RbtTransformFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
                                        const std::string &strTransformClasses) {
   // Get list of transform objects to create
   std::vector<std::string> transformList =
-      Rbt::ConvertDelimitedStringToList(strTransformClasses);
+      ConvertDelimitedStringToList(strTransformClasses);
   // If strTransformClasses is empty, then default to reading all sections of
   // the parameter file for valid transform definitions In this case we do not
   // throw an error if a particular section is not a transform, we simply skip
@@ -107,7 +109,7 @@ RbtTransformFactory::CreateAggFromFile(RbtParameterFileSourcePtr spPrmSource,
         // Look for scoring function request (PARAM@SF)
         // Only SetParamRequest currently supported
         std::vector<std::string> compList =
-            Rbt::ConvertDelimitedStringToList(*prmIter, "@");
+            ConvertDelimitedStringToList(*prmIter, "@");
         if (compList.size() == 2) {
           RbtRequestPtr spReq(new RbtSFSetParamRequest(
               compList[1], compList[0],

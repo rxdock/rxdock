@@ -12,6 +12,8 @@
 
 #include "RbtBaseMolecularFileSink.h"
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 // RbtBaseMolecularFileSink::RbtBaseMolecularFileSink(const char* fileName,

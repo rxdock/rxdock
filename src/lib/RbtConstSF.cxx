@@ -12,6 +12,8 @@
 
 #include "RbtConstSF.h"
 
+using namespace rxdock;
+
 // Static data member for class type
 std::string RbtConstSF::_CT("RbtConstSF");
 std::string RbtConstSF::_SOLVENT_PENALTY("SOLVENT_PENALTY");

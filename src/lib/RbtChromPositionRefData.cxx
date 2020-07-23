@@ -12,6 +12,8 @@
 
 #include "RbtChromPositionRefData.h"
 
+using namespace rxdock;
+
 std::string RbtChromPositionRefData::_CT = "RbtChromPositionRefData";
 const RbtPrincipalAxes RbtChromPositionRefData::CARTESIAN_AXES;
 
@@ -62,11 +64,11 @@ RbtChromPositionRefData::~RbtChromPositionRefData() {
 void RbtChromPositionRefData::GetModelValue(RbtCoord &com,
                                             RbtEuler &orientation) const {
   // Determine the principal axes and centre of mass of the reference atoms
-  RbtPrincipalAxes prAxes = Rbt::GetPrincipalAxes(m_refAtoms);
+  RbtPrincipalAxes prAxes = GetPrincipalAxesOfAtoms(m_refAtoms);
   // Determine the quaternion needed to align Cartesian axes with actual
   // molecule principal axes. This represents the absolute orientation of
   // the molecule.
-  RbtQuat q = Rbt::GetQuatFromAlignAxes(CARTESIAN_AXES, prAxes);
+  RbtQuat q = GetQuatFromAlignAxes(CARTESIAN_AXES, prAxes);
   orientation.FromQuat(q);
   com = prAxes.com;
 }
@@ -74,10 +76,10 @@ void RbtChromPositionRefData::GetModelValue(RbtCoord &com,
 void RbtChromPositionRefData::SetModelValue(const RbtCoord &com,
                                             const RbtEuler &orientation) {
   // Determine the principal axes and centre of mass of the reference atoms
-  RbtPrincipalAxes prAxes = Rbt::GetPrincipalAxes(m_refAtoms);
+  RbtPrincipalAxes prAxes = GetPrincipalAxesOfAtoms(m_refAtoms);
   // Determine the overall rotation required.
   // 1) Go back to realign with Cartesian axes
-  RbtQuat qBack = Rbt::GetQuatFromAlignAxes(prAxes, CARTESIAN_AXES);
+  RbtQuat qBack = GetQuatFromAlignAxes(prAxes, CARTESIAN_AXES);
   // 2) Go forward to the desired orientation
   RbtQuat qForward = orientation.ToQuat();
   // 3 Combine the two rotations

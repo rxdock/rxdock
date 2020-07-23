@@ -20,6 +20,8 @@
 #include "RbtInteractionGrid.h"
 #include "RbtPolarSF.h"
 
+namespace rxdock {
+
 class RbtPolarIntraSF : public RbtBaseIntraSF, public RbtPolarSF {
 public:
   // Class type string
@@ -53,5 +55,7 @@ private:
   RbtInteractionListMap m_prtIntns;
   bool m_bAttr;
 };
+
+} // namespace rxdock
 
 #endif //_RBTPOLARINTRASF_H_

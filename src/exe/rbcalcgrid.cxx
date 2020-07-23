@@ -22,6 +22,10 @@
 #include <fstream>
 #include <iomanip>
 
+using namespace rxdock;
+
+namespace rxdock {
+
 const std::string _ROOT_SF = "SCORE";
 
 // Creates list of probe models
@@ -77,6 +81,8 @@ RbtModelList CreateProbes() {
   return probes;
 }
 
+} // namespace rxdock
+
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
@@ -91,7 +97,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName);
+  PrintStdHeader(std::cout, strExeName);
 
   // Command line arguments and default values
   std::string strSuffix(".grd");
@@ -158,13 +164,13 @@ int main(int argc, char *argv[]) {
     RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
     // Set the workspace name to the root of the receptor .prm filename
     std::vector<std::string> componentList =
-        Rbt::ConvertDelimitedStringToList(strReceptorPrmFile, ".");
+        ConvertDelimitedStringToList(strReceptorPrmFile, ".");
     std::string wsName = componentList.front();
     spWS->SetName(wsName);
 
     // Read the receptor parameter file
     RbtParameterFileSourcePtr spRecepPrmSource(new RbtParameterFileSource(
-        Rbt::GetRbtFileName("data/receptors", strReceptorPrmFile)));
+        GetRbtFileName("data/receptors", strReceptorPrmFile)));
     std::cout << std::endl
               << "RECEPTOR:" << std::endl
               << spRecepPrmSource->GetFileName() << std::endl
@@ -172,7 +178,7 @@ int main(int argc, char *argv[]) {
 
     // Read the scoring function file
     RbtParameterFileSourcePtr spSFSource(
-        new RbtParameterFileSource(Rbt::GetRbtFileName("data/sf", strSFFile)));
+        new RbtParameterFileSource(GetRbtFileName("data/sf", strSFFile)));
     RbtSFFactoryPtr spSFFactory(
         new RbtSFFactory()); // Factory class for scoring functions
     RbtSFAggPtr spSF(spSFFactory->CreateAggFromFile(
@@ -201,7 +207,7 @@ int main(int argc, char *argv[]) {
 
     // Read docking site from file and register with workspace
     std::string strASFile = spWS->GetName() + ".as";
-    std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
+    std::string strInputFile = GetRbtFileName("data/grids", strASFile);
     // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
     std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
@@ -249,11 +255,11 @@ int main(int argc, char *argv[]) {
     // Write header string (RbtVdwGridSF)
     const char *const header = "RbtVdwGridSF";
     int length = strlen(header);
-    Rbt::WriteWithThrow(ostr, (const char *)&length, sizeof(length));
-    Rbt::WriteWithThrow(ostr, header, length);
+    WriteWithThrow(ostr, (const char *)&length, sizeof(length));
+    WriteWithThrow(ostr, header, length);
     // Write number of grids
     int nGrids = probes.size();
-    Rbt::WriteWithThrow(ostr, (const char *)&nGrids, sizeof(nGrids));
+    WriteWithThrow(ostr, (const char *)&nGrids, sizeof(nGrids));
 
     // Store regular pointers to avoid smart pointer dereferencing overheads
     RbtRealGrid *pGrid(spGrid);
@@ -278,8 +284,8 @@ int main(int argc, char *argv[]) {
       // Write the atom type string to the grid file, before the grid itself
       const char *const szType = strType.c_str();
       int l = strlen(szType);
-      Rbt::WriteWithThrow(ostr, (const char *)&l, sizeof(l));
-      Rbt::WriteWithThrow(ostr, szType, l);
+      WriteWithThrow(ostr, (const char *)&l, sizeof(l));
+      WriteWithThrow(ostr, szType, l);
       pGrid->Write(ostr);
     }
     ostr.close();

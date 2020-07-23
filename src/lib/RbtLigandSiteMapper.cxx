@@ -17,6 +17,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Static data member for class type
 std::string RbtLigandSiteMapper::_CT("RbtLigandSiteMapper");
 std::string RbtLigandSiteMapper::_REF_MOL("REF_MOL");
@@ -76,26 +78,26 @@ RbtCavityList RbtLigandSiteMapper::operator()() {
   // Simple extension would be to read all the records from the SD file
   // to construct a docking site from the superimposition of all the reference
   // ligands
-  std::string strMolFile = Rbt::GetRbtFileName("data/ligands", strRef);
+  std::string strMolFile = GetRbtFileName("data/ligands", strRef);
   RbtMolecularFileSourcePtr spMdlFileSource(
       new RbtMdlFileSource(strMolFile, false, false, true));
   // Only include non-H reference atoms in the mapping
-  RbtAtomList refAtomList = Rbt::GetAtomList(spMdlFileSource->GetAtomList(),
-                                             std::not1(Rbt::isAtomicNo_eq(1)));
+  RbtAtomList refAtomList = GetAtomListWithPredicate(
+      spMdlFileSource->GetAtomList(), std::not1(isAtomicNo_eq(1)));
 
   RbtFFTGridPtr spGrid;
 
   // Only include non-H receptor atoms in the mapping
-  RbtAtomList atomList = Rbt::GetAtomList(spReceptor->GetAtomList(),
-                                          std::not1(Rbt::isAtomicNo_eq(1)));
+  RbtAtomList atomList = GetAtomListWithPredicate(spReceptor->GetAtomList(),
+                                                  std::not1(isAtomicNo_eq(1)));
   RbtVector gridStep(step, step, step);
 
   // Construct the grid to cover the ligand coords + radius
   RbtCoordList refCoordList;
-  Rbt::GetCoordList(refAtomList, refCoordList);
+  GetCoordList(refAtomList, refCoordList);
   double border = radius + smallR + step;
-  RbtCoord minCoord = Rbt::Min(refCoordList) - border;
-  RbtCoord maxCoord = Rbt::Max(refCoordList) + border;
+  RbtCoord minCoord = Min(refCoordList) - border;
+  RbtCoord maxCoord = Max(refCoordList) + border;
   RbtVector extent = maxCoord - minCoord;
   Eigen::Vector3d nXYZ = extent.xyz.array() / gridStep.xyz.array();
   unsigned int nX = static_cast<unsigned int>(nXYZ(0)) + 1;
@@ -156,8 +158,7 @@ RbtCavityList RbtLigandSiteMapper::operator()() {
   }
 
   // Sort cavities by volume
-  std::sort(cavityList.begin(), cavityList.end(),
-            Rbt::RbtCavityPtrCmp_Volume());
+  std::sort(cavityList.begin(), cavityList.end(), RbtCavityPtrCmp_Volume());
 
   if (iTrace > 0) {
     for (RbtCavityListConstIter cIter = cavityList.begin();

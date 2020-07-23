@@ -24,6 +24,9 @@
 #include <fstream>
 #include <sstream>
 
+using namespace rxdock;
+using namespace rxdock::geneticprogram;
+
 std::string RbtGPFFHSP90::_CT("RbtGPFFHSP90");
 int nInversions(int idx, RbtReturnTypeArray &list);
 

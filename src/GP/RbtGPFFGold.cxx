@@ -17,6 +17,9 @@
 #include <fstream>
 #include <sstream>
 
+using namespace rxdock;
+using namespace rxdock::geneticprogram;
+
 std::string RbtGPFFGold::_CT("RbtGPFFGold");
 
 void RbtGPFFGold::ReadTables(std::istream &in, RbtReturnTypeArray &,

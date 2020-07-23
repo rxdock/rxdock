@@ -17,6 +17,8 @@
 
 #include "RbtAtom.h"
 
+namespace rxdock {
+
 class RbtPseudoAtom : public RbtAtom {
 public:
   ///////////////////////////////////////////////
@@ -81,5 +83,7 @@ typedef std::vector<RbtPseudoAtomPtr>
     RbtPseudoAtomList; // Vector of smart pointers
 typedef RbtPseudoAtomList::iterator RbtPseudoAtomListIter;
 typedef RbtPseudoAtomList::const_iterator RbtPseudoAtomListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTPSEUDOATOM_H_

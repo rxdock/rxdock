@@ -16,6 +16,8 @@
 #include "RbtMdlFileSink.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtPharmaSF::_CT("RbtPharmaSF");
 std::string RbtPharmaSF::_CONSTRAINTS_FILE("CONSTRAINTS_FILE");
@@ -56,9 +58,8 @@ void RbtPharmaSF::SetupReceptor() {
     return;
   std::string strWSName = GetWorkSpace()->GetName();
   std::string strConstraintFile =
-      Rbt::GetRbtFileName("", GetParameter(_CONSTRAINTS_FILE));
-  std::string strOptFile =
-      Rbt::GetRbtFileName("", GetParameter(_OPTIONAL_FILE));
+      GetRbtFileName("", GetParameter(_CONSTRAINTS_FILE));
+  std::string strOptFile = GetRbtFileName("", GetParameter(_OPTIONAL_FILE));
 
   // Create an output sink for ligands that do not have sufficient
   // pharmacophore features. These ligands will be written to an error SD file
@@ -94,8 +95,8 @@ void RbtPharmaSF::SetupReceptor() {
     throw RbtFileReadError(_WHERE_, "cannot open mandatory constraints file " +
                                         strConstraintFile);
   }
-  Rbt::ZeroCounters();
-  Rbt::ReadConstraints(constrFile, m_constrList, true);
+  ZeroCounters();
+  ReadConstraints(constrFile, m_constrList, true);
   constrFile.close();
 
   // Optional constraints
@@ -105,7 +106,7 @@ void RbtPharmaSF::SetupReceptor() {
       std::cout << _CT << ": Reading optional ph4 constraints from "
                 << strOptFile << std::endl;
     }
-    Rbt::ReadConstraints(optFile, m_optList, false);
+    ReadConstraints(optFile, m_optList, false);
     // Keep m_nopt within range
     SetParameter(_NOPT, std::min(m_nopt, int(m_optList.size())));
     SetParameter(_NOPT, std::max(m_nopt, 0));

@@ -17,6 +17,8 @@
 #include "RbtBaseBiMolTransform.h"
 #include "RbtChromElement.h"
 
+namespace rxdock {
+
 class RbtRandPopTransform : public RbtBaseBiMolTransform {
 public:
   static std::string _CT;
@@ -66,5 +68,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtRandPopTransform> RbtRandPopTransformPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTRANDPOPTRANSFORM_H_

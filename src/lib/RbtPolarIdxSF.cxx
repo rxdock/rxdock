@@ -16,6 +16,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtPolarIdxSF::_CT("RbtPolarIdxSF");
 std::string RbtPolarIdxSF::_INCR("INCR");
@@ -148,7 +150,7 @@ void RbtPolarIdxSF::SetupReceptor() {
       GetReceptor()->SetAtomSelectionFlags(false);
       GetReceptor()
           ->SelectFlexAtoms(); // This leaves all moveable atoms selected
-      Rbt::isInteractionCenterSelected isSel;
+      isInteractionCenterSelected isSel;
       RbtInteractionCenterListIter fIter = std::stable_partition(
           m_recepPosList.begin(), m_recepPosList.end(), std::not1(isSel));
       std::copy(fIter, m_recepPosList.end(),

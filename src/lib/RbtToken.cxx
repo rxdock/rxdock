@@ -14,6 +14,8 @@
 #include "RbtCommands.h"
 #include "RbtDebug.h"
 
+using namespace rxdock;
+
 static const RbtVble default_vble;
 
 std::string RbtToken::_CT("RbtToken");

@@ -16,6 +16,8 @@
 #include "RbtReceptorFlexData.h"
 #include "RbtSolventFlexData.h"
 
+using namespace rxdock;
+
 RbtFlexAtomFactory::RbtFlexAtomFactory(RbtModel *pModel) { Visit(pModel); }
 
 RbtFlexAtomFactory::RbtFlexAtomFactory(RbtModelList modelList) {
@@ -61,11 +63,10 @@ void RbtFlexAtomFactory::VisitReceptorFlexData(RbtReceptorFlexData *pFlexData) {
       // This code assumes that the only flexible atoms in the receptor are
       // terminal OH/NH3+ hydrogens. Max rotational displacement from current
       // coords is equal to twice the bond length.
-      RbtAtomList bondedAtomList = Rbt::GetBondedAtomList(*iter);
+      RbtAtomList bondedAtomList = GetBondedAtomList(*iter);
       if (bondedAtomList.size() == 1) {
         RbtAtom *parent = bondedAtomList.front();
-        double bondLength =
-            Rbt::Length(parent->GetCoords(), (*iter)->GetCoords());
+        double bondLength = Length(parent->GetCoords(), (*iter)->GetCoords());
         (*iter)->SetUser2Value(2.0 * bondLength);
       }
     } else {
@@ -99,11 +100,11 @@ void RbtFlexAtomFactory::VisitLigandFlexData(RbtLigandFlexData *pFlexData) {
     // COM For simplicity, we don't distinguish between tethered and free
     // rotation so assume full rotation through +/- 180 deg is possible.
     else {
-      RbtPrincipalAxes prAxes = Rbt::GetPrincipalAxes(atomList);
+      RbtPrincipalAxes prAxes = GetPrincipalAxesOfAtoms(atomList);
       for (RbtAtomListIter iter = atomList.begin(); iter != atomList.end();
            ++iter) {
         m_tetheredAtomList.push_back(*iter);
-        double radius = Rbt::Length((*iter)->GetCoords(), prAxes.com);
+        double radius = Length((*iter)->GetCoords(), prAxes.com);
         (*iter)->SetUser2Value(2.0 * radius);
       }
     }
@@ -122,11 +123,11 @@ void RbtFlexAtomFactory::VisitLigandFlexData(RbtLigandFlexData *pFlexData) {
     // and free rotation so assume full rotation through +/- 180 deg is
     // possible.
     else {
-      RbtPrincipalAxes prAxes = Rbt::GetPrincipalAxes(atomList);
+      RbtPrincipalAxes prAxes = GetPrincipalAxesOfAtoms(atomList);
       for (RbtAtomListIter iter = atomList.begin(); iter != atomList.end();
            ++iter) {
         m_tetheredAtomList.push_back(*iter);
-        double radius = Rbt::Length((*iter)->GetCoords(), prAxes.com);
+        double radius = Length((*iter)->GetCoords(), prAxes.com);
         (*iter)->SetUser2Value((2.0 * radius) + maxTrans);
       }
     }

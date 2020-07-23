@@ -12,6 +12,8 @@
 
 #include "RbtTransformAgg.h"
 
+using namespace rxdock;
+
 // Static data member for class type
 std::string RbtTransformAgg::_CT("RbtTransformAgg");
 

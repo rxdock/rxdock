@@ -17,6 +17,8 @@
 
 #include <string>
 
+namespace rxdock {
+
 const std::string IDS_NAME = "RxDock";
 
 const std::string IDS_COPYRIGHT =
@@ -29,5 +31,7 @@ const std::string IDS_COPYRIGHT =
 const std::string IDS_PRODUCT = "librxdock.so";
 
 const std::string IDS_VERSION = "0.1.0";
+
+} // namespace rxdock
 
 #endif //_RBTRESOURCES_H_

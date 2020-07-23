@@ -19,6 +19,8 @@
 #include "RbtFlexDataVisitor.h"
 #include "RbtParamHandler.h"
 
+namespace rxdock {
+
 class RbtModel;
 class RbtDockingSite;
 
@@ -40,5 +42,7 @@ private:
 };
 
 typedef SmartPtr<RbtFlexData> RbtFlexDataPtr;
+
+} // namespace rxdock
 
 #endif //_RBTFLEXDATA_

@@ -13,6 +13,8 @@
 #include "RbtPolarIntraSF.h"
 #include "RbtSFRequest.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtPolarIntraSF::_CT("RbtPolarIntraSF");
 std::string RbtPolarIntraSF::_ATTR("ATTR");

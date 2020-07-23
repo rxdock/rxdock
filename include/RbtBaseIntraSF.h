@@ -18,6 +18,8 @@
 #include "RbtBaseSF.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
 class RbtBaseIntraSF : public virtual RbtBaseSF {
 public:
   // Class type string
@@ -69,5 +71,7 @@ private:
   // i.e. all intramolecular scores are reported relative to the initial score
   double m_zero;
 };
+
+} // namespace rxdock
 
 #endif //_RBTBASEINTRASF_H_

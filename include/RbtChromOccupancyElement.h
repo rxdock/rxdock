@@ -18,6 +18,8 @@
 #include "RbtChromOccupancyRefData.h"
 #include "RbtRand.h"
 
+namespace rxdock {
+
 class RbtChromOccupancyElement : public RbtChromElement {
 public:
   // Class type string
@@ -55,5 +57,7 @@ private:
   RbtChromOccupancyRefDataPtr m_spRefData; // Fixed reference data
   double m_value;                          // The genotype value
 };
+
+} // namespace rxdock
 
 #endif /*RBTCHROMOCCUPANCYELEMENT_H_*/

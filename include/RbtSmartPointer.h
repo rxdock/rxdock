@@ -36,6 +36,8 @@
 
 //#include "RbtError.h"
 
+namespace rxdock {
+
 // Only check smart pointer assertions in debug build
 //#ifdef _NDEBUG
 // const RbtBool SMART_CHECK = false;
@@ -202,5 +204,7 @@ template <class T>
 bool operator>(const SmartPtr<T> &lhs, const SmartPtr<T> &rhs) {
   return lhs.Ptr() > rhs.Ptr();
 }
+
+} // namespace rxdock
 
 #endif //_RBTSMARTPOINTER_H_

@@ -17,6 +17,9 @@
 #include <fstream>
 #include <sstream>
 
+using namespace rxdock;
+using namespace rxdock::geneticprogram;
+
 std::string RbtGPFFCrossDock::_CT("RbtGPFFCrossDock");
 
 void RbtGPFFCrossDock::ReadTables(std::istream &in, RbtReturnTypeArray &it,

@@ -24,6 +24,8 @@
 #include "RbtSimplexTransform.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data member for class type
 std::string RbtSimplexTransform::_CT("RbtSimplexTransform");
 // Parameter names
@@ -121,10 +123,10 @@ void RbtSimplexTransform::Execute() {
   RbtSimplexCostFunction costFunction(pSF, m_chrom);
 
   // Builder to generate the optimizer with a composite stoping criterion
-  auto optimizer = RbtNM::CreateSimplex(
-      costFunction, RbtNM::CreateAndCriteria(
-                        RbtNM::IterationCriterion(maxcalls),
-                        RbtNM::RelativeValueCriterion<double>(stopping)));
+  auto optimizer = neldermead::CreateSimplex(
+      costFunction, neldermead::CreateAndCriteria(
+                        neldermead::IterationCriterion(maxcalls),
+                        neldermead::RelativeValueCriterion<double>(stopping)));
 
   int calls = 0;
   double initScore = pSF->Score(); // Current score

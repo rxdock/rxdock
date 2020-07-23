@@ -22,6 +22,10 @@
 #include "RbtRand.h"
 // #include <cmath>
 
+namespace rxdock {
+
+namespace geneticprogram {
+
 class RbtGPFitnessFunction {
 public:
   static std::string _CT;
@@ -63,4 +67,9 @@ typedef std::vector<RbtGPFitnessFunctionPtr>
 typedef RbtGPFitnessFunctionList::iterator RbtGPFitnessFunctionListIter;
 typedef RbtGPFitnessFunctionList::const_iterator
     RbtGPFitnessFunctionListConstIter;
+
+} // namespace geneticprogram
+
+} // namespace rxdock
+
 #endif //_RbtGPFitnessFunction

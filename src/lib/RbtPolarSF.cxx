@@ -16,6 +16,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtPolarSF::_CT("RbtPolarSF");
 std::string RbtPolarSF::_R12FACTOR("R12FACTOR");
@@ -96,10 +98,11 @@ RbtPolarSF::CreateDonorInteractionCenters(const RbtAtomList &atomList) const {
 
   // H-Bond donors
   if (bIncHBD) {
-    RbtAtomList posList = Rbt::GetAtomList(atomList, Rbt::isAtomHBondDonor());
+    RbtAtomList posList =
+        GetAtomListWithPredicate(atomList, isAtomHBondDonor());
     for (RbtAtomListConstIter iter = posList.begin(); iter != posList.end();
          iter++) {
-      RbtAtomList parentList = Rbt::GetBondedAtomList(*iter);
+      RbtAtomList parentList = GetBondedAtomList(*iter);
       // Create interaction center from donor H and donor parent
       intnList.push_back(new RbtInteractionCenter(*iter, parentList.front()));
     }
@@ -107,7 +110,7 @@ RbtPolarSF::CreateDonorInteractionCenters(const RbtAtomList &atomList) const {
 
   // Metals
   if (bIncMetal) {
-    RbtAtomList posList = Rbt::GetAtomList(atomList, Rbt::isAtomMetal());
+    RbtAtomList posList = GetAtomListWithPredicate(atomList, isAtomMetal());
     for (RbtAtomListConstIter iter = posList.begin(); iter != posList.end();
          iter++) {
       // Create interaction center from metal ion only
@@ -118,10 +121,10 @@ RbtPolarSF::CreateDonorInteractionCenters(const RbtAtomList &atomList) const {
   // Guanidinium carbons
   if (bIncGuan) {
     RbtAtomList posList =
-        Rbt::GetAtomList(atomList, Rbt::isAtomGuanidiniumCarbon());
+        GetAtomListWithPredicate(atomList, isAtomGuanidiniumCarbon());
     for (RbtAtomListConstIter iter = posList.begin(); iter != posList.end();
          iter++) {
-      RbtAtomList parentList = Rbt::GetBondedAtomList(*iter);
+      RbtAtomList parentList = GetBondedAtomList(*iter);
       // Two options: for attractive interactions (HBA..GUAN) the SF depends on
       // the angle between the acceptor and the normal to the plane of the
       // guanidinium, so we define an interaction center with 3 atoms
@@ -149,19 +152,19 @@ RbtInteractionCenterList RbtPolarSF::CreateAcceptorInteractionCenters(
   const bool bLP = GetParameter(_LP_OSP2);
 
   RbtInteractionCenterList intnList;
-  Rbt::isAtomicNo_eq bIsC(6);
-  Rbt::isAtomicNo_eq bIsN(7);
-  Rbt::isAtomicNo_eq bIsO(8);
-  Rbt::isAtomRNA bIsRNA;
-  Rbt::isAtomAnionic bIsAnionic;
+  isAtomicNo_eq bIsC(6);
+  isAtomicNo_eq bIsN(7);
+  isAtomicNo_eq bIsO(8);
+  isAtomRNA bIsRNA;
+  isAtomAnionic bIsAnionic;
 
   // Negative polar (HBA)
   if (bIncHBA) {
     RbtAtomList negList =
-        Rbt::GetAtomList(atomList, Rbt::isAtomHBondAcceptor());
+        GetAtomListWithPredicate(atomList, isAtomHBondAcceptor());
     for (RbtAtomListConstIter iter = negList.begin(); iter != negList.end();
          iter++) {
-      RbtAtomList parentList = Rbt::GetBondedAtomList(*iter);
+      RbtAtomList parentList = GetBondedAtomList(*iter);
 
       // Unconnected acceptor - ignore
       if (parentList.empty())
@@ -178,9 +181,9 @@ RbtInteractionCenterList RbtPolarSF::CreateAcceptorInteractionCenters(
           // Get the atoms bonded to the acceptor parent (not including the
           // acceptor itself)
           RbtAtomList grandParentList =
-              Rbt::GetAtomList(Rbt::GetBondedAtomList(spAcceptorParent),
-                               std::bind(std::not2(Rbt::isAtomPtr_eq()),
-                                         std::placeholders::_1, *iter));
+              GetAtomListWithPredicate(GetBondedAtomList(spAcceptorParent),
+                                       std::bind(std::not2(isAtomPtr_eq()),
+                                                 std::placeholders::_1, *iter));
           if (!grandParentList.empty()) {
             RbtAtomPtr spGrandParent = grandParentList.front();
             // If O is -ve charged (likely carboxylate), or is in RNA, or is in
@@ -225,8 +228,8 @@ RbtInteractionCenterList RbtPolarSF::CreateAcceptorInteractionCenters(
 void RbtPolarSF::BuildIntraMap(const RbtInteractionCenterList &ICList1,
                                const RbtInteractionCenterList &ICList2,
                                RbtInteractionListMap &intns) const {
-  Rbt::SelectInteractionCenter selectIC(true);
-  Rbt::isInteractionCenterSelected isSelected;
+  SelectInteractionCenter selectIC(true);
+  isInteractionCenterSelected isSelected;
   bool bSingleList = ICList2.empty(); // If true, then index the flexible
                                       // interactions within ICList1
   for (RbtInteractionCenterListConstIter iter = ICList1.begin();
@@ -248,7 +251,7 @@ void RbtPolarSF::BuildIntraMap(const RbtInteractionCenterList &ICList1,
     // 3. Set the selection flags for all atoms in the model whose distance can
     // vary to *any* of the atoms in the IC
     RbtAtomRList atomList = (*iter)->GetAtomList();
-    std::for_each(atomList.begin(), atomList.end(), Rbt::SelectFlexAtoms());
+    std::for_each(atomList.begin(), atomList.end(), SelectFlexAtoms());
     // Now we retrieve the ICs from the 2nd list whose constituent atoms have
     // been selected
     if (bSingleList) {
@@ -367,7 +370,7 @@ void RbtPolarSF::Partition(const RbtInteractionCenterList &posList,
     RbtAtom *pAtom = (*iter)->GetAtom1Ptr();
     int id = pAtom->GetAtomId() - 1;
     if (dist > 0.0) {
-      Rbt::isInteractionD_lt bInRange(*iter, dist);
+      isInteractionD_lt bInRange(*iter, dist);
       // This copies all interactions which are within dist A of atom
       std::copy_if(intns[id].begin(), intns[id].end(),
                    std::back_inserter(prtIntns[id]), bInRange);
@@ -387,7 +390,7 @@ void RbtPolarSF::Partition(const RbtInteractionCenterList &posList,
     RbtAtom *pAtom = (*iter)->GetAtom1Ptr();
     int id = pAtom->GetAtomId() - 1;
     if (dist > 0.0) {
-      Rbt::isInteractionD_lt bInRange(*iter, dist);
+      isInteractionD_lt bInRange(*iter, dist);
       // This copies all interactions which are within dist A of atom
       std::copy_if(intns[id].begin(), intns[id].end(),
                    std::back_inserter(prtIntns[id]), bInRange);
@@ -479,13 +482,13 @@ double RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
       // For guanidinium bPlane2 interacting with C=O lone pair bLP1, we want to
       // use the regular angular dependence
       if (bAngle1 || (bPlane2 && bLP1)) {
-        double DA1 = Rbt::Angle(cAtom1_2, cAtom1_1, cAtom2_1) - A1prms.R0;
+        double DA1 = Angle(cAtom1_2, cAtom1_1, cAtom2_1) - A1prms.R0;
         f *= f1(std::fabs(DA1), A1prms);
         // std::cout << "A1:\t" << A1prms.R0 << "," << DA1 << ", f=" << f <<
         // std::endl;
       } else if (bPlane1) {
-        double A = std::acos(-std::fabs(Rbt::Dot(v12.Unit(), pl1.VNorm()))) *
-                   180.0 / M_PI;
+        double A =
+            std::acos(-std::fabs(Dot(v12.Unit(), pl1.VNorm()))) * 180.0 / M_PI;
         double DA1 = A - A1prms.R0;
         f *= f1(std::fabs(DA1), A1prms);
         // std::cout << "Pl1:\t" << A1prms.R0 << "," << DA1 << ", f=" << f <<
@@ -494,16 +497,17 @@ double RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
       // Lone pair geometry dependence around Osp2
       else if (bLP1) {
         // Perpendicular distance from donor H to plane of lone pairs
-        double dPerp = Rbt::DistanceFromPointToPlane(cAtom2_1, pl1);
+        double dPerp = DistanceFromPointToPlane(cAtom2_1, pl1);
         // Coordinate of donor H projected into plane of lone pairs
         RbtCoord cPerp = cAtom2_1 - dPerp * pl1.VNorm();
         // std::cout << "dPerp = " << dPerp << " check cPerp = " <<
-        // Rbt::DistanceFromPointToPlane(cPerp, pl1) << std::endl; Can calculate
-        // std::sin(theta) directly from the two distances we have already
+        // DistanceFromPointToPlane(cPerp, pl1) << std::endl; Can
+        // calculate std::sin(theta) directly from the two distances we have
+        // already
         double theta = std::asin(dPerp / R) * 180.0 / M_PI;
         f *= f1(std::fabs(theta), m_THETAprms);
         if (f > 0.0) {
-          double phi = 180.0 - Rbt::Angle(cPerp, cAtom1_1, cAtom1_2);
+          double phi = 180.0 - Angle(cPerp, cAtom1_1, cAtom1_2);
           double Dphi = phi - PHI1prms.R0;
           f *= f1(std::fabs(Dphi), PHI1prms);
           // std::cout << "LP1:\t" << theta << "," << PHI1prms.R0 << "," << Dphi
@@ -516,7 +520,7 @@ double RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
         // to use the regular angular dependence
         if (bAngle2 || (bPlane1 && bLP2)) {
           const RbtCoord &cAtom2_2 = pAtom2_2->GetCoords();
-          double DA2 = Rbt::Angle(cAtom1_1, cAtom2_1, cAtom2_2) - A2prms.R0;
+          double DA2 = Angle(cAtom1_1, cAtom2_1, cAtom2_2) - A2prms.R0;
           f *= f1(std::fabs(DA2), A2prms);
           // std::cout << "A2:\t" << A2prms.R0 << "," << DA2 << ", f=" << f <<
           // std::endl;
@@ -524,7 +528,7 @@ double RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
           const RbtCoord &cAtom2_2 = pAtom2_2->GetCoords();
           const RbtCoord &cAtom2_3 = pAtom2_3->GetCoords();
           RbtPlane pl2 = RbtPlane(cAtom2_1, cAtom2_2, cAtom2_3);
-          double A = std::acos(-std::fabs(Rbt::Dot(v12.Unit(), pl2.VNorm()))) *
+          double A = std::acos(-std::fabs(Dot(v12.Unit(), pl2.VNorm()))) *
                      180.0 / M_PI;
           double DA2 = A - A2prms.R0;
           f *= f1(std::fabs(DA2), A2prms);
@@ -537,14 +541,14 @@ double RbtPolarSF::PolarScore(const RbtInteractionCenter *pIC1,
                                        ? m_PHI_lp_prms
                                        : m_PHI_plane_prms;
           RbtPlane pl2 = RbtPlane(cAtom2_1, cAtom2_2, cAtom2_3);
-          double dPerp = Rbt::DistanceFromPointToPlane(cAtom1_1, pl2);
+          double dPerp = DistanceFromPointToPlane(cAtom1_1, pl2);
           RbtCoord cPerp = cAtom1_1 - dPerp * pl2.VNorm();
           // std::cout << "dPerp = " << dPerp << " check cPerp = " <<
-          // Rbt::DistanceFromPointToPlane(cPerp, pl2) << std::endl;
+          // DistanceFromPointToPlane(cPerp, pl2) << std::endl;
           double theta = std::asin(dPerp / R) * 180.0 / M_PI;
           f *= f1(std::fabs(theta), m_THETAprms);
           if (f > 0.0) {
-            double phi = 180.0 - Rbt::Angle(cPerp, cAtom2_1, cAtom2_2);
+            double phi = 180.0 - Angle(cPerp, cAtom2_1, cAtom2_2);
             double Dphi = phi - PHI2prms.R0;
             f *= f1(std::fabs(Dphi), PHI2prms);
             // std::cout << "LP2:\t" << theta << "," << PHI2prms.R0 << "," <<

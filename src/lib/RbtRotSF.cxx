@@ -14,6 +14,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Static data member for class type
 std::string RbtRotSF::_CT("RbtRotSF");
 std::string RbtRotSF::_INCNH3("INCNH3");
@@ -44,14 +46,14 @@ void RbtRotSF::SetupLigand() {
     nRot = 0;
   } else {
     RbtBondList rotatableBondList =
-        Rbt::GetBondList(GetLigand()->GetBondList(), Rbt::isBondRotatable());
+        GetBondListWithPredicate(GetLigand()->GetBondList(), isBondRotatable());
     if (!bIncNH3) {
       rotatableBondList =
-          Rbt::GetBondList(rotatableBondList, std::not1(Rbt::isBondToNH3()));
+          GetBondListWithPredicate(rotatableBondList, std::not1(isBondToNH3()));
     }
     if (!bIncOH) {
       rotatableBondList =
-          Rbt::GetBondList(rotatableBondList, std::not1(Rbt::isBondToOH()));
+          GetBondListWithPredicate(rotatableBondList, std::not1(isBondToOH()));
     }
     nRot = rotatableBondList.size();
   }

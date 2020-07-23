@@ -20,6 +20,8 @@
 #include "RbtGPTypes.h"
 #include "RbtTokenIter.h"
 
+namespace rxdock {
+
 class RbtFilterExpressionVisitor;
 
 class RbtFilterExpression {
@@ -258,5 +260,7 @@ public:
 private:
   RbtFilterExpressionPtr operand1, operand2, operand3;
 };
+
+} // namespace rxdock
 
 #endif //_RbtFilterExpression_H_

@@ -13,6 +13,8 @@
 #include "RbtObserver.h"
 #include "RbtDebug.h"
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 RbtObserver::RbtObserver() { _RBTOBJECTCOUNTER_CONSTR_("RbtObserver"); }

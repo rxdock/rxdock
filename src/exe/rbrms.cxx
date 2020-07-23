@@ -20,6 +20,10 @@
 #include "RbtModel.h"
 #include "RbtModelError.h"
 
+using namespace rxdock;
+
+namespace rxdock {
+
 typedef std::vector<RbtCoordList> RbtCoordListList;
 typedef RbtCoordListList::iterator RbtCoordListListIter;
 typedef RbtCoordListList::const_iterator RbtCoordListListConstIter;
@@ -83,7 +87,7 @@ void EnumerateSymCoords::operator()(RbtSymBondListConstIter symIter,
   // ref coord list
   else {
     RbtCoordList coords;
-    Rbt::GetCoordList(m_heavyAtomList, coords);
+    GetCoordList(m_heavyAtomList, coords);
     cll.push_back(coords);
     m_sink->Render();
   }
@@ -97,8 +101,8 @@ void EnumerateSymCoords::GetSymCoords(RbtCoordListList &cll) {
 }
 
 void EnumerateSymCoords::Setup() {
-  m_heavyAtomList = Rbt::GetAtomList(m_spModel->GetAtomList(),
-                                     std::not1(Rbt::isAtomicNo_eq(1)));
+  m_heavyAtomList = GetAtomListWithPredicate(m_spModel->GetAtomList(),
+                                             std::not1(isAtomicNo_eq(1)));
   m_symBondList.clear();
   RbtBondList bondList = m_spModel->GetBondList();
   std::vector<std::string> symBonds =
@@ -151,12 +155,14 @@ double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
   } else {
     double rms(0.0);
     for (unsigned int i = 0; i < nCoords; i++) {
-      rms += Rbt::Length2(rc[i], c[i]);
+      rms += Length2(rc[i], c[i]);
     }
     rms = std::sqrt(rms / float(nCoords));
     return rms;
   }
 }
+
+} // namespace rxdock
 
 int main(int argc, char *argv[]) {
   if (argc < 3) {
@@ -203,11 +209,11 @@ int main(int argc, char *argv[]) {
 
   try {
     RbtMolecularFileSourcePtr spRefFileSource(new RbtMdlFileSource(
-        Rbt::GetRbtFileName("data/ligands", strRefSDFile), false, false, true));
+        GetRbtFileName("data/ligands", strRefSDFile), false, false, true));
     // DM 16 June 2006 - remove any solvent fragments from reference
     // The largest fragment in each SD record always has segment name="H"
     // for reasons lost in the mists of rDock history
-    spRefFileSource->SetSegmentFilterMap(Rbt::ConvertStringToSegmentMap("H"));
+    spRefFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
     // Get reference ligand (first record)
     RbtModelPtr spRefModel(new RbtModel(spRefFileSource));
     RbtCoordListList cll;
@@ -225,8 +231,7 @@ int main(int argc, char *argv[]) {
     // MAIN LOOP OVER LIGAND RECORDS
     ///////////////////////////////////
     RbtMolecularFileSourcePtr spMdlFileSource(new RbtMdlFileSource(
-        Rbt::GetRbtFileName("data/ligands", strInputSDFile), false, false,
-        true));
+        GetRbtFileName("data/ligands", strInputSDFile), false, false, true));
     RbtMolecularFileSinkPtr spMdlFileSink;
     if (bOutput) {
       spMdlFileSink = new RbtMdlFileSink(strOutputSDFile, RbtModelPtr());
@@ -240,12 +245,12 @@ int main(int argc, char *argv[]) {
         continue;
       }
       // DM 16 June 2006 - remove any solvent fragments from each record
-      spMdlFileSource->SetSegmentFilterMap(Rbt::ConvertStringToSegmentMap("H"));
+      spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
       RbtModelPtr spModel(new RbtModel(spMdlFileSource));
       RbtCoordList coords;
-      Rbt::GetCoordList(Rbt::GetAtomList(spModel->GetAtomList(),
-                                         std::not1(Rbt::isAtomicNo_eq(1))),
-                        coords);
+      GetCoordList(GetAtomListWithPredicate(spModel->GetAtomList(),
+                                            std::not1(isAtomicNo_eq(1))),
+                   coords);
 
       if (coords.size() ==
           nCoords) { // Only calculate RMSD if atom count is same as reference
@@ -271,9 +276,9 @@ int main(int argc, char *argv[]) {
           for (unsigned int i = 0; i < previousModels.size() && bIsUnique;
                i++) {
             RbtCoordList prevCoords;
-            Rbt::GetCoordList(
-                Rbt::GetAtomList(previousModels[i]->GetAtomList(),
-                                 std::not1(Rbt::isAtomicNo_eq(1))),
+            GetCoordList(
+                GetAtomListWithPredicate(previousModels[i]->GetAtomList(),
+                                         std::not1(isAtomicNo_eq(1))),
                 prevCoords);
             double rms0 = rmsd(prevCoords, coords);
             bIsUnique = (rms0 > threshold);

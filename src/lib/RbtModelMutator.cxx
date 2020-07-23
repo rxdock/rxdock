@@ -16,6 +16,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 #ifdef _DEBUG
 namespace Tmp {
 void PrintAtomList(RbtAtomRListConstIter i1, RbtAtomRListConstIter i2) {
@@ -82,19 +84,17 @@ void RbtModelMutator::Setup() {
     RbtAtom *pAtom3 = (*iter)->GetAtom2Ptr();
     // The following lines get the bonded atom lists on each end of the rotable
     // bond, taking care not to include the atoms actually in the rotable bond
-    RbtAtomList bondedAtoms2 =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(pAtom2),
-                         std::bind(std::not2(Rbt::isAtomPtr_eq()),
-                                   std::placeholders::_1, pAtom3));
-    RbtAtomList bondedAtoms3 =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(pAtom3),
-                         std::bind(std::not2(Rbt::isAtomPtr_eq()),
-                                   std::placeholders::_1, pAtom2));
+    RbtAtomList bondedAtoms2 = GetAtomListWithPredicate(
+        GetBondedAtomList(pAtom2),
+        std::bind(std::not2(isAtomPtr_eq()), std::placeholders::_1, pAtom3));
+    RbtAtomList bondedAtoms3 = GetAtomListWithPredicate(
+        GetBondedAtomList(pAtom3),
+        std::bind(std::not2(isAtomPtr_eq()), std::placeholders::_1, pAtom2));
     // Assertion - check bonded atom lists are not empty
     Assert<RbtAssert>(!MUT_CHECK ||
                       !(bondedAtoms2.empty() || bondedAtoms3.empty()));
 
-    Rbt::ToSpin(*iter, m_pModel->m_atomList, m_pModel->m_bondList);
+    ToSpin(*iter, m_pModel->m_atomList, m_pModel->m_bondList);
     pAtom2->SetSelectionFlag(false);
     pAtom3->SetSelectionFlag(false);
     // If we have selected over half the molecule to rotate then invert the
@@ -103,13 +103,13 @@ void RbtModelMutator::Setup() {
     // atoms are rotated (preferably none). i.e. we rotate the free end of the
     // bond, even if this is over half the molecule
     int nSelected = (nTethered == 0)
-                        ? Rbt::GetNumSelectedAtoms(m_pModel->m_atomList)
-                        : Rbt::GetNumSelectedAtoms(m_tetheredAtoms);
+                        ? GetNumSelectedAtomsInList(m_pModel->m_atomList)
+                        : GetNumSelectedAtomsInList(m_tetheredAtoms);
     int nHalf = (nTethered == 0) ? (nAtoms - 2) / 2 : (nTethered - 2) / 2;
     if (nSelected > nHalf) {
       // std::cout << "Over half the molecule selected: " << nSelected << "
       // atoms" << std::endl;
-      Rbt::InvertAtomSelectionFlags(m_pModel->m_atomList);
+      InvertAtomSelectionFlags(m_pModel->m_atomList);
       pAtom2->SetSelectionFlag(false);
       pAtom3->SetSelectionFlag(false);
       m_dih1Atoms.push_back(bondedAtoms3.front());
@@ -117,7 +117,7 @@ void RbtModelMutator::Setup() {
       m_dih3Atoms.push_back(pAtom2);
       m_dih4Atoms.push_back(bondedAtoms2.front());
       // std::cout << "Inverted: " <<
-      // Rbt::GetNumSelectedAtoms(m_pModel->m_atomList)
+      // GetNumSelectedAtoms(m_pModel->m_atomList)
       // << " atoms now selected" << std::endl; std::cout << "Dihedral spec: "
       // << bondedAtoms3.front()->GetName() << "\t" << pAtom3->GetName()
       // <<
@@ -140,7 +140,7 @@ void RbtModelMutator::Setup() {
     // rotable bond
     RbtAtomRList sList;
     std::copy_if(m_pModel->m_atomList.begin(), m_pModel->m_atomList.end(),
-                 std::back_inserter(sList), Rbt::isAtomSelected());
+                 std::back_inserter(sList), isAtomSelected());
     m_rotAtoms.push_back(sList);
 
     // DM 25 Apr 2002
@@ -163,15 +163,15 @@ void RbtModelMutator::Setup() {
     //  sort interaction list for atom
     //  remove duplicates from interaction list
     //}
-    Rbt::InvertAtomSelectionFlags(m_pModel->m_atomList);
+    InvertAtomSelectionFlags(m_pModel->m_atomList);
     pAtom2->SetSelectionFlag(false);
     pAtom3->SetSelectionFlag(false);
     RbtAtomRList uList;
     std::copy_if(m_pModel->m_atomList.begin(), m_pModel->m_atomList.end(),
-                 std::back_inserter(uList), Rbt::isAtomSelected());
+                 std::back_inserter(uList), isAtomSelected());
     // Sort the lists of selected and unselected atoms by atom ID
-    std::sort(sList.begin(), sList.end(), Rbt::RbtAtomPtrCmp_AtomId());
-    std::sort(uList.begin(), uList.end(), Rbt::RbtAtomPtrCmp_AtomId());
+    std::sort(sList.begin(), sList.end(), RbtAtomPtrCmp_AtomId());
+    std::sort(uList.begin(), uList.end(), RbtAtomPtrCmp_AtomId());
 
     // Loop over selected atom list
     // and append the unselected atom list to the interaction list for each atom
@@ -198,7 +198,7 @@ void RbtModelMutator::Setup() {
   for (RbtAtomRListListIter lIter = m_flexIntns.begin();
        lIter != m_flexIntns.end(); lIter++) {
     if (!(*lIter).empty()) {
-      std::sort((*lIter).begin(), (*lIter).end(), Rbt::RbtAtomPtrCmp_AtomId());
+      std::sort((*lIter).begin(), (*lIter).end(), RbtAtomPtrCmp_AtomId());
       // std::unique will shuffle all the duplicate elements to the end of the
       // vector and return an iterator to the end of the unique elements
       RbtAtomRListIter uniqIter = std::unique((*lIter).begin(), (*lIter).end());

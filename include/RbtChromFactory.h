@@ -22,6 +22,8 @@
 #include "RbtFlexDataVisitor.h"
 #include "RbtModelMutator.h"
 
+namespace rxdock {
+
 class RbtChromElement;
 
 class RBTDLL_EXPORT RbtChromFactory : public RbtFlexDataVisitor {
@@ -39,4 +41,7 @@ private:
   RbtChromElement *m_pChrom;
   RbtModelMutatorPtr m_spMutator;
 };
+
+} // namespace rxdock
+
 #endif //_RBTCHROMFACTORY_H_

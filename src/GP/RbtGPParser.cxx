@@ -16,6 +16,9 @@
 #include <fstream>
 #include <sstream>
 
+using namespace rxdock;
+using namespace rxdock::geneticprogram;
+
 std::string RbtGPParser::_CT("RbtGPParser");
 int RbtCommand::ntabs = 0;
 bool RbtCommand::inside = false;

@@ -15,6 +15,8 @@
 #include "RbtBaseGrid.h"
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 template <class T> class RbtInteractionNode {
   T property;
 
@@ -185,4 +187,7 @@ private:
 template <typename T> // instead RbtInteractionGridPtr
 class RbtInteractionGridTemplatePtr
     : public SmartPtr<RbtInteractionGridTemplate<T>> {};
+
+} // namespace rxdock
+
 #endif //  _RBTINTERACTIONTEMPLATE_H_

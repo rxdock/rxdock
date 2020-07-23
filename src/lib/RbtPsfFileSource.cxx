@@ -16,6 +16,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Constructors
 // RbtPsfFileSource::RbtPsfFileSource(const char* fileName) :
 //  RbtBaseMolecularFileSource(fileName,"PSF_FILE_SOURCE") //Call base class
@@ -36,10 +38,10 @@ RbtPsfFileSource::RbtPsfFileSource(const std::string &fileName,
       RbtCharmmDataSourcePtr(new RbtCharmmDataSource(strMassesFile));
   // DM 13 Jun 2000 - new separate prm file for receptor ionic atom definitions
   m_spParamSource = RbtParameterFileSourcePtr(new RbtParameterFileSource(
-      Rbt::GetRbtFileName("data/sf", "RbtIonicAtoms.prm")));
+      GetRbtFileName("data/sf", "RbtIonicAtoms.prm")));
   // Open an Element data source
   m_spElementData = RbtElementFileSourcePtr(
-      new RbtElementFileSource(Rbt::GetRbtFileName("data", "RbtElements.dat")));
+      new RbtElementFileSource(GetRbtFileName("data", "RbtElements.dat")));
   _RBTOBJECTCOUNTER_CONSTR_("RbtPsfFileSource");
 }
 
@@ -261,15 +263,15 @@ void RbtPsfFileSource::SetupVdWRadii() {
   // Radius increment for atoms with implicit hydrogens
   // DM 22 Jul 1999 - only increase the radius for sp3 atoms with implicit
   // hydrogens For sp2 and aromatic, leave as is
-  Rbt::isHybridState_eq bIsSP3(RbtAtom::SP3);
-  Rbt::isHybridState_eq bIsTri(RbtAtom::TRI);
-  Rbt::isCoordinationNumber_eq bTwoBonds(2);
+  isHybridState_eq bIsSP3(RbtAtom::SP3);
+  isHybridState_eq bIsTri(RbtAtom::TRI);
+  isCoordinationNumber_eq bTwoBonds(2);
 
   double dImplRadIncr = m_spElementData->GetImplicitRadiusIncr();
   // Element data for hydrogen
   RbtElementData elHData = m_spElementData->GetElementData(1);
   // Radius increment and predicate for H-bonding hydrogens
-  Rbt::isAtomHBondDonor bIsHBondDonor;
+  isAtomHBondDonor bIsHBondDonor;
   double dHBondRadius =
       elHData.vdwRadius + m_spElementData->GetHBondRadiusIncr();
 
@@ -319,11 +321,11 @@ void RbtPsfFileSource::SetupPartialIonicGroups() {
   // continguous
   //
   // Deselect all atoms
-  std::for_each(m_atomList.begin(), m_atomList.end(), Rbt::SelectAtom(false));
+  std::for_each(m_atomList.begin(), m_atomList.end(), SelectAtom(false));
   // The loop increment searches for the next unselected atom
   for (RbtAtomListIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter = std::find_if(iter + 1, m_atomList.end(),
-                           std::not1(Rbt::isAtomSelected()))) {
+                           std::not1(isAtomSelected()))) {
     // Copy all atoms that belong to same substructure as head atom
     RbtAtomList ss;
     std::copy_if(iter, m_atomList.end(), std::back_inserter(ss),
@@ -334,7 +336,7 @@ void RbtPsfFileSource::SetupPartialIonicGroups() {
     // atoms" << std::endl; Assign group charges for this residue
     RbtBaseMolecularFileSource::SetupPartialIonicGroups(ss, m_spParamSource);
     // Mark each atom in substructure as having been processed
-    std::for_each(ss.begin(), ss.end(), Rbt::SelectAtom(true));
+    std::for_each(ss.begin(), ss.end(), SelectAtom(true));
   }
 }
 
@@ -342,12 +344,12 @@ void RbtPsfFileSource::SetupPartialIonicGroups() {
 // hydrogens
 void RbtPsfFileSource::RemoveNonPolarHydrogens() {
   // Get list of all carbons
-  RbtAtomList cList = Rbt::GetAtomList(m_atomList, Rbt::isAtomicNo_eq(6));
+  RbtAtomList cList = GetAtomListWithPredicate(m_atomList, isAtomicNo_eq(6));
 
   for (RbtAtomListIter cIter = cList.begin(); cIter != cList.end(); cIter++) {
     // Get list of all bonded hydrogens
     RbtAtomList hList =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(*cIter), Rbt::isAtomicNo_eq(1));
+        GetAtomListWithPredicate(GetBondedAtomList(*cIter), isAtomicNo_eq(1));
     int nImplH = hList.size();
     if (nImplH > 0) {
       for (RbtAtomListIter hIter = hList.begin(); hIter != hList.end();

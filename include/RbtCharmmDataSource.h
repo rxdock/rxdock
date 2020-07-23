@@ -18,6 +18,8 @@
 #include "RbtAtom.h"
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 // Added by DM, 8 Dec 1998 for HybridState lookup method
 typedef std::map<std::string, RbtAtom::eHybridState> RbtStringHybridStateMap;
 typedef RbtStringHybridStateMap::iterator RbtStringHybridStateMapIter;
@@ -30,8 +32,8 @@ public:
   // Constructors/destructors
 
   // DM 30 Apr 1999 - pass in masses.rtf file name as parameter
-  RbtCharmmDataSource(const std::string &strMassesFile =
-                          Rbt::GetRbtFileName("data", "masses.rtf"));
+  RbtCharmmDataSource(
+      const std::string &strMassesFile = GetRbtFileName("data", "masses.rtf"));
 
   ~RbtCharmmDataSource(); // Default destructor
 
@@ -86,5 +88,7 @@ private:
 
 // useful typedefs
 typedef SmartPtr<RbtCharmmDataSource> RbtCharmmDataSourcePtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTCHARMMDATASOURCE_H_

@@ -15,6 +15,8 @@
 #include "RbtDirectorySource.h"
 #include <iostream>
 
+using namespace rxdock;
+
 std::string RbtDirectorySource::_CT("RbtDirectorySource");
 
 /**

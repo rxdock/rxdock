@@ -17,6 +17,8 @@
 
 #include "RbtBaseMolecularFileSink.h"
 
+namespace rxdock {
+
 class RbtPsfFileSink : public RbtBaseMolecularFileSink {
 public:
   ////////////////////////////////////////
@@ -62,5 +64,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtPsfFileSink> RbtPsfFileSinkPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTPSFFILESINK_H_

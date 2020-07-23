@@ -36,6 +36,8 @@
 
 extern std::istream &eatSeps(std::istream &is);
 
+namespace rxdock {
+
 class RbtCoord {
   ///////////////////////////////////////////////
   // Data members
@@ -313,9 +315,9 @@ typedef RbtUIntCoordMap::iterator RbtUIntCoordMapIter;
 typedef RbtUIntCoordMap::const_iterator RbtUIntCoordMapConstIter;
 
 ///////////////////////////////////////////////
-// Non-member functions (in Rbt namespace)
+// Non-member functions (in rxdock namespace)
 //////////////////////////////////////////
-namespace Rbt {
+
 //////////////////
 // VECTOR FUNCTIONS
 //////////////////
@@ -325,7 +327,7 @@ inline double Length2(const RbtVector &v1) { return v1.Length2(); }
 
 // Returns square of distance between two coords
 inline double Length2(const RbtCoord &c1, const RbtCoord &c2) {
-  return Rbt::Length2(c2 - c1);
+  return Length2(c2 - c1);
 }
 
 // Returns magnitude of vector
@@ -333,19 +335,19 @@ inline double Length(const RbtVector &v1) { return v1.Length(); }
 
 // Returns distance between two coords
 inline double Length(const RbtCoord &c1, const RbtCoord &c2) {
-  return Rbt::Length(c2 - c1);
+  return Length(c2 - c1);
 }
 
 // Returns unit vector in same direction
 // V2 = Unit(V1)
 inline RbtVector Unit(const RbtVector &v1) { return v1.Unit(); }
 
-// Cross product (V3 = Rbt::Cross(V1,V2))
+// Cross product (V3 = Cross(V1,V2))
 inline RbtVector Cross(const RbtVector &v11, const RbtVector &v2) {
   return v11.Cross(v2);
 }
 
-// Dot product (D = Rbt::Dot(V1,V2))
+// Dot product (D = Dot(V1,V2))
 inline double Dot(const RbtVector &v1, const RbtVector &v2) {
   return v1.Dot(v2);
 }
@@ -368,7 +370,7 @@ inline double Angle(const RbtVector &v1, const RbtVector &v2) {
 inline double Angle(const RbtCoord &coord1, const RbtCoord &coord2,
                     const RbtCoord &coord3) {
   // Determine vectors between coords and call vector version of Angle()
-  return Rbt::Angle(coord1 - coord2, coord3 - coord2);
+  return Angle(coord1 - coord2, coord3 - coord2);
 }
 
 // DM 7 June 1999
@@ -395,7 +397,7 @@ inline double Dihedral(const RbtVector &v1, const RbtVector &v2,
 inline double Dihedral(const RbtCoord &c1, const RbtCoord &c2,
                        const RbtCoord &c3, const RbtCoord &c4) {
   // Determine vectors between coords and call vector version of Dihedral()
-  return Rbt::Dihedral(c1 - c2, c2 - c3, c3 - c4);
+  return Dihedral(c1 - c2, c2 - c3, c3 - c4);
 }
 
 //////////////////////
@@ -446,13 +448,13 @@ inline RbtCoord Max(const RbtCoordList &cl) {
 }
 
 // Returns center of "mass" of coords in coord list
-inline RbtCoord GetCenterOfMass(const RbtCoordList &coordList) {
+inline RbtCoord GetCenterOfAtomicMass(const RbtCoordList &coordList) {
   RbtCoord com;
   com = std::accumulate(coordList.begin(), coordList.end(), com);
   // Check for divide by zero
   return coordList.empty() ? com : com / static_cast<double>(coordList.size());
 }
 
-} // namespace Rbt
+} // namespace rxdock
 
 #endif //_RBTCOORD_H_

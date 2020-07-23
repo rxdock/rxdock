@@ -20,6 +20,8 @@
 #include "RbtBaseInterSF.h"
 #include "RbtPolarSF.h"
 
+namespace rxdock {
+
 class RbtPolarIdxSF : public RbtBaseInterSF,
                       public RbtBaseIdxSF,
                       public RbtPolarSF {
@@ -96,5 +98,7 @@ private:
   double m_posThreshold;
   double m_negThreshold;
 };
+
+} // namespace rxdock
 
 #endif //_RBTPOLARIDXSF_H_

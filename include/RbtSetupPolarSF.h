@@ -21,6 +21,8 @@
 
 #include "RbtBaseInterSF.h"
 
+namespace rxdock {
+
 class RbtSetupPolarSF : public RbtBaseInterSF {
 public:
   // Class type string
@@ -47,5 +49,7 @@ private:
   void SetupAtomList(RbtAtomList &atomList, const RbtAtomList &neighbourList,
                      int traceTriggerLevel);
 };
+
+} // namespace rxdock
 
 #endif //_RBTSETUPPOLARSF_H_

@@ -18,6 +18,8 @@
 #include "RbtBaseObject.h"
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 class RbtTransformAgg; // forward declaration
 
 class RbtBaseTransform : public RbtBaseObject {
@@ -98,5 +100,7 @@ typedef std::vector<RbtBaseTransform *>
     RbtBaseTransformList; // Vector of smart pointers
 typedef RbtBaseTransformList::iterator RbtBaseTransformListIter;
 typedef RbtBaseTransformList::const_iterator RbtBaseTransformListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTBASETRANSFORM_H_

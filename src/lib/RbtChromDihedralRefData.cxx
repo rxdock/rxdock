@@ -16,6 +16,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 std::string RbtChromDihedralRefData::_CT = "RbtChromDihedralRefData";
 
 RbtChromDihedralRefData::RbtChromDihedralRefData(RbtBondPtr spBond,
@@ -34,7 +36,7 @@ RbtChromDihedralRefData::~RbtChromDihedralRefData() {
 }
 
 double RbtChromDihedralRefData::GetModelValue() const {
-  return Rbt::BondDihedral(m_atom1, m_atom2, m_atom3, m_atom4);
+  return BondDihedral(m_atom1, m_atom2, m_atom3, m_atom4);
 }
 
 void RbtChromDihedralRefData::SetModelValue(double dihedralAngle) {
@@ -68,17 +70,17 @@ void RbtChromDihedralRefData::Setup(RbtBondPtr spBond,
   int nTethered = tetheredAtoms.size();
   // The following lines get the bonded atom lists on each end of the rotable
   // bond, taking care not to include the atoms actually in the rotable bond
-  RbtAtomList bondedAtoms2 = Rbt::GetAtomList(
-      Rbt::GetBondedAtomList(pAtom2),
-      std::bind(std::not2(Rbt::isAtomPtr_eq()), std::placeholders::_1, pAtom3));
-  RbtAtomList bondedAtoms3 = Rbt::GetAtomList(
-      Rbt::GetBondedAtomList(pAtom3),
-      std::bind(std::not2(Rbt::isAtomPtr_eq()), std::placeholders::_1, pAtom2));
+  RbtAtomList bondedAtoms2 = GetAtomListWithPredicate(
+      GetBondedAtomList(pAtom2),
+      std::bind(std::not2(isAtomPtr_eq()), std::placeholders::_1, pAtom3));
+  RbtAtomList bondedAtoms3 = GetAtomListWithPredicate(
+      GetBondedAtomList(pAtom3),
+      std::bind(std::not2(isAtomPtr_eq()), std::placeholders::_1, pAtom2));
   // Assertion - check bonded atom lists are not empty
   Assert<RbtAssert>(!MUT_CHECK ||
                     !(bondedAtoms2.empty() || bondedAtoms3.empty()));
 
-  Rbt::ToSpin(spBond, atomList, bondList);
+  ToSpin(spBond, atomList, bondList);
   pAtom2->SetSelectionFlag(false);
   pAtom3->SetSelectionFlag(false);
   // If we have selected over half the molecule to rotate then invert the
@@ -87,13 +89,13 @@ void RbtChromDihedralRefData::Setup(RbtBondPtr spBond,
   // are rotated (preferably none). i.e. we rotate the free end of the bond,
   // even
   // if this is over half the molecule
-  int nSelected = (nTethered == 0) ? Rbt::GetNumSelectedAtoms(atomList)
-                                   : Rbt::GetNumSelectedAtoms(tetheredAtoms);
+  int nSelected = (nTethered == 0) ? GetNumSelectedAtomsInList(atomList)
+                                   : GetNumSelectedAtomsInList(tetheredAtoms);
   int nHalf = (nTethered == 0) ? (nAtoms - 2) / 2 : (nTethered - 2) / 2;
   if (nSelected > nHalf) {
     // std::cout << "Over half the molecule selected: " << nSelected << " atoms"
     // << std::endl;
-    Rbt::InvertAtomSelectionFlags(atomList);
+    InvertAtomSelectionFlags(atomList);
     pAtom2->SetSelectionFlag(false);
     pAtom3->SetSelectionFlag(false);
     m_atom1 = bondedAtoms3.front();
@@ -101,7 +103,8 @@ void RbtChromDihedralRefData::Setup(RbtBondPtr spBond,
     m_atom3 = pAtom2;
     m_atom4 = bondedAtoms2.front();
     // std::cout << "Inverted: " <<
-    // Rbt::GetNumSelectedAtoms(m_pModel->m_atomList) << " atoms now selected"
+    // GetNumSelectedAtoms(m_pModel->m_atomList) << " atoms now
+    // selected"
     // << std::endl; std::cout << "Dihedral spec: " <<
     // bondedAtoms3.front()->GetName() << "\t" << pAtom3->GetName() <<
     // "\t"
@@ -123,5 +126,5 @@ void RbtChromDihedralRefData::Setup(RbtBondPtr spBond,
   // rotable bond
   m_rotAtoms.clear();
   std::copy_if(atomList.begin(), atomList.end(), std::back_inserter(m_rotAtoms),
-               Rbt::isAtomSelected());
+               isAtomSelected());
 }

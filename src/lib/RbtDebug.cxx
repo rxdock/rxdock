@@ -13,6 +13,8 @@
 #ifdef _RBTOBJECTCOUNTER
 #include "RbtDebug.h"
 
+using namespace rxdock;
+
 RbtObjectCounter::RbtObjectCounter() : nConstr(0), nCopyConstr(0), nDestr(0) {}
 
 RbtObjectCounter::~RbtObjectCounter() {}
@@ -25,6 +27,6 @@ ostream &operator<<(std::ostream &s, const RbtObjectCounter &counter) {
 }
 
 // The one and only RbtObjectCounterMap definition
-RbtObjectCounterMap Rbt::theObjectCounterMap;
+RbtObjectCounterMap rxdock::theObjectCounterMap;
 
 #endif //_RBTOBJECTCOUNTER

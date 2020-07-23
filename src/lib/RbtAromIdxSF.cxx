@@ -13,6 +13,8 @@
 #include "RbtAromIdxSF.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtAromIdxSF::_CT("RbtAromIdxSF");
 std::string RbtAromIdxSF::_INCR("INCR");
@@ -105,7 +107,7 @@ void RbtAromIdxSF::SetupReceptor() {
   if (nCoords > 0) {
     for (RbtAtomListListConstIter rIter = recepRingLists.begin();
          rIter != recepRingLists.end(); rIter++) {
-      if (Rbt::GetNumAtoms(*rIter, Rbt::isPiAtom()) == (*rIter).size()) {
+      if (GetNumAtomsWithPredicate(*rIter, isPiAtom()) == (*rIter).size()) {
         RbtPseudoAtomPtr spPseudoAtom = GetReceptor()->AddPseudoAtom(*rIter);
         RbtAtomList recepPiAtoms = spPseudoAtom->GetAtomList();
         RbtAtomPtr spRecepPiAtom1 = recepPiAtoms[0];
@@ -115,11 +117,11 @@ void RbtAromIdxSF::SetupReceptor() {
         m_recepAromList.push_back(pIntnCenter);
       }
     }
-    RbtAtomList recepGuanList = Rbt::GetAtomList(
-        GetReceptor()->GetAtomList(), Rbt::isAtomGuanidiniumCarbon());
+    RbtAtomList recepGuanList = GetAtomListWithPredicate(
+        GetReceptor()->GetAtomList(), isAtomGuanidiniumCarbon());
     for (RbtAtomListConstIter iter = recepGuanList.begin();
          iter != recepGuanList.end(); iter++) {
-      RbtAtomList recepPiAtoms = Rbt::GetBondedAtomList(*iter);
+      RbtAtomList recepPiAtoms = GetBondedAtomList(*iter);
       RbtAtomPtr spRecepPiAtom1 = recepPiAtoms[0];
       RbtAtomPtr spRecepPiAtom2 = recepPiAtoms[1];
       RbtInteractionCenter *pIntnCenter(
@@ -147,7 +149,7 @@ void RbtAromIdxSF::SetupReceptor() {
     for (RbtAtomListListConstIter rIter = recepRingLists.begin();
          rIter != recepRingLists.end(); rIter++) {
       // Check that all ring atoms are pi-atoms (crude test for aromaticity)
-      if (Rbt::GetNumAtoms(*rIter, Rbt::isPiAtom()) == (*rIter).size()) {
+      if (GetNumAtomsWithPredicate(*rIter, isPiAtom()) == (*rIter).size()) {
         RbtPseudoAtomPtr spPseudoAtom = GetReceptor()->AddPseudoAtom(*rIter);
         if (bIsInRange(spPseudoAtom)) {
           RbtAtomList recepPiAtoms = spPseudoAtom->GetAtomList();
@@ -166,11 +168,11 @@ void RbtAromIdxSF::SetupReceptor() {
     RbtAtomList atomList = spDS->GetAtomList(GetReceptor()->GetAtomList(), 0.0,
                                              GetCorrectedRange());
     RbtAtomList recepGuanList =
-        Rbt::GetAtomList(atomList, Rbt::isAtomGuanidiniumCarbon());
+        GetAtomListWithPredicate(atomList, isAtomGuanidiniumCarbon());
 
     for (RbtAtomListConstIter iter = recepGuanList.begin();
          iter != recepGuanList.end(); iter++) {
-      RbtAtomList recepPiAtoms = Rbt::GetBondedAtomList(*iter);
+      RbtAtomList recepPiAtoms = GetBondedAtomList(*iter);
       RbtAtomPtr spRecepPiAtom1 = recepPiAtoms[0];
       RbtAtomPtr spRecepPiAtom2 = recepPiAtoms[1];
       RbtInteractionCenter *pIntnCenter(
@@ -191,9 +193,9 @@ void RbtAromIdxSF::SetupLigand() {
   for (RbtAtomListListConstIter rIter = ligRingLists.begin();
        rIter != ligRingLists.end(); rIter++) {
     // Check that all ring atoms are pi-atoms (crude test for aromaticity)
-    if (Rbt::GetNumAtoms(*rIter, Rbt::isPiAtom()) == (*rIter).size()) {
+    if (GetNumAtomsWithPredicate(*rIter, isPiAtom()) == (*rIter).size()) {
       RbtPseudoAtomPtr spPseudoAtom = GetLigand()->AddPseudoAtom(*rIter);
-      // RbtAtomList ligPiAtoms = Rbt::GetBondedAtomList(spPseudoAtom);
+      // RbtAtomList ligPiAtoms = GetBondedAtomList(spPseudoAtom);
       RbtAtomList ligPiAtoms = spPseudoAtom->GetAtomList();
       RbtAtomPtr spLigPiAtom1 = ligPiAtoms[0];
       RbtAtomPtr spLigPiAtom2 = ligPiAtoms[1];
@@ -204,11 +206,11 @@ void RbtAromIdxSF::SetupLigand() {
   }
 
   // Now the guanidinium groups (positively charged carbons)
-  RbtAtomList ligGuanList = Rbt::GetAtomList(GetLigand()->GetAtomList(),
-                                             Rbt::isAtomGuanidiniumCarbon());
+  RbtAtomList ligGuanList = GetAtomListWithPredicate(GetLigand()->GetAtomList(),
+                                                     isAtomGuanidiniumCarbon());
   for (RbtAtomListConstIter iter = ligGuanList.begin();
        iter != ligGuanList.end(); iter++) {
-    RbtAtomList ligPiAtoms = Rbt::GetBondedAtomList(*iter);
+    RbtAtomList ligPiAtoms = GetBondedAtomList(*iter);
     RbtAtomPtr spLigPiAtom1 = ligPiAtoms[0];
     RbtAtomPtr spLigPiAtom2 = ligPiAtoms[1];
     RbtInteractionCenter *pIntnCenter(
@@ -354,15 +356,15 @@ double RbtAromIdxSF::AromScore(const RbtInteractionCenter *pIC1,
 
     // Calculate average perp. distance from each pi center to the other ring
     // plane
-    double R = (std::fabs(Rbt::DistanceFromPointToPlane(cAtom1_1, pl2)) +
-                std::fabs(Rbt::DistanceFromPointToPlane(cAtom2_1, pl1))) /
+    double R = (std::fabs(DistanceFromPointToPlane(cAtom1_1, pl2)) +
+                std::fabs(DistanceFromPointToPlane(cAtom2_1, pl1))) /
                2.0;
     double f = f1(R - Rprms.R0, Rprms);
     // Only calculate average slip angle if f  > 0
     if (f > 0.0) {
       RbtVector v = cAtom2_1 - cAtom1_1;
-      double sa = (std::acos(std::fabs(Rbt::Dot(v.Unit(), pl1.VNorm()))) +
-                   std::acos(std::fabs(Rbt::Dot(v.Unit(), pl2.VNorm())))) *
+      double sa = (std::acos(std::fabs(Dot(v.Unit(), pl1.VNorm()))) +
+                   std::acos(std::fabs(Dot(v.Unit(), pl2.VNorm())))) *
                   90.0 / M_PI;
       f *= f1(sa, Aprms);
       if (f > 0.0) {
@@ -440,14 +442,12 @@ double RbtAromIdxSF::PiScore(const RbtInteractionCenter *pIC1,
          cIter1++) {
       for (RbtCoordListConstIter cIter2 = sigma2.begin();
            cIter2 != sigma2.end(); cIter2++) {
-        double r =
-            Rbt::Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
+        double r = Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
         m_ss += (1.0 / r);
       }
       for (RbtCoordListConstIter cIter2 = pi2.begin(); cIter2 != pi2.end();
            cIter2++) {
-        double r =
-            Rbt::Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
+        double r = Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
         m_sp += (1.0 / r);
       }
     }
@@ -455,14 +455,12 @@ double RbtAromIdxSF::PiScore(const RbtInteractionCenter *pIC1,
          cIter1++) {
       for (RbtCoordListConstIter cIter2 = pi2.begin(); cIter2 != pi2.end();
            cIter2++) {
-        double r =
-            Rbt::Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
+        double r = Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
         m_pp += (1.0 / r);
       }
       for (RbtCoordListConstIter cIter2 = sigma2.begin();
            cIter2 != sigma2.end(); cIter2++) {
-        double r =
-            Rbt::Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
+        double r = Length(*cIter1, *cIter2) + 0.0001; // prevent div by zero
         m_sp += (1.0 / r);
       }
     }

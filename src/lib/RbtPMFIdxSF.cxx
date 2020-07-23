@@ -17,6 +17,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // the PMFs are defined only in this range in the Muegge database
 const double cPMFStart = 0.2; // closest PMF distance
 const double cPMFRes = 0.2;   // PMF resolution
@@ -54,7 +56,7 @@ RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
 
   // setup the grids for every types
   // first read .pmf files from directory
-  RbtPMFDirSource theSrcDir(Rbt::GetRbtRoot() + "/" +
+  RbtPMFDirSource theSrcDir(GetRbtRoot() + "/" +
                             (std::string)GetParameter(_PMFDIR));
   std::vector<std::vector<RbtPMFValue>>
       thePMF;                            // vector helping to read PMF files
@@ -68,18 +70,18 @@ RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
 #ifdef _DEBUG1
     std::cout << _CT << " " << theFileNames[i];
     std::cout << " " << theFileNames[i].substr(0, 2) << " "
-              << Rbt::PMFStr2Type(theFileNames[i].substr(0, 2));
+              << PMFStr2Type(theFileNames[i].substr(0, 2));
     std::cout << " " << theFileNames[i].substr(2, 2) << " "
-              << Rbt::PMFStr2Type(theFileNames[i].substr(2, 2));
+              << PMFStr2Type(theFileNames[i].substr(2, 2));
     std::cout << " " << std::endl;
 #endif // _DEBUG1
 
     // iterate through each individual PMF
     for (unsigned int j = 0; j < thePMF[i].size(); j++) {
       RbtPMFType rType =
-          Rbt::PMFStr2Type(theFileNames[i].substr(0, 2)); // receptor type
+          PMFStr2Type(theFileNames[i].substr(0, 2)); // receptor type
       RbtPMFType lType =
-          Rbt::PMFStr2Type(theFileNames[i].substr(2, 2)); // ligand type
+          PMFStr2Type(theFileNames[i].substr(2, 2)); // ligand type
       thePMFGrid->SetValue(
           thePMFGrid->GetIX((double)thePMF[i][j].distance), // distance
           rType, lType,
@@ -90,9 +92,8 @@ RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
   // fill slope grid
   for (unsigned int i = 0; i < theSlopeIndex.size(); i++) {
     RbtPMFType rType =
-        Rbt::PMFStr2Type(theFileNames[i].substr(0, 2)); // receptor type
-    RbtPMFType lType =
-        Rbt::PMFStr2Type(theFileNames[i].substr(2, 2)); // ligand type
+        PMFStr2Type(theFileNames[i].substr(0, 2)); // receptor type
+    RbtPMFType lType = PMFStr2Type(theFileNames[i].substr(2, 2)); // ligand type
     theSlopeGrid->SetValue(cPlStart,     // index 1 for the distance where the
                            rType, lType, // plateau starts
                            theSlopeIndex[i].distance);
@@ -132,12 +133,11 @@ RbtPMFIdxSF::RbtPMFIdxSF(const std::string &aName) : RbtBaseSF(_CT, aName) {
   // other test for grid. RbtPMFType enum starts with 1.
   for (int i = 1; i < PMF_UNDEFINED; i++) {
     for (int j = 1; j < PMF_UNDEFINED; j++) {
-      std::cout << "PMF Pair: " << Rbt::PMFType2Str((RbtPMFType)i)
-                << Rbt::PMFType2Str((RbtPMFType)j) << " *********" << std::endl;
+      std::cout << "PMF Pair: " << PMFType2Str((RbtPMFType)i)
+                << PMFType2Str((RbtPMFType)j) << " *********" << std::endl;
       for (RbtDouble grid = cPMFStart; grid < cPMFEnd; grid += cPMFRes) {
         RbtUInt idx = thePMFGrid->GetIX(grid);
-        std::cout << Rbt::PMFType2Str((RbtPMFType)i)
-                  << Rbt::PMFType2Str((RbtPMFType)j);
+        std::cout << PMFType2Str((RbtPMFType)i) << PMFType2Str((RbtPMFType)j);
         std::cout << " " << grid << " " << idx << " "
                   << thePMFGrid->GetValue(idx, (RbtPMFType)i, (RbtPMFType)j)
                   << std::endl;
@@ -187,7 +187,7 @@ void RbtPMFIdxSF::SetupReceptor() {
     RbtAtomList atomList = spDS->GetAtomList(GetReceptor()->GetAtomList(), 0.0,
                                              GetCorrectedRange());
     theReceptorList =
-        Rbt::GetAtomList(atomList, std::not1(Rbt::isAtomicNo_eq(1)));
+        GetAtomListWithPredicate(atomList, std::not1(isAtomicNo_eq(1)));
     // std::cout << "Receptor list size: "<<theReceptorList.size()<<endl;
     // create non-bonded grid to get the atoms around each gridpoint
     for (RbtAtomListIter sIter = theReceptorList.begin();
@@ -208,8 +208,8 @@ void RbtPMFIdxSF::SetupLigand() {
   std::cout << _CT << " PMF SetupLigand" << std::endl;
 #endif //_DEBUG
 
-  theLigandList = Rbt::GetAtomList(GetLigand()->GetAtomList(),
-                                   std::not1(Rbt::isAtomicNo_eq(1)));
+  theLigandList = GetAtomListWithPredicate(GetLigand()->GetAtomList(),
+                                           std::not1(isAtomicNo_eq(1)));
 
   // clean old list
   theLigandRList.clear();
@@ -252,7 +252,7 @@ double RbtPMFIdxSF::RawScore() const {
     for (RbtAtomRListConstIter rIter = rAtomList.begin();
          rIter != rAtomList.end(); rIter++) {
       // get distance of the atom
-      double theDist = Rbt::Length((*rIter)->GetCoords(), ligCoord);
+      double theDist = Length((*rIter)->GetCoords(), ligCoord);
       double i_score; // interpolated score
 
       if (theDist > GetRange()) // skip distances out of a given distance
@@ -261,7 +261,7 @@ double RbtPMFIdxSF::RawScore() const {
       // to make code readable introduce some local variables
       // hoping cc can optimize them out
       const RbtPMFType rType = (*rIter)->GetPMFType();
-      // std::cout << _CT << " receptor type " << Rbt::PMFType2Str(rType) <<
+      // std::cout << _CT << " receptor type " << PMFType2Str(rType) <<
       // std::endl;
       const RbtPMFType lType = (*lIter)->GetPMFType();
       // optimal distance for C-C interactions is
@@ -276,14 +276,15 @@ double RbtPMFIdxSF::RawScore() const {
 #ifdef _DEBUG1
         std::cout << "Plateau reached: " << theDist << " "
                   << theSlopeGrid->GetValue(1, rType, lType);
-        std::cout << " " << Rbt::PMFType2Str(rType) << " "
-                  << Rbt::PMFType2Str(lType) << std::endl;
+        std::cout << " " << PMFType2Str(rType) << " " << PMFType2Str(lType)
+                  << std::endl;
 #endif // _DEBUG1
       } else {
         // if(HH==rType || HL==lType || HL==rType || HH==lType)
-        //     std::cout << Rbt::PMFType2Str(rType)<<Rbt::PMFType2Str(lType)<<"
+        //     std::cout <<
+        //     PMFType2Str(rType)<<PMFType2Str(lType)<<"
         // should not happen" << std::endl; std::cout << _CT << " ligand type "
-        // << Rbt::PMFType2Str(lType) << std::endl;
+        // << PMFType2Str(lType) << std::endl;
         // RbtUInt		idx		= thePMFGrid->GetIX(theDist);
         // RbtDouble score		= thePMFGrid->GetValue( idx, rType,
         // lType

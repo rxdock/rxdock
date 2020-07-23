@@ -12,10 +12,12 @@
 
 #include "RbtAtomFuncs.h"
 
+using namespace rxdock;
+
 // DM 31 Oct 2000
 // Given a bond, determines if it is in a ring (cutdown version of ToSpin)
-bool Rbt::FindCyclic(RbtBondPtr spBond, RbtAtomList &atomList,
-                     RbtBondList &bondList) {
+bool rxdock::FindCyclic(RbtBondPtr spBond, RbtAtomList &atomList,
+                        RbtBondList &bondList) {
   // Max no. of atoms to process before giving up and return bCyclic=false
   // DM 8 Nov 2000 - effectively remove the cap
   const int maxProc = 999999;
@@ -23,8 +25,10 @@ bool Rbt::FindCyclic(RbtBondPtr spBond, RbtAtomList &atomList,
   RbtAtomPtr spAtom1 = spBond->GetAtom1Ptr();
   RbtAtomPtr spAtom2 = spBond->GetAtom2Ptr();
 
-  Rbt::SetAtomSelectionFlags(atomList, false); // Clear the atom selection flags
-  Rbt::SetBondSelectionFlags(bondList, false); // Clear the bond selection flags
+  SetAtomSelectionFlagsInList(atomList,
+                              false); // Clear the atom selection flags
+  SetBondSelectionFlagsInList(bondList,
+                              false); // Clear the bond selection flags
 
   // Temporary atom list containing atoms to be processed
   // Note: this is a true list (not a vector) as we will be making numerous
@@ -81,8 +85,8 @@ bool Rbt::FindCyclic(RbtBondPtr spBond, RbtAtomList &atomList,
 // atom 2 of the bond Returns true if bond is in a ring (i.e. if atom 1's flag
 // gets set also) DM 8 Feb 2000 - standalone version (formerly only available as
 // RbtModel method)
-bool Rbt::ToSpin(RbtBondPtr spBond, RbtAtomList &atomList,
-                 RbtBondList &bondList) {
+bool rxdock::ToSpin(RbtBondPtr spBond, RbtAtomList &atomList,
+                    RbtBondList &bondList) {
   RbtAtomPtr spAtom1 = spBond->GetAtom1Ptr();
   RbtAtomPtr spAtom2 = spBond->GetAtom2Ptr();
 
@@ -90,8 +94,10 @@ bool Rbt::ToSpin(RbtBondPtr spBond, RbtAtomList &atomList,
   // if ( (spAtom1->GetModelPtr() != this) || (spAtom2->GetModelPtr() != this) )
   //  return false;
 
-  Rbt::SetAtomSelectionFlags(atomList, false); // Clear the atom selection flags
-  Rbt::SetBondSelectionFlags(bondList, false); // Clear the bond selection flags
+  SetAtomSelectionFlagsInList(atomList,
+                              false); // Clear the atom selection flags
+  SetBondSelectionFlagsInList(bondList,
+                              false); // Clear the bond selection flags
   bool bIsCyclic(false);
 
   // Temporary atom list containing atoms to be processed
@@ -166,20 +172,20 @@ bool Rbt::ToSpin(RbtBondPtr spBond, RbtAtomList &atomList,
 // Set the atom and bond cyclic flags for all atoms and bonds in the model
 // DM 8 Feb 2000 - standalone version (formerly only available as RbtModel
 // method)
-void Rbt::SetAtomAndBondCyclicFlags(RbtAtomList &atomList,
-                                    RbtBondList &bondList) {
+void rxdock::SetAtomAndBondCyclicFlags(RbtAtomList &atomList,
+                                       RbtBondList &bondList) {
   // Clear the flags
-  Rbt::SetAtomCyclicFlags(atomList, false);
-  Rbt::SetBondCyclicFlags(bondList, false);
+  SetAtomCyclicFlagsInList(atomList, false);
+  SetBondCyclicFlagsInList(bondList, false);
 
-  // A bond is cyclic if Rbt::FindCyclic returns true
+  // A bond is cyclic if FindCyclic returns true
   // An atom is cyclic if it is involved in a cyclic bond
   // So loop around each bond, call FindCyclic and set the flags for the bond,
   // atom 1 and atom 2 accordingly
   for (RbtBondListIter iter = bondList.begin(); iter != bondList.end();
        iter++) {
     RbtBondPtr spBond(*iter);
-    if (Rbt::FindCyclic(spBond, atomList, bondList)) {
+    if (FindCyclic(spBond, atomList, bondList)) {
       spBond->SetCyclicFlag(true);
       spBond->GetAtom1Ptr()->SetCyclicFlag(true);
       spBond->GetAtom2Ptr()->SetCyclicFlag(true);
@@ -191,18 +197,19 @@ void Rbt::SetAtomAndBondCyclicFlags(RbtAtomList &atomList,
 // Assumes SetAtomAndBondCyclicFlags has already been called
 // Note: if the atom is a member of two equally sized rings, only one will be
 // returned 30 Oct 2000 - Standalone version
-RbtAtomList Rbt::FindRing(RbtAtomPtr spAtom, RbtBondList &bondList) {
+RbtAtomList rxdock::FindRing(RbtAtomPtr spAtom, RbtBondList &bondList) {
   // Check that atom is cyclic
   if (!spAtom->GetCyclicFlag())
     return RbtAtomList();
 
-  Rbt::SetBondSelectionFlags(bondList, false); // Clear the bond selection flags
+  SetBondSelectionFlagsInList(bondList,
+                              false); // Clear the bond selection flags
 
   // Get the cyclic bonds this atom is in
   RbtBondMap cyclicBondMap = spAtom->GetCyclicBondMap();
   RbtBondMapIter bIter = cyclicBondMap.begin();
   (*bIter).first->SetSelectionFlag(true);
-  RbtAtomPtr spAtom2 = Rbt::GetBondedAtomPtr(*bIter);
+  RbtAtomPtr spAtom2 = GetBondedAtomPtr(*bIter);
   // Seed the partial ring lists with the first two atoms
   RbtAtomList firstRing;
   firstRing.push_back(spAtom);
@@ -271,7 +278,7 @@ RbtAtomList Rbt::FindRing(RbtAtomPtr spAtom, RbtBondList &bondList) {
         if (!pBnd->GetSelectionFlag()) {
           // If this atom is first in the bond (bIter->second == true), get atom
           // 2 ptr, else get atom 1 ptr
-          RbtAtomPtr spA2 = Rbt::GetBondedAtomPtr(*bIter);
+          RbtAtomPtr spA2 = GetBondedAtomPtr(*bIter);
           // We've hit atom 1 so this must be the smallest ring
           if (spA2 == spAtom) {
 #ifdef _DEBUG
@@ -297,11 +304,11 @@ RbtAtomList Rbt::FindRing(RbtAtomPtr spAtom, RbtBondList &bondList) {
 }
 
 // 30 Oct 2000 (DM) - Find all rings, standalone version
-void Rbt::FindRings(RbtAtomList &atomList, RbtBondList &bondList,
-                    RbtAtomListList &ringList) {
+void rxdock::FindRings(RbtAtomList &atomList, RbtBondList &bondList,
+                       RbtAtomListList &ringList) {
   ringList.clear();
   // Determine the cyclic atoms and bonds
-  Rbt::SetAtomAndBondCyclicFlags(atomList, bondList);
+  SetAtomAndBondCyclicFlags(atomList, bondList);
 
   // First set the selection flags to the inverse of the cyclic flag
   // so we initially have all the cyclic atoms unselected
@@ -312,11 +319,11 @@ void Rbt::FindRings(RbtAtomList &atomList, RbtBondList &bondList,
   for (RbtAtomListIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
     if (!(*iter)->GetSelectionFlag()) {
-      RbtAtomList ringAtoms = Rbt::FindRing(*iter, bondList);
+      RbtAtomList ringAtoms = FindRing(*iter, bondList);
       if (!ringAtoms.empty()) {
         // Now we've found a ring, set the selection flags to true for each ring
         // member
-        Rbt::SetAtomSelectionFlags(ringAtoms, true);
+        SetAtomSelectionFlagsInList(ringAtoms, true);
         // Store in our list of rings
         ringList.push_back(ringAtoms);
       }

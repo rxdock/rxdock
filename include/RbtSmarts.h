@@ -18,7 +18,9 @@
 
 #include "RbtModel.h"
 
-namespace DT {
+namespace rxdock {
+
+namespace daylight {
 RbtAtomListList QueryModel(RbtModelPtr spModel, const std::string &strSmart,
                            std::string &strSmiles);
 }
@@ -27,5 +29,7 @@ RbtAtomListList QueryModel(RbtModelPtr spModel, const std::string &strSmart,
 typedef std::map<int, int> RbtIntIntMap;
 typedef RbtIntIntMap::iterator RbtIntIntMapIter;
 typedef RbtIntIntMap::const_iterator RbtIntIntMapConstIter;
+
+} // namespace rxdock
 
 #endif

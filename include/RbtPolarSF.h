@@ -21,6 +21,8 @@
 #include "RbtBaseSF.h"
 #include "RbtInteractionGrid.h"
 
+namespace rxdock {
+
 class RbtPolarSF : public virtual RbtBaseSF,
                    public virtual RbtAnnotationHandler {
 public:
@@ -129,5 +131,7 @@ private:
   f1prms m_PHI_plane_prms;
   f1prms m_THETAprms;
 };
+
+} // namespace rxdock
 
 #endif //_RBTPOLARSF_H_

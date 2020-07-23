@@ -24,6 +24,8 @@
 // distances respectively
 #include "RbtRealGrid.h"
 
+namespace rxdock {
+
 /** RbtPMFIdxSF class for PMF scoring.
  */
 class RbtPMFIdxSF : public RbtBaseInterSF,
@@ -90,5 +92,7 @@ protected:
   double GetLinearCloseRangeValue(double aDist, RbtPMFType aRecType,
                                   RbtPMFType aLigType) const;
 };
+
+} // namespace rxdock
 
 #endif // _RBTPMFIDXSF_H_

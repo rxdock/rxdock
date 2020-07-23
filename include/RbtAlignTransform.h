@@ -19,6 +19,8 @@
 #include "RbtCavity.h"
 #include "RbtRand.h"
 
+namespace rxdock {
+
 class RbtAlignTransform : public RbtBaseBiMolTransform {
 public:
   // Static data member for class type
@@ -72,5 +74,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtAlignTransform> RbtAlignTransformPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTALIGNTRANSFORM_H_

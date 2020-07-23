@@ -19,6 +19,8 @@
 #include "RbtConfig.h"
 #include "RbtVble.h"
 
+namespace rxdock {
+
 class RbtToken {
 public:
   static std::string _CT;
@@ -72,5 +74,7 @@ typedef RbtTokenList::const_iterator RbtTokenListConstIter;
 // Compare class to compare different genomes inside a population
 // This is used to sort the genomes in a population depending
 // of the value of their scoring function.
+
+} // namespace rxdock
 
 #endif //_RbtToken_H_

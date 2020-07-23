@@ -19,13 +19,15 @@
 
 #include <iomanip>
 
+using namespace rxdock;
+
 RbtCSVFileSink::RbtCSVFileSink(const std::string &fileName, RbtModelPtr spModel,
                                std::size_t nAtoms, std::size_t nDataFields)
     : RbtBaseMolecularFileSink(fileName, spModel), m_nAtoms(nAtoms),
       m_nDataFields(nDataFields) {
   SetAppend(true);
   m_spElementData = RbtElementFileSourcePtr(
-      new RbtElementFileSource(Rbt::GetRbtFileName("data", "RbtElements.dat")));
+      new RbtElementFileSource(GetRbtFileName("data", "RbtElements.dat")));
   _RBTOBJECTCOUNTER_CONSTR_("RbtCSVFileSink");
 }
 

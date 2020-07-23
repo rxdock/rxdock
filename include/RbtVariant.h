@@ -21,6 +21,8 @@
 
 #include "RbtCoord.h"
 
+namespace rxdock {
+
 // Strings representing TRUE and FALSE
 const std::string _TRUE("TRUE");
 const std::string _FALSE("FALSE");
@@ -237,5 +239,7 @@ typedef RbtVariantList::const_iterator RbtVariantListConstIter;
 typedef std::map<std::string, RbtVariant> RbtStringVariantMap;
 typedef RbtStringVariantMap::iterator RbtStringVariantMapIter;
 typedef RbtStringVariantMap::const_iterator RbtStringVariantMapConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTVARIANT_H_

@@ -17,6 +17,8 @@
 
 #include "RbtBaseTransform.h"
 
+namespace rxdock {
+
 // Only check transform aggregate assertions in debug build
 #ifdef _NDEBUG
 const RbtBool TRANSFORMAGG_CHECK = false;
@@ -103,5 +105,7 @@ typedef std::vector<RbtTransformAggPtr>
     RbtTransformAggList; // Vector of smart pointers
 typedef RbtTransformAggList::iterator RbtTransformAggListIter;
 typedef RbtTransformAggList::const_iterator RbtTransformAggListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTTRANSFORMAGG_H_

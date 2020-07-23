@@ -19,6 +19,8 @@
 #include "RbtBaseMolecularDataSource.h"
 #include "RbtParameterFileSource.h"
 
+namespace rxdock {
+
 class RbtBaseMolecularFileSource : public RbtBaseFileSource,
                                    public RbtBaseMolecularDataSource {
 public:
@@ -112,5 +114,7 @@ private:
 // useful typedefs
 typedef SmartPtr<RbtBaseMolecularFileSource>
     RbtMolecularFileSourcePtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTBASEMOLECULARFILESOURCE_H_

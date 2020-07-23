@@ -17,6 +17,8 @@
 
 #include "RbtError.h"
 
+namespace rxdock {
+
 const std::string IDS_MODEL_ERROR = "RBT_MODEL_ERROR";
 
 // Unspecified model error
@@ -32,5 +34,7 @@ protected:
                 int nLine, const std::string &strMessage = "")
       : RbtError(strName, strFile, nLine, strMessage) {}
 };
+
+} // namespace rxdock
 
 #endif //_RBTMODELERROR_H_

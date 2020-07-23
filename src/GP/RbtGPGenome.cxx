@@ -16,6 +16,9 @@
 #include <fstream>
 #include <sstream>
 
+using namespace rxdock;
+using namespace rxdock::geneticprogram;
+
 std::string RbtGPGenome::_CT("RbtGPGenome");
 int RbtGPGenome::npi;
 int RbtGPGenome::nfi;
@@ -28,19 +31,19 @@ int RbtGPGenome::nc;
 int RbtGPGenome::l;
 
 // Constructors
-RbtGPGenome::RbtGPGenome() : m_rand(Rbt::GetRbtRand()) {
+RbtGPGenome::RbtGPGenome() : m_rand(GetRbtRand()) {
   chrom = new RbtGPChromosome(npi, nfi, nn, no, nr, nc);
   fitness = 0.0;
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
-RbtGPGenome::RbtGPGenome(const RbtGPGenome &g) : m_rand(Rbt::GetRbtRand()) {
+RbtGPGenome::RbtGPGenome(const RbtGPGenome &g) : m_rand(GetRbtRand()) {
   chrom = new RbtGPChromosome(*(g.chrom));
   fitness = g.fitness;
   _RBTOBJECTCOUNTER_COPYCONSTR_(_CT);
 }
 
-RbtGPGenome::RbtGPGenome(std::istream &in) : m_rand(Rbt::GetRbtRand()) {
+RbtGPGenome::RbtGPGenome(std::istream &in) : m_rand(GetRbtRand()) {
   long int seed;
   in >> seed;
   m_rand.Seed(seed);
@@ -53,7 +56,7 @@ RbtGPGenome::RbtGPGenome(std::istream &in) : m_rand(Rbt::GetRbtRand()) {
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
-RbtGPGenome::RbtGPGenome(std::string str) : m_rand(Rbt::GetRbtRand()) {
+RbtGPGenome::RbtGPGenome(std::string str) : m_rand(GetRbtRand()) {
   std::istringstream ist(str);
   // Get structure
   ist >> npi >> nfi >> nsfi >> no >> nf >> nr >> nc >> l;
@@ -197,6 +200,7 @@ std::ostream &RbtGPGenome::Print(std::ostream &s) const {
   return s;
 }
 
-std::ostream &operator<<(std::ostream &s, const RbtGPGenome &g) {
+std::ostream &rxdock::geneticprogram::operator<<(std::ostream &s,
+                                                 const RbtGPGenome &g) {
   return g.Print(s);
 }

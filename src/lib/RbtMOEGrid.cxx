@@ -18,6 +18,8 @@
 #include "RbtParameterFileSource.h"
 #include "RbtRealGrid.h"
 
+using namespace rxdock;
+
 const std::string GRID_SIGNATURE = "SVLgrid\n";
 const int VERSION = 100;
 
@@ -72,9 +74,9 @@ RbtMOEGridPoint::RbtMOEGridPoint(std::vector<double> a_coord, double a_value) {
 
 // convenience method for RbtCoord
 RbtMOEGridPoint::RbtMOEGridPoint(RbtCoord &a_coord, double a_value) {
-  coords.push_back(Rbt::ExtractXCoord(a_coord));
-  coords.push_back(Rbt::ExtractYCoord(a_coord));
-  coords.push_back(Rbt::ExtractZCoord(a_coord));
+  coords.push_back(ExtractXCoord(a_coord));
+  coords.push_back(ExtractYCoord(a_coord));
+  coords.push_back(ExtractZCoord(a_coord));
   value = a_value;
 }
 //////////////////////////////////////////////////////////////////////////////////////
@@ -147,12 +149,12 @@ void RbtMOEGrid::GetDockingSiteExtents(std::string &a_strPrmFile) {
   RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
   // Set the workspace name to the root of the receptor .prm filename
   std::vector<std::string> componentList =
-      Rbt::ConvertDelimitedStringToList(a_strPrmFile, ".");
+      ConvertDelimitedStringToList(a_strPrmFile, ".");
   std::string wsName = componentList.front();
   spWS->SetName(wsName);
   // Read docking site from file
   std::string strASFile = spWS->GetName() + ".as";
-  std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
+  std::string strInputFile = GetRbtFileName("data/grids", strASFile);
 #if defined(__sgi) && !defined(__GNUC__)
   std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
 #else

@@ -18,6 +18,8 @@
 #include "RbtAtom.h"
 #include "RbtBaseGrid.h"
 
+namespace rxdock {
+
 // simple container for up to 3 atoms, to hold one half of an interaction
 // i.e. receptor atoms or ligand atoms.
 class RbtInteractionCenter {
@@ -55,7 +57,6 @@ typedef RbtInteractionCenterList::iterator RbtInteractionCenterListIter;
 typedef RbtInteractionCenterList::const_iterator
     RbtInteractionCenterListConstIter;
 
-namespace Rbt {
 // Less than operator for sorting RbtInteractionCenter* by pointer value
 class InteractionCenterCmp {
 public:
@@ -84,8 +85,7 @@ public:
   explicit isInteractionD_lt(const RbtInteractionCenter *pIC1, double dd)
       : d_sq(dd * dd), a(pIC1->GetAtom1Ptr()) {}
   bool operator()(const RbtInteractionCenter *pIC2) const {
-    return Rbt::Length2(pIC2->GetAtom1Ptr()->GetCoords(), a->GetCoords()) <
-           d_sq;
+    return Length2(pIC2->GetAtom1Ptr()->GetCoords(), a->GetCoords()) < d_sq;
   }
 };
 
@@ -97,7 +97,6 @@ public:
   explicit SelectInteractionCenter(bool bb) : b(bb) {}
   void operator()(RbtInteractionCenter *pIC);
 };
-} // namespace Rbt
 
 // A map of interaction centers indexed by unsigned int
 // Used to store the receptor atom lists at each grid point
@@ -201,5 +200,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtInteractionGrid> RbtInteractionGridPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTINTERACTIONGRID_H_

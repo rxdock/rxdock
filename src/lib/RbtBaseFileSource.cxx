@@ -15,6 +15,8 @@
 #include <cstring>
 #include <sys/stat.h>
 
+using namespace rxdock;
+
 // Constructors
 // RbtBaseFileSource::RbtBaseFileSource(const char* fileName)
 //{

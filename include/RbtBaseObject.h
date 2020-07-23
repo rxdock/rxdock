@@ -21,6 +21,8 @@
 #include "RbtParamHandler.h"
 #include "RbtRequestHandler.h"
 
+namespace rxdock {
+
 class RbtWorkSpace; // forward definition
 
 class RbtBaseObject : public RbtParamHandler,
@@ -120,5 +122,7 @@ typedef std::vector<RbtBaseObject *>
     RbtBaseObjectList; // Vector of smart pointers
 typedef RbtBaseObjectList::iterator RbtBaseObjectListIter;
 typedef RbtBaseObjectList::const_iterator RbtBaseObjectListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTBASEOBJECT_H_

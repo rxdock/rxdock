@@ -21,6 +21,10 @@
 #include "RbtGPFitnessFunction.h"
 #include "RbtGPGenome.h"
 
+namespace rxdock {
+
+namespace geneticprogram {
+
 class RbtGPPopulation {
 public:
   static std::string _CT;
@@ -93,5 +97,9 @@ public:
     return (x->Best()->GetFitness() < y->Best()->GetFitness());
   }
 };
+
+} // namespace geneticprogram
+
+} // namespace rxdock
 
 #endif //_RbtGPPopulation_H_

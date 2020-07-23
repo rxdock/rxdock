@@ -15,6 +15,8 @@
 
 #include "RbtBaseInterSF.h"
 
+namespace rxdock {
+
 class RbtSetupPMFSF : public RbtBaseInterSF {
   RbtAtomList theLigandList;   // ligand typing
   RbtAtomList theReceptorList; // receptor typing
@@ -48,4 +50,7 @@ protected:
 
   bool IsChargedNitrogen(RbtAtomPtr); // true for guanidino or other charged
 };
+
+} // namespace rxdock
+
 #endif //_RBTSETUPPMFSF_H_

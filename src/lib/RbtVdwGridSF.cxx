@@ -14,6 +14,8 @@
 #include "RbtFileError.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtVdwGridSF::_CT("RbtVdwGridSF");
 std::string RbtVdwGridSF::_GRID("GRID");
@@ -64,8 +66,7 @@ void RbtVdwGridSF::SetupReceptor() {
   std::string strWSName = GetWorkSpace()->GetName();
 
   std::string strSuffix = GetParameter(_GRID);
-  std::string strFile =
-      Rbt::GetRbtFileName("data/grids", strWSName + strSuffix);
+  std::string strFile = GetRbtFileName("data/grids", strWSName + strSuffix);
   // DM 26 Sep 2000 - std::ios_base::binary qualifier doesn't appear to be valid
   // with IRIX CC
 #ifdef __sgi
@@ -187,9 +188,9 @@ void RbtVdwGridSF::ReadGrids(std::istream &istr) {
 
   // Read header string
   int length;
-  Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
+  ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *header = new char[length + 1];
-  Rbt::ReadWithThrow(istr, header, length);
+  ReadWithThrow(istr, header, length);
   // Add null character to end of string
   header[length] = '\0';
   // Compare title with
@@ -202,7 +203,7 @@ void RbtVdwGridSF::ReadGrids(std::istream &istr) {
 
   // Now read number of grids
   int nGrids;
-  Rbt::ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
+  ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
   if (iTrace > 0) {
     std::cout << _CT << ": reading " << nGrids << " grids..." << std::endl;
   }
@@ -218,9 +219,9 @@ void RbtVdwGridSF::ReadGrids(std::istream &istr) {
   m_grids = RbtRealGridList(RbtTriposAtomType::MAXTYPES);
   for (int i = 0; i < nGrids; i++) {
     // Read the atom type string
-    Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
+    ReadWithThrow(istr, (char *)&length, sizeof(length));
     char *szType = new char[length + 1];
-    Rbt::ReadWithThrow(istr, szType, length);
+    ReadWithThrow(istr, szType, length);
     // Add null character to end of string
     szType[length] = '\0';
     std::string strType(szType);

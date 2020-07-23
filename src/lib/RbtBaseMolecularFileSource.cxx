@@ -15,6 +15,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Constructors
 // RbtBaseMolecularFileSource::RbtBaseMolecularFileSource(const char* fileName,
 // const char* sourceName) :
@@ -238,7 +240,7 @@ void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
 
   // First remove all bonds from the atom
   for (const auto &mapIter : bondMap) {
-    auto bIter = Rbt::FindBond(m_bondList, Rbt::isBond_eq((mapIter).first));
+    auto bIter = FindBond(m_bondList, isBond_eq((mapIter).first));
     if (bIter != m_bondList.end()) {
 #ifdef _DEBUG
       std::cout << "Removing bond #" << (*bIter)->GetBondId() << " ("
@@ -253,10 +255,10 @@ void RbtBaseMolecularFileSource::RemoveAtom(RbtAtomPtr spAtom) {
   // Find the atom in the FileSource atom list
   // DM 2 Aug 1999 - search by atom  attributes, not by memory location (v
   // risky) auto aIter =
-  // Rbt::FindAtomInList(m_atomList, std::bind(Rbt::isAtomPtr_eq(),
+  // FindAtomInList(m_atomList, std::bind(isAtomPtr_eq(),
   // std::placeholders::_1, spAtom));
-  auto aIter = Rbt::FindAtomInList(
-      m_atomList, std::bind(Rbt::isAtom_eq(), std::placeholders::_1, spAtom));
+  auto aIter = FindAtomInList(
+      m_atomList, std::bind(isAtom_eq(), std::placeholders::_1, spAtom));
   if (aIter != m_atomList.end()) {
 #ifdef _DEBUG
     std::cout << "Removing atom #" << (*aIter)->GetAtomId() << ", "
@@ -375,7 +377,7 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
   std::string subunitName = leadAtom->GetSubunitName();
   std::string match = leadAtom->GetSegmentName() + ":" + subunitName + "_" +
                       leadAtom->GetSubunitId() + ":";
-  if (Rbt::GetNumMatchingAtoms(atoms, match) != atoms.size()) {
+  if (GetNumMatchingAtoms(atoms, match) != atoms.size()) {
     std::cout
         << "WARNING SetupPartialIonicGroups: Inconsistent subunit names in "
            "atom list headed by "
@@ -395,8 +397,8 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     std::string mandatory =
         spParamSource->GetParameterValueAsString(_MANDATORY);
     std::vector<std::string> mandAtoms =
-        Rbt::ConvertDelimitedStringToList(mandatory);
-    unsigned int nPresent = Rbt::GetNumMatchingAtoms(atoms, mandAtoms);
+        ConvertDelimitedStringToList(mandatory);
+    unsigned int nPresent = GetNumMatchingAtoms(atoms, mandAtoms);
     if (nPresent != mandAtoms.size()) {
 #ifdef _DEBUG
       std::cout << "INFO SetupPartialIonicGroups: Only " << nPresent
@@ -412,8 +414,8 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     std::string forbidden =
         spParamSource->GetParameterValueAsString(_FORBIDDEN);
     std::vector<std::string> forbAtoms =
-        Rbt::ConvertDelimitedStringToList(forbidden);
-    int nPresent = Rbt::GetNumMatchingAtoms(atoms, forbAtoms);
+        ConvertDelimitedStringToList(forbidden);
+    int nPresent = GetNumMatchingAtoms(atoms, forbAtoms);
     if (nPresent > 0) {
 #ifdef _DEBUG
       std::cout << "INFO SetupPartialIonicGroups: " << nPresent
@@ -433,7 +435,7 @@ void RbtBaseMolecularFileSource::SetupPartialIonicGroups(
     std::cout << std::endl << "Trying to match " << *aIter << std::endl;
 #endif //_DEBUG
     // Find the atoms which match the specifier string
-    RbtAtomList selectedAtoms = Rbt::GetMatchingAtomList(atoms, *aIter);
+    RbtAtomList selectedAtoms = GetMatchingAtomList(atoms, *aIter);
     // Now we've got the matching atoms, set the group charge on each atom
     for (RbtAtomListIter iter = selectedAtoms.begin();
          iter != selectedAtoms.end(); iter++) {

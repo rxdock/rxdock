@@ -14,6 +14,8 @@
 
 #include <algorithm>
 
+using namespace rxdock;
+
 // Constructor -does nothing.
 RbtSubject::RbtSubject() { _RBTOBJECTCOUNTER_CONSTR_("RbtSubject"); }
 

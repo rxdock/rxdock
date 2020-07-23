@@ -17,6 +17,8 @@
 
 #include "RbtCoord.h"
 
+namespace rxdock {
+
 class RbtPlane {
   ///////////////////////////////////////////////
   // Data members
@@ -98,9 +100,9 @@ public:
 };
 
 ///////////////////////////////////////////////
-// Non-member functions (in Rbt namespace)
+// Non-member functions (in rxdock namespace)
 //////////////////////////////////////////
-namespace Rbt {
+
 // Since our planes are always in normal form, we don't need to divide
 // by the magnitude of the normal vector
 // DM 31 Mar 1999 - returned signed distance (not absolute value)
@@ -111,13 +113,14 @@ inline double DistanceFromPointToPlane(const RbtCoord &c0, const RbtPlane &p) {
 
 // Angle between planes is just the angle between the normal vectors
 inline double AngleBetweenPlanes(const RbtPlane &p0, const RbtPlane &p1) {
-  return Rbt::Angle(p0.VNorm(), p1.VNorm());
+  return Angle(p0.VNorm(), p1.VNorm());
 }
 
 // Cos(Angle) between planes is just the dot product of the normal vectors
 inline double CosAngleBetweenPlanes(const RbtPlane &p0, const RbtPlane &p1) {
-  return Rbt::Dot(p0.VNorm(), p1.VNorm());
+  return Dot(p0.VNorm(), p1.VNorm());
 }
-} // namespace Rbt
+
+} // namespace rxdock
 
 #endif //_RBTPLANE_H_

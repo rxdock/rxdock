@@ -21,6 +21,8 @@
 #include "RbtBaseMolecularFileSink.h"
 #include "RbtElementFileSource.h"
 
+namespace rxdock {
+
 class RbtCSVFileSink : public RbtBaseMolecularFileSink {
 public:
   RBTDLL_EXPORT RbtCSVFileSink(const std::string &fileName, RbtModelPtr spModel,
@@ -47,5 +49,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtCSVFileSink> RbtCSVFileSinkPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTCSVFILESINK_H_

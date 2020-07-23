@@ -17,6 +17,8 @@
 
 #include "RbtSiteMapper.h"
 
+namespace rxdock {
+
 class RbtSphereSiteMapper : public RbtSiteMapper {
 public:
   // Static data member for class type
@@ -41,5 +43,7 @@ public:
 
 // Useful typedefs
 typedef SmartPtr<RbtSphereSiteMapper> RbtSphereSiteMapperPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTSPHERESITEMAPPER_H_

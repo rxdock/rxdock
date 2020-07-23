@@ -17,6 +17,8 @@
 
 #include <functional>
 
+namespace rxdock {
+
 class RbtAtom;
 
 // Atom typing class for the solvation atom types
@@ -195,7 +197,6 @@ typedef HHS_SolvationList::iterator HHS_SolvationListIter;
 typedef HHS_SolvationList::const_iterator HHS_SolvationListConstIter;
 
 // Useful STL predicates and function objects
-namespace Rbt {
 class InitHHS {
 public:
   explicit InitHHS() {}
@@ -253,5 +254,7 @@ public:
 inline double AccumHHSEnergy(double val, const HHS_Solvation *pHHS) {
   return val + pHHS->GetEnergy();
 }
-} // namespace Rbt
+
+} // namespace rxdock
+
 #endif //_RBTSATYPES_H_

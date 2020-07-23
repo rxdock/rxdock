@@ -14,6 +14,8 @@
 // #include <stdlib>
 //#include "RbtFileError.h"
 
+using namespace rxdock;
+
 RbtPMFDirSource::RbtPMFDirSource(const std::string &aDir)
     : RbtDirectorySource(aDir) {
 #ifdef _DEBUG

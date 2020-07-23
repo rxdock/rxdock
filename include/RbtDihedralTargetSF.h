@@ -18,6 +18,8 @@
 #include "RbtBaseInterSF.h"
 #include "RbtDihedralSF.h"
 
+namespace rxdock {
+
 class RbtDihedralTargetSF : public RbtBaseInterSF, public RbtDihedralSF {
 public:
   // Class type string
@@ -40,5 +42,7 @@ protected:
 private:
   RbtDihedralList m_dihList;
 };
+
+} // namespace rxdock
 
 #endif //_RBTDIHEDRALTARGETSF_H_

@@ -21,6 +21,8 @@
 #include "RbtError.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
 class RbtChrom : public RbtChromElement {
 public:
   // Class type string
@@ -63,5 +65,7 @@ private:
   // a SyncToModel
   RbtModelList m_modelList;
 };
+
+} // namespace rxdock
 
 #endif /*RBTCHROM_H_*/

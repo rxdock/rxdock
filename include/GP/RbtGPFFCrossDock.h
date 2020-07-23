@@ -22,6 +22,10 @@
 #include "RbtRand.h"
 // #include <cmath>
 
+namespace rxdock {
+
+namespace geneticprogram {
+
 class RbtGPFFCrossDock : public RbtGPFitnessFunction {
 public:
   static std::string _CT;
@@ -43,4 +47,9 @@ typedef std::vector<RbtGPFFCrossDockPtr>
     RbtGPFFCrossDockList; // Vector of smart pointers
 typedef RbtGPFFCrossDockList::iterator RbtGPFFCrossDockListIter;
 typedef RbtGPFFCrossDockList::const_iterator RbtGPFFCrossDockListConstIter;
+
+} // namespace geneticprogram
+
+} // namespace rxdock
+
 #endif //_RbtGPFFCrossDock

@@ -23,6 +23,8 @@
 #include "RbtEuler.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
 class RbtChromPositionRefData {
 public:
   // Class type string
@@ -85,5 +87,7 @@ private:
 
 typedef SmartPtr<RbtChromPositionRefData>
     RbtChromPositionRefDataPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif /*RBTCHROMPOSITIONREFDATA_H_*/

@@ -40,6 +40,8 @@
 #include "RbtBaseFileSource.h"
 #include "RbtNoeRestraint.h"
 
+namespace rxdock {
+
 class RbtNmrRestraintFileSource : public RbtBaseFileSource {
 public:
   ////////////////////////////////////////
@@ -79,7 +81,7 @@ private:
 
   // Returns NOE restraint type and modifies the atom name string accordingly
   // Returns UNDEFINED if the atom name string has bad syntax
-  Rbt::eNoeType NoeRestraintType(std::string &strAtomNames);
+  eNoeType NoeRestraintType(std::string &strAtomNames);
 
 protected:
   ////////////////////////////////////////
@@ -103,5 +105,7 @@ typedef RbtNmrRestraintFileSourceList::iterator
     RbtNmrRestraintFileSourceListIter;
 typedef RbtNmrRestraintFileSourceList::const_iterator
     RbtNmrRestraintFileSourceListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTNMRRESTRAINTFILESOURCE_H_

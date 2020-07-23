@@ -17,6 +17,8 @@
 #include "RbtElementFileSource.h"
 #include "RbtFileError.h"
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 
@@ -25,7 +27,7 @@
 RbtCharmmDataSource::RbtCharmmDataSource(const std::string &strMassesFile) {
   // Need element data source to convert element names to atomic numbers
   RbtElementFileSourcePtr spElementData(
-      new RbtElementFileSource(Rbt::GetRbtFileName("data", "RbtElements.dat")));
+      new RbtElementFileSource(GetRbtFileName("data", "RbtElements.dat")));
 
   // Initialize m_atomTypes, m_atomicNumber and m_hybridState from masses.rtf
   RbtCharmmTypesFileSourcePtr spTypesFile(

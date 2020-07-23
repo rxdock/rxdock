@@ -21,6 +21,10 @@
 #include "RbtModel.h"
 #include "RbtSFAgg.h"
 
+namespace rxdock {
+
+namespace unittest {
+
 class RbtChromTest : public ::testing::Test {
 protected:
   static double TINY;
@@ -53,5 +57,9 @@ protected:
   RbtBiMolWorkSpacePtr m_workSpace; // simple workspace
   RbtSFAggPtr m_SF;                 // simple scoring function
 };
+
+} // namespace unittest
+
+} // namespace rxdock
 
 #endif /*RBTCHROMTEST_H_*/

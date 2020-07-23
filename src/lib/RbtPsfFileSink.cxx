@@ -15,6 +15,8 @@
 #include <iomanip>
 #include <sstream>
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 

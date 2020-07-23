@@ -14,6 +14,8 @@
 #include "RbtFileError.h"
 #include "RbtPseudoAtom.h"
 
+using namespace rxdock;
+
 // Could be a useful general function
 // If pAtom is a pseudo atom, then pushes all the constituent atoms onto list
 // else, push pAtom itself onto the list
@@ -46,14 +48,14 @@ RbtAtomRList RbtInteractionCenter::GetAtomList() const {
 // If any of the constituent atoms are pseudo-atoms, then check these also
 bool RbtInteractionCenter::isSelected() const {
   RbtAtomRList atomList = GetAtomList();
-  return (std::count_if(atomList.begin(), atomList.end(),
-                        Rbt::isAtomSelected()) > 0);
+  return (std::count_if(atomList.begin(), atomList.end(), isAtomSelected()) >
+          0);
 }
 
 // Select/deselect the interaction center (selects all constituent atoms)
-void Rbt::SelectInteractionCenter::operator()(RbtInteractionCenter *pIC) {
+void rxdock::SelectInteractionCenter::operator()(RbtInteractionCenter *pIC) {
   RbtAtomRList atomList = pIC->GetAtomList();
-  std::for_each(atomList.begin(), atomList.end(), Rbt::SelectAtom(b));
+  std::for_each(atomList.begin(), atomList.end(), SelectAtom(b));
 }
 
 // Static data members
@@ -232,7 +234,7 @@ void RbtInteractionGrid::UniqueInteractionLists() {
   for (RbtInteractionListMapIter iter = m_intnMap.begin();
        iter != m_intnMap.end(); iter++) {
     // std::cout << _CT << ": before = " << (*iter).size();
-    std::sort((*iter).begin(), (*iter).end(), Rbt::InteractionCenterCmp());
+    std::sort((*iter).begin(), (*iter).end(), InteractionCenterCmp());
     RbtInteractionCenterListIter uniqIter =
         std::unique((*iter).begin(), (*iter).end());
     (*iter).erase(uniqIter, (*iter).end());

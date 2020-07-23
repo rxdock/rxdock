@@ -14,6 +14,8 @@
 #ifndef _RBTFLEXDATAVISITOR_H_
 #define _RBTFLEXDATAVISITOR_H_
 
+namespace rxdock {
+
 class RbtReceptorFlexData;
 class RbtLigandFlexData;
 class RbtSolventFlexData;
@@ -25,4 +27,7 @@ public:
   virtual void VisitLigandFlexData(RbtLigandFlexData *) = 0;
   virtual void VisitSolventFlexData(RbtSolventFlexData *) = 0;
 };
+
+} // namespace rxdock
+
 #endif //_RBTFLEXDATAVISITOR_H_

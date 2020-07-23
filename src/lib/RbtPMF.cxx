@@ -12,7 +12,9 @@
 
 #include "RbtPMF.h"
 
-std::string Rbt::PMFType2Str(RbtPMFType aType) {
+using namespace rxdock;
+
+std::string rxdock::PMFType2Str(RbtPMFType aType) {
   switch (aType) {
   case CF:
     return std::string("CF");
@@ -131,7 +133,7 @@ std::string Rbt::PMFType2Str(RbtPMFType aType) {
   }
 }
 
-RbtPMFType Rbt::PMFStr2Type(std::string aStr) {
+RbtPMFType rxdock::PMFStr2Type(std::string aStr) {
   if (!aStr.compare("CF"))
     return CF;
   else if (!aStr.compare("CP"))

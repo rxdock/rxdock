@@ -39,6 +39,8 @@
 
 #include "RbtQuat.h"
 
+namespace rxdock {
+
 class RbtEuler {
 public:
   // Constructor accepting values for heading, attitude and bank (radians).
@@ -97,4 +99,7 @@ private:
   double m_attitude; // attitude angle (radians)
   double m_bank;     // bank angle (radians)
 };
+
+} // namespace rxdock
+
 #endif /*RBTEULER_H_*/

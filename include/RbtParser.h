@@ -21,6 +21,8 @@
 #include "RbtToken.h"
 #include "RbtTokenIter.h"
 
+namespace rxdock {
+
 class RbtFilterExpression;
 
 class RbtParser {
@@ -54,5 +56,7 @@ typedef RbtParserList::const_iterator RbtParserListConstIter;
 // Compare class to compare different genomes inside a population
 // This is used to sort the genomes in a population depending
 // of the value of their scoring function.
+
+} // namespace rxdock
 
 #endif //_RbtParser_H_

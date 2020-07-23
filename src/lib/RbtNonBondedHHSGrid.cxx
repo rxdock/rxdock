@@ -14,6 +14,8 @@
 #include "RbtAtom.h"
 #include "RbtFileError.h"
 
+using namespace rxdock;
+
 std::string RbtNonBondedHHSGrid::_CT("RbtNonBondedHHSGrid");
 
 RbtNonBondedHHSGrid::RbtNonBondedHHSGrid(const RbtCoord &gridMin,

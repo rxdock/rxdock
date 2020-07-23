@@ -18,6 +18,8 @@
 
 #include "RbtChromElement.h"
 
+namespace rxdock {
+
 class RbtBaseSF;
 
 class RbtGenome {
@@ -95,7 +97,6 @@ typedef std::vector<RbtGenomePtr> RbtGenomeList; // Vector of smart pointers
 typedef RbtGenomeList::iterator RbtGenomeListIter;
 typedef RbtGenomeList::const_iterator RbtGenomeListConstIter;
 
-namespace Rbt {
 // Compare class to compare different genomes inside a population
 // This is used to sort the genomes in a population depending
 // of the value of their scoring function.
@@ -119,6 +120,7 @@ public:
     return pG1->Equals(*pG2, m_threshold);
   }
 };
-} // namespace Rbt
+
+} // namespace rxdock
 
 #endif //_RBT_GENOME_H_

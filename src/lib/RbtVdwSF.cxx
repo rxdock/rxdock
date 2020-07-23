@@ -13,6 +13,8 @@
 #include "RbtVdwSF.h"
 #include "RbtModel.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtVdwSF::_CT("RbtVdwSF");
 std::string RbtVdwSF::_USE_4_8("USE_4_8");
@@ -36,7 +38,7 @@ RbtVdwSF::RbtVdwSF()
   AddParameter(_ECUT, m_ecut);
   AddParameter(_E0, m_e0);
   m_spVdwSource = RbtParameterFileSourcePtr(new RbtParameterFileSource(
-      Rbt::GetRbtFileName("data/sf", "Tripos52_vdw.prm")));
+      GetRbtFileName("data/sf", "Tripos52_vdw.prm")));
   Setup();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -91,7 +93,7 @@ double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
     for (RbtAtomRListConstIter iter = atomList.begin(); iter != atomList.end();
          iter++) {
       const RbtCoord &c2 = (*iter)->GetCoords();
-      double R_sq = Rbt::Length2(c1, c2); // Distance squared
+      double R_sq = Length2(c1, c2); // Distance squared
       RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
       // iter2 points to the vdw params for this atom type pair
       RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
@@ -111,7 +113,7 @@ double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
     for (RbtAtomRListConstIter iter = atomList.begin(); iter != atomList.end();
          iter++) {
       const RbtCoord &c2 = (*iter)->GetCoords();
-      double R_sq = Rbt::Length2(c1, c2); // Distance squared
+      double R_sq = Length2(c1, c2); // Distance squared
       RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
       // iter2 points to the vdw params for this atom type pair
       RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
@@ -136,7 +138,7 @@ double RbtVdwSF::VdwScore(const RbtAtom *pAtom,
     for (RbtAtomRListConstIter iter = atomList.begin(); iter != atomList.end();
          iter++) {
       const RbtCoord &c2 = (*iter)->GetCoords();
-      double R_sq = Rbt::Length2(c1, c2); // Distance squared
+      double R_sq = Length2(c1, c2); // Distance squared
       RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
       // iter2 points to the vdw params for this atom type pair
       RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
@@ -173,7 +175,7 @@ double RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
          iter++) {
       if ((*iter)->GetEnabled()) {
         const RbtCoord &c2 = (*iter)->GetCoords();
-        double R_sq = Rbt::Length2(c1, c2); // Distance squared
+        double R_sq = Length2(c1, c2); // Distance squared
         RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
         // iter2 points to the vdw params for this atom type pair
         RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
@@ -188,7 +190,7 @@ double RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
          iter++) {
       if ((*iter)->GetEnabled()) {
         const RbtCoord &c2 = (*iter)->GetCoords();
-        double R_sq = Rbt::Length2(c1, c2); // Distance squared
+        double R_sq = Length2(c1, c2); // Distance squared
         RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
         // iter2 points to the vdw params for this atom type pair
         RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
@@ -208,7 +210,7 @@ double RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
          iter++) {
       if ((*iter)->GetEnabled()) {
         const RbtCoord &c2 = (*iter)->GetCoords();
-        double R_sq = Rbt::Length2(c1, c2); // Distance squared
+        double R_sq = Length2(c1, c2); // Distance squared
         RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
         // iter2 points to the vdw params for this atom type pair
         RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
@@ -238,7 +240,7 @@ double RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
 //    for (RbtAtomRListConstIter iter = atomList.begin(); iter !=
 //    atomList.end(); iter++) {
 //      const RbtCoord& c2 = (*iter)->GetCoords();
-//      RbtDouble R_sq = Rbt::Length2(c1,c2);//Distance squared
+//      RbtDouble R_sq = Length2(c1,c2);//Distance squared
 //      RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
 //      //iter2 points to the vdw params for this atom type pair
 //      RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
@@ -251,7 +253,7 @@ double RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
 //    for (RbtAtomRListConstIter iter = atomList.begin(); iter !=
 //    atomList.end(); iter++) {
 //      const RbtCoord& c2 = (*iter)->GetCoords();
-//      RbtDouble R_sq = Rbt::Length2(c1,c2);//Distance squared
+//      RbtDouble R_sq = Length2(c1,c2);//Distance squared
 //      RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
 //      //iter2 points to the vdw params for this atom type pair
 //      RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
@@ -269,7 +271,7 @@ double RbtVdwSF::VdwScoreEnabledOnly(const RbtAtom *pAtom,
 //    for (RbtAtomRListConstIter iter = atomList.begin(); iter !=
 //    atomList.end(); iter++) {
 //      const RbtCoord& c2 = (*iter)->GetCoords();
-//      RbtDouble R_sq = Rbt::Length2(c1,c2);//Distance squared
+//      RbtDouble R_sq = Length2(c1,c2);//Distance squared
 //      RbtTriposAtomType::eType type2 = (*iter)->GetTriposType();
 //      //iter2 points to the vdw params for this atom type pair
 //      RbtVdwRowConstIter iter2 = (*iter1).begin() + type2;
@@ -432,8 +434,8 @@ void RbtVdwSF::SetupCloseRange() {
 void RbtVdwSF::BuildIntraMap(const RbtAtomRList &atomList1,
                              const RbtAtomRList &atomList2,
                              RbtAtomRListList &intns) const {
-  Rbt::SelectAtom selectAtom(true);
-  Rbt::isAtomSelected isSelected;
+  SelectAtom selectAtom(true);
+  isAtomSelected isSelected;
   bool bSingleList = atomList2.empty(); // If true, then index the flexible
                                         // interactions within atomList1
   for (RbtAtomRListConstIter iter = atomList1.begin(); iter != atomList1.end();

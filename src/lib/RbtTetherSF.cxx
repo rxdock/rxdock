@@ -15,6 +15,8 @@
 #include "RbtWorkSpace.h"
 #include <sstream>
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtTetherSF::_CT("RbtTetherSF");
 std::string RbtTetherSF::_REFERENCE_FILE("REFERENCE_FILE");
@@ -40,7 +42,7 @@ RbtTetherSF::~RbtTetherSF() {
 std::vector<int>
 RbtTetherSF::ReadTetherAtoms(std::vector<std::string> &strAtoms) {
   std::vector<int> tetherAtoms;
-  std::string strTetherAtoms = Rbt::ConvertListToDelimitedString(strAtoms);
+  std::string strTetherAtoms = ConvertListToDelimitedString(strAtoms);
   std::istringstream ist(strTetherAtoms.c_str());
   int i;
   char sep[2];
@@ -57,7 +59,7 @@ void RbtTetherSF::SetupReceptor() {
     return;
   std::string strWSName = GetWorkSpace()->GetName();
   std::string refExt = GetParameter(_REFERENCE_FILE);
-  std::string refFile = Rbt::GetRbtFileName("", strWSName + refExt);
+  std::string refFile = GetRbtFileName("", strWSName + refExt);
   RbtMolecularFileSourcePtr spReferenceSD(
       new RbtMdlFileSource(refFile, false, false, true));
   RbtModelPtr spReferenceMdl(new RbtModel(spReferenceSD));
@@ -100,7 +102,7 @@ double RbtTetherSF::RawScore() const {
   int i = 0;
   for (std::vector<int>::const_iterator iter = m_tetherAtomList.begin();
        iter < m_tetherAtomList.end(); iter++, i++)
-    score += Rbt::Length2(m_ligAtomList[*iter]->GetCoords(), m_tetherCoords[i]);
+    score += Length2(m_ligAtomList[*iter]->GetCoords(), m_tetherCoords[i]);
   return score;
 }
 

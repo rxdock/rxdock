@@ -15,6 +15,8 @@
 #include <functional>
 #include <sstream>
 
+using namespace rxdock;
+
 // initialization of the static data of RbtConstraint
 std::string RbtConstraint::_CT("RbtConstraint");
 unsigned int RbtHeavyConstraint::counter =
@@ -77,7 +79,7 @@ double RbtConstraint::Score() const {
   std::vector<double> d2list;
   for (RbtAtomListConstIter iter = m_atomList.begin(); iter != m_atomList.end();
        iter++) {
-    d2list.push_back(Rbt::Length2((*iter)->GetCoords(), coord));
+    d2list.push_back(Length2((*iter)->GetCoords(), coord));
   }
   // Min distance**2
   double d2min = *(std::min_element(d2list.begin(), d2list.end()));
@@ -86,8 +88,8 @@ double RbtConstraint::Score() const {
   return (dr > 0.0) ? dr * dr : 0.0;
 }
 
-RbtConstraintPtr Rbt::CreateConstraint(RbtCoord &c, double &t, std::string &n,
-                                       bool bCount) {
+RbtConstraintPtr rxdock::CreateConstraint(RbtCoord &c, double &t,
+                                          std::string &n, bool bCount) {
   if (n == "Any") {
     if (bCount)
       RbtHeavyConstraint::counter++;
@@ -128,7 +130,7 @@ RbtConstraintPtr Rbt::CreateConstraint(RbtCoord &c, double &t, std::string &n,
     throw RbtError(_WHERE_, "Constraint " + n + " not recognized");
 }
 
-void Rbt::ZeroCounters() {
+void rxdock::ZeroCounters() {
   RbtHeavyConstraint::counter = 0;
   RbtHBAConstraint::counter = 0;
   RbtHBDConstraint::counter = 0;
@@ -140,8 +142,8 @@ void Rbt::ZeroCounters() {
   RbtRingAromaticConstraint::counter = 0;
 }
 
-void Rbt::ReadConstraint(std::istream &ifile, RbtConstraintPtr &cnt,
-                         bool bCount) {
+void rxdock::ReadConstraint(std::istream &ifile, RbtConstraintPtr &cnt,
+                            bool bCount) {
   std::string n;
   RbtCoord c;
   double t;
@@ -151,11 +153,11 @@ void Rbt::ReadConstraint(std::istream &ifile, RbtConstraintPtr &cnt,
   std::cout << c << "\t" << t << "\t" << n << std::endl;
   if (ifile.fail())
     throw RbtError(_WHERE_, "Problems reading constraint " + n);
-  cnt = Rbt::CreateConstraint(c, t, n, bCount);
+  cnt = CreateConstraint(c, t, n, bCount);
 }
 
-void Rbt::ReadConstraintFromMoe(std::istream &ifile, RbtConstraintPtr &cnt,
-                                bool bCount) {
+void rxdock::ReadConstraintFromMoe(std::istream &ifile, RbtConstraintPtr &cnt,
+                                   bool bCount) {
   std::string n, extra;
   double x, y, z, t;
   ifile >> n;
@@ -167,10 +169,10 @@ void Rbt::ReadConstraintFromMoe(std::istream &ifile, RbtConstraintPtr &cnt,
     throw RbtError(_WHERE_, "Problems reading constraint " + n);
   RbtCoord c(x, y, z);
   std::cout << c << "\t" << t << "\t" << n << std::endl;
-  cnt = Rbt::CreateConstraint(c, t, n, bCount);
+  cnt = CreateConstraint(c, t, n, bCount);
 }
 
-void Rbt::ReadStartMoe(std::istream &ifile) {
+void rxdock::ReadStartMoe(std::istream &ifile) {
   const int MAXLINELENGTH = 100; // I'm quite sure the max length for any
                                  // line in moe is 72, but
                                  // prefer to be on the safe side
@@ -190,8 +192,8 @@ void Rbt::ReadStartMoe(std::istream &ifile) {
   ifile.getline(line, MAXLINELENGTH); // next comment line
 }
 
-void Rbt::ReadConstraints(std::istream &ifile, RbtConstraintList &cl,
-                          bool bCount) {
+void rxdock::ReadConstraints(std::istream &ifile, RbtConstraintList &cl,
+                             bool bCount) {
   char ch;
   bool moe = false;
   cl.clear();
@@ -223,7 +225,7 @@ void Rbt::ReadConstraints(std::istream &ifile, RbtConstraintList &cl,
 // 07 Feb 2005 (DM) - new constraint type, any heavy atom
 void RbtHeavyConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   m_atomList =
-      Rbt::GetAtomList(lig->GetAtomList(), std::not1(Rbt::isAtomicNo_eq(1)));
+      GetAtomListWithPredicate(lig->GetAtomList(), std::not1(isAtomicNo_eq(1)));
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
     ostr << "The ligand has only " << m_atomList.size() << " heavy atom(s) ("
@@ -234,8 +236,9 @@ void RbtHeavyConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
 
 // 16 May 2003 (DM) - limit to neutral H-bond donor hydrogens
 void RbtHBDConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
-  m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomHBondDonor());
-  m_atomList = Rbt::GetAtomList(m_atomList, std::not1(Rbt::isAtomCationic()));
+  m_atomList = GetAtomListWithPredicate(lig->GetAtomList(), isAtomHBondDonor());
+  m_atomList =
+      GetAtomListWithPredicate(m_atomList, std::not1(isAtomCationic()));
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
     ostr << "The ligand has only " << m_atomList.size()
@@ -247,8 +250,9 @@ void RbtHBDConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
 
 // 16 May 2003 (DM) - limit to neutral H-bond acceptors
 void RbtHBAConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
-  m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomHBondAcceptor());
-  m_atomList = Rbt::GetAtomList(m_atomList, std::not1(Rbt::isAtomAnionic()));
+  m_atomList =
+      GetAtomListWithPredicate(lig->GetAtomList(), isAtomHBondAcceptor());
+  m_atomList = GetAtomListWithPredicate(m_atomList, std::not1(isAtomAnionic()));
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
     ostr << "The ligand has only " << m_atomList.size()
@@ -259,7 +263,7 @@ void RbtHBAConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
 }
 
 void RbtHydroConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
-  m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomLipophilic());
+  m_atomList = GetAtomListWithPredicate(lig->GetAtomList(), isAtomLipophilic());
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
     ostr << "The ligand has only " << m_atomList.size()
@@ -269,9 +273,9 @@ void RbtHydroConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
 }
 
 void RbtHydroAliphaticConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
-  m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomLipophilic());
+  m_atomList = GetAtomListWithPredicate(lig->GetAtomList(), isAtomLipophilic());
   m_atomList =
-      Rbt::GetAtomList(m_atomList, Rbt::isHybridState_eq(RbtAtom::SP3));
+      GetAtomListWithPredicate(m_atomList, isHybridState_eq(RbtAtom::SP3));
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
     ostr << "The ligand has only " << m_atomList.size()
@@ -282,9 +286,9 @@ void RbtHydroAliphaticConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
 }
 
 void RbtHydroAromaticConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
-  m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomLipophilic());
+  m_atomList = GetAtomListWithPredicate(lig->GetAtomList(), isAtomLipophilic());
   m_atomList =
-      Rbt::GetAtomList(m_atomList, Rbt::isHybridState_eq(RbtAtom::AROM));
+      GetAtomListWithPredicate(m_atomList, isHybridState_eq(RbtAtom::AROM));
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
     ostr << "The ligand has only " << m_atomList.size()
@@ -295,7 +299,7 @@ void RbtHydroAromaticConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
 }
 
 void RbtNegChargeConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
-  m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomAnionic());
+  m_atomList = GetAtomListWithPredicate(lig->GetAtomList(), isAtomAnionic());
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
     ostr << "The ligand has only " << m_atomList.size()
@@ -306,7 +310,7 @@ void RbtNegChargeConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
 }
 
 void RbtPosChargeConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
-  m_atomList = Rbt::GetAtomList(lig->GetAtomList(), Rbt::isAtomCationic());
+  m_atomList = GetAtomListWithPredicate(lig->GetAtomList(), isAtomCationic());
   if (bCheck && (m_atomList.size() < counter)) {
     std::ostringstream ostr;
     ostr << "The ligand has only " << m_atomList.size()
@@ -322,7 +326,7 @@ void RbtRingAromaticConstraint::AddAtomList(RbtModelPtr lig, bool bCheck) {
   RbtAtomListList ligRingLists = lig->GetRingAtomLists();
   for (RbtAtomListListConstIter rIter = ligRingLists.begin();
        rIter != ligRingLists.end(); rIter++) {
-    if (Rbt::GetNumAtoms(*rIter, Rbt::isPiAtom()) == (*rIter).size()) {
+    if (GetNumAtomsWithPredicate(*rIter, isPiAtom()) == (*rIter).size()) {
       RbtPseudoAtomPtr spPseudoAtom = lig->AddPseudoAtom(*rIter);
       m_atomList.push_back(spPseudoAtom);
     }

@@ -12,6 +12,8 @@
 
 #include "RbtChromPositionElement.h"
 
+using namespace rxdock;
+
 std::string RbtChromPositionElement::_CT = "RbtChromPositionElement";
 
 RbtChromPositionElement::RbtChromPositionElement(
@@ -290,7 +292,7 @@ double RbtChromPositionElement::CompareVector(const std::vector<double> &v,
       double transStepSize = m_spRefData->GetTransStepSize();
       // Compare distance between centres of mass
       if (transStepSize > 0.0) {
-        double absDiff = Rbt::Length(m_com, otherCom);
+        double absDiff = Length(m_com, otherCom);
         double relDiff = absDiff / transStepSize;
         retVal = std::max(retVal, relDiff);
       }

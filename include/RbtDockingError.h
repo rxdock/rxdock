@@ -18,6 +18,8 @@
 
 #include "RbtError.h"
 
+namespace rxdock {
+
 const std::string IDS_DOCKING_ERROR = "RBT_DOCKING_ERROR";
 
 // Unspecified model error
@@ -33,5 +35,7 @@ protected:
                   int nLine, const std::string &strMessage = "")
       : RbtError(strName, strFile, nLine, strMessage) {}
 };
+
+} // namespace rxdock
 
 #endif //_RBTDOCKINGERROR_H_

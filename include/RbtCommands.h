@@ -15,6 +15,8 @@
 #ifndef _RBT_COMMANDS_H_
 #define _RBT_COMMANDS_H_
 
+namespace rxdock {
+
 class RbtCommands {
 public:
   enum RbtCommName {
@@ -103,5 +105,7 @@ private:
 // Compare class to compare different genomes inside a population
 // This is used to sort the genomes in a population depending
 // of the value of their scoring function.
+
+} // namespace rxdock
 
 #endif //_RbtCommands_H_

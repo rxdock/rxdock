@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-// Miscellaneous non-member functions in Rbt namespace
+// Miscellaneous non-member functions in rxdock namespace
 #ifndef _RBT_H_
 #define _RBT_H_
 
@@ -40,6 +40,8 @@
 #endif
 #endif
 
+namespace rxdock {
+
 // Segment is a named part of an RbtModel (usually an intact molecule)
 // For now, a segment is defined as just an RbtString
 // RbtSegmentMap holds a map of (key=unique segment name, value=number of atoms
@@ -49,7 +51,6 @@ typedef std::map<RbtSegment, unsigned int> RbtSegmentMap;
 typedef RbtSegmentMap::iterator RbtSegmentMapIter;
 typedef RbtSegmentMap::const_iterator RbtSegmentMapConstIter;
 
-namespace Rbt {
 ////////////////////////////////////////////////////////////////
 // RESOURCE HANDLING FUNCTIONS
 //
@@ -58,12 +59,12 @@ std::string GetRbtRoot();
 // GetRbtHome - returns value of RBT_HOME env variable
 //(or HOME if RBT_HOME is undefined)
 std::string GetRbtHome();
-// Rbt::GetProgramName - returns program name
+// GetProgramName - returns program name
 RBTDLL_EXPORT std::string GetProgramName();
 // GetCopyright - returns legalese statement
 std::string GetCopyright();
-// GetVersion - returns current library version
-RBTDLL_EXPORT std::string GetVersion();
+// GetProgramVersion - returns current library version
+RBTDLL_EXPORT std::string GetProgramVersion();
 // GetProduct - returns library product name
 RBTDLL_EXPORT std::string GetProduct();
 // GetTime - returns current time and date as an RbtString
@@ -170,6 +171,6 @@ RBTDLL_EXPORT void WriteWithThrow(std::ostream &ostr, const char *p,
                                   streamsize n);
 RBTDLL_EXPORT void ReadWithThrow(std::istream &istr, char *p, streamsize n);
 
-} // namespace Rbt
+} // namespace rxdock
 
 #endif //_RBT_H_

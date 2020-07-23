@@ -16,6 +16,8 @@
 
 #include "RbtLigandFlexData.h"
 
+namespace rxdock {
+
 class RbtSolventFlexData : public RbtLigandFlexData {
 public:
   // Probability of solvent being visible
@@ -28,4 +30,7 @@ public:
 private:
   RbtSolventFlexData();
 };
+
+} // namespace rxdock
+
 #endif //_RBTSOLVENTFLEXDATA_

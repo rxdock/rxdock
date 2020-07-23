@@ -25,6 +25,8 @@
 #include "RbtError.h"
 #include "RbtRealGrid.h"
 
+namespace rxdock {
+
 class RbtDockingSite {
 public:
   // STL predicate for selecting atoms within a defined distance range from
@@ -110,5 +112,9 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtDockingSite> RbtDockingSitePtr; // Smart pointer
+
+std::ostream &operator<<(std::ostream &s, const RbtDockingSite &site);
+
+} // namespace rxdock
 
 #endif //_RBTDOCKINGSITE_H_

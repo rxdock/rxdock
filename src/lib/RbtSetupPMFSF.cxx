@@ -14,6 +14,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 std::string RbtSetupPMFSF::_CT("RbtSetupPMFSF");
 
 RbtSetupPMFSF::RbtSetupPMFSF(const std::string &strName)
@@ -29,8 +31,8 @@ RbtSetupPMFSF::~RbtSetupPMFSF() {
 }
 
 void RbtSetupPMFSF::SetupReceptor() {
-  theReceptorList = Rbt::GetAtomList(GetReceptor()->GetAtomList(),
-                                     std::not1(Rbt::isAtomicNo_eq(1)));
+  theReceptorList = GetAtomListWithPredicate(GetReceptor()->GetAtomList(),
+                                             std::not1(isAtomicNo_eq(1)));
   SetupReceptorPMFTypes();
 #ifdef _DEBUG1
   for (long i = 0; i < theReceptorList.size(); i++) {
@@ -53,8 +55,8 @@ void RbtSetupPMFSF::SetupLigand() {
     return;
   } else {
     // theLigandList = GetLigand()->GetAtomList();
-    theLigandList = Rbt::GetAtomList(GetLigand()->GetAtomList(),
-                                     std::not1(Rbt::isAtomicNo_eq(1)));
+    theLigandList = GetAtomListWithPredicate(GetLigand()->GetAtomList(),
+                                             std::not1(isAtomicNo_eq(1)));
     SetupLigandPMFTypes();
 #ifdef _DEBUG1
     for (int i = 0; i < theLigandList.size(); i++) {
@@ -72,20 +74,20 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rC(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
   std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << " Hybrid : " << ConvertHybridStateToString(theHybState)
             << std::endl;
 #endif //_DEBUG1
 
-  Rbt::isAtomicNo_eq isO(8);
-  Rbt::isAtomicNo_eq isN(7);
-  Rbt::isAtomicNo_eq isS(16);
+  isAtomicNo_eq isO(8);
+  isAtomicNo_eq isN(7);
+  isAtomicNo_eq isS(16);
 
   RbtAtomList obdAtomList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), isO);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), isO);
   RbtAtomList nbdAtomList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), isN);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), isN);
   RbtAtomList sbdAtomList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), isS);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), isS);
   int nBoundedHetero =
       obdAtomList.size() + nbdAtomList.size() + sbdAtomList.size();
 
@@ -97,7 +99,7 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rC(RbtAtomPtr anAtom) {
   }
   // non-aromatic
   // check for charged [CN] neighbours
-  RbtAtomList bList = Rbt::GetBondedAtomList(anAtom);
+  RbtAtomList bList = GetBondedAtomList(anAtom);
   for (RbtAtomListIter bIter = bList.begin(); bIter != bList.end(); bIter++) {
     if (isO((*bIter)) &&
         (*bIter)->GetGroupCharge() < 0.0) // negatively charged oxigen neigbour
@@ -123,9 +125,9 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rO(RbtAtomPtr anAtom) {
   if (anAtom->GetGroupCharge() < 0.0)
     return OC;
   // check wether is it water
-  Rbt::isAtomicNo_eq bIsH(1);
+  isAtomicNo_eq bIsH(1);
   RbtAtomList hbdAtomList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), bIsH);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), bIsH);
   if (2 == hbdAtomList.size()) // must be water
     return OW;
   else if (1 == hbdAtomList.size()) // if not water assume it is a H-bond donor
@@ -139,16 +141,16 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rN(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
   std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << " Hybrid : " << ConvertHybridStateToString(theHybState)
             << std::endl;
 #endif //_DEBUG1
        // check for charge
   if (IsChargedNitrogen(anAtom))
     return NC;
   // check for donors
-  Rbt::isAtomHBondDonor isHBondDonor;
+  isAtomHBondDonor isHBondDonor;
   RbtAtomList donorList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), isHBondDonor);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), isHBondDonor);
   if (donorList.size() > 0)
     return ND;
   else
@@ -161,7 +163,7 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_rS(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
   std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << " Hybrid : " << ConvertHybridStateToString(theHybState)
             << std::endl;
 #endif //_DEBUG1
   if (std::string::npos != anAtom->GetFullAtomName().find("MET"))
@@ -214,15 +216,15 @@ void RbtSetupPMFSF::SetupReceptorPMFTypes(void) {
 bool RbtSetupPMFSF::IsChargedNitrogen(RbtAtomPtr anAtom) {
   // std::cout << _CT << " AMINO ACID " << anAtom->GetSubunitName() <<
   // std::endl;
-  Rbt::isAtomicNo_eq bIsN(7);
+  isAtomicNo_eq bIsN(7);
   if (!bIsN(anAtom)) // is it N at all?
     return false;
   if (anAtom->GetGroupCharge() > 0.0) // some charge on the N itself
     return true;
   else {
-    Rbt::isAtomicNo_eq bIsH(1);
+    isAtomicNo_eq bIsH(1);
     RbtAtomList hbdAtomList =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), bIsH);
+        GetAtomListWithPredicate(GetBondedAtomList(anAtom), bIsH);
     for (RbtAtomListConstIter hIter = hbdAtomList.begin();
          hIter != hbdAtomList.end(); hIter++) {
       if ((*hIter)->GetGroupCharge() >
@@ -239,21 +241,21 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lC(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
   std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << " Hybrid : " << ConvertHybridStateToString(theHybState)
             << std::endl;
 #endif                                         //_DEBUG1
   if (RbtAtom::SP == anAtom->GetHybridState()) // sp has only one PMF type
     return C0;                                 // C-zero and not cee-oh
 
-  Rbt::isAtomicNo_eq isH(1);
-  Rbt::isAtomicNo_eq isC(6);
+  isAtomicNo_eq isH(1);
+  isAtomicNo_eq isC(6);
 
   RbtAtomList hbdAtomList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), isH);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), isH);
   RbtAtomList cbdAtomList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), isC);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), isC);
   // bonded list will be needed anyway
-  RbtAtomList bList = Rbt::GetBondedAtomList(anAtom);
+  RbtAtomList bList = GetBondedAtomList(anAtom);
   if (bList.size() == hbdAtomList.size() + cbdAtomList.size()) { // if non-polar
     switch (anAtom->GetHybridState()) {
     case RbtAtom::SP2:
@@ -271,10 +273,10 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lC(RbtAtomPtr anAtom) {
     }
   } else { // considered as polar
     // there is a chance to bound to a charged O or N
-    Rbt::isAtomicNo_eq isO(8);
-    Rbt::isAtomicNo_eq isN(7);
+    isAtomicNo_eq isO(8);
+    isAtomicNo_eq isN(7);
 
-    RbtAtomList bList = Rbt::GetBondedAtomList(anAtom);
+    RbtAtomList bList = GetBondedAtomList(anAtom);
     for (RbtAtomListIter bIter = bList.begin(); bIter != bList.end(); bIter++) {
       if (isO((*bIter)) && (*bIter)->GetGroupCharge() <
                                0.0) // negatively charged oxigen neigbour
@@ -305,7 +307,7 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lN(RbtAtomPtr anAtom) {
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
 #ifdef _DEBUG1
   std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << " Hybrid : " << ConvertHybridStateToString(theHybState)
             << std::endl;
 #endif //_DEBUG1
        // sp has only one PMF type
@@ -315,19 +317,19 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lN(RbtAtomPtr anAtom) {
   // the lists we get will be useful later as well
   // NOTE: excluding N as well since most of the ligand Ns will be typed
   // as NS instead of ND/NA/NR
-  Rbt::isAtomicNo_eq bIsH(1);
-  Rbt::isAtomicNo_eq bIsC(6);
-  Rbt::isAtomicNo_eq bIsN(7);
+  isAtomicNo_eq bIsH(1);
+  isAtomicNo_eq bIsC(6);
+  isAtomicNo_eq bIsN(7);
   RbtAtomList hbdAtomList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), bIsH);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), bIsH);
   RbtAtomList cbdAtomList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), bIsC);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), bIsC);
   RbtAtomList nbdAtomList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), bIsN);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), bIsN);
   // if num_of_C + num_of_H < all_of_bounded than type is NS (there is something
   // else than C or H)
   if ((hbdAtomList.size() + cbdAtomList.size() + nbdAtomList.size() <
-       Rbt::GetBondedAtomList(anAtom).size()) &&
+       GetBondedAtomList(anAtom).size()) &&
       RbtAtom::AROM != theHybState)
     return NS;
   // if in aromatic (planar) ring:
@@ -343,17 +345,17 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lN(RbtAtomPtr anAtom) {
     return NP;
 
   // if H-donor/acceptor outside of an aromatic ring
-  Rbt::isAtomHBondDonor isHBondDonor;
-  Rbt::isAtomHBondAcceptor isHBondAcceptor;
+  isAtomHBondDonor isHBondDonor;
+  isAtomHBondAcceptor isHBondAcceptor;
 
   RbtAtomList donorList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), isHBondDonor);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), isHBondDonor);
   if (donorList.size() > 0)
     return ND;
   else if (isHBondAcceptor(anAtom))
     return NA;
   // in ring like in FMN but not necessary aromatic and can be even SP3
-  Rbt::isAtomCyclic isCyclic;
+  isAtomCyclic isCyclic;
   if (isCyclic(anAtom))
     return NR;
 
@@ -365,13 +367,13 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lO(RbtAtomPtr anAtom) {
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
 #ifdef _DEBUG1
   std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << " Hybrid : " << ConvertHybridStateToString(theHybState)
             << std::endl;
 #endif //_DEBUG1
-  Rbt::isAtomHBondDonor isHBondDonor;
-  Rbt::isAtomHBondAcceptor isHBondAcceptor;
-  Rbt::isAtomCyclic isCyclic;
-  Rbt::isAtomicNo_eq bIsC(6);
+  isAtomHBondDonor isHBondDonor;
+  isAtomHBondAcceptor isHBondAcceptor;
+  isAtomCyclic isCyclic;
+  isAtomicNo_eq bIsC(6);
 
   // first check negative charge
   if (anAtom->GetGroupCharge() < 0.0)
@@ -382,12 +384,12 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lO(RbtAtomPtr anAtom) {
   // first we have to check ether bonds since isAtomHBondAcceptor includes
   // ethers
   RbtAtomList cbdAtomList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), bIsC);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), bIsC);
   if (cbdAtomList.size() > 1)
     return OE;
   // check for H-bond donor role
   RbtAtomList donorList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), isHBondDonor);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), isHBondDonor);
   if (donorList.size() > 0)
     return OD;
   // H-bond acceptor role
@@ -402,12 +404,12 @@ RbtPMFType RbtSetupPMFSF::GetPMFfor_lS(RbtAtomPtr anAtom) {
 #ifdef _DEBUG1
   RbtAtom::eHybridState theHybState = anAtom->GetHybridState();
   std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << Rbt::ConvertHybridStateToString(theHybState)
+            << " Hybrid : " << ConvertHybridStateToString(theHybState)
             << std::endl;
 #endif //_DEBUG1
-  Rbt::isAtomHBondDonor isHBondDonor;
+  isAtomHBondDonor isHBondDonor;
   RbtAtomList donorList =
-      Rbt::GetAtomList(Rbt::GetBondedAtomList(anAtom), isHBondDonor);
+      GetAtomListWithPredicate(GetBondedAtomList(anAtom), isHBondDonor);
   if (donorList.size() > 0)
     return SD;
   else

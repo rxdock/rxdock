@@ -21,6 +21,8 @@
 #include "RbtParameterFileSource.h"
 #include "RbtTransformAgg.h"
 
+namespace rxdock {
+
 class RbtTransformFactory {
   // Parameter name which identifies a scoring function definition
   static std::string _TRANSFORM;
@@ -84,5 +86,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtTransformFactory> RbtTransformFactoryPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTTRANSFORMFACTORY_H_

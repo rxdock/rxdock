@@ -13,6 +13,8 @@
 #include "RbtChromElement.h"
 #include "RbtRand.h"
 
+using namespace rxdock;
+
 std::string RbtChromElement::_CT = "RbtChromElement";
 double RbtChromElement::_THRESHOLD = 1E-4;
 
@@ -56,7 +58,7 @@ std::string RbtChromElement::ModeToStr(RbtChromElement::eMode mode) {
   return retVal;
 }
 
-RbtChromElement::RbtChromElement() : m_rand(Rbt::GetRbtRand()) {
+RbtChromElement::RbtChromElement() : m_rand(GetRbtRand()) {
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
@@ -116,21 +118,21 @@ void RbtChromElement::SetVector(const RbtXOverList &v) {
   SetVector(v, i);
 }
 
-bool operator==(const RbtChromElement &c1, const RbtChromElement &c2) {
+bool rxdock::operator==(const RbtChromElement &c1, const RbtChromElement &c2) {
   return c1.Equals(c2, RbtChromElement::_THRESHOLD);
 }
 
-bool operator!=(const RbtChromElement &c1, const RbtChromElement &c2) {
+bool rxdock::operator!=(const RbtChromElement &c1, const RbtChromElement &c2) {
   return !(c1 == c2);
 }
 
-std::ostream &operator<<(std::ostream &s, const RbtChromElement &c) {
+std::ostream &rxdock::operator<<(std::ostream &s, const RbtChromElement &c) {
   c.Print(s);
   return s;
 }
 
-void Rbt::Crossover(RbtChromElement *pChr1, RbtChromElement *pChr2,
-                    RbtChromElement *pChr3, RbtChromElement *pChr4) {
+void rxdock::Crossover(RbtChromElement *pChr1, RbtChromElement *pChr2,
+                       RbtChromElement *pChr3, RbtChromElement *pChr4) {
   // Check all chromosomes have the same crossover length
   int length1 = pChr1->GetXOverLength();
   if ((length1 != pChr2->GetXOverLength()) ||

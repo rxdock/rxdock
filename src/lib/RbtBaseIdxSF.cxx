@@ -13,6 +13,8 @@
 #include "RbtBaseIdxSF.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtBaseIdxSF::_CT("RbtBaseIdxSF");
 std::string RbtBaseIdxSF::_GRIDSTEP("GRIDSTEP");

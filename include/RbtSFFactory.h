@@ -20,6 +20,8 @@
 #include "RbtParameterFileSource.h"
 #include "RbtSFAgg.h"
 
+namespace rxdock {
+
 class RbtSFFactory {
   // Parameter name which identifies a scoring function definition
   static std::string _SF;
@@ -81,5 +83,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtSFFactory> RbtSFFactoryPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTSFFACTORY_H_

@@ -17,6 +17,8 @@
 #include "RbtElementFileSource.h"
 #include "RbtParameterFileSource.h"
 
+namespace rxdock {
+
 // Simple struct for holding MOL2 SUBSTRUCTURE records
 class RbtMOL2Substructure {
 public:
@@ -117,5 +119,7 @@ private:
 typedef SmartPtr<RbtMOL2FileSource> RbtMOL2FileSourcePtr;
 // function pointer (callback) for Parse()
 typedef void (RbtMOL2FileSource::*fcPtr)(const std::string &);
+
+} // namespace rxdock
 
 #endif // _RBTMOL2FILESOURCE_H_

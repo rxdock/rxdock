@@ -19,6 +19,8 @@
 #include "RbtBaseMolecularFileSink.h"
 #include "RbtConstraint.h"
 
+namespace rxdock {
+
 class RbtPharmaSF : public RbtBaseInterSF {
 public:
   // Class type string
@@ -53,5 +55,7 @@ private:
   mutable std::vector<double> m_conScores; // Mandatory constraint scores
   mutable std::vector<double> m_optScores; // Optional constraint scores
 };
+
+} // namespace rxdock
 
 #endif //_RBTPHARMASF_H_

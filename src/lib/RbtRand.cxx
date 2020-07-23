@@ -13,6 +13,8 @@
 #include "RbtRand.h"
 #include "Singleton.h"
 
+using namespace rxdock;
+
 /////////////
 // Constructor
 RbtRand::RbtRand() {
@@ -86,7 +88,7 @@ double RbtRand::GetCauchyRandom(double mean, double variance) {
 }
 
 ///////////////////////////////////////
-// Non-member functions in Rbt namespace
+// Non-member functions in rxdock namespace
 
 // Returns reference to single instance of RbtRand class (singleton)
-RbtRand &Rbt::GetRbtRand() { return Singleton<RbtRand>::instance(); }
+RbtRand &rxdock::GetRbtRand() { return Singleton<RbtRand>::instance(); }

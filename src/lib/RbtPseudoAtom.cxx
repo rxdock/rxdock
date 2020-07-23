@@ -12,6 +12,8 @@
 
 #include "RbtPseudoAtom.h"
 
+using namespace rxdock;
+
 ///////////////////////////////////////////////
 // Constructors / destructors
 

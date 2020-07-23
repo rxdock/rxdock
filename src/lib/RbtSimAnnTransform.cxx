@@ -19,6 +19,8 @@
 #include "RbtSimAnnTransform.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Simple class to keep track of Monte Carlo sampling statistics
 RbtMCStats::RbtMCStats() { Init(0.0); }
 
@@ -85,7 +87,7 @@ std::string &RbtSimAnnTransform::GetPartitionFreq() { return _PARTITION_FREQ; }
 ////////////////////////////////////////
 // Constructors/destructors
 RbtSimAnnTransform::RbtSimAnnTransform(const std::string &strName)
-    : RbtBaseBiMolTransform(_CT, strName), m_rand(Rbt::GetRbtRand()) {
+    : RbtBaseBiMolTransform(_CT, strName), m_rand(GetRbtRand()) {
   // Add parameters
   AddParameter(_START_T, 1000.0);
   AddParameter(_FINAL_T, 300.0);

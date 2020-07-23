@@ -19,6 +19,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtCavityGridSF::_CT("RbtCavityGridSF");
 std::string RbtCavityGridSF::_RMAX("RMAX");
@@ -144,7 +146,7 @@ void RbtCavityGridSF::HeavyAtomFactory::VisitLigandFlexData(
   // Extract all non-hydrogen atoms from ligand
   RbtAtomList atomList = pFlexData->GetModel()->GetAtomList();
   std::copy_if(atomList.begin(), atomList.end(), std::back_inserter(m_atomList),
-               std::not1(Rbt::isAtomicNo_eq(1)));
+               std::not1(isAtomicNo_eq(1)));
 }
 
 void RbtCavityGridSF::HeavyAtomFactory::VisitSolventFlexData(
@@ -160,7 +162,6 @@ void RbtCavityGridSF::HeavyAtomFactory::VisitSolventFlexData(
       ((eTransMode == RbtChromElement::TETHERED) && (maxTrans > 0.0))) {
     RbtAtomList atomList = pFlexData->GetModel()->GetAtomList();
     std::copy_if(atomList.begin(), atomList.end(),
-                 std::back_inserter(m_atomList),
-                 std::not1(Rbt::isAtomicNo_eq(1)));
+                 std::back_inserter(m_atomList), std::not1(isAtomicNo_eq(1)));
   }
 }

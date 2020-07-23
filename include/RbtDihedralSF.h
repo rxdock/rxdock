@@ -24,6 +24,8 @@
 #include "RbtParameterFileSource.h"
 #include "RbtTriposAtomType.h"
 
+namespace rxdock {
+
 // Class for holding dihedral atom specifiers and force field params
 // Main method is operator() - calculates single dihedral score for current
 // conformation DM (9 Dec 2003): Extended to allow additional terms to be added
@@ -111,5 +113,7 @@ private:
   std::vector<std::string> m_centralPairs;
   RbtTriposAtomType m_triposType;
 };
+
+} // namespace rxdock
 
 #endif //_RBTDIHEDRALSF_H_

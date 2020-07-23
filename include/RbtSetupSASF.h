@@ -15,6 +15,8 @@
 
 #include "RbtBaseInterSF.h"
 
+namespace rxdock {
+
 // after Hasel, Hendrickson and Still
 struct RbtSimpleSolvationParameters {
   double p;
@@ -40,4 +42,7 @@ protected:
   void SetupReceptorSATypes(void);
   void SetupLigandSATypes(void);
 };
+
+} // namespace rxdock
+
 #endif //_RBTSETUPSASF_H_

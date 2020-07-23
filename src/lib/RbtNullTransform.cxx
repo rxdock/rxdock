@@ -14,6 +14,8 @@
 #include "RbtPopulation.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data member for class type
 std::string RbtNullTransform::_CT("RbtNullTransform");
 

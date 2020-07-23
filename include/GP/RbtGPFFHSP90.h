@@ -22,6 +22,10 @@
 #include "RbtGPTypes.h"
 #include "RbtRand.h"
 
+namespace rxdock {
+
+namespace geneticprogram {
+
 class RbtGPFFHSP90 : public RbtGPFitnessFunction {
 public:
   static std::string _CT;
@@ -51,4 +55,9 @@ typedef std::vector<RbtGPFFHSP90Ptr>
     RbtGPFFHSP90List; // Vector of smart pointers
 typedef RbtGPFFHSP90List::iterator RbtGPFFHSP90ListIter;
 typedef RbtGPFFHSP90List::const_iterator RbtGPFFHSP90ListConstIter;
+
+} // namespace geneticprogram
+
+} // namespace rxdock
+
 #endif //_RbtGPFFHSP90

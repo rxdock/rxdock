@@ -14,6 +14,8 @@
 #include "RbtBaseSF.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtBaseTransform::_CT("RbtBaseTransform");
 

@@ -13,6 +13,8 @@
 #include "RbtSiteMapper.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtSiteMapper::_CT("RbtSiteMapper");
 

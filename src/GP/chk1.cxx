@@ -21,7 +21,7 @@
 
 int main(int argc, char *argv[]) {
   try {
-    RbtRand &theRand = Rbt::GetRbtRand(); // ref to random number generator
+    RbtRand &theRand = GetRbtRand(); // ref to random number generator
     if (argc > 1)
       theRand.Seed(std::atoi(argv[2]));
     else

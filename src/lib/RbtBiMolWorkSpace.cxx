@@ -15,6 +15,8 @@
 #include "RbtBaseMolecularFileSource.h"
 #include "RbtBaseSF.h"
 
+using namespace rxdock;
+
 ////////////////////////////////////////
 // Constructors/destructors
 
@@ -86,11 +88,11 @@ void RbtBiMolWorkSpace::UpdateModelCoordsFromChromRecords(
           if (pSource->isDataFieldPresent(chromField)) {
             // TODO: Move this code to RbtVariant class
             // Concatenate the multi-record value into a single string
-            std::string chromRecord = Rbt::ConvertListToDelimitedString(
+            std::string chromRecord = ConvertListToDelimitedString(
                 pSource->GetDataValue(chromField), ",");
             // Now split into string values and convert to doubles
             std::vector<std::string> chromValues =
-                Rbt::ConvertDelimitedStringToList(chromRecord, ",");
+                ConvertDelimitedStringToList(chromRecord, ",");
             if (chromLength == chromValues.size()) {
               std::vector<double> chromVec;
               for (std::vector<std::string>::const_iterator iter =

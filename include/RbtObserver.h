@@ -26,6 +26,8 @@
 
 #include <vector>
 
+namespace rxdock {
+
 class RbtSubject;
 
 class RbtObserver {
@@ -72,5 +74,7 @@ private:
 typedef std::vector<RbtObserver *> RbtObserverList;
 typedef RbtObserverList::iterator RbtObserverListIter;
 typedef RbtObserverList::const_iterator RbtObserverListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTOBSERVER_H_

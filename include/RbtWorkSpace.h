@@ -11,7 +11,7 @@
  ***********************************************************************/
 
 // Manages all models used in simulation, coordinates updates of all registered
-// Rbt::Observer objects (scoring functions and transforms)
+// Observer objects (scoring functions and transforms)
 // In this version, the number of models in the workspace is fixed in the
 // constructor, and can't be changed. Models can still be null however.
 //
@@ -29,6 +29,8 @@
 #include "RbtParamHandler.h"
 #include "RbtPopulation.h"
 #include "RbtSubject.h"
+
+namespace rxdock {
 
 class RbtBaseSF;        // Forward definition
 class RbtBaseTransform; // Forward definition
@@ -165,5 +167,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtWorkSpace> RbtWorkSpacePtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTWORKSPACE_H_

@@ -24,6 +24,8 @@
 #include "RbtPsfFileSink.h"
 #include "RbtSiteMapperFactory.h"
 
+using namespace rxdock;
+
 /////////////////////////////////////////////////////////////////////
 // MAIN PROGRAM STARTS HERE
 /////////////////////////////////////////////////////////////////////
@@ -48,7 +50,7 @@ int main(int argc, char *argv[]) {
     strExeName.erase(0, i + 1);
 
   // Print a standard header
-  Rbt::PrintStdHeader(std::cout, strExeName);
+  PrintStdHeader(std::cout, strExeName);
 
   cxxopts::Options options(strExeName, "rbcavity - calculate docking cavities");
 
@@ -140,13 +142,13 @@ int main(int argc, char *argv[]) {
     RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
     // Set the workspace name to the root of the receptor .prm filename
     std::vector<std::string> componentList =
-        Rbt::ConvertDelimitedStringToList(strReceptorPrmFile, ".");
+        ConvertDelimitedStringToList(strReceptorPrmFile, ".");
     std::string wsName = componentList.front();
     spWS->SetName(wsName);
 
     // Read the protocol parameter file
     RbtParameterFileSourcePtr spRecepPrmSource(new RbtParameterFileSource(
-        Rbt::GetRbtFileName("data/receptors", strReceptorPrmFile)));
+        GetRbtFileName("data/receptors", strReceptorPrmFile)));
 
     // Create the receptor model from the file names in the parameter file
     spRecepPrmSource->SetSection();
@@ -158,7 +160,7 @@ int main(int argc, char *argv[]) {
 
     // Either read the docking site from the .as file
     if (bReadAS) {
-      std::string strInputFile = Rbt::GetRbtFileName("data/grids", strASFile);
+      std::string strInputFile = GetRbtFileName("data/grids", strASFile);
 #if defined(__sgi) && !defined(__GNUC__)
       std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
 #else
@@ -285,9 +287,8 @@ int main(int argc, char *argv[]) {
       // Get the list of solvent exposed cavity atoms
       for (RbtAtomListConstIter iter = cavAtomList.begin();
            iter != cavAtomList.end(); iter++) {
-        int nNeighb = Rbt::GetNumAtoms(
-            recepAtomList,
-            Rbt::isAtomInsideSphere((*iter)->GetCoords(), neighbR));
+        int nNeighb = GetNumAtomsWithPredicate(
+            recepAtomList, isAtomInsideSphere((*iter)->GetCoords(), neighbR));
         nNeighb--;
         if (nNeighb < threshold) {
           std::cout << (*iter)->GetFullAtomName() << "\t" << nNeighb
@@ -310,15 +311,17 @@ int main(int argc, char *argv[]) {
       }
 
       // Atom type counts
-      Rbt::isHybridState_eq bIsArom(RbtAtom::AROM);
+      isHybridState_eq bIsArom(RbtAtom::AROM);
       int nAtoms = exposedAtomList.size();
-      int nLipoC = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomLipophilic());
-      int nArom = Rbt::GetNumAtoms(exposedAtomList, bIsArom);
-      int nNHBD = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondDonor());
-      int nMetal = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomMetal());
+      int nLipoC =
+          GetNumAtomsWithPredicate(exposedAtomList, isAtomLipophilic());
+      int nArom = GetNumAtomsWithPredicate(exposedAtomList, bIsArom);
+      int nNHBD = GetNumAtomsWithPredicate(exposedAtomList, isAtomHBondDonor());
+      int nMetal = GetNumAtomsWithPredicate(exposedAtomList, isAtomMetal());
       int nGuan =
-          Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomGuanidiniumCarbon());
-      int nNHBA = Rbt::GetNumAtoms(exposedAtomList, Rbt::isAtomHBondAcceptor());
+          GetNumAtomsWithPredicate(exposedAtomList, isAtomGuanidiniumCarbon());
+      int nNHBA =
+          GetNumAtomsWithPredicate(exposedAtomList, isAtomHBondAcceptor());
 
       // Cavity volume
       std::cout << std::endl

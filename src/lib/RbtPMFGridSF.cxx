@@ -16,6 +16,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 std::string RbtPMFGridSF::_CT("RbtPMFGridSF");
 std::string RbtPMFGridSF::_GRID("GRID");
 std::string RbtPMFGridSF::_SMOOTHED("SMOOTHED");
@@ -45,8 +47,7 @@ void RbtPMFGridSF::SetupReceptor() {
   std::string strWSName = GetWorkSpace()->GetName();
 
   std::string strSuffix = GetParameter(_GRID);
-  std::string strFile =
-      Rbt::GetRbtFileName("data/grids", strWSName + strSuffix);
+  std::string strFile = GetRbtFileName("data/grids", strWSName + strSuffix);
   std::cout << _CT << " Reading PMF grid from " << strFile << std::endl;
   std::ifstream istr(strFile.c_str(),
                      std::ios_base::in | std::ios_base::binary);
@@ -60,8 +61,8 @@ void RbtPMFGridSF::SetupLigand() {
     return;
 
   // get the  non-H atoms only
-  theLigandList = Rbt::GetAtomList(GetLigand()->GetAtomList(),
-                                   std::not1(Rbt::isAtomicNo_eq(1)));
+  theLigandList = GetAtomListWithPredicate(GetLigand()->GetAtomList(),
+                                           std::not1(isAtomicNo_eq(1)));
 #ifdef _DEBUG
   std::cout << _CT << "::SetupLigand(): #ATOMS = " << theLigandList.size()
             << std::endl;
@@ -103,9 +104,9 @@ void RbtPMFGridSF::ReadGrids(std::istream &istr) {
 
   // Read header string
   int length;
-  Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
+  ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *header = new char[length + 1];
-  Rbt::ReadWithThrow(istr, header, length);
+  ReadWithThrow(istr, header, length);
   // Add null character to end of string
   header[length] = '\0';
   // Compare title with
@@ -118,15 +119,15 @@ void RbtPMFGridSF::ReadGrids(std::istream &istr) {
 
   // Now read number of grids
   int nGrids;
-  Rbt::ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
+  ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
   std::cout << "Reading " << nGrids << " grids..." << std::endl;
   theGrids.reserve(nGrids);
   for (int i = CF; i <= nGrids; i++) {
     std::cout << "Grid# " << i << " ";
     // Read type
     RbtPMFType theType;
-    Rbt::ReadWithThrow(istr, (char *)&theType, sizeof(theType));
-    std::cout << "type " << Rbt::PMFType2Str(theType);
+    ReadWithThrow(istr, (char *)&theType, sizeof(theType));
+    std::cout << "type " << PMFType2Str(theType);
     // Now we can read the grid
     RbtRealGridPtr spGrid(new RbtRealGrid(istr));
     std::cout << " done" << std::endl;

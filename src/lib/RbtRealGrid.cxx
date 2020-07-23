@@ -17,6 +17,8 @@
 #include "RbtFileError.h"
 #include "RbtRealGrid.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtRealGrid::_CT("RbtRealGrid");
 
@@ -442,14 +444,14 @@ void RbtRealGrid::OwnWrite(std::ostream &ostr) const {
   // on read
   const char *const gridTitle = _CT.c_str();
   int length = strlen(gridTitle);
-  Rbt::WriteWithThrow(ostr, (const char *)&length, sizeof(length));
-  Rbt::WriteWithThrow(ostr, gridTitle, length);
+  WriteWithThrow(ostr, (const char *)&length, sizeof(length));
+  WriteWithThrow(ostr, gridTitle, length);
 
   // Write all the data members
-  Rbt::WriteWithThrow(ostr, (const char *)&m_tol, sizeof(m_tol));
+  WriteWithThrow(ostr, (const char *)&m_tol, sizeof(m_tol));
   const float *data = m_grid.data();
   for (unsigned int i = 0; i < GetN(); i++) {
-    Rbt::WriteWithThrow(ostr, (const char *)&data[i], sizeof(data[i]));
+    WriteWithThrow(ostr, (const char *)&data[i], sizeof(data[i]));
   }
 }
 
@@ -459,9 +461,9 @@ void RbtRealGrid::OwnWrite(std::ostream &ostr) const {
 void RbtRealGrid::OwnRead(std::istream &istr) {
   // Read title
   int length;
-  Rbt::ReadWithThrow(istr, (char *)&length, sizeof(length));
+  ReadWithThrow(istr, (char *)&length, sizeof(length));
   char *gridTitle = new char[length + 1];
-  Rbt::ReadWithThrow(istr, gridTitle, length);
+  ReadWithThrow(istr, gridTitle, length);
   // Add null character to end of string
   gridTitle[length] = '\0';
   // Compare title with class name
@@ -473,10 +475,10 @@ void RbtRealGrid::OwnRead(std::istream &istr) {
   }
 
   // Read all the data members
-  Rbt::ReadWithThrow(istr, (char *)&m_tol, sizeof(m_tol));
+  ReadWithThrow(istr, (char *)&m_tol, sizeof(m_tol));
   float *data = m_grid.data();
   for (unsigned int i = 0; i < GetN(); i++) {
-    Rbt::ReadWithThrow(istr, (char *)&data[i], sizeof(data[i]));
+    ReadWithThrow(istr, (char *)&data[i], sizeof(data[i]));
   }
 }
 

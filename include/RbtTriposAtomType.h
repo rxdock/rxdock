@@ -17,6 +17,8 @@
 
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 class RbtAtom;
 
 class RbtTriposAtomType {
@@ -135,5 +137,7 @@ typedef RbtTriposInfoList::const_iterator RbtTriposInfoListConstIter;
 typedef std::vector<RbtTriposAtomType::eType> RbtTriposAtomTypeList;
 typedef RbtTriposAtomTypeList::iterator RbtTriposAtomTypeListIter;
 typedef RbtTriposAtomTypeList::const_iterator RbtTriposAtomTypeListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTTRIPOSATOMTYPE_H_

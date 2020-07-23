@@ -12,6 +12,8 @@
 
 #include "RbtDihedralIntraSF.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtDihedralIntraSF::_CT("RbtDihedralIntraSF");
 

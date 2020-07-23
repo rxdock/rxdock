@@ -16,6 +16,8 @@
 #include "RbtDirectorySource.h"
 #include "RbtPMF.h"
 
+namespace rxdock {
+
 class RbtPMFDirSource : public RbtDirectorySource {
 public:
   RbtPMFDirSource(const std::string &);
@@ -27,5 +29,7 @@ public:
   virtual void ParseLines(std::vector<std::string> anStrVect,
                           std::vector<RbtPMFValue> *aValueVect);
 };
+
+} // namespace rxdock
 
 #endif // _RBTPMFDIRSOURCE_H_

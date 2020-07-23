@@ -18,6 +18,8 @@
 #include "RbtBaseIntraSF.h"
 #include "RbtVdwSF.h"
 
+namespace rxdock {
+
 class RbtVdwIntraSF : public RbtBaseIntraSF, public RbtVdwSF {
 public:
   // Class type string
@@ -44,5 +46,7 @@ private:
       m_prtIntns; // The partitioned interactions (within partition distance)
   RbtAtomRList m_ligAtomList;
 };
+
+} // namespace rxdock
 
 #endif //_RBTVDWINTRASF_H_

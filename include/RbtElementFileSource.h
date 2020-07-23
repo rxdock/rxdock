@@ -18,6 +18,8 @@
 
 #include "RbtBaseFileSource.h"
 
+namespace rxdock {
+
 // Simple struct for holding the element data
 class RbtElementData {
 public:
@@ -105,5 +107,7 @@ private:
 
 // useful typedefs
 typedef SmartPtr<RbtElementFileSource> RbtElementFileSourcePtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTELEMENTFILESOURCE_H_

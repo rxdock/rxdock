@@ -18,6 +18,10 @@
 #include "RbtBiMolWorkSpace.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
+namespace unittest {
+
 class OccupancyTest : public ::testing::Test {
 protected:
   static double TINY;
@@ -32,5 +36,9 @@ protected:
   RbtBiMolWorkSpacePtr m_workSpace;
   RbtModelList m_solventList;
 };
+
+} // namespace unittest
+
+} // namespace rxdock
 
 #endif /*OCCUPANCY_TEST_H_*/

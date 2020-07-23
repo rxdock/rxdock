@@ -16,6 +16,8 @@
 #include "RbtLigandSiteMapper.h"
 #include "RbtSphereSiteMapper.h"
 
+using namespace rxdock;
+
 // Parameter name which identifies a scoring function definition
 std::string RbtSiteMapperFactory::_MAPPER("SITE_MAPPER");
 

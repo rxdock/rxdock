@@ -17,6 +17,8 @@
 #include "RbtBaseObject.h"
 #include "RbtConfig.h"
 
+namespace rxdock {
+
 class RbtSFAgg; // forward declaration
 
 class RbtBaseSF : public RbtBaseObject {
@@ -108,5 +110,7 @@ private:
 typedef std::vector<RbtBaseSF *> RbtBaseSFList; // Vector of smart pointers
 typedef RbtBaseSFList::iterator RbtBaseSFListIter;
 typedef RbtBaseSFList::const_iterator RbtBaseSFListConstIter;
+
+} // namespace rxdock
 
 #endif //_RBTBASESF_H_

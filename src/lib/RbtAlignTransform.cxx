@@ -14,6 +14,8 @@
 #include "RbtDockingSite.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data member for class type
 std::string RbtAlignTransform::_CT("RbtAlignTransform");
 // Parameter names
@@ -23,7 +25,7 @@ std::string RbtAlignTransform::_AXES("AXES");
 ////////////////////////////////////////
 // Constructors/destructors
 RbtAlignTransform::RbtAlignTransform(const std::string &strName)
-    : RbtBaseBiMolTransform(_CT, strName), m_rand(Rbt::GetRbtRand()),
+    : RbtBaseBiMolTransform(_CT, strName), m_rand(GetRbtRand()),
       m_totalSize(0) {
   // Add parameters
   AddParameter(_COM, "ALIGN");

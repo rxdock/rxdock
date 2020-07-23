@@ -12,6 +12,8 @@
 
 #include "RbtParamHandler.h"
 
+using namespace rxdock;
+
 RbtParamHandler::RbtParamHandler() {
   _RBTOBJECTCOUNTER_CONSTR_("RbtParamHandler");
 }
@@ -103,7 +105,7 @@ void RbtParamHandler::Print(std::ostream &s) const {
 // Non-member functions
 
 // Insertion operator (primarily for debugging)
-std::ostream &operator<<(std::ostream &s, const RbtParamHandler &ph) {
+std::ostream &rxdock::operator<<(std::ostream &s, const RbtParamHandler &ph) {
   ph.Print(s);
   return s;
 }

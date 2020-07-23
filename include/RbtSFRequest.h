@@ -17,6 +17,8 @@
 
 #include "RbtRequest.h"
 
+namespace rxdock {
+
 // Request IDs
 const RbtRequestID ID_REQ_SF_ENABLE = 1;
 const RbtRequestID ID_REQ_SF_DISABLE = 2;
@@ -74,5 +76,7 @@ public:
     AddParameter(paramValue);
   }
 };
+
+} // namespace rxdock
 
 #endif //_RBTSFREQUEST_H_

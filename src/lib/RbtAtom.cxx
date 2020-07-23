@@ -17,6 +17,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 ///////////////////////////////////////////////
 // Constructors / destructors
 ///////////////////////////////////////////////
@@ -141,7 +143,7 @@ RbtAtom &RbtAtom::operator=(const RbtAtom &atom) {
 ///////////////////////////////////////////////
 
 // Insertion operator (primarily for debugging)
-std::ostream &operator<<(std::ostream &s, const RbtAtom &atom) {
+std::ostream &rxdock::operator<<(std::ostream &s, const RbtAtom &atom) {
   return atom.Print(s);
 }
 
@@ -159,7 +161,7 @@ std::ostream &RbtAtom::Print(std::ostream &s) const {
            << ", ID=" << m_nAtomId << ", AtNo=" << m_nAtomicNo << ", "
            << m_strSegmentName << "," << m_strSubunitName << ","
            << m_strSubunitId << "," << m_strAtomName
-           << ", Hybrid=" << Rbt::ConvertHybridStateToString(m_eState)
+           << ", Hybrid=" << ConvertHybridStateToString(m_eState)
            << ", #Hyd=" << m_nHydrogens << ", GrpChg=" << m_dGroupCharge
            << ", Tripos="
            << triposType.Type2Str(GetTriposType())
@@ -287,33 +289,33 @@ unsigned int RbtAtom::GetCoordinationNumber() const {
 // Note: for hydrogens, the implicit atoms are excluded
 // so GetCoordinationNumber(1) will return the number of explicit hydrogens
 unsigned int RbtAtom::GetCoordinationNumber(int nAtomicNo) const {
-  return Rbt::GetNumAtoms(Rbt::GetBondedAtomList(m_bondMap),
-                          Rbt::isAtomicNo_eq(nAtomicNo));
+  return GetNumAtomsWithPredicate(GetBondedAtomList(m_bondMap),
+                                  isAtomicNo_eq(nAtomicNo));
 }
 
 // This version returns the number of coordinated atoms of a given force field
 // type
 unsigned int
 RbtAtom::GetCoordinationNumber(const std::string &strFFType) const {
-  return Rbt::GetNumAtoms(Rbt::GetBondedAtomList(m_bondMap),
-                          Rbt::isFFType_eq(strFFType));
+  return GetNumAtomsWithPredicate(GetBondedAtomList(m_bondMap),
+                                  isFFType_eq(strFFType));
 }
 
 // This version returns the number of coordinated atoms of a given hybridisation
 // state
 unsigned int RbtAtom::GetCoordinationNumber(eHybridState e) const {
-  return Rbt::GetNumAtoms(Rbt::GetBondedAtomList(m_bondMap),
-                          Rbt::isHybridState_eq(e));
+  return GetNumAtomsWithPredicate(GetBondedAtomList(m_bondMap),
+                                  isHybridState_eq(e));
 }
 
 //////////////////////////////////////////
-// Non-member functions (in Rbt namespace)
+// Non-member functions (in rxdock namespace)
 //////////////////////////////////////////
 
 // DM 23 Apr 1999 - provide custom comparison function
 // to bond map, so that map is sorted by bond ID, not by pointer
-bool Rbt::RbtBondPCmp_BondId::operator()(RbtBond *pBond1,
-                                         RbtBond *pBond2) const {
+bool rxdock::RbtBondPCmp_BondId::operator()(RbtBond *pBond1,
+                                            RbtBond *pBond2) const {
   return pBond1->GetBondId() < pBond2->GetBondId();
 }
 
@@ -322,7 +324,7 @@ bool Rbt::RbtBondPCmp_BondId::operator()(RbtBond *pBond1,
 ///////////////////////
 
 // Converts hybridisation state enum to a string
-std::string Rbt::ConvertHybridStateToString(RbtAtom::eHybridState eState) {
+std::string rxdock::ConvertHybridStateToString(RbtAtom::eHybridState eState) {
   switch (eState) {
   case RbtAtom::SP:
     return "SP";
@@ -340,7 +342,7 @@ std::string Rbt::ConvertHybridStateToString(RbtAtom::eHybridState eState) {
 }
 
 // Convert formal charge to a string (e.g. +, -, ++, --, +3, -3 etc)
-std::string Rbt::ConvertFormalChargeToString(int nCharge) {
+std::string rxdock::ConvertFormalChargeToString(int nCharge) {
   switch (nCharge) {
   case 0:
     return "";
@@ -371,7 +373,7 @@ std::string Rbt::ConvertFormalChargeToString(int nCharge) {
 // DM 15 Feb 1999 - screens out positively charged atoms
 // Checks nitrogen hybridisation state and coordination number for available
 // lone pairs
-bool Rbt::isAtomHBondAcceptor::operator()(const RbtAtom *pAtom) const {
+bool rxdock::isAtomHBondAcceptor::operator()(const RbtAtom *pAtom) const {
   // Screen out positively charged atoms
   // if (spAtom->GetFormalCharge() > 0.0)
   //  return false;
@@ -423,7 +425,7 @@ bool Rbt::isAtomHBondAcceptor::operator()(const RbtAtom *pAtom) const {
 // Is atom a H-Bond Donor ?
 // Checks 1) is it a hydrogen, 2) does it make exactly one bond, 3) is the bond
 // to O, N or S ?
-bool Rbt::isAtomHBondDonor::operator()(const RbtAtom *pAtom) const {
+bool rxdock::isAtomHBondDonor::operator()(const RbtAtom *pAtom) const {
   return ((pAtom->GetAtomicNo() == 1) && (pAtom->GetNumBonds() == 1) &&
           ((pAtom->GetCoordinationNumber(8) == 1) ||
            (pAtom->GetCoordinationNumber(7) == 1) ||
@@ -433,7 +435,7 @@ bool Rbt::isAtomHBondDonor::operator()(const RbtAtom *pAtom) const {
 // Is atom planar ?
 // Checks if 1) atom makes 2 bonds (in which case must be planar) or
 // 2) hybridisation state is SP2, AROM or TRI
-bool Rbt::isAtomPlanar::operator()(const RbtAtom *pAtom) const {
+bool rxdock::isAtomPlanar::operator()(const RbtAtom *pAtom) const {
   const RbtAtom::eHybridState hybrid = pAtom->GetHybridState();
   // 17 Dec 1998 (DM) GetCoordinationNumber works for extended atoms
   // as it includes any implicit hydrogens
@@ -444,7 +446,7 @@ bool Rbt::isAtomPlanar::operator()(const RbtAtom *pAtom) const {
 
 // Is atom a pi-atom ?
 // SP2,TRI or AROM
-bool Rbt::isPiAtom::operator()(const RbtAtom *pAtom) const {
+bool rxdock::isPiAtom::operator()(const RbtAtom *pAtom) const {
   const RbtAtom::eHybridState hybrid = pAtom->GetHybridState();
   return ((hybrid == RbtAtom::SP2) || (hybrid == RbtAtom::AROM) ||
           (hybrid == RbtAtom::TRI));
@@ -452,22 +454,22 @@ bool Rbt::isPiAtom::operator()(const RbtAtom *pAtom) const {
 
 // DM 29 Jul 1999
 // Is atom within a given distance of any coord in the coord list
-bool Rbt::isAtomNearCoordList::operator()(const RbtAtom *pAtom) const {
+bool rxdock::isAtomNearCoordList::operator()(const RbtAtom *pAtom) const {
   // DM 27 Oct 2000 - GetCoords now returns by reference
   const RbtCoord &atomCoord = pAtom->GetCoords();
   for (RbtCoordListConstIter iter = cl.begin(); iter != cl.end(); iter++) {
-    if (Rbt::Length2(atomCoord - (*iter)) <= r2)
+    if (Length2(atomCoord - (*iter)) <= r2)
       return true;
   }
   return false;
 }
 
 // Is atom2 1-2 connected (i.e. bonded) to atom1 ?
-Rbt::isAtom_12Connected::isAtom_12Connected(RbtAtom *pAtom) : pAtom1(pAtom) {
+rxdock::isAtom_12Connected::isAtom_12Connected(RbtAtom *pAtom) : pAtom1(pAtom) {
   bondedAtomList1 = GetBondedAtomList(pAtom1);
 }
 
-bool Rbt::isAtom_12Connected::operator()(RbtAtom *pAtom2) const {
+bool rxdock::isAtom_12Connected::operator()(RbtAtom *pAtom2) const {
   // Check if atom1 and atom2 are the same
   if (pAtom1 == pAtom2)
     return false;
@@ -476,16 +478,16 @@ bool Rbt::isAtom_12Connected::operator()(RbtAtom *pAtom2) const {
   // STL find_if will do the trick
   // Need to use std::bind to convert binary predicate to unary
   return std::find_if(bondedAtomList1.begin(), bondedAtomList1.end(),
-                      std::bind(Rbt::isAtomPtr_eq(), std::placeholders::_1,
+                      std::bind(isAtomPtr_eq(), std::placeholders::_1,
                                 pAtom2)) != bondedAtomList1.end();
 }
 
 // Is atom2 1-3 connected (i.e. via a bond angle) to atom1 ?
-Rbt::isAtom_13Connected::isAtom_13Connected(RbtAtom *pAtom) : pAtom1(pAtom) {
+rxdock::isAtom_13Connected::isAtom_13Connected(RbtAtom *pAtom) : pAtom1(pAtom) {
   bondedAtomList1 = GetBondedAtomList(pAtom1);
 }
 
-bool Rbt::isAtom_13Connected::operator()(RbtAtom *pAtom2) const {
+bool rxdock::isAtom_13Connected::operator()(RbtAtom *pAtom2) const {
   // Check if atom1 and atom2 are the same
   if (pAtom1 == pAtom2)
     return false;
@@ -495,14 +497,14 @@ bool Rbt::isAtom_13Connected::operator()(RbtAtom *pAtom2) const {
   // STL find_first_of will do the trick.
   return std::find_first_of(bondedAtomList1.begin(), bondedAtomList1.end(),
                             bondedAtomList2.begin(), bondedAtomList2.end(),
-                            Rbt::isAtomPtr_eq()) != bondedAtomList1.end();
+                            isAtomPtr_eq()) != bondedAtomList1.end();
 }
 
 // Is atom's subunit an RNA-type (i.e. A,G,C or U)
 // DM 4 Jan 1999 - check for 3 letter residue names also
 // Note: strictly speaking these are used for DNA, not RNA, but they often crop
 // up in RNA
-bool Rbt::isAtomRNA::operator()(const RbtAtom *pAtom) const {
+bool rxdock::isAtomRNA::operator()(const RbtAtom *pAtom) const {
   std::string strSubunitName = pAtom->GetSubunitName();
   return ((strSubunitName == "A") || (strSubunitName == "ADE") ||
           (strSubunitName == "G") || (strSubunitName == "GUA") ||
@@ -512,7 +514,7 @@ bool Rbt::isAtomRNA::operator()(const RbtAtom *pAtom) const {
 
 // DM 21 Jul 1999 Is atom lipophilic ?
 // DM 16 May 2003 Total rewrite to be much more comprehensive
-bool Rbt::isAtomLipophilic::operator()(RbtAtom *pAtom) const {
+bool rxdock::isAtomLipophilic::operator()(RbtAtom *pAtom) const {
   // Remove the obvious polar stuff
   if (isIonic(pAtom) || isHBD(pAtom) || isHBA(pAtom) || isMetal(pAtom) ||
       isO(pAtom) || isN(pAtom))
@@ -529,7 +531,7 @@ bool Rbt::isAtomLipophilic::operator()(RbtAtom *pAtom) const {
   case 16: // S
     if (isSP3(pAtom))
       return true;
-    bondedAtomList = Rbt::GetBondedAtomList(pAtom);
+    bondedAtomList = GetBondedAtomList(pAtom);
     // Remove C,S bonded to O_SP2 (gets rid of carbonyl, sulphone, sulphoxide,
     // sulphonamide etc)
     for (iter = bondedAtomList.begin(); iter != bondedAtomList.end(); iter++) {
@@ -552,15 +554,15 @@ bool Rbt::isAtomLipophilic::operator()(RbtAtom *pAtom) const {
 
 // DM 24 Jan 2001
 // Checks for common metal ions by atomic number (Na,Mg,K->Zn)
-Rbt::isAtomMetal::isAtomMetal() {}
-bool Rbt::isAtomMetal::operator()(const RbtAtom *pAtom) const {
+rxdock::isAtomMetal::isAtomMetal() {}
+bool rxdock::isAtomMetal::operator()(const RbtAtom *pAtom) const {
   int atNo = pAtom->GetAtomicNo();
   return (atNo == 11) || (atNo == 12) || ((atNo >= 19) && (atNo <= 30));
 }
 
 // Select the intramolecular flexible interactions to this atom (sets
 // SelectionFlag = true)
-void Rbt::SelectFlexAtoms::operator()(RbtAtom *pAtom) {
+void rxdock::SelectFlexAtoms::operator()(RbtAtom *pAtom) {
   RbtModel *pModel = pAtom->GetModelPtr();
   if (pModel) {
     pModel->SelectFlexAtoms(pAtom);
@@ -571,18 +573,19 @@ void Rbt::SelectFlexAtoms::operator()(RbtAtom *pAtom) {
 // Atom list functions (implemented as STL algorithms)
 ////////////////////////////////////////////
 
-void Rbt::SetAtomSelectionFlags(RbtAtomList &atomList, bool bSelected) {
-  Rbt::SelectAtom select(bSelected);
+void rxdock::SetAtomSelectionFlagsInList(RbtAtomList &atomList,
+                                         bool bSelected) {
+  SelectAtom select(bSelected);
   std::for_each(atomList.begin(), atomList.end(), select);
 }
 
-void Rbt::InvertAtomSelectionFlags(RbtAtomList &atomList) {
-  Rbt::InvertSelectAtom invert;
+void rxdock::InvertAtomSelectionFlags(RbtAtomList &atomList) {
+  InvertSelectAtom invert;
   std::for_each(atomList.begin(), atomList.end(), invert);
 }
 
-void Rbt::SetAtomCyclicFlags(RbtAtomList &atomList, bool bCyclic) {
-  Rbt::CyclicAtom cyclic(bCyclic);
+void rxdock::SetAtomCyclicFlagsInList(RbtAtomList &atomList, bool bCyclic) {
+  CyclicAtom cyclic(bCyclic);
   std::for_each(atomList.begin(), atomList.end(), cyclic);
 }
 
@@ -590,23 +593,23 @@ void Rbt::SetAtomCyclicFlags(RbtAtomList &atomList, bool bCyclic) {
 // Helper function to return the atom pointer for the "other" atom in the bond
 // i.e. return (bondPair.second) ? bondPair.first->GetAtom2Ptr() :
 // bondPair.first->GetAtom1Ptr();
-RbtAtomPtr Rbt::GetBondedAtomPtr(std::pair<RbtBond *, bool> bondBoolPair) {
+RbtAtomPtr rxdock::GetBondedAtomPtr(std::pair<RbtBond *, bool> bondBoolPair) {
   // If this atom is first in the bond (bondPair.second == true), get atom 2
   // ptr, else get atom 1 ptr
   return (bondBoolPair.second) ? (bondBoolPair.first)->GetAtom2Ptr()
                                : (bondBoolPair.first)->GetAtom1Ptr();
 }
 
-unsigned int Rbt::GetNumBondedAtoms(const RbtBondMap &bondMap) {
+unsigned int rxdock::GetNumBondedAtoms(const RbtBondMap &bondMap) {
   return bondMap.size(); // This function is not really needed, but provide for
                          // consistency
 }
 
-RbtAtomList Rbt::GetBondedAtomList(const RbtBondMap &bondMap) {
+RbtAtomList rxdock::GetBondedAtomList(const RbtBondMap &bondMap) {
   RbtAtomList atomList;
-  std::transform(bondMap.begin(), bondMap.end(), std::back_inserter(atomList),
-                 std::function<RbtAtomPtr(std::pair<RbtBond *, bool>)>(
-                     &Rbt::GetBondedAtomPtr));
+  std::transform(
+      bondMap.begin(), bondMap.end(), std::back_inserter(atomList),
+      std::function<RbtAtomPtr(std::pair<RbtBond *, bool>)>(&GetBondedAtomPtr));
   // DM 23 Apr 1999 - sort the bonded atom list by atom ID so we return the
   // atoms in the same order every time The problem with the bond map is that
   // the key is RbtBond* which is not guaranteed to increase in order of
@@ -618,24 +621,24 @@ RbtAtomList Rbt::GetBondedAtomList(const RbtBondMap &bondMap) {
 // If spAtom is a regular RbtAtom, these two functions just behave like the two
 // above If spAtom can be dynamically_casted to an RbtPseudoAtom, these return
 // the constituent atom list for the pseudoatom
-unsigned int Rbt::GetNumBondedAtoms(const RbtAtom *pAtom) {
+unsigned int rxdock::GetNumBondedAtoms(const RbtAtom *pAtom) {
   // Attempt the dynamic cast (on the regular pointer)
   RbtPseudoAtom *pPseudoAtom =
       dynamic_cast<RbtPseudoAtom *>(const_cast<RbtAtom *>(pAtom));
   if (pPseudoAtom != nullptr)
     return pPseudoAtom->GetNumAtoms();
   else
-    return Rbt::GetNumBondedAtoms(pAtom->GetBondMap());
+    return GetNumBondedAtoms(pAtom->GetBondMap());
 }
 
-RbtAtomList Rbt::GetBondedAtomList(const RbtAtom *pAtom) {
+RbtAtomList rxdock::GetBondedAtomList(const RbtAtom *pAtom) {
   // Attempt the dynamic cast (on the regular pointer)
   RbtPseudoAtom *pPseudoAtom =
       dynamic_cast<RbtPseudoAtom *>(const_cast<RbtAtom *>(pAtom));
   if (pPseudoAtom != nullptr)
     return pPseudoAtom->GetAtomList();
   else
-    return Rbt::GetBondedAtomList(pAtom->GetBondMap());
+    return GetBondedAtomList(pAtom->GetBondMap());
 }
 
 // Binary
@@ -647,24 +650,24 @@ RbtAtomList Rbt::GetBondedAtomList(const RbtAtom *pAtom) {
 // themselves
 // for equality, i.e. same objects) Returns list of RbtAtom smart pointers to
 // atoms in atomList1 for which a match is found.
-unsigned int Rbt::GetNumMatchingAtoms(const RbtAtomList &atomList1,
-                                      const RbtAtomList &atomList2) {
+unsigned int rxdock::GetNumMatchingAtoms(const RbtAtomList &atomList1,
+                                         const RbtAtomList &atomList2) {
   unsigned int nCount(0);
   for (RbtAtomListConstIter iter = atomList2.begin(); iter != atomList2.end();
        iter++) {
-    nCount += GetNumAtoms(
-        atomList1, std::bind(Rbt::isAtom_eq(), std::placeholders::_1, *iter));
+    nCount += GetNumAtomsWithPredicate(
+        atomList1, std::bind(isAtom_eq(), std::placeholders::_1, *iter));
   }
   return nCount;
 }
 
-RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList1,
-                                     const RbtAtomList &atomList2) {
+RbtAtomList rxdock::GetMatchingAtomList(const RbtAtomList &atomList1,
+                                        const RbtAtomList &atomList2) {
   RbtAtomList matchingAtomList;
   for (RbtAtomListConstIter iter = atomList2.begin(); iter != atomList2.end();
        iter++) {
-    RbtAtomList tempList = GetAtomList(
-        atomList1, std::bind(Rbt::isAtom_eq(), std::placeholders::_1, *iter));
+    RbtAtomList tempList = GetAtomListWithPredicate(
+        atomList1, std::bind(isAtom_eq(), std::placeholders::_1, *iter));
     std::copy(tempList.begin(), tempList.end(),
               std::back_inserter(matchingAtomList));
   }
@@ -683,26 +686,26 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList1,
 // O4's in subunit U23 in all segments _23:                    - matches all
 // atoms in
 // subunit ID=23 in all segments
-unsigned int Rbt::GetNumMatchingAtoms(const RbtAtomList &atomList,
-                                      const std::string &strFullName) {
-  return Rbt::GetMatchingAtomList(atomList, strFullName).size();
+unsigned int rxdock::GetNumMatchingAtoms(const RbtAtomList &atomList,
+                                         const std::string &strFullName) {
+  return GetMatchingAtomList(atomList, strFullName).size();
 }
 
-RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
-                                     const std::string &strFullName) {
+RbtAtomList rxdock::GetMatchingAtomList(const RbtAtomList &atomList,
+                                        const std::string &strFullName) {
   RbtAtomList matchingAtoms = atomList;
 
   // Split the name into it's constituent subunit and atom names
   std::vector<std::string> componentList =
-      Rbt::ConvertDelimitedStringToList(strFullName, ":");
+      ConvertDelimitedStringToList(strFullName, ":");
   unsigned int idx(0); // Index into constituent list
   // Switch on how many constituent names are specified
   switch (componentList.size()) {
 
   case 3: // we have segment, subunit and atom names
     if (!componentList[idx].empty()) {
-      matchingAtoms = Rbt::GetAtomList(
-          matchingAtoms, Rbt::isSegmentName_eq(componentList[idx]));
+      matchingAtoms = GetAtomListWithPredicate(
+          matchingAtoms, isSegmentName_eq(componentList[idx]));
 #ifdef _DEBUG
       // std::cout << "Matching segment name=" << componentList[idx] << ",
       // #atoms="
@@ -715,12 +718,12 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
     // Check if the subunit name also specifies a subunit ID
     if (!componentList[idx].empty()) {
       std::vector<std::string> subunitList =
-          Rbt::ConvertDelimitedStringToList(componentList[idx], "_");
+          ConvertDelimitedStringToList(componentList[idx], "_");
       switch (subunitList.size()) {
       case 2: // Subunit ID and name are specified
         if (!subunitList[1].empty()) {
-          matchingAtoms = Rbt::GetAtomList(matchingAtoms,
-                                           Rbt::isSubunitId_eq(subunitList[1]));
+          matchingAtoms = GetAtomListWithPredicate(
+              matchingAtoms, isSubunitId_eq(subunitList[1]));
 #ifdef _DEBUG
           // std::cout << "Matching subunit id=" << subunitList[1] << ",
           // #atoms=" << matchingAtoms.size() << std::endl;
@@ -728,8 +731,8 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
         }
       case 1: // Fall-through!! Only the subunit name is specified
         if (!subunitList[0].empty()) {
-          matchingAtoms = Rbt::GetAtomList(
-              matchingAtoms, Rbt::isSubunitName_eq(subunitList[0]));
+          matchingAtoms = GetAtomListWithPredicate(
+              matchingAtoms, isSubunitName_eq(subunitList[0]));
 #ifdef _DEBUG
           // std::cout << "Matching subunit name=" << subunitList[0] << ",
           // #atoms="
@@ -749,8 +752,8 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
 
   case 1: // Fall-through!! We only have an atom name specifier
     if (!componentList[idx].empty()) {
-      matchingAtoms = Rbt::GetAtomList(matchingAtoms,
-                                       Rbt::isAtomName_eq(componentList[idx]));
+      matchingAtoms = GetAtomListWithPredicate(
+          matchingAtoms, isAtomName_eq(componentList[idx]));
 #ifdef _DEBUG
       // std::cout << "Matching atom name=" << componentList[idx] << ", #atoms="
       // << matchingAtoms.size() << std::endl;
@@ -772,19 +775,19 @@ RbtAtomList Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
 // specifiers Returns total list (i.e. all matches OR'd). Does not remove
 // duplicates.
 unsigned int
-Rbt::GetNumMatchingAtoms(const RbtAtomList &atomList,
-                         const std::vector<std::string> &fullNameList) {
-  return Rbt::GetMatchingAtomList(atomList, fullNameList).size();
+rxdock::GetNumMatchingAtoms(const RbtAtomList &atomList,
+                            const std::vector<std::string> &fullNameList) {
+  return GetMatchingAtomList(atomList, fullNameList).size();
 }
 
 RbtAtomList
-Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
-                         const std::vector<std::string> &fullNameList) {
+rxdock::GetMatchingAtomList(const RbtAtomList &atomList,
+                            const std::vector<std::string> &fullNameList) {
   RbtAtomList matchingAtoms;
   for (std::vector<std::string>::const_iterator iter = fullNameList.begin();
        iter != fullNameList.end(); iter++) {
     // Find the atoms which match the specifier string
-    RbtAtomList selectedAtoms = Rbt::GetMatchingAtomList(atomList, *iter);
+    RbtAtomList selectedAtoms = GetMatchingAtomList(atomList, *iter);
     // Add to the total list of matching atoms
     std::copy(selectedAtoms.begin(), selectedAtoms.end(),
               std::back_inserter(matchingAtoms));
@@ -798,7 +801,8 @@ Rbt::GetMatchingAtomList(const RbtAtomList &atomList,
 /////////////////////////
 
 // Save coords by number for all atoms in the list
-void Rbt::SaveAtomCoords(const RbtAtomList &atomList, unsigned int coordNum) {
+void rxdock::SaveAtomCoords(const RbtAtomList &atomList,
+                            unsigned int coordNum) {
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
     RbtAtomPtr spAtom(*iter);
@@ -807,7 +811,8 @@ void Rbt::SaveAtomCoords(const RbtAtomList &atomList, unsigned int coordNum) {
 }
 
 // Revert to numbered coords for all atoms in the list
-void Rbt::RevertAtomCoords(const RbtAtomList &atomList, unsigned int coordNum) {
+void rxdock::RevertAtomCoords(const RbtAtomList &atomList,
+                              unsigned int coordNum) {
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
     RbtAtomPtr spAtom(*iter);
@@ -816,23 +821,23 @@ void Rbt::RevertAtomCoords(const RbtAtomList &atomList, unsigned int coordNum) {
 }
 
 // Returns total atomic mass (molecular weight) for all atoms in the list
-double Rbt::GetTotalAtomicMass(const RbtAtomList &atomList) {
+double rxdock::GetTotalAtomicMass(const RbtAtomList &atomList) {
   return std::accumulate(atomList.begin(), atomList.end(), 0.0,
                          AccumAtomicMass);
 }
 
 // Returns center of mass of atoms in the list
-RbtCoord Rbt::GetCenterOfMass(const RbtAtomList &atomList) {
+RbtCoord rxdock::GetCenterOfAtomicMass(const RbtAtomList &atomList) {
   // Accumulate sum of mass*coord
   RbtCoord com = std::accumulate(atomList.begin(), atomList.end(), RbtCoord(),
                                  AccumMassWeightedCoords);
   // Divide by total mass
-  com /= Rbt::GetTotalAtomicMass(atomList);
+  com /= GetTotalAtomicMass(atomList);
   return com;
 }
 
 // DM 20 May 1999 - returns the coords of all atoms in the list
-RbtCoordList Rbt::GetCoordList(const RbtAtomList &atomList) {
+RbtCoordList rxdock::GetCoordList(const RbtAtomList &atomList) {
   RbtCoordList coordList;
   std::transform(atomList.begin(), atomList.end(),
                  std::back_inserter(coordList), ExtractAtomCoord);
@@ -840,7 +845,8 @@ RbtCoordList Rbt::GetCoordList(const RbtAtomList &atomList) {
 }
 
 // DM 09 Aug 2001 - returns coordList via argument
-void Rbt::GetCoordList(const RbtAtomList &atomList, RbtCoordList &coordList) {
+void rxdock::GetCoordList(const RbtAtomList &atomList,
+                          RbtCoordList &coordList) {
   coordList.clear();
   std::transform(atomList.begin(), atomList.end(),
                  std::back_inserter(coordList), ExtractAtomCoord);
@@ -851,8 +857,8 @@ void Rbt::GetCoordList(const RbtAtomList &atomList, RbtCoordList &coordList) {
 // pick O5T = col 2" nFormat != 0 => Ligand atom format "pick N1 .and. segm H =
 // col 2" std::ostream should have been opened before calling QuantaCSDFileDump
 // DM 30 Jul 1999 - added segment name to receptor atom format
-void Rbt::PrintQuantaCSDFormat(const RbtAtomList &atomList, std::ostream &s,
-                               int nColor, int nFormat) {
+void rxdock::PrintQuantaCSDFormat(const RbtAtomList &atomList, std::ostream &s,
+                                  int nColor, int nFormat) {
   for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
     RbtAtomPtr spAtom(*iter);
@@ -873,11 +879,11 @@ void Rbt::PrintQuantaCSDFormat(const RbtAtomList &atomList, std::ostream &s,
 // Scans an atom list and sets the group charge to zero on any
 // cationic-ionic pairs which are 1-2 or 1-3 connected
 //(e.g. on -OOC.CR.NH3+ would zero the C and N)
-void Rbt::RemoveZwitterions(RbtAtomList &atomList) {
+void rxdock::RemoveZwitterions(RbtAtomList &atomList) {
   RbtAtomList cationicAtomList =
-      Rbt::GetAtomList(atomList, Rbt::isAtomCationic());
+      GetAtomListWithPredicate(atomList, isAtomCationic());
   RbtAtomList anionicAtomList =
-      Rbt::GetAtomList(atomList, Rbt::isAtomAnionic());
+      GetAtomListWithPredicate(atomList, isAtomAnionic());
 
   // Progressively partition the cationic atom list into those that are 1-3
   // connected or less to one of the anionic atoms, and those that aren't
@@ -890,9 +896,9 @@ void Rbt::RemoveZwitterions(RbtAtomList &atomList) {
     // Need to partition in two stages: firstly 1-2 connected, then 1-3
     // connected
     c14begin = std::stable_partition(c14begin, cationicAtomList.end(),
-                                     Rbt::isAtom_12Connected(*aIter));
+                                     isAtom_12Connected(*aIter));
     c14begin = std::stable_partition(c14begin, cationicAtomList.end(),
-                                     Rbt::isAtom_13Connected(*aIter));
+                                     isAtom_13Connected(*aIter));
   }
 
   // Now repeat the other way round, checking the anionic atom list against ALL
@@ -907,9 +913,9 @@ void Rbt::RemoveZwitterions(RbtAtomList &atomList) {
     // Need to partition in two stages: firstly 1-2 connected, then 1-3
     // connected
     a14begin = std::stable_partition(a14begin, anionicAtomList.end(),
-                                     Rbt::isAtom_12Connected(*cIter));
+                                     isAtom_12Connected(*cIter));
     a14begin = std::stable_partition(a14begin, anionicAtomList.end(),
-                                     Rbt::isAtom_13Connected(*cIter));
+                                     isAtom_13Connected(*cIter));
   }
 
   // Now we can safely neutralise the 1-2 and 1-3 atoms

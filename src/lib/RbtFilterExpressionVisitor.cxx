@@ -15,6 +15,8 @@
 #include <climits>
 #include <cmath>
 
+using namespace rxdock;
+
 void PrintVisitor::VisitVbleExp(FilterVbleExp *fe) {
   std::string name = fe->GetVble().GetName();
   if (name[0] == 'c') // constant

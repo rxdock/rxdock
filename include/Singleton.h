@@ -1,6 +1,8 @@
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
+namespace rxdock {
+
 template <class singleton_type> class Singleton {
 protected:
   enum action { DESTROY, CREATE, GET };
@@ -32,4 +34,7 @@ public:
 protected:
   Singleton() {}
 };
+
+} // namespace rxdock
+
 #endif

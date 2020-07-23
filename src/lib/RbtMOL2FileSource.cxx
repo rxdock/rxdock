@@ -20,6 +20,8 @@
 #include "RbtMOL2FileSource.h"
 #include "RbtModelError.h"
 
+using namespace rxdock;
+
 std::string RbtMOL2FileSource::_CT("RbtMOL2FileSource");
 // record delimiter strings
 std::string RbtMOL2FileSource::_TRIPOS_DELIM("@<TRIPOS>");
@@ -34,9 +36,9 @@ RbtMOL2FileSource::RbtMOL2FileSource(const std::string &fileName,
                                  "MOL2_FILE_SOURCE"),
       m_bImplHydrogens(bImplHydrogens) {
   m_spElementData = RbtElementFileSourcePtr(
-      new RbtElementFileSource(Rbt::GetRbtFileName("data", "RbtElements.dat")));
+      new RbtElementFileSource(GetRbtFileName("data", "RbtElements.dat")));
   m_spParamSource = RbtParameterFileSourcePtr(new RbtParameterFileSource(
-      Rbt::GetRbtFileName("data/sf", "RbtIonicAtoms.prm")));
+      GetRbtFileName("data/sf", "RbtIonicAtoms.prm")));
   m_NL = 0; // make line counter zero
   // initialize MOLECULE descriptors
   nAtoms = nBonds = nSubstructures = nFeatures = nSets = 0;
@@ -442,7 +444,8 @@ void RbtMOL2FileSource::SetupAtomParams() {
   if (m_bImplHydrogens) {
     RemoveNonPolarHydrogens();
     // Quick fix: remove all "Lone Pair" atoms as well
-    RbtAtomList lpList = Rbt::GetAtomList(m_atomList, Rbt::isFFType_eq("LP"));
+    RbtAtomList lpList =
+        GetAtomListWithPredicate(m_atomList, isFFType_eq("LP"));
     for (RbtAtomListIter iter = lpList.begin(); iter != lpList.end(); iter++) {
       // std::cout << "INFO Removing Lone Pair " << (*iter)->GetFullAtomName()
       // << std::endl;
@@ -463,7 +466,7 @@ void RbtMOL2FileSource::SetupAtomParams() {
 // connections to each carbon
 void RbtMOL2FileSource::FixImplicitHydrogenCount() {
   // Get list of all carbons
-  RbtAtomList cList = Rbt::GetAtomList(m_atomList, Rbt::isAtomicNo_eq(6));
+  RbtAtomList cList = GetAtomListWithPredicate(m_atomList, isAtomicNo_eq(6));
   for (RbtAtomListIter iter = cList.begin(); iter != cList.end(); iter++) {
     RbtAtom::eHybridState hyb = (*iter)->GetHybridState();
     // Compare actual and expected bond count based on hybridisation state
@@ -500,9 +503,9 @@ void RbtMOL2FileSource::FixImplicitHydrogenCount() {
 // Convert {O,S}_SP3 to TRI, if and only if the atom is bonded to pi-atom
 void RbtMOL2FileSource::FixHybridState() {
   RbtAtomList sp3AtomList =
-      Rbt::GetAtomList(m_atomList, Rbt::isHybridState_eq(RbtAtom::SP3));
+      GetAtomListWithPredicate(m_atomList, isHybridState_eq(RbtAtom::SP3));
   sp3AtomList =
-      Rbt::GetAtomList(sp3AtomList, std::not1(Rbt::isAtomPosCharged()));
+      GetAtomListWithPredicate(sp3AtomList, std::not1(isAtomPosCharged()));
 
   for (RbtAtomListIter iter = sp3AtomList.begin(); iter != sp3AtomList.end();
        iter++) {
@@ -510,9 +513,8 @@ void RbtMOL2FileSource::FixHybridState() {
     switch ((*iter)->GetAtomicNo()) {
     case 8:  // O
     case 16: // S
-      bondedAtomList = Rbt::GetBondedAtomList(*iter);
-      if (Rbt::FindAtomInList(bondedAtomList, Rbt::isPiAtom()) !=
-          bondedAtomList.end()) {
+      bondedAtomList = GetBondedAtomList(*iter);
+      if (FindAtomInList(bondedAtomList, isPiAtom()) != bondedAtomList.end()) {
         (*iter)->SetHybridState(RbtAtom::TRI);
         // std::cout << "Changing " << (*iter)->GetFullAtomName() << " from SP3
         // to TRI" << std::endl;
@@ -527,7 +529,7 @@ void RbtMOL2FileSource::FixHybridState() {
 // Correct the Tripos types read from file, for extended carbons and polar
 // hydrogens
 void RbtMOL2FileSource::FixTriposTypes() {
-  RbtAtomList cList = Rbt::GetAtomList(m_atomList, Rbt::isAtomicNo_eq(6));
+  RbtAtomList cList = GetAtomListWithPredicate(m_atomList, isAtomicNo_eq(6));
   for (RbtAtomListIter iter = cList.begin(); iter != cList.end(); iter++) {
     RbtTriposAtomType::eType t = (*iter)->GetTriposType();
     RbtTriposAtomType::eType xt = t;
@@ -565,7 +567,7 @@ void RbtMOL2FileSource::FixTriposTypes() {
       }
     }
   }
-  RbtAtomList hpList = Rbt::GetAtomList(m_atomList, Rbt::isAtomHBondDonor());
+  RbtAtomList hpList = GetAtomListWithPredicate(m_atomList, isAtomHBondDonor());
   for (RbtAtomListIter iter = hpList.begin(); iter != hpList.end(); iter++) {
     RbtTriposAtomType::eType t = (*iter)->GetTriposType();
     RbtTriposAtomType::eType xt = RbtTriposAtomType::H_P;
@@ -580,13 +582,13 @@ void RbtMOL2FileSource::FixTriposTypes() {
 }
 
 void RbtMOL2FileSource::RemoveNonPolarHydrogens() {
-  RbtAtomList cList = Rbt::GetAtomList(m_atomList, Rbt::isAtomicNo_eq(6));
+  RbtAtomList cList = GetAtomListWithPredicate(m_atomList, isAtomicNo_eq(6));
 
   RbtAtomList removeList;
   for (auto &cIter : cList) {
     // Get list of all bonded hydrogens
     RbtAtomList hList =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(cIter), Rbt::isAtomicNo_eq(1));
+        GetAtomListWithPredicate(GetBondedAtomList(cIter), isAtomicNo_eq(1));
     int nH = hList.size();
     if (nH > 0) {
       for (auto &hIter : hList) {
@@ -600,8 +602,8 @@ void RbtMOL2FileSource::RemoveNonPolarHydrogens() {
   }
 
   // Remove orphan hydrogens (from fragmented residues for e.g.)
-  RbtAtomList hList = Rbt::GetAtomList(m_atomList, Rbt::isAtomicNo_eq(1));
-  hList = Rbt::GetAtomList(hList, Rbt::isCoordinationNumber_eq(0));
+  RbtAtomList hList = GetAtomListWithPredicate(m_atomList, isAtomicNo_eq(1));
+  hList = GetAtomListWithPredicate(hList, isCoordinationNumber_eq(0));
   for (const auto &hIter : hList) {
     std::cout << _CT << ": INFO Removing orphan hydrogen "
               << hIter->GetFullAtomName() << std::endl;
@@ -615,12 +617,12 @@ void RbtMOL2FileSource::SetupVdWRadii() {
   // Radius increment for atoms with implicit hydrogens
   // DM 22 Jul 1999 - only increase the radius for sp3 atoms with implicit
   // hydrogens For sp2 and aromatic, leave as is
-  Rbt::isHybridState_eq bIsSP3(RbtAtom::SP3);
+  isHybridState_eq bIsSP3(RbtAtom::SP3);
   double dImplRadIncr = m_spElementData->GetImplicitRadiusIncr();
   // Element data for hydrogen
   RbtElementData elHData = m_spElementData->GetElementData(1);
   // Radius increment and predicate for H-bonding hydrogens
-  Rbt::isAtomHBondDonor bIsHBondDonor;
+  isAtomHBondDonor bIsHBondDonor;
   double dHBondRadius =
       elHData.vdwRadius + m_spElementData->GetHBondRadiusIncr();
 

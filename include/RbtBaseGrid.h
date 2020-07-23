@@ -22,6 +22,8 @@
 
 #include <set>
 
+namespace rxdock {
+
 class RbtBaseGrid {
 public:
   // Class type string
@@ -243,5 +245,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtBaseGrid> RbtBaseGridPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTBASEGRID_H_

@@ -12,6 +12,8 @@
 
 #include "RbtChromDihedralElement.h"
 
+using namespace rxdock;
+
 std::string RbtChromDihedralElement::_CT = "RbtChromDihedralElement";
 
 RbtChromDihedralElement::RbtChromDihedralElement(RbtBondPtr spBond,

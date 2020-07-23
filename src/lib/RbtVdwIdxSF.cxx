@@ -16,6 +16,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtVdwIdxSF::_CT("RbtVdwIdxSF");
 std::string RbtVdwIdxSF::_THRESHOLD_ATTR("THRESHOLD_ATTR");
@@ -145,7 +147,7 @@ void RbtVdwIdxSF::SetupReceptor() {
       GetReceptor()->SetAtomSelectionFlags(false);
       GetReceptor()
           ->SelectFlexAtoms(); // This leaves all moveable atoms selected
-      Rbt::isAtomSelected isSel;
+      isAtomSelected isSel;
       RbtAtomRListIter fIter =
           std::stable_partition(m_recRigidAtomList.begin(),
                                 m_recRigidAtomList.end(), std::not1(isSel));
@@ -372,7 +374,7 @@ void RbtVdwIdxSF::RenderAnnotationsByResidue(
   std::string strRepul = GetName() + "_REP";
 
   RbtAnnotationList annList = GetAnnotationList();
-  std::sort(annList.begin(), annList.end(), Rbt::RbtAnn_Cmp_AtomId2());
+  std::sort(annList.begin(), annList.end(), RbtAnn_Cmp_AtomId2());
 
   std::string oldResName("UNLIKELY_TO_MATCH_BY_CHANCE");
   RbtAnnotationPtr spAnn;
@@ -396,20 +398,20 @@ void RbtVdwIdxSF::RenderAnnotationsByResidue(
       // Find all the atoms in this residue, so that we can locate the central
       // atom for annotation purposes Amino acid = CA; nucleic acid = C1'; other
       // residues = first non-hydrogen atom (or first atom)
-      RbtAtomList resAtoms = Rbt::GetMatchingAtomList(m_recAtomList, resName);
+      RbtAtomList resAtoms = GetMatchingAtomList(m_recAtomList, resName);
       // If assertion fails, implies that atom 2 is not in the receptor
       Assert<RbtAssert>(!resAtoms.empty());
-      RbtAtomList centralAtoms = Rbt::GetMatchingAtomList(resAtoms, "CA");
+      RbtAtomList centralAtoms = GetMatchingAtomList(resAtoms, "CA");
       RbtAtom *centralAtom;
       if (!centralAtoms.empty()) {
         centralAtom = centralAtoms.front(); // Amino acid
       } else {
-        centralAtoms = Rbt::GetMatchingAtomList(resAtoms, "C1'");
+        centralAtoms = GetMatchingAtomList(resAtoms, "C1'");
         if (!centralAtoms.empty()) {
           centralAtom = centralAtoms.front(); // Nucleic acid
         } else {
           centralAtoms =
-              Rbt::GetAtomList(resAtoms, std::not1(Rbt::isAtomicNo_eq(1)));
+              GetAtomListWithPredicate(resAtoms, std::not1(isAtomicNo_eq(1)));
           centralAtom = (!centralAtoms.empty())
                             ? centralAtoms.front()
                             : resAtoms.front(); // other residue (e.g. solvent)

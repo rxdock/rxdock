@@ -21,6 +21,8 @@
 #include "RbtPrincipalAxes.h"
 #include "RbtRealGrid.h"
 
+namespace rxdock {
+
 class RbtCavity {
 public:
   ////////////////////////////////////////
@@ -29,8 +31,8 @@ public:
   // Constructor
   RbtCavity(const RbtCoordList &coordList, const RbtVector gridStep)
       : m_coordList(coordList), m_gridStep(gridStep),
-        m_prAxes(Rbt::GetPrincipalAxes(coordList)),
-        m_minCoord(Rbt::Min(coordList)), m_maxCoord(Rbt::Max(coordList)) {}
+        m_prAxes(GetPrincipalAxesOfAtoms(coordList)),
+        m_minCoord(Min(coordList)), m_maxCoord(Max(coordList)) {}
 
   // Constructor reading from binary stream
   RbtCavity(std::istream &istr) { Read(istr); }
@@ -62,7 +64,7 @@ public:
     m_gridStep.Write(ostr);
     // Write number of coords
     int nCoords = m_coordList.size();
-    Rbt::WriteWithThrow(ostr, (const char *)&nCoords, sizeof(nCoords));
+    WriteWithThrow(ostr, (const char *)&nCoords, sizeof(nCoords));
     for (RbtCoordListConstIter cIter = m_coordList.begin();
          cIter != m_coordList.end(); cIter++) {
       (*cIter).Write(ostr); // Write each coord
@@ -77,7 +79,7 @@ public:
     m_gridStep.Read(istr);
     // Read number of coords
     int nCoords;
-    Rbt::ReadWithThrow(istr, (char *)&nCoords, sizeof(nCoords));
+    ReadWithThrow(istr, (char *)&nCoords, sizeof(nCoords));
     m_coordList.reserve(nCoords);
     RbtCoord c;
     // Read each coord and add it to the cavity list
@@ -86,9 +88,9 @@ public:
       m_coordList.push_back(c);
     }
     // Recalculate the other properties
-    m_prAxes = Rbt::GetPrincipalAxes(m_coordList);
-    m_minCoord = Rbt::Min(m_coordList);
-    m_maxCoord = Rbt::Max(m_coordList);
+    m_prAxes = GetPrincipalAxesOfAtoms(m_coordList);
+    m_minCoord = Min(m_coordList);
+    m_maxCoord = Max(m_coordList);
   }
 
   // DM 4 Apr 2002 - return a grid with all cavity points set to 1.0
@@ -158,7 +160,6 @@ typedef std::vector<RbtCavityPtr> RbtCavityList; // Vector of smart pointers
 typedef RbtCavityList::iterator RbtCavityListIter;
 typedef RbtCavityList::const_iterator RbtCavityListConstIter;
 
-namespace Rbt {
 ////////////////////////////////////////////////////////
 // Comparison functions for sorting RbtCavityPtr containers
 // For use by STL sort algorithms
@@ -171,8 +172,8 @@ class RbtCavityPtrCmp_Distance {
 public:
   RbtCavityPtrCmp_Distance(const RbtCoord &cc) : c(cc) {}
   bool operator()(RbtCavityPtr spCav1, RbtCavityPtr spCav2) const {
-    return Rbt::Length2(spCav1->GetCenterOfMass() - c) <
-           Rbt::Length2(spCav2->GetCenterOfMass() - c);
+    return Length2(spCav1->GetCenterOfMass() - c) <
+           Length2(spCav2->GetCenterOfMass() - c);
   }
 };
 // Less than operator for sorting RbtCavityPtrs into descending order by volume
@@ -194,7 +195,7 @@ public:
   explicit isCavityNearCoord(const RbtCoord &cc, double rr)
       : c(cc), r2(rr * rr) {}
   bool operator()(RbtCavityPtr spCavity) const {
-    return Rbt::Length2(spCavity->GetCenterOfMass() - c) <= r2;
+    return Length2(spCavity->GetCenterOfMass() - c) <= r2;
   }
 };
 
@@ -208,6 +209,7 @@ inline const RbtCoord &ExtractCavityMinCoord(RbtCavityPtr spCav) {
 inline const RbtCoord &ExtractCavityMaxCoord(RbtCavityPtr spCav) {
   return spCav->GetMaxCoord();
 }
-} // namespace Rbt
+
+} // namespace rxdock
 
 #endif //_RBTCAVITY_H_

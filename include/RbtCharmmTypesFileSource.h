@@ -18,6 +18,8 @@
 
 #include "RbtBaseFileSource.h"
 
+namespace rxdock {
+
 // Simple struct for holding the type info in masses.rtf
 class CharmmType {
 public:
@@ -73,5 +75,7 @@ private:
 // useful typedefs
 typedef SmartPtr<RbtCharmmTypesFileSource>
     RbtCharmmTypesFileSourcePtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTCHARMMTYPESFILESOURCE_H_

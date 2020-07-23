@@ -12,6 +12,8 @@
 
 #include "RbtFilterExpression.h"
 
+using namespace rxdock;
+
 std::string RbtFilterExpression::_CT("FilterExpression");
 
 RbtFilterExpression::RbtFilterExpression() { _RBTOBJECTCOUNTER_CONSTR_(_CT); }

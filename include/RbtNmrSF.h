@@ -19,6 +19,8 @@
 #include "RbtBaseInterSF.h"
 #include "RbtNoeRestraint.h"
 
+namespace rxdock {
+
 class RbtNmrSF : public RbtBaseInterSF, public RbtBaseIdxSF {
 public:
   // Class type string
@@ -48,5 +50,7 @@ private:
   RbtNoeRestraintAtomsList m_noeList; // List of all NOE interactions
   RbtStdRestraintAtomsList m_stdList; // List of all STD interactions
 };
+
+} // namespace rxdock
 
 #endif //_RBTNMRSF_H_

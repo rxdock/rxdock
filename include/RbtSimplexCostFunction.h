@@ -21,6 +21,8 @@
 #include "RbtBaseSF.h"
 #include "RbtChromElement.h"
 
+namespace rxdock {
+
 // Rosenbrock cost function
 class RbtSimplexCostFunction {
 public:
@@ -42,5 +44,7 @@ private:
   RbtBaseSF *m_pSF;
   RbtChromElementPtr m_chrom;
 };
+
+} // namespace rxdock
 
 #endif // _RBTSIMPLEXCOSTFUNCTION_H

@@ -20,6 +20,10 @@
 #include "RbtGPChromosome.h"
 #include "RbtGPTypes.h"
 
+namespace rxdock {
+
+namespace geneticprogram {
+
 class RbtGPParser {
 public:
   static std::string _CT;
@@ -59,5 +63,9 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtGPParser> RbtGPParserPtr; // Smart pointer
+
+} // namespace geneticprogram
+
+} // namespace rxdock
 
 #endif //_RbtGPParser_H_

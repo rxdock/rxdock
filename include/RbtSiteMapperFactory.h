@@ -19,6 +19,8 @@
 #include "RbtParameterFileSource.h"
 #include "RbtSiteMapper.h"
 
+namespace rxdock {
+
 class RbtSiteMapperFactory {
   // Parameter name which identifies a site mapper definition
   static std::string _MAPPER;
@@ -74,5 +76,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtSiteMapperFactory> RbtSiteMapperFactoryPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTSITEMAPPERFACTORY_H_

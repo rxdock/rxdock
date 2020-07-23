@@ -11,15 +11,18 @@
 #include "RbtVariant.h"
 #include "RbtVdwIdxSF.h"
 
+using namespace rxdock;
+using namespace rxdock::unittest;
+
 double OccupancyTest::TINY = 1E-4;
 
 void OccupancyTest::SetUp() {
   try {
     // Create the docking site, receptor, and ligand objects
     const std::string &wsName = "1YET";
-    std::string prmFileName = Rbt::GetRbtFileName("", wsName + ".prm");
-    std::string ligFileName = Rbt::GetRbtFileName("", wsName + "_c.sd");
-    std::string asFileName = Rbt::GetRbtFileName("", wsName + ".as");
+    std::string prmFileName = GetRbtFileName("", wsName + ".prm");
+    std::string ligFileName = GetRbtFileName("", wsName + "_c.sd");
+    std::string asFileName = GetRbtFileName("", wsName + ".as");
     RbtParameterFileSourcePtr spPrmSource(
         new RbtParameterFileSource(prmFileName));
     RbtMolecularFileSourcePtr spMdlFileSource(

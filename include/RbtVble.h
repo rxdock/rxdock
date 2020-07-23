@@ -17,6 +17,8 @@
 
 #include "RbtGPTypes.h"
 
+namespace rxdock {
+
 class RbtVble {
 public:
   static std::string _CT;
@@ -72,5 +74,7 @@ typedef SmartPtr<RbtVble> RbtVblePtr;        // Smart pointer
 typedef std::vector<RbtVblePtr> RbtVbleList; // Vector of smart pointers
 typedef RbtVbleList::iterator RbtVbleListIter;
 typedef RbtVbleList::const_iterator RbtVbleListConstIter;
+
+} // namespace rxdock
 
 #endif //_RbtVble_H_

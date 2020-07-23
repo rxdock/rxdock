@@ -13,6 +13,8 @@
 #include "RbtChromOccupancyRefData.h"
 #include "RbtModel.h"
 
+using namespace rxdock;
+
 std::string RbtChromOccupancyRefData::_CT = "RbtChromOccupancyRefData";
 
 RbtChromOccupancyRefData::RbtChromOccupancyRefData(RbtModel *pModel,

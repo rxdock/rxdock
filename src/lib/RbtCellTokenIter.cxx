@@ -12,12 +12,14 @@
 
 #include "RbtCellTokenIter.h"
 
+using namespace rxdock;
+
 std::string RbtCellTokenIter::_CT("RbtCellTokenIter");
 
 ///////////////////
 // Constructors
 ///////////////////
-RbtCellTokenIter::RbtCellTokenIter(const RbtGPChromosomePtr c,
+RbtCellTokenIter::RbtCellTokenIter(const geneticprogram::RbtGPChromosomePtr c,
                                    RbtContextPtr contextp)
     : chrom(c) {
   int startCell = chrom->GetStartingCell();

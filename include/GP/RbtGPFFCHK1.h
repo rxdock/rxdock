@@ -23,6 +23,10 @@
 #include "RbtRand.h"
 // #include <cmath>
 
+namespace rxdock {
+
+namespace geneticprogram {
+
 class RbtGPFFCHK1 : public RbtGPFitnessFunction {
 public:
   static std::string _CT;
@@ -49,4 +53,9 @@ typedef SmartPtr<RbtGPFFCHK1> RbtGPFFCHK1Ptr;        // Smart pointer
 typedef std::vector<RbtGPFFCHK1Ptr> RbtGPFFCHK1List; // Vector of smart pointers
 typedef RbtGPFFCHK1List::iterator RbtGPFFCHK1ListIter;
 typedef RbtGPFFCHK1List::const_iterator RbtGPFFCHK1ListConstIter;
+
+} // namespace geneticprogram
+
+} // namespace rxdock
+
 #endif //_RbtGPFFCHK1

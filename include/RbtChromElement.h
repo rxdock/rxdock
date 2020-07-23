@@ -17,6 +17,8 @@
 #include "RbtConfig.h"
 #include "RbtRand.h"
 
+namespace rxdock {
+
 // Typedefs for crossover data.
 // To prevent splitting (for example) an orientation or position vector in two
 // during crossover, we convert the chromosome to a vector of vector of doubles
@@ -164,9 +166,14 @@ typedef std::vector<RbtChromElement *>
 typedef RbtChromElementList::iterator RbtChromElementListIter;
 typedef RbtChromElementList::const_iterator RbtChromElementListConstIter;
 
-namespace Rbt {
+bool operator==(const RbtChromElement &c1, const RbtChromElement &c2);
+bool operator!=(const RbtChromElement &c1, const RbtChromElement &c2);
+std::ostream &operator<<(std::ostream &s, const RbtChromElement &c);
+
 // 2-point crossover
 RBTDLL_EXPORT void Crossover(RbtChromElement *pChr1, RbtChromElement *pChr2,
                              RbtChromElement *pChr3, RbtChromElement *pChr4);
-} // namespace Rbt
+
+} // namespace rxdock
+
 #endif /*RBTCHROMELEMENT_H_*/

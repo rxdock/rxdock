@@ -13,6 +13,8 @@
 #include "RbtBaseUniMolTransform.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtBaseUniMolTransform::_CT("RbtBaseUniMolTransform");
 

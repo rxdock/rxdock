@@ -15,6 +15,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 // Static data member for class type
 std::string RbtSphereSiteMapper::_CT("RbtSphereSiteMapper");
 std::string RbtSphereSiteMapper::_VOL_INCR("VOL_INCR");
@@ -78,8 +80,8 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   double minSize = minVol / (step * step * step);
   RbtFFTGridPtr spReceptorGrid;
   // Only include non-H receptor atoms in the mapping
-  RbtAtomList atomList = Rbt::GetAtomList(spReceptor->GetAtomList(),
-                                          std::not1(Rbt::isAtomicNo_eq(1)));
+  RbtAtomList atomList = GetAtomListWithPredicate(spReceptor->GetAtomList(),
+                                                  std::not1(isAtomicNo_eq(1)));
   RbtVector gridStep(step, step, step);
 
   // We extend the grid by 2*largeR on each side to eliminate edge effects in
@@ -194,8 +196,7 @@ RbtCavityList RbtSphereSiteMapper::operator()() {
   }
 
   // Sort cavities by volume
-  std::sort(cavityList.begin(), cavityList.end(),
-            Rbt::RbtCavityPtrCmp_Volume());
+  std::sort(cavityList.begin(), cavityList.end(), RbtCavityPtrCmp_Volume());
 
   if (iTrace > 0) {
     for (RbtCavityListConstIter cIter = cavityList.begin();

@@ -16,7 +16,10 @@
 #include <cmath>
 #include <limits>
 
-namespace RbtNM {
+namespace rxdock {
+
+namespace neldermead {
+
 class IterationCriterion {
 private:
   int m_maxIterations;
@@ -72,6 +75,9 @@ AndCriteria<Criteria1, Criteria2>
 CreateAndCriteria(const Criteria1 &criteria1, const Criteria2 &criteria2) {
   return AndCriteria<Criteria1, Criteria2>(criteria1, criteria2);
 }
-} // namespace RbtNM
+
+} // namespace neldermead
+
+} // namespace rxdock
 
 #endif /* _RBTNMCRITERIA_H_ */

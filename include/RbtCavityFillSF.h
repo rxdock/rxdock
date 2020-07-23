@@ -19,6 +19,8 @@
 #include "RbtBaseInterSF.h"
 #include "RbtFFTGrid.h"
 
+namespace rxdock {
+
 class RbtCavityFillSF : public RbtBaseInterSF {
 public:
   // Class type string
@@ -38,5 +40,7 @@ private:
   RbtFFTGridPtr m_spGrid;
   RbtAtomList m_ligAtomList;
 };
+
+} // namespace rxdock
 
 #endif //_RBTCAVITYFILLSF_H_

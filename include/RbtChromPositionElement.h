@@ -18,6 +18,8 @@
 #include "RbtChromPositionRefData.h"
 #include "RbtRand.h"
 
+namespace rxdock {
+
 class RbtChromPositionElement : public RbtChromElement {
 public:
   // Class type string
@@ -69,5 +71,7 @@ private:
   RbtCoord m_com;                         // Centre of mass genotype value
   RbtEuler m_orientation; // Euler angle orientation genotype value
 };
+
+} // namespace rxdock
 
 #endif /*RBTCHROMPOSITIONELEMENT_H_*/

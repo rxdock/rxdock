@@ -14,6 +14,8 @@
 #include "RbtDockingSite.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtCavityFillSF::_CT("RbtCavityFillSF");
 
@@ -163,8 +165,7 @@ double RbtCavityFillSF::RawScore() const {
   }
 
   // Sort cavities by volume
-  std::sort(cavityList.begin(), cavityList.end(),
-            Rbt::RbtCavityPtrCmp_Volume());
+  std::sort(cavityList.begin(), cavityList.end(), RbtCavityPtrCmp_Volume());
 
   if (iTrace > 0) {
     for (RbtCavityListConstIter cIter = cavityList.begin();

@@ -8,12 +8,15 @@
 #include "dt_smarts.h"
 #include "dt_smiles.h"
 
+using namespace rxdock;
+using namespace rxdock::daylight;
+
 void print_atoms_in_path(dt_Handle path);
 
-RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
-                               std::string &strSmiles) {
-  Rbt::isAtomicNo_eq isO(8);
-  Rbt::isAtomicNo_eq isH(1);
+RbtAtomListList QueryModel(RbtModelPtr spModel, const std::string &strSmart,
+                           std::string &strSmiles) {
+  isAtomicNo_eq isO(8);
+  isAtomicNo_eq isH(1);
   RbtAtomList atomList = spModel->GetAtomList();
   RbtBondList bondList = spModel->GetBondList();
   RbtIntIntMap r2d; // track rDock to Daylight numbering
@@ -73,12 +76,12 @@ RbtAtomListList DT::QueryModel(RbtModelPtr spModel, const std::string &strSmart,
     }
     // Try and find the bonded atoms in the rDock atom list (comparison is on
     // RbtAtom* pointers)
-    RbtAtomListConstIter iter1 = std::find_if(
-        atomList.begin(), atomList.end(),
-        std::bind(Rbt::isAtomPtr_eq(), std::placeholders::_1, at1));
-    RbtAtomListConstIter iter2 = std::find_if(
-        atomList.begin(), atomList.end(),
-        std::bind(Rbt::isAtomPtr_eq(), std::placeholders::_1, at2));
+    RbtAtomListConstIter iter1 =
+        std::find_if(atomList.begin(), atomList.end(),
+                     std::bind(isAtomPtr_eq(), std::placeholders::_1, at1));
+    RbtAtomListConstIter iter2 =
+        std::find_if(atomList.begin(), atomList.end(),
+                     std::bind(isAtomPtr_eq(), std::placeholders::_1, at2));
     Assert<RbtAssert>((iter1 != atomList.end()) && (iter2 != atomList.end()));
     // rDock numbering
     int rID1 = iter1 - atomList.begin();

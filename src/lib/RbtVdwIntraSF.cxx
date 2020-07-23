@@ -13,6 +13,8 @@
 #include "RbtVdwIntraSF.h"
 #include "RbtSFRequest.h"
 
+using namespace rxdock;
+
 // Static data members
 std::string RbtVdwIntraSF::_CT("RbtVdwIntraSF");
 

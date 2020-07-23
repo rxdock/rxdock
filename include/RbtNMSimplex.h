@@ -21,7 +21,10 @@
 
 #include "RbtNMState.h"
 
-namespace RbtNM {
+namespace rxdock {
+
+namespace neldermead {
+
 /**
  * The Nelder-Mead Simplex algorithm
  * Complies to a simple and standard interface
@@ -263,6 +266,9 @@ CreateSimplex(Function &fun, const Criterion &criterion) // const
   return Simplex<typename Function::DataType, typename Function::ParameterType,
                  Function, Criterion>(criterion);
 }
-} // namespace RbtNM
+
+} // namespace neldermead
+
+} // namespace rxdock
 
 #endif // _DEBUG /* _RBTNMSIMPLEX_H_ */

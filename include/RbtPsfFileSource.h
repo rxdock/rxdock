@@ -20,13 +20,15 @@
 #include "RbtElementFileSource.h"
 #include "RbtParameterFileSource.h"
 
+namespace rxdock {
+
 class RbtPsfFileSource : public RbtBaseMolecularFileSource {
 public:
   // Constructors
-  RbtPsfFileSource(const std::string &fileName,
-                   const std::string &strMassesFile =
-                       Rbt::GetRbtFileName("data", "masses.rtf"),
-                   bool bImplHydrogens = true);
+  RbtPsfFileSource(
+      const std::string &fileName,
+      const std::string &strMassesFile = GetRbtFileName("data", "masses.rtf"),
+      bool bImplHydrogens = true);
 
   // Default destructor
   virtual ~RbtPsfFileSource();
@@ -80,5 +82,7 @@ private:
 
 // useful typedefs
 typedef SmartPtr<RbtPsfFileSource> RbtPsfFileSourcePtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTPSFFILESOURCE_H_

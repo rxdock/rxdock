@@ -22,6 +22,8 @@
 #include "RbtReceptorFlexData.h"
 #include "RbtSolventFlexData.h"
 
+using namespace rxdock;
+
 const std::string &RbtPRMFactory::_CT = "RbtPRMFactory";
 const std::string &RbtPRMFactory::_REC_SECTION = "";
 const std::string &RbtPRMFactory::_REC_FILE = "RECEPTOR_FILE";
@@ -243,16 +245,19 @@ RbtModelList RbtPRMFactory::CreateSolvent() {
     }
     // Find all the water molecules within the file source and convert each to a
     // separate RbtModel
-    Rbt::isAtomName_eq bIsO("OW");
-    Rbt::isAtomName_eq bIsH1("H1");
-    Rbt::isAtomName_eq bIsH2("H2");
-    Rbt::isCoordinationNumber_eq bIsIsolated(0);
+    isAtomName_eq bIsO("OW");
+    isAtomName_eq bIsH1("H1");
+    isAtomName_eq bIsH2("H2");
+    isCoordinationNumber_eq bIsIsolated(0);
     RbtTriposAtomType triposType; // Tripos atom typer
     int nAtomId(0);               // incremental counter of all atoms created
     int nBondId(0);               // incremental counter of all bonds created
-    RbtAtomList oAtomList = Rbt::GetAtomList(theSource->GetAtomList(), bIsO);
-    RbtAtomList h1AtomList = Rbt::GetAtomList(theSource->GetAtomList(), bIsH1);
-    RbtAtomList h2AtomList = Rbt::GetAtomList(theSource->GetAtomList(), bIsH2);
+    RbtAtomList oAtomList =
+        GetAtomListWithPredicate(theSource->GetAtomList(), bIsO);
+    RbtAtomList h1AtomList =
+        GetAtomListWithPredicate(theSource->GetAtomList(), bIsH1);
+    RbtAtomList h2AtomList =
+        GetAtomListWithPredicate(theSource->GetAtomList(), bIsH2);
     for (RbtAtomListConstIter iter = oAtomList.begin(); iter != oAtomList.end();
          ++iter) {
       RbtAtomPtr oAtom = (*iter);
@@ -261,11 +266,11 @@ RbtModelList RbtPRMFactory::CreateSolvent() {
       // Need to find its matching hydrogens in the file and create the bonds
       if (bIsIsolated(oAtom)) {
         // std::cout << "...is isolated" << std::endl;
-        Rbt::isSubunitId_eq bInSameSubunit(oAtom->GetSubunitId());
+        isSubunitId_eq bInSameSubunit(oAtom->GetSubunitId());
         RbtAtomList matchingH1AtomList =
-            Rbt::GetAtomList(h1AtomList, bInSameSubunit);
+            GetAtomListWithPredicate(h1AtomList, bInSameSubunit);
         RbtAtomList matchingH2AtomList =
-            Rbt::GetAtomList(h2AtomList, bInSameSubunit);
+            GetAtomListWithPredicate(h2AtomList, bInSameSubunit);
         // std::cout << "..." << matchingH1AtomList.size() << " matching H1" <<
         // std::endl; std::cout << "..." << matchingH2AtomList.size() << "
         // matching H2" << std::endl; Found a water!
@@ -431,12 +436,12 @@ void RbtPRMFactory::AttachSolventFlexData(RbtModel *pSolvent) {
 RbtMolecularFileSourcePtr
 RbtPRMFactory::CreateMolFileSource(const std::string &fileName) {
   RbtMolecularFileSourcePtr retVal;
-  std::string fileType = Rbt::GetFileType(fileName);
+  std::string fileType = GetFileType(fileName);
   std::string fileTypeUpper;
   // std::toupper will not work https://stackoverflow.com/a/7131881
   std::transform(fileType.begin(), fileType.end(),
                  std::back_inserter(fileTypeUpper), ::toupper);
-  std::string fullFileName = Rbt::GetRbtFileName("", fileName);
+  std::string fullFileName = GetRbtFileName("", fileName);
 
   if (m_iTrace > 0) {
     std::cout << _CT << ": File name requested = " << fileName
@@ -456,7 +461,7 @@ RbtPRMFactory::CreateMolFileSource(const std::string &fileName) {
   } else if (fileTypeUpper == "PSF") {
     std::string strMassesFile =
         m_pParamSource->GetParameterValueAsString("RECEPTOR_MASSES_FILE");
-    strMassesFile = Rbt::GetRbtFileName("data", strMassesFile);
+    strMassesFile = GetRbtFileName("data", strMassesFile);
     if (m_iTrace > 0) {
       std::cout << _CT << ": Using file " << strMassesFile
                 << " to lookup Charmm atom type info" << std::endl;
@@ -478,7 +483,7 @@ RbtPRMFactory::CreateMolFileSource(const std::string &fileName) {
   if (m_pParamSource->isParameterPresent("RECEPTOR_SEGMENT_NAME")) {
     std::string strSegmentName =
         m_pParamSource->GetParameterValueAsString("RECEPTOR_SEGMENT_NAME");
-    RbtSegmentMap segmentMap = Rbt::ConvertStringToSegmentMap(strSegmentName);
+    RbtSegmentMap segmentMap = ConvertStringToSegmentMap(strSegmentName);
     retVal->SetSegmentFilterMap(segmentMap);
     if (m_iTrace > 0) {
       std::cout << _CT << ": Setting segment/chain filter to " << strSegmentName

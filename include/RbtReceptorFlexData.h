@@ -16,6 +16,8 @@
 
 #include "RbtFlexData.h"
 
+namespace rxdock {
+
 class RbtReceptorFlexData : public RbtFlexData {
 public:
   // Distance from docking site within which OH/NH3+ groups are flexible (A)
@@ -28,4 +30,7 @@ public:
 private:
   RbtReceptorFlexData();
 };
+
+} // namespace rxdock
+
 #endif //_RBTRECEPTORFLEXDATA_

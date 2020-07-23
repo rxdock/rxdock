@@ -20,6 +20,10 @@
 #include "RbtRand.h"
 // #include <cmath>
 
+namespace rxdock {
+
+namespace geneticprogram {
+
 class RbtGPGenome {
 public:
   static std::string _CT;
@@ -71,5 +75,11 @@ typedef SmartPtr<RbtGPGenome> RbtGPGenomePtr;        // Smart pointer
 typedef std::vector<RbtGPGenomePtr> RbtGPGenomeList; // Vector of smart pointers
 typedef RbtGPGenomeList::iterator RbtGPGenomeListIter;
 typedef RbtGPGenomeList::const_iterator RbtGPGenomeListConstIter;
+
+std::ostream &operator<<(std::ostream &s, const RbtGPGenome &p);
+
+} // namespace geneticprogram
+
+} // namespace rxdock
 
 #endif //_RbtGPGenome_H_

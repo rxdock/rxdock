@@ -19,6 +19,8 @@
 
 #include "RbtError.h"
 
+namespace rxdock {
+
 const std::string IDS_LIGAND_ERROR = "RBT_LIGAND_ERROR";
 
 // Unspecified ligand error
@@ -34,5 +36,7 @@ protected:
                  int nLine, const std::string &strMessage = "")
       : RbtError(strName, strFile, nLine, strMessage) {}
 };
+
+} // namespace rxdock
 
 #endif //_RBTLIGANDERROR_H_

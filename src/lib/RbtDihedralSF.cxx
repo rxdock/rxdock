@@ -14,6 +14,8 @@
 
 #include <functional>
 
+using namespace rxdock;
+
 RbtDihedral::RbtDihedral(RbtAtom *pAtom1, RbtAtom *pAtom2, RbtAtom *pAtom3,
                          RbtAtom *pAtom4, const prms &dihprms)
     : m_pAtom1(pAtom1), m_pAtom2(pAtom2), m_pAtom3(pAtom3), m_pAtom4(pAtom4) {
@@ -26,7 +28,7 @@ double RbtDihedral::operator()() const {
   // std::cout.precision(3);
   // std::cout.setf(std::ios_base::fixed,ios_base::floatfield);
   // std::cout.setf(std::ios_base::right,ios_base::adjustfield);
-  double dih = Rbt::BondDihedral(m_pAtom1, m_pAtom2, m_pAtom3, m_pAtom4);
+  double dih = BondDihedral(m_pAtom1, m_pAtom2, m_pAtom3, m_pAtom4);
   double score(0.0);
   for (unsigned int i = 0; i != m_prms.size(); ++i) {
     // Subtract the implicit hydrogen offset from the actual dihedral angle
@@ -55,7 +57,7 @@ RbtDihedralSF::RbtDihedralSF() {
   // Add parameters
   AddParameter(_IMPL_H_CORR, false);
   m_spDihedralSource = RbtParameterFileSourcePtr(new RbtParameterFileSource(
-      Rbt::GetRbtFileName("data/sf", "Tripos52_dihedrals.prm")));
+      GetRbtFileName("data/sf", "Tripos52_dihedrals.prm")));
   m_centralPairs = m_spDihedralSource->GetSectionList();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -254,8 +256,7 @@ RbtDihedral::prms RbtDihedralSF::FindDihedralParams(
     }
   }
 
-  std::vector<std::string> paramList =
-      Rbt::ConvertDelimitedStringToList(strParams);
+  std::vector<std::string> paramList = ConvertDelimitedStringToList(strParams);
   // Add checks on #params
   double k = std::atof(paramList[0].c_str());
   double s = std::atof(paramList[1].c_str());
@@ -273,9 +274,9 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
                                     RbtAtomList &bondedAtoms,
                                     std::vector<double> &offsets) {
   offsets.clear();
-  bondedAtoms = Rbt::GetAtomList(
-      Rbt::GetBondedAtomList(pAtom1),
-      std::bind(std::not2(Rbt::isAtomPtr_eq()), std::placeholders::_1, pAtom2));
+  bondedAtoms = GetAtomListWithPredicate(
+      GetBondedAtomList(pAtom1),
+      std::bind(std::not2(isAtomPtr_eq()), std::placeholders::_1, pAtom2));
   if (bondedAtoms.empty())
     return;
   int nH = pAtom1->GetNumImplicitHydrogens();
@@ -292,7 +293,7 @@ void RbtDihedralSF::CalcBondedAtoms(RbtAtom *pAtom1, RbtAtom *pAtom2,
     // dihedral already present
     if ((nH == 1) && (bondedAtoms.size() == 2)) {
       double improper =
-          Rbt::BondDihedral(bondedAtoms[0], pAtom1, pAtom2, bondedAtoms[1]);
+          BondDihedral(bondedAtoms[0], pAtom1, pAtom2, bondedAtoms[1]);
       double offset = -improper;
       if (GetTrace() > 2) {
         std::cout << _CT << ": offset for SP3 atom " << pAtom1->GetName()

@@ -18,6 +18,8 @@
 #include "RbtFlexDataVisitor.h"
 #include "RbtRealGrid.h"
 
+namespace rxdock {
+
 class RbtCavityGridSF : public RbtBaseInterSF {
 public:
   // RbtFlexDataVisitor class to generate list of movable non-hydrogen atoms
@@ -62,5 +64,7 @@ private:
   double m_rMax;
   bool m_bQuadratic; // synchronised with QUADRATIC named parameter
 };
+
+} // namespace rxdock
 
 #endif //_RBTCAVITYGRIDSF_H_

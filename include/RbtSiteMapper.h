@@ -25,6 +25,8 @@
 #include "RbtConfig.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
 class RbtSiteMapper : public RbtBaseObject {
 public:
   // Class type string
@@ -75,5 +77,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtSiteMapper> RbtSiteMapperPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTSITEMAPPER_H_

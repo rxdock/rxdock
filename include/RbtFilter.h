@@ -21,6 +21,8 @@
 #include "RbtContext.h"
 #include "RbtFilterExpression.h"
 
+namespace rxdock {
+
 class RbtFilterExpressionVisitor;
 
 class RbtFilter : public RbtBaseObject {
@@ -68,5 +70,7 @@ typedef std::vector<RbtFilterPtr> RbtFilterList;
 // Vector of smart pointers
 typedef RbtFilterList::iterator RbtFilterListIter;
 typedef RbtFilterList::const_iterator RbtFilterListConstIter;
+
+} // namespace rxdock
 
 #endif //_RbtFilter_H_

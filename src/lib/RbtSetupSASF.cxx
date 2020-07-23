@@ -12,6 +12,8 @@
 
 #include "RbtSetupSASF.h"
 
+using namespace rxdock;
+
 std::string RbtSetupSASF::_CT("RbtSetupSASF");
 
 RbtSetupSASF::RbtSetupSASF(const std::string &strName)
@@ -36,7 +38,7 @@ void RbtSetupSASF::SetupReceptor() {
 #endif //_DEBUG
        // get receptor atoms
        // theReceptorList =
-       // Rbt::GetAtomList(GetReceptor()->GetAtomList(),std::not1(Rbt::isAtomicNo_eq(1)));
+       // GetAtomListWithPredicate(GetReceptor()->GetAtomList(),std::not1(isAtomicNo_eq(1)));
   theReceptorList = GetReceptor()->GetAtomList();
 #ifdef _DEBUG
   std::cout << _CT << "::SetupReceptor(): #ATOMS = " << theReceptorList.size()

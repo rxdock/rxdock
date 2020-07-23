@@ -18,6 +18,8 @@
 #include "RbtBaseMolecularFileSource.h"
 #include "RbtElementFileSource.h"
 
+namespace rxdock {
+
 const std::string IDS_MDL_RECDELIM = "$$$$";
 
 class RbtMdlFileSource : public RbtBaseMolecularFileSource {
@@ -113,5 +115,7 @@ private:
 
 // useful typedefs
 typedef SmartPtr<RbtMdlFileSource> RbtMdlFileSourcePtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTMDLFILESOURCE_H_

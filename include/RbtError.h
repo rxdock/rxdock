@@ -33,6 +33,8 @@
 // and line number respectively
 #define _WHERE_ __FILE__, __LINE__
 
+namespace rxdock {
+
 // General errors
 const std::string IDS_ERROR = "RBT_ERROR";
 const std::string IDS_OK = "RBT_OK";
@@ -147,5 +149,7 @@ public:
                      const std::string &strMessage = "")
       : RbtError(IDS_BAD_RECEPTOR_FILE, strFile, nLine, strMessage) {}
 };
+
+} // namespace rxdock
 
 #endif //_RBTERROR_H_

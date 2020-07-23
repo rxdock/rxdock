@@ -15,6 +15,8 @@
 #include "RbtPopulation.h"
 #include "RbtWorkSpace.h"
 
+using namespace rxdock;
+
 std::string RbtRandPopTransform::_CT("RbtRandPopTransform");
 std::string RbtRandPopTransform::_POP_SIZE("POP_SIZE");
 std::string RbtRandPopTransform::_SCALE_CHROM_LENGTH("SCALE_CHROM_LENGTH");

@@ -18,6 +18,8 @@
 #include "RbtAtom.h"
 #include "RbtBaseGrid.h"
 
+namespace rxdock {
+
 // A map of atom vectors indexed by unsigned int
 // Used to store the receptor atom lists at each grid point
 // DM 11 Jul 2000 - use map of regular RbtAtom* list (not RbtAtomPtr smart
@@ -122,5 +124,7 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<RbtNonBondedGrid> RbtNonBondedGridPtr; // Smart pointer
+
+} // namespace rxdock
 
 #endif //_RBTNONBONDEDGRID_H_

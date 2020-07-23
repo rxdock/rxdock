@@ -16,6 +16,8 @@
 #include "RbtBaseInterSF.h"
 #include "RbtRealGrid.h"
 
+namespace rxdock {
+
 class RbtPMFGridSF : public RbtBaseInterSF {
   bool m_bSmoothed;
   RbtAtomList theLigandList;            // vector to store the ligand
@@ -39,5 +41,7 @@ protected:
   virtual double RawScore() const;
   unsigned int GetCorrectedType(RbtPMFType aType) const;
 };
+
+} // namespace rxdock
 
 #endif // _RBTPMFGRIDSF_H_

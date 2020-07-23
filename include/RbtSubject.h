@@ -30,6 +30,8 @@
 #include "RbtConfig.h"
 #include "RbtObserver.h"
 
+namespace rxdock {
+
 class RbtSubject {
 public:
   ////////////////////////////////////////
@@ -65,5 +67,7 @@ private:
   //////////////
   RbtObserverList m_observers;
 };
+
+} // namespace rxdock
 
 #endif //_RBTSUBJECT_H_

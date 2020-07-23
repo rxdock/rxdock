@@ -18,6 +18,8 @@
 #include "RbtBaseSF.h"
 #include "RbtModel.h"
 
+namespace rxdock {
+
 class RbtBaseInterSF : public virtual RbtBaseSF {
 public:
   // Class type string
@@ -70,5 +72,7 @@ private:
   RbtModelPtr m_spLigand;
   RbtModelList m_solventList;
 };
+
+} // namespace rxdock
 
 #endif //_RBTBASEINTERSF_H_

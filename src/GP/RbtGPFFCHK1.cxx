@@ -23,6 +23,9 @@
 #include <fstream>
 #include <sstream>
 
+using namespace rxdock;
+using namespace rxdock::geneticprogram;
+
 std::string RbtGPFFCHK1::_CT("RbtGPFFCHK1");
 
 void RbtGPFFCHK1::ReadTables(std::istream &in, RbtReturnTypeArray &it,

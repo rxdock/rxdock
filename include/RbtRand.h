@@ -27,6 +27,8 @@
 
 #include "RbtCoord.h"
 
+namespace rxdock {
+
 class RbtRand {
   /////////////
   // Constructor
@@ -63,10 +65,11 @@ private:
 };
 
 ///////////////////////////////////////
-// Non-member functions in Rbt namespace
+// Non-member functions in rxdock namespace
 
-namespace Rbt {
 // Returns reference to single instance of RbtRand class (singleton)
 RBTDLL_EXPORT RbtRand &GetRbtRand();
-} // namespace Rbt
+
+} // namespace rxdock
+
 #endif //_RBTRAND_H_

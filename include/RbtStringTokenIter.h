@@ -23,6 +23,8 @@
 #include <fstream>
 #include <stack>
 
+namespace rxdock {
+
 typedef SmartPtr<std::istream> istreamPtr;
 class RbtStringTokenIter : public RbtTokenIter {
 public:
@@ -69,5 +71,7 @@ typedef std::vector<RbtStringTokenIterPtr>
     RbtStringTokenIterList; // Vector of smart pointers
 typedef RbtStringTokenIterList::iterator RbtStringTokenIterListIter;
 typedef RbtStringTokenIterList::const_iterator RbtStringTokenIterListConstIter;
+
+} // namespace rxdock
 
 #endif //_RbtStringTokenIter_H_

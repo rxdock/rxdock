@@ -19,6 +19,8 @@
 #include "RbtModelError.h"
 #include "RbtPlane.h"
 
+using namespace rxdock;
+
 RbtMdlFileSource::RbtMdlFileSource(const std::string &fileName,
                                    bool bPosIonisable, bool bNegIonisable,
                                    bool bImplHydrogens)
@@ -29,7 +31,7 @@ RbtMdlFileSource::RbtMdlFileSource(const std::string &fileName,
       m_bImplHydrogens(bImplHydrogens) {
   // Open an Element data source
   m_spElementData = RbtElementFileSourcePtr(
-      new RbtElementFileSource(Rbt::GetRbtFileName("data", "RbtElements.dat")));
+      new RbtElementFileSource(GetRbtFileName("data", "RbtElements.dat")));
   _RBTOBJECTCOUNTER_CONSTR_("RbtMdlFileSource");
 }
 
@@ -274,10 +276,10 @@ void RbtMdlFileSource::SetupAtomParams() {
   if (m_bNegIonisable)
     SetupNegIonisableGroups();
   SetupIonicGroups();
-  Rbt::RemoveZwitterions(m_atomList); // DM 6 Apr 1999 - might as well
-                                      // neutralise any zwitterions here
-  RenumberAtomsAndBonds(); // DM 30 Oct 2000 - clean up atom and bond list
-                           // numbering
+  RemoveZwitterions(m_atomList); // DM 6 Apr 1999 - might as well
+                                 // neutralise any zwitterions here
+  RenumberAtomsAndBonds();       // DM 30 Oct 2000 - clean up atom and bond list
+                                 // numbering
 }
 
 // Helper functions for SetupAtomParams()
@@ -329,9 +331,9 @@ void RbtMdlFileSource::SetupHybridState() {
   //
   // Get a list of all the sp3 atoms which are not positively charged
   RbtAtomList sp3AtomList =
-      Rbt::GetAtomList(m_atomList, Rbt::isHybridState_eq(RbtAtom::SP3));
+      GetAtomListWithPredicate(m_atomList, isHybridState_eq(RbtAtom::SP3));
   sp3AtomList =
-      Rbt::GetAtomList(sp3AtomList, std::not1(Rbt::isAtomPosCharged()));
+      GetAtomListWithPredicate(sp3AtomList, std::not1(isAtomPosCharged()));
 
   for (RbtAtomListIter iter = sp3AtomList.begin(); iter != sp3AtomList.end();
        iter++) {
@@ -340,10 +342,9 @@ void RbtMdlFileSource::SetupHybridState() {
     case 7:  // N
     case 8:  // O
     case 16: // S
-      bondedAtomList = Rbt::GetBondedAtomList(*iter);
+      bondedAtomList = GetBondedAtomList(*iter);
       // Is is bonded to a pi-atom ?
-      if (Rbt::FindAtomInList(bondedAtomList, Rbt::isPiAtom()) !=
-          bondedAtomList.end()) {
+      if (FindAtomInList(bondedAtomList, isPiAtom()) != bondedAtomList.end()) {
         // Determine distance from atom to plane of bonded atoms (only nitrogen
         // will have 3 substituents)
         if (bondedAtomList.size() == 3) {
@@ -359,7 +360,7 @@ void RbtMdlFileSource::SetupHybridState() {
           RbtPlane p = RbtPlane(c0 + v1.Unit(), c0 + v2.Unit(),
                                 c0 + v3.Unit()); // Plane of three substs
           // This is the signed distance from the atom to the plane
-          double dist = std::fabs(Rbt::DistanceFromPointToPlane(c0, p));
+          double dist = std::fabs(DistanceFromPointToPlane(c0, p));
 #ifdef _DEBUG
           std::cout << "Distance from " << (*iter)->GetName()
                     << " to plane of substituents=" << dist << std::endl;
@@ -392,11 +393,11 @@ void RbtMdlFileSource::SetupTheRest() {
   // Radius increment for atoms with implicit hydrogens
   // DM 22 Jul 1999 - only increase the radius for sp3 atoms with implicit
   // hydrogens For sp2 and aromatic, leave as is
-  Rbt::isHybridState_eq bIsSP3(RbtAtom::SP3);
+  isHybridState_eq bIsSP3(RbtAtom::SP3);
   double dImplRadIncr = m_spElementData->GetImplicitRadiusIncr();
   // Radius increment and predicate for H-bonding hydrogens
   double dHBondRadIncr = m_spElementData->GetHBondRadiusIncr();
-  Rbt::isAtomHBondDonor bIsHBondDonor;
+  isAtomHBondDonor bIsHBondDonor;
   // Element data for hydrogen
   RbtElementData elHData = m_spElementData->GetElementData(1);
 
@@ -462,8 +463,8 @@ void RbtMdlFileSource::SetupTheRest() {
     // Now set a nominal "force-field" type of the style OSP3- etc
     std::string strFFType = elData.element;
     strFFType += "_";
-    strFFType += Rbt::ConvertHybridStateToString((*iter)->GetHybridState());
-    strFFType += Rbt::ConvertFormalChargeToString((*iter)->GetFormalCharge());
+    strFFType += ConvertHybridStateToString((*iter)->GetHybridState());
+    strFFType += ConvertFormalChargeToString((*iter)->GetFormalCharge());
     (*iter)->SetFFType(strFFType);
   }
 }
@@ -471,10 +472,10 @@ void RbtMdlFileSource::SetupTheRest() {
 // Protonates all amines, guanidines and imidazoles
 void RbtMdlFileSource::SetupPosIonisableGroups() {
   // Useful predicates
-  Rbt::isFFType_eq bIsN_SP3("N_SP3");
-  Rbt::isFFType_eq bIsN_SP2("N_SP2");
-  Rbt::isFFType_eq bIsN_TRI("N_TRI");
-  Rbt::isFFType_eq bIsC_SP2("C_SP2");
+  isFFType_eq bIsN_SP3("N_SP3");
+  isFFType_eq bIsN_SP2("N_SP2");
+  isFFType_eq bIsN_TRI("N_TRI");
+  isFFType_eq bIsC_SP2("C_SP2");
 
   // 1. Amines
   // Protonate all Nsp3 atoms
@@ -483,19 +484,18 @@ void RbtMdlFileSource::SetupPosIonisableGroups() {
   // non-planar so are still N_SP3. However we don't want to protonate these
   // guys as the pKa for e.g. Ph-NH3+ is much lower than for R(aliphatic)-NH3+.
   // This will also prevent e.g. SO2NHR getting protonated.
-  RbtAtomList nsp3AtomList = Rbt::GetAtomList(m_atomList, bIsN_SP3);
+  RbtAtomList nsp3AtomList = GetAtomListWithPredicate(m_atomList, bIsN_SP3);
   // DM 04 Aug 1999 - only consider Nsp3 atoms which are bonded to at least one
   // Csp3 to avoid protonating hydrazines for e.g. This is the definition of an
   // amine in any case
-  nsp3AtomList = Rbt::GetAtomList(
-      nsp3AtomList, std::not1(Rbt::isCoordinationNumber_eq(0, "C_SP3")));
+  nsp3AtomList = GetAtomListWithPredicate(
+      nsp3AtomList, std::not1(isCoordinationNumber_eq(0, "C_SP3")));
 
   for (RbtAtomListIter iter = nsp3AtomList.begin(); iter != nsp3AtomList.end();
        iter++) {
-    RbtAtomList bondedAtomList = Rbt::GetBondedAtomList(*iter);
+    RbtAtomList bondedAtomList = GetBondedAtomList(*iter);
     // Only protonate if not bonded to pi-atom ?
-    if (Rbt::FindAtomInList(bondedAtomList, Rbt::isPiAtom()) ==
-        bondedAtomList.end()) {
+    if (FindAtomInList(bondedAtomList, isPiAtom()) == bondedAtomList.end()) {
       //#ifdef _DEBUG
       std::cout << "Protonating neutral amine " << (*iter)->GetName()
                 << std::endl;
@@ -531,10 +531,10 @@ void RbtMdlFileSource::SetupPosIonisableGroups() {
   //
 
   // Loop over all C_SP2
-  RbtAtomList csp2AtomList = Rbt::GetAtomList(m_atomList, bIsC_SP2);
+  RbtAtomList csp2AtomList = GetAtomListWithPredicate(m_atomList, bIsC_SP2);
   for (RbtAtomListIter iter = csp2AtomList.begin(); iter != csp2AtomList.end();
        iter++) {
-    RbtAtomList bondedAtomList = Rbt::GetBondedAtomList(*iter);
+    RbtAtomList bondedAtomList = GetBondedAtomList(*iter);
 
     RbtAtomListIter nsp2Iter;
     RbtAtomListIter ntriIter;
@@ -544,15 +544,15 @@ void RbtMdlFileSource::SetupPosIonisableGroups() {
     //////////////////
     // switch on #N_SP2
     //////////////////
-    switch (Rbt::GetNumAtoms(bondedAtomList, bIsN_SP2)) {
+    switch (GetNumAtomsWithPredicate(bondedAtomList, bIsN_SP2)) {
 
     case 1: // 1 x N_SP2
-      nsp2Iter = Rbt::FindAtomInList(bondedAtomList, bIsN_SP2);
+      nsp2Iter = FindAtomInList(bondedAtomList, bIsN_SP2);
 
       //////////////////
       // switch on #N_TRI
       //////////////////
-      switch (Rbt::GetNumAtoms(bondedAtomList, bIsN_TRI)) {
+      switch (GetNumAtomsWithPredicate(bondedAtomList, bIsN_TRI)) {
 
       //////////////////////////////////
       // 1 x N_SP2, 2 x N_TRI = guanidine
@@ -578,9 +578,9 @@ void RbtMdlFileSource::SetupPosIonisableGroups() {
       // membered ring
       //////////////////////////////////
       case 1:
-        ntriIter = Rbt::FindAtomInList(bondedAtomList, bIsN_TRI);
-        nsp2BondedAtomList = Rbt::GetBondedAtomList(*nsp2Iter);
-        ntriBondedAtomList = Rbt::GetBondedAtomList(*ntriIter);
+        ntriIter = FindAtomInList(bondedAtomList, bIsN_TRI);
+        nsp2BondedAtomList = GetBondedAtomList(*nsp2Iter);
+        ntriBondedAtomList = GetBondedAtomList(*ntriIter);
 #ifdef _DEBUG
         std::cout
             << "Possible imidazole/amidine, found 1xN_SP2, 1xN_TRI bonded to "
@@ -588,9 +588,9 @@ void RbtMdlFileSource::SetupPosIonisableGroups() {
 #endif //_DEBUG
        // IMIDAZOLE - Check that the N_SP2 is bonded to 2 x C_SP2 and that
        // the N_TRI is bonded to 2 x C_SP2 and 1 hydrogen
-        if ((Rbt::GetNumAtoms(nsp2BondedAtomList, bIsC_SP2) == 2) &&
-            (Rbt::GetNumAtoms(ntriBondedAtomList, bIsC_SP2) == 2) &&
-            (Rbt::GetNumAtoms(ntriBondedAtomList, Rbt::isAtomicNo_eq(1)) ==
+        if ((GetNumAtomsWithPredicate(nsp2BondedAtomList, bIsC_SP2) == 2) &&
+            (GetNumAtomsWithPredicate(ntriBondedAtomList, bIsC_SP2) == 2) &&
+            (GetNumAtomsWithPredicate(ntriBondedAtomList, isAtomicNo_eq(1)) ==
              1)) {
 #ifdef _DEBUG
           std::cout << "Possible imidazole, bonding requirements for N_SP2 and "
@@ -605,8 +605,8 @@ void RbtMdlFileSource::SetupPosIonisableGroups() {
           RbtAtomList atoms12Conn;
           for (RbtAtomListConstIter iter2 = ntriBondedAtomList.begin();
                iter2 != ntriBondedAtomList.end(); iter2++) {
-            RbtAtomList tmpList = Rbt::GetAtomList(
-                nsp2BondedAtomList, Rbt::isAtom_12Connected(*iter2));
+            RbtAtomList tmpList = GetAtomListWithPredicate(
+                nsp2BondedAtomList, isAtom_12Connected(*iter2));
             std::copy(tmpList.begin(), tmpList.end(),
                       std::back_inserter(atoms12Conn));
           }
@@ -615,8 +615,8 @@ void RbtMdlFileSource::SetupPosIonisableGroups() {
             std::cout << "5-membered imidazole ring found" << std::endl;
 #endif //_DEBUG
        // Remove bridgehead atoms (fused rings)
-            atoms12Conn = Rbt::GetAtomList(atoms12Conn,
-                                           std::not1(Rbt::isAtomBridgehead()));
+            atoms12Conn = GetAtomListWithPredicate(
+                atoms12Conn, std::not1(isAtomBridgehead()));
             if (atoms12Conn.size() == 1) { // Imidazole!!
               std::cout << "Protonating neutral imidazole "
                         << (*nsp2Iter)->GetName() << std::endl;
@@ -637,10 +637,10 @@ void RbtMdlFileSource::SetupPosIonisableGroups() {
         }
         // AMIDINE Check that the N_SP2 is bonded to 1 hydrogen and the N_TRI is
         // bonded to 2 hydrogens
-        else if ((Rbt::GetNumAtoms(nsp2BondedAtomList, Rbt::isAtomicNo_eq(1)) ==
-                  1) &&
-                 (Rbt::GetNumAtoms(ntriBondedAtomList, Rbt::isAtomicNo_eq(1)) ==
-                  2)) {
+        else if ((GetNumAtomsWithPredicate(nsp2BondedAtomList,
+                                           isAtomicNo_eq(1)) == 1) &&
+                 (GetNumAtomsWithPredicate(ntriBondedAtomList,
+                                           isAtomicNo_eq(1)) == 2)) {
           //#ifdef _DEBUG
           std::cout << "Protonating neutral amidine " << (*nsp2Iter)->GetName()
                     << std::endl;
@@ -684,17 +684,17 @@ void RbtMdlFileSource::SetupPosIonisableGroups() {
 // sulphonates
 void RbtMdlFileSource::SetupNegIonisableGroups() {
   // Useful predicates
-  Rbt::isFFType_eq bIsO_TRI("O_TRI");
-  Rbt::isFFType_eq bIsO_TRIM("O_TRI-");
-  Rbt::isFFType_eq bIsO_SP2("O_SP2");
-  Rbt::isFFType_eq bIsC_SP2("C_SP2");
-  Rbt::isFFType_eq bIsS_SP2("S_SP2");
-  Rbt::isFFType_eq bIsP_SP2("P_SP2");
+  isFFType_eq bIsO_TRI("O_TRI");
+  isFFType_eq bIsO_TRIM("O_TRI-");
+  isFFType_eq bIsO_SP2("O_SP2");
+  isFFType_eq bIsC_SP2("C_SP2");
+  isFFType_eq bIsS_SP2("S_SP2");
+  isFFType_eq bIsP_SP2("P_SP2");
 
   // Compile list of all C_SP2, S_SP2 and P_SP2
-  RbtAtomList csp2AtomList = Rbt::GetAtomList(m_atomList, bIsC_SP2);
-  RbtAtomList ssp2AtomList = Rbt::GetAtomList(m_atomList, bIsS_SP2);
-  RbtAtomList psp2AtomList = Rbt::GetAtomList(m_atomList, bIsP_SP2);
+  RbtAtomList csp2AtomList = GetAtomListWithPredicate(m_atomList, bIsC_SP2);
+  RbtAtomList ssp2AtomList = GetAtomListWithPredicate(m_atomList, bIsS_SP2);
+  RbtAtomList psp2AtomList = GetAtomListWithPredicate(m_atomList, bIsP_SP2);
   RbtAtomList acidAtomList = csp2AtomList;
   acidAtomList.insert(acidAtomList.end(), ssp2AtomList.begin(),
                       ssp2AtomList.end());
@@ -704,20 +704,21 @@ void RbtMdlFileSource::SetupNegIonisableGroups() {
   // Loop over all potential acid centers
   for (RbtAtomListIter iter = acidAtomList.begin(); iter != acidAtomList.end();
        iter++) {
-    RbtAtomList bondedAtomList = Rbt::GetBondedAtomList(*iter);
+    RbtAtomList bondedAtomList = GetBondedAtomList(*iter);
     // Check if there is at least one O_SP2 bonded (i.e.C=O, S=O, P=O)
     // DM 27 Apr 1999 - check there is already an O_TRI- present. We only want
     // to deprotonate one oxygen.
-    if ((Rbt::GetNumAtoms(bondedAtomList, bIsO_SP2) > 0) &&
-        (Rbt::GetNumAtoms(bondedAtomList, bIsO_TRIM) == 0)) {
+    if ((GetNumAtomsWithPredicate(bondedAtomList, bIsO_SP2) > 0) &&
+        (GetNumAtomsWithPredicate(bondedAtomList, bIsO_TRIM) == 0)) {
       // Now get the list of all O_TRI which are bonded (i.e. C-O-, S-O-, P-O-)
-      RbtAtomList otriAtomList = Rbt::GetAtomList(bondedAtomList, bIsO_TRI);
+      RbtAtomList otriAtomList =
+          GetAtomListWithPredicate(bondedAtomList, bIsO_TRI);
       for (RbtAtomListIter otriIter = otriAtomList.begin();
            otriIter != otriAtomList.end(); otriIter++) {
         // Is there a hydrogen bonded to the O_TRI ?
-        RbtAtomList otriBondedAtomList = Rbt::GetBondedAtomList(*otriIter);
+        RbtAtomList otriBondedAtomList = GetBondedAtomList(*otriIter);
         RbtAtomListIter hIter =
-            Rbt::FindAtomInList(otriBondedAtomList, Rbt::isAtomicNo_eq(1));
+            FindAtomInList(otriBondedAtomList, isAtomicNo_eq(1));
         if (hIter != otriBondedAtomList.end()) {
           //#ifdef _DEBUG
           std::cout << "Removing " << (*hIter)->GetName() << " from "
@@ -739,8 +740,8 @@ void RbtMdlFileSource::SetupNegIonisableGroups() {
 
 // Adds a proton to N_SP3 and N_SP2 atoms
 void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) {
-  Rbt::isFFType_eq bIsNSP3("N_SP3");
-  Rbt::isFFType_eq bIsNSP2("N_SP2");
+  isFFType_eq bIsNSP3("N_SP3");
+  isFFType_eq bIsNSP2("N_SP2");
 
   // Element data for hydrogen
   RbtElementData elHData = m_spElementData->GetElementData(1);
@@ -753,7 +754,7 @@ void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) {
 
   // Attributes for heavy atom
   const RbtCoord &c0 = spAtom->GetCoords();
-  RbtAtomList bondedAtomList = Rbt::GetBondedAtomList(spAtom);
+  RbtAtomList bondedAtomList = GetBondedAtomList(spAtom);
 
   ////////////////
   // Nsp3
@@ -777,7 +778,7 @@ void RbtMdlFileSource::AddHydrogen(RbtAtomPtr spAtom) {
     RbtPlane p = RbtPlane(c0 + v1.Unit(), c0 + v2.Unit(),
                           c0 + v3.Unit()); // Plane of three substs
     // This is the signed distance from the nitrogen to the plane
-    double dist = Rbt::DistanceFromPointToPlane(c0, p);
+    double dist = DistanceFromPointToPlane(c0, p);
     // Take sign so we go in the opposite direction to the other substituents
     int iSign = (dist > 0) ? 1 : -1;
     hCoord = c0 + (iSign * dNHLength * p.VNorm()); // New H coordinate
@@ -872,16 +873,16 @@ void RbtMdlFileSource::SetupIonicGroups() {
 
 // Helper function to set up protonated amines
 void RbtMdlFileSource::SetupNSP3Plus() {
-  Rbt::isFFType_eq bIsN_SP3p("N_SP3+");
-  Rbt::isAtomicNo_eq bIsH(1);
+  isFFType_eq bIsN_SP3p("N_SP3+");
+  isAtomicNo_eq bIsH(1);
 
   // Divide up the charge equally amongst the hydrogens bonded to the nitrogen
-  RbtAtomList nsp3pAtomList = Rbt::GetAtomList(m_atomList, bIsN_SP3p);
+  RbtAtomList nsp3pAtomList = GetAtomListWithPredicate(m_atomList, bIsN_SP3p);
   for (RbtAtomListIter iter = nsp3pAtomList.begin();
        iter != nsp3pAtomList.end(); iter++) {
     // Get the list of hydrogens
     RbtAtomList hbdAtomList =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(*iter), bIsH);
+        GetAtomListWithPredicate(GetBondedAtomList(*iter), bIsH);
     double nCharge = (*iter)->GetGroupCharge();      // Total charge
     double pCharge = nCharge / (hbdAtomList.size()); // Partial charge
     (*iter)->SetGroupCharge(0.0);                    // Neutralise the nitrogen
@@ -902,18 +903,19 @@ void RbtMdlFileSource::SetupNSP3Plus() {
 // charge from N to H)
 void RbtMdlFileSource::SetupNSP2Plus() {
   // Useful predicates
-  Rbt::isFFType_eq bIsN_SP2p("N_SP2+");
-  Rbt::isFFType_eq bIsN_TRI("N_TRI");
-  Rbt::isFFType_eq bIsC_SP2("C_SP2");
-  Rbt::isAtomicNo_eq bIsH(1);
+  isFFType_eq bIsN_SP2p("N_SP2+");
+  isFFType_eq bIsN_TRI("N_TRI");
+  isFFType_eq bIsC_SP2("C_SP2");
+  isAtomicNo_eq bIsH(1);
 
   // Loop over all N_SP2+
-  RbtAtomList nsp2PlusAtomList = Rbt::GetAtomList(m_atomList, bIsN_SP2p);
+  RbtAtomList nsp2PlusAtomList =
+      GetAtomListWithPredicate(m_atomList, bIsN_SP2p);
   for (RbtAtomListIter iter = nsp2PlusAtomList.begin();
        iter != nsp2PlusAtomList.end(); iter++) {
     // Now get the list of all bonded C_SP2
     RbtAtomList csp2AtomList =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(*iter), bIsC_SP2);
+        GetAtomListWithPredicate(GetBondedAtomList(*iter), bIsC_SP2);
 #ifdef _DEBUG
     std::cout << csp2AtomList.size() << " CSP2 atoms found bonded to NSP2+"
               << std::endl;
@@ -921,17 +923,17 @@ void RbtMdlFileSource::SetupNSP2Plus() {
     // Eliminate bridgehead carbons, so we can guarantee we handle imidazoles
     // correctly
     csp2AtomList =
-        Rbt::GetAtomList(csp2AtomList, std::not1(Rbt::isAtomBridgehead()));
+        GetAtomListWithPredicate(csp2AtomList, std::not1(isAtomBridgehead()));
 #ifdef _DEBUG
     std::cout << csp2AtomList.size() << " are non-bridgehead" << std::endl;
 #endif //_DEBUG
     // There may be cases where the guanidinium and imidazole bonding patterns
     // are both present (on different C_SP2 atoms) so we want to check for both.
     // Let the guanidinium moiety take precedence
-    RbtAtomListIter guanIter = Rbt::FindAtomInList(
-        csp2AtomList, Rbt::isCoordinationNumber_eq(2, "N_TRI"));
-    RbtAtomListIter imidIter = Rbt::FindAtomInList(
-        csp2AtomList, Rbt::isCoordinationNumber_eq(1, "N_TRI"));
+    RbtAtomListIter guanIter =
+        FindAtomInList(csp2AtomList, isCoordinationNumber_eq(2, "N_TRI"));
+    RbtAtomListIter imidIter =
+        FindAtomInList(csp2AtomList, isCoordinationNumber_eq(1, "N_TRI"));
     RbtAtomListIter csp2Iter =
         csp2AtomList.end(); // This will point to the C_SP2 atom to transfer the
                             // charge to
@@ -954,7 +956,7 @@ void RbtMdlFileSource::SetupNSP2Plus() {
     // handle protonated pyridines Get the list of hydrogens on the attached
     // nitrogens Start with the hydrogen on the N_SP2+
     RbtAtomList hbdAtomList =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(*iter), bIsH);
+        GetAtomListWithPredicate(GetBondedAtomList(*iter), bIsH);
 #ifdef _DEBUG
     std::cout << "Found " << hbdAtomList.size() << " hydrogens bonded to "
               << (*iter)->GetName() << std::endl;
@@ -964,7 +966,7 @@ void RbtMdlFileSource::SetupNSP2Plus() {
     if (csp2Iter != csp2AtomList.end()) {
       // Now add the hydrogens on the (1 or 2) N_TRI atoms
       RbtAtomList ntriAtomList =
-          Rbt::GetAtomList(Rbt::GetBondedAtomList(*csp2Iter), bIsN_TRI);
+          GetAtomListWithPredicate(GetBondedAtomList(*csp2Iter), bIsN_TRI);
 #ifdef _DEBUG
       std::cout << "Found " << ntriAtomList.size() << " nitrogens bonded to "
                 << (*csp2Iter)->GetName() << std::endl;
@@ -972,7 +974,7 @@ void RbtMdlFileSource::SetupNSP2Plus() {
       for (RbtAtomListConstIter nIter = ntriAtomList.begin();
            nIter != ntriAtomList.end(); nIter++) {
         RbtAtomList hAtomList =
-            Rbt::GetAtomList(Rbt::GetBondedAtomList(*nIter), bIsH);
+            GetAtomListWithPredicate(GetBondedAtomList(*nIter), bIsH);
 #ifdef _DEBUG
         std::cout << "Found " << hAtomList.size() << " hydrogens bonded to "
                   << (*nIter)->GetName() << std::endl;
@@ -1007,16 +1009,16 @@ void RbtMdlFileSource::SetupNSP2Plus() {
 
 // Helper function to set up deprotonated acids
 void RbtMdlFileSource::SetupOTRIMinus() {
-  Rbt::isFFType_eq bIsO_TRIm("O_TRI-");
-  Rbt::isFFType_eq bIsO_SP2("O_SP2");
-  Rbt::isFFType_eq bIsC_SP2("C_SP2");
-  Rbt::isFFType_eq bIsS_SP2("S_SP2");
-  Rbt::isFFType_eq bIsP_SP2("P_SP2");
+  isFFType_eq bIsO_TRIm("O_TRI-");
+  isFFType_eq bIsO_SP2("O_SP2");
+  isFFType_eq bIsC_SP2("C_SP2");
+  isFFType_eq bIsS_SP2("S_SP2");
+  isFFType_eq bIsP_SP2("P_SP2");
 
   // Compile list of all C_SP2, S_SP2 and P_SP2
-  RbtAtomList csp2AtomList = Rbt::GetAtomList(m_atomList, bIsC_SP2);
-  RbtAtomList ssp2AtomList = Rbt::GetAtomList(m_atomList, bIsS_SP2);
-  RbtAtomList psp2AtomList = Rbt::GetAtomList(m_atomList, bIsP_SP2);
+  RbtAtomList csp2AtomList = GetAtomListWithPredicate(m_atomList, bIsC_SP2);
+  RbtAtomList ssp2AtomList = GetAtomListWithPredicate(m_atomList, bIsS_SP2);
+  RbtAtomList psp2AtomList = GetAtomListWithPredicate(m_atomList, bIsP_SP2);
   RbtAtomList acidAtomList = csp2AtomList;
   acidAtomList.insert(acidAtomList.end(), ssp2AtomList.begin(),
                       ssp2AtomList.end());
@@ -1035,9 +1037,9 @@ void RbtMdlFileSource::SetupOTRIMinus() {
        iter != acidAtomList.end(); iter++) {
     // Get the list of bonded O_SP2 and O_TRI-
     RbtAtomList osp2AtomList =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(*iter), bIsO_SP2);
+        GetAtomListWithPredicate(GetBondedAtomList(*iter), bIsO_SP2);
     RbtAtomList otrimAtomList =
-        Rbt::GetAtomList(Rbt::GetBondedAtomList(*iter), bIsO_TRIm);
+        GetAtomListWithPredicate(GetBondedAtomList(*iter), bIsO_TRIm);
     if ((osp2AtomList.size() > 0) && (otrimAtomList.size() > 0)) {
       // Combine O_SP2 and O_TRI- lists into one
       RbtAtomList oAtomList = osp2AtomList;
@@ -1070,8 +1072,8 @@ void RbtMdlFileSource::SetupSegmentNames() {
   int nMaxSize(0);               // Size of the largest segment
   int nSeg;
   RbtAtomListIter seed;
-  for (nSeg = 1, seed = m_atomList.begin(); seed != m_atomList.end(); nSeg++,
-      seed = Rbt::FindAtomInList(m_atomList, Rbt::isSegmentName_eq("H"))) {
+  for (nSeg = 1, seed = m_atomList.begin(); seed != m_atomList.end();
+       nSeg++, seed = FindAtomInList(m_atomList, isSegmentName_eq("H"))) {
     // New segment name (H1, H2 etc)
     std::ostringstream ostr;
     ostr << "H" << nSeg;
@@ -1091,8 +1093,8 @@ void RbtMdlFileSource::SetupSegmentNames() {
       pendingAtomList.pop_back();
       // Get the list of bonded atoms which haven't yet been processed (i.e.
       // those whose segName is still H)
-      RbtAtomList atomsToAdd = Rbt::GetAtomList(Rbt::GetBondedAtomList(spAtom),
-                                                Rbt::isSegmentName_eq("H"));
+      RbtAtomList atomsToAdd = GetAtomListWithPredicate(
+          GetBondedAtomList(spAtom), isSegmentName_eq("H"));
       // Set the segment name for each atom, and add to the queue
       for (RbtAtomListIter iter = atomsToAdd.begin(); iter != atomsToAdd.end();
            iter++) {
@@ -1117,7 +1119,7 @@ void RbtMdlFileSource::SetupSegmentNames() {
   std::cout << "Largest segment is " << strLargestSegName << std::endl;
 #endif //_DEBUG
   RbtAtomList largestAtomList =
-      Rbt::GetAtomList(m_atomList, Rbt::isSegmentName_eq(strLargestSegName));
+      GetAtomListWithPredicate(m_atomList, isSegmentName_eq(strLargestSegName));
   for (RbtAtomListIter iter = largestAtomList.begin();
        iter != largestAtomList.end(); iter++) {
     (*iter)->SetSegmentName("H");
@@ -1134,10 +1136,10 @@ void RbtMdlFileSource::SetupSegmentNames() {
 // DM 2 Aug 1999 - remove all non-polar hydrogens
 void RbtMdlFileSource::RemoveNonPolarHydrogens() {
   // Get list of all hydrogens
-  RbtAtomList hList = Rbt::GetAtomList(m_atomList, Rbt::isAtomicNo_eq(1));
+  RbtAtomList hList = GetAtomListWithPredicate(m_atomList, isAtomicNo_eq(1));
   // Get list of all hydrogens bonded to carbon
   RbtAtomList implHList =
-      Rbt::GetAtomList(hList, Rbt::isCoordinationNumber_eq(1, 6));
+      GetAtomListWithPredicate(hList, isCoordinationNumber_eq(1, 6));
 
   // Remove them one by one (not very efficient)
   for (RbtAtomListIter iter = implHList.begin(); iter != implHList.end();
@@ -1157,5 +1159,5 @@ void RbtMdlFileSource::RemoveNonPolarHydrogens() {
 // DM 8 Feb 2000 - setup atom and bond cyclic flags (previously in RbtModel)
 // Set the atom and bond cyclic flags for all atoms and bonds in the source
 void RbtMdlFileSource::SetCyclicFlags() {
-  Rbt::SetAtomAndBondCyclicFlags(m_atomList, m_bondList);
+  SetAtomAndBondCyclicFlags(m_atomList, m_bondList);
 }

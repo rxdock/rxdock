@@ -21,6 +21,8 @@
 #include <iostream>
 #include <map>
 
+namespace rxdock {
+
 // Object counter class for debugging no. of object constructions and
 // destructions
 class RbtObjectCounter {
@@ -38,22 +40,20 @@ public:
 typedef std::map<RbtString, RbtObjectCounter> RbtObjectCounterMap;
 typedef RbtObjectCounterMap::iterator RbtObjectCounterMapIter;
 
-namespace Rbt {
 // External declaration of the one and only object counter map
 extern RbtObjectCounterMap theObjectCounterMap;
-} // namespace Rbt
 
-#define _RBTOBJECTCOUNTER_CONSTR_(class)                                       \
-  Rbt::theObjectCounterMap[(class)].nConstr++
+} // namespace rxdock
+
+#define _RBTOBJECTCOUNTER_CONSTR_(class) theObjectCounterMap[(class)].nConstr++
 #define _RBTOBJECTCOUNTER_COPYCONSTR_(class)                                   \
-  Rbt::theObjectCounterMap[(class)].nCopyConstr++
-#define _RBTOBJECTCOUNTER_DESTR_(class)                                        \
-  Rbt::theObjectCounterMap[(class)].nDestr++
+  theObjectCounterMap[(class)].nCopyConstr++
+#define _RBTOBJECTCOUNTER_DESTR_(class) theObjectCounterMap[(class)].nDestr++
 
 #define _RBTOBJECTCOUNTER_DUMP_(stream)                                        \
   (stream) << std::endl << "RBT OBJECT COUNTERS:" << std::endl << std::endl;   \
-  for (RbtObjectCounterMapIter dumpIter = Rbt::theObjectCounterMap.begin();    \
-       dumpIter != Rbt::theObjectCounterMap.end(); dumpIter++) {               \
+  for (RbtObjectCounterMapIter dumpIter = theObjectCounterMap.begin();         \
+       dumpIter != theObjectCounterMap.end(); dumpIter++) {                    \
     (stream) << (*dumpIter).first << ": " << (*dumpIter).second << std::endl;  \
   }
 

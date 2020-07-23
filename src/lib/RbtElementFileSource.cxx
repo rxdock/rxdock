@@ -15,6 +15,8 @@
 #include "RbtElementFileSource.h"
 #include "RbtFileError.h"
 
+using namespace rxdock;
+
 // Constructors
 // RbtElementFileSource::RbtElementFileSource(const char* fileName) :
 //  RbtBaseFileSource(fileName)
