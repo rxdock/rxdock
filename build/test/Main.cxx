@@ -1,5 +1,5 @@
-#include "RbtConfig.h"
-#include "RbtDebug.h"
+#include "Config.h"
+#include "Debug.h"
 #include <gtest/gtest.h>
 
 using namespace rxdock;

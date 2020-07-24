@@ -32,34 +32,34 @@
 #include <unistd.h> //For POSIX getcwd
 #endif
 //#include <ios>
+#include "FileError.h"
 #include "Rbt.h"
-#include "RbtFileError.h"
-#include "RbtResources.h"
+#include "Resources.h"
 
 using namespace rxdock;
 
-// GetRbtRoot - returns value of RBT_ROOT env variable
-std::string rxdock::GetRbtRoot() {
-  char *szRbtRoot = std::getenv("RBT_ROOT");
-  if (szRbtRoot != (char *)nullptr) {
-    return std::string(szRbtRoot);
+// GetRoot - returns value of RBT_ROOT env variable
+std::string rxdock::GetRoot() {
+  char *szRoot = std::getenv("RBT_ROOT");
+  if (szRoot != (char *)nullptr) {
+    return std::string(szRoot);
   } else {
     return GetCurrentWorkingDirectory();
   }
 }
 
 // DM 02 Aug 2000
-// GetRbtHome - returns value of RBT_HOME env variable
+// GetHome - returns value of RBT_HOME env variable
 // or HOME if RBT_HOME is not defined
 // If HOME is undefined, returns current working directory
-std::string rxdock::GetRbtHome() {
-  char *szRbtHome = std::getenv("RBT_HOME");
-  if (szRbtHome != (char *)nullptr) {
-    return std::string(szRbtHome);
+std::string rxdock::GetHome() {
+  char *szHome = std::getenv("RBT_HOME");
+  if (szHome != (char *)nullptr) {
+    return std::string(szHome);
   } else {
-    szRbtHome = std::getenv("HOME");
-    if (szRbtHome != (char *)nullptr) {
-      return std::string(szRbtHome);
+    szHome = std::getenv("HOME");
+    if (szHome != (char *)nullptr) {
+      return std::string(szHome);
     } else {
       return GetCurrentWorkingDirectory();
     }
@@ -74,7 +74,7 @@ std::string rxdock::GetCopyright() { return IDS_COPYRIGHT; }
 std::string rxdock::GetProgramVersion() { return IDS_VERSION; }
 // GetProduct - returns library product name
 std::string rxdock::GetProduct() { return IDS_PRODUCT; }
-// GetTime - returns current time as an RbtString
+// GetTime - returns current time as an String
 std::string rxdock::GetTime() {
   std::time_t t = std::time(nullptr);       // Get time in seconds since 1970
   std::tm *pLocalTime = std::localtime(&t); // Convert to local time struct
@@ -96,29 +96,29 @@ std::string rxdock::GetCurrentWorkingDirectory() {
   return strCwd;
 }
 
-// rxdock::GetRbtDirName
+// rxdock::GetDirName
 // Returns the full path to a subdirectory in the rDock directory structure
 //
 // For example, if RBT_ROOT environment variable is ~dave/ribodev/molmod/ribodev
-// then GetRbtDirName("data") would return ~dave/ribodev/molmod/ribodev/data/
+// then GetDirName("data") would return ~dave/ribodev/molmod/ribodev/data/
 //
-std::string rxdock::GetRbtDirName(const std::string &strSubDir) {
-  std::string strRbtDir = GetRbtRoot();
+std::string rxdock::GetDirName(const std::string &strSubDir) {
+  std::string strDir = GetRoot();
   if (strSubDir.size() > 0) {
-    strRbtDir += "/";
-    strRbtDir += strSubDir;
+    strDir += "/";
+    strDir += strSubDir;
   }
-  return strRbtDir;
+  return strDir;
 }
 
-// rxdock::GetRbtFileName
+// rxdock::GetDataFileName
 // DM 17 Dec 1998 - slightly different behaviour
 // First check if the file exists in the CWD, if so return this path
 // Next check RBT_HOME directory, if so return this path
 // Finally, return the path to the file in the rDock directory structure
 //(without checking if the file is actually present)
-std::string rxdock::GetRbtFileName(const std::string &strSubdir,
-                                   const std::string &strFile) {
+std::string rxdock::GetDataFileName(const std::string &strSubdir,
+                                    const std::string &strFile) {
   // First see if the file exists in the current directory
   std::string strFullPathToFile(strFile);
   // Just open it, don't try and parse it (after all, we don't know what format
@@ -129,7 +129,7 @@ std::string rxdock::GetRbtFileName(const std::string &strSubdir,
     return strFullPathToFile;
   } else {
     // DM 02 Aug 200 - check RBT_HOME directory
-    strFullPathToFile = GetRbtHome() + "/" + strFile;
+    strFullPathToFile = GetHome() + "/" + strFile;
     // DM 27 Apr 2005 - under gcc 3.4.3 there are problems reusing the same
     // ifstream object after the first "file open" fails
     // fileIn.open(strFullPathToFile.c_str(),std::ios_base::in);
@@ -138,7 +138,7 @@ std::string rxdock::GetRbtFileName(const std::string &strSubdir,
       fileIn2.close();
       return strFullPathToFile;
     } else {
-      return GetRbtDirName(strSubdir) + "/" + strFile;
+      return GetDirName(strSubdir) + "/" + strFile;
     }
   }
 }
@@ -200,16 +200,15 @@ std::vector<std::string> rxdock::GetDirList(const std::string &strDir,
 }
 
 // Converts (comma)-delimited string of segment names to segment map
-RbtSegmentMap
-rxdock::ConvertStringToSegmentMap(const std::string &strSegments,
-                                  const std::string &strDelimiter) {
+SegmentMap rxdock::ConvertStringToSegmentMap(const std::string &strSegments,
+                                             const std::string &strDelimiter) {
 #ifdef _DEBUG
   // std::cout << "ConvertStringToSegmentMap: " << strSegments << " delimiter="
   // << strDelimiter << std::endl;
 #endif //_DEBUG
 
   std::string::size_type nDelimiterSize = strDelimiter.size();
-  RbtSegmentMap segmentMap;
+  SegmentMap segmentMap;
 
   // Check for null string or null delimiter
   if ((strSegments.size() > 0) && (nDelimiterSize > 0)) {
@@ -234,13 +233,13 @@ rxdock::ConvertStringToSegmentMap(const std::string &strSegments,
 }
 
 // Converts segment map to (comma)-delimited string of segment names
-std::string rxdock::ConvertSegmentMapToString(const RbtSegmentMap &segmentMap,
+std::string rxdock::ConvertSegmentMapToString(const SegmentMap &segmentMap,
                                               const std::string &strDelimiter) {
   std::string strSegments;
 
   // Check for empty segment map
   if (segmentMap.size() > 0) {
-    RbtSegmentMapConstIter iter = segmentMap.begin();
+    SegmentMapConstIter iter = segmentMap.begin();
     strSegments += (*iter++).first; // Add first string
     // Now loop over remaining entries, adding delimiter before each string
     while (iter != segmentMap.end()) {
@@ -254,10 +253,10 @@ std::string rxdock::ConvertSegmentMapToString(const RbtSegmentMap &segmentMap,
 // Returns a segment map containing the members of map1 which are not in map2
 // I know, should really be a template so as to be more universal...one day
 // maybe. Or maybe there is already an STL algorithm for doing this.
-RbtSegmentMap rxdock::SegmentDiffMap(const RbtSegmentMap &map1,
-                                     const RbtSegmentMap &map2) {
-  RbtSegmentMap map3 = map1; // Init return value to map1
-  for (RbtSegmentMapConstIter iter = map2.begin(); iter != map2.end(); iter++)
+SegmentMap rxdock::SegmentDiffMap(const SegmentMap &map1,
+                                  const SegmentMap &map2) {
+  SegmentMap map3 = map1; // Init return value to map1
+  for (SegmentMapConstIter iter = map2.begin(); iter != map2.end(); iter++)
     map3.erase((*iter).first); // Now delete everything in map2
   return map3;
 }
@@ -363,8 +362,8 @@ std::ostream &rxdock::PrintStdHeader(std::ostream &s,
     s << "Executable:\t" << strExecutable << "/" << GetProgramVersion()
       << std::endl;
   s << "Library:\t" << GetProduct() << "/" << GetProgramVersion() << std::endl;
-  s << "RBT_ROOT:\t" << GetRbtRoot() << std::endl;
-  s << "RBT_HOME:\t" << GetRbtHome() << std::endl;
+  s << "RBT_ROOT:\t" << GetRoot() << std::endl;
+  s << "RBT_HOME:\t" << GetHome() << std::endl;
   s << "Current dir:\t" << GetCurrentWorkingDirectory() << std::endl;
   s << "Date:\t\t" << GetTime() << std::endl;
   s << "***********************************************" << std::endl;
@@ -443,21 +442,21 @@ std::ostream &rxdock::PrintBibliographyItem(std::ostream &s,
 // at least on RedHat 6.1, so this is a temporary workaround (yeah right)
 void rxdock::WriteWithThrow(std::ostream &ostr, const char *p, streamsize n) {
   if (!ostr)
-    throw RbtFileWriteError(_WHERE_, "Error writing to output stream");
+    throw FileWriteError(_WHERE_, "Error writing to output stream");
   ostr.write(p, n);
   if (!ostr)
-    throw RbtFileWriteError(_WHERE_, "Error writing to output stream");
+    throw FileWriteError(_WHERE_, "Error writing to output stream");
 }
 
 void rxdock::ReadWithThrow(std::istream &istr, char *p, streamsize n) {
   if (!istr)
-    throw RbtFileReadError(_WHERE_, "Error reading from input stream");
+    throw FileReadError(_WHERE_, "Error reading from input stream");
   istr.read(p, n);
   if (!istr)
-    throw RbtFileReadError(_WHERE_, "Error reading from input stream");
+    throw FileReadError(_WHERE_, "Error reading from input stream");
 }
 
-// Used to read RbtCoord. The separator between x y z should be a
+// Used to read Coord. The separator between x y z should be a
 // ',', but this takes care of small mistakes, reading any white
 // space or commas there is between each variable.
 // If necessary, it can be modified to accept the ',' as a

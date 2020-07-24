@@ -2,13 +2,13 @@ RBT_PARAMETER_FILE_V1.00
 TITLE Free docking (with SOLVATION, indexed VDW)
 
 SECTION SCORE
-    	INTER    RbtSolvIdxSF.prm
-    	INTRA    RbtIntraSF.prm
-	SYSTEM   RbtTargetSF.prm
+    	INTER    SolvIdxSF.prm
+    	INTRA    IntraSF.prm
+	SYSTEM   TargetSF.prm
 END_SECTION
 
 SECTION SETSLOPE_1
-	TRANSFORM           		RbtNullTransform
+	TRANSFORM           		NullTransform
 	WEIGHT@SCORE.RESTR.CAVITY	5.0	# Dock with a high penalty for leaving the cavity
 	WEIGHT@SCORE.INTRA.DIHEDRAL	0.1	# Gradually ramp up dihedral weight from 0.1->0.5
 	ECUT@SCORE.INTER.VDW		1.0	# Gradually ramp up energy cutoff for switching to quadratic
@@ -19,13 +19,13 @@ SECTION SETSLOPE_1
 END_SECTION
 
 SECTION RANDOM_POP
-        TRANSFORM                       RbtRandPopTransform
+        TRANSFORM                       RandPopTransform
         POP_SIZE                        50
 	SCALE_CHROM_LENGTH		TRUE
 END_SECTION
 
 SECTION GA_SLOPE1
-	TRANSFORM			RbtGATransform	
+	TRANSFORM			GATransform	
 	PCROSSOVER			0.4	# Prob. of crossover
 	XOVERMUT			TRUE	# Cauchy mutation after each crossover
 	CMUTATE				FALSE	# True = Cauchy; False = Rectang. for regular mutations
@@ -33,7 +33,7 @@ SECTION GA_SLOPE1
 END_SECTION
 
 SECTION SETSLOPE_3
-	TRANSFORM           		RbtNullTransform
+	TRANSFORM           		NullTransform
 	WEIGHT@SCORE.INTRA.DIHEDRAL	0.2
 	ECUT@SCORE.INTER.VDW		5.0
 	DA1MAX@SCORE.INTER.POLAR	140.0
@@ -42,7 +42,7 @@ SECTION SETSLOPE_3
 END_SECTION
 
 SECTION GA_SLOPE3
-	TRANSFORM			RbtGATransform	
+	TRANSFORM			GATransform	
 	PCROSSOVER			0.4	# Prob. of crossover
 	XOVERMUT			TRUE	# Cauchy mutation after each crossover
 	CMUTATE				FALSE	# True = Cauchy; False = Rectang. for regular mutations
@@ -50,7 +50,7 @@ SECTION GA_SLOPE3
 END_SECTION
 
 SECTION SETSLOPE_5
-	TRANSFORM           		RbtNullTransform
+	TRANSFORM           		NullTransform
 	WEIGHT@SCORE.INTRA.DIHEDRAL	0.3
 	ECUT@SCORE.INTER.VDW		25.0
 	USE_4_8@SCORE.INTER.VDW		FALSE	# Now switch to a convential 6-12 for final GA, MC, minimisation
@@ -60,7 +60,7 @@ SECTION SETSLOPE_5
 END_SECTION
 
 SECTION GA_SLOPE5
-	TRANSFORM			RbtGATransform	
+	TRANSFORM			GATransform	
 	PCROSSOVER			0.4	# Prob. of crossover
 	XOVERMUT			TRUE	# Cauchy mutation after each crossover
 	CMUTATE				FALSE	# True = Cauchy; False = Rectang. for regular mutations
@@ -68,7 +68,7 @@ SECTION GA_SLOPE5
 END_SECTION
 
 SECTION SETSLOPE_10
-	TRANSFORM           		RbtNullTransform
+	TRANSFORM           		NullTransform
 	WEIGHT@SCORE.INTRA.DIHEDRAL	0.5	# Final dihedral weight matches SF file
 	ECUT@SCORE.INTER.VDW		120.0	# Final ECUT matches SF file
 	DA1MAX@SCORE.INTER.POLAR	80.0
@@ -77,7 +77,7 @@ SECTION SETSLOPE_10
 END_SECTION
 
 SECTION MC_10K
-	TRANSFORM           		RbtSimAnnTransform
+	TRANSFORM           		SimAnnTransform
 	START_T             		10.0
 	FINAL_T             		10.0
 	NUM_BLOCKS          		5
@@ -89,7 +89,7 @@ SECTION MC_10K
 END_SECTION
 
 SECTION SIMPLEX
-	TRANSFORM			RbtSimplexTransform
+	TRANSFORM			SimplexTransform
 	MAX_CALLS			200
 	NCYCLES				20
 	STOPPING_STEP_LENGTH		10e-4
@@ -99,6 +99,6 @@ SECTION SIMPLEX
 END_SECTION
 
 SECTION FINAL
-	TRANSFORM           		RbtNullTransform
+	TRANSFORM           		NullTransform
 	WEIGHT@SCORE.RESTR.CAVITY	1.0	# revert to standard cavity penalty
 END_SECTION

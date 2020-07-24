@@ -16,21 +16,21 @@
 #include <cxxopts.hpp>
 #include <iomanip>
 
-#include "RbtBiMolWorkSpace.h"
-#include "RbtCrdFileSink.h"
-#include "RbtDockingError.h"
-#include "RbtFileError.h"
-#include "RbtFilter.h"
-#include "RbtLigandError.h"
-#include "RbtMdlFileSink.h"
-#include "RbtMdlFileSource.h"
-#include "RbtModelError.h"
-#include "RbtPRMFactory.h"
-#include "RbtParameterFileSource.h"
-#include "RbtRand.h"
-#include "RbtSFFactory.h"
-#include "RbtSFRequest.h"
-#include "RbtTransformFactory.h"
+#include "BiMolWorkSpace.h"
+#include "CrdFileSink.h"
+#include "DockingError.h"
+#include "FileError.h"
+#include "Filter.h"
+#include "LigandError.h"
+#include "MdlFileSink.h"
+#include "MdlFileSource.h"
+#include "ModelError.h"
+#include "PRMFactory.h"
+#include "ParameterFileSource.h"
+#include "Rand.h"
+#include "SFFactory.h"
+#include "SFRequest.h"
+#include "TransformFactory.h"
 
 using namespace rxdock;
 
@@ -272,7 +272,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Create a bimolecular workspace
-    RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
+    BiMolWorkSpacePtr spWS(new BiMolWorkSpace());
     // Set the workspace name to the root of the receptor .prm filename
     std::vector<std::string> componentList =
         ConvertDelimitedStringToList(strReceptorPrmFile, ".");
@@ -280,11 +280,11 @@ int main(int argc, char *argv[]) {
     spWS->SetName(wsName);
 
     // Read the docking protocol parameter file
-    RbtParameterFileSourcePtr spParamSource(new RbtParameterFileSource(
-        GetRbtFileName("data/scripts", strParamFile)));
+    ParameterFileSourcePtr spParamSource(
+        new ParameterFileSource(GetDataFileName("data/scripts", strParamFile)));
     // Read the receptor parameter file
-    RbtParameterFileSourcePtr spRecepPrmSource(new RbtParameterFileSource(
-        GetRbtFileName("data/receptors", strReceptorPrmFile)));
+    ParameterFileSourcePtr spRecepPrmSource(new ParameterFileSource(
+        GetDataFileName("data/receptors", strReceptorPrmFile)));
     std::cout << std::endl
               << "DOCKING PROTOCOL:" << std::endl
               << spParamSource->GetFileName() << std::endl
@@ -296,8 +296,8 @@ int main(int argc, char *argv[]) {
 
     // Create the scoring function from the SCORE section of the docking
     // protocol prm file Format is: SECTION SCORE
-    //    INTER    RbtInterSF.prm
-    //    INTRA RbtIntraSF.prm
+    //    INTER    InterSF.prm
+    //    INTRA IntraSF.prm
     // END_SECTION
     //
     // Notes:
@@ -306,18 +306,18 @@ int main(int argc, char *argv[]) {
     // Parameter name becomes the name of the subaggregate (e.g. SCORE.INTER)
     // Parameter value is the file name for the subaggregate definition
     // Default directory is $RBT_ROOT/data/sf
-    RbtSFFactoryPtr spSFFactory(
-        new RbtSFFactory()); // Factory class for scoring functions
-    RbtSFAggPtr spSF(new RbtSFAgg(_ROOT_SF)); // Root SF aggregate
+    SFFactoryPtr spSFFactory(
+        new SFFactory());               // Factory class for scoring functions
+    SFAggPtr spSF(new SFAgg(_ROOT_SF)); // Root SF aggregate
     spParamSource->SetSection(_ROOT_SF);
     std::vector<std::string> sfList(spParamSource->GetParameterList());
     // Loop over all parameters in the SCORE section
     for (std::vector<std::string>::const_iterator sfIter = sfList.begin();
          sfIter != sfList.end(); sfIter++) {
       // sfFile = file name for scoring function subaggregate
-      std::string sfFile(GetRbtFileName(
+      std::string sfFile(GetDataFileName(
           "data/sf", spParamSource->GetParameterValueAsString(*sfIter)));
-      RbtParameterFileSourcePtr spSFSource(new RbtParameterFileSource(sfFile));
+      ParameterFileSourcePtr spSFSource(new ParameterFileSource(sfFile));
       // Create and add the subaggregate
       spSF->Add(spSFFactory->CreateAggFromFile(spSFSource, *sfIter));
     }
@@ -328,16 +328,16 @@ int main(int argc, char *argv[]) {
 
     // Create the docking transform aggregate from the transform definitions in
     // the docking prm file
-    RbtTransformFactoryPtr spTransformFactory(new RbtTransformFactory());
+    TransformFactoryPtr spTransformFactory(new TransformFactory());
     spParamSource->SetSection();
-    RbtTransformAggPtr spTransform(
+    TransformAggPtr spTransform(
         spTransformFactory->CreateAggFromFile(spParamSource, _ROOT_TRANSFORM));
 
     // Override the TRACE levels for the scoring function and transform
     // Dump details to std::cout
     // Register the scoring function and the transform with the workspace
     if (bTrace) {
-      RbtRequestPtr spTraceReq(new RbtSFSetParamRequest("TRACE", iTrace));
+      RequestPtr spTraceReq(new SFSetParamRequest("TRACE", iTrace));
       spSF->HandleRequest(spTraceReq);
       spTransform->HandleRequest(spTraceReq);
     }
@@ -355,16 +355,16 @@ int main(int argc, char *argv[]) {
     // DM 18 May 1999
     // Variants describing the library version, exe version, parameter file, and
     // current directory Will be stored in the ligand SD files
-    RbtVariant vLib(GetProduct() + "/" + GetProgramVersion());
-    RbtVariant vExe(strExeName + "/" + GetProgramVersion());
-    RbtVariant vRecep(spRecepPrmSource->GetFileName());
-    RbtVariant vPrm(spParamSource->GetFileName());
-    RbtVariant vDir(GetCurrentWorkingDirectory());
+    Variant vLib(GetProduct() + "/" + GetProgramVersion());
+    Variant vExe(strExeName + "/" + GetProgramVersion());
+    Variant vRecep(spRecepPrmSource->GetFileName());
+    Variant vPrm(spParamSource->GetFileName());
+    Variant vDir(GetCurrentWorkingDirectory());
 
     spRecepPrmSource->SetSection();
     // Read docking site from file and register with workspace
     std::string strASFile = spWS->GetName() + ".as";
-    std::string strInputFile = GetRbtFileName("data/grids", strASFile);
+    std::string strInputFile = GetDataFileName("data/grids", strASFile);
     // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
     std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
@@ -379,9 +379,9 @@ int main(int argc, char *argv[]) {
       std::string message = "Cavity file (" + strASFile +
                             ") not found in current directory or $RBT_HOME";
       message += " - run rbcavity first";
-      throw RbtFileReadError(_WHERE_, message);
+      throw FileReadError(_WHERE_, message);
     }
-    RbtDockingSitePtr spDS(new RbtDockingSite(istr));
+    DockingSitePtr spDS(new DockingSite(istr));
     istr.close();
     spWS->SetDockingSite(spDS);
     std::cout << std::endl
@@ -389,23 +389,23 @@ int main(int argc, char *argv[]) {
               << (*spDS) << std::endl;
 
     // Prepare the SD file sink for saving the docked conformations for each
-    // ligand DM 3 Dec 1999 - replaced ostrstream with RbtString in determining
+    // ligand DM 3 Dec 1999 - replaced ostrstream with String in determining
     // SD file name SRC 2014 moved here this block to allow WRITE_ERROR TRUE
     if (bOutput) {
-      RbtMolecularFileSinkPtr spMdlFileSink(
-          new RbtMdlFileSink(strRunName + ".sd", RbtModelPtr()));
+      MolecularFileSinkPtr spMdlFileSink(
+          new MdlFileSink(strRunName + ".sd", ModelPtr()));
       spWS->SetSink(spMdlFileSink);
     }
 
-    RbtPRMFactory prmFactory(spRecepPrmSource, spDS);
+    PRMFactory prmFactory(spRecepPrmSource, spDS);
     prmFactory.SetTrace(iTrace);
     // Create the receptor model from the file names in the receptor parameter
     // file
-    RbtModelPtr spReceptor = prmFactory.CreateReceptor();
+    ModelPtr spReceptor = prmFactory.CreateReceptor();
     spWS->SetReceptor(spReceptor);
 
     // Register any solvent
-    RbtModelList solventList = prmFactory.CreateSolvent();
+    ModelList solventList = prmFactory.CreateSolvent();
     spWS->SetSolvent(solventList);
     if (spWS->hasSolvent()) {
       int nSolvent = spWS->GetSolvent().size();
@@ -419,23 +419,23 @@ int main(int argc, char *argv[]) {
     // WRITEERRORS TRUE
 
     // Seed the random number generator
-    RbtRand &theRand = GetRbtRand(); // ref to random number generator
+    Rand &theRand = GetRandInstance(); // ref to random number generator
     if (bSeed) {
       theRand.Seed(nSeed);
     }
 
     // Create the filter object for controlling early termination of protocol
-    RbtFilterPtr spfilter;
+    FilterPtr spfilter;
     if (bFilter) {
-      spfilter = new RbtFilter(strFilterFile);
+      spfilter = new Filter(strFilterFile);
       if (bDockingRuns) {
         spfilter->SetMaxNRuns(nDockingRuns);
       }
     } else {
-      spfilter = new RbtFilter(strFilter.str(), true);
+      spfilter = new Filter(strFilter.str(), true);
     }
     if (bTrace) {
-      RbtRequestPtr spTraceReq(new RbtSFSetParamRequest("TRACE", iTrace));
+      RequestPtr spTraceReq(new SFSetParamRequest("TRACE", iTrace));
       spfilter->HandleRequest(spTraceReq);
     }
 
@@ -445,8 +445,8 @@ int main(int argc, char *argv[]) {
     // MAIN LOOP OVER LIGAND RECORDS
     // DM 20 Apr 1999 - add explicit bPosIonise and bNegIonise flags to
     // MdlFileSource constructor
-    RbtMolecularFileSourcePtr spMdlFileSource(new RbtMdlFileSource(
-        strLigandMdlFile, bPosIonise, bNegIonise, !bExplH));
+    MolecularFileSourcePtr spMdlFileSource(
+        new MdlFileSource(strLigandMdlFile, bPosIonise, bNegIonise, !bExplH));
     std::chrono::duration<double> totalDuration(0.0);
     std::size_t nFailedLigands = 0;
     std::size_t nUnnamedLigands = 0;
@@ -460,7 +460,7 @@ int main(int argc, char *argv[]) {
                 << "**************************************************"
                 << std::endl
                 << "RECORD #" << nRec << std::endl;
-      RbtError molStatus = spMdlFileSource->Status();
+      Error molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
         std::cout << std::endl
                   << molStatus << std::endl
@@ -479,7 +479,7 @@ int main(int argc, char *argv[]) {
         spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
 
         if (spMdlFileSource->isDataFieldPresent("Name")) {
-          RbtVariant molName = spMdlFileSource->GetDataValue("Name");
+          Variant molName = spMdlFileSource->GetDataValue("Name");
           if (molName.isEmpty())
             nUnnamedLigands++;
           std::cout << "NAME:   " << molName << std::endl;
@@ -496,7 +496,7 @@ int main(int argc, char *argv[]) {
         std::cout << std::endl;
 
         // Create and register the ligand model
-        RbtModelPtr spLigand = prmFactory.CreateLigand(spMdlFileSource);
+        ModelPtr spLigand = prmFactory.CreateLigand(spMdlFileSource);
         std::string strMolName = spLigand->GetName();
         spWS->SetLigand(spLigand);
         // Update any model coords from embedded chromosomes in the ligand file
@@ -539,8 +539,8 @@ int main(int argc, char *argv[]) {
               std::ostringstream histr;
               histr << strRunName << "_" << strMolName << nRec << "_his_"
                     << iRun << ".sd";
-              RbtMolecularFileSinkPtr spHistoryFileSink(
-                  new RbtMdlFileSink(histr.str(), spLigand));
+              MolecularFileSinkPtr spHistoryFileSink(
+                  new MdlFileSink(histr.str(), spLigand));
               spWS->SetHistorySink(spHistoryFileSink);
             }
             spWS->Run(); // Dock!
@@ -552,7 +552,7 @@ int main(int argc, char *argv[]) {
               spWS->Save();
             }
             iRun++;
-          } catch (RbtDockingError &e) {
+          } catch (DockingError &e) {
             std::cout << e << std::endl;
             nErrors++;
           }
@@ -565,7 +565,7 @@ int main(int argc, char *argv[]) {
                   << nErrors << " errors)" << std::endl;
       }
       // END OF TRY
-      catch (RbtLigandError &e) {
+      catch (LigandError &e) {
         std::cout << e << std::endl;
         bLigandError = true;
       }
@@ -648,8 +648,8 @@ int main(int argc, char *argv[]) {
 
     std::cout << std::endl << "END OF RUN" << std::endl;
     //    if (bOutput && flexRec) {
-    //      RbtMolecularFileSinkPtr spRecepSink(new
-    //      RbtCrdFileSink(strRunName+".crd",spReceptor));
+    //      MolecularFileSinkPtr spRecepSink(new
+    //      CrdFileSink(strRunName+".crd",spReceptor));
     //      spRecepSink->Render();
     //    }
     std::cout << std::endl;
@@ -664,7 +664,7 @@ int main(int argc, char *argv[]) {
   } catch (const cxxopts::OptionException &e) {
     std::cout << "Error parsing options: " << e.what() << std::endl;
     return 1;
-  } catch (RbtError &e) {
+  } catch (Error &e) {
     std::cout << e << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;

@@ -6,7 +6,7 @@ RECEPTOR_SEGMENT_NAME		P1KO           # Segment name for receptor in the above f
 RECEPTOR_MASSES_FILE		masses.rtf     # CHARMm file containing atom types
 RECEPTOR_FLEX			3.0
 SECTION MAPPER
-        SITE_MAPPER     RbtLigandSiteMapper
+        SITE_MAPPER     LigandSiteMapper
         VOL_INCR        0.0
         GRIDSTEP        0.5
         RADIUS          4.0
@@ -18,6 +18,6 @@ SECTION MAPPER
 END_SECTION
 # Restraints definition
 SECTION CAVITY
-        SCORING_FUNCTION        RbtCavityGridSF
+        SCORING_FUNCTION        CavityGridSF
         WEIGHT                  1.0
 END_SECTION	

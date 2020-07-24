@@ -2,13 +2,13 @@ RBT_PARAMETER_FILE_V1.00
 TITLE Simplex minimisation
 
 SECTION SCORE
-	INTER	RbtInterIdxSF.prm
-	INTRA	RbtIntraSF.prm
-	SYSTEM	RbtTargetSF.prm
+	INTER	InterIdxSF.prm
+	INTRA	IntraSF.prm
+	SYSTEM	TargetSF.prm
 END_SECTION
 
 SECTION SIMPLEX
-	TRANSFORM			RbtSimplexTransform
+	TRANSFORM			SimplexTransform
 	MAX_CALLS			200
 	NCYCLES				20
 	STOPPING_STEP_LENGTH		10e-4
@@ -18,5 +18,5 @@ SECTION SIMPLEX
 END_SECTION
 
 SECTION FINAL
-	TRANSFORM			RbtNullTransform
+	TRANSFORM			NullTransform
 END_SECTION

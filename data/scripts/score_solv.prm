@@ -2,11 +2,11 @@ RBT_PARAMETER_FILE_V1.00
 TITLE Score only (with SOLVATION)
 
 SECTION SCORE
-	INTER	RbtSolvIdxSF.prm
-	INTRA	RbtIntraSF.prm
- 	SYSTEM	RbtTargetSF.prm
+	INTER	SolvIdxSF.prm
+	INTRA	IntraSF.prm
+ 	SYSTEM	TargetSF.prm
 END_SECTION
 
 SECTION FINAL
-	TRANSFORM			RbtNullTransform
+	TRANSFORM			NullTransform
 END_SECTION

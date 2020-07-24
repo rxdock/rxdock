@@ -10,14 +10,14 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-// Calculates vdW grids for use by RbtVdwGridSF scoring function class
+// Calculates vdW grids for use by VdwGridSF scoring function class
 
-#include "RbtBiMolWorkSpace.h"
-#include "RbtPRMFactory.h"
-#include "RbtParameterFileSource.h"
-#include "RbtRealGrid.h"
-#include "RbtSFFactory.h"
-#include "RbtTriposAtomType.h"
+#include "BiMolWorkSpace.h"
+#include "PRMFactory.h"
+#include "ParameterFileSource.h"
+#include "RealGrid.h"
+#include "SFFactory.h"
+#include "TriposAtomType.h"
 #include <cstring>
 #include <fstream>
 #include <iomanip>
@@ -30,53 +30,53 @@ const std::string _ROOT_SF = "SCORE";
 
 // Creates list of probe models
 // NOTE: MUST BE IN ORDER OF ASCENDING RADII
-RbtModelList CreateProbes() {
-  RbtModelList probes;
-  RbtTriposAtomTypeList atomTypes;
-  atomTypes.push_back(RbtTriposAtomType::UNDEFINED);
-  atomTypes.push_back(RbtTriposAtomType::Br);
-  atomTypes.push_back(RbtTriposAtomType::C_cat);
-  atomTypes.push_back(RbtTriposAtomType::C_1);
-  atomTypes.push_back(RbtTriposAtomType::C_1_H1);
-  atomTypes.push_back(RbtTriposAtomType::C_2);
-  atomTypes.push_back(RbtTriposAtomType::C_2_H1);
-  atomTypes.push_back(RbtTriposAtomType::C_2_H2);
-  atomTypes.push_back(RbtTriposAtomType::C_3);
-  atomTypes.push_back(RbtTriposAtomType::C_3_H1);
-  atomTypes.push_back(RbtTriposAtomType::C_3_H2);
-  atomTypes.push_back(RbtTriposAtomType::C_3_H3);
-  atomTypes.push_back(RbtTriposAtomType::C_ar);
-  atomTypes.push_back(RbtTriposAtomType::C_ar_H1);
-  atomTypes.push_back(RbtTriposAtomType::Cl);
-  atomTypes.push_back(RbtTriposAtomType::F);
-  atomTypes.push_back(RbtTriposAtomType::H);
-  atomTypes.push_back(RbtTriposAtomType::H_P);
-  atomTypes.push_back(RbtTriposAtomType::I);
-  atomTypes.push_back(RbtTriposAtomType::N_1);
-  atomTypes.push_back(RbtTriposAtomType::N_2);
-  atomTypes.push_back(RbtTriposAtomType::N_3);
-  atomTypes.push_back(RbtTriposAtomType::N_4);
-  atomTypes.push_back(RbtTriposAtomType::N_am);
-  atomTypes.push_back(RbtTriposAtomType::N_ar);
-  atomTypes.push_back(RbtTriposAtomType::N_pl3);
-  atomTypes.push_back(RbtTriposAtomType::O_2);
-  atomTypes.push_back(RbtTriposAtomType::O_3);
-  atomTypes.push_back(RbtTriposAtomType::O_co2);
-  atomTypes.push_back(RbtTriposAtomType::P_3);
-  atomTypes.push_back(RbtTriposAtomType::S_2);
-  atomTypes.push_back(RbtTriposAtomType::S_3);
-  atomTypes.push_back(RbtTriposAtomType::S_o);
-  atomTypes.push_back(RbtTriposAtomType::S_o2);
-  for (RbtTriposAtomTypeListConstIter iter = atomTypes.begin();
+ModelList CreateProbes() {
+  ModelList probes;
+  TriposAtomTypeList atomTypes;
+  atomTypes.push_back(TriposAtomType::UNDEFINED);
+  atomTypes.push_back(TriposAtomType::Br);
+  atomTypes.push_back(TriposAtomType::C_cat);
+  atomTypes.push_back(TriposAtomType::C_1);
+  atomTypes.push_back(TriposAtomType::C_1_H1);
+  atomTypes.push_back(TriposAtomType::C_2);
+  atomTypes.push_back(TriposAtomType::C_2_H1);
+  atomTypes.push_back(TriposAtomType::C_2_H2);
+  atomTypes.push_back(TriposAtomType::C_3);
+  atomTypes.push_back(TriposAtomType::C_3_H1);
+  atomTypes.push_back(TriposAtomType::C_3_H2);
+  atomTypes.push_back(TriposAtomType::C_3_H3);
+  atomTypes.push_back(TriposAtomType::C_ar);
+  atomTypes.push_back(TriposAtomType::C_ar_H1);
+  atomTypes.push_back(TriposAtomType::Cl);
+  atomTypes.push_back(TriposAtomType::F);
+  atomTypes.push_back(TriposAtomType::H);
+  atomTypes.push_back(TriposAtomType::H_P);
+  atomTypes.push_back(TriposAtomType::I);
+  atomTypes.push_back(TriposAtomType::N_1);
+  atomTypes.push_back(TriposAtomType::N_2);
+  atomTypes.push_back(TriposAtomType::N_3);
+  atomTypes.push_back(TriposAtomType::N_4);
+  atomTypes.push_back(TriposAtomType::N_am);
+  atomTypes.push_back(TriposAtomType::N_ar);
+  atomTypes.push_back(TriposAtomType::N_pl3);
+  atomTypes.push_back(TriposAtomType::O_2);
+  atomTypes.push_back(TriposAtomType::O_3);
+  atomTypes.push_back(TriposAtomType::O_co2);
+  atomTypes.push_back(TriposAtomType::P_3);
+  atomTypes.push_back(TriposAtomType::S_2);
+  atomTypes.push_back(TriposAtomType::S_3);
+  atomTypes.push_back(TriposAtomType::S_o);
+  atomTypes.push_back(TriposAtomType::S_o2);
+  for (TriposAtomTypeListConstIter iter = atomTypes.begin();
        iter != atomTypes.end(); iter++) {
-    RbtAtomList atomList;
-    RbtBondList bondList;
-    RbtAtomPtr spAtom(new RbtAtom(1));
+    AtomList atomList;
+    BondList bondList;
+    AtomPtr spAtom(new Atom(1));
     spAtom->SetTriposType(*iter);
     spAtom->SetAtomicMass(
         12.0); // Mass is irrelevant as we are not rotating models around COM
     atomList.push_back(spAtom);
-    probes.push_back(new RbtModel(atomList, bondList));
+    probes.push_back(new Model(atomList, bondList));
   }
   return probes;
 }
@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
 
   try {
     // Create a bimolecular workspace
-    RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
+    BiMolWorkSpacePtr spWS(new BiMolWorkSpace());
     // Set the workspace name to the root of the receptor .prm filename
     std::vector<std::string> componentList =
         ConvertDelimitedStringToList(strReceptorPrmFile, ".");
@@ -169,19 +169,19 @@ int main(int argc, char *argv[]) {
     spWS->SetName(wsName);
 
     // Read the receptor parameter file
-    RbtParameterFileSourcePtr spRecepPrmSource(new RbtParameterFileSource(
-        GetRbtFileName("data/receptors", strReceptorPrmFile)));
+    ParameterFileSourcePtr spRecepPrmSource(new ParameterFileSource(
+        GetDataFileName("data/receptors", strReceptorPrmFile)));
     std::cout << std::endl
               << "RECEPTOR:" << std::endl
               << spRecepPrmSource->GetFileName() << std::endl
               << spRecepPrmSource->GetTitle() << std::endl;
 
     // Read the scoring function file
-    RbtParameterFileSourcePtr spSFSource(
-        new RbtParameterFileSource(GetRbtFileName("data/sf", strSFFile)));
-    RbtSFFactoryPtr spSFFactory(
-        new RbtSFFactory()); // Factory class for scoring functions
-    RbtSFAggPtr spSF(spSFFactory->CreateAggFromFile(
+    ParameterFileSourcePtr spSFSource(
+        new ParameterFileSource(GetDataFileName("data/sf", strSFFile)));
+    SFFactoryPtr spSFFactory(
+        new SFFactory()); // Factory class for scoring functions
+    SFAggPtr spSF(spSFFactory->CreateAggFromFile(
         spSFSource, _ROOT_SF)); // Root SF aggregate
 
     // Register the scoring function with the workspace
@@ -194,20 +194,20 @@ int main(int argc, char *argv[]) {
     // Create the receptor model from the file names in the receptor parameter
     // file
     spRecepPrmSource->SetSection();
-    RbtPRMFactory prmFactory(spRecepPrmSource);
-    RbtModelPtr spReceptor = prmFactory.CreateReceptor();
+    PRMFactory prmFactory(spRecepPrmSource);
+    ModelPtr spReceptor = prmFactory.CreateReceptor();
     // Trap multiple receptor conformations here: this SF does not support them
     // yet
     bool bEnsemble = (spReceptor->GetNumSavedCoords() > 1);
     if (bEnsemble) {
       std::string message(
           "rbcalcgrid does not support multiple receptor conformations yet");
-      throw RbtInvalidRequest(_WHERE_, message);
+      throw InvalidRequest(_WHERE_, message);
     }
 
     // Read docking site from file and register with workspace
     std::string strASFile = spWS->GetName() + ".as";
-    std::string strInputFile = GetRbtFileName("data/grids", strASFile);
+    std::string strInputFile = GetDataFileName("data/grids", strASFile);
     // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
 #if defined(__sgi) && !defined(__GNUC__)
     std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
@@ -215,7 +215,7 @@ int main(int argc, char *argv[]) {
     std::ifstream istr(strInputFile.c_str(),
                        std::ios_base::in | std::ios_base::binary);
 #endif
-    RbtDockingSitePtr spDS(new RbtDockingSite(istr));
+    DockingSitePtr spDS(new DockingSite(istr));
     istr.close();
     spWS->SetDockingSite(spDS);
 
@@ -226,21 +226,21 @@ int main(int argc, char *argv[]) {
               << (*spDS) << std::endl;
 
     // Create a grid covering the docking site, plus user-defined border
-    RbtCoord minCoord = spDS->GetMinCoord() - border;
-    RbtCoord maxCoord = spDS->GetMaxCoord() + border;
-    RbtVector recepExtent = maxCoord - minCoord;
-    RbtVector gridStep(gs, gs, gs);
+    Coord minCoord = spDS->GetMinCoord() - border;
+    Coord maxCoord = spDS->GetMaxCoord() + border;
+    Vector recepExtent = maxCoord - minCoord;
+    Vector gridStep(gs, gs, gs);
     Eigen::Vector3d nXYZ = recepExtent.xyz.array() / gridStep.xyz.array();
     unsigned int nX = static_cast<unsigned int>(nXYZ(0)) + 1;
     unsigned int nY = static_cast<unsigned int>(nXYZ(1)) + 1;
     unsigned int nZ = static_cast<unsigned int>(nXYZ(2)) + 1;
     std::cout << "Constructing grid of size " << nX << " x " << nY << " x "
               << nZ << std::endl;
-    RbtRealGridPtr spGrid(new RbtRealGrid(minCoord, gridStep, nX, nY, nZ));
+    RealGridPtr spGrid(new RealGrid(minCoord, gridStep, nX, nY, nZ));
     float *gridData = spGrid->GetGridData();
 
     // Create probes
-    RbtModelList probes = CreateProbes();
+    ModelList probes = CreateProbes();
 
     // Open output file
     std::string strOutputFile(spWS->GetName() + strSuffix);
@@ -252,8 +252,8 @@ int main(int argc, char *argv[]) {
                                                   std::ios_base::binary |
                                                   std::ios_base::trunc);
 #endif
-    // Write header string (RbtVdwGridSF)
-    const char *const header = "RbtVdwGridSF";
+    // Write header string (VdwGridSF)
+    const char *const header = "VdwGridSF";
     int length = strlen(header);
     WriteWithThrow(ostr, (const char *)&length, sizeof(length));
     WriteWithThrow(ostr, header, length);
@@ -262,15 +262,15 @@ int main(int argc, char *argv[]) {
     WriteWithThrow(ostr, (const char *)&nGrids, sizeof(nGrids));
 
     // Store regular pointers to avoid smart pointer dereferencing overheads
-    RbtRealGrid *pGrid(spGrid);
-    RbtSFAgg *pSF(spSF);
-    RbtTriposAtomType triposType;
+    RealGrid *pGrid(spGrid);
+    SFAgg *pSF(spSF);
+    TriposAtomType triposType;
     // Main loop over each probe model
-    for (RbtModelListConstIter mIter = probes.begin(); mIter != probes.end();
+    for (ModelListConstIter mIter = probes.begin(); mIter != probes.end();
          mIter++) {
-      RbtModelPtr spLigand(*mIter);
-      RbtAtom *pAtom = spLigand->GetAtomList().front();
-      RbtTriposAtomType::eType atomType = pAtom->GetTriposType();
+      ModelPtr spLigand(*mIter);
+      Atom *pAtom = spLigand->GetAtomList().front();
+      TriposAtomType::eType atomType = pAtom->GetTriposType();
       std::string strType = triposType.Type2Str(atomType);
       std::cout << "Atom type=" << strType << std::endl;
       // Register ligand with workspace
@@ -289,7 +289,7 @@ int main(int argc, char *argv[]) {
       pGrid->Write(ostr);
     }
     ostr.close();
-  } catch (RbtError &e) {
+  } catch (Error &e) {
     std::cout << e << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;

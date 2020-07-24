@@ -15,68 +15,66 @@
 #include <functional>
 #include <sstream>
 
-#include "RbtMdlFileSink.h"
-#include "RbtMdlFileSource.h"
-#include "RbtModel.h"
-#include "RbtModelError.h"
+#include "MdlFileSink.h"
+#include "MdlFileSource.h"
+#include "Model.h"
+#include "ModelError.h"
 
 using namespace rxdock;
 
 namespace rxdock {
 
-typedef std::vector<RbtCoordList> RbtCoordListList;
-typedef RbtCoordListList::iterator RbtCoordListListIter;
-typedef RbtCoordListList::const_iterator RbtCoordListListConstIter;
+typedef std::vector<CoordList> CoordListList;
+typedef CoordListList::iterator CoordListListIter;
+typedef CoordListList::const_iterator CoordListListConstIter;
 
 // Struct for holding symmetric bond params
-class RbtSymBond {
+class SymBond {
 public:
-  RbtSymBond(RbtBondPtr bond, int n, bool swap)
-      : m_bond(bond), m_n(n), m_swap(swap) {
+  SymBond(BondPtr bond, int n, bool swap) : m_bond(bond), m_n(n), m_swap(swap) {
     m_dih = (m_n > 0) ? 360.0 / m_n : 360.0;
   }
-  RbtBondPtr m_bond; // The smart pointer to the bond itself
-  int m_n;           // The symmetry operator (n-fold rotation)
-  bool m_swap;       // false = spin atom 2 in bond; true = spin atom 1 in bond
-  double m_dih;      // The dihedral step (360/n)
+  BondPtr m_bond; // The smart pointer to the bond itself
+  int m_n;        // The symmetry operator (n-fold rotation)
+  bool m_swap;    // false = spin atom 2 in bond; true = spin atom 1 in bond
+  double m_dih;   // The dihedral step (360/n)
 };
 
-typedef SmartPtr<RbtSymBond> RbtSymBondPtr;
-typedef std::vector<RbtSymBondPtr> RbtSymBondList;
-typedef RbtSymBondList::iterator RbtSymBondListIter;
-typedef RbtSymBondList::const_iterator RbtSymBondListConstIter;
+typedef SmartPtr<SymBond> SymBondPtr;
+typedef std::vector<SymBondPtr> SymBondList;
+typedef SymBondList::iterator SymBondListIter;
+typedef SymBondList::const_iterator SymBondListConstIter;
 
-// Class to enumerate all symmetry-related coordinate sets for a RbtModel
+// Class to enumerate all symmetry-related coordinate sets for a Model
 class EnumerateSymCoords {
 public:
-  EnumerateSymCoords(RbtModelPtr spModel);
+  EnumerateSymCoords(ModelPtr spModel);
   // Main method to get the sym coords
-  void GetSymCoords(RbtCoordListList &cll);
+  void GetSymCoords(CoordListList &cll);
 
 private:
   void Setup();
   // Recursive operator to traverse the sym bond list
-  void operator()(RbtSymBondListConstIter symIter, RbtCoordListList &cll);
+  void operator()(SymBondListConstIter symIter, CoordListList &cll);
 
-  RbtModelPtr m_spModel;
-  RbtCoordListList m_cll;
-  RbtSymBondList m_symBondList;
-  RbtAtomList m_heavyAtomList;
-  RbtMolecularFileSinkPtr m_sink;
+  ModelPtr m_spModel;
+  CoordListList m_cll;
+  SymBondList m_symBondList;
+  AtomList m_heavyAtomList;
+  MolecularFileSinkPtr m_sink;
 };
 
-EnumerateSymCoords::EnumerateSymCoords(RbtModelPtr spModel)
-    : m_spModel(spModel) {
+EnumerateSymCoords::EnumerateSymCoords(ModelPtr spModel) : m_spModel(spModel) {
   Setup();
-  m_sink = new RbtMdlFileSink("rmsd_ref_sym.sd", m_spModel);
+  m_sink = new MdlFileSink("rmsd_ref_sym.sd", m_spModel);
 }
 
-void EnumerateSymCoords::operator()(RbtSymBondListConstIter symIter,
-                                    RbtCoordListList &cll) {
+void EnumerateSymCoords::operator()(SymBondListConstIter symIter,
+                                    CoordListList &cll) {
   // If we are not at the end of the sym bond list, then spin the current bond
   // At each dihedral step, recursively spin all remaining sym bonds
   if (symIter != m_symBondList.end()) {
-    RbtSymBondPtr spSymBond = *symIter;
+    SymBondPtr spSymBond = *symIter;
     for (int i = 0; i < spSymBond->m_n; i++) {
       m_spModel->RotateBond(spSymBond->m_bond, spSymBond->m_dih,
                             spSymBond->m_swap);
@@ -86,7 +84,7 @@ void EnumerateSymCoords::operator()(RbtSymBondListConstIter symIter,
   // Once we get to the end of the sym bond list, append the conformation to the
   // ref coord list
   else {
-    RbtCoordList coords;
+    CoordList coords;
     GetCoordList(m_heavyAtomList, coords);
     cll.push_back(coords);
     m_sink->Render();
@@ -95,7 +93,7 @@ void EnumerateSymCoords::operator()(RbtSymBondListConstIter symIter,
 }
 
 // Main public method to enumerate the ref coords for the model
-void EnumerateSymCoords::GetSymCoords(RbtCoordListList &cll) {
+void EnumerateSymCoords::GetSymCoords(CoordListList &cll) {
   cll.clear();
   (*this)(m_symBondList.begin(), cll);
 }
@@ -104,7 +102,7 @@ void EnumerateSymCoords::Setup() {
   m_heavyAtomList = GetAtomListWithPredicate(m_spModel->GetAtomList(),
                                              std::not1(isAtomicNo_eq(1)));
   m_symBondList.clear();
-  RbtBondList bondList = m_spModel->GetBondList();
+  BondList bondList = m_spModel->GetBondList();
   std::vector<std::string> symBonds =
       m_spModel->GetDataValue("SYMMETRIC_BONDS");
   for (std::vector<std::string>::const_iterator iter = symBonds.begin();
@@ -116,11 +114,11 @@ void EnumerateSymCoords::Setup() {
     istr >> atomId1 >> atomId2 >> nSym;
     bool bMatch = false;
     // Find the bond which matches these two atom IDs
-    for (RbtBondListConstIter bIter = bondList.begin();
+    for (BondListConstIter bIter = bondList.begin();
          bIter != bondList.end() && !bMatch; bIter++) {
       if (((*bIter)->GetAtom1Ptr()->GetAtomId() == atomId1) &&
           ((*bIter)->GetAtom2Ptr()->GetAtomId() == atomId2)) {
-        RbtSymBondPtr spSymBond(new RbtSymBond(*bIter, nSym, false));
+        SymBondPtr spSymBond(new SymBond(*bIter, nSym, false));
         m_symBondList.push_back(spSymBond);
         bMatch = true;
 #ifdef _DEBUG
@@ -130,7 +128,7 @@ void EnumerateSymCoords::Setup() {
 #endif //_DEBUG
       } else if (((*bIter)->GetAtom1Ptr()->GetAtomId() == atomId2) &&
                  ((*bIter)->GetAtom2Ptr()->GetAtomId() == atomId1)) {
-        RbtSymBondPtr spSymBond(new RbtSymBond(*bIter, nSym, true));
+        SymBondPtr spSymBond(new SymBond(*bIter, nSym, true));
         m_symBondList.push_back(spSymBond);
         bMatch = true;
 #ifdef _DEBUG
@@ -148,7 +146,7 @@ void EnumerateSymCoords::Setup() {
 }
 
 // RMSD calculation between two coordinate lists
-double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
+double rmsd(const CoordList &rc, const CoordList &c) {
   unsigned int nCoords = rc.size();
   if (c.size() != nCoords) {
     return 0.0;
@@ -208,15 +206,15 @@ int main(int argc, char *argv[]) {
   double minScore(9999.9);
 
   try {
-    RbtMolecularFileSourcePtr spRefFileSource(new RbtMdlFileSource(
-        GetRbtFileName("data/ligands", strRefSDFile), false, false, true));
+    MolecularFileSourcePtr spRefFileSource(new MdlFileSource(
+        GetDataFileName("data/ligands", strRefSDFile), false, false, true));
     // DM 16 June 2006 - remove any solvent fragments from reference
     // The largest fragment in each SD record always has segment name="H"
     // for reasons lost in the mists of rDock history
     spRefFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
     // Get reference ligand (first record)
-    RbtModelPtr spRefModel(new RbtModel(spRefFileSource));
-    RbtCoordListList cll;
+    ModelPtr spRefModel(new Model(spRefFileSource));
+    CoordListList cll;
     EnumerateSymCoords symEnumerator(spRefModel);
     symEnumerator.GetSymCoords(cll);
     unsigned int nCoords = cll.front().size();
@@ -230,24 +228,24 @@ int main(int argc, char *argv[]) {
     ///////////////////////////////////
     // MAIN LOOP OVER LIGAND RECORDS
     ///////////////////////////////////
-    RbtMolecularFileSourcePtr spMdlFileSource(new RbtMdlFileSource(
-        GetRbtFileName("data/ligands", strInputSDFile), false, false, true));
-    RbtMolecularFileSinkPtr spMdlFileSink;
+    MolecularFileSourcePtr spMdlFileSource(new MdlFileSource(
+        GetDataFileName("data/ligands", strInputSDFile), false, false, true));
+    MolecularFileSinkPtr spMdlFileSink;
     if (bOutput) {
-      spMdlFileSink = new RbtMdlFileSink(strOutputSDFile, RbtModelPtr());
+      spMdlFileSink = new MdlFileSink(strOutputSDFile, ModelPtr());
     }
-    RbtModelList previousModels;
+    ModelList previousModels;
     for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
-      RbtError molStatus = spMdlFileSource->Status();
+      Error molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
         std::cout << molStatus << std::endl;
         continue;
       }
       // DM 16 June 2006 - remove any solvent fragments from each record
       spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
-      RbtModelPtr spModel(new RbtModel(spMdlFileSource));
-      RbtCoordList coords;
+      ModelPtr spModel(new Model(spMdlFileSource));
+      CoordList coords;
       GetCoordList(GetAtomListWithPredicate(spModel->GetAtomList(),
                                             std::not1(isAtomicNo_eq(1))),
                    coords);
@@ -255,7 +253,7 @@ int main(int argc, char *argv[]) {
       if (coords.size() ==
           nCoords) { // Only calculate RMSD if atom count is same as reference
         double rms(9999.9);
-        for (RbtCoordListListConstIter cIter = cll.begin(); cIter != cll.end();
+        for (CoordListListConstIter cIter = cll.begin(); cIter != cll.end();
              cIter++) {
           double rms1 = rmsd(*cIter, coords);
           // std::cout << "\tRMSD = " << rms1 << std::endl;
@@ -275,7 +273,7 @@ int main(int argc, char *argv[]) {
         if (bRemoveDups) {
           for (unsigned int i = 0; i < previousModels.size() && bIsUnique;
                i++) {
-            RbtCoordList prevCoords;
+            CoordList prevCoords;
             GetCoordList(
                 GetAtomListWithPredicate(previousModels[i]->GetAtomList(),
                                          std::not1(isAtomicNo_eq(1))),
@@ -323,7 +321,7 @@ int main(int argc, char *argv[]) {
     // double zVar = zMean2 / zTot - (zMean * zMean);
     // std::cout << "zRMSD," << zTot << "," << zMean << "," << std::sqrt(zVar)
     // << std::endl;
-  } catch (RbtError &e) {
+  } catch (Error &e) {
     std::cout << e << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;

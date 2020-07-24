@@ -22,7 +22,7 @@ SECTION SOLVENT
 END_SECTION
 
 SECTION MAPPER
-        SITE_MAPPER RbtLigandSiteMapper
+        SITE_MAPPER LigandSiteMapper
         VOL_INCR 0.0
         GRIDSTEP 0.5
         RADIUS 6.0
@@ -34,6 +34,6 @@ SECTION MAPPER
 END_SECTION
 
 SECTION CAVITY
-        SCORING_FUNCTION        RbtCavityGridSF
+        SCORING_FUNCTION        CavityGridSF
         WEIGHT                  1.0
 END_SECTION

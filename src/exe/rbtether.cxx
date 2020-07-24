@@ -16,18 +16,18 @@
 #include <iomanip>
 #include <sstream>
 
-#include "RbtBiMolWorkSpace.h"
-#include "RbtMdlFileSink.h"
-#include "RbtMdlFileSource.h"
-#include "RbtPRMFactory.h"
-#include "RbtParameterFileSource.h"
-#include "RbtSmarts.h"
+#include "BiMolWorkSpace.h"
+#include "MdlFileSink.h"
+#include "MdlFileSource.h"
+#include "PRMFactory.h"
+#include "ParameterFileSource.h"
+#include "Smarts.h"
 
 using namespace rxdock;
 
 namespace rxdock {
 
-void print_atoms(RbtAtomList &atoms, std::ostringstream &ost);
+void print_atoms(AtomList &atoms, std::ostringstream &ost);
 
 } // namespace rxdock
 
@@ -131,11 +131,11 @@ int main(int argc, char *argv[]) {
 
   try {
     // Read the reference SD file
-    RbtMolecularFileSourcePtr spReferenceSD(new RbtMdlFileSource(
-        strReferenceSDFile, bPosIonise, bNegIonise, bImplH));
-    RbtModelPtr spReferenceMdl(new RbtModel(spReferenceSD));
+    MolecularFileSourcePtr spReferenceSD(
+        new MdlFileSource(strReferenceSDFile, bPosIonise, bNegIonise, bImplH));
+    ModelPtr spReferenceMdl(new Model(spReferenceSD));
     std::string strSmiles;
-    RbtAtomListList tetherAtoms =
+    AtomListList tetherAtoms =
         DT::QueryModel(spReferenceMdl, strQuery, strSmiles);
     std::cout << std::endl
               << "REFERENCE SD FILE: " << strReferenceSDFile << std::endl;
@@ -147,10 +147,10 @@ int main(int argc, char *argv[]) {
     }
     std::cout << "SMILES: " << strSmiles << std::endl;
     std::cout << "SMARTS: " << strQuery << std::endl;
-    for (RbtAtomListListIter alli = tetherAtoms.begin();
-         alli != tetherAtoms.end(); alli++) {
+    for (AtomListListIter alli = tetherAtoms.begin(); alli != tetherAtoms.end();
+         alli++) {
       std::cout << "Path: ";
-      for (RbtAtomListIter ali = alli->begin(); ali != alli->end(); ali++) {
+      for (AtomListIter ali = alli->begin(); ali != alli->end(); ali++) {
         std::cout << (*ali)->GetName() << "\t";
       }
       std::cout << std::endl;
@@ -161,11 +161,11 @@ int main(int argc, char *argv[]) {
       std::exit(0);
     }
     if (tetherAtoms.empty()) {
-      throw RbtError(_WHERE_, "SMARTS query should have at least one match in "
-                              "the reference SD file");
+      throw Error(_WHERE_, "SMARTS query should have at least one match in "
+                           "the reference SD file");
     }
     if (tetherAtoms.size() > 1) {
-      // throw RbtError(_WHERE_,
+      // throw Error(_WHERE_,
       std::cout << "More than one SMARTS match found with the reference SD file"
                 << std::endl;
       std::cout << "Will only tether to the first matching path..."
@@ -175,8 +175,8 @@ int main(int argc, char *argv[]) {
     // DM 1 Jul 2002 - calculate principal axes and COM of tethered atoms
     // for the reference structure. Use to prealign each ligand with the
     // reference.
-    RbtAtomList tetheredAtomList(*(tetherAtoms.begin()));
-    RbtPrincipalAxes refAxes = GetPrincipalAxesOfAtoms(tetheredAtomList);
+    AtomList tetheredAtomList(*(tetherAtoms.begin()));
+    PrincipalAxes refAxes = GetPrincipalAxesOfAtoms(tetheredAtomList);
 
     // Prepare the SD file sink for saving the docked conformations
     // for each ligand
@@ -184,9 +184,9 @@ int main(int argc, char *argv[]) {
       // writing down the reference sd file for the query
       std::ostringstream ost;
       print_atoms(tetheredAtomList, ost);
-      RbtVariant vTetherAtoms(ost.str());
-      RbtMolecularFileSinkPtr spRefMdlFileSink(
-          new RbtMdlFileSink(strRunName + "_reference.sd", spReferenceMdl));
+      Variant vTetherAtoms(ost.str());
+      MolecularFileSinkPtr spRefMdlFileSink(
+          new MdlFileSink(strRunName + "_reference.sd", spReferenceMdl));
       spReferenceMdl->SetDataValue("TETHERED ATOMS", vTetherAtoms);
       spRefMdlFileSink->Render();
     }
@@ -195,18 +195,18 @@ int main(int argc, char *argv[]) {
     // Variants describing the library version, exe version,
     // parameter file, and current directory
     // Will be stored in the ligand SD files
-    RbtVariant vLib(GetProduct() + "/" + GetProgramVersion());
-    RbtVariant vExe(strExeName + "/" + GetProgramVersion());
-    RbtVariant vDir(GetCurrentWorkingDirectory());
+    Variant vLib(GetProduct() + "/" + GetProgramVersion());
+    Variant vExe(strExeName + "/" + GetProgramVersion());
+    Variant vDir(GetCurrentWorkingDirectory());
     ///////////////////////////////////
     // MAIN LOOP OVER LIGAND RECORDS
     ///////////////////////////////////
     // DM 20 Apr 1999 - add explicit bPosIonise and bNegIonise flags
     // to MdlFileSource constructor
-    RbtMolecularFileSinkPtr spMdlFileSink(
-        new RbtMdlFileSink(strRunName + ".sd", RbtModelPtr()));
-    RbtMolecularFileSourcePtr spMdlFileSource(
-        new RbtMdlFileSource(strLigandMdlFile, bPosIonise, bNegIonise, bImplH));
+    MolecularFileSinkPtr spMdlFileSink(
+        new MdlFileSink(strRunName + ".sd", ModelPtr()));
+    MolecularFileSourcePtr spMdlFileSource(
+        new MdlFileSource(strLigandMdlFile, bPosIonise, bNegIonise, bImplH));
     for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
       std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
@@ -214,7 +214,7 @@ int main(int argc, char *argv[]) {
                 << "**************************************************"
                 << std::endl
                 << "RECORD #" << nRec << std::endl;
-      RbtError molStatus = spMdlFileSource->Status();
+      Error molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
         std::cout << std::endl
                   << molStatus << std::endl
@@ -235,7 +235,7 @@ int main(int argc, char *argv[]) {
                   << std::endl;
 
       // Create the ligand model
-      RbtModelPtr spLigand(new RbtModel(spMdlFileSource));
+      ModelPtr spLigand(new Model(spMdlFileSource));
       std::string strMolName = spLigand->GetName();
 
       tetherAtoms = DT::QueryModel(spLigand, strQuery, strSmiles);
@@ -245,11 +245,11 @@ int main(int argc, char *argv[]) {
         std::cout << "No SMARTS match, structure not output" << std::endl;
         continue; // ligand filtered out
       }
-      RbtAtomList ligAtomList = spLigand->GetAtomList();
-      for (RbtAtomListListIter alli = tetherAtoms.begin();
+      AtomList ligAtomList = spLigand->GetAtomList();
+      for (AtomListListIter alli = tetherAtoms.begin();
            alli != tetherAtoms.end(); alli++) {
         std::cout << "Path: ";
-        for (RbtAtomListIter ali = alli->begin(); ali != alli->end(); ali++) {
+        for (AtomListIter ali = alli->begin(); ali != alli->end(); ali++) {
           std::cout << (*ali)->GetName() << "\t";
         }
         std::cout << std::endl;
@@ -257,8 +257,8 @@ int main(int argc, char *argv[]) {
         // DM 1 Jul 2002 - prealign each ligand with the reference tether
         // Calculate quat needed to overlay principal axes of tethered fragment
         // with reference tether
-        RbtPrincipalAxes prAxes = GetPrincipalAxesOfAtoms(*alli);
-        RbtQuat q = GetQuatFromAlignAxes(prAxes, refAxes);
+        PrincipalAxes prAxes = GetPrincipalAxesOfAtoms(*alli);
+        Quat q = GetQuatFromAlignAxes(prAxes, refAxes);
         // Apply the transformation to the whole ligand
         // 1. Translate COM of tethered fragment to the origin
         // 2. Perform the rotation
@@ -273,7 +273,7 @@ int main(int argc, char *argv[]) {
 
         std::ostringstream ost;
         print_atoms(*alli, ost);
-        RbtVariant vTetherAtoms(ost.str());
+        Variant vTetherAtoms(ost.str());
         // DM 18 May 1999 - store run info in model data
         // Clear any previous Rbt.* data fields
         spLigand->ClearAllDataFields("Rbt.");
@@ -289,7 +289,7 @@ int main(int argc, char *argv[]) {
     // END OF MAIN LOOP OVER LIGAND RECORDS
     ////////////////////////////////////////////////////
     std::cout << std::endl << "END OF RUN" << std::endl;
-  } catch (RbtError &e) {
+  } catch (Error &e) {
     std::cout << e << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;
@@ -300,7 +300,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void rxdock::print_atoms(RbtAtomList &atoms, std::ostringstream &ost) {
+void rxdock::print_atoms(AtomList &atoms, std::ostringstream &ost) {
   ost.clear();
   for (int iter = 0; iter < atoms.size(); iter++) {
     ost << atoms[iter]->GetAtomId();

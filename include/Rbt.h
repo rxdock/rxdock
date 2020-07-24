@@ -17,7 +17,7 @@
 #include <map>
 #include <vector>
 
-#include "RbtError.h"
+#include "Error.h"
 
 #if defined _WIN32 || defined __CYGWIN__
 #ifdef __GNUC__
@@ -42,23 +42,23 @@
 
 namespace rxdock {
 
-// Segment is a named part of an RbtModel (usually an intact molecule)
-// For now, a segment is defined as just an RbtString
-// RbtSegmentMap holds a map of (key=unique segment name, value=number of atoms
+// Segment is a named part of an Model (usually an intact molecule)
+// For now, a segment is defined as just an String
+// SegmentMap holds a map of (key=unique segment name, value=number of atoms
 // in segment)
-typedef std::string RbtSegment;
-typedef std::map<RbtSegment, unsigned int> RbtSegmentMap;
-typedef RbtSegmentMap::iterator RbtSegmentMapIter;
-typedef RbtSegmentMap::const_iterator RbtSegmentMapConstIter;
+typedef std::string Segment;
+typedef std::map<Segment, unsigned int> SegmentMap;
+typedef SegmentMap::iterator SegmentMapIter;
+typedef SegmentMap::const_iterator SegmentMapConstIter;
 
 ////////////////////////////////////////////////////////////////
 // RESOURCE HANDLING FUNCTIONS
 //
-// GetRbtRoot - returns value of RBT_ROOT env variable
-std::string GetRbtRoot();
-// GetRbtHome - returns value of RBT_HOME env variable
+// GetRoot - returns value of RBT_ROOT env variable
+std::string GetRoot();
+// GetHome - returns value of RBT_HOME env variable
 //(or HOME if RBT_HOME is undefined)
-std::string GetRbtHome();
+std::string GetHome();
 // GetProgramName - returns program name
 RBTDLL_EXPORT std::string GetProgramName();
 // GetCopyright - returns legalese statement
@@ -67,7 +67,7 @@ std::string GetCopyright();
 RBTDLL_EXPORT std::string GetProgramVersion();
 // GetProduct - returns library product name
 RBTDLL_EXPORT std::string GetProduct();
-// GetTime - returns current time and date as an RbtString
+// GetTime - returns current time and date as an String
 std::string GetTime();
 // GetCurrentWorkingDirectory - returns current working directory
 RBTDLL_EXPORT std::string GetCurrentWorkingDirectory();
@@ -77,22 +77,22 @@ RBTDLL_EXPORT std::string GetCurrentWorkingDirectory();
 ////////////////////////////////////////////////////////////////
 // FILE/DIRECTORY HANDLING FUNCTIONS
 //
-// GetRbtDirName
+// GetDirName
 // Returns the full path to a subdirectory in the rDock directory structure
 //
 // For example, if RBT_ROOT environment variable is ~dave/ribodev/molmod/ribodev
-// then GetRbtDirName("data") would return ~dave/ribodev/molmod/ribodev/data/
+// then GetDirName("data") would return ~dave/ribodev/molmod/ribodev/data/
 //
-// If RBT_ROOT is not set, then GetRbtDirName returns ./ irrespective of the
+// If RBT_ROOT is not set, then GetDirName returns ./ irrespective of the
 // subdirectory asked for. Thus the fall-back position is that parameter files
 // are read from the current directory if RBT_ROOT is not defined.
-std::string GetRbtDirName(const std::string &strSubdir = "");
+std::string GetDirName(const std::string &strSubdir = "");
 
-// GetRbtFileName
-// As GetRbtDirName but returns the full path to a file in the rDock directory
+// GetDataFileName
+// As GetDirName but returns the full path to a file in the rDock directory
 // structure
-RBTDLL_EXPORT std::string GetRbtFileName(const std::string &strSubdir,
-                                         const std::string &strFile);
+RBTDLL_EXPORT std::string GetDataFileName(const std::string &strSubdir,
+                                          const std::string &strFile);
 
 // GetFileType
 // Returns the string following the last "." in the file name.
@@ -113,17 +113,16 @@ std::vector<std::string> GetDirList(const std::string &strDir,
 // CONVERSION ROUTINES
 //
 // Converts (comma)-delimited string of segment names to segment map
-RBTDLL_EXPORT RbtSegmentMap ConvertStringToSegmentMap(
+RBTDLL_EXPORT SegmentMap ConvertStringToSegmentMap(
     const std::string &strSegments, const std::string &strDelimiter = ",");
 // Converts segment map to (comma)-delimited string of segment names
-std::string ConvertSegmentMapToString(const RbtSegmentMap &segmentMap,
+std::string ConvertSegmentMapToString(const SegmentMap &segmentMap,
                                       const std::string &strDelimiter = ",");
 
 // Returns a segment map containing the members of map1 which are not in map2
 // I know, should really be a template so as to be more universal...one day
 // maybe. Or maybe there is already an STL algorithm for doing this.
-RbtSegmentMap SegmentDiffMap(const RbtSegmentMap &map1,
-                             const RbtSegmentMap &map2);
+SegmentMap SegmentDiffMap(const SegmentMap &map1, const SegmentMap &map2);
 
 // DM 30 Mar 1999
 // Converts (comma)-delimited string to string list (similar to

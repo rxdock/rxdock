@@ -2,11 +2,11 @@ RBT_PARAMETER_FILE_V1.00
 TITLE Score only (PMF)
 
 SECTION SCORE
-	INTER	RbtPMFIdxSF.prm
-	INTRA	RbtIntraSF.prm
- 	TARGET	RbtTargetSF.prm
+	INTER	PMFIdxSF.prm
+	INTRA	IntraSF.prm
+ 	TARGET	TargetSF.prm
 END_SECTION
 
 SECTION FINAL
-	TRANSFORM			RbtNullTransform
+	TRANSFORM			NullTransform
 END_SECTION

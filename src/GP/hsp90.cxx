@@ -10,18 +10,18 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "RbtDebug.h"
-#include "RbtGPFFHSP90.h"
-#include "RbtGPFitnessFunction.h"
-#include "RbtGPGenome.h"
-#include "RbtGPPopulation.h"
-#include "RbtParser.h"
+#include "Debug.h"
+#include "GPFFHSP90.h"
+#include "GPFitnessFunction.h"
+#include "GPGenome.h"
+#include "GPPopulation.h"
+#include "Parser.h"
 #include <cstdio>
 #include <fstream>
 
 int main(int argc, char *argv[]) {
   try {
-    RbtRand &theRand = GetRbtRand(); // ref to random number generator
+    Rand &theRand = GetRand(); // ref to random number generator
     if (argc > 1)
       theRand.Seed(std::atoi(argv[1]));
     else
@@ -32,11 +32,11 @@ int main(int argc, char *argv[]) {
     std::cin >> strInputFile;
     std::ifstream inputFile(strInputFile.c_str(), std::ios::in);
     if (!inputFile)
-      throw RbtError(_WHERE_, "can't open " + strInputFile);
-    RbtGPGenome::SetStructure(56, 3, 1, 1, 7, 1, 200, 100);
+      throw Error(_WHERE_, "can't open " + strInputFile);
+    GPGenome::SetStructure(56, 3, 1, 1, 7, 1, 200, 100);
     std::ifstream desc("descnames", std::ios::in);
-    RbtContextPtr contextp(new RbtCellContext(desc));
-    RbtGPFitnessFunctionPtr ff = new RbtGPFFHSP90(contextp);
+    ContextPtr contextp(new CellContext(desc));
+    GPFitnessFunctionPtr ff = new GPFFHSP90(contextp);
     std::cout << "Number of input sets: \n";
     int nInputSets;
     std::cin >> nInputSets;
@@ -75,14 +75,14 @@ int main(int argc, char *argv[]) {
     trainingFile.seekp(0, std::ios::beg);
     testFile.seekp(0, std::ios::beg);
 
-    RbtReturnTypeArray ittrain, sfttrain, ittest, sfttest;
+    ReturnTypeArray ittrain, sfttrain, ittest, sfttest;
     ff->ReadTables(trainingFile, ittrain, sfttrain);
     //    if (!testFile)
-    //      throw RbtError(_WHERE_, "can't open" + strTestFile);
+    //      throw Error(_WHERE_, "can't open" + strTestFile);
     ff->ReadTables(testFile, ittest, sfttest);
 
     double hitlimit = 0.0;
-    RbtGPPopulation p(5, 5, ff, ittrain, sfttrain);
+    GPPopulation p(5, 5, ff, ittrain, sfttrain);
     p.Initialise(hitlimit, false);
     double b = 0.0;
     int i = 0;
@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
               << ff->CalculateFitness(p.Best(), ittest, sfttest, false)
               << std::endl;
 
-  } catch (RbtError &e) {
+  } catch (Error &e) {
     std::cout << e << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;

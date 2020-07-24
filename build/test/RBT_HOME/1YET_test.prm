@@ -7,7 +7,7 @@ RECEPTOR_FLEX 3.0
 ### CAVITY DEFINITION: REFERENCE LIGAND METHOD
 ##################################################################
 SECTION MAPPER
-        SITE_MAPPER RbtLigandSiteMapper
+        SITE_MAPPER LigandSiteMapper
         REF_MOL 1YET_c.sd
         RADIUS 6.0
         SMALL_SPHERE 1.0
@@ -21,6 +21,6 @@ END_SECTION
 #CAVITY RESTRAINT PENALTY
 #################################
 SECTION CAVITY
-        SCORING_FUNCTION        RbtCavityGridSF
+        SCORING_FUNCTION        CavityGridSF
         WEIGHT                  1.0
 END_SECTION

@@ -3,7 +3,7 @@ TITLE vdw potential (4-8 functional form, ECUT=1.0)
 VERSION $Id: //depot/dev/client3/rdock/2013.1/data/sf/calcgrid_vdw1.prm#2 $
 
 SECTION VDW_1
-	SCORING_FUNCTION	RbtVdwIdxSF
+	SCORING_FUNCTION	VdwIdxSF
 	WEIGHT			1.0	# Free-energy weighting
 	USE_4_8			TRUE	# TRUE = Use 4-8 potential (Ref (16))
 	USE_TRIPOS		FALSE	# FALSE = IP/POL method for kij

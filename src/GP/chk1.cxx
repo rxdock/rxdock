@@ -10,45 +10,45 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "RbtDebug.h"
-#include "RbtGPFFCHK1.h"
-#include "RbtGPFitnessFunction.h"
-#include "RbtGPGenome.h"
-#include "RbtGPPopulation.h"
-#include "RbtParser.h"
+#include "Debug.h"
+#include "GPFFCHK1.h"
+#include "GPFitnessFunction.h"
+#include "GPGenome.h"
+#include "GPPopulation.h"
+#include "Parser.h"
 #include <cstdio>
 #include <fstream>
 
 int main(int argc, char *argv[]) {
   try {
-    RbtRand &theRand = GetRbtRand(); // ref to random number generator
+    Rand &theRand = GetRand(); // ref to random number generator
     if (argc > 1)
       theRand.Seed(std::atoi(argv[2]));
     else
       theRand.SeedFromRandomDevice();
     std::cout << "Seed: " << theRand.GetSeed() << std::endl;
-    RbtGPGenome::SetStructure(56, 3, 1, 1, 7, 1, 200, 100);
+    GPGenome::SetStructure(56, 3, 1, 1, 7, 1, 200, 100);
     ifstream desc("descnames", ios::in);
-    RbtContextPtr contextp(new RbtCellContext(desc));
-    RbtGPFitnessFunctionPtr ff = new RbtGPFFCHK1(contextp);
+    ContextPtr contextp(new CellContext(desc));
+    GPFitnessFunctionPtr ff = new GPFFCHK1(contextp);
     std::string strTrainingFile = argv[1];
     strTrainingFile += "_training.dat";
     fstream trainingFile(strTrainingFile.c_str(), ios::in);
     if (!trainingFile)
-      throw RbtError(_WHERE_, "can't open " + strTrainingFile);
+      throw Error(_WHERE_, "can't open " + strTrainingFile);
     std::string strTestFile = argv[1];
     strTestFile += "_testing.dat";
     fstream testFile(strTestFile.c_str(), ios::in);
     if (!testFile)
-      throw RbtError(_WHERE_, "can't open " + strTestFile);
-    RbtReturnTypeArray ittrain, sfttrain, ittest, sfttest;
+      throw Error(_WHERE_, "can't open " + strTestFile);
+    ReturnTypeArray ittrain, sfttrain, ittest, sfttest;
     ff->ReadTables(trainingFile, ittrain, sfttrain);
     //    if (!testFile)
-    //      throw RbtError(_WHERE_, "can't open" + strTestFile);
+    //      throw Error(_WHERE_, "can't open" + strTestFile);
     ff->ReadTables(testFile, ittest, sfttest);
 
     double hitlimit = 0.0;
-    RbtGPPopulation p(5, 5, ff, ittrain, sfttrain);
+    GPPopulation p(5, 5, ff, ittrain, sfttrain);
     p.Initialise(hitlimit, false);
     double b = 0.0, currentBest = 0.0;
     int i = 0, count;
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
               << ff->CalculateFitness(p.Best(), ittest, sfttest, 0.0, false)
               << std::endl;
 
-  } catch (RbtError &e) {
+  } catch (Error &e) {
     std::cout << e << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;

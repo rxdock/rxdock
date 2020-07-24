@@ -18,22 +18,22 @@
 
 #include <sstream>
 
-#include "RbtMdlFileSink.h"
-#include "RbtMdlFileSource.h"
-#include "RbtModel.h"
-#include "RbtModelError.h"
-#include "RbtSmarts.h"
+#include "MdlFileSink.h"
+#include "MdlFileSource.h"
+#include "Model.h"
+#include "ModelError.h"
+#include "Smarts.h"
 
 using namespace rxdock;
 
 namespace rxdock {
 
-typedef std::vector<RbtCoordList> RbtCoordListList;
-typedef RbtCoordListList::iterator RbtCoordListListIter;
-typedef RbtCoordListList::const_iterator RbtCoordListListConstIter;
+typedef std::vector<CoordList> CoordListList;
+typedef CoordListList::iterator CoordListListIter;
+typedef CoordListList::const_iterator CoordListListConstIter;
 
 // RMSD calculation between two coordinate lists
-double rmsd(const RbtCoordList &rc, const RbtCoordList &c) {
+double rmsd(const CoordList &rc, const CoordList &c) {
   int nCoords = rc.size();
   if (c.size() != nCoords) {
     return 0.0;
@@ -85,18 +85,18 @@ int main(int argc, char *argv[]) {
   std::vector<double> rmsVec;
 
   try {
-    RbtMolecularFileSourcePtr spRefFileSource(new RbtMdlFileSource(
-        GetRbtFileName("data/ligands", strRefSDFile), false, false, true));
+    MolecularFileSourcePtr spRefFileSource(new MdlFileSource(
+        GetDataFileName("data/ligands", strRefSDFile), false, false, true));
     // DM 16 June 2006 - remove any solvent fragments from reference
     // The largest fragment in each SD record always has segment name="H"
     // for reasons lost in the mists of rDock history
     spRefFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
     // Get reference ligand (first record)
-    RbtModelPtr spRefModel(new RbtModel(spRefFileSource));
-    RbtCoordListList cll;
+    ModelPtr spRefModel(new Model(spRefFileSource));
+    CoordListList cll;
     std::string strSmarts;
     std::string strSmiles;
-    RbtAtomListList pathset = DT::QueryModel(spRefModel, strSmarts, strSmiles);
+    AtomListList pathset = DT::QueryModel(spRefModel, strSmarts, strSmiles);
     std::cout << "Reference SMILES: " << strSmiles << std::endl;
     std::cout << "Paths found = " << pathset.size() << std::endl;
     if (pathset.empty()) {
@@ -107,9 +107,9 @@ int main(int argc, char *argv[]) {
     // file does not have to be consistent with that in the reference structure
     // Also allows the reference to be a substructural fragment of each ligand
     strSmarts = strSmiles;
-    for (RbtAtomListListConstIter iter = pathset.begin(); iter != pathset.end();
+    for (AtomListListConstIter iter = pathset.begin(); iter != pathset.end();
          iter++) {
-      RbtCoordList coords;
+      CoordList coords;
       GetCoordList(*iter, coords);
       cll.push_back(coords);
     }
@@ -124,23 +124,23 @@ int main(int argc, char *argv[]) {
     ///////////////////////////////////
     // MAIN LOOP OVER LIGAND RECORDS
     ///////////////////////////////////
-    RbtMolecularFileSourcePtr spMdlFileSource(new RbtMdlFileSource(
-        GetRbtFileName("data/ligands", strInputSDFile), false, false, true));
-    RbtMolecularFileSinkPtr spMdlFileSink;
+    MolecularFileSourcePtr spMdlFileSource(new MdlFileSource(
+        GetDataFileName("data/ligands", strInputSDFile), false, false, true));
+    MolecularFileSinkPtr spMdlFileSink;
     if (bOutput) {
-      spMdlFileSink = new RbtMdlFileSink(strOutputSDFile, RbtModelPtr());
+      spMdlFileSink = new MdlFileSink(strOutputSDFile, ModelPtr());
     }
     for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
-      RbtError molStatus = spMdlFileSource->Status();
+      Error molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
         std::cout << molStatus << std::endl;
         continue;
       }
       // DM 16 June 2006 - remove any solvent fragments from each record
       spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
-      RbtModelPtr spModel(new RbtModel(spMdlFileSource));
-      RbtAtomListList pathset1 = DT::QueryModel(spModel, strSmarts, strSmiles);
+      ModelPtr spModel(new Model(spMdlFileSource));
+      AtomListList pathset1 = DT::QueryModel(spModel, strSmarts, strSmiles);
       // std::cout << "SMILES: " << strSmiles << std::endl;
       // std::cout << "Paths found = " << pathset1.size() << std::endl;
       if (pathset1.empty()) {
@@ -149,13 +149,13 @@ int main(int argc, char *argv[]) {
       // we only need to retrieve the coordinate list for the first matching
       // atom numbering path as we have already stored all the alternative
       // numbering schemes for the reference structure
-      RbtCoordList coords;
+      CoordList coords;
       GetCoordList(pathset1.front(), coords);
 
       if (coords.size() ==
           nCoords) { // Only calculate RMSD if atom count is same as reference
         double rms(9999.9);
-        for (RbtCoordListListConstIter cIter = cll.begin(); cIter != cll.end();
+        for (CoordListListConstIter cIter = cll.begin(); cIter != cll.end();
              cIter++) {
           double rms1 = rmsd(*cIter, coords);
           // std::cout << "\tRMSD = " << rms1 << std::endl;
@@ -198,7 +198,7 @@ int main(int argc, char *argv[]) {
     }
     // std::cout << "zGood,zPartial,zBad = " << zGood << "," << zPartial << ","
     // << zBad << std::endl;
-  } catch (RbtError &e) {
+  } catch (Error &e) {
     std::cout << e << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;

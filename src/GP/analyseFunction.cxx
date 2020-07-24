@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "../inc/RbtGPGenome.h"
-#include "../inc/RbtGPPopulation.h"
-#include "../inc/RbtParser.h"
+#include "../inc/GPGenome.h"
+#include "../inc/GPPopulation.h"
+#include "../inc/Parser.h"
 #include <cstdio>
 #include <fstream>
 #include <sstream>
@@ -23,15 +23,15 @@ int main(int argc, char *argv[]) {
   std::cin >> gfile; */
   std::string gfile(argv[1]);
   std::ifstream gstr(gfile.c_str(), std::ios::in);
-  RbtGPGenome gen(gstr);
+  GPGenome gen(gstr);
   /*std::cout << "Names file: \n";
   std::string nfile;
   std::cin >> nfile;*/
   std::string nfile(argv[2]);
   std::ifstream nstr(nfile.c_str(), std::ios::in);
-  RbtParser p(gen.GetNIP(), gen.GetNIF(), gen.GetNN(), gen.GetNO());
-  RbtInt i = 1;
-  RbtInt pos = nstr.tellg();
+  Parser p(gen.GetNIP(), gen.GetNIF(), gen.GetNN(), gen.GetNO());
+  Int i = 1;
+  Int pos = nstr.tellg();
   while (i != EOF) {
     gen.GetChrom()->Clear();
     nstr.close();

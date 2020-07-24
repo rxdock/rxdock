@@ -15,11 +15,11 @@
 
 #include <gtest/gtest.h>
 
-#include "RbtBiMolWorkSpace.h"
-#include "RbtChrom.h"
-#include "RbtDockingSite.h"
-#include "RbtModel.h"
-#include "RbtSFAgg.h"
+#include "BiMolWorkSpace.h"
+#include "Chrom.h"
+#include "DockingSite.h"
+#include "Model.h"
+#include "SFAgg.h"
 
 namespace rxdock {
 
@@ -33,11 +33,11 @@ protected:
 
   // rdock helper methods
   // RMSD calculation between two coordinate lists
-  double rmsd(const RbtCoordList &rc, const RbtCoordList &c);
+  double rmsd(const CoordList &rc, const CoordList &c);
 
-  RbtAtomList m_atomList;           // All atoms in receptor, ligand and solvent
-  RbtBiMolWorkSpacePtr m_workSpace; // simple workspace
-  RbtSFAggPtr m_SF;                 // simple scoring function
+  AtomList m_atomList;           // All atoms in receptor, ligand and solvent
+  BiMolWorkSpacePtr m_workSpace; // simple workspace
+  SFAggPtr m_SF;                 // simple scoring function
 };
 
 } // namespace unittest

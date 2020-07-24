@@ -12,8 +12,8 @@
 
 // SD file dump, listing number of atoms, bonds, interaction centers etc
 
-#include "RbtMdlFileSink.h"
-#include "RbtMdlFileSource.h"
+#include "MdlFileSink.h"
+#include "MdlFileSource.h"
 #include <algorithm> //for min,max
 #include <functional>
 #include <iomanip>
@@ -22,7 +22,7 @@ using namespace rxdock;
 
 namespace rxdock {
 
-class isAtomNitroN : public std::function<bool(RbtAtomPtr)> {
+class isAtomNitroN : public std::function<bool(AtomPtr)> {
   // Useful predicates
   isFFType_eq bIsN_SP2P;
   isFFType_eq bIsO_SP2;
@@ -32,74 +32,74 @@ class isAtomNitroN : public std::function<bool(RbtAtomPtr)> {
 public:
   explicit isAtomNitroN()
       : bIsN_SP2P("N_SP2+"), bIsO_SP2("O_SP2"), bIsO_SP3M("O_SP3-") {}
-  bool operator()(RbtAtomPtr spAtom) const {
+  bool operator()(AtomPtr spAtom) const {
     if (!bIsN_SP2P(spAtom))
       return false;
-    RbtAtomList bondedAtomList = GetBondedAtomList(spAtom);
+    AtomList bondedAtomList = GetBondedAtomList(spAtom);
     return (GetNumAtomsWithPredicate(bondedAtomList, bIsO_SP2) == 1) &&
            (GetNumAtomsWithPredicate(bondedAtomList, bIsO_SP3M) == 1);
   }
 };
 
-void ListAtoms(const RbtAtomList &atomList, std::string strTitle,
+void ListAtoms(const AtomList &atomList, std::string strTitle,
                int nMaxToPrint = 20) {
   int nSize = atomList.size();
   int nToPrint = std::min(nMaxToPrint, nSize);
   std::cout << std::endl
             << "1st " << nToPrint << " " << strTitle << " (out of " << nSize
             << ")" << std::endl;
-  for (RbtAtomListConstIter iter = atomList.begin();
+  for (AtomListConstIter iter = atomList.begin();
        (iter != (atomList.begin() + nMaxToPrint)) && (iter != atomList.end());
        iter++)
     std::cout << (**iter) << std::endl;
 }
 
-void ListBonds(const RbtBondList &bondList, std::string strTitle,
+void ListBonds(const BondList &bondList, std::string strTitle,
                int nMaxToPrint = 20) {
   int nSize = bondList.size();
   int nToPrint = std::min(nMaxToPrint, nSize);
   std::cout << std::endl
             << "1st " << nToPrint << " " << strTitle << " (out of " << nSize
             << ")" << std::endl;
-  for (RbtBondListConstIter iter = bondList.begin();
+  for (BondListConstIter iter = bondList.begin();
        (iter != (bondList.begin() + nMaxToPrint)) && (iter != bondList.end());
        iter++)
     std::cout << (**iter) << std::endl;
 }
 
 // DM 7 Jun 1999 - set primary and secondary amide bonds to 180.0 deg
-void CheckAmideBonds(RbtModelPtr spModel) {
+void CheckAmideBonds(ModelPtr spModel) {
   // Useful predicates
   isFFType_eq bIsN_TRI("N_TRI");
   isFFType_eq bIsC_SP2("C_SP2");
   isFFType_eq bIsO_SP2("O_SP2");
   isAtomicNo_eq bIsH(1);
 
-  RbtBondList amideBondList =
+  BondList amideBondList =
       GetBondListWithPredicate(spModel->GetBondList(), isBondAmide());
   // DM 9 Oct 2000 - remove cyclic bonds from list
   amideBondList =
       GetBondListWithPredicate(amideBondList, std::not1(isBondCyclic()));
   int nAMIDE = amideBondList.size();
   std::cout << nAMIDE << " amide bonds:" << std::endl;
-  for (RbtBondListConstIter bIter = amideBondList.begin();
+  for (BondListConstIter bIter = amideBondList.begin();
        bIter != amideBondList.end(); bIter++) {
-    RbtAtomPtr spAtom2 = (*bIter)->GetAtom1Ptr();
-    RbtAtomPtr spAtom3 = (*bIter)->GetAtom2Ptr();
+    AtomPtr spAtom2 = (*bIter)->GetAtom1Ptr();
+    AtomPtr spAtom3 = (*bIter)->GetAtom2Ptr();
 
     // Find N and C
-    RbtAtomPtr spN = (bIsN_TRI(spAtom2)) ? spAtom2 : spAtom3;
-    RbtAtomPtr spC = (bIsC_SP2(spAtom2)) ? spAtom2 : spAtom3;
+    AtomPtr spN = (bIsN_TRI(spAtom2)) ? spAtom2 : spAtom3;
+    AtomPtr spC = (bIsC_SP2(spAtom2)) ? spAtom2 : spAtom3;
 
     // Find bonded O_SP2 and H (if any)
-    RbtAtomList bondedAtomsN = GetBondedAtomList(spN);
-    RbtAtomList bondedAtomsC = GetBondedAtomList(spC);
-    RbtAtomListIter oIter = FindAtomInList(bondedAtomsC, bIsO_SP2);
-    RbtAtomListIter hIter = FindAtomInList(bondedAtomsN, bIsH);
+    AtomList bondedAtomsN = GetBondedAtomList(spN);
+    AtomList bondedAtomsC = GetBondedAtomList(spC);
+    AtomListIter oIter = FindAtomInList(bondedAtomsC, bIsO_SP2);
+    AtomListIter hIter = FindAtomInList(bondedAtomsN, bIsH);
 
     if ((oIter != bondedAtomsC.end()) && (hIter != bondedAtomsN.end())) {
-      RbtAtomPtr spH = (*hIter);
-      RbtAtomPtr spO = (*oIter);
+      AtomPtr spH = (*hIter);
+      AtomPtr spO = (*oIter);
       double phi = BondDihedral(spH, spN, spC, spO);
       std::cout << spH->GetName() << "(" << spH->GetFFType() << ") - "
                 << spN->GetName() << "(" << spN->GetFFType() << ") - "
@@ -223,22 +223,22 @@ int main(int argc, char *argv[]) {
   try {
     // Prepare the SD file sink for saving the autoionised structures for each
     // ligand
-    RbtMolecularFileSinkPtr spMdlFileSink;
+    MolecularFileSinkPtr spMdlFileSink;
     if (bWriteLigand)
-      spMdlFileSink = RbtMolecularFileSinkPtr(
-          new RbtMdlFileSink(strOutputSDFile, RbtModelPtr()));
+      spMdlFileSink =
+          MolecularFileSinkPtr(new MdlFileSink(strOutputSDFile, ModelPtr()));
 
     ///////////////////////////////////
     // MAIN LOOP OVER LIGAND RECORDS
     ///////////////////////////////////
-    RbtMolecularFileSourcePtr spMdlFileSource(
-        new RbtMdlFileSource(strInputSDFile, bPosIonise, bNegIonise, bImplH));
+    MolecularFileSourcePtr spMdlFileSource(
+        new MdlFileSource(strInputSDFile, bPosIonise, bNegIonise, bImplH));
     // DM 4 June 1999 - only read the largest segment
     // spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
 
     for (int nRec = 1; spMdlFileSource->FileStatusOK();
          spMdlFileSource->NextRecord(), nRec++) {
-      RbtError molStatus = spMdlFileSource->Status();
+      Error molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
         std::cout << molStatus << std::endl;
         continue;
@@ -249,16 +249,16 @@ int main(int argc, char *argv[]) {
       spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
 
       // Create the ligand model
-      RbtModelPtr spModel(new RbtModel(spMdlFileSource));
+      ModelPtr spModel(new Model(spMdlFileSource));
       std::string strModelName = spModel->GetTitleList()[0];
       if (strModelName.empty())
         strModelName = spModel->GetName();
 
       if (bList) {
-        RbtAtomList atomList = spModel->GetAtomList();
+        AtomList atomList = spModel->GetAtomList();
         std::cout << std::endl << "Model = " << spModel->GetName() << std::endl;
-        for (RbtAtomListConstIter iter = atomList.begin();
-             iter != atomList.end(); iter++) {
+        for (AtomListConstIter iter = atomList.begin(); iter != atomList.end();
+             iter++) {
           std::cout << (**iter) << std::endl;
         }
         // continue;
@@ -271,10 +271,10 @@ int main(int argc, char *argv[]) {
       int nAtoms = spModel->GetNumAtoms();
 
       int nBonds = spModel->GetNumBonds();
-      RbtAtomList atomList = spModel->GetAtomList();
-      RbtBondList bondList = spModel->GetBondList();
+      AtomList atomList = spModel->GetAtomList();
+      BondList bondList = spModel->GetBondList();
 
-      isHybridState_eq bIsArom(RbtAtom::AROM);
+      isHybridState_eq bIsArom(Atom::AROM);
       int nLipoC = GetNumAtomsWithPredicate(atomList, isAtomLipophilic());
       int nAromAtoms =
           GetNumAtomsWithPredicate(atomList, bIsArom); //# aromatic atoms
@@ -287,7 +287,7 @@ int main(int argc, char *argv[]) {
       double posChg(0.0);
       double negChg(0.0);
 
-      for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
+      for (AtomListConstIter iter = atomList.begin(); iter != atomList.end();
            iter++) {
         double chg = (*iter)->GetGroupCharge();
         if (chg > 0.0) {
@@ -298,15 +298,15 @@ int main(int argc, char *argv[]) {
       }
 
       // Count aromatic rings
-      RbtAtomListList ringLists = spModel->GetRingAtomLists();
+      AtomListList ringLists = spModel->GetRingAtomLists();
       int nAromRings(0); //# aromatic rings
-      for (RbtAtomListListIter rIter = ringLists.begin();
-           rIter != ringLists.end(); rIter++) {
+      for (AtomListListIter rIter = ringLists.begin(); rIter != ringLists.end();
+           rIter++) {
         if (GetNumAtomsWithPredicate(*rIter, isPiAtom()) == (*rIter).size())
           nAromRings++;
       }
 
-      RbtBondList rotatableBondList =
+      BondList rotatableBondList =
           GetBondListWithPredicate(bondList, isBondRotatable());
       // DM 24 Sep 2001 - remove bonds to terminal NH3+
       rotatableBondList =
@@ -318,10 +318,10 @@ int main(int argc, char *argv[]) {
 
       if (bList) {
         std::cout << nROT << " rotatable bonds:" << std::endl;
-        for (RbtBondListConstIter bIter = rotatableBondList.begin();
+        for (BondListConstIter bIter = rotatableBondList.begin();
              bIter != rotatableBondList.end(); bIter++) {
-          RbtAtomPtr spAtom1 = (*bIter)->GetAtom1Ptr();
-          RbtAtomPtr spAtom2 = (*bIter)->GetAtom2Ptr();
+          AtomPtr spAtom1 = (*bIter)->GetAtom1Ptr();
+          AtomPtr spAtom2 = (*bIter)->GetAtom2Ptr();
           std::cout << spAtom1->GetName() << "(" << spAtom1->GetFFType()
                     << ") - " << spAtom2->GetName() << "("
                     << spAtom2->GetFFType() << ")" << std::endl;
@@ -350,35 +350,32 @@ int main(int argc, char *argv[]) {
         // DM 11 Nov 1999 Set Data fields for mol.wt, #interaction centers etc
         // NB Molecular weight is calculated for the fragment actually read
         // i.e. largest fragment present if multifragment record.
-        spModel->SetDataValue("LIG_MW", RbtVariant(dMolWt));
-        spModel->SetDataValue("LIG_NATOMS", RbtVariant(nAtoms));
-        spModel->SetDataValue("LIG_NLIPOC", RbtVariant(nLipoC));
-        spModel->SetDataValue("LIG_NAROMATOMS", RbtVariant(nAromAtoms));
-        spModel->SetDataValue("LIG_NAROMRINGS", RbtVariant(nAromRings));
-        spModel->SetDataValue("LIG_NHBD", RbtVariant(nNHBD));
-        spModel->SetDataValue("LIG_NMETAL", RbtVariant(nMetal));
-        spModel->SetDataValue("LIG_NGUAN", RbtVariant(nGuan));
-        spModel->SetDataValue("LIG_NHBA", RbtVariant(nNHBA));
-        spModel->SetDataValue("LIG_NROT", RbtVariant(nROT));
+        spModel->SetDataValue("LIG_MW", Variant(dMolWt));
+        spModel->SetDataValue("LIG_NATOMS", Variant(nAtoms));
+        spModel->SetDataValue("LIG_NLIPOC", Variant(nLipoC));
+        spModel->SetDataValue("LIG_NAROMATOMS", Variant(nAromAtoms));
+        spModel->SetDataValue("LIG_NAROMRINGS", Variant(nAromRings));
+        spModel->SetDataValue("LIG_NHBD", Variant(nNHBD));
+        spModel->SetDataValue("LIG_NMETAL", Variant(nMetal));
+        spModel->SetDataValue("LIG_NGUAN", Variant(nGuan));
+        spModel->SetDataValue("LIG_NHBA", Variant(nNHBA));
+        spModel->SetDataValue("LIG_NROT", Variant(nROT));
 
         // Atom type percentages
         spModel->SetDataValue("LIG_PERC_LIPOC",
-                              RbtVariant(100.0 * nLipoC / nAtoms));
+                              Variant(100.0 * nLipoC / nAtoms));
         spModel->SetDataValue("LIG_PERC_AROMATOMS",
-                              RbtVariant(100.0 * nAromAtoms / nAtoms));
-        spModel->SetDataValue("LIG_PERC_HBD",
-                              RbtVariant(100.0 * nNHBD / nAtoms));
+                              Variant(100.0 * nAromAtoms / nAtoms));
+        spModel->SetDataValue("LIG_PERC_HBD", Variant(100.0 * nNHBD / nAtoms));
         spModel->SetDataValue("LIG_PERC_METAL",
-                              RbtVariant(100.0 * nMetal / nAtoms));
-        spModel->SetDataValue("LIG_PERC_GUAN",
-                              RbtVariant(100.0 * nGuan / nAtoms));
-        spModel->SetDataValue("LIG_PERC_HBA",
-                              RbtVariant(100.0 * nNHBA / nAtoms));
+                              Variant(100.0 * nMetal / nAtoms));
+        spModel->SetDataValue("LIG_PERC_GUAN", Variant(100.0 * nGuan / nAtoms));
+        spModel->SetDataValue("LIG_PERC_HBA", Variant(100.0 * nNHBA / nAtoms));
 
         // Charges
-        spModel->SetDataValue("LIG_POS_CHG", RbtVariant(posChg));
-        spModel->SetDataValue("LIG_NEG_CHG", RbtVariant(negChg));
-        spModel->SetDataValue("LIG_TOT_CHG", RbtVariant(posChg + negChg));
+        spModel->SetDataValue("LIG_POS_CHG", Variant(posChg));
+        spModel->SetDataValue("LIG_NEG_CHG", Variant(negChg));
+        spModel->SetDataValue("LIG_TOT_CHG", Variant(posChg + negChg));
 
         spMdlFileSink->SetModel(spModel);
         spMdlFileSink->Render();
@@ -386,7 +383,7 @@ int main(int argc, char *argv[]) {
     }
     // END OF MAIN LOOP OVER LIGAND RECORDS
     ////////////////////////////////////////////////////
-  } catch (RbtError &e) {
+  } catch (Error &e) {
     std::cout << e << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;

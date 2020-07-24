@@ -16,13 +16,13 @@
 #include <cxxopts.hpp>
 #include <iomanip>
 
-#include "RbtBiMolWorkSpace.h"
-#include "RbtCrdFileSink.h"
-#include "RbtDockingSite.h"
-#include "RbtPRMFactory.h"
-#include "RbtParameterFileSource.h"
-#include "RbtPsfFileSink.h"
-#include "RbtSiteMapperFactory.h"
+#include "BiMolWorkSpace.h"
+#include "CrdFileSink.h"
+#include "DockingSite.h"
+#include "PRMFactory.h"
+#include "ParameterFileSource.h"
+#include "PsfFileSink.h"
+#include "SiteMapperFactory.h"
 
 using namespace rxdock;
 
@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
     std::cout.setf(std::ios_base::left, std::ios_base::adjustfield);
 
     // Create a bimolecular workspace
-    RbtBiMolWorkSpacePtr spWS(new RbtBiMolWorkSpace());
+    BiMolWorkSpacePtr spWS(new BiMolWorkSpace());
     // Set the workspace name to the root of the receptor .prm filename
     std::vector<std::string> componentList =
         ConvertDelimitedStringToList(strReceptorPrmFile, ".");
@@ -147,33 +147,33 @@ int main(int argc, char *argv[]) {
     spWS->SetName(wsName);
 
     // Read the protocol parameter file
-    RbtParameterFileSourcePtr spRecepPrmSource(new RbtParameterFileSource(
-        GetRbtFileName("data/receptors", strReceptorPrmFile)));
+    ParameterFileSourcePtr spRecepPrmSource(new ParameterFileSource(
+        GetDataFileName("data/receptors", strReceptorPrmFile)));
 
     // Create the receptor model from the file names in the parameter file
     spRecepPrmSource->SetSection();
-    RbtPRMFactory prmFactory(spRecepPrmSource);
-    RbtModelPtr spReceptor = prmFactory.CreateReceptor();
+    PRMFactory prmFactory(spRecepPrmSource);
+    ModelPtr spReceptor = prmFactory.CreateReceptor();
 
-    RbtDockingSitePtr spDockSite;
+    DockingSitePtr spDockSite;
     std::string strASFile = wsName + ".as";
 
     // Either read the docking site from the .as file
     if (bReadAS) {
-      std::string strInputFile = GetRbtFileName("data/grids", strASFile);
+      std::string strInputFile = GetDataFileName("data/grids", strASFile);
 #if defined(__sgi) && !defined(__GNUC__)
       std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
 #else
       std::ifstream istr(strInputFile.c_str(),
                          std::ios_base::in | std::ios_base::binary);
 #endif
-      spDockSite = RbtDockingSitePtr(new RbtDockingSite(istr));
+      spDockSite = DockingSitePtr(new DockingSite(istr));
       istr.close();
     }
     // Or map the site using the prescribed mapping algorithm
     else {
-      RbtSiteMapperFactoryPtr spMapperFactory(new RbtSiteMapperFactory());
-      RbtSiteMapperPtr spMapper =
+      SiteMapperFactoryPtr spMapperFactory(new SiteMapperFactory());
+      SiteMapperPtr spMapper =
           spMapperFactory->CreateFromFile(spRecepPrmSource, "MAPPER");
       spMapper->Register(spWS);
       spWS->SetReceptor(spReceptor);
@@ -181,16 +181,15 @@ int main(int argc, char *argv[]) {
 
       int nRI = spReceptor->GetNumSavedCoords() - 1;
       if (nRI == 0) {
-        spDockSite =
-            RbtDockingSitePtr(new RbtDockingSite((*spMapper)(), border));
+        spDockSite = DockingSitePtr(new DockingSite((*spMapper)(), border));
       } else {
-        RbtCavityList allCavs;
+        CavityList allCavs;
         for (int i = 1; i <= nRI; i++) {
           spReceptor->RevertCoords(i);
-          RbtCavityList cavs((*spMapper)());
+          CavityList cavs((*spMapper)());
           std::copy(cavs.begin(), cavs.end(), std::back_inserter(allCavs));
         }
-        spDockSite = RbtDockingSitePtr(new RbtDockingSite(allCavs, border));
+        spDockSite = DockingSitePtr(new DockingSite(allCavs, border));
       }
     }
 
@@ -214,12 +213,12 @@ int main(int argc, char *argv[]) {
     // Write PSF/CRD files to keep the rDock Viewer happy (it doesn't read MOL2
     // files yet)
     if (bViewer) {
-      RbtMolecularFileSinkPtr spRecepSink =
-          new RbtPsfFileSink(wsName + "_for_viewer.psf", spReceptor);
+      MolecularFileSinkPtr spRecepSink =
+          new PsfFileSink(wsName + "_for_viewer.psf", spReceptor);
       std::cout << "Writing PSF file: " << spRecepSink->GetFileName()
                 << std::endl;
       spRecepSink->Render();
-      spRecepSink = new RbtCrdFileSink(wsName + "_for_viewer.crd", spReceptor);
+      spRecepSink = new CrdFileSink(wsName + "_for_viewer.crd", spReceptor);
       std::cout << "Writing CRD file: " << spRecepSink->GetFileName()
                 << std::endl;
       spRecepSink->Render();
@@ -227,7 +226,7 @@ int main(int argc, char *argv[]) {
 
     // Write an ASCII InsightII grid file for each defined cavity
     if (bDump) {
-      RbtCavityList cavList = spDockSite->GetCavityList();
+      CavityList cavList = spDockSite->GetCavityList();
       for (unsigned int i = 0; i < cavList.size(); i++) {
         std::ostringstream filename;
         filename << wsName << "_cav" << i + 1 << ".grd";
@@ -244,13 +243,13 @@ int main(int argc, char *argv[]) {
     }
     // List all receptor atoms within given distance of any cavity
     if (bList) {
-      RbtRealGridPtr spGrid = spDockSite->GetGrid();
-      RbtAtomList atomList =
+      RealGridPtr spGrid = spDockSite->GetGrid();
+      AtomList atomList =
           spDockSite->GetAtomList(spReceptor->GetAtomList(), 0.0, dist);
       std::cout << atomList.size() << " receptor atoms within " << dist
                 << " A of any cavity" << std::endl;
       std::cout << std::endl << "DISTANCE,ATOM" << std::endl;
-      for (RbtAtomListConstIter iter = atomList.begin(); iter != atomList.end();
+      for (AtomListConstIter iter = atomList.begin(); iter != atomList.end();
            iter++) {
         std::cout << spGrid->GetSmoothedValue((*iter)->GetCoords()) << "\t"
                   << **iter << std::endl;
@@ -268,10 +267,10 @@ int main(int argc, char *argv[]) {
       double neighbR = 4.0; // Sphere radius for counting nearest neighbours
       double threshold =
           15; // Definition of solvent exposed: neighbours < threshold
-      // RbtRealGridPtr spGrid = spDockSite->GetGrid();
-      RbtAtomList recepAtomList = spReceptor->GetAtomList();
-      RbtAtomList cavAtomList = spDockSite->GetAtomList(recepAtomList, cavDist);
-      RbtAtomList exposedAtomList; // The list of exposed cavity atoms
+      // RealGridPtr spGrid = spDockSite->GetGrid();
+      AtomList recepAtomList = spReceptor->GetAtomList();
+      AtomList cavAtomList = spDockSite->GetAtomList(recepAtomList, cavDist);
+      AtomList exposedAtomList; // The list of exposed cavity atoms
       std::cout << std::endl << "SOLVENT EXPOSED CAVITY ATOMS" << std::endl;
       std::cout << "1) Consider atoms within " << cavDist << "A of docking site"
                 << std::endl;
@@ -285,7 +284,7 @@ int main(int argc, char *argv[]) {
       std::cout << std::endl << "ATOM NAME\t#NEIGHBOURS" << std::endl;
 
       // Get the list of solvent exposed cavity atoms
-      for (RbtAtomListConstIter iter = cavAtomList.begin();
+      for (AtomListConstIter iter = cavAtomList.begin();
            iter != cavAtomList.end(); iter++) {
         int nNeighb = GetNumAtomsWithPredicate(
             recepAtomList, isAtomInsideSphere((*iter)->GetCoords(), neighbR));
@@ -300,7 +299,7 @@ int main(int argc, char *argv[]) {
       // Total +ve and -ve charges
       double posChg(0.0);
       double negChg(0.0);
-      for (RbtAtomListConstIter iter = exposedAtomList.begin();
+      for (AtomListConstIter iter = exposedAtomList.begin();
            iter != exposedAtomList.end(); iter++) {
         double chg = (*iter)->GetGroupCharge();
         if (chg > 0.0) {
@@ -311,7 +310,7 @@ int main(int argc, char *argv[]) {
       }
 
       // Atom type counts
-      isHybridState_eq bIsArom(RbtAtom::AROM);
+      isHybridState_eq bIsArom(Atom::AROM);
       int nAtoms = exposedAtomList.size();
       int nLipoC =
           GetNumAtomsWithPredicate(exposedAtomList, isAtomLipophilic());
@@ -356,7 +355,7 @@ int main(int argc, char *argv[]) {
   } catch (const cxxopts::OptionException &e) {
     std::cout << "Error parsing options: " << e.what() << std::endl;
     return 1;
-  } catch (RbtError &e) {
+  } catch (Error &e) {
     std::cout << e << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;

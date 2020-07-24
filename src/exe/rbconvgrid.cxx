@@ -12,8 +12,8 @@
 
 #include <fstream>
 
-#include "RbtFileError.h"
-#include "RbtVdwGridSF.h"
+#include "FileError.h"
+#include "VdwGridSF.h"
 
 using namespace rxdock;
 
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
   if (argc == 1) {
     std::cout
         << std::endl
-        << "rbconvgrid - converts RbtVdwGridSF binary grid file to InsightII "
+        << "rbconvgrid - converts VdwGridSF binary grid file to InsightII "
            "ascii grid file"
         << std::endl;
     std::cout
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
         << std::endl;
     std::cout
         << std::endl
-        << "Options:\t-i<InputFile> - input RbtVdwGridSF binary grid filename"
+        << "Options:\t-i<InputFile> - input VdwGridSF binary grid filename"
         << std::endl;
     std::cout << "\t\t-o<OutputFile> - output InsightII ascii grid filename"
               << std::endl;
@@ -99,11 +99,10 @@ int main(int argc, char *argv[]) {
     // Add null character to end of string
     header[length] = '\0';
     // Compare title with
-    bool match = (RbtVdwGridSF::GetCt() == header);
+    bool match = (VdwGridSF::GetCt() == header);
     delete[] header;
     if (!match) {
-      throw RbtFileParseError(_WHERE_,
-                              "Invalid title string in " + strInputFile);
+      throw FileParseError(_WHERE_, "Invalid title string in " + strInputFile);
     }
 
     // Skip the appropriate number of grids
@@ -115,7 +114,7 @@ int main(int argc, char *argv[]) {
     } else {
       std::cout << "Locating grid# " << iGrid << "..." << std::endl;
     }
-    RbtRealGridPtr spGrid;
+    RealGridPtr spGrid;
     for (int i = 1; (i <= nGrids) && (i <= iGrid); i++) {
       // Read the atom type string
       ReadWithThrow(istr, (char *)&length, sizeof(length));
@@ -125,12 +124,12 @@ int main(int argc, char *argv[]) {
       szType[length] = '\0';
       std::string strType(szType);
       delete[] szType;
-      RbtTriposAtomType triposType;
-      RbtTriposAtomType::eType aType = triposType.Str2Type(strType);
+      TriposAtomType triposType;
+      TriposAtomType::eType aType = triposType.Str2Type(strType);
       std::cout << "Grid# " << i << "\t"
                 << "atom type=" << strType << " (type #" << aType << ")"
                 << std::endl;
-      spGrid = RbtRealGridPtr(new RbtRealGrid(istr));
+      spGrid = RealGridPtr(new RealGrid(istr));
     }
     istr.close();
     // If we are not in listing mode, write the grid
@@ -141,7 +140,7 @@ int main(int argc, char *argv[]) {
       spGrid->PrintInsightGrid(ostr);
       ostr.close();
     }
-  } catch (RbtError &e) {
+  } catch (Error &e) {
     std::cout << e << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;
