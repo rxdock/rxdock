@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
       ostr.close();
     }
   } catch (Error &e) {
-    std::cout << e << std::endl;
+    std::cout << e.what() << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;
   }

@@ -306,10 +306,9 @@ void MdlFileSource::SetupHybridState() {
     default:
       // throw ModelError(_WHERE_, (*iter)->GetName()+" makes a bond with
       // an unknown bond order");
-      std::cout << ModelError(_WHERE_,
-                              (*iter)->GetName() +
-                                  " makes a bond with an unknown bond order")
-                << std::endl;
+      ModelError err(_WHERE_, (*iter)->GetName() +
+                                  " makes a bond with an unknown bond order");
+      std::cout << err.what() << std::endl;
       (*iter)->SetHybridState(Atom::UNDEFINED);
       break;
     }
@@ -430,10 +429,8 @@ void MdlFileSource::SetupTheRest() {
         // DM 26 Jul 1999 - don't complain about valency errors
         // throw ModelError(_WHERE_, (*iter)->GetName()+" makes too few
         // bonds");
-        std::cout << "**WARNING** "
-                  << ModelError(_WHERE_,
-                                (*iter)->GetName() + " makes too few bonds")
-                  << std::endl;
+        ModelError err(_WHERE_, (*iter)->GetName() + " makes too few bonds");
+        std::cout << "**WARNING** " << err.what() << std::endl;
         break;
       }
     }
@@ -441,10 +438,8 @@ void MdlFileSource::SetupTheRest() {
     else if (nValency > nMaxVal) {
       // throw ModelError(_WHERE_, (*iter)->GetName()+" makes too many
       // bonds");
-      std::cout << "**WARNING** "
-                << ModelError(_WHERE_,
-                              (*iter)->GetName() + " makes too many bonds")
-                << std::endl;
+      ModelError err(_WHERE_, (*iter)->GetName() + " makes too many bonds");
+      std::cout << "**WARNING** " << err.what() << std::endl;
     }
 
     // Set the vdw radius, first correcting for H-bonding hydrogens

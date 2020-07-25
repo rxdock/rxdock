@@ -37,7 +37,7 @@ void OccupancyTest::SetUp() {
     m_workSpace->SetSolvent(prmFactory.CreateSolvent());
     m_solventList = m_workSpace->GetSolvent();
   } catch (Error &e) {
-    std::cout << e << std::endl;
+    std::cout << e.what() << std::endl;
   }
 }
 

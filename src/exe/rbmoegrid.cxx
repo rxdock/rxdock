@@ -269,7 +269,7 @@ int main(int argc, char *argv[]) {
     std::cout << "Error parsing options: " << e.what() << std::endl;
     return 1;
   } catch (Error &e) {
-    std::cout << e << std::endl;
+    std::cout << e.what() << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;
   }

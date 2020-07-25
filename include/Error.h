@@ -26,7 +26,9 @@
 #ifndef _RBTERROR_H_
 #define _RBTERROR_H_
 
+#include <exception>
 #include <iostream>
+#include <sstream>
 
 // Useful macro for reporting errors
 //__FILE__ and __LINE__ are standard macros for source code file name
@@ -55,7 +57,7 @@ template <class X, class A> inline void Assert(A assertion) {
 // Note: This is a concrete class so can be instantiated
 /////////////////////////////////////
 
-class Error {
+class Error : public std::exception {
   ///////////////////////
   // Public methods
 public:
@@ -71,20 +73,20 @@ public:
   Error(const std::string &strFile, int nLine,
         const std::string &strMessage = "")
       : m_strName(IDS_ERROR), m_strFile(strFile), m_strMessage(strMessage),
-        m_nLine(nLine), m_bOK(false) {}
+        m_nLine(nLine), m_bOK(false) {
+    std::ostringstream oss;
+    oss << Name();
+    if (!File().empty())
+      oss << " at " << File() << ", line " << Line();
+    if (!Message().empty())
+      oss << std::endl << Message();
+    m_strWhat = oss.str();
+  }
 
   // Default destructor
   virtual ~Error() {}
 
-  // Insertion operator
-  friend std::ostream &operator<<(std::ostream &s, const Error &error) {
-    s << error.Name();
-    if (!error.File().empty())
-      s << " at " << error.File() << ", line " << error.Line();
-    if (!error.Message().empty())
-      s << std::endl << error.Message();
-    return s;
-  }
+  virtual const char *what() const noexcept { return m_strWhat.c_str(); }
 
   // Attribute methods
   std::string File() const { return m_strFile; }       // Get filename
@@ -94,7 +96,10 @@ public:
   bool isOK() const { return m_bOK; } // If true, status is OK (not an error)
 
   // Append new message to existing message
-  void AddMessage(const std::string &strMessage) { m_strMessage += strMessage; }
+  void AddMessage(const std::string &strMessage) {
+    m_strMessage += strMessage;
+    m_strWhat += "\n" + strMessage;
+  }
 
   ///////////////////////
   // Protected methods
@@ -111,6 +116,7 @@ private:
   std::string m_strName;
   std::string m_strFile;
   std::string m_strMessage;
+  std::string m_strWhat;
   int m_nLine;
   bool m_bOK;
 };

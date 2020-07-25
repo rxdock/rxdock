@@ -463,7 +463,7 @@ int main(int argc, char *argv[]) {
       Error molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
         std::cout << std::endl
-                  << molStatus << std::endl
+                  << molStatus.what() << std::endl
                   << "************************************************"
                   << std::endl;
         continue;
@@ -553,7 +553,7 @@ int main(int argc, char *argv[]) {
             }
             iRun++;
           } catch (DockingError &e) {
-            std::cout << e << std::endl;
+            std::cout << e.what() << std::endl;
             nErrors++;
           }
         }
@@ -566,7 +566,7 @@ int main(int argc, char *argv[]) {
       }
       // END OF TRY
       catch (LigandError &e) {
-        std::cout << e << std::endl;
+        std::cout << e.what() << std::endl;
         bLigandError = true;
       }
 
@@ -665,7 +665,7 @@ int main(int argc, char *argv[]) {
     std::cout << "Error parsing options: " << e.what() << std::endl;
     return 1;
   } catch (Error &e) {
-    std::cout << e << std::endl;
+    std::cout << e.what() << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;
   }

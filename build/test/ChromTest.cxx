@@ -56,7 +56,7 @@ void ChromTest::SetUp() {
     std::copy(recepAtomList.begin(), recepAtomList.end(),
               std::back_inserter(m_atomList));
   } catch (Error &e) {
-    std::cout << e << std::endl;
+    std::cout << e.what() << std::endl;
   }
 }
 

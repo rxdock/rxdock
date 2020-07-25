@@ -51,7 +51,7 @@ void SearchTest::SetUp() {
     m_SF->Add(sfIntra);
     m_workSpace->SetSF(m_SF);
   } catch (Error &e) {
-    std::cout << e << std::endl;
+    std::cout << e.what() << std::endl;
   }
 }
 

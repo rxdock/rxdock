@@ -240,7 +240,7 @@ int main(int argc, char *argv[]) {
          spMdlFileSource->NextRecord(), nRec++) {
       Error molStatus = spMdlFileSource->Status();
       if (!molStatus.isOK()) {
-        std::cout << molStatus << std::endl;
+        std::cout << molStatus.what() << std::endl;
         continue;
       }
 
@@ -384,7 +384,7 @@ int main(int argc, char *argv[]) {
     // END OF MAIN LOOP OVER LIGAND RECORDS
     ////////////////////////////////////////////////////
   } catch (Error &e) {
-    std::cout << e << std::endl;
+    std::cout << e.what() << std::endl;
   } catch (...) {
     std::cout << "Unknown exception" << std::endl;
   }
