@@ -186,7 +186,8 @@ AtomList Model::GetTetheredAtomList() const {
   AtomList tetheredAtomList;
   // Can be multi-line so process as a vector of strings
   // (std::vector<std::string>)
-  std::vector<std::string> dataField = GetDataValue("TETHERED ATOMS");
+  std::vector<std::string> dataField =
+      GetDataValue(GetMetaDataPrefix() + "tethered_atoms");
   for (std::vector<std::string>::const_iterator iter = dataField.begin();
        iter != dataField.end(); iter++) {
     // Each line is comma-separated list of atom IDs

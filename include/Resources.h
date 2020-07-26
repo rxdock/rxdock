@@ -21,6 +21,8 @@ namespace rxdock {
 
 const std::string IDS_NAME = "RxDock";
 
+const std::string IDS_METADATA_PREFIX = "rxdock.";
+
 const std::string IDS_COPYRIGHT =
     "The " + IDS_NAME +
     " molecular docking program is licensed under GNU LGPL version 3.\n" +

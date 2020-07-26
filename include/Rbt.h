@@ -61,6 +61,8 @@ std::string GetRoot();
 std::string GetHome();
 // GetProgramName - returns program name
 RBTDLL_EXPORT std::string GetProgramName();
+// GetMetaDataPrefix - returns meta data prefix
+RBTDLL_EXPORT std::string GetMetaDataPrefix();
 // GetCopyright - returns legalese statement
 std::string GetCopyright();
 // GetProgramVersion - returns current library version

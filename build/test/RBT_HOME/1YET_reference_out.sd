@@ -92,32 +92,32 @@ libRbt.so/2006.1/901 2006/09/27
  11 43  1  0  0  0
  11 44  1  0  0  0
 M  END
->  <CHROM.0>
+>  <rxdock.chrom.0>
 64.12540954,-57.65322675,53.34742205,-57.14100212,-176.35502015,-68.63555890
 
->  <CHROM.1>
+>  <rxdock.chrom.1>
 156.53968631,-167.77671564,5.21130411,-176.44975611,-71.16602861,-66.94133215
 34.45104295,8.26640344,24.33299797,-0.16161449,0.65294462,-0.57169818
 
 >  <Name>
 L_1YET
 
->  <RI>
+>  <rxdock.ri>
 0
 
->  <Rbt.Current_Directory>
+>  <rxdock.program.current_directory>
 /home/sergi/work/dev/rdock/rDock_2013_SRC/build/test/RBT_HOME
 
->  <Rbt.Executable>
+>  <rxdock.program.executable>
 rbdock ($Id: //depot/dev/client3/rdock/2006.1/src/exe/rbdock.cxx#4 $)
 
->  <Rbt.Library>
+>  <rxdock.program.library>
 libRbt.so (2006.1, Build901 2006/09/27)
 
->  <Rbt.Parameter_File>
+>  <rxdock.program.parameter_file>
 /mds/sergi/rdock/2006.1/data/scripts/dock.prm
 
->  <Rbt.Receptor>
+>  <rxdock.program.receptor>
 1YET.prm
 
 >  <SCORE>

@@ -79,7 +79,7 @@ void BiMolWorkSpace::UpdateModelCoordsFromChromRecords(
         unsigned int chromLength = spChrom->GetLength();
         if (chromLength > 0) {
           std::ostringstream ostr;
-          ostr << "CHROM." << iModel;
+          ostr << GetMetaDataPrefix() << "chrom." << iModel;
           std::string chromField = ostr.str();
           if (pSource->isDataFieldPresent(chromField)) {
             // TODO: Move this code to Variant class
@@ -153,7 +153,7 @@ void BiMolWorkSpace::SaveLigand(MolecularFileSinkPtr spSink, bool bSaveScores) {
       spLigand->SetDataValue((*vIter).first, (*vIter).second);
     }
     // Save the chromosome values for all models for later retrieval
-    spLigand->ClearAllDataFields("CHROM.");
+    spLigand->ClearAllDataFields(GetMetaDataPrefix() + "chrom.");
     int nModels = GetNumModels();
     for (int iModel = 0; iModel < nModels; iModel++) {
       ModelPtr spModel = GetModel(iModel);
@@ -164,7 +164,7 @@ void BiMolWorkSpace::SaveLigand(MolecularFileSinkPtr spSink, bool bSaveScores) {
           std::vector<double> chromVec;
           spChrom->GetVector(chromVec);
           std::ostringstream ostr;
-          ostr << "CHROM." << iModel;
+          ostr << GetMetaDataPrefix() << "chrom." << iModel;
           spLigand->SetDataValue(ostr.str(), Variant(chromVec, 72, 8));
         }
       }

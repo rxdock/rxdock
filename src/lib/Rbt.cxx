@@ -68,6 +68,8 @@ std::string rxdock::GetHome() {
 
 // rxdock::GetProgramName - returns program name
 std::string rxdock::GetProgramName() { return IDS_NAME; }
+// rxdock::GetMetaDataPrefix - returns meta data prefix
+std::string rxdock::GetMetaDataPrefix() { return IDS_METADATA_PREFIX; }
 // rxdock::GetCopyright - returns legalese statement
 std::string rxdock::GetCopyright() { return IDS_COPYRIGHT; }
 // rxdock::GetProgramVersion - returns current library version

@@ -275,10 +275,10 @@ if __name__ == "__main__":
                 molMatchID = molMatchAllIds[imatch]
                 updateCoords(mol, bestCoord)
                 newData = pybel.ob.OBPairData()
-                newData.SetAttribute("TETHERED ATOMS")
+                newData.SetAttribute("rxdock.tethered_atoms")
                 newData.SetValue(prepareAtomString(molMatchID))
 
-                mol.OBMol.DeleteData("TETHERED ATOMS")  # Remove Previous DATA
+                mol.OBMol.DeleteData("rxdock.tethered_atoms")  # Remove Previous DATA
                 mol.OBMol.CloneData(newData)           # Add new data
                 out.write(mol)
 

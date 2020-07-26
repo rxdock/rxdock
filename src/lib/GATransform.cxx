@@ -129,5 +129,5 @@ void GATransform::Execute() {
   }
   pop->Best()->GetChrom()->SyncToModel();
   int ri = GetReceptor()->GetCurrentCoords();
-  GetLigand()->SetDataValue("RI", ri);
+  GetLigand()->SetDataValue(GetMetaDataPrefix() + "ri", ri);
 }

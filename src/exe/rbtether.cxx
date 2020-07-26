@@ -187,7 +187,8 @@ int main(int argc, char *argv[]) {
       Variant vTetherAtoms(ost.str());
       MolecularFileSinkPtr spRefMdlFileSink(
           new MdlFileSink(strRunName + "_reference.sd", spReferenceMdl));
-      spReferenceMdl->SetDataValue("TETHERED ATOMS", vTetherAtoms);
+      spReferenceMdl->SetDataValue(GetMetaDataPrefix() + "tethered_atoms",
+                                   vTetherAtoms);
       spRefMdlFileSink->Render();
     }
 
@@ -275,13 +276,16 @@ int main(int argc, char *argv[]) {
         print_atoms(*alli, ost);
         Variant vTetherAtoms(ost.str());
         // DM 18 May 1999 - store run info in model data
-        // Clear any previous Rbt.* data fields
-        spLigand->ClearAllDataFields("Rbt.");
-        spLigand->ClearAllDataFields("TETHERED ATOMS");
-        spLigand->SetDataValue("Rbt.Library", vLib);
-        spLigand->SetDataValue("Rbt.Executable", vExe);
-        spLigand->SetDataValue("Rbt.Current_Directory", vDir);
-        spLigand->SetDataValue("TETHERED ATOMS", vTetherAtoms);
+        // Clear any previous rxdock.program.* data fields
+        spLigand->ClearAllDataFields(GetMetaDataPrefix() + "program.");
+        spLigand->ClearAllDataFields(GetMetaDataPrefix() + "tethered_atoms");
+        spLigand->SetDataValue(GetMetaDataPrefix() + "program.library", vLib);
+        spLigand->SetDataValue(GetMetaDataPrefix() + "program.executable",
+                               vExe);
+        spLigand->SetDataValue(
+            GetMetaDataPrefix() + "program.current_directory", vDir);
+        spLigand->SetDataValue(GetMetaDataPrefix() + "tethered_atoms",
+                               vTetherAtoms);
         spMdlFileSink->SetModel(spLigand);
         spMdlFileSink->Render();
       }

@@ -28,6 +28,7 @@
 #include "PRMFactory.h"
 #include "ParameterFileSource.h"
 #include "Rand.h"
+#include "Rbt.h"
 #include "SFFactory.h"
 #include "SFRequest.h"
 #include "TransformFactory.h"
@@ -503,13 +504,17 @@ int main(int argc, char *argv[]) {
         spWS->UpdateModelCoordsFromChromRecords(spMdlFileSource, iTrace);
 
         // DM 18 May 1999 - store run info in model data
-        // Clear any previous Rbt.* data fields
-        spLigand->ClearAllDataFields("Rbt.");
-        spLigand->SetDataValue("Rbt.Library", vLib);
-        spLigand->SetDataValue("Rbt.Executable", vExe);
-        spLigand->SetDataValue("Rbt.Receptor", vRecep);
-        spLigand->SetDataValue("Rbt.Parameter_File", vPrm);
-        spLigand->SetDataValue("Rbt.Current_Directory", vDir);
+        // Clear any previous rxdock.program.* data fields
+        spLigand->ClearAllDataFields(GetMetaDataPrefix() + "program.");
+        spLigand->SetDataValue(GetMetaDataPrefix() + "program.library", vLib);
+        spLigand->SetDataValue(GetMetaDataPrefix() + "program.executable",
+                               vExe);
+        spLigand->SetDataValue(GetMetaDataPrefix() + "program.receptor",
+                               vRecep);
+        spLigand->SetDataValue(GetMetaDataPrefix() + "program.parameter_file",
+                               vPrm);
+        spLigand->SetDataValue(
+            GetMetaDataPrefix() + "program.current_directory", vDir);
 
         // DM 10 Dec 1999 - if in target mode, loop until target score is
         // reached

@@ -63,7 +63,7 @@ void TetherSF::SetupReceptor() {
       new MdlFileSource(refFile, false, false, true));
   ModelPtr spReferenceMdl(new Model(spReferenceSD));
   std::vector<std::string> strTetherAtomsL =
-      spReferenceMdl->GetDataValue("TETHERED ATOMS");
+      spReferenceMdl->GetDataValue(GetMetaDataPrefix() + "tethered_atoms");
   std::vector<int> tetherAtomsId = ReadTetherAtoms(strTetherAtomsL);
   AtomList refAtoms = spReferenceMdl->GetAtomList();
   for (std::vector<int>::iterator iter = tetherAtomsId.begin();
@@ -78,7 +78,7 @@ void TetherSF::SetupLigand() {
     return;
 
   std::vector<std::string> strTetherAtomsL =
-      GetLigand()->GetDataValue("TETHERED ATOMS");
+      GetLigand()->GetDataValue(GetMetaDataPrefix() + "tethered_atoms");
   m_tetherAtomList = ReadTetherAtoms(strTetherAtomsL);
   if (m_tetherAtomList.size() != m_tetherCoords.size())
     throw BadArgument(_WHERE_,
