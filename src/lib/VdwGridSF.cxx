@@ -67,16 +67,11 @@ void VdwGridSF::SetupReceptor() {
 
   std::string strSuffix = GetParameter(_GRID);
   std::string strFile = GetDataFileName("data/grids", strWSName + strSuffix);
-  // DM 26 Sep 2000 - std::ios_base::binary qualifier doesn't appear to be valid
-  // with IRIX CC
-#ifdef __sgi
-  std::ifstream istr(strFile.c_str(), std::ios_base::in);
-#else
-  std::ifstream istr(strFile.c_str(),
-                     std::ios_base::in | std::ios_base::binary);
-#endif
-  ReadGrids(istr);
-  istr.close();
+  std::ifstream file(strFile.c_str());
+  json vdwGrids;
+  file >> vdwGrids;
+  file.close();
+  ReadGrids(vdwGrids.at("vdw-grids"));
 }
 
 void VdwGridSF::SetupLigand() {
@@ -182,30 +177,14 @@ double VdwGridSF::RawScore() const {
 
 // Read grids from input stream, checking that header string matches
 // VdwGridSF
-void VdwGridSF::ReadGrids(std::istream &istr) {
+void VdwGridSF::ReadGrids(json vdwGrids) {
   m_grids.clear();
   int iTrace = GetTrace();
 
-  // Read header string
-  int length;
-  ReadWithThrow(istr, (char *)&length, sizeof(length));
-  char *header = new char[length + 1];
-  ReadWithThrow(istr, header, length);
-  // Add null character to end of string
-  header[length] = '\0';
-  // Compare title with
-  bool match = (_CT == header);
-  delete[] header;
-  if (!match) {
-    throw FileParseError(_WHERE_,
-                         "Invalid title string in " + _CT + "::ReadGrids()");
-  }
-
   // Now read number of grids
-  int nGrids;
-  ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
   if (iTrace > 0) {
-    std::cout << _CT << ": reading " << nGrids << " grids..." << std::endl;
+    std::cout << _CT << ": reading " << vdwGrids.size() << " grids..."
+              << std::endl;
   }
 
   // We actually create a vector of size TriposAtomType::MAXTYPES
@@ -217,15 +196,10 @@ void VdwGridSF::ReadGrids(std::istream &istr) {
   // the same) It also means we do not have to have a grid for each and every
   // atom type if we don't want to
   m_grids = RealGridList(TriposAtomType::MAXTYPES);
-  for (int i = 0; i < nGrids; i++) {
+  for (int i = 0; i < vdwGrids.size(); i++) {
     // Read the atom type string
-    ReadWithThrow(istr, (char *)&length, sizeof(length));
-    char *szType = new char[length + 1];
-    ReadWithThrow(istr, szType, length);
-    // Add null character to end of string
-    szType[length] = '\0';
-    std::string strType(szType);
-    delete[] szType;
+    std::string strType;
+    vdwGrids.at(i).at("tripos-type").get_to(strType);
     TriposAtomType triposType;
     TriposAtomType::eType aType = triposType.Str2Type(strType);
     if (iTrace > 0) {
@@ -234,7 +208,7 @@ void VdwGridSF::ReadGrids(std::istream &istr) {
                 << std::endl;
     }
     // Now we can read the grid
-    RealGridPtr spGrid(new RealGrid(istr));
+    RealGridPtr spGrid(new RealGrid(vdwGrids.at(i).at("real-grid")));
     m_grids[aType] = spGrid;
   }
 }

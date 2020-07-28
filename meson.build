@@ -74,6 +74,7 @@ cpp_compiler = meson.get_compiler('cpp')
 
 eigen3_dep = dependency('eigen3', fallback : ['eigen', 'eigen_dep'])
 openmp_dep = dependency('openmp', required : false)
+nlohmann_json_dep = dependency('nlohmann_json', fallback : ['nlohmann_json', 'nlohmann_json_dep'])
 
 if host_machine.system() == 'windows'
   tronkko_dirent_proj = subproject('tronkko-dirent')
@@ -95,7 +96,7 @@ endif
 library_soversion = meson.project_version().split('.')[0]
 librxdock = library(
   'rxdock', srcRbt,
-  dependencies : [eigen3_dep, openmp_dep, pcg_cpp_dep, tronkko_dirent_dep],
+  dependencies : [eigen3_dep, openmp_dep, nlohmann_json_dep, pcg_cpp_dep, tronkko_dirent_dep],
   soversion : library_soversion,
   version : meson.project_version(),
   include_directories : incRbt, install : true
@@ -105,37 +106,37 @@ cxxopts_dep = dependency('cxxopts', fallback : ['cxxopts', 'cxxopts_dep'])
 
 rbdock = executable(
   'rbdock', 'src/exe/rbdock.cxx', link_with : librxdock,
-  dependencies : [cxxopts_dep, eigen3_dep, pcg_cpp_dep],
+  dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, pcg_cpp_dep],
   include_directories : incRbt, install : true
 )
 rbcavity = executable(
   'rbcavity', 'src/exe/rbcavity.cxx', link_with : librxdock,
-  dependencies : [cxxopts_dep, eigen3_dep, pcg_cpp_dep],
+  dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, pcg_cpp_dep],
   include_directories : incRbt, install : true
 )
 executable(
   'rbrms', 'src/exe/rbrms.cxx', link_with : librxdock,
-  dependencies : eigen3_dep,
+  dependencies : [eigen3_dep, nlohmann_json_dep],
   include_directories : incRbt, install: true
 )
 executable(
   'rbmoegrid', 'src/exe/rbmoegrid.cxx', link_with : librxdock,
-  dependencies : [cxxopts_dep, eigen3_dep, pcg_cpp_dep],
+  dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, pcg_cpp_dep],
   include_directories : incRbt, install : true
 )
 executable(
   'rblist', 'src/exe/rblist.cxx', link_with : librxdock,
-  dependencies : eigen3_dep,
+  dependencies : [eigen3_dep, nlohmann_json_dep],
   include_directories : incRbt, install : true
 )
 executable(
   'rbcalcgrid', 'src/exe/rbcalcgrid.cxx', link_with : librxdock,
-  dependencies : [eigen3_dep, pcg_cpp_dep], include_directories : incRbt,
+  dependencies : [eigen3_dep, nlohmann_json_dep, pcg_cpp_dep], include_directories : incRbt,
   install : true
 )
 executable(
   'rbconvgrid', 'src/exe/rbconvgrid.cxx', link_with : librxdock,
-  dependencies : eigen3_dep, include_directories : incRbt, install : true
+  dependencies : [eigen3_dep, nlohmann_json_dep], include_directories : incRbt, install : true
 )
 
 dt_smarts_dep = dependency('dt_smarts', required : false)
@@ -363,7 +364,7 @@ if tests_opt
     ]
     unit_test = executable(
       'unit-test', srcTest,
-      dependencies : [pcg_cpp_dep, gtest_dep, eigen3_dep],
+      dependencies : [pcg_cpp_dep, gtest_dep, eigen3_dep, nlohmann_json_dep],
       link_with : librxdock, include_directories : [incTest, incRbt]
     )
     rbtHomePath = '/build/test/RBT_HOME'

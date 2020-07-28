@@ -28,6 +28,10 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -65,20 +69,6 @@ public:
 
   // Copy constructor
   inline Coord(const Coord &coord) { xyz = coord.xyz; }
-
-  // DM 19 Jul 2000 - Read,Write methods to read/write coords to binary streams
-  inline std::ostream &Write(std::ostream &ostr) const {
-    ostr.write((const char *)&(xyz(0)), sizeof(xyz(0)));
-    ostr.write((const char *)&(xyz(1)), sizeof(xyz(1)));
-    ostr.write((const char *)&(xyz(2)), sizeof(xyz(2)));
-    return ostr;
-  }
-  inline std::istream &Read(std::istream &istr) {
-    istr.read((char *)&(xyz(0)), sizeof(xyz(0)));
-    istr.read((char *)&(xyz(1)), sizeof(xyz(1)));
-    istr.read((char *)&(xyz(2)), sizeof(xyz(2)));
-    return istr;
-  }
 
   ///////////////////////////////////////////////
   // Operator functions:
@@ -257,6 +247,16 @@ public:
   // Scalar division (coord / const)
   inline friend Coord operator/(const Coord &coord, const double &d) {
     return Coord(coord.xyz / d);
+  }
+
+  friend void to_json(json &j, const Coord &c) {
+    j = json{c.xyz(0), c.xyz(1), c.xyz(2)};
+  }
+
+  friend void from_json(const json &j, Coord &c) {
+    j.at(0).get_to(c.xyz(0));
+    j.at(1).get_to(c.xyz(1));
+    j.at(2).get_to(c.xyz(2));
   }
 
   ///////////////////////////////////////////////

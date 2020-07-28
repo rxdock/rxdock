@@ -26,14 +26,16 @@ void ChromTest::SetUp() {
     std::string prmFileName =
         GetDataFileName("data/receptors", wsName + ".prm");
     std::string ligFileName = GetDataFileName("", wsName + "_c.sd");
-    std::string asFileName = GetDataFileName("data/grids", wsName + ".as");
+    std::string dockingSiteFileName =
+        GetDataFileName("data/grids", wsName + "-docking-site.json");
     ParameterFileSourcePtr spPrmSource(new ParameterFileSource(prmFileName));
     MolecularFileSourcePtr spMdlFileSource(
         new MdlFileSource(ligFileName, true, true, true));
-    std::ifstream istr(asFileName.c_str(),
-                       std::ios_base::in | std::ios_base::binary);
-    m_site_1koc = new DockingSite(istr);
-    istr.close();
+    std::ifstream dockingSiteFile(dockingSiteFileName);
+    json siteData;
+    dockingSiteFile >> siteData;
+    dockingSiteFile.close();
+    m_site_1koc = new DockingSite(siteData.at("docking-site"));
     PRMFactory prmFactory(spPrmSource);
     m_recep_1koc = prmFactory.CreateReceptor();
     m_lig_1koc = prmFactory.CreateLigand(spMdlFileSource);

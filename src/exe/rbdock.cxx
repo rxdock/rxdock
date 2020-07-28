@@ -364,26 +364,21 @@ int main(int argc, char *argv[]) {
 
     spRecepPrmSource->SetSection();
     // Read docking site from file and register with workspace
-    std::string strASFile = spWS->GetName() + ".as";
-    std::string strInputFile = GetDataFileName("data/grids", strASFile);
-    // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
-#if defined(__sgi) && !defined(__GNUC__)
-    std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
-#else
-    std::ifstream istr(strInputFile.c_str(),
-                       std::ios_base::in | std::ios_base::binary);
-#endif
+    std::string strDockingSiteFile = spWS->GetName() + "-docking-site.json";
+    std::string strInputFile =
+        GetDataFileName("data/grids", strDockingSiteFile);
     // DM 14 June 2006 - bug fix to one of the longest standing rDock issues
     //(the cryptic "Error reading from input stream" message, if cavity file was
     // missing)
-    if (!istr) {
-      std::string message = "Cavity file (" + strASFile +
-                            ") not found in current directory or $RBT_HOME";
-      message += " - run rbcavity first";
-      throw FileReadError(_WHERE_, message);
-    }
-    DockingSitePtr spDS(new DockingSite(istr));
-    istr.close();
+    // std::string message = "Cavity file (" + strDockingSiteFile +
+    //                       ") not found in current directory or $RBT_HOME";
+    // message += " - run rbcavity first";
+    // throw FileReadError(_WHERE_, message);
+    std::ifstream inputFile(strInputFile.c_str());
+    json siteData;
+    inputFile >> siteData;
+    inputFile.close();
+    DockingSitePtr spDS(new DockingSite(siteData.at("docking-site")));
     spWS->SetDockingSite(spDS);
     std::cout << std::endl
               << "DOCKING SITE" << std::endl

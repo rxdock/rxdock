@@ -21,15 +21,17 @@ void SearchTest::SetUp() {
     const std::string &wsName = "1YET";
     std::string prmFileName = GetDataFileName("", wsName + ".prm");
     std::string ligFileName = GetDataFileName("", wsName + "_c.sd");
-    std::string asFileName = GetDataFileName("", wsName + ".as");
+    std::string dockingSiteFileName =
+        GetDataFileName("", wsName + "-docking-site.json");
     ParameterFileSourcePtr spPrmSource(new ParameterFileSource(prmFileName));
     MolecularFileSourcePtr spMdlFileSource(
         new MdlFileSource(ligFileName, true, true, true));
     m_workSpace = new BiMolWorkSpace();
-    std::ifstream istr(asFileName.c_str(),
-                       std::ios_base::in | std::ios_base::binary);
-    m_workSpace->SetDockingSite(new DockingSite(istr));
-    istr.close();
+    std::ifstream dockingSiteFile(dockingSiteFileName.c_str());
+    json siteData;
+    dockingSiteFile >> siteData;
+    dockingSiteFile.close();
+    m_workSpace->SetDockingSite(new DockingSite(siteData.at("docking-site")));
     PRMFactory prmFactory(spPrmSource, m_workSpace->GetDockingSite());
     m_workSpace->SetReceptor(prmFactory.CreateReceptor());
     m_workSpace->SetLigand(prmFactory.CreateLigand(spMdlFileSource));

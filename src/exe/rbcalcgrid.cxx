@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
   PrintStdHeader(std::cout, strExeName);
 
   // Command line arguments and default values
-  std::string strSuffix(".grd");
+  std::string strSuffix(".json");
   std::string strReceptorPrmFile;             // Receptor param file
   std::string strSFFile("calcgrid_attr.prm"); // Scoring function file
   double gs(0.5);                             // grid step
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
               << std::endl;
     std::cout
         << std::endl
-        << "Options:\t-o<OutputSuffix> - suffix for grid (.grd IS required)"
+        << "Options:\t-o<OutputSuffix> - suffix for grid (.json IS required)"
         << std::endl;
     std::cout
         << "\t\t-r<ReceptorPrmFile> - receptor param file (contains active "
@@ -206,17 +206,14 @@ int main(int argc, char *argv[]) {
     }
 
     // Read docking site from file and register with workspace
-    std::string strASFile = spWS->GetName() + ".as";
-    std::string strInputFile = GetDataFileName("data/grids", strASFile);
-    // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
-#if defined(__sgi) && !defined(__GNUC__)
-    std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
-#else
-    std::ifstream istr(strInputFile.c_str(),
-                       std::ios_base::in | std::ios_base::binary);
-#endif
-    DockingSitePtr spDS(new DockingSite(istr));
-    istr.close();
+    std::string strDockingSiteFile = spWS->GetName() + ".as";
+    std::string strInputFile =
+        GetDataFileName("data/grids", strDockingSiteFile);
+    std::ifstream inputFile(strInputFile.c_str());
+    json siteData;
+    inputFile >> siteData;
+    inputFile.close();
+    DockingSitePtr spDS(new DockingSite(siteData.at("docking-site")));
     spWS->SetDockingSite(spDS);
 
     // Register receptor with workspace
@@ -244,22 +241,10 @@ int main(int argc, char *argv[]) {
 
     // Open output file
     std::string strOutputFile(spWS->GetName() + strSuffix);
-#if defined(__sgi) && !defined(__GNUC__)
     std::ofstream ostr(strOutputFile.c_str(),
                        std::ios_base::out | std::ios_base::trunc);
-#else
-    std::ofstream ostr(strOutputFile.c_str(), std::ios_base::out |
-                                                  std::ios_base::binary |
-                                                  std::ios_base::trunc);
-#endif
-    // Write header string (VdwGridSF)
-    const char *const header = "VdwGridSF";
-    int length = strlen(header);
-    WriteWithThrow(ostr, (const char *)&length, sizeof(length));
-    WriteWithThrow(ostr, header, length);
-    // Write number of grids
-    int nGrids = probes.size();
-    WriteWithThrow(ostr, (const char *)&nGrids, sizeof(nGrids));
+
+    json gridList;
 
     // Store regular pointers to avoid smart pointer dereferencing overheads
     RealGrid *pGrid(spGrid);
@@ -282,12 +267,12 @@ int main(int argc, char *argv[]) {
         gridData[i] = pSF->Score();
       }
       // Write the atom type string to the grid file, before the grid itself
-      const char *const szType = strType.c_str();
-      int l = strlen(szType);
-      WriteWithThrow(ostr, (const char *)&l, sizeof(l));
-      WriteWithThrow(ostr, szType, l);
-      pGrid->Write(ostr);
+      json grid{{"tripos-type", strType}, {"real-grid", *pGrid}};
+      gridList.push_back(grid);
     }
+    json vdwGrids;
+    vdwGrids["vdw-grids"] = gridList;
+    ostr << vdwGrids;
     ostr.close();
   } catch (Error &e) {
     std::cout << e.what() << std::endl;

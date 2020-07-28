@@ -48,7 +48,7 @@ public:
   static std::string _CT;
 
   RBTDLL_EXPORT DockingSite(const CavityList &cavList, double border);
-  RBTDLL_EXPORT DockingSite(std::istream &istr);
+  RBTDLL_EXPORT DockingSite(json j);
 
   // Destructor
   virtual ~DockingSite();
@@ -57,15 +57,14 @@ public:
   RBTDLL_EXPORT friend std::ostream &operator<<(std::ostream &s,
                                                 const DockingSite &site);
 
+  RBTDLL_EXPORT friend void to_json(json &j, const DockingSite &site);
+  friend void from_json(const json &j, DockingSite &site);
+
   // Virtual function for dumping docking site details to an output stream
   // Derived classes can override if required
   virtual void Print(std::ostream &s) const;
 
   // Public methods
-  void Read(std::istream &istr); // Reads docking site from binary stream
-  RBTDLL_EXPORT void
-  Write(std::ostream &ostr); // Writes docking site to binary stream
-
   RBTDLL_EXPORT RealGridPtr GetGrid();
   double GetBorder() const { return m_border; }
   Coord GetMinCoord() const { return m_minCoord; }
@@ -113,6 +112,9 @@ private:
 typedef SmartPtr<DockingSite> DockingSitePtr; // Smart pointer
 
 std::ostream &operator<<(std::ostream &s, const DockingSite &site);
+
+RBTDLL_EXPORT void to_json(json &j, const DockingSite &site);
+void from_json(const json &j, DockingSite &site);
 
 } // namespace rxdock
 

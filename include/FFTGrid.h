@@ -55,7 +55,7 @@ public:
           unsigned int NY, unsigned int NZ, unsigned int NPad = 0);
 
   // Constructor reading all params from binary stream
-  FFTGrid(std::istream &istr);
+  FFTGrid(json j);
 
   ~FFTGrid(); // Default destructor
 
@@ -76,12 +76,10 @@ public:
   ////////////////////////////////////////
   // Virtual functions for reading/writing grid data to streams in
   // text and binary format
-  // Subclasses should provide their own private OwnPrint,OwnWrite, OwnRead
-  // methods to handle subclass data members, and override the public
-  // Print,Write and Read methods
+  // Subclasses should provide their own private OwnPrint
+  // method to handle subclass data members, and override the public
+  // Print method
   virtual void Print(std::ostream &ostr) const; // Text output
-  virtual void Write(std::ostream &ostr) const; // Binary output (serialisation)
-  virtual void Read(std::istream &istr); // Binary input, replaces existing grid
 
   // Find the coords of all (separate) peaks above the threshold value
   // whose volumes are not less than minVol
@@ -97,10 +95,6 @@ protected:
   ///////////////////
   // Protected method for writing data members for this class to text stream
   void OwnPrint(std::ostream &ostr) const;
-  // Protected method for writing data members for this class to binary stream
-  void OwnWrite(std::ostream &ostr) const;
-  // Protected method for reading data members for this class from binary stream
-  void OwnRead(std::istream &istr);
 
 private:
   ////////////////////////////////////////

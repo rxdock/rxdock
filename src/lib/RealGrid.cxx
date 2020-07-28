@@ -36,12 +36,12 @@ RealGrid::RealGrid(const Coord &gridMin, const Coord &gridStep, unsigned int NX,
 }
 
 // Constructor reading params from binary stream
-RealGrid::RealGrid(std::istream &istr) : BaseGrid(istr) {
+RealGrid::RealGrid(json j) : BaseGrid(j.at("base-grid")) {
   // Base class constructor has already read the grid dimensions
   // etc, so all we have to do here is created the array
   // and read in the grid values
   CreateArrays();
-  OwnRead(istr);
+  j.get_to(*this);
   _RBTOBJECTCOUNTER_CONSTR_("RealGrid");
 }
 
@@ -90,28 +90,14 @@ RealGrid &RealGrid::operator=(const BaseGrid &grid) {
 ////////////////////////////////////////
 // Virtual functions for reading/writing grid data to streams in
 // text and binary format
-// Subclasses should provide their own private OwnPrint,OwnWrite, OwnRead
-// methods to handle subclass data members, and override the public
-// Print,Write and Read methods
+// Subclasses should provide their own private OwnPrint
+// method to handle subclass data members, and override the public
+// Print method
 
 // Text output
 void RealGrid::Print(std::ostream &ostr) const {
   BaseGrid::Print(ostr);
   OwnPrint(ostr);
-}
-
-// Binary output
-void RealGrid::Write(std::ostream &ostr) const {
-  BaseGrid::Write(ostr);
-  OwnWrite(ostr);
-}
-
-// Binary input
-void RealGrid::Read(std::istream &istr) {
-  BaseGrid::Read(istr); // Base class read
-  // Now create the new grid and read in the grid values
-  CreateArrays();
-  OwnRead(istr);
 }
 
 ////////////////////////////////////////
@@ -435,51 +421,6 @@ void RealGrid::OwnPrint(std::ostream &ostr) const {
   }
 }
 
-// Protected method for writing data members for this class to binary stream
-//(Serialisation)
-void RealGrid::OwnWrite(std::ostream &ostr) const {
-  // Write the class name as a title so we can check the authenticity of streams
-  // on read
-  const char *const gridTitle = _CT.c_str();
-  int length = strlen(gridTitle);
-  WriteWithThrow(ostr, (const char *)&length, sizeof(length));
-  WriteWithThrow(ostr, gridTitle, length);
-
-  // Write all the data members
-  WriteWithThrow(ostr, (const char *)&m_tol, sizeof(m_tol));
-  const float *data = m_grid.data();
-  for (unsigned int i = 0; i < GetN(); i++) {
-    WriteWithThrow(ostr, (const char *)&data[i], sizeof(data[i]));
-  }
-}
-
-// Protected method for reading data members for this class from binary stream
-// WARNING: Assumes grid data array has already been created
-// and is of the correct size
-void RealGrid::OwnRead(std::istream &istr) {
-  // Read title
-  int length;
-  ReadWithThrow(istr, (char *)&length, sizeof(length));
-  char *gridTitle = new char[length + 1];
-  ReadWithThrow(istr, gridTitle, length);
-  // Add null character to end of string
-  gridTitle[length] = '\0';
-  // Compare title with class name
-  bool match = (_CT == gridTitle);
-  delete[] gridTitle;
-  if (!match) {
-    throw FileParseError(_WHERE_,
-                         "Invalid title string in " + _CT + "::Read()");
-  }
-
-  // Read all the data members
-  ReadWithThrow(istr, (char *)&m_tol, sizeof(m_tol));
-  float *data = m_grid.data();
-  for (unsigned int i = 0; i < GetN(); i++) {
-    ReadWithThrow(istr, (char *)&data[i], sizeof(data[i]));
-  }
-}
-
 ///////////////////////////////////////////////////////////////////////////
 // Private methods
 
@@ -526,4 +467,22 @@ void RealGrid::CreateArrays() {
 void RealGrid::CopyGrid(const RealGrid &grid) {
   m_tol = grid.m_tol;
   m_grid = grid.m_grid;
+}
+
+void rxdock::to_json(json &j, const RealGrid &grid) {
+  const std::vector<float> data(grid.m_grid.data(),
+                                grid.m_grid.data() + grid.GetN());
+  j = json{{"tolerance", grid.m_tol},
+           {"data", data},
+           {"base-grid", static_cast<BaseGrid>(grid)}};
+}
+
+void rxdock::from_json(const json &j, RealGrid &grid) {
+  j.at("base-grid").get_to(static_cast<BaseGrid &>(grid));
+  j.at("tolerance").get_to(grid.m_tol);
+
+  grid.CreateArrays();
+  std::vector<float> data;
+  j.at("data").get_to(data);
+  std::copy(data.begin(), data.end(), grid.m_grid.data());
 }

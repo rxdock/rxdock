@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-// Standalone executable for generating docking site .as files for rbdock
+// Standalone executable for generating docking site .json files for rbdock
 
 #include <algorithm>
 #include <cxxopts.hpp>
@@ -59,9 +59,9 @@ int main(int argc, char *argv[]) {
   adder("r,receptor-param", "receptor param file (contains active site params)",
         cxxopts::value<std::string>());
   adder("W,write-docking-cavities",
-        "write docking cavities (plus distance grid) to .as file");
+        "write docking cavities (plus distance grid) to .json file");
   adder("R,read-docking-cavities",
-        "read docking cavities (plus distance grid) from .as file");
+        "read docking cavities (plus distance grid) from .json file");
   adder("d,write-insightii-grids",
         "dump InsightII grids for each cavity for visualisation");
   adder("v,write-psf-crd", "dump target PSF/CRD files for rDock Viewer");
@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
     if (result.count("r")) {
       strReceptorPrmFile = result["r"].as<std::string>();
     }
-    bool bReadAS = result.count("R");  // If true, read Active Site from file
+    bool bReadDS = result.count("R");  // If true, read Active Site from file
     bool bWriteAS = result.count("W"); // If true, write Active Site to file
     bool bDump =
         result.count("d"); // If true, dump cavity grids in Insight format
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
       std::cout << "-b " << border << std::endl;
     if (bWriteAS)
       std::cout << "-W" << std::endl;
-    if (bReadAS)
+    if (bReadDS)
       std::cout << "-R" << std::endl;
     if (bMOEgrid)
       std::cout << "-m" << std::endl;
@@ -156,19 +156,17 @@ int main(int argc, char *argv[]) {
     ModelPtr spReceptor = prmFactory.CreateReceptor();
 
     DockingSitePtr spDockSite;
-    std::string strASFile = wsName + ".as";
+    std::string strDockingSiteFile = wsName + "-docking-site.json";
 
     // Either read the docking site from the .as file
-    if (bReadAS) {
-      std::string strInputFile = GetDataFileName("data/grids", strASFile);
-#if defined(__sgi) && !defined(__GNUC__)
-      std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
-#else
-      std::ifstream istr(strInputFile.c_str(),
-                         std::ios_base::in | std::ios_base::binary);
-#endif
-      spDockSite = DockingSitePtr(new DockingSite(istr));
-      istr.close();
+    if (bReadDS) {
+      std::string strInputFile =
+          GetDataFileName("data/grids", strDockingSiteFile);
+      std::ifstream inputFile(strInputFile.c_str());
+      json siteData;
+      inputFile >> siteData;
+      inputFile.close();
+      spDockSite = DockingSitePtr(new DockingSite(siteData.at("docking-site")));
     }
     // Or map the site using the prescribed mapping algorithm
     else {
@@ -198,15 +196,11 @@ int main(int argc, char *argv[]) {
               << (*spDockSite) << std::endl;
 
     if (bWriteAS) {
-#if defined(__sgi) && !defined(__GNUC__)
-      std::ofstream ostr(strASFile.c_str(),
+      std::ofstream ostr(strDockingSiteFile.c_str(),
                          std::ios_base::out | std::ios_base::trunc);
-#else
-      std::ofstream ostr(strASFile.c_str(), std::ios_base::out |
-                                                std::ios_base::binary |
-                                                std::ios_base::trunc);
-#endif
-      spDockSite->Write(ostr);
+      json dockingSite;
+      dockingSite["docking-site"] = *spDockSite;
+      ostr << dockingSite;
       ostr.close();
     }
 

@@ -67,10 +67,15 @@ DockingSite::DockingSite(const CavityList &cavList, double border)
     m_maxCoord = Max(maxCoords);
     _RBTOBJECTCOUNTER_CONSTR_(_CT);
   }
+
+  // Make sure grid has been calculated
+  if (m_spGrid.Null()) {
+    CreateGrid();
+  }
 }
 
-DockingSite::DockingSite(std::istream &istr) {
-  Read(istr);
+DockingSite::DockingSite(json j) {
+  j.get_to(*this);
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
@@ -88,82 +93,6 @@ void DockingSite::Print(std::ostream &s) const {
   s << "Total volume " << GetVolume() << " A^3" << std::endl;
   for (unsigned int i = 0; i < m_cavityList.size(); i++) {
     s << "Cavity #" << i + 1 << "\t" << *(m_cavityList[i]) << std::endl;
-  }
-}
-
-// Public methods
-void DockingSite::Write(std::ostream &ostr) {
-  // Make sure grid has been calculated
-  if (m_spGrid.Null()) {
-    CreateGrid();
-  }
-  // Write the class name as a title so we can check the authenticity of streams
-  // on read
-  const char *const header = _CT.c_str();
-  int length = strlen(header);
-  WriteWithThrow(ostr, (const char *)&length, sizeof(length));
-  WriteWithThrow(ostr, header, length);
-
-  // DM 4 Apr 2002 - write overall min, max coords of all cavities, plus border
-  m_minCoord.Write(ostr);
-  m_maxCoord.Write(ostr);
-  WriteWithThrow(ostr, (const char *)&m_border, sizeof(m_border));
-
-  // Write the number of cavities
-  int nCav = m_cavityList.size();
-  WriteWithThrow(ostr, (const char *)&nCav, sizeof(nCav));
-
-  // Write each cavity
-  for (const auto &cIter : m_cavityList) {
-    cIter->Write(ostr);
-  }
-
-  // DM 4 Apr 2002 - write the distance grid
-  if ((nCav > 0) && !m_spGrid.Null()) {
-    m_spGrid->Write(ostr);
-  }
-}
-
-void DockingSite::Read(std::istream &istr) {
-  m_cavityList.clear();
-  m_minCoord = Coord();
-  m_maxCoord = Coord();
-  m_spGrid = RealGridPtr();
-  m_border = 0.0;
-
-  // Read title
-  int length;
-  ReadWithThrow(istr, (char *)&length, sizeof(length));
-  char *header = new char[length + 1];
-  ReadWithThrow(istr, header, length);
-  // Add null character to end of string
-  header[length] = '\0';
-  // Compare title with class name
-  bool match = (_CT == header);
-  delete[] header;
-  if (!match) {
-    throw FileParseError(_WHERE_,
-                         "Invalid title string in " + _CT + "::Read()");
-  }
-
-  // DM 4 Apr 2002 - read overall min, max coords of all cavities, plus border
-  m_minCoord.Read(istr);
-  m_maxCoord.Read(istr);
-  ReadWithThrow(istr, (char *)&m_border, sizeof(m_border));
-
-  // Read the number of cavities
-  int nCav;
-  ReadWithThrow(istr, (char *)&nCav, sizeof(nCav));
-  m_cavityList.reserve(nCav);
-  // Read each cavity
-  for (int i = 0; i < nCav; i++) {
-    CavityPtr spCavity = CavityPtr(new Cavity(istr));
-    m_cavityList.push_back(spCavity);
-  }
-
-  if (nCav > 0) {
-    // DM 4 Apr 2002 - read the distance grid
-    m_spGrid = RealGridPtr(new RealGrid(istr));
   }
 }
 
@@ -314,4 +243,36 @@ void DockingSite::CreateGrid() {
     }
     m_spGrid->SetValue(i, std::sqrt(dist2));
   }
+}
+
+void rxdock::to_json(json &j, const DockingSite &site) {
+  json cavityList;
+  for (const auto &cIter : site.m_cavityList) {
+    json cavity = *cIter;
+    cavityList.push_back(cavity);
+  }
+
+  j = json{{"min-coord", site.m_minCoord},
+           {"max-coord", site.m_maxCoord},
+           {"border", site.m_border},
+           {"cavities", cavityList}};
+  if (cavityList.size() > 0 && !site.m_spGrid.Null()) {
+    j["real-grid"] = *site.m_spGrid;
+  }
+}
+
+void rxdock::from_json(const json &j, DockingSite &site) {
+  site.m_cavityList.clear();
+  site.m_cavityList.reserve(j.at("cavities").size());
+  for (auto &cavity : j.at("cavities")) {
+    CavityPtr spCavity = CavityPtr(new Cavity(cavity));
+    site.m_cavityList.push_back(spCavity);
+  }
+
+  j.at("min-coord").get_to(site.m_minCoord);
+  j.at("max-coord").get_to(site.m_maxCoord);
+  if (site.m_cavityList.size() > 0) {
+    site.m_spGrid = RealGridPtr(new RealGrid(j.at("real-grid")));
+  }
+  j.at("border").get_to(site.m_border);
 }

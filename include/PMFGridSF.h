@@ -24,7 +24,7 @@ class PMFGridSF : public BaseInterSF {
   std::vector<PMFType> theTypeList;  // store PMF used types here
   std::vector<RealGridPtr> theGrids; // grids with PMF data
 
-  void ReadGrids(std::istream &istr);
+  void ReadGrids(json pmfGrids);
 
 public:
   static std::string _CT;       // class name

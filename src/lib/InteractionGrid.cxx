@@ -72,9 +72,9 @@ InteractionGrid::InteractionGrid(const Coord &gridMin, const Coord &gridStep,
 }
 
 // Constructor reading params from binary stream
-InteractionGrid::InteractionGrid(std::istream &istr) : BaseGrid(istr) {
+InteractionGrid::InteractionGrid(json j) : BaseGrid(j) {
   CreateMap();
-  OwnRead(istr);
+  j.get_to(*this);
   _RBTOBJECTCOUNTER_CONSTR_("InteractionGrid");
 }
 
@@ -122,27 +122,14 @@ InteractionGrid &InteractionGrid::operator=(const BaseGrid &grid) {
 ////////////////////////////////////////
 // Virtual functions for reading/writing grid data to streams in
 // text and binary format
-// Subclasses should provide their own private OwnPrint,OwnWrite, OwnRead
-// methods to handle subclass data members, and override the public
-// Print,Write and Read methods
+// Subclasses should provide their own private OwnPrint
+// method to handle subclass data members, and override the public
+// Print method
 
 // Text output
 void InteractionGrid::Print(std::ostream &ostr) const {
   BaseGrid::Print(ostr);
   OwnPrint(ostr);
-}
-
-// Binary output
-void InteractionGrid::Write(std::ostream &ostr) const {
-  BaseGrid::Write(ostr);
-  OwnWrite(ostr);
-}
-
-// Binary input
-void InteractionGrid::Read(std::istream &istr) {
-  ClearInteractionLists();
-  BaseGrid::Read(istr);
-  OwnRead(istr);
 }
 
 ////////////////////////////////////////
@@ -245,28 +232,6 @@ void InteractionGrid::OwnPrint(std::ostream &ostr) const {
   ostr << std::endl << "Class\t" << _CT << std::endl;
   ostr << "No. of entries in the map: " << m_intnMap.size() << std::endl;
   // TO BE COMPLETED - no real need for dumping the interaction list info
-}
-
-// Protected method for writing data members for this class to binary stream
-//(Serialisation)
-void InteractionGrid::OwnWrite(std::ostream &ostr) const {
-  // Write all the data members
-  // NO MEANS OF WRITING THE INTERACTION LISTS IN A WAY WHICH CAN BE READ BACK
-  // IN i.e. we are holding pointers to atoms which would need to be recreated
-  // What we need is some kind of object database I guess.
-  // Note: By not writing the title key here, it enables a successful read
-  // of ANY grid subclass file. e.g. An InteractionGrid can be constructed
-  // from an RealGrid output stream, so will have the same grid dimensions
-  // The RealGrid data array will simply be ignored
-}
-
-// Protected method for reading data members for this class from binary stream
-// WARNING: Assumes grid data array has already been created
-// and is of the correct size
-void InteractionGrid::OwnRead(std::istream &istr) {
-  // Read all the data members
-  // NOTHING TO READ - see above
-  CreateMap();
 }
 
 ///////////////////////////////////////////////////////////////////////////

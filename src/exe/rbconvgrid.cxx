@@ -47,10 +47,9 @@ int main(int argc, char *argv[]) {
         << std::endl
         << "Usage:\trbconvgrid -i<InputFile> [-o<OutputFile>] [-n<GridNum>]"
         << std::endl;
-    std::cout
-        << std::endl
-        << "Options:\t-i<InputFile> - input VdwGridSF binary grid filename"
-        << std::endl;
+    std::cout << std::endl
+              << "Options:\t-i<InputFile> - input VdwGridSF TOML grid filename"
+              << std::endl;
     std::cout << "\t\t-o<OutputFile> - output InsightII ascii grid filename"
               << std::endl;
     std::cout
@@ -81,59 +80,35 @@ int main(int argc, char *argv[]) {
   std::cout << std::endl;
 
   try {
-    // Read the grid file header
-#if defined(__sgi) && !defined(__GNUC__)
-    std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
-#else
-    std::ifstream istr(strInputFile.c_str(),
-                       std::ios_base::in | std::ios_base::binary);
-#endif
-    if (istr) {
-      std::cout << strInputFile << " opened OK" << std::endl;
-    }
-    // Read header string
-    int length;
-    ReadWithThrow(istr, (char *)&length, sizeof(length));
-    char *header = new char[length + 1];
-    ReadWithThrow(istr, header, length);
-    // Add null character to end of string
-    header[length] = '\0';
-    // Compare title with
-    bool match = (VdwGridSF::GetCt() == header);
-    delete[] header;
-    if (!match) {
-      throw FileParseError(_WHERE_, "Invalid title string in " + strInputFile);
-    }
+    // Read the grid file
+    std::ifstream inputFile(strInputFile);
+    json vdwGrids;
+    inputFile >> vdwGrids;
+    inputFile.close();
 
     // Skip the appropriate number of grids
-    int nGrids;
-    ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
-    std::cout << "File contains " << nGrids << " grids..." << std::endl;
-    if ((iGrid > nGrids) || (iGrid < 1)) {
+    std::cout << "File contains " << vdwGrids.size() << " grids..."
+              << std::endl;
+    if ((iGrid > vdwGrids.size()) || (iGrid < 1)) {
       std::cout << "Listing grids..." << std::endl;
     } else {
       std::cout << "Locating grid# " << iGrid << "..." << std::endl;
     }
     RealGridPtr spGrid;
-    for (int i = 1; (i <= nGrids) && (i <= iGrid); i++) {
+    for (int i = 1; (i <= vdwGrids.size()) && (i <= iGrid); i++) {
       // Read the atom type string
-      ReadWithThrow(istr, (char *)&length, sizeof(length));
-      char *szType = new char[length + 1];
-      ReadWithThrow(istr, szType, length);
-      // Add null character to end of string
-      szType[length] = '\0';
-      std::string strType(szType);
-      delete[] szType;
+      std::string strType;
+      vdwGrids.at(i).at("vdw-grid").at("tripos-type").get_to(strType);
       TriposAtomType triposType;
       TriposAtomType::eType aType = triposType.Str2Type(strType);
       std::cout << "Grid# " << i << "\t"
                 << "atom type=" << strType << " (type #" << aType << ")"
                 << std::endl;
-      spGrid = RealGridPtr(new RealGrid(istr));
+      spGrid = RealGridPtr(
+          new RealGrid(vdwGrids.at(i).at("vdw-grid").at("real-grid")));
     }
-    istr.close();
     // If we are not in listing mode, write the grid
-    if ((iGrid <= nGrids) && (iGrid >= 1)) {
+    if ((iGrid <= vdwGrids.size()) && (iGrid >= 1)) {
       std::cout << "Writing grid# " << iGrid << " to " << strOutputFile << "..."
                 << std::endl;
       std::ofstream ostr(strOutputFile.c_str());

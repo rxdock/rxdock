@@ -26,9 +26,9 @@ NonBondedHHSGrid::NonBondedHHSGrid(const Coord &gridMin, const Coord &gridStep,
   _RBTOBJECTCOUNTER_CONSTR_("NonBondedHHSGrid");
 }
 
-NonBondedHHSGrid::NonBondedHHSGrid(std::istream &istr) : BaseGrid(istr) {
+NonBondedHHSGrid::NonBondedHHSGrid(json j) : BaseGrid(j) {
   CreateMap();
-  OwnRead(istr);
+  j.get_to(*this);
   _RBTOBJECTCOUNTER_CONSTR_("NonBondedHHSGrid");
 }
 
@@ -76,19 +76,6 @@ void NonBondedHHSGrid::Print(std::ostream &ostr) const {
   OwnPrint(ostr);
 }
 
-// Binary output
-void NonBondedHHSGrid::Write(std::ostream &ostr) const {
-  BaseGrid::Write(ostr);
-  OwnWrite(ostr);
-}
-
-// Binary input
-void NonBondedHHSGrid::Read(std::istream &istr) {
-  ClearHHSLists();
-  BaseGrid::Read(istr);
-  OwnRead(istr);
-}
-
 const HHS_SolvationRList &
 NonBondedHHSGrid::GetHHSList(unsigned int iXYZ) const {
   if (isValid(iXYZ)) {
@@ -131,10 +118,6 @@ void NonBondedHHSGrid::OwnPrint(std::ostream &ostr) const {
   ostr << std::endl << "Class\t" << _CT << std::endl;
   ostr << "No. of entries in the map: " << m_hhsMap.size() << std::endl;
 }
-
-void NonBondedHHSGrid::OwnWrite(std::ostream &ostr) const {}
-
-void NonBondedHHSGrid::OwnRead(std::istream &istr) {}
 
 void NonBondedHHSGrid::CopyGrid(const NonBondedHHSGrid &grid) {
   m_hhsMap = grid.m_hhsMap;

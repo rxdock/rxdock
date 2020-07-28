@@ -35,7 +35,7 @@ public:
   BaseGrid(const Coord &gridMin, const Vector &gridStep, unsigned int NX,
            unsigned int NY, unsigned int NZ, unsigned int NPad = 0);
   // Constructor reading all params from binary stream
-  BaseGrid(std::istream &istr);
+  BaseGrid(json j);
   BaseGrid(const BaseGrid &);            // Copy constructor
   BaseGrid &operator=(const BaseGrid &); // Copy assignment
   virtual ~BaseGrid();                   // Default destructor
@@ -43,16 +43,16 @@ public:
   // Friend functions
   // Insertion operator (primarily for debugging)
   friend std::ostream &operator<<(std::ostream &s, const BaseGrid &grid);
+  friend void to_json(json &j, const BaseGrid &grid);
+  friend void from_json(const json &j, BaseGrid &grid);
 
   ////////////////////////////////////////
   // Virtual functions for reading/writing grid data to streams in
   // text and binary format
-  // Subclasses should provide their own private OwnPrint,OwnWrite, OwnRead
-  // methods to handle subclass data members, and override the public
-  // Print,Write and Read methods
+  // Subclasses should provide their own private OwnPrint
+  // method to handle subclass data members, and override the public
+  // Print method
   virtual void Print(std::ostream &ostr) const; // Text output
-  virtual void Write(std::ostream &ostr) const; // Binary output (serialisation)
-  virtual void Read(std::istream &istr); // Binary input, replaces existing grid
 
   ////////////////////////////////////////
   // Public methods
@@ -192,10 +192,6 @@ protected:
 
   // Protected method for writing data members for this class to text stream
   void OwnPrint(std::ostream &ostr) const;
-  // Protected method for writing data members for this class to binary stream
-  void OwnWrite(std::ostream &ostr) const;
-  // Protected method for reading data members for this class from binary stream
-  void OwnRead(std::istream &istr);
 
 private:
   ////////////////////////////////////////
@@ -243,6 +239,9 @@ private:
 
 // Useful typedefs
 typedef SmartPtr<BaseGrid> BaseGridPtr; // Smart pointer
+
+void to_json(json &j, const BaseGrid &grid);
+void from_json(const json &j, BaseGrid &grid);
 
 } // namespace rxdock
 

@@ -46,7 +46,7 @@ protected:
 
 private:
   // Read grids from input stream
-  void ReadGrids(std::istream &istr);
+  void ReadGrids(json vdwGrids);
 
   RealGridList m_grids;
   AtomRList m_ligAtomList;

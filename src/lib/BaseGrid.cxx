@@ -35,8 +35,8 @@ BaseGrid::BaseGrid(const Coord &gridMin, const Coord &gridStep, unsigned int NX,
 }
 
 // Constructor reading params from binary stream
-BaseGrid::BaseGrid(std::istream &istr) {
-  OwnRead(istr);
+BaseGrid::BaseGrid(json j) {
+  j.get_to(*this);
   _RBTOBJECTCOUNTER_CONSTR_("BaseGrid");
 }
 
@@ -66,21 +66,15 @@ std::ostream &operator<<(std::ostream &s, const BaseGrid &grid) {
 ////////////////////////////////////////
 // Virtual functions for reading/writing grid data to streams in
 // text and binary format
-// Subclasses should provide their own private OwnPrint,OwnWrite, OwnRead
-// methods to handle subclass data members, and override the public
-// Print,Write and Read methods
+// Subclasses should provide their own private OwnPrint
+// method to handle subclass data members, and override the public
+// Print method
 
 // These implementations are not strictly necessary for the base class
 // as base class objects cannot be instantiated
 
 // Text output
 void BaseGrid::Print(std::ostream &ostr) const { OwnPrint(ostr); }
-
-// Binary output
-void BaseGrid::Write(std::ostream &ostr) const { OwnWrite(ostr); }
-
-// Binary input
-void BaseGrid::Read(std::istream &istr) { OwnRead(istr); }
 
 ////////////////////////////////////////
 // Public methods
@@ -225,81 +219,6 @@ void BaseGrid::OwnPrint(std::ostream &ostr) const {
   ostr << "m_nZMin,m_nZMax\t" << m_nZMin << "," << m_nZMax << std::endl;
 }
 
-// Protected method for writing data members for this class to binary stream
-//(Serialisation)
-void BaseGrid::OwnWrite(std::ostream &ostr) const {
-  // Write the class name as a title so we can check the authenticity of streams
-  // on read
-  const char *const gridTitle = _CT.c_str();
-  int length = strlen(gridTitle);
-  WriteWithThrow(ostr, (const char *)&length, sizeof(length));
-  WriteWithThrow(ostr, gridTitle, length);
-
-  // Write all the data members
-  // The Coord::Write method doesn't throw an error, but we can live with
-  // that for now
-  m_min.Write(ostr);
-  m_max.Write(ostr);
-  m_step.Write(ostr);
-  m_padMin.Write(ostr);
-  m_padMax.Write(ostr);
-  WriteWithThrow(ostr, (const char *)&m_NX, sizeof(m_NX));
-  WriteWithThrow(ostr, (const char *)&m_NY, sizeof(m_NY));
-  WriteWithThrow(ostr, (const char *)&m_NZ, sizeof(m_NZ));
-  WriteWithThrow(ostr, (const char *)&m_N, sizeof(m_N));
-  WriteWithThrow(ostr, (const char *)&m_SX, sizeof(m_SX));
-  WriteWithThrow(ostr, (const char *)&m_SY, sizeof(m_SY));
-  WriteWithThrow(ostr, (const char *)&m_SZ, sizeof(m_SZ));
-  WriteWithThrow(ostr, (const char *)&m_NPad, sizeof(m_NPad));
-  WriteWithThrow(ostr, (const char *)&m_nXMin, sizeof(m_nXMin));
-  WriteWithThrow(ostr, (const char *)&m_nXMax, sizeof(m_nXMax));
-  WriteWithThrow(ostr, (const char *)&m_nYMin, sizeof(m_nYMin));
-  WriteWithThrow(ostr, (const char *)&m_nYMax, sizeof(m_nYMax));
-  WriteWithThrow(ostr, (const char *)&m_nZMin, sizeof(m_nZMin));
-  WriteWithThrow(ostr, (const char *)&m_nZMax, sizeof(m_nZMax));
-}
-
-// Protected method for reading data members for this class from binary stream
-void BaseGrid::OwnRead(std::istream &istr) {
-  // Read title
-  int length;
-  ReadWithThrow(istr, (char *)&length, sizeof(length));
-  char *gridTitle = new char[length + 1];
-  ReadWithThrow(istr, gridTitle, length);
-  // Add null character to end of string
-  gridTitle[length] = '\0';
-  // Compare title with class name
-  bool match = (_CT == gridTitle);
-  delete[] gridTitle;
-  if (!match) {
-    throw FileParseError(_WHERE_,
-                         "Invalid title string in " + _CT + "::Read()");
-  }
-
-  // Read all the data members
-  // The Coord::Read method doesn't throw an error, but we can live with that
-  // for now
-  m_min.Read(istr);
-  m_max.Read(istr);
-  m_step.Read(istr);
-  m_padMin.Read(istr);
-  m_padMax.Read(istr);
-  ReadWithThrow(istr, (char *)&m_NX, sizeof(m_NX));
-  ReadWithThrow(istr, (char *)&m_NY, sizeof(m_NY));
-  ReadWithThrow(istr, (char *)&m_NZ, sizeof(m_NZ));
-  ReadWithThrow(istr, (char *)&m_N, sizeof(m_N));
-  ReadWithThrow(istr, (char *)&m_SX, sizeof(m_SX));
-  ReadWithThrow(istr, (char *)&m_SY, sizeof(m_SY));
-  ReadWithThrow(istr, (char *)&m_SZ, sizeof(m_SZ));
-  ReadWithThrow(istr, (char *)&m_NPad, sizeof(m_NPad));
-  ReadWithThrow(istr, (char *)&m_nXMin, sizeof(m_nXMin));
-  ReadWithThrow(istr, (char *)&m_nXMax, sizeof(m_nXMax));
-  ReadWithThrow(istr, (char *)&m_nYMin, sizeof(m_nYMin));
-  ReadWithThrow(istr, (char *)&m_nYMax, sizeof(m_nYMax));
-  ReadWithThrow(istr, (char *)&m_nZMin, sizeof(m_nZMin));
-  ReadWithThrow(istr, (char *)&m_nZMax, sizeof(m_nZMax));
-}
-
 ///////////////////////////////////////////////////////////////////////////
 // Private methods
 
@@ -326,4 +245,40 @@ void BaseGrid::CopyGrid(const BaseGrid &grid) {
   m_nYMax = grid.m_nYMax;
   m_nZMin = grid.m_nZMin;
   m_nZMax = grid.m_nZMax;
+}
+
+void rxdock::to_json(json &j, const BaseGrid &grid) {
+  j = json{{"min", grid.m_min},
+           {"max", grid.m_max},
+           {"step", grid.m_step},
+           {"pad-min", grid.m_padMin},
+           {"pad-max", grid.m_padMax},
+           {"nxyz", {grid.m_NX, grid.m_NY, grid.m_NZ}},
+           {"n", grid.m_N},
+           {"sxyz", {grid.m_SX, grid.m_SY, grid.m_SZ}},
+           {"npad", grid.m_NPad},
+           {"nxyz-min", {grid.m_nXMin, grid.m_nYMin, grid.m_nZMin}},
+           {"nxyz-max", {grid.m_nXMax, grid.m_nYMax, grid.m_nZMax}}};
+}
+
+void rxdock::from_json(const json &j, BaseGrid &grid) {
+  j.at("min").get_to(grid.m_min);
+  j.at("max").get_to(grid.m_max);
+  j.at("step").get_to(grid.m_step);
+  j.at("pad-min").get_to(grid.m_padMin);
+  j.at("pad-max").get_to(grid.m_padMax);
+  j.at("nxyz").at(0).get_to(grid.m_NX);
+  j.at("nxyz").at(1).get_to(grid.m_NY);
+  j.at("nxyz").at(2).get_to(grid.m_NZ);
+  j.at("n").get_to(grid.m_N);
+  j.at("sxyz").at(0).get_to(grid.m_SX);
+  j.at("sxyz").at(1).get_to(grid.m_SY);
+  j.at("sxyz").at(2).get_to(grid.m_SZ);
+  j.at("npad").get_to(grid.m_NPad);
+  j.at("nxyz-min").at(0).get_to(grid.m_nXMin);
+  j.at("nxyz-min").at(1).get_to(grid.m_nYMin);
+  j.at("nxyz-min").at(2).get_to(grid.m_nZMin);
+  j.at("nxyz-min").at(0).get_to(grid.m_nXMax);
+  j.at("nxyz-min").at(1).get_to(grid.m_nYMax);
+  j.at("nxyz-min").at(2).get_to(grid.m_nZMax);
 }

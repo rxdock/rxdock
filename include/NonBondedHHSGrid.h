@@ -27,7 +27,7 @@ public:
   static std::string _CT;
   NonBondedHHSGrid(const Coord &gridMin, const Coord &gridStep, unsigned int NX,
                    unsigned int NY, unsigned int NZ, unsigned int NPad = 0);
-  NonBondedHHSGrid(std::istream &istr);
+  NonBondedHHSGrid(json j);
   ~NonBondedHHSGrid();
 
   NonBondedHHSGrid(const NonBondedHHSGrid &);
@@ -36,8 +36,6 @@ public:
   NonBondedHHSGrid &operator=(const BaseGrid &);
 
   virtual void Print(std::ostream &ostr) const;
-  virtual void Write(std::ostream &ostr) const;
-  virtual void Read(std::istream &istr);
 
   const HHS_SolvationRList &GetHHSList(unsigned int iXYZ) const;
   const HHS_SolvationRList &GetHHSList(const Coord &c) const;
@@ -47,8 +45,6 @@ public:
 
 protected:
   void OwnPrint(std::ostream &ostr) const;
-  void OwnWrite(std::ostream &ostr) const;
-  void OwnRead(std::istream &istr);
 
 private:
   NonBondedHHSGrid();

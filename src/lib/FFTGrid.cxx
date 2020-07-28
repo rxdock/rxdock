@@ -33,8 +33,8 @@ FFTGrid::FFTGrid(const Coord &gridMin, const Coord &gridStep, unsigned int NX,
 }
 
 // Constructor reading params from binary stream
-FFTGrid::FFTGrid(std::istream &istr) : RealGrid(istr) {
-  OwnRead(istr);
+FFTGrid::FFTGrid(json j) : RealGrid(j) {
+  j.get_to(*this);
   _RBTOBJECTCOUNTER_CONSTR_("FFTGrid");
 }
 
@@ -82,26 +82,14 @@ FFTGrid &FFTGrid::operator=(const BaseGrid &grid) {
 ////////////////////////////////////////
 // Virtual functions for reading/writing grid data to streams in
 // text and binary format
-// Subclasses should provide their own private OwnPrint,OwnWrite, OwnRead
-// methods to handle subclass data members, and override the public
-// Print,Write and Read methods
+// Subclasses should provide their own private OwnPrint
+// method to handle subclass data members, and override the public
+// Print method
 
 // Text output
 void FFTGrid::Print(std::ostream &ostr) const {
   RealGrid::Print(ostr);
   OwnPrint(ostr);
-}
-
-// Binary output
-void FFTGrid::Write(std::ostream &ostr) const {
-  RealGrid::Write(ostr);
-  OwnWrite(ostr);
-}
-
-// Binary input
-void FFTGrid::Read(std::istream &istr) {
-  RealGrid::Read(istr);
-  OwnRead(istr);
 }
 
 // Find the coords of all (separate) peaks above the threshold value
@@ -291,35 +279,6 @@ FFTPeak FFTGrid::FindMaxPeak() const {
 // Protected method for writing data members for this class to text stream
 void FFTGrid::OwnPrint(std::ostream &ostr) const {
   ostr << "Class\t" << _CT << std::endl;
-}
-
-// Protected method for writing data members for this class to binary stream
-//(Serialisation)
-void FFTGrid::OwnWrite(std::ostream &ostr) const {
-  // Write the class name as a title so we can check the authenticity of streams
-  // on read
-  const char *const gridTitle = _CT.c_str();
-  int length = strlen(gridTitle);
-  WriteWithThrow(ostr, (const char *)&length, sizeof(length));
-  WriteWithThrow(ostr, gridTitle, length);
-}
-
-// Protected method for reading data members for this class from binary stream
-void FFTGrid::OwnRead(std::istream &istr) {
-  // Read title
-  int length;
-  ReadWithThrow(istr, (char *)&length, sizeof(length));
-  char *gridTitle = new char[length + 1];
-  ReadWithThrow(istr, gridTitle, length);
-  // Add null character to end of string
-  gridTitle[length] = '\0';
-  // Compare title with class name
-  bool match = (_CT == gridTitle);
-  delete[] gridTitle;
-  if (!match) {
-    throw FileParseError(_WHERE_,
-                         "Invalid title string in " + _CT + "::Read()");
-  }
 }
 
 ///////////////////////////////////////////////////////////////////////////

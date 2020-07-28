@@ -181,17 +181,14 @@ int main(int argc, char *argv[]) {
       ModelPtr spReceptor = prmFactory.CreateReceptor();
 
       // Read docking site from file and register with workspace
-      std::string strASFile = spWS->GetName() + ".as";
-      std::string strInputFile = GetDataFileName("data/grids", strASFile);
-      // DM 26 Sep 2000 - std::ios_base::binary is invalid with IRIX CC
-#if defined(__sgi) && !defined(__GNUC__)
-      std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
-#else
-      std::ifstream istr(strInputFile.c_str(),
-                         std::ios_base::in | std::ios_base::binary);
-#endif
-      DockingSitePtr spDS(new DockingSite(istr));
-      istr.close();
+      std::string strDockingSiteFile = spWS->GetName() + ".as";
+      std::string strInputFile =
+          GetDataFileName("data/grids", strDockingSiteFile);
+      std::ifstream inputFile(strInputFile);
+      json siteData;
+      inputFile >> siteData;
+      inputFile.close();
+      DockingSitePtr spDS(new DockingSite(siteData["docking-site"]));
       spWS->SetDockingSite(spDS);
 
       // Register receptor with workspace

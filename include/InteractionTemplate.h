@@ -64,7 +64,6 @@ public:
   InteractionGridTemplate(std::istream &istr) {
     _CT = "InteractionGridTemplate";
     CreateMap();
-    OwnRead(istr);
     _RBTOBJECTCOUNTER_CONSTR_("InteractionGridTemplate");
   }
 
@@ -109,17 +108,6 @@ public:
   virtual void Print(std::ostream &ostr) const { // Text output
     BaseGrid::Print(ostr);
     OwnPrint(ostr);
-  }
-  virtual void
-  Write(std::ostream &ostr) const { // Binary output (serialisation)
-    BaseGrid::Write(ostr);
-    OwnWrite(ostr);
-  }
-  virtual void
-  Read(std::istream &istr) { // Binary input, replaces existing grid
-    ClearInteractionLists();
-    BaseGrid::Read(istr);
-    OwnRead(istr);
   }
 
   const InteractionNodeList<T> &GetInteractionList(unsigned int iXYZ) const {
@@ -166,8 +154,6 @@ protected:
     ostr << std::endl << "Class\t" << _CT << std::endl;
     ostr << "No. of entries in the map: " << m_intnMap.size() << std::endl;
   }
-  void OwnWrite(std::ostream &ostr) const {}
-  void OwnRead(std::istream &istr) { CreateMap(); }
 
 private:
   InteractionGridTemplate();

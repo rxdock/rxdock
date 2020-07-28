@@ -49,10 +49,11 @@ void PMFGridSF::SetupReceptor() {
   std::string strSuffix = GetParameter(_GRID);
   std::string strFile = GetDataFileName("data/grids", strWSName + strSuffix);
   std::cout << _CT << " Reading PMF grid from " << strFile << std::endl;
-  std::ifstream istr(strFile.c_str(),
-                     std::ios_base::in | std::ios_base::binary);
-  ReadGrids(istr);
-  istr.close();
+  std::ifstream file(strFile.c_str());
+  json pmfGrids;
+  file >> pmfGrids;
+  file.close();
+  ReadGrids(pmfGrids.at("pmf-grids"));
 }
 // Determine PMF grid type for each atom
 void PMFGridSF::SetupLigand() {
@@ -93,7 +94,7 @@ double PMFGridSF::RawScore() const {
   return theScore;
 }
 
-void PMFGridSF::ReadGrids(std::istream &istr) {
+void PMFGridSF::ReadGrids(json pmfGrids) {
   std::cout << "**************************************************************"
             << std::endl;
   std::cout << "                    Reading grid..." << std::endl;
@@ -102,34 +103,18 @@ void PMFGridSF::ReadGrids(std::istream &istr) {
   std::cout << _CT << "::ReadGrids(std::istream&)" << std::endl;
   theGrids.clear();
 
-  // Read header string
-  int length;
-  ReadWithThrow(istr, (char *)&length, sizeof(length));
-  char *header = new char[length + 1];
-  ReadWithThrow(istr, header, length);
-  // Add null character to end of string
-  header[length] = '\0';
-  // Compare title with
-  bool match = (_CT == header);
-  delete[] header;
-  if (!match) {
-    throw FileParseError(_WHERE_,
-                         "Invalid title string in " + _CT + "::ReadGrids()");
-  }
-
   // Now read number of grids
-  int nGrids;
-  ReadWithThrow(istr, (char *)&nGrids, sizeof(nGrids));
-  std::cout << "Reading " << nGrids << " grids..." << std::endl;
-  theGrids.reserve(nGrids);
-  for (int i = CF; i <= nGrids; i++) {
+  std::cout << "Reading " << pmfGrids.size() << " grids..." << std::endl;
+  theGrids.reserve(pmfGrids.size());
+  for (int i = CF; i <= pmfGrids.size(); i++) {
     std::cout << "Grid# " << i << " ";
     // Read type
-    PMFType theType;
-    ReadWithThrow(istr, (char *)&theType, sizeof(theType));
-    std::cout << "type " << PMFType2Str(theType);
+    std::string strType;
+    pmfGrids.at(i).at("pmf-type").get_to(strType);
+    PMFType theType = PMFStr2Type(strType);
+    std::cout << "type " << strType;
     // Now we can read the grid
-    RealGridPtr spGrid(new RealGrid(istr));
+    RealGridPtr spGrid(new RealGrid(pmfGrids.at(i).at("real-grid")));
     std::cout << " done" << std::endl;
     theGrids.push_back(spGrid);
   }

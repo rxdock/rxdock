@@ -153,16 +153,13 @@ void MOEGrid::GetDockingSiteExtents(std::string &a_strPrmFile) {
   std::string wsName = componentList.front();
   spWS->SetName(wsName);
   // Read docking site from file
-  std::string strASFile = spWS->GetName() + ".as";
-  std::string strInputFile = GetDataFileName("data/grids", strASFile);
-#if defined(__sgi) && !defined(__GNUC__)
-  std::ifstream istr(strInputFile.c_str(), std::ios_base::in);
-#else
-  std::ifstream istr(strInputFile.c_str(),
-                     std::ios_base::in | std::ios_base::binary);
-#endif
-  DockingSitePtr dSite(new DockingSite(istr));
-  istr.close();
+  std::string strDockingSiteFile = spWS->GetName() + ".json";
+  std::string strInputFile = GetDataFileName("data/grids", strDockingSiteFile);
+  std::ifstream inputFile(strInputFile.c_str());
+  json siteData;
+  inputFile >> siteData;
+  inputFile.close();
+  DockingSitePtr dSite(new DockingSite(siteData.at("docking-site")));
   // we need only these two values
   c_min = dSite->GetMinCoord();
   c_max = dSite->GetMaxCoord();

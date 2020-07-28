@@ -35,7 +35,7 @@ public:
         m_minCoord(Min(coordList)), m_maxCoord(Max(coordList)) {}
 
   // Constructor reading from binary stream
-  Cavity(std::istream &istr) { Read(istr); }
+  Cavity(json j) { j.get_to(*this); }
 
   // Destructor
   virtual ~Cavity() {}
@@ -56,41 +56,6 @@ public:
     s << "Size=" << m_coordList.size() << " points; Vol=" << GetVolume()
       << " A^3; Min=" << m_minCoord << "; Max=" << m_maxCoord
       << "; Center=" << m_prAxes.com << "; Extent=" << m_maxCoord - m_minCoord;
-  }
-
-  // Binary output (serialisation)
-  virtual void Write(std::ostream &ostr) const {
-    // DM 4 Apr 2002 - Write grid step
-    m_gridStep.Write(ostr);
-    // Write number of coords
-    int nCoords = m_coordList.size();
-    WriteWithThrow(ostr, (const char *)&nCoords, sizeof(nCoords));
-    for (CoordListConstIter cIter = m_coordList.begin();
-         cIter != m_coordList.end(); cIter++) {
-      (*cIter).Write(ostr); // Write each coord
-    }
-  }
-
-  // Binary input, replaces existing cavity
-  virtual void Read(std::istream &istr) {
-    // Clear the existing cavity
-    m_coordList.clear();
-    // DM 4 Apr 2002 - Read grid step
-    m_gridStep.Read(istr);
-    // Read number of coords
-    int nCoords;
-    ReadWithThrow(istr, (char *)&nCoords, sizeof(nCoords));
-    m_coordList.reserve(nCoords);
-    Coord c;
-    // Read each coord and add it to the cavity list
-    for (int i = 0; i < nCoords; i++) {
-      c.Read(istr);
-      m_coordList.push_back(c);
-    }
-    // Recalculate the other properties
-    m_prAxes = GetPrincipalAxesOfAtoms(m_coordList);
-    m_minCoord = Min(m_coordList);
-    m_maxCoord = Max(m_coordList);
   }
 
   // DM 4 Apr 2002 - return a grid with all cavity points set to 1.0
@@ -122,6 +87,15 @@ public:
   const Vector &GetGridStep() const { return m_gridStep; }
   double GetVolume() const {
     return m_coordList.size() * m_gridStep.xyz.prod();
+  }
+
+  friend void to_json(json &j, const Cavity &c) {
+    j = json{{"grid-step", c.m_gridStep}, {"coordinates", c.m_coordList}};
+  }
+
+  friend void from_json(const json &j, Cavity &c) {
+    j.at("grid-step").get_to(c.m_gridStep);
+    j.at("coordinates").get_to(c.m_coordList);
   }
 
 protected:
