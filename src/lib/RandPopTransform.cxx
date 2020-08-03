@@ -15,6 +15,8 @@
 #include "Population.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 std::string RandPopTransform::_CT("RandPopTransform");
@@ -63,9 +65,7 @@ void RandPopTransform::Execute() {
     int chromLength = m_chrom->GetLength();
     popSize *= chromLength;
   }
-  if (GetTrace() > 3) {
-    std::cout << _CT << ": popSize=" << popSize << std::endl;
-  }
+  LOG_F(2, "RandPopTransform::Execute: popSize={}", popSize);
   PopulationPtr pop = new Population(m_chrom, popSize, pSF);
   pop->Best()->GetChrom()->SyncToModel();
   GetWorkSpace()->SetPopulation(pop);

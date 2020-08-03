@@ -14,6 +14,9 @@
 #include "DockingSite.h"
 #include "WorkSpace.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data member for class type
@@ -27,19 +30,15 @@ std::string AlignTransform::_AXES("AXES");
 AlignTransform::AlignTransform(const std::string &strName)
     : BaseBiMolTransform(_CT, strName), m_rand(GetRandInstance()),
       m_totalSize(0) {
+  LOG_F(2, "AlignTransform parameterised constructor");
   // Add parameters
   AddParameter(_COM, "ALIGN");
   AddParameter(_AXES, "ALIGN");
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 AlignTransform::~AlignTransform() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "AlignTransform destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -81,8 +80,6 @@ void AlignTransform::Execute() {
   if (spLigand.Null() || m_cavities.empty())
     return;
 
-  int iTrace = GetTrace();
-
   // Select a cavity at random, weighted by each cavity size
   int iRnd = m_rand.GetRandomInt(m_totalSize);
   int iCavity(0);
@@ -104,19 +101,14 @@ void AlignTransform::Execute() {
     // Select a coord at random
     int iRand = m_rand.GetRandomInt(coordList.size());
     Coord asCavityCoord = coordList[iRand];
-    if (iTrace > 1) {
-      std::cout << "Translating ligand COM to active site coord #" << iRand
-                << ": " << asCavityCoord << std::endl;
-    }
+    LOG_F(1, "Translating ligand COM to active site coord #{}: {}", iRand,
+          asCavityCoord);
     // Translate the ligand center of mass to the selected coord
     spLigand->SetCenterOfMass(asCavityCoord);
   }
   // B. Active site center of mass
   else if (strPlaceCOM == "ALIGN") {
-    if (iTrace > 1) {
-      std::cout << "Translating ligand COM to active site COM: " << prAxes.com
-                << std::endl;
-    }
+    LOG_F(1, "Translating ligand COM to active site COM: {}", prAxes.com);
     spLigand->SetCenterOfMass(prAxes.com);
   }
 
@@ -125,10 +117,8 @@ void AlignTransform::Execute() {
   if (strPlaceAxes == "RANDOM") {
     double thetaDeg = 180.0 * m_rand.GetRandom01();
     Coord axis = m_rand.GetRandomUnitVector();
-    if (iTrace > 1) {
-      std::cout << "Rotating ligand by " << thetaDeg
-                << " deg around axis=" << axis << " through COM" << std::endl;
-    }
+    LOG_F(1, "Rotating ligand by {} deg around axis={} through COM", thetaDeg,
+          axis);
     spLigand->Rotate(axis, thetaDeg);
   }
   // B. Align ligand principal axes with principal axes of active site
@@ -136,29 +126,19 @@ void AlignTransform::Execute() {
     spLigand->AlignPrincipalAxes(
         prAxes,
         false); // false = don't translate COM as we've already done it above
-    if (iTrace > 1) {
-      std::cout
-          << "Aligning ligand principal axes with active site principal axes"
-          << std::endl;
-    }
+    LOG_F(1, "Aligning ligand principal axes with active site principal axes");
     // Make random 180 deg rotations around each of the principal axes
     if (m_rand.GetRandom01() < 0.5) {
       spLigand->Rotate(prAxes.axis1, 180.0, prAxes.com);
-      if (iTrace > 1) {
-        std::cout << "180 deg rotation around PA#1" << std::endl;
-      }
+      LOG_F(1, "180 deg rotation around PA#1");
     }
     if (m_rand.GetRandom01() < 0.5) {
       spLigand->Rotate(prAxes.axis2, 180.0, prAxes.com);
-      if (iTrace > 1) {
-        std::cout << "180 deg rotation around PA#2" << std::endl;
-      }
+      LOG_F(1, "180 deg rotation around PA#2");
     }
     if (m_rand.GetRandom01() < 0.5) {
       spLigand->Rotate(prAxes.axis3, 180.0, prAxes.com);
-      if (iTrace > 1) {
-        std::cout << "180 deg rotation around PA#3" << std::endl;
-      }
+      LOG_F(1, "180 deg rotation around PA#3");
     }
   }
 }

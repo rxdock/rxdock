@@ -262,8 +262,8 @@ public:
 
   // XB
   // reweighting factor
-  //  Double GetReweight() const {return m_dReweight;}
-  //  void SetReweight(const Double dReweight) {m_dReweight = dReweight;}
+  // double GetReweight() const { return m_dReweight; }
+  // void SetReweight(const double dReweight) { m_dReweight = dReweight; }
   // XB END MODIFICATIONS
 
   ///////////////////////////////////////////////
@@ -344,7 +344,7 @@ private:
   double m_dAtomicMass;    // atomic mass
   double m_dVdwRadius;     // atomic mass
   std::string m_strFFType; // force field atom type
-  //  Double m_dReweight; // XB reweighting factor
+  // double m_dReweight;      // XB reweighting factor
 
   UIntCoordMap m_savedCoords; // DM 08 Feb 1999 - now store all saved coords
                               // in a std::map<UInt,Coord>

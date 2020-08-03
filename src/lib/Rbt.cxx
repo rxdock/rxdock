@@ -36,6 +36,8 @@
 #include "Rbt.h"
 #include "Resources.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // GetRoot - returns value of RBT_ROOT env variable
@@ -204,11 +206,8 @@ std::vector<std::string> rxdock::GetDirList(const std::string &strDir,
 // Converts (comma)-delimited string of segment names to segment map
 SegmentMap rxdock::ConvertStringToSegmentMap(const std::string &strSegments,
                                              const std::string &strDelimiter) {
-#ifdef _DEBUG
-  // std::cout << "ConvertStringToSegmentMap: " << strSegments << " delimiter="
-  // << strDelimiter << std::endl;
-#endif //_DEBUG
-
+  LOG_F(2, "ConvertStringToSegmentMap: segments={} delimiter={}", strSegments,
+        strDelimiter);
   std::string::size_type nDelimiterSize = strDelimiter.size();
   SegmentMap segmentMap;
 
@@ -222,9 +221,8 @@ SegmentMap rxdock::ConvertStringToSegmentMap(const std::string &strSegments,
     // string
     do {
       iEnd = strSegments.find(strDelimiter, iBegin);
-#ifdef _DEBUG
-      // std::cout << strSegments.substr(iBegin, iEnd-iBegin) << std::endl;
-#endif //_DEBUG
+      LOG_F(1, "ConvertStringToSegmentMap: substring={}",
+            strSegments.substr(iBegin, iEnd - iBegin));
       segmentMap[strSegments.substr(iBegin, iEnd - iBegin)] = 0;
       iBegin = iEnd + nDelimiterSize;
     } while (iEnd !=

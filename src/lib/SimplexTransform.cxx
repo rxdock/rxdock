@@ -24,6 +24,9 @@
 #include "SimplexTransform.h"
 #include "WorkSpace.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data member for class type
@@ -46,22 +49,18 @@ std::string &SimplexTransform::GetStepSize() { return _STEP_SIZE; }
 // Constructors/destructors
 SimplexTransform::SimplexTransform(const std::string &strName)
     : BaseBiMolTransform(_CT, strName) {
+  LOG_F(2, "SimplexTransform parameterised constructor");
   AddParameter(_MAX_CALLS, 200);
   AddParameter(_NCYCLES, 5);
   AddParameter(_STOPPING_STEP_LENGTH, 10e-4);
   AddParameter(_PARTITION_DIST, 0.0);
   AddParameter(_STEP_SIZE, 0.1);
   AddParameter(_CONVERGENCE, 0.001);
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 SimplexTransform::~SimplexTransform() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "SimplexTransform destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -89,6 +88,7 @@ void SimplexTransform::SetupTransform() {
 // Pure virtual in BaseTransform
 // Actually apply the transform
 void SimplexTransform::Execute() {
+  LOG_F(2, "SimplexTransform::Execute");
   // Get the current scoring function from the workspace
   WorkSpace *pWorkSpace = GetWorkSpace();
   if (pWorkSpace == nullptr) // Return if this transform is not registered
@@ -96,7 +96,6 @@ void SimplexTransform::Execute() {
   BaseSF *pSF = pWorkSpace->GetSF();
   if (pSF == nullptr) // Return if workspace does not have a scoring function
     return;
-  int iTrace = GetTrace();
 
   pWorkSpace->ClearPopulation();
   int maxcalls = GetParameter(_MAX_CALLS);
@@ -136,25 +135,9 @@ void SimplexTransform::Execute() {
   // immediately
   double delta = -convergence - 1.0;
 
-  if (iTrace > 0) {
-    std::cout.precision(3);
-    std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
-    std::cout.setf(std::ios_base::right, std::ios_base::adjustfield);
-    std::cout << std::endl
-              << _CT << std::endl
-              << std::setw(5) << "CYCLE" << std::setw(5) << "MODE"
-              << std::setw(5) << "DOF" << std::setw(10) << "CALLS"
-              << std::setw(10) << "SCORE" << std::setw(10) << "DELTA"
-              << std::endl;
-    std::cout << std::endl
-              << std::setw(5) << "Init" << std::setw(5) << "-" << std::setw(5)
-              << "-" << std::setw(10) << calls << std::setw(10) << initScore
-              << std::setw(10) << "-" << std::endl
-              << std::endl;
-    if (iTrace > 1) {
-      std::cout << *m_chrom << std::endl;
-    }
-  }
+  LOG_F(INFO, "CYCLE MODE  DOF     CALLS     SCORE     DELTA");
+  LOG_F(INFO, " Init    -    -{:10d}{:10f}         -", calls, initScore);
+  LOG_F(1, "{}", *m_chrom);
 
   for (int i = 0; (i < ncycles) && (delta < -convergence); i++) {
     if (partDist > 0.0) {
@@ -167,11 +150,6 @@ void SimplexTransform::Execute() {
         Eigen::Map<SimplexCostFunction::ParameterType, Eigen::Unaligned>(
             vc.data(), vc.size());
 
-    if (iTrace > 0) {
-      std::cout << std::setw(5) << i << std::setw(5) << "ALL" << std::setw(5)
-                << vc.size();
-    }
-
     optimizer.SetStartPoint(start_point); // Starting parameters
     optimizer.SetDelta(delta);            // Simplex size
     optimizer.Optimize(costFunction);     // Optimization start
@@ -183,25 +161,15 @@ void SimplexTransform::Execute() {
     std::vector<double> best_vec(best.data(), best.data() + best.size());
     m_chrom->SetVector(best_vec);
 
-    if (iTrace > 0) {
-      std::cout << std::setw(10) << calls << std::setw(10) << newmin
-                << std::setw(10) << delta << std::endl;
-      if (iTrace > 1) {
-        std::cout << *m_chrom << std::endl;
-      }
-    }
+    LOG_F(INFO, "{:5d}  ALL{:5d}{:10d}{:10f}{:10f}", i, vc.size(), calls,
+          newmin, delta);
+    LOG_F(1, "{}", *m_chrom);
 
     min = newmin;
   }
   m_chrom->SyncToModel();
   pSF->HandleRequest(spClearPartReq); // Clear any partitioning
   delete[] steps;
-  if (iTrace > 0) {
-    min = pSF->Score();
-    delta = min - initScore;
-    std::cout << std::endl
-              << std::setw(5) << "Final" << std::setw(5) << "-" << std::setw(5)
-              << "-" << std::setw(10) << calls << std::setw(10) << min
-              << std::setw(10) << delta << std::endl;
-  }
+  LOG_F(INFO, "Final    -    -{:10d}{:10f}{:10f}", calls, pSF->Score(),
+        pSF->Score() - initScore);
 }

@@ -14,6 +14,8 @@
 #include "FlexAtomFactory.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -32,6 +34,7 @@ VdwIdxSF::VdwIdxSF(const std::string &strName)
     : BaseSF(_CT, strName), m_nAttr(0), m_nRep(0), m_attrThreshold(-0.5),
       m_repThreshold(0.5), m_lipoAnnot(-0.1), m_bAnnotate(true),
       m_bFlexRec(false), m_bFastSolvent(true) {
+  LOG_F(2, "VdwIdxSF parameterised constructor");
   AddParameter(_THRESHOLD_ATTR, m_attrThreshold);
   AddParameter(_THRESHOLD_REP, m_repThreshold);
   AddParameter(_ANNOTATION_LIPO,
@@ -40,16 +43,11 @@ VdwIdxSF::VdwIdxSF(const std::string &strName)
                m_bAnnotate); // Threshold for outputting lipo vdW annotations
   AddParameter(_FAST_SOLVENT,
                m_bFastSolvent); // Controls solvent performance enhancements
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 VdwIdxSF::~VdwIdxSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "VdwIdxSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -119,14 +117,11 @@ void VdwIdxSF::SetupReceptor() {
   double maxError = GetMaxError();
   double flexDist = 2.0;
   DockingSitePtr spDS = GetWorkSpace()->GetDockingSite();
-  int iTrace = GetTrace();
 
   int nCoords = GetReceptor()->GetNumSavedCoords() - 1;
   if (nCoords > 0) {
     for (int i = 1; i <= nCoords; i++) {
-      if (iTrace > 0) {
-        std::cout << _CT << ": Indexing receptor coords # " << i << std::endl;
-      }
+      LOG_F(1, "VdwIdxSF::SetupReceptor: Indexing receptor coords #{}", i);
       GetReceptor()->RevertCoords(i);
       AtomList atomList =
           spDS->GetAtomList(m_recAtomList, 0.0, GetCorrectedRange());
@@ -180,11 +175,8 @@ void VdwIdxSF::SetupReceptor() {
         double range = MaxVdwRange(*iter);
         m_spGrid->SetAtomLists(*iter, range + maxError + flexDist);
       }
-      if (iTrace > 0) {
-        double score = ReceptorScore();
-        std::cout << GetWorkSpace()->GetName() << " " << GetFullName()
-                  << ": Intra-receptor score = " << score << std::endl;
-      }
+      LOG_F(1, "{} {}: Intra-receptor score = {}", GetWorkSpace()->GetName(),
+            GetFullName(), ReceptorScore());
     }
     // Index the rigid atoms as usual
     for (AtomRListConstIter iter = m_recRigidAtomList.begin();
@@ -295,37 +287,25 @@ void VdwIdxSF::SetupSolvent() {
         MaxVdwRange(TriposAtomType::O_3) + (2.0 * maxFlexDist);
     Partition(m_solventFixTethAtomList, m_solventFixTethIntns,
               m_solventFixTethPrtIntns, partitionDist);
-    if (GetTrace() > 0) {
-      std::cout << std::endl
-                << "Faster calculation of vdW scores involving fixed/tethered "
-                   "solvent is enabled..."
-                << std::endl;
-      std::cout << "#Fixed/tethered solvent atoms = "
-                << m_solventFixTethAtomList.size() << std::endl;
-      std::cout << "Max translation of any fixed/tethered solvent atom = "
-                << maxFlexDist << "A" << std::endl;
-    }
+    LOG_F(INFO, "Faster calculation of vdW scores involving fixed/tethered "
+                "solvent is enabled...");
+    LOG_F(INFO, "#Fixed/tethered solvent atoms = {}",
+          m_solventFixTethAtomList.size());
+    LOG_F(INFO, "Max translation of any fixed/tethered solvent atom = {} A",
+          maxFlexDist);
   }
   // Build the interaction map for the free solvent - free solvent interactions
   // only
   if (!m_solventFreeAtomList.empty()) {
     m_solventFreeIntns = AtomRListList(m_solventAtomList.size(), AtomRList());
     BuildIntraMap(m_solventFreeAtomList, m_solventFreeIntns);
-    if (GetTrace() > 0) {
-      if (m_bFastSolvent) {
-        std::cout << std::endl
-                  << "Calculation of vdW scores involving freely translating "
-                     "solvent can not be optimised..."
-                  << std::endl;
-        std::cout << "#Free solvent atoms = " << m_solventFreeAtomList.size()
-                  << std::endl;
-      } else {
-        std::cout
-            << std::endl
-            << "Faster calculation of vdW scores involving fixed/tethered "
-               "solvent is disabled..."
-            << std::endl;
-      }
+    if (m_bFastSolvent) {
+      LOG_F(INFO, "Calculation of vdW scores involving freely translating "
+                  "solvent can not be optimised...");
+      LOG_F(INFO, "#Free solvent atoms = {}", m_solventFreeAtomList.size());
+    } else {
+      LOG_F(INFO, "Faster calculation of vdW scores involving fixed/tethered "
+                  "solvent is disabled...");
     }
   }
 }

@@ -19,6 +19,8 @@
 #include "SimAnnTransform.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Simple class to keep track of Monte Carlo sampling statistics
@@ -88,6 +90,7 @@ std::string &SimAnnTransform::GetPartitionFreq() { return _PARTITION_FREQ; }
 // Constructors/destructors
 SimAnnTransform::SimAnnTransform(const std::string &strName)
     : BaseBiMolTransform(_CT, strName), m_rand(GetRandInstance()) {
+  LOG_F(2, "SimAnnTransform parameterised constructor");
   // Add parameters
   AddParameter(_START_T, 1000.0);
   AddParameter(_FINAL_T, 300.0);
@@ -100,16 +103,11 @@ SimAnnTransform::SimAnnTransform(const std::string &strName)
   AddParameter(_PARTITION_FREQ, 0);
   AddParameter(_HISTORY_FREQ, 0);
   m_spStats = MCStatsPtr(new MCStats());
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 SimAnnTransform::~SimAnnTransform() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "SimAnnTransform destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -147,7 +145,6 @@ void SimAnnTransform::Execute() {
   BaseSF *pSF = pWorkSpace->GetSF();
   if (pSF == nullptr) // Return if workspace does not have a scoring function
     return;
-  int iTrace = GetTrace();
 
   pWorkSpace->ClearPopulation();
   // Get the cooling schedule params
@@ -163,9 +160,7 @@ void SimAnnTransform::Execute() {
     int chromLength = m_chrom->GetLength();
     blockLen *= chromLength;
   }
-  if (iTrace > 0) {
-    std::cout << _CT << ": Block length = " << blockLen << std::endl;
-  }
+  LOG_F(INFO, "SimAnnTransform::Execute: Block length = {}", blockLen);
 
   // Cooling factor (check for nBlocks=1)
   double tFac = (nBlocks > 1) ? std::pow(tFinal / t, 1.0 / (nBlocks - 1)) : 1.0;
@@ -188,35 +183,21 @@ void SimAnnTransform::Execute() {
   double score = pSF->Score();
   m_spStats->Init(score);
 
-  std::cout.precision(3);
-  std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
-  std::cout.setf(std::ios_base::right, std::ios_base::adjustfield);
-
-  if (iTrace > 0) {
-    std::cout << _CT << ": Initial score = " << score << std::endl;
-    std::cout << std::endl
-              << std::endl
-              << std::setw(5) << "BLOCK" << std::setw(10) << "TEMP"
-              << std::setw(10) << "ACC.RATE" << std::setw(10) << "STEP"
-              << std::setw(10) << "INITIAL" << std::setw(10) << "FINAL"
-              << std::setw(10) << "MEAN" << std::setw(10) << "S.DEV"
-              << std::setw(10) << "MIN" << std::setw(10) << "MAX" << std::endl;
-  }
-
+  LOG_F(INFO, "SimAnnTransform::Execute: Initial score = {}", score);
+  LOG_F(INFO, "BLOCK      TEMP  ACC.RATE      STEP   INITIAL     FINAL      "
+              "MEAN     S.DEV       MIN       MAX");
   for (int iBlock = 1; iBlock <= nBlocks; iBlock++, t *= tFac) {
     if (bInitBlock) {
       m_spStats->InitBlock(pSF->Score());
     }
     MC(t, blockLen, stepSize);
-    if (iTrace > 0) {
-      std::cout << std::setw(5) << iBlock << std::setw(10) << t << std::setw(10)
-                << m_spStats->AccRate() << std::setw(10) << stepSize
-                << std::setw(10) << m_spStats->_blockInitial << std::setw(10)
-                << m_spStats->_blockFinal << std::setw(10) << m_spStats->Mean()
-                << std::setw(10) << std::sqrt(m_spStats->Variance())
-                << std::setw(10) << m_spStats->_blockMin << std::setw(10)
-                << m_spStats->_blockMax << std::endl;
-    }
+    LOG_F(INFO,
+          "{:5d}{:10.3f}{:10.3f}{:10.3f}{:10.3f}{:10.3f}{:10.3f}{:10.3f}"
+          "{:10.3f}{:10.3f}",
+          iBlock, t, m_spStats->AccRate(), stepSize, m_spStats->_blockInitial,
+          m_spStats->_blockFinal, m_spStats->Mean(),
+          std::sqrt(m_spStats->Variance()), m_spStats->_blockMin,
+          m_spStats->_blockMax);
 
     // Halve the maximum step sizes for all enabled modes
     // if the acceptance rate is less than the threshold
@@ -234,15 +215,11 @@ void SimAnnTransform::Execute() {
   m_chrom->SyncToModel();
   RequestPtr spClearPartReq(new SFPartitionRequest(0.0));
   pSF->HandleRequest(spClearPartReq); // Clear any partitioning
-  if (iTrace > 0) {
-    std::cout << std::endl
-              << _CT << ": Final score = " << pSF->Score() << std::endl;
-  }
+  LOG_F(INFO, "SimAnnTransform: Final score = {}", pSF->Score());
 }
 
 void SimAnnTransform::MC(double t, int blockLen, double stepSize) {
   BaseSF *pSF = GetWorkSpace()->GetSF();
-  int iTrace = GetTrace();
   double score = pSF->Score();
 
   int nHisFreq = GetParameter(_HISTORY_FREQ);
@@ -294,10 +271,9 @@ void SimAnnTransform::MC(double t, int blockLen, double stepSize) {
       pSF->HandleRequest(m_spPartReq);
       double oldScore = score;
       score = pSF->Score();
-      if (std::fabs(score - oldScore) > 0.001 && (iTrace > 1)) {
-        std::cout
-            << "** WARNING - Interaction lists updated, change in score = "
-            << score - oldScore << std::endl;
+      if (std::fabs(score - oldScore) > 0.001) {
+        LOG_F(WARNING, "Interaction lists updated, change in score = {}",
+              score - oldScore);
       }
     }
   }

@@ -12,6 +12,8 @@
 
 #include "SetupPMFSF.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -19,13 +21,13 @@ using namespace rxdock;
 std::string SetupPMFSF::_CT("SetupPMFSF");
 
 SetupPMFSF::SetupPMFSF(const std::string &strName) : BaseSF(_CT, strName) {
-  std::cout << _CT << " parameterised constructor" << std::endl;
+  LOG_F(2, "SetupPMFSF parameterised constructor");
   Disable();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 SetupPMFSF::~SetupPMFSF() {
-  std::cout << _CT << " destructor" << std::endl;
+  LOG_F(2, "SetupPMFSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -33,14 +35,12 @@ void SetupPMFSF::SetupReceptor() {
   theReceptorList = GetAtomListWithPredicate(GetReceptor()->GetAtomList(),
                                              std::not1(isAtomicNo_eq(1)));
   SetupReceptorPMFTypes();
-#ifdef _DEBUG1
   for (long i = 0; i < theReceptorList.size(); i++) {
-    std::cout << _CT << " " << theReceptorList[i]->GetFullAtomName();
-    std::cout << " type " << PMFType2Str(theReceptorList[i]->GetPMFType());
-    std::cout << " No " << theReceptorList[i]->GetAtomicNo();
-    std::cout << std::endl;
+    LOG_F(1, "SetupPMFSF::SetupReceptor: {} {} type {} No {}", i,
+          theReceptorList[i]->GetFullAtomName(),
+          PMFType2Str(theReceptorList[i]->GetPMFType()),
+          theReceptorList[i]->GetAtomicNo());
   }
-#endif //_DEBUG1
 }
 
 void SetupPMFSF::SetupScore() {}
@@ -50,32 +50,25 @@ double SetupPMFSF::RawScore() const { return 0.0; }
 void SetupPMFSF::SetupLigand() {
   theLigandList.clear();
   if (GetLigand().Null()) {
-    std::cout << _CT << "WARNING: ligand is not defined" << std::endl;
+    LOG_F(WARNING, "SetupPMFSF::SetupLigand: Ligand is not defined");
     return;
   } else {
     // theLigandList = GetLigand()->GetAtomList();
     theLigandList = GetAtomListWithPredicate(GetLigand()->GetAtomList(),
                                              std::not1(isAtomicNo_eq(1)));
     SetupLigandPMFTypes();
-#ifdef _DEBUG1
     for (int i = 0; i < theLigandList.size(); i++) {
-      std::cout << i + 1 << " " << _CT << " "
-                << theLigandList[i]->GetFullAtomName();
-      std::cout << " type " << PMFType2Str(theLigandList[i]->GetPMFType());
-      std::cout << " No " << theLigandList[i]->GetAtomicNo();
-      std::cout << std::endl;
+      LOG_F(1, "SetupPMFSF:SetupLigand: {} {} type {} No {}", i,
+            theLigandList[i]->GetFullAtomName(),
+            PMFType2Str(theLigandList[i]->GetPMFType()),
+            theLigandList[i]->GetAtomicNo());
     }
-#endif //_DEBUG1
   }
 }
 
 PMFType SetupPMFSF::GetPMFfor_rC(AtomPtr anAtom) {
-#ifdef _DEBUG1
-  Atom::eHybridState theHybState = anAtom->GetHybridState();
-  std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << ConvertHybridStateToString(theHybState)
-            << std::endl;
-#endif //_DEBUG1
+  LOG_F(2, "SetupPMFSF::GetPMFfor_rC: {} Hybrid: {}", anAtom->GetFullAtomName(),
+        ConvertHybridStateToString(anAtom->GetHybridState()));
 
   isAtomicNo_eq isO(8);
   isAtomicNo_eq isN(7);
@@ -117,10 +110,8 @@ PMFType SetupPMFSF::GetPMFfor_rC(AtomPtr anAtom) {
 }
 
 PMFType SetupPMFSF::GetPMFfor_rO(AtomPtr anAtom) {
-#ifdef _DEBUG1
-  std::cout << _CT << " " << anAtom->GetFullAtomName() << std::endl;
-#endif //_DEBUG1
-       // check charge
+  LOG_F(2, "SetupPMFSF::GetPMFfor_rO: {}", anAtom->GetFullAtomName());
+  // check charge
   if (anAtom->GetGroupCharge() < 0.0)
     return OC;
   // check wether is it water
@@ -137,13 +128,9 @@ PMFType SetupPMFSF::GetPMFfor_rO(AtomPtr anAtom) {
 }
 
 PMFType SetupPMFSF::GetPMFfor_rN(AtomPtr anAtom) {
-#ifdef _DEBUG1
-  Atom::eHybridState theHybState = anAtom->GetHybridState();
-  std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << ConvertHybridStateToString(theHybState)
-            << std::endl;
-#endif //_DEBUG1
-       // check for charge
+  LOG_F(2, "SetupPMFSF::GetPMFfor_rN: {} Hybrid: {}", anAtom->GetFullAtomName(),
+        ConvertHybridStateToString(anAtom->GetHybridState()));
+  // check for charge
   if (IsChargedNitrogen(anAtom))
     return NC;
   // check for donors
@@ -159,12 +146,8 @@ PMFType SetupPMFSF::GetPMFfor_rN(AtomPtr anAtom) {
 // sulphur in MET (SA) and CYS (SD)
 // it is not likely to find them elsewhere than in proteins
 PMFType SetupPMFSF::GetPMFfor_rS(AtomPtr anAtom) {
-#ifdef _DEBUG1
-  Atom::eHybridState theHybState = anAtom->GetHybridState();
-  std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << ConvertHybridStateToString(theHybState)
-            << std::endl;
-#endif //_DEBUG1
+  LOG_F(2, "SetupPMFSF::GetPMFfor_rS: {} Hybrid: {}", anAtom->GetFullAtomName(),
+        ConvertHybridStateToString(anAtom->GetHybridState()));
   if (std::string::npos != anAtom->GetFullAtomName().find("MET"))
     return SA; // metionin H-bond acceptor
   else
@@ -172,8 +155,7 @@ PMFType SetupPMFSF::GetPMFfor_rS(AtomPtr anAtom) {
 }
 
 void SetupPMFSF::SetupReceptorPMFTypes(void) {
-  // std::cout << _CT << " receptor size " << theReceptorList.size() <<
-  // std::endl;
+  LOG_F(1, "SetupPMFSF receptor size {}", theReceptorList.size());
   for (unsigned long i = 0; i < theReceptorList.size(); i++) {
     switch (theReceptorList[i]->GetAtomicNo()) {
     case 1:
@@ -204,17 +186,15 @@ void SetupPMFSF::SetupReceptorPMFTypes(void) {
       // throw ();
       break;
     }
-#ifdef _DEBUG1
-    std::cout << _CT << " receptor type: "
-              << PMFType2Str(theReceptorList[i]->GetPMFType())
-              << " for: " << theReceptorList[i]->GetAtomicNo() << std::endl;
-#endif //_DEBUG1
+    LOG_F(2, "SetupPMFSF receptor type: {} for: {}",
+          PMFType2Str(theReceptorList[i]->GetPMFType()),
+          theReceptorList[i]->GetAtomicNo());
   }
 }
 
 bool SetupPMFSF::IsChargedNitrogen(AtomPtr anAtom) {
-  // std::cout << _CT << " AMINO ACID " << anAtom->GetSubunitName() <<
-  // std::endl;
+  LOG_F(2, "SetupPMFSF::IsChargedNitrogen");
+  LOG_F(1, "amino acid {}", anAtom->GetSubunitName());
   isAtomicNo_eq bIsN(7);
   if (!bIsN(anAtom)) // is it N at all?
     return false;
@@ -237,12 +217,8 @@ bool SetupPMFSF::IsChargedNitrogen(AtomPtr anAtom) {
 
 // Set PMF type for carbons.
 PMFType SetupPMFSF::GetPMFfor_lC(AtomPtr anAtom) {
-#ifdef _DEBUG1
-  Atom::eHybridState theHybState = anAtom->GetHybridState();
-  std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << ConvertHybridStateToString(theHybState)
-            << std::endl;
-#endif                                      //_DEBUG1
+  LOG_F(2, "SetupPMFSF::GetPMFfor_lC: {} Hybrid: {}", anAtom->GetFullAtomName(),
+        ConvertHybridStateToString(anAtom->GetHybridState()));
   if (Atom::SP == anAtom->GetHybridState()) // sp has only one PMF type
     return C0;                              // C-zero and not cee-oh
 
@@ -304,12 +280,9 @@ PMFType SetupPMFSF::GetPMFfor_lC(AtomPtr anAtom) {
 // same for nitrogen
 PMFType SetupPMFSF::GetPMFfor_lN(AtomPtr anAtom) {
   Atom::eHybridState theHybState = anAtom->GetHybridState();
-#ifdef _DEBUG1
-  std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << ConvertHybridStateToString(theHybState)
-            << std::endl;
-#endif //_DEBUG1
-       // sp has only one PMF type
+  LOG_F(2, "SetupPMFSF::GetPMFfor_lN: {} Hybrid: {}", anAtom->GetFullAtomName(),
+        ConvertHybridStateToString(theHybState));
+  // sp has only one PMF type
   if (Atom::SP == theHybState)
     return N0; // N-zero and not en-oh
   // checking are there neighbours other than [CH]
@@ -364,11 +337,8 @@ PMFType SetupPMFSF::GetPMFfor_lN(AtomPtr anAtom) {
 
 PMFType SetupPMFSF::GetPMFfor_lO(AtomPtr anAtom) {
   Atom::eHybridState theHybState = anAtom->GetHybridState();
-#ifdef _DEBUG1
-  std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << ConvertHybridStateToString(theHybState)
-            << std::endl;
-#endif //_DEBUG1
+  LOG_F(2, "SetupPMFSF::GetPMFfor_lO: {} Hybrid: {}", anAtom->GetFullAtomName(),
+        ConvertHybridStateToString(theHybState));
   isAtomHBondDonor isHBondDonor;
   isAtomHBondAcceptor isHBondAcceptor;
   isAtomCyclic isCyclic;
@@ -400,12 +370,8 @@ PMFType SetupPMFSF::GetPMFfor_lO(AtomPtr anAtom) {
 
 // PMF type for sulphur
 PMFType SetupPMFSF::GetPMFfor_lS(AtomPtr anAtom) {
-#ifdef _DEBUG1
-  Atom::eHybridState theHybState = anAtom->GetHybridState();
-  std::cout << _CT << " " << anAtom->GetFullAtomName()
-            << " Hybrid : " << ConvertHybridStateToString(theHybState)
-            << std::endl;
-#endif //_DEBUG1
+  LOG_F(2, "SetupPMFSF::GetPMFfor_lS: {} Hybrid: {}", anAtom->GetFullAtomName(),
+        ConvertHybridStateToString(anAtom->GetHybridState()));
   isAtomHBondDonor isHBondDonor;
   AtomList donorList =
       GetAtomListWithPredicate(GetBondedAtomList(anAtom), isHBondDonor);

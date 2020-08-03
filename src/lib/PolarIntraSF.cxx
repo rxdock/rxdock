@@ -13,6 +13,8 @@
 #include "PolarIntraSF.h"
 #include "SFRequest.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -23,19 +25,15 @@ std::string PolarIntraSF::_ATTR("ATTR");
 // implicit constructor for BaseInterSF is called second
 PolarIntraSF::PolarIntraSF(const std::string &strName)
     : BaseSF(_CT, strName), m_bAttr(true) {
+  LOG_F(2, "PolarIntraSF parameterised constructor");
   // Add parameters
   AddParameter(_ATTR, m_bAttr);
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 PolarIntraSF::~PolarIntraSF() {
+  LOG_F(2, "PolarIntraSF destructor");
   ClearModel();
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -109,7 +107,6 @@ void PolarIntraSF::ParameterUpdated(const std::string &strName) {
 // Handles the Partition request
 void PolarIntraSF::HandleRequest(RequestPtr spRequest) {
   VariantList params = spRequest->GetParameters();
-  int iTrace = GetTrace();
 
   switch (spRequest->GetID()) {
     // ID_REQ_SF_PARTITION requests come in two forms:
@@ -118,27 +115,21 @@ void PolarIntraSF::HandleRequest(RequestPtr spRequest) {
     //         param[1] = distance => Partition a named scoring function
   case ID_REQ_SF_PARTITION:
     if (params.size() == 1) {
-      if (iTrace > 2) {
-        std::cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
-                  << " at distance=" << params[0] << std::endl;
-      }
+      LOG_F(1, "PolarIntraSF::HandleRequest: Partitioning {} at distance={}",
+            GetFullName(), params[0].GetString());
       Partition(m_posList, m_negList, m_intns, m_prtIntns, params[0]);
     } else if ((params.size() == 2) &&
                (params[0].GetString() == GetFullName())) {
-      if (iTrace > 2) {
-        std::cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
-                  << " at distance=" << params[1] << std::endl;
-      }
+      LOG_F(1, "PolarIntraSF::HandleRequest: Partitioning {} at distance={}",
+            GetFullName(), params[1].GetString());
       Partition(m_posList, m_negList, m_intns, m_prtIntns, params[1]);
     }
     break;
 
     // Pass all other requests to base handler
   default:
-    if (iTrace > 2) {
-      std::cout << _CT << "::HandleRequest: " << GetFullName()
-                << " passing request to base handler" << std::endl;
-    }
+    LOG_F(1, "PolarIntraSF::HandleRequest: {} passing request to base handler",
+          GetFullName());
     BaseObject::HandleRequest(spRequest);
     break;
   }

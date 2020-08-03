@@ -33,9 +33,6 @@ public:
   static std::string _CLASS;
   static std::string _NAME;
   static std::string _ENABLED;
-  static std::string _TRACE; // DM 1 Mar 2002 - move from BaseTransform
-
-  RBTDLL_EXPORT static std::string &GetTraceStr();
 
   ////////////////////////////////////////
   // Constructors/destructors
@@ -55,11 +52,6 @@ public:
   void Enable();
   void Disable();
   bool isEnabled() const;
-
-  // DM 1 Mar 2002 - move from BaseTransform
-  // get/set the trace level for debugging
-  int GetTrace() const;
-  RBTDLL_EXPORT void SetTrace(int);
 
   // WorkSpace handling methods
   // Register scoring function with a workspace
@@ -112,7 +104,6 @@ private:
   //////////////
   WorkSpace *m_workspace;
   bool m_enabled;
-  int m_trace;
 };
 
 // Useful typedefs

@@ -19,6 +19,9 @@
 #include "ModelError.h"
 #include "Plane.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 MdlFileSource::MdlFileSource(const std::string &fileName, bool bPosIonisable,
@@ -84,10 +87,8 @@ void MdlFileSource::Parse() {
           (*fileIter).insert(3, " ");
         std::istringstream istr(*fileIter++);
         istr >> nAtomRec >> nBondRec;
-#ifdef _DEBUG
-        // std::cout << nAtomRec << " atoms, " << nBondRec << " bonds" <<
-        // std::endl;
-#endif //_DEBUG
+        LOG_F(1, "MdlFileSource::Parse: {} atoms, {} bonds", nAtomRec,
+              nBondRec);
       } else
         throw FileParseError(_WHERE_, "Missing atom and bond information in " +
                                           GetFileName());
@@ -306,9 +307,8 @@ void MdlFileSource::SetupHybridState() {
     default:
       // throw ModelError(_WHERE_, (*iter)->GetName()+" makes a bond with
       // an unknown bond order");
-      ModelError err(_WHERE_, (*iter)->GetName() +
-                                  " makes a bond with an unknown bond order");
-      std::cout << err.what() << std::endl;
+      LOG_F(ERROR, "{} makes a bond with an unknown bond order",
+            (*iter)->GetName());
       (*iter)->SetHybridState(Atom::UNDEFINED);
       break;
     }
@@ -352,22 +352,15 @@ void MdlFileSource::SetupHybridState() {
                           c0 + v3.Unit()); // Plane of three substs
           // This is the signed distance from the atom to the plane
           double dist = std::fabs(DistanceFromPointToPlane(c0, p));
-#ifdef _DEBUG
-          std::cout << "Distance from " << (*iter)->GetName()
-                    << " to plane of substituents=" << dist << std::endl;
-#endif                      //_DEBUG
+          LOG_F(1, "Distance from {} to plane of substituents={}",
+                (*iter)->GetName(), dist);
           if (dist > 0.1) { // Not planar
-#ifdef _DEBUG
-            std::cout << "Not planar" << std::endl;
-#endif //_DEBUG
+            LOG_F(1, "Not planar");
             break;
           }
         }
         (*iter)->SetHybridState(Atom::TRI);
-#ifdef _DEBUG
-        std::cout << "Changing " << (*iter)->GetName() << " from SP3 to TRI"
-                  << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "Changing {} from SP3 to TRI", (*iter)->GetName());
       }
       break;
     default:
@@ -418,19 +411,15 @@ void MdlFileSource::SetupTheRest() {
         if (bIsSP3(*iter)) {
           vdwRadius +=
               dImplRadIncr; // adjust vdw radius (for sp3 implicit atoms only)
-#ifdef _DEBUG
-          std::cout << "Adding " << nMinVal - nValency
-                    << " implicit hydrogens to " << (*iter)->GetName()
-                    << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "Adding {} implicit hydrogens to {}", nMinVal - nValency,
+                (*iter)->GetName());
         }
         break;
       default:
         // DM 26 Jul 1999 - don't complain about valency errors
         // throw ModelError(_WHERE_, (*iter)->GetName()+" makes too few
         // bonds");
-        ModelError err(_WHERE_, (*iter)->GetName() + " makes too few bonds");
-        std::cout << "**WARNING** " << err.what() << std::endl;
+        LOG_F(ERROR, "{} makes too few bonds", (*iter)->GetName());
         break;
       }
     }
@@ -438,8 +427,7 @@ void MdlFileSource::SetupTheRest() {
     else if (nValency > nMaxVal) {
       // throw ModelError(_WHERE_, (*iter)->GetName()+" makes too many
       // bonds");
-      ModelError err(_WHERE_, (*iter)->GetName() + " makes too many bonds");
-      std::cout << "**WARNING** " << err.what() << std::endl;
+      LOG_F(ERROR, "{} makes too many bonds", (*iter)->GetName());
     }
 
     // Set the vdw radius, first correcting for H-bonding hydrogens
@@ -483,18 +471,12 @@ void MdlFileSource::SetupPosIonisableGroups() {
     AtomList bondedAtomList = GetBondedAtomList(*iter);
     // Only protonate if not bonded to pi-atom ?
     if (FindAtomInList(bondedAtomList, isPiAtom()) == bondedAtomList.end()) {
-      //#ifdef _DEBUG
-      std::cout << "Protonating neutral amine " << (*iter)->GetName()
-                << std::endl;
-      //#endif //_DEBUG
+      LOG_F(1, "Protonating neutral amine {}", (*iter)->GetName());
       AddHydrogen(*iter);
+    } else {
+      LOG_F(1, "Amine adjacent to pi-atom, not protonated: {}",
+            (*iter)->GetName());
     }
-#ifdef _DEBUG
-    else {
-      std::cout << "Amine adjacent to pi-atom, not protonated: "
-                << (*iter)->GetName() << std::endl;
-    }
-#endif //_DEBUG
   }
 
   // 2. Guanidine, imidazole, amidine
@@ -546,18 +528,12 @@ void MdlFileSource::SetupPosIonisableGroups() {
       //////////////////////////////////
       case 2:
         if (!(*iter)->GetCyclicFlag()) {
-          //#ifdef _DEBUG
-          std::cout << "Protonating neutral guanidine "
-                    << (*nsp2Iter)->GetName() << std::endl;
-          //#endif //_DEBUG
+          LOG_F(1, "Protonating neutral guanidine {}", (*nsp2Iter)->GetName());
           AddHydrogen(*nsp2Iter);
+        } else {
+          LOG_F(1, "Cyclic guanidine-like fragment - ignored {}",
+                (*nsp2Iter)->GetName());
         }
-#ifdef _DEBUG
-        else {
-          std::cout << "Cyclic guanidine-like fragment - ignored "
-                    << (*nsp2Iter)->GetName() << std::endl;
-        }
-#endif //_DEBUG
         break;
 
       //////////////////////////////////
@@ -568,27 +544,22 @@ void MdlFileSource::SetupPosIonisableGroups() {
         ntriIter = FindAtomInList(bondedAtomList, bIsN_TRI);
         nsp2BondedAtomList = GetBondedAtomList(*nsp2Iter);
         ntriBondedAtomList = GetBondedAtomList(*ntriIter);
-#ifdef _DEBUG
-        std::cout
-            << "Possible imidazole/amidine, found 1xN_SP2, 1xN_TRI bonded to "
-            << (*iter)->GetName() << std::endl;
-#endif //_DEBUG
-       // IMIDAZOLE - Check that the N_SP2 is bonded to 2 x C_SP2 and that
-       // the N_TRI is bonded to 2 x C_SP2 and 1 hydrogen
+        LOG_F(1,
+              "Possible imidazole/amidine, found 1xN_SP2, 1xN_TRI bonded to {}",
+              (*iter)->GetName());
+        // IMIDAZOLE - Check that the N_SP2 is bonded to 2 x C_SP2 and that
+        // the N_TRI is bonded to 2 x C_SP2 and 1 hydrogen
         if ((GetNumAtomsWithPredicate(nsp2BondedAtomList, bIsC_SP2) == 2) &&
             (GetNumAtomsWithPredicate(ntriBondedAtomList, bIsC_SP2) == 2) &&
             (GetNumAtomsWithPredicate(ntriBondedAtomList, isAtomicNo_eq(1)) ==
              1)) {
-#ifdef _DEBUG
-          std::cout << "Possible imidazole, bonding requirements for N_SP2 and "
-                       "N_TRI met"
-                    << std::endl;
-#endif //_DEBUG
-       // Now check if any of the atoms bonded to the N_TRI are 1-2 connected to
-       // any of the atoms bonded to the N_SP2. If so, it is a 5-membered ring
-       // DM 25 Jul 2002 - also check whether the atoms are bridgeheads or not
-       // We don't want to protonate imidazoles which are part of larger fused
-       // ring systems (can have very different pKa's)
+          LOG_F(1, "Possible imidazole, bonding requirements for N_SP2 and "
+                   "N_TRI met");
+          // Now check if any of the atoms bonded to the N_TRI are 1-2 connected
+          // to any of the atoms bonded to the N_SP2. If so, it is a 5-membered
+          // ring DM 25 Jul 2002 - also check whether the atoms are bridgeheads
+          // or not We don't want to protonate imidazoles which are part of
+          // larger fused ring systems (can have very different pKa's)
           AtomList atoms12Conn;
           for (AtomListConstIter iter2 = ntriBondedAtomList.begin();
                iter2 != ntriBondedAtomList.end(); iter2++) {
@@ -598,29 +569,20 @@ void MdlFileSource::SetupPosIonisableGroups() {
                       std::back_inserter(atoms12Conn));
           }
           if (atoms12Conn.size() == 1) {
-#ifdef _DEBUG
-            std::cout << "5-membered imidazole ring found" << std::endl;
-#endif //_DEBUG
-       // Remove bridgehead atoms (fused rings)
+            LOG_F(1, "5-membered imidazole ring found");
+            // Remove bridgehead atoms (fused rings)
             atoms12Conn = GetAtomListWithPredicate(
                 atoms12Conn, std::not1(isAtomBridgehead()));
             if (atoms12Conn.size() == 1) { // Imidazole!!
-              std::cout << "Protonating neutral imidazole "
-                        << (*nsp2Iter)->GetName() << std::endl;
+              LOG_F(1, "Protonating neutral imidazole {}",
+                    (*nsp2Iter)->GetName());
               AddHydrogen(*nsp2Iter);
+            } else {
+              LOG_F(1, "Fused imidazole - ignored {}", (*nsp2Iter)->GetName());
             }
-#ifdef _DEBUG
-            else {
-              std::cout << "Fused imidazole - ignored "
-                        << (*nsp2Iter)->GetName() << std::endl;
-            }
-#endif //_DEBUG
+          } else {
+            LOG_F(1, "Not a 5-membered ring");
           }
-#ifdef _DEBUG
-          else {
-            std::cout << "Not a 5-membered ring" << std::endl;
-          }
-#endif //_DEBUG
         }
         // AMIDINE Check that the N_SP2 is bonded to 1 hydrogen and the N_TRI is
         // bonded to 2 hydrogens
@@ -628,19 +590,11 @@ void MdlFileSource::SetupPosIonisableGroups() {
                                            isAtomicNo_eq(1)) == 1) &&
                  (GetNumAtomsWithPredicate(ntriBondedAtomList,
                                            isAtomicNo_eq(1)) == 2)) {
-          //#ifdef _DEBUG
-          std::cout << "Protonating neutral amidine " << (*nsp2Iter)->GetName()
-                    << std::endl;
-          //#endif //_DEBUG
+          LOG_F(1, "Protonating neutral amidine {}", (*nsp2Iter)->GetName());
           AddHydrogen(*nsp2Iter);
+        } else {
+          LOG_F(1, "Bonding requirements for N_SP2 and N_TRI not met");
         }
-
-#ifdef _DEBUG
-        else {
-          std::cout << "Bonding requirements for N_SP2 and N_TRI not met"
-                    << std::endl;
-        }
-#endif //_DEBUG
         break;
         //////////////////////
         // End of case #N_TRI=1
@@ -707,11 +661,8 @@ void MdlFileSource::SetupNegIonisableGroups() {
         AtomListIter hIter =
             FindAtomInList(otriBondedAtomList, isAtomicNo_eq(1));
         if (hIter != otriBondedAtomList.end()) {
-          //#ifdef _DEBUG
-          std::cout << "Removing " << (*hIter)->GetName() << " from "
-                    << (*otriIter)->GetName()
-                    << ", acid center=" << (*iter)->GetName() << std::endl;
-          //#endif //_DEBUG
+          LOG_F(1, "Removing {} from {}, acid center={}", (*hIter)->GetName(),
+                (*otriIter)->GetName(), (*iter)->GetName());
           RemoveAtom(*hIter);
           // Adjust the attributes on the O_TRI
           (*otriIter)->SetFormalCharge(-1);
@@ -876,11 +827,8 @@ void MdlFileSource::SetupNSP3Plus() {
     for (AtomListIter hIter = hbdAtomList.begin(); hIter != hbdAtomList.end();
          hIter++) {
       (*hIter)->SetGroupCharge(pCharge); // Charge up the hydrogens
-#ifdef _DEBUG
-      std::cout << "Transferring charge of " << pCharge << " from "
-                << (*iter)->GetName() << " to " << (*hIter)->GetName()
-                << std::endl;
-#endif //_DEBUG
+      LOG_F(1, "Transferring charge of {} from {} to {}", pCharge,
+            (*iter)->GetName(), (*hIter)->GetName());
     }
   }
 }
@@ -902,17 +850,12 @@ void MdlFileSource::SetupNSP2Plus() {
     // Now get the list of all bonded C_SP2
     AtomList csp2AtomList =
         GetAtomListWithPredicate(GetBondedAtomList(*iter), bIsC_SP2);
-#ifdef _DEBUG
-    std::cout << csp2AtomList.size() << " CSP2 atoms found bonded to NSP2+"
-              << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "{} CSP2 atoms found bonded to NSP2+", csp2AtomList.size());
     // Eliminate bridgehead carbons, so we can guarantee we handle imidazoles
     // correctly
     csp2AtomList =
         GetAtomListWithPredicate(csp2AtomList, std::not1(isAtomBridgehead()));
-#ifdef _DEBUG
-    std::cout << csp2AtomList.size() << " are non-bridgehead" << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "{} are non-bridgehead", csp2AtomList.size());
     // There may be cases where the guanidinium and imidazole bonding patterns
     // are both present (on different C_SP2 atoms) so we want to check for both.
     // Let the guanidinium moiety take precedence
@@ -928,43 +871,35 @@ void MdlFileSource::SetupNSP2Plus() {
     else if (imidIter != csp2AtomList.end())
       csp2Iter = imidIter;
 
-#ifdef _DEBUG
-    std::cout << "Checking N_SP2+ atom " << (*iter)->GetName() << std::endl;
-    if (guanIter != csp2AtomList.end())
-      std::cout << (*guanIter)->GetName() << " is a guanidinium-like carbon"
-                << std::endl;
-    if (imidIter != csp2AtomList.end())
-      std::cout << (*imidIter)->GetName() << " is a imidazole-like carbon"
-                << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Checking N_SP2+ atom {}", (*iter)->GetName());
+    if (guanIter != csp2AtomList.end()) {
+      LOG_F(1, "{} is a guanidinium-like carbon", (*guanIter)->GetName());
+    }
+    if (imidIter != csp2AtomList.end()) {
+      LOG_F(1, "{} is a imidazole-like carbon", (*imidIter)->GetName());
+    }
 
     // DM 23 Nov 2000 - move this code out of the following if {} block, to
     // handle protonated pyridines Get the list of hydrogens on the attached
     // nitrogens Start with the hydrogen on the N_SP2+
     AtomList hbdAtomList =
         GetAtomListWithPredicate(GetBondedAtomList(*iter), bIsH);
-#ifdef _DEBUG
-    std::cout << "Found " << hbdAtomList.size() << " hydrogens bonded to "
-              << (*iter)->GetName() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Found {} hydrogens bonded to {}", hbdAtomList.size(),
+          (*iter)->GetName());
 
     // DM 23 Nov 2000 - this bit handles guanidines, imidazoles, amidines
     if (csp2Iter != csp2AtomList.end()) {
       // Now add the hydrogens on the (1 or 2) N_TRI atoms
       AtomList ntriAtomList =
           GetAtomListWithPredicate(GetBondedAtomList(*csp2Iter), bIsN_TRI);
-#ifdef _DEBUG
-      std::cout << "Found " << ntriAtomList.size() << " nitrogens bonded to "
-                << (*csp2Iter)->GetName() << std::endl;
-#endif //_DEBUG
+      LOG_F(1, "Found {} nitrogens bonded to {}", ntriAtomList.size(),
+            (*csp2Iter)->GetName());
       for (AtomListConstIter nIter = ntriAtomList.begin();
            nIter != ntriAtomList.end(); nIter++) {
         AtomList hAtomList =
             GetAtomListWithPredicate(GetBondedAtomList(*nIter), bIsH);
-#ifdef _DEBUG
-        std::cout << "Found " << hAtomList.size() << " hydrogens bonded to "
-                  << (*nIter)->GetName() << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "Found {} hydrogens bonded to {}", hAtomList.size(),
+              (*nIter)->GetName());
         hbdAtomList.insert(hbdAtomList.end(), hAtomList.begin(),
                            hAtomList.end());
       }
@@ -983,11 +918,8 @@ void MdlFileSource::SetupNSP2Plus() {
       for (AtomListIter hIter = hbdAtomList.begin(); hIter != hbdAtomList.end();
            hIter++) {
         (*hIter)->SetGroupCharge(pCharge); // H
-#ifdef _DEBUG
-        std::cout << "Transferring charge of " << pCharge << " from "
-                  << (*iter)->GetName() << " to " << (*hIter)->GetName()
-                  << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "Transferring charge of {} from {} to {}", pCharge,
+              (*iter)->GetName(), (*hIter)->GetName());
       }
     }
   }
@@ -1039,11 +971,8 @@ void MdlFileSource::SetupOTRIMinus() {
       for (AtomListIter oIter = oAtomList.begin(); oIter != oAtomList.end();
            oIter++) {
         (*oIter)->SetGroupCharge(pCharge); // Charge up the oxygens
-#ifdef _DEBUG
-        std::cout << "Transferring charge of " << pCharge << " from "
-                  << (*iter)->GetName() << " to " << (*oIter)->GetName()
-                  << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "Transferring charge of {} from {} to {}", pCharge,
+              (*iter)->GetName(), (*oIter)->GetName());
       }
     }
   }
@@ -1088,10 +1017,7 @@ void MdlFileSource::SetupSegmentNames() {
         pendingAtomList.push_back(*iter);
       }
     }
-#ifdef _DEBUG
-    std::cout << "Segment " << strSegName << " contains " << nSize << " atoms"
-              << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Segment {} contains {} atoms", strSegName, nSize);
 
     // Keep track of the largest segment
     if (nSize > nMaxSize) {
@@ -1101,9 +1027,7 @@ void MdlFileSource::SetupSegmentNames() {
   }
 
   // Rename the largest segment back to H
-#ifdef _DEBUG
-  std::cout << "Largest segment is " << strLargestSegName << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "Largest segment is {}", strLargestSegName);
   AtomList largestAtomList =
       GetAtomListWithPredicate(m_atomList, isSegmentName_eq(strLargestSegName));
   for (AtomListIter iter = largestAtomList.begin();
@@ -1131,14 +1055,12 @@ void MdlFileSource::RemoveNonPolarHydrogens() {
   for (AtomListIter iter = implHList.begin(); iter != implHList.end(); iter++) {
     RemoveAtom(*iter);
   }
-#ifdef _DEBUG
   for (BondListConstIter bIter = m_bondList.begin(); bIter != m_bondList.end();
        bIter++) {
-    std::cout << "Bond ID=" << (*bIter)->GetBondId() << " ("
-              << (*bIter)->GetAtom1Ptr()->GetName() << "-"
-              << (*bIter)->GetAtom2Ptr()->GetName() << ")" << std::endl;
+    LOG_F(1, "Bond ID={} ({}-{})", (*bIter)->GetBondId(),
+          (*bIter)->GetAtom1Ptr()->GetName(),
+          (*bIter)->GetAtom2Ptr()->GetName());
   }
-#endif //_DEBUG
 }
 
 // DM 8 Feb 2000 - setup atom and bond cyclic flags (previously in Model)

@@ -14,6 +14,8 @@
 #include "FileError.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -27,19 +29,15 @@ std::string &VdwGridSF::GetCt() { return _CT; }
 // implicit constructor for BaseInterSF is called second
 VdwGridSF::VdwGridSF(const std::string &strName)
     : BaseSF(_CT, strName), m_bSmoothed(true) {
+  LOG_F(2, "VdwGridSF parameterised constructor");
   // Add parameters
   AddParameter(_GRID, ".grd");
   AddParameter(_SMOOTHED, m_bSmoothed);
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 VdwGridSF::~VdwGridSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "VdwGridSF parameterised constructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -102,7 +100,6 @@ void VdwGridSF::SetupScore() {
   if (m_ligAtomList.empty())
     return;
 
-  int iTrace = GetTrace();
   m_ligAtomTypes.reserve(m_ligAtomList.size());
   // Check if we have a grid for the UNDEFINED type:
   // If so, we can use it if a particular atom type grid is missing
@@ -111,18 +108,12 @@ void VdwGridSF::SetupScore() {
   bool bHasUndefined = !m_grids[TriposAtomType::UNDEFINED].Null();
   TriposAtomType triposType;
 
-  if (iTrace > 1) {
-    if (bHasUndefined) {
-      std::cout
-          << "The grid for the UNDEFINED atom type will be used if a grid is "
-             "missing for any atom type"
-          << std::endl;
-    } else {
-      std::cout
-          << "There is no grid for the UNDEFINED atom type. An error will be "
-             "thrown if a grid is missing for any atom type"
-          << std::endl;
-    }
+  if (bHasUndefined) {
+    LOG_F(INFO, "The grid for the UNDEFINED atom type will be used if a grid "
+                "is missing for any atom type");
+  } else {
+    LOG_F(INFO, "There is no grid for the UNDEFINED atom type. An error will "
+                "be thrown if a grid is missing for any atom type");
   }
 
   for (AtomRListConstIter iter = m_ligAtomList.begin();
@@ -135,9 +126,7 @@ void VdwGridSF::SetupScore() {
       std::string strError = "No vdw grid available for " +
                              (*iter)->GetFullAtomName() + " (type " +
                              triposType.Type2Str(aType) + ")";
-      if (iTrace > 1) {
-        std::cout << strError << std::endl;
-      }
+      LOG_F(ERROR, "{}", strError);
       if (bHasUndefined) {
         aType = TriposAtomType::UNDEFINED;
       } else {
@@ -146,10 +135,7 @@ void VdwGridSF::SetupScore() {
     }
 
     m_ligAtomTypes.push_back(aType);
-    if (iTrace > 1) {
-      std::cout << "Using grid #" << aType << " for "
-                << (*iter)->GetFullAtomName() << std::endl;
-    }
+    LOG_F(1, "Using grid #{} for {}", aType, (*iter)->GetFullAtomName());
   }
 }
 
@@ -179,13 +165,9 @@ double VdwGridSF::RawScore() const {
 // VdwGridSF
 void VdwGridSF::ReadGrids(json vdwGrids) {
   m_grids.clear();
-  int iTrace = GetTrace();
 
   // Now read number of grids
-  if (iTrace > 0) {
-    std::cout << _CT << ": reading " << vdwGrids.size() << " grids..."
-              << std::endl;
-  }
+  LOG_F(1, "VdwGridSF: reading {} grids...", vdwGrids.size());
 
   // We actually create a vector of size TriposAtomType::MAXTYPES
   // Each grid is in the file is prefixed by the atom type string (e.g. C.2)
@@ -202,11 +184,7 @@ void VdwGridSF::ReadGrids(json vdwGrids) {
     vdwGrids.at(i).at("tripos-type").get_to(strType);
     TriposAtomType triposType;
     TriposAtomType::eType aType = triposType.Str2Type(strType);
-    if (iTrace > 0) {
-      std::cout << "Grid# " << i << "\t"
-                << "atom type=" << strType << " (type #" << aType << ")"
-                << std::endl;
-    }
+    LOG_F(1, "Grid# {} atom type={} (type #{})", i, strType, aType);
     // Now we can read the grid
     RealGridPtr spGrid(new RealGrid(vdwGrids.at(i).at("real-grid")));
     m_grids[aType] = spGrid;

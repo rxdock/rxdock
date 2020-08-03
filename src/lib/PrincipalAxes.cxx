@@ -23,6 +23,9 @@
 #include "Plane.h"
 #include "PrincipalAxes.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Special case for water
@@ -51,13 +54,12 @@ PrincipalAxes rxdock::GetSolventPrincipalAxes(const AtomPtr &oAtom,
     retVal.axis2 = -retVal.axis2;
     retVal.axis3 = -retVal.axis3;
   }
-  //  std::cout << "Solvent: Axis 1 = " << retVal.axis1;
-  //  std::cout << ": d1 = " << v1.Dot(retVal.axis1) << "; d2 = " <<
-  //  v2.Dot(retVal.axis1) << std::endl; std::cout << "Solvent: Axis 2 = " <<
-  //  retVal.axis2; std::cout << ": d1 = " << v1.Dot(retVal.axis2) << "; d2 = "
-  //  << v2.Dot(retVal.axis2) << std::endl; std::cout << "Solvent: Axis 3 = " <<
-  //  retVal.axis3; std::cout << ": d1 = " << v1.Dot(retVal.axis3) << "; d2 = "
-  //  << v2.Dot(retVal.axis3) << std::endl;
+  LOG_F(1, "Solvent: Axis 1 = {}: d1 = {}; d2 = {}", retVal.axis1,
+        v1.Dot(retVal.axis1), v2.Dot(retVal.axis1));
+  LOG_F(1, "Solvent: Axis 2 = {}: d1 = {}; d2 = {}", retVal.axis2,
+        v1.Dot(retVal.axis2), v2.Dot(retVal.axis2));
+  LOG_F(1, "Solvent: Axis 3 = {}: d1 = {}; d2 = {}", retVal.axis3,
+        v1.Dot(retVal.axis3), v2.Dot(retVal.axis3));
   return retVal;
 }
 
@@ -172,26 +174,22 @@ PrincipalAxes rxdock::GetPrincipalAxesOfAtoms(const AtomList &atomList) {
   Coord c0 = (atomList.front())->GetCoords() - principalAxes.com;
   double d1 = c0.Dot(principalAxes.axis1);
   double d2 = c0.Dot(principalAxes.axis2);
-  // Double d3 = c0.Dot(principalAxes.axis3);
-  // std::cout << "Before: d1,d2,d3=" << d1 << "\t" << d2 << "\t" << d3 <<
-  // std::endl;
+  double d3 = c0.Dot(principalAxes.axis3);
+  LOG_F(1, "Before: d1,d2,d3={} {} {}", d1, d2, d3);
   if (d1 < 0.0)
     principalAxes.axis1 = -principalAxes.axis1;
   if (d2 < 0.0)
     principalAxes.axis2 = -principalAxes.axis2;
   principalAxes.axis3 = Cross(principalAxes.axis1, principalAxes.axis2);
-  // d1 = c0.Dot(principalAxes.axis1);
-  // d2 = c0.Dot(principalAxes.axis2);
-  // d3 = c0.Dot(principalAxes.axis3);
-  // std::cout << "After: d1,d2,d3=" << d1 << "\t" << d2 << "\t" << d3 <<
-  // std::endl;
+  LOG_F(1, "After: d1,d2,d3={} {} {}", c0.Dot(principalAxes.axis1),
+        c0.Dot(principalAxes.axis2), c0.Dot(principalAxes.axis3));
 
-  // std::cout << "(Eigen) Axis1=" << principalAxes.axis1 << "; Moment1=" <<
-  // principalAxes.moment1 << std::endl; std::cout << "(Eigen) Axis2=" <<
-  // principalAxes.axis2
-  // << "; Moment2=" << principalAxes.moment2 << std::endl; std::cout <<
-  // "(Eigen) Axis3=" << principalAxes.axis3 << "; Moment3=" <<
-  // principalAxes.moment3 << std::endl;
+  LOG_F(1, "(Eigen) Axis1={}; Moment1=", principalAxes.axis1,
+        principalAxes.moment1);
+  LOG_F(1, "(Eigen) Axis2={}; Moment2=", principalAxes.axis2,
+        principalAxes.moment2);
+  LOG_F(1, "(Eigen) Axis3={}; Moment3=", principalAxes.axis3,
+        principalAxes.moment3);
   return principalAxes;
 }
 

@@ -14,6 +14,8 @@
 #include "ElementFileSource.h"
 #include "FileError.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -164,11 +166,11 @@ void PsfFileSource::Parse() {
       unsigned int nBondRec;
       fileIter++;
       std::istringstream(*fileIter) >> nBondRec >> strKey;
-      // std::cout << "strKey "<<strKey << " strBondKey " << strBondKey <<
-      // std::endl; if(strBondKey.compare(strKey,0,6)) {// 6 for "!NBOND" old
+      LOG_F(1, "strKey {} strBondKey {}", strKey, strBondKey);
+      // if(strBondKey.compare(strKey,0,6)) {// 6 for "!NBOND" old
       // style API
       int iCmp = strBondKey.compare(0, 5, strKey);
-      // std::cout << "iCmp = " << iCmp << std::endl;
+      LOG_F(1, "iCmp = {}", iCmp);
       if (iCmp > 0) { // 6 for "!NBOND" new API
         throw FileParseError(_WHERE_, "Missing " + strBondKey + " string in " +
                                           GetFileName());
@@ -282,8 +284,7 @@ void PsfFileSource::SetupVdWRadii() {
     // masses.rtf defines hybrid state as TRI so switch here if necessary
     if ((nAtomicNo == 7) && bIsTri(*iter) && bTwoBonds(*iter)) {
       (*iter)->SetHybridState(Atom::SP2);
-      // std::cout << "Switch from N_tri to N_sp2: " <<
-      // (*iter)->GetFullAtomName() << std::endl;
+      LOG_F(1, "Switch from N_tri to N_sp2: {}", (*iter)->GetFullAtomName());
     }
     ElementData elData = m_spElementData->GetElementData(nAtomicNo);
     double vdwRadius = elData.vdwRadius;
@@ -303,11 +304,8 @@ void PsfFileSource::SetupVdWRadii() {
     }
     // Finally we can set the radius
     (*iter)->SetVdwRadius(vdwRadius);
-#ifdef _DEBUG
-    // std::cout << (*iter)->GetFullAtomName() << ": #H=" << nImplH
-    //<< "; vdwR=" << (*iter)->GetVdwRadius()
-    //<< "; mass=" << (*iter)->GetAtomicMass() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "{}: #H= {}; vdwR={}; mass={}", (*iter)->GetFullAtomName(), nImplH,
+          (*iter)->GetVdwRadius(), (*iter)->GetAtomicMass());
   }
 }
 
@@ -327,10 +325,10 @@ void PsfFileSource::SetupPartialIonicGroups() {
     AtomList ss;
     std::copy_if(iter, m_atomList.end(), std::back_inserter(ss),
                  isSS_eq(*iter));
-    // std::cout << "Psf SetupPartialIonicGroups: SS from " <<
-    // ss.front()->GetFullAtomName()
-    //	 << " to " << ss.back()->GetFullAtomName() << " (" << ss.size() << ")
-    // atoms" << std::endl; Assign group charges for this residue
+    LOG_F(1, "Psf SetupPartialIonicGroups: SS from {} to {} ({}) atoms",
+          ss.front()->GetFullAtomName(), ss.back()->GetFullAtomName(),
+          ss.size());
+    // Assign group charges for this residue
     BaseMolecularFileSource::SetupPartialIonicGroups(ss, m_spParamSource);
     // Mark each atom in substructure as having been processed
     std::for_each(ss.begin(), ss.end(), SelectAtom(true));
@@ -355,10 +353,8 @@ void PsfFileSource::RemoveNonPolarHydrogens() {
       // Adjust number of implicit hydrogens
       (*cIter)->SetNumImplicitHydrogens((*cIter)->GetNumImplicitHydrogens() +
                                         nImplH);
-#ifdef _DEBUG
-      std::cout << "Removing " << nImplH << " hydrogens from "
-                << (*cIter)->GetFullAtomName() << std::endl;
-#endif //_DEBUG
+      LOG_F(1, "Removing {} hydrogens from {}", nImplH,
+            (*cIter)->GetFullAtomName());
     }
   }
 }

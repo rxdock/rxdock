@@ -14,6 +14,8 @@
 #include "Population.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data member for class type
@@ -23,16 +25,12 @@ std::string NullTransform::_CT("NullTransform");
 // Constructors/destructors
 NullTransform::NullTransform(const std::string &strName)
     : BaseTransform(_CT, strName) {
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "NullTransform parameterised constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 NullTransform::~NullTransform() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "NullTransform destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -45,27 +43,22 @@ void NullTransform::Update(Subject *theChangedSubject) {}
 // Private methods
 ////////////////
 void NullTransform::Execute() {
-  int iTrace = GetTrace();
   // Trace level 1 = just output the current conformation (presumed to be the
   // best from the previous transform) to the history file
-  if (iTrace == 5) {
-    GetWorkSpace()->SaveHistory(true);
-    double s = GetWorkSpace()->GetSF()->Score();
-    std::cout << "SCORE = " << s << std::endl;
-  }
+  GetWorkSpace()->SaveHistory(true);
+  LOG_F(1, "NullTransform::Execute: SCORE = {}",
+        GetWorkSpace()->GetSF()->Score());
   // Trace level 2 = output entire GA population to history file, unless pop
   // does not exist, in which case same as level 1
-  else if (iTrace > 5) {
-    PopulationPtr pop = GetWorkSpace()->GetPopulation();
-    if (pop.Ptr() == nullptr) {
+  /* PopulationPtr pop = GetWorkSpace()->GetPopulation();
+  if (pop.Ptr() == nullptr) {
+    GetWorkSpace()->SaveHistory(true);
+  } else {
+    const GenomeList &genList = pop->GetGenomeList();
+    for (GenomeListConstIter gIter = genList.begin(); gIter != genList.end();
+         ++gIter) {
+      (*gIter)->GetChrom()->SyncToModel();
       GetWorkSpace()->SaveHistory(true);
-    } else {
-      const GenomeList &genList = pop->GetGenomeList();
-      for (GenomeListConstIter gIter = genList.begin(); gIter != genList.end();
-           ++gIter) {
-        (*gIter)->GetChrom()->SyncToModel();
-        GetWorkSpace()->SaveHistory(true);
-      }
     }
-  }
+  } */
 }

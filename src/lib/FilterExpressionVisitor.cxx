@@ -11,6 +11,9 @@
  ***********************************************************************/
 
 #include "FilterExpressionVisitor.h"
+
+#include <loguru.hpp>
+
 #include <cerrno>
 #include <climits>
 #include <cmath>
@@ -20,14 +23,14 @@ using namespace rxdock;
 void PrintVisitor::VisitVbleExp(FilterVbleExp *fe) {
   std::string name = fe->GetVble().GetName();
   if (name[0] == 'c') // constant
-    std::cout << fe->GetVble().GetValue() << " ";
+    strbuf << fe->GetVble().GetValue() << " ";
   else
-    std::cout << fe->GetVble().GetName() << " ";
+    strbuf << fe->GetVble().GetName() << " ";
 }
 
 void PrettyPrintVisitor::VisitVbleExp(FilterVbleExp *fe) {
-  //	  std::cout << "Vble ";
-  std::cout << fe->GetVble().GetName() << " ";
+  //	  strbuf << "Vble ";
+  strbuf << fe->GetVble().GetName() << " ";
 }
 
 void EvaluateVisitor::VisitVbleExp(FilterVbleExp *fe) {
@@ -35,83 +38,83 @@ void EvaluateVisitor::VisitVbleExp(FilterVbleExp *fe) {
 }
 
 void PrintVisitor::VisitAddExp(FilterAddExp *fe) {
-  std::cout << "+ ";
+  strbuf << "+ ";
   for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
 void PrettyPrintVisitor::VisitAddExp(FilterAddExp *fe) {
-  std::cout << "(";
+  strbuf << "(";
   fe->GetOp(0)->Accept(*this);
-  std::cout << "+ ";
+  strbuf << "+ ";
   fe->GetOp(1)->Accept(*this);
-  std::cout << ")";
+  strbuf << ")";
 }
 
 void EvaluateVisitor::VisitAddExp(FilterAddExp *fe) {
   fe->GetOp(0)->Accept(*this);
   fe->GetOp(1)->Accept(*this);
   fe->SetValue(fe->GetOp(0)->GetValue() + fe->GetOp(1)->GetValue());
-  // std::cout << "AddExp: " << fe->GetOp(0)->GetValue() << "\t" <<
+  // strbuf << "AddExp: " << fe->GetOp(0)->GetValue() << "\t" <<
   // fe->GetOp(1)->GetValue() << std::endl;
 }
 
 void PrintVisitor::VisitSubExp(FilterSubExp *fe) {
-  std::cout << "- ";
+  strbuf << "- ";
   for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
 void PrettyPrintVisitor::VisitSubExp(FilterSubExp *fe) {
-  std::cout << "(";
+  strbuf << "(";
   fe->GetOp(0)->Accept(*this);
-  std::cout << "- ";
+  strbuf << "- ";
   fe->GetOp(1)->Accept(*this);
-  std::cout << ")";
+  strbuf << ")";
 }
 
 void EvaluateVisitor::VisitSubExp(FilterSubExp *fe) {
   fe->GetOp(0)->Accept(*this);
   fe->GetOp(1)->Accept(*this);
   fe->SetValue(fe->GetOp(0)->GetValue() - fe->GetOp(1)->GetValue());
-  // std::cout << "sub " << fe->GetOp(0)->GetValue() <<"\t" <<
+  // strbuf << "sub " << fe->GetOp(0)->GetValue() <<"\t" <<
   // fe->GetOp(1)->GetValue() << std::endl;
 }
 
 void PrintVisitor::VisitMulExp(FilterMulExp *fe) {
-  std::cout << "* ";
+  strbuf << "* ";
   for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
 void PrettyPrintVisitor::VisitMulExp(FilterMulExp *fe) {
-  std::cout << "(";
+  strbuf << "(";
   fe->GetOp(0)->Accept(*this);
-  std::cout << "* ";
+  strbuf << "* ";
   fe->GetOp(1)->Accept(*this);
-  std::cout << ")";
+  strbuf << ")";
 }
 
 void EvaluateVisitor::VisitMulExp(FilterMulExp *fe) {
   fe->GetOp(0)->Accept(*this);
   fe->GetOp(1)->Accept(*this);
   fe->SetValue(fe->GetOp(0)->GetValue() * fe->GetOp(1)->GetValue());
-  // std::cout << "Mul " << fe->GetOp(0)->GetValue() <<"\t" <<
+  // strbuf << "Mul " << fe->GetOp(0)->GetValue() <<"\t" <<
   // fe->GetOp(1)->GetValue() << std::endl;
 }
 
 void PrintVisitor::VisitDivExp(FilterDivExp *fe) {
-  std::cout << "/ ";
+  strbuf << "/ ";
   for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
 void PrettyPrintVisitor::VisitDivExp(FilterDivExp *fe) {
-  std::cout << "(";
+  strbuf << "(";
   fe->GetOp(0)->Accept(*this);
-  std::cout << "div ";
+  strbuf << "div ";
   fe->GetOp(1)->Accept(*this);
-  std::cout << ")";
+  strbuf << ")";
 }
 
 void EvaluateVisitor::VisitDivExp(FilterDivExp *fe) {
@@ -119,7 +122,7 @@ void EvaluateVisitor::VisitDivExp(FilterDivExp *fe) {
   fe->GetOp(0)->Accept(*this);
   ReturnType v0 = fe->GetOp(0)->GetValue();
   ReturnType v1 = fe->GetOp(1)->GetValue();
-  // std::cout << "div " << v0 <<"\t" << v1 << std::endl;
+  // strbuf << "div " << v0 <<"\t" << v1 << std::endl;
   if (std::fabs(v1) < 0.000001)
     fe->SetValue(v0);
   else
@@ -127,17 +130,17 @@ void EvaluateVisitor::VisitDivExp(FilterDivExp *fe) {
 }
 
 void PrintVisitor::VisitAndExp(FilterAndExp *fe) {
-  std::cout << "and ";
+  strbuf << "and ";
   for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
 void PrettyPrintVisitor::VisitAndExp(FilterAndExp *fe) {
-  std::cout << "( (";
+  strbuf << "( (";
   fe->GetOp(0)->Accept(*this);
-  std::cout << " > 0) and (";
+  strbuf << " > 0) and (";
   fe->GetOp(1)->Accept(*this);
-  std::cout << " > 0) )";
+  strbuf << " > 0) )";
 }
 
 void EvaluateVisitor::VisitAndExp(FilterAndExp *fe) {
@@ -156,15 +159,15 @@ void EvaluateVisitor::VisitAndExp(FilterAndExp *fe) {
 }
 
 void PrintVisitor::VisitLogExp(FilterLogExp *fe) {
-  std::cout << "log ";
+  strbuf << "log ";
   for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
 void PrettyPrintVisitor::VisitLogExp(FilterLogExp *fe) {
-  std::cout << "(log ";
+  strbuf << "(log ";
   fe->GetOp(0)->Accept(*this);
-  std::cout << ")";
+  strbuf << ")";
 }
 
 void EvaluateVisitor::VisitLogExp(FilterLogExp *fe) {
@@ -174,19 +177,19 @@ void EvaluateVisitor::VisitLogExp(FilterLogExp *fe) {
     fe->SetValue(0.0);
   else
     fe->SetValue(std::log(std::fabs(v0)));
-  //  std::cout << "log " << v0 << std::endl;
+  //  strbuf << "log " << v0 << std::endl;
 }
 
 void PrintVisitor::VisitExpExp(FilterExpExp *fe) {
-  std::cout << "exp ";
+  strbuf << "exp ";
   for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
 void PrettyPrintVisitor::VisitExpExp(FilterExpExp *fe) {
-  std::cout << "(exp ";
+  strbuf << "(exp ";
   fe->GetOp(0)->Accept(*this);
-  std::cout << ")";
+  strbuf << ")";
 }
 
 void EvaluateVisitor::VisitExpExp(FilterExpExp *fe) {
@@ -197,29 +200,29 @@ void EvaluateVisitor::VisitExpExp(FilterExpExp *fe) {
 
   {
     //			float m = FLOAT_MAX; //numeric_limits<float>::max();
-    // std::cout << "greater " << m << "\n";
+    // strbuf << "greater " << m << "\n";
     fe->SetValue(std::exp(20));
   } else if (v0 < -200)
     fe->SetValue(0.0);
   else
     fe->SetValue(std::exp(v0));
-  //  std::cout << "exp " << v0 <<  "\t" << fe->GetValue() <<endl;
+  //  strbuf << "exp " << v0 <<  "\t" << fe->GetValue() <<endl;
 }
 
 void PrintVisitor::VisitIfExp(FilterIfExp *fe) {
-  std::cout << "if ";
+  strbuf << "if ";
   for (int i = 0; i < fe->GetNOps(); i++)
     fe->GetOp(i)->Accept(*this);
 }
 
 void PrettyPrintVisitor::VisitIfExp(FilterIfExp *fe) {
-  std::cout << "\nif ";
+  strbuf << "\nif ";
   fe->GetOp(0)->Accept(*this);
-  std::cout << " > 0 then\n\t";
+  strbuf << " > 0 then\n\t";
   fe->GetOp(1)->Accept(*this);
-  std::cout << "\nelse\n\t";
+  strbuf << "\nelse\n\t";
   fe->GetOp(2)->Accept(*this);
-  std::cout << "\nend\n";
+  strbuf << "\nend\n";
 }
 
 void EvaluateVisitor::VisitIfExp(FilterIfExp *fe) {
@@ -240,6 +243,10 @@ FilterExpressionVisitor::FilterExpressionVisitor() {}
 
 PrintVisitor::PrintVisitor(ContextPtr co) : contextp(co) {}
 
+PrintVisitor::~PrintVisitor() { LOG_F(INFO, "{}", strbuf.str()); }
+
 PrettyPrintVisitor::PrettyPrintVisitor(ContextPtr co) : contextp(co) {}
+
+PrettyPrintVisitor::~PrettyPrintVisitor() { LOG_F(INFO, "{}", strbuf.str()); }
 
 EvaluateVisitor::EvaluateVisitor(ContextPtr co) : contextp(co) {}

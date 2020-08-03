@@ -14,6 +14,8 @@
 #include "FileError.h"
 #include <cstring>
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 namespace rxdock {
@@ -124,8 +126,7 @@ void DockingSite::GetCoordList(CoordList &retVal) const {
     std::sort(retVal.begin(), retVal.end(), CoordCmp());
     CoordListIter uniqIter = std::unique(retVal.begin(), retVal.end());
     retVal.erase(uniqIter, retVal.end());
-    // std::cout << "Cav = " << cavCoords.size() << "; total = " <<
-    // retVal.size() << std::endl;
+    LOG_F(1, "Cav = {}; total = {}", cavCoords.size(), retVal.size());
   }
 }
 
@@ -220,8 +221,7 @@ void DockingSite::CreateGrid() {
     std::sort(allCoords.begin(), allCoords.end(), CoordCmp());
     CoordListIter uniqIter = std::unique(allCoords.begin(), allCoords.end());
     allCoords.erase(uniqIter, allCoords.end());
-    std::cout << "Cav = " << cavCoords.size()
-              << "; total = " << allCoords.size() << std::endl;
+    LOG_F(1, "Cav = {}; total = {}", cavCoords.size(), allCoords.size());
   }
 
   // Loop over all grid points in the distance grid

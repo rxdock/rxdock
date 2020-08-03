@@ -14,6 +14,9 @@
 #include "NmrRestraintFileSource.h"
 #include "WorkSpace.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -27,21 +30,16 @@ std::string NmrSF::_QUADRATIC("QUADRATIC");
 // implicit constructors for BaseInterSF is called second
 NmrSF::NmrSF(const std::string &strName)
     : BaseSF(_CT, strName), m_bQuadratic(true) {
+  LOG_F(2, "NmrSF parameterised constructor");
   // Add parameters
   AddParameter(_FILENAME, std::string("default.noe"));
   AddParameter(_QUADRATIC, m_bQuadratic);
   SetRange(6.0);
-  SetTrace(1);
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 NmrSF::~NmrSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "NmrSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -49,8 +47,6 @@ void NmrSF::SetupReceptor() {
   m_spGrid = NonBondedGridPtr();
   if (GetReceptor().Null())
     return;
-
-  int iTrace = GetTrace();
 
   // Create indexed grid for STD restraints penalty function
   m_spGrid = CreateNonBondedGrid();
@@ -70,18 +66,13 @@ void NmrSF::SetupReceptor() {
   // Now limit the list to those atoms in the vicinity of the docking site
   nphList = spDS->GetAtomList(nphList, 0.0, GetCorrectedRange());
 
-  if (iTrace > 0) {
-    std::cout << _CT << "::SetupReceptor() - " << nphList.size()
-              << " nonpolar Hs and extended carbons near docking site"
-              << std::endl;
-    for (AtomListConstIter iter = nphList.begin(); iter != nphList.end();
-         iter++) {
-      std::cout << (**iter) << std::endl;
-    }
-  }
-
+  LOG_F(1,
+        "NmrSF::SetupReceptor: {} nonpolar Hs and extended carbons near "
+        "docking site",
+        nphList.size());
   for (AtomListConstIter iter = nphList.begin(); iter != nphList.end();
        iter++) {
+    LOG_F(1, "{}", **iter);
     m_spGrid->SetAtomLists(*iter, range);
   }
 }
@@ -99,8 +90,6 @@ void NmrSF::SetupScore() {
   m_stdList.clear();
   if (GetLigand().Null() || GetReceptor().Null())
     return;
-
-  int iTrace = GetTrace();
 
   // Create a restraint filesource with the appropriate filename
   std::string strRestrFile =
@@ -124,18 +113,15 @@ void NmrSF::SetupScore() {
     // Create the NOE restraint - constructor matches the atoms in atomList with
     // the names in *rIter
     NoeRestraintAtoms noe(*rIter, atomList);
-    if (iTrace > 0) {
-      std::cout << std::endl << *rIter << std::endl << noe << std::endl;
-    }
+    LOG_F(1, "NmrSF::SetupScore: {}\n{}", *rIter, noe);
     // Only store if NOE is OK - i.e. has found the restraint names in the atom
     // list
     if (noe.isOK()) {
       m_noeList.push_back(noe);
     } else {
-      std::cout
-          << "** WARNING - unable to match NOE restraint names to atom list"
-          << std::endl;
-      std::cout << noe << " not added" << std::endl;
+      LOG_F(WARNING,
+            "Unable to match NOE restraint names to atom list; {} not added",
+            noe);
     }
   }
 
@@ -148,25 +134,20 @@ void NmrSF::SetupScore() {
     // with the names in *rIter Note for STD restraints it only makes senses to
     // check the names against the ligand atoms
     StdRestraintAtoms std(*rIter, m_ligAtomList);
-    if (iTrace > 0) {
-      std::cout << std::endl << *rIter << std::endl << std << std::endl;
-    }
+    LOG_F(1, "NmrSF::SetupScore: {}\n{}", *rIter, std);
     // Only store if STD is OK - i.e. has found the restraint names in the atom
     // list and maxDist is within the range of the scoring function
     if (std.maxDist > GetRange()) {
-      std::cout << "** WARNING - maxDist is beyond the range of the scoring "
-                   "function index"
-                << std::endl;
-      std::cout << "** Increase the RANGE parameter in " << GetFullName()
-                << std::endl;
-      std::cout << std << " not added" << std::endl;
+      LOG_F(WARNING,
+            "maxDist is beyond the range of the scoring function index; "
+            "Increase the RANGE parameter in {}; {} not added",
+            GetFullName(), std);
     } else if (std.isOK()) {
       m_stdList.push_back(std);
     } else {
-      std::cout
-          << "** WARNING - unable to match STD restraint names to atom list"
-          << std::endl;
-      std::cout << std << " not added" << std::endl;
+      LOG_F(WARNING,
+            "Unable to match STD restraint names to atom list; {} not added",
+            std);
     }
   }
 }
@@ -180,8 +161,7 @@ double NmrSF::RawScore() const {
       double r = NoeDistance(*iter);
       double dr = r - (*iter).maxDist; // delta(R)
       double s = (dr > 0.0) ? dr * dr : 0.0;
-      // std::cout << "(NOE) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << ","
-      // << dr << "," << s << std::endl;
+      LOG_F(1, "(NOE) R={}, RMAX={}, DR={}, S={}", r, (*iter).maxDist, dr, s);
       score += s;
     }
     for (StdRestraintAtomsListConstIter iter = m_stdList.begin();
@@ -189,8 +169,7 @@ double NmrSF::RawScore() const {
       double r = StdDistance(*iter);
       double dr = r - (*iter).maxDist; // delta(R)
       double s = (dr > 0.0) ? dr * dr : 0.0;
-      // std::cout << "(STD) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << ","
-      // << dr << "," << s << std::endl;
+      LOG_F(1, "(STD) R={}, RMAX={}, DR={}, S={}", r, (*iter).maxDist, dr, s);
       score += s;
     }
   }
@@ -201,8 +180,7 @@ double NmrSF::RawScore() const {
       double r = NoeDistance(*iter);
       double dr = r - (*iter).maxDist; // delta(R)
       double s = (dr > 0.0) ? dr : 0.0;
-      // std::cout << "(NOE) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << ","
-      // << dr << "," << s << std::endl;
+      LOG_F(1, "(NOE) R={}, RMAX={}, DR={}, S={}", r, (*iter).maxDist, dr, s);
       score += s;
     }
     for (StdRestraintAtomsListConstIter iter = m_stdList.begin();
@@ -210,8 +188,7 @@ double NmrSF::RawScore() const {
       double r = StdDistance(*iter);
       double dr = r - (*iter).maxDist; // delta(R)
       double s = (dr > 0.0) ? dr : 0.0;
-      // std::cout << "(STD) R,RMAX,DR,S=" << r << "," << (*iter).maxDist << ","
-      // << dr << "," << s << std::endl;
+      LOG_F(1, "(STD) R={}, RMAX={}, DR={}, S={}", r, (*iter).maxDist, dr, s);
       score += s;
     }
   }

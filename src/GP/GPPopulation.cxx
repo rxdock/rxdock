@@ -12,6 +12,9 @@
 
 #include "GPPopulation.h"
 #include "Debug.h"
+
+#include <loguru.hpp>
+
 #include <algorithm>
 #include <cfloat>
 
@@ -31,7 +34,7 @@ GPPopulation::GPPopulation(int s, int nr, GPFitnessFunctionPtr f,
   ff = f;
   ittrain = it;
   sfttrain = sft;
-  std::cout << "const: " << ittrain.size() << std::endl;
+  LOG_F(1, "const: {}", ittrain.size());
   c = 2.0; // default value for the sigma truncation multiplier
   pop = GPGenomeList(popsize);
   for (GPGenomeListIter iter = pop.begin(); iter != pop.end(); iter++)
@@ -80,7 +83,7 @@ void GPPopulation::Initialise(double hitlimit, bool function) {
   for (int i = 0; i < popsize; i++) {
     pop[i]->Initialise();
     fit = ff->CalculateFitness(pop[i], ittrain, sfttrain, function);
-    std::cout << "init: " << ittrain.size() << std::endl;
+    LOG_F(1, "init: {}", ittrain.size());
     if (fit > bestFitness) {
       bestFitness = fit;
       bestInd = i;
@@ -166,7 +169,7 @@ void GPPopulation::EPstep(std::string selector, double pcross, double pmut,
   *(newpop[0]) = *(pop[bestInd]);
   for (int i = 1; i < popsize; i++) {
     *(newpop[i]) = *(pop[bestInd]);
-    //        std::cout << "new ind\n";
+    LOG_F(1, "new ind");
     newpop[i]->Mutate(pmut);
   }
   // calculate the objective values and
@@ -264,7 +267,7 @@ GPGenomePtr GPPopulation::RkSelect() const {
            std::sqrt(bias * bias - 4.0 * (bias - 1) * m_rand.GetRandom01())) /
           2.0 / (bias - 1);
   if (index < 0) {
-    std::cout << index << " " << max << std::endl;
+    LOG_F(1, "index={} max={}", index, max);
     index = 0.0;
   }
   // DM 25/04/05 - avoid compiler warning by explicitly converting double to int
@@ -291,34 +294,27 @@ void GPPopulation::QSort()
 void GPPopulation::MergePops()
 {
     GPGenomeList mpop(popsize + newpop.size(), pop[0]);
-#ifdef _DEBUG
-    std::cout << "pop\n";
-    for (Int k1 = 0 ; k1 < popsize ; k1++)
-        std::cout << *(pop[k1]) << "  " << pop[k1]->GetFitness() << "  "
-             << pop[k1]->GetFitness() << std::endl;
-    std::cout << "newpop\n";
+    LOG_F(1, "pop");
+    for (unsigned int k1 = 0 ; k1 < popsize ; k1++)
+        LOG_F(1, "{} {} {}", *(pop[k1]), pop[k1]->GetFitness(),
+              pop[k1]->GetFitness());
+    LOG_F(1, "newpop");
     for (GPGenomeListIter p = newpop.begin() ; p != newpop.end() ; p++)
-        std::cout << (*p) << "  " << (*p)->GetFitness()
-             << "  " << (*p)->GetFitness() << std::endl;
-#endif
+        LOG_F(1, "{} {} {}", (*p), (*p)->GetFitness(), (*p)->GetFitness());
     merge(pop.begin(), pop.end(), newpop.begin(), newpop.end(),
           mpop.begin(), GenCmp());
     GPGenomeListIter end = unique(mpop.begin(), mpop.end(), Gen_eq);
             // uses operator== , Gen_eq);
     mpop.erase(end, mpop.end());
-#ifdef _DEBUG
-    std::cout << "mpop\n";
-    for (Int k1 = 0 ; k1 < mpop.size() ; k1++)
-        std::cout << mpop[k1] << "  " << mpop[k1]->GetFitness() << "  "
-             << mpop[k1]->GetFitness() << std::endl;
-#endif
+    LOG_F(1, "mpop");
+    for (unsigned int k1 = 0 ; k1 < mpop.size() ; k1++)
+        LOG_F(1, "{} {} {}", mpop[k1], mpop[k1]->GetFitness(),
+              mpop[k1]->GetFitness());
     pop.clear();
     end = (mpop.size() > popsize) ? (mpop.begin() + popsize) : mpop.end();
     copy(mpop.begin(), end, back_inserter(pop));
-#ifdef _DEBUG
-    std::cout << "copied pop\n";
+    LOG_F(1, "copied pop");
     for (Int k1 = 0 ; k1 < popsize ; k1++)
-        std::cout << *(pop[k1]) << "  " << pop[k1]->GetFitness() << "  "
-             << pop[k1]->GetFitness() << std::endl;
-#endif
+        LOG_F(1, "{} {} {}", *(pop[k1]), pop[k1]->GetFitness(),
+              pop[k1]->GetFitness());
 }*/

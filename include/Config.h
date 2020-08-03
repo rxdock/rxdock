@@ -15,8 +15,6 @@
 #ifndef _RBTCONFIG_H_
 #define _RBTCONFIG_H_
 
-#include <iostream>
-
 // For g++ 3.4.3 (libstdc++)
 #include <sstream>
 

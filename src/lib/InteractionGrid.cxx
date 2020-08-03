@@ -14,6 +14,9 @@
 #include "FileError.h"
 #include "PseudoAtom.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Could be a useful general function
@@ -167,8 +170,7 @@ InteractionGrid::GetInteractionList(const Coord &c) const {
   if (isValid(c)) {
     return m_intnMap[GetIXYZ(c)];
   } else {
-    // std::cout << _CT << "::GetInteractionList," << c << " is off grid" <<
-    // std::endl;
+    LOG_F(1, "InteractionGrid::GetInteractionList: {} is off grid", c);
     return m_emptyList;
   }
 }
@@ -215,12 +217,14 @@ void InteractionGrid::ClearInteractionLists() {
 void InteractionGrid::UniqueInteractionLists() {
   for (InteractionListMapIter iter = m_intnMap.begin(); iter != m_intnMap.end();
        iter++) {
-    // std::cout << _CT << ": before = " << (*iter).size();
+    LOG_F(1, "InteractionGrid::UniqueInteractionLists: before = {}",
+          (*iter).size());
     std::sort((*iter).begin(), (*iter).end(), InteractionCenterCmp());
     InteractionCenterListIter uniqIter =
         std::unique((*iter).begin(), (*iter).end());
     (*iter).erase(uniqIter, (*iter).end());
-    // std::cout << "; After = " << (*iter).size() << std::endl;
+    LOG_F(1, "InteractionGrid::UniqueInteractionLists: after = {}",
+          (*iter).size());
   }
 }
 

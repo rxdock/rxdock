@@ -20,6 +20,9 @@
 #include "Parser.h"
 #include "Rand.h"
 #include "TokenIter.h"
+
+#include <loguru.hpp>
+
 #include <cassert>
 #include <fstream>
 #include <sstream>
@@ -102,28 +105,26 @@ double GPFFHSP90::CalculateFitness(
     fe->Accept(visitor);
     pred.push_back(new ReturnType(fe->GetValue()));
     o.push_back(pred);
-    //        std::cout << *(SFValues[0]) << "\t" << *(o[i][0]) << std::endl;
+    LOG_F(1, "{} {}", *(SFValues[0]), *(o[i][0]));
   }
   int ninv = nInversions(0, o);
-  //        std::cout << "n inversions " << ninv << std::endl;
+  LOG_F(1, "n inversions {}", ninv);
   /*    Double sumDiff = 0.0,
                 sumSqrReal = 0.0, sumSqrPred = 0.0;
 
       meanReal = meanReal / it.size();
       meanPred = meanPred / it.size();
-  //    std::cout << std::endl;
-  //    std::cout << it.size() << "\t" << meanPred << "\t" << meanReal <<
-  std::endl; for (Int i = 0 ; i < it.size() ; i++)
+  // LOG_F(1, "{} {} {}", it.size(), meanPred, meanReal);
+  for (Int i = 0 ; i < it.size() ; i++)
       {
         Double t1 = *sft[i][0]; // - meanReal;
         Double t2 = *o[i][0]; // - meanPred;
         sumDiff += std::abs(t1 - t2);
-  //    std::cout << sumDiff << "\t" << sumSqrReal << "\t" << sumSqrPred <<
-  std::endl;
+  // LOG_F(1, "{} {} {}", sumDiff, sumSqrReal, sumSqrPred);
       }
       objective = sumDiff / it.size();
 
-  //    std::cout << objective << std::endl; */
+  // LOG_F(1, "{}", objective); */
 
   // For now, I am using tournament selection. So the fitness
   // function doesn't need to be scaled in any way
@@ -155,13 +156,12 @@ double GPFFHSP90::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
     o.push_back(pred);
     meanPred += *(o[i][0]);
     meanReal += *(SFValues[0]);
-    std::cout << *(SFValues[0]) << "\t" << *(o[i][0]) << std::endl;
+    LOG_F(1, "{} {}", *(SFValues[0]), *(o[i][0]));
   }
   double sumDiff = 0.0, sumSqrReal = 0.0, sumSqrPred = 0.0;
 
   meanReal = meanReal / it.size();
   meanPred = meanPred / it.size();
-  //    std::cout << std::endl;
   for (unsigned int i = 0; i < it.size(); i++) {
     double t1 = *sft[i][0] - meanReal;
     double t2 = *o[i][0] - meanPred;
@@ -185,13 +185,13 @@ void GPFFHSP90::CreateRandomCtes(int nctes) {
     double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
-    std::cout << "c0 \t0.0" << std::endl;
-    std::cout << "c1 \t1.0" << std::endl;
+    LOG_F(1, "c0=0.0");
+    LOG_F(1, "c1=1.0");
     for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * std::pow(10, b);
-      std::cout << "c" << i + 2 << " \t" << c << std::endl;
+      LOG_F(1, "c{}={}", i + 2, c);
       ctes.push_back(c);
     }
   }

@@ -20,6 +20,8 @@
 #include "ReceptorFlexData.h"
 #include "SolventFlexData.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 ChromFactory::ChromFactory() { m_pChrom = new Chrom(); }
@@ -159,20 +161,18 @@ void ChromFactory::VisitSolventFlexData(SolventFlexData *pFlexData) {
     if ((occupancyProb > 0.0) && (occupancyProb < 1.0)) {
       double threshold = 1.0 - occupancyProb;
       m_pChrom->Add(new ChromOccupancyElement(pModel, stepSize, threshold));
-      // std::cout << "INFO Solvent model " << pModel->GetName() << " has
-      // variable occupancy" << std::endl;
+      LOG_F(INFO, "Solvent model {} has variable occupancy", pModel->GetName());
     }
     // occupancy prob is either zero or one.
     // just need to force the model into either the enabled or disabled state
     // No need for chromosome element
     else if (occupancyProb <= 0.0) {
       pModel->SetOccupancy(0.0);
-      std::cout << "WARNING Solvent model " << pModel->GetName()
-                << " is permanently disabled" << std::endl;
+      LOG_F(WARNING, "Solvent model {} is permanently disabled",
+            pModel->GetName());
     } else if (occupancyProb >= 1.0) {
       pModel->SetOccupancy(1.0);
-      // std::cout << "INFO Solvent model " << pModel->GetName() << " is
-      // permanently enabled" << std::endl;
+      LOG_F(INFO, "Solvent model {} is permanently enabled", pModel->GetName());
     }
   }
 }

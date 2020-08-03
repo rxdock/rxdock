@@ -13,6 +13,8 @@
 #include "SiteMapper.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -22,16 +24,12 @@ std::string SiteMapper::_CT("SiteMapper");
 // Constructors/destructors
 SiteMapper::SiteMapper(const std::string &strClass, const std::string &strName)
     : BaseObject(strClass, strName) {
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "SiteMapper parameterised constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 SiteMapper::~SiteMapper() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "SiteMapper destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -39,17 +37,13 @@ SiteMapper::~SiteMapper() {
 // Notify observer that subject has changed
 void SiteMapper::Update(Subject *theChangedSubject) {
   WorkSpace *pWorkSpace = GetWorkSpace();
-  int iTrace = GetTrace();
   if (theChangedSubject == pWorkSpace) {
     // Check if receptor has been updated (model #0)
     if (pWorkSpace->GetNumModels() >= 1) {
       ModelPtr spReceptor = GetWorkSpace()->GetModel(0);
       if (spReceptor != m_spReceptor) {
         m_spReceptor = spReceptor;
-        if (iTrace > 1) {
-          std::cout << _CT << "::Update(): Receptor has been updated"
-                    << std::endl;
-        }
+        LOG_F(2, "SiteMapper::Update(): Receptor has been updated");
       }
     }
   }

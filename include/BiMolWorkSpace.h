@@ -50,8 +50,7 @@ public:
   RBTDLL_EXPORT void SetSolvent(ModelList solventList);
   RBTDLL_EXPORT void RemoveSolvent();
   RBTDLL_EXPORT void
-  UpdateModelCoordsFromChromRecords(BaseMolecularFileSource *pSource,
-                                    int iTrace);
+  UpdateModelCoordsFromChromRecords(BaseMolecularFileSource *pSource);
 
   // Model I/O
   // Saves ligand to file sink

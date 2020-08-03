@@ -12,6 +12,8 @@
 
 #include "TransformAgg.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data member for class type
@@ -21,29 +23,22 @@ std::string TransformAgg::_CT("TransformAgg");
 // Constructors/destructors
 TransformAgg::TransformAgg(const std::string &strName)
     : BaseTransform(_CT, strName) {
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "TransformAgg parameterised constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 TransformAgg::~TransformAgg() {
+  LOG_F(2, "TransformAgg destructor");
+  LOG_F(1, "Deleting child transforms of {}", GetName());
   // Delete all our children
-#ifdef _DEBUG
-  std::cout << _CT << "::~" << _CT << "(): Deleting child transforms of "
-            << GetName() << std::endl;
-#endif //_DEBUG
-       // We need to iterate using a while loop because each deletion will
-       // reduce the size of m_sf, hence conventional iterators would become
-       // invalid
+  // We need to iterate using a while loop because each deletion will
+  // reduce the size of m_sf, hence conventional iterators would become
+  // invalid
   while (m_transforms.size() > 0) {
     BaseTransform *pTransform = m_transforms.back();
     // Assertion: parent of child is this object
     Assert<Assertion>(!TRANSFORMAGG_CHECK || pTransform->m_parent == this);
-#ifdef _DEBUG
-    std::cout << "Deleting " << pTransform->GetName() << " from " << GetName()
-              << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Deleting {} from {}", pTransform->GetName(), GetName());
     delete pTransform;
   }
   _RBTOBJECTCOUNTER_DESTR_(_CT);
@@ -55,18 +50,17 @@ TransformAgg::~TransformAgg() {
 
 // Aggregate handling methods
 void TransformAgg::Add(BaseTransform *pTransform) {
+  LOG_F(2, "TransformAgg::Add");
   // By first orphaning the transform to be added,
   // we handle attempts to readd existing children automatically,
   pTransform->Orphan();
   pTransform->m_parent = this;
-#ifdef _DEBUG
-  std::cout << _CT << "::Add(): Adding " << pTransform->GetName() << " to "
-            << GetName() << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "Adding {} to {}", pTransform->GetName(), GetName());
   m_transforms.push_back(pTransform);
 }
 
 void TransformAgg::Remove(BaseTransform *pTransform) {
+  LOG_F(2, "TransformAgg::Remove");
   BaseTransformListIter iter =
       std::find(m_transforms.begin(), m_transforms.end(), pTransform);
   if (iter == m_transforms.end()) {
@@ -75,10 +69,7 @@ void TransformAgg::Remove(BaseTransform *pTransform) {
   } else {
     // Assertion: parent of child is this object
     Assert<Assertion>(!TRANSFORMAGG_CHECK || pTransform->m_parent == this);
-#ifdef _DEBUG
-    std::cout << _CT << "::Remove(): Removing " << pTransform->GetName()
-              << " from " << GetName() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Removing {} from {}", pTransform->GetName(), GetName());
     m_transforms.erase(iter);
     pTransform->m_parent = nullptr; // Nullify the parent pointer of the child
                                     // that has been removed
@@ -102,10 +93,8 @@ BaseTransform *TransformAgg::GetTransform(unsigned int iTransform) const {
 // Aggregate version registers all children, but NOT itself
 //(Aggregates are just containers, and have no need for model information
 void TransformAgg::Register(WorkSpace *pWorkSpace) {
-#ifdef _DEBUG
-  std::cout << _CT << "::Register(): Registering child transforms of "
-            << GetName() << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "TransformAgg::Register");
+  LOG_F(1, "Registering child transforms of {}", GetName());
   for (BaseTransformListIter iter = m_transforms.begin();
        iter != m_transforms.end(); iter++) {
     (*iter)->Register(pWorkSpace);
@@ -115,10 +104,8 @@ void TransformAgg::Register(WorkSpace *pWorkSpace) {
 // Unregister with a workspace
 // Aggregate version unregisters all children, but NOT itself
 void TransformAgg::Unregister() {
-#ifdef _DEBUG
-  std::cout << _CT << "::Unregister(): Unregistering child transforms of "
-            << GetName() << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "TransformAgg::Unregister");
+  LOG_F(1, "Unregistering child transforms of {}", GetName());
   for (BaseTransformListIter iter = m_transforms.begin();
        iter != m_transforms.end(); iter++) {
     (*iter)->Unregister();
@@ -129,11 +116,9 @@ void TransformAgg::Unregister() {
 // Notify observer that subject has changed
 // Does nothing in TransformAgg as aggregates do not require updating
 void TransformAgg::Update(Subject *theChangedSubject) {
+  // LOG_F(2, "TransformAgg::Update");
   //	if (theChangedSubject == GetWorkSpace()) {
-  //#ifdef _DEBUG
-  //         std::cout << _CT << "::Update(): " << GetName() << " received
-  //         update
-  // from workspace" << std::endl; #endif //_DEBUG
+  // LOG_F(1, "{} received update from workspace", GetName());
   //	}
 }
 

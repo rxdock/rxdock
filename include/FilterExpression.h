@@ -20,6 +20,8 @@
 #include "GPTypes.h"
 #include "TokenIter.h"
 
+#include <iostream>
+
 namespace rxdock {
 
 class FilterExpressionVisitor;

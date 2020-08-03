@@ -22,6 +22,9 @@
 #include "ReceptorFlexData.h"
 #include "SolventFlexData.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 const std::string &PRMFactory::_CT = "PRMFactory";
@@ -38,10 +41,10 @@ const std::string &PRMFactory::_SOLV_SECTION = "SOLVENT";
 const std::string &PRMFactory::_SOLV_FILE = "FILE";
 
 PRMFactory::PRMFactory(ParameterFileSource *pParamSource)
-    : m_pParamSource(pParamSource), m_pDS(nullptr), m_iTrace(0) {}
+    : m_pParamSource(pParamSource), m_pDS(nullptr) {}
 
 PRMFactory::PRMFactory(ParameterFileSource *pParamSource, DockingSite *pDS)
-    : m_pParamSource(pParamSource), m_pDS(pDS), m_iTrace(0) {}
+    : m_pParamSource(pParamSource), m_pDS(pDS) {}
 ModelPtr PRMFactory::CreateReceptor() {
   ModelPtr retVal;
   m_pParamSource->SetSection(_REC_SECTION);
@@ -52,34 +55,19 @@ ModelPtr PRMFactory::CreateReceptor() {
 
   // Read topology and coordinates from a single molecular file source
   if (m_pParamSource->isParameterPresent(_REC_FILE)) {
-    if (m_iTrace > 0) {
-      std::cout << std::endl
-                << "Using " << _REC_FILE
-                << " as combined source of topology and 3D coordinates"
-                << std::endl
-                << std::endl;
-    }
+    LOG_F(INFO, "Using RECEPTOR_FILE as combined source of topology and 3D "
+                "coordinates");
     std::string strFile = m_pParamSource->GetParameterValueAsString(_REC_FILE);
     MolecularFileSourcePtr theSource = CreateMolFileSource(strFile);
     bool isOK = theSource->isAtomListSupported() &&
                 theSource->isBondListSupported() &&
                 theSource->isCoordinatesSupported();
     if (!isOK) {
-      if (m_iTrace > 0) {
-        std::cout << std::endl
-                  << "Incompatible file type for " << _REC_FILE << " option"
-                  << std::endl;
-        std::cout
-            << "File type must provide atom list, bond list and coordinates "
-               "in a single file"
-            << std::endl;
-        std::cout << "Consider using " << _REC_TOPOL_FILE << " and "
-                  << _REC_COORD_FILE
-                  << " to specify topology (atoms/bonds) and coordinate files "
-                     "separately"
-                  << std::endl
-                  << std::endl;
-      }
+      LOG_F(ERROR,
+            "Incompatible file type for RECEPTOR_FILE option: file type must "
+            "provide atom list, bond list and coordinates in a single file. "
+            "Consider using RECEPTOR_TOPOL_FILE and RECEPTOR_COORD_FILE to "
+            "specify topology (atoms/bonds) and coordinate files separately");
       throw BadReceptorFile(_WHERE_, "Inappropriate molecular file type for " +
                                          _REC_FILE + " option");
     }
@@ -87,56 +75,33 @@ ModelPtr PRMFactory::CreateReceptor() {
   }
   // Read topology and coordinates separately from two molecular file sources
   else {
-    if (m_iTrace > 0) {
-      std::cout << std::endl
-                << "Using " << _REC_TOPOL_FILE << " as topology source"
-                << std::endl
-                << std::endl;
-    }
+    LOG_F(INFO, "Using RECEPTOR_TOPOL_FILE as topology source");
     std::string strTopolFile =
         m_pParamSource->GetParameterValueAsString(_REC_TOPOL_FILE);
     MolecularFileSourcePtr theTopolSource = CreateMolFileSource(strTopolFile);
     bool isOK = theTopolSource->isAtomListSupported() &&
                 theTopolSource->isBondListSupported();
     if (!isOK) {
-      if (m_iTrace > 0) {
-        std::cout << std::endl
-                  << "Incompatible file type for " << _REC_TOPOL_FILE
-                  << " option" << std::endl;
-        std::cout
-            << "File type must provide topology information (atom list and "
-               "bond list)"
-            << std::endl
-            << std::endl;
-      }
+      LOG_F(ERROR,
+            "Incompatible file type for RECEPTOR_TOPOL_FILE option. File type "
+            "must provide topology information (atom list and bond list)");
       throw BadReceptorFile(_WHERE_, "Inappropriate molecular file type for " +
                                          _REC_TOPOL_FILE + " option");
     }
     retVal = new Model(theTopolSource);
     if (!bEnsemble) {
       // Now read coord file
-      if (m_iTrace > 0) {
-        std::cout << std::endl
-                  << "Using " << _REC_COORD_FILE
-                  << " as source of 3D coordinates" << std::endl
-                  << std::endl;
-      }
+      LOG_F(INFO, "Using RECEPTOR_COORD_FILE as source of 3D coordinates");
       std::string strCoordFile =
           m_pParamSource->GetParameterValueAsString(_REC_COORD_FILE);
       MolecularFileSourcePtr theCoordSource = CreateMolFileSource(strCoordFile);
       isOK = theCoordSource->isAtomListSupported() &&
              theCoordSource->isCoordinatesSupported();
       if (!isOK) {
-        if (m_iTrace > 0) {
-          std::cout << std::endl
-                    << "Incompatible file type for " << _REC_COORD_FILE
-                    << " option" << std::endl;
-          std::cout
-              << "File type must provide coordinate information (atom list "
-                 "with 3D coords)"
-              << std::endl
-              << std::endl;
-        }
+        LOG_F(
+            ERROR,
+            "Incompatible file type for RECEPTOR_COORD_FILE option. File type "
+            "must provide coordinate information (atom list with 3D coords)");
         throw BadReceptorFile(_WHERE_,
                               "Inappropriate molecular file type for " +
                                   _REC_COORD_FILE + " option");
@@ -148,35 +113,25 @@ ModelPtr PRMFactory::CreateReceptor() {
   // Optional read of multiple receptor conformations (numbered from 1 thru N)
   if (bEnsemble) {
     int n = m_pParamSource->GetParameterValue(_REC_NUM_COORD_FILES);
-    if (m_iTrace > 0) {
-      std::cout << std::endl
-                << "Using ensemble of " << _REC_COORD_FILE
-                << "'s as source of 3D coordinates (N=" << n << ")" << std::endl
-                << std::endl;
-    }
+    LOG_F(INFO,
+          "Using ensemble of RECEPTOR_COORD_FILE's as source of 3D coordinates "
+          "(N={})",
+          n);
     for (int i = 1; i <= n; i++) {
       std::ostringstream ostr;
       ostr << _REC_COORD_FILE << "_" << i;
       std::string paramName(ostr.str());
       std::string strCoordFile =
           m_pParamSource->GetParameterValueAsString(paramName);
-      if (m_iTrace > 0) {
-        std::cout << std::endl << "I=" << i << std::endl;
-      }
+      LOG_F(1, "I={}", i);
       MolecularFileSourcePtr theCoordSource = CreateMolFileSource(strCoordFile);
       bool isOK = theCoordSource->isAtomListSupported() &&
                   theCoordSource->isCoordinatesSupported();
       if (!isOK) {
-        if (m_iTrace > 0) {
-          std::cout << std::endl
-                    << "Incompatible file type for " << paramName << " option"
-                    << std::endl;
-          std::cout
-              << "File type must provide coordinate information (atom list "
-                 "with 3D coords)"
-              << std::endl
-              << std::endl;
-        }
+        LOG_F(ERROR,
+              "Incompatible file type for {} option. File type must provide "
+              "coordinate information (atom list with 3D coords)",
+              paramName);
         throw BadReceptorFile(_WHERE_,
                               "Inappropriate molecular file type for " +
                                   paramName + " option");
@@ -185,8 +140,7 @@ ModelPtr PRMFactory::CreateReceptor() {
       retVal->SaveCoords(strCoordFile);
     }
     int nCoords = retVal->GetNumSavedCoords() - 1;
-    std::cout << "Total number of receptor conformations read = " << nCoords
-              << std::endl;
+    LOG_F(INFO, "Total number of receptor conformations read = {}", nCoords);
   }
 
   // If the docking site is defined, then we can define the
@@ -215,24 +169,13 @@ ModelList PRMFactory::CreateSolvent() {
   m_pParamSource->SetSection(_SOLV_SECTION);
   if (m_pParamSource->isParameterPresent(_SOLV_FILE)) {
     std::string strFile = m_pParamSource->GetParameterValueAsString(_SOLV_FILE);
-    if (m_iTrace > 0) {
-      std::cout << std::endl
-                << "Reading solvent from " << strFile << std::endl
-                << std::endl;
-    }
+    LOG_F(INFO, "Reading solvent from {}", strFile);
     MolecularFileSourcePtr theSource = CreateMolFileSource(strFile);
     bool isOK =
         theSource->isAtomListSupported() && theSource->isCoordinatesSupported();
     if (!isOK) {
-      if (m_iTrace > 0) {
-        std::cout << std::endl
-                  << "Incompatible file type for " << _SOLV_SECTION
-                  << "::" << _SOLV_FILE << " option" << std::endl;
-        std::cout
-            << "File type must provide atom list and coordinates in a single "
-               "file"
-            << std::endl;
-      }
+      LOG_F(ERROR, "Incompatible file type for SOLVENT::FILE option. File type "
+                   "must provide atom list and coordinates in a single file");
       throw BadReceptorFile(_WHERE_, "Inappropriate molecular file type for " +
                                          _SOLV_SECTION + "::" + _SOLV_FILE +
                                          " option");
@@ -255,19 +198,19 @@ ModelList PRMFactory::CreateSolvent() {
     for (AtomListConstIter iter = oAtomList.begin(); iter != oAtomList.end();
          ++iter) {
       AtomPtr oAtom = (*iter);
-      // std::cout << "Processing " << (*oAtom) << "..." << std::endl;
+      LOG_F(1, "Processing {}...", *oAtom);
       // Isolated oxygen atom:
       // Need to find its matching hydrogens in the file and create the bonds
       if (bIsIsolated(oAtom)) {
-        // std::cout << "...is isolated" << std::endl;
+        LOG_F(1, "...is isolated");
         isSubunitId_eq bInSameSubunit(oAtom->GetSubunitId());
         AtomList matchingH1AtomList =
             GetAtomListWithPredicate(h1AtomList, bInSameSubunit);
         AtomList matchingH2AtomList =
             GetAtomListWithPredicate(h2AtomList, bInSameSubunit);
-        // std::cout << "..." << matchingH1AtomList.size() << " matching H1" <<
-        // std::endl; std::cout << "..." << matchingH2AtomList.size() << "
-        // matching H2" << std::endl; Found a water!
+        LOG_F(1, "...{} matching H1", matchingH1AtomList.size());
+        LOG_F(1, "...{} matching H2", matchingH2AtomList.size());
+        // Found a water!
         if ((matchingH1AtomList.size() == 1) &&
             (matchingH2AtomList.size() == 1)) {
           AtomPtr h1Atom = matchingH1AtomList.front();
@@ -301,13 +244,8 @@ ModelList PRMFactory::CreateSolvent() {
           oAtom->SetTriposType(triposType(oAtom, true));
           h1Atom->SetTriposType(triposType(h1Atom, true));
           h2Atom->SetTriposType(triposType(h2Atom, true));
-          if (m_iTrace > 0) {
-            std::cout << "Creating water model # " << retVal.size()
-                      << std::endl;
-            std::cout << (*oAtom) << std::endl
-                      << (*h1Atom) << std::endl
-                      << (*h2Atom) << std::endl;
-          }
+          LOG_F(INFO, "Creating water model # {}", retVal.size());
+          LOG_F(INFO, "{} {} {}", *oAtom, *h1Atom, *h2Atom);
           ModelPtr solvent(new Model(waterAtomList, waterBondList));
           // If the docking site is defined, then we can define the
           // solvent flexibility
@@ -329,11 +267,10 @@ void PRMFactory::AttachReceptorFlexData(Model *pReceptor) {
   // Parameter value is the range from the docking volume to include
   if (m_pParamSource->isParameterPresent(_REC_FLEX_DISTANCE)) {
     double flexDist = m_pParamSource->GetParameterValue(_REC_FLEX_DISTANCE);
-    if (m_iTrace > 0) {
-      std::cout << std::endl
-                << "Target OH/NH3 groups within " << flexDist
-                << " A of docking site requested as flexible" << std::endl;
-    }
+    LOG_F(INFO,
+          "Target OH/NH3 groups within {} A of docking site requested as "
+          "flexible",
+          flexDist);
     FlexData *pFlexData = new ReceptorFlexData(m_pDS);
     pFlexData->SetParameter(ReceptorFlexData::_FLEX_DISTANCE, flexDist);
     if (m_pParamSource->isParameterPresent(_REC_DIHEDRAL_STEP)) {
@@ -341,18 +278,10 @@ void PRMFactory::AttachReceptorFlexData(Model *pReceptor) {
           m_pParamSource->GetParameterValue(_REC_DIHEDRAL_STEP);
       pFlexData->SetParameter(ReceptorFlexData::_DIHEDRAL_STEP,
                               dihedralStepSize);
-      if (m_iTrace > 0) {
-        std::cout << std::endl
-                  << _REC_DIHEDRAL_STEP << " = " << dihedralStepSize
-                  << std::endl;
-      }
+      LOG_F(INFO, "RECEPTOR_DIHEDRAL_STEP = {}", dihedralStepSize);
     }
     pReceptor->SetFlexData(pFlexData);
-    if (m_iTrace > 0) {
-      std::cout << std::endl
-                << "RECEPTOR FLEXIBILITY PARAMETERS:" << std::endl
-                << *pFlexData << std::endl;
-    }
+    LOG_F(INFO, "RECEPTOR FLEXIBILITY PARAMETERS: {}", *pFlexData);
   }
 }
 
@@ -366,11 +295,7 @@ void PRMFactory::AttachLigandFlexData(Model *pLigand) {
     pFlexData->SetParameter(*iter, strValue);
   }
   pLigand->SetFlexData(pFlexData);
-  if (m_iTrace > 0) {
-    std::cout << std::endl
-              << "LIGAND FLEXIBILITY PARAMETERS:" << std::endl
-              << *pFlexData << std::endl;
-  }
+  LOG_F(INFO, "LIGAND FLEXIBILITY PARAMETERS: {}", *pFlexData);
 }
 
 void PRMFactory::AttachSolventFlexData(Model *pSolvent) {
@@ -420,11 +345,7 @@ void PRMFactory::AttachSolventFlexData(Model *pSolvent) {
     }
   }
   pSolvent->SetFlexData(pFlexData);
-  if (m_iTrace > 0) {
-    std::cout << std::endl
-              << "SOLVENT FLEXIBILITY PARAMETERS:" << std::endl
-              << *pFlexData << std::endl;
-  }
+  LOG_F(INFO, "SOLVENT FLEXIBILITY PARAMETERS: {}", *pFlexData);
 }
 
 MolecularFileSourcePtr
@@ -436,12 +357,11 @@ PRMFactory::CreateMolFileSource(const std::string &fileName) {
   std::transform(fileType.begin(), fileType.end(),
                  std::back_inserter(fileTypeUpper), ::toupper);
   std::string fullFileName = GetDataFileName("", fileName);
-
-  if (m_iTrace > 0) {
-    std::cout << _CT << ": File name requested = " << fileName
-              << "; type = " << fileTypeUpper << std::endl;
-    std::cout << _CT << ": Reading file from " << fullFileName << std::endl;
-  }
+  LOG_F(1,
+        "PRMFactory::CreateMolFileSource: File name requested = {}; type = {}",
+        fileName, fileTypeUpper);
+  LOG_F(1, "PRMFactory::CreateMolFileSource: Reading file from {}",
+        fullFileName);
 
   bool bImplH = true;
   if (m_pParamSource->isParameterPresent("RECEPTOR_ALL_H")) {
@@ -455,10 +375,10 @@ PRMFactory::CreateMolFileSource(const std::string &fileName) {
     std::string strMassesFile =
         m_pParamSource->GetParameterValueAsString("RECEPTOR_MASSES_FILE");
     strMassesFile = GetDataFileName("data", strMassesFile);
-    if (m_iTrace > 0) {
-      std::cout << _CT << ": Using file " << strMassesFile
-                << " to lookup Charmm atom type info" << std::endl;
-    }
+    LOG_F(1,
+          "PRMFactory::CreateMolFileSource: Using file {} to lookup Charmm "
+          "atom type info",
+          strMassesFile);
     retVal = new PsfFileSource(fullFileName, strMassesFile, bImplH);
   } else if (fileTypeUpper == "CRD") {
     retVal = new CrdFileSource(fullFileName);
@@ -478,40 +398,31 @@ PRMFactory::CreateMolFileSource(const std::string &fileName) {
         m_pParamSource->GetParameterValueAsString("RECEPTOR_SEGMENT_NAME");
     SegmentMap segmentMap = ConvertStringToSegmentMap(strSegmentName);
     retVal->SetSegmentFilterMap(segmentMap);
-    if (m_iTrace > 0) {
-      std::cout << _CT << ": Setting segment/chain filter to " << strSegmentName
-                << std::endl;
-    }
+    LOG_F(1,
+          "PRMFactory::CreateMolFileSource: Setting segment/chain filter to {}",
+          strSegmentName);
   } else {
-    if (m_iTrace > 0) {
-      std::cout << _CT << ": No segment/chain filter defined" << std::endl;
-    }
+    LOG_F(1, "PRMFactory: No segment/chain filter defined");
   }
 
-  if (m_iTrace > 0) {
-    if (bImplH)
-      std::cout << _CT << ": Removing non-polar hydrogens" << std::endl;
-    else
-      std::cout << _CT << ": Reading all hydrogens present" << std::endl;
+  if (bImplH) {
+    LOG_F(1, "PRMFactory::CreateMolFileSource: Removing non-polar hydrogens");
+  } else {
+    LOG_F(1, "PRMFactory::CreateMolFileSource: Reading all hydrogens present");
   }
-
   Error status = retVal->Status();
   if (!status.isOK())
     throw status;
   int nAtoms = retVal->GetNumAtoms();
   if (nAtoms == 0) {
-    if (m_iTrace > 0) {
-      std::cout << _CT << ": File source contains zero atoms!" << std::endl;
-      std::cout << _CT << ": Have you defined RECEPTOR_SEGMENT_NAME correctly?"
-                << std::endl;
-    }
+    LOG_F(ERROR, "PRMFactory::CreateMolFileSource: File source contains zero "
+                 "atoms! Have you defined RECEPTOR_SEGMENT_NAME correctly?");
     throw BadReceptorFile(_WHERE_,
                           "Zero atoms provided by " + retVal->GetFileName());
   } else {
-    if (m_iTrace > 0) {
-      std::cout << _CT << ": File source contains " << nAtoms << " atoms"
-                << std::endl;
-    }
+    LOG_F(INFO,
+          "PRMFactory::CreateMolFileSource: File source contains {} atoms",
+          nAtoms);
   }
   return retVal;
 }

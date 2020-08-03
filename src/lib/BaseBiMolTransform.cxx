@@ -13,6 +13,8 @@
 #include "BaseBiMolTransform.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -23,16 +25,12 @@ std::string BaseBiMolTransform::_CT("BaseBiMolTransform");
 BaseBiMolTransform::BaseBiMolTransform(const std::string &strClass,
                                        const std::string &strName)
     : BaseTransform(strClass, strName) {
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "BaseBiMolTransform parameterised constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 BaseBiMolTransform::~BaseBiMolTransform() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "BaseBiMolTransform destructor")
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -54,10 +52,7 @@ void BaseBiMolTransform::Update(Subject *theChangedSubject) {
     if (numModels >= 1) {
       ModelPtr spReceptor = pWorkSpace->GetModel(0);
       if (spReceptor != m_spReceptor) {
-#ifdef _DEBUG
-        std::cout << _CT << "::Update(): Receptor has been updated"
-                  << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "BaseBiMolTransform::Update(): Receptor has been updated");
         m_spReceptor = spReceptor;
         SetupReceptor();
       }
@@ -66,9 +61,7 @@ void BaseBiMolTransform::Update(Subject *theChangedSubject) {
     if (numModels >= 2) {
       ModelPtr spLigand = pWorkSpace->GetModel(1);
       if (spLigand != m_spLigand) {
-#ifdef _DEBUG
-        std::cout << _CT << "::Update(): Ligand has been updated" << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "BaseBiMolTransform::Update(): Ligand has been updated");
         m_spLigand = spLigand;
         SetupLigand();
       }

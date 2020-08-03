@@ -13,22 +13,20 @@
 #include "BaseIntraSF.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
 std::string BaseIntraSF::_CT("BaseIntraSF");
 
 BaseIntraSF::BaseIntraSF() : m_zero(0.0) {
-#ifdef _DEBUG
-  std::cout << _CT << " default constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "BaseIntraSF default constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 BaseIntraSF::~BaseIntraSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "BaseIntraSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -47,9 +45,7 @@ void BaseIntraSF::Update(Subject *theChangedSubject) {
     if (pWorkSpace->GetNumModels() >= 2) {
       ModelPtr spLigand = GetWorkSpace()->GetModel(1);
       if (spLigand != m_spLigand) {
-#ifdef _DEBUG
-        std::cout << _CT << "::Update(): Ligand has been updated" << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "BaseIntraSF::Update(): Ligand has been updated");
         m_spLigand = spLigand;
         SetupScore();
         // Retain the zero-point offset from the ligand model data if present

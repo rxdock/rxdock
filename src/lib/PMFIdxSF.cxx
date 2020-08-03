@@ -15,6 +15,8 @@
 #include "PMFDirSource.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -65,14 +67,11 @@ PMFIdxSF::PMFIdxSF(const std::string &aName) : BaseSF(_CT, aName) {
   theSrcDir.ReadFiles(&thePMF, &theFileNames, &theSlopeIndex);
   // convert vector to grid
   for (unsigned int i = 0; i < thePMF.size(); i++) {
-#ifdef _DEBUG1
-    std::cout << _CT << " " << theFileNames[i];
-    std::cout << " " << theFileNames[i].substr(0, 2) << " "
-              << PMFStr2Type(theFileNames[i].substr(0, 2));
-    std::cout << " " << theFileNames[i].substr(2, 2) << " "
-              << PMFStr2Type(theFileNames[i].substr(2, 2));
-    std::cout << " " << std::endl;
-#endif // _DEBUG1
+    LOG_F(1, "PMFIdxSF: {} {} {} {} {}", theFileNames[i],
+          theFileNames[i].substr(0, 2),
+          PMFStr2Type(theFileNames[i].substr(0, 2)),
+          theFileNames[i].substr(2, 2),
+          PMFStr2Type(theFileNames[i].substr(2, 2)));
 
     // iterate through each individual PMF
     for (unsigned int j = 0; j < thePMF[i].size(); j++) {
@@ -97,66 +96,53 @@ PMFIdxSF::PMFIdxSF(const std::string &aName) : BaseSF(_CT, aName) {
                            rType, lType, // can be more than 3.0
                            theSlopeIndex[i].density);
   }
-#ifdef _DEBUG1
   // checking values for type cP only. This test assumes the original
   // Muegge file list where the very first is the cPcP.pmf
   for (int j = 0; j < thePMF[0].size(); j++) {
-    std::cout << _CT << " "
-              << thePMFGrid->GetValue(thePMFGrid->GetIX(thePMF[0][j].distance),
-                                      cP, cP) -
-                     thePMF[0][j].density
-              << std::endl;
+    LOG_F(
+        1, "PMFIdxSF: {}",
+        thePMFGrid->GetValue(thePMFGrid->GetIX(thePMF[0][j].distance), cP, cP) -
+            thePMF[0][j].density);
   }
-  std::cout << _CT << " " << theFileNames[0] << std::endl;
+  LOG_F(1, "PMFIdxSF: {}", theFileNames[0]);
 
   //	 this is a printout of values NOT the grid
-  std::cout << _CT << " number of PMF functions: " << thePMF.size()
-            << std::endl;
+  LOG_F(1, "PMFIdxSF: number of PMF functions: {}", thePMF.size());
   for (long k = 0; k < thePMF.size(); k++) {
     for (int l = 0, m = 0; l < thePMF[k].size(); l++, m++) {
-      std::cout << "| " << thePMF[k][l].distance << "  " << thePMF[k][l].density
-                << "| ";
+      LOG_F(1, "l = {}", l);
+      LOG_F(1, "| {}  {} |", thePMF[k][l].distance, thePMF[k][l].density);
       if (5 == m) {
+        LOG_F(1, "m = 5, resetting to 0");
         m = 0;
-        std::cout << std::endl;
       }
     }
-    std::cout << std::endl;
-    std::cout << std::endl;
   }
-#endif //_DEBUG1
-#ifdef _DEBUG1
+
   // other test for grid. PMFType enum starts with 1.
   for (int i = 1; i < PMF_UNDEFINED; i++) {
     for (int j = 1; j < PMF_UNDEFINED; j++) {
-      std::cout << "PMF Pair: " << PMFType2Str((PMFType)i)
-                << PMFType2Str((PMFType)j) << " *********" << std::endl;
-      for (Double grid = cPMFStart; grid < cPMFEnd; grid += cPMFRes) {
-        UInt idx = thePMFGrid->GetIX(grid);
-        std::cout << PMFType2Str((PMFType)i) << PMFType2Str((PMFType)j);
-        std::cout << " " << grid << " " << idx << " "
-                  << thePMFGrid->GetValue(idx, (PMFType)i, (PMFType)j)
-                  << std::endl;
+      LOG_F(1, "PMFIdxSF: PMF Pair: {} {}", PMFType2Str((PMFType)i),
+            PMFType2Str((PMFType)j));
+      for (double grid = cPMFStart; grid < cPMFEnd; grid += cPMFRes) {
+        unsigned int idx = thePMFGrid->GetIX(grid);
+        LOG_F(1, "{} {}", PMFType2Str((PMFType)i), PMFType2Str((PMFType)j));
+        LOG_F(1, "{} {} {}", grid, idx,
+              thePMFGrid->GetValue(idx, (PMFType)i, (PMFType)j));
       }
     }
   }
-#endif //_DEBUG1
 
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 PMFIdxSF::~PMFIdxSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " PMF destructor" << std::endl;
-#endif //_DEBUG
-
+  LOG_F(2, "PMFIdxSF PMF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
 void PMFIdxSF::Update(Subject *theChangedSubject) {
-#ifdef _DEBUG
-  std::cout << _CT << " PMF Update" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "PMFIdxSF PMF Update");
   BaseInterSF::Update(theChangedSubject);
 }
 
@@ -166,15 +152,13 @@ void PMFIdxSF::Update(Subject *theChangedSubject) {
  * create NonBondedGrid of nearest neighbours
  */
 void PMFIdxSF::SetupReceptor() {
-#ifdef _DEBUG
-  std::cout << _CT << " PMF SetupReceptor" << std::endl;
-#endif //_DEBUG
-       // clear to be on the safe side
+  LOG_F(2, "PMFIdxSF PMF SetupReceptor");
+  // clear to be on the safe side
   theReceptorList.clear();
   theReceptorRList.clear();
   theSurround = NonBondedGridPtr();
   if (GetReceptor().Null()) {
-    std::cout << _CT << "WARNING: no receptor defined. " << std::endl;
+    LOG_F(WARNING, "PMFIdxSF::SetupReceptor: no receptor defined");
     return;
   } else { // load PMFs from table files
     theSurround = CreateNonBondedGrid();
@@ -184,7 +168,7 @@ void PMFIdxSF::SetupReceptor() {
                                           GetCorrectedRange());
     theReceptorList =
         GetAtomListWithPredicate(atomList, std::not1(isAtomicNo_eq(1)));
-    // std::cout << "Receptor list size: "<<theReceptorList.size()<<endl;
+    LOG_F(1, "Receptor list size: {}", theReceptorList.size());
     // create non-bonded grid to get the atoms around each gridpoint
     for (AtomListIter sIter = theReceptorList.begin();
          sIter != theReceptorList.end(); ++sIter) {
@@ -200,10 +184,7 @@ void PMFIdxSF::SetupReceptor() {
 }
 
 void PMFIdxSF::SetupLigand() {
-#ifdef _DEBUG
-  std::cout << _CT << " PMF SetupLigand" << std::endl;
-#endif //_DEBUG
-
+  LOG_F(2, "PMFIdxSF PMF SetupLigand");
   theLigandList = GetAtomListWithPredicate(GetLigand()->GetAtomList(),
                                            std::not1(isAtomicNo_eq(1)));
 
@@ -214,22 +195,16 @@ void PMFIdxSF::SetupLigand() {
             std::back_inserter(theLigandRList));
 }
 
-void PMFIdxSF::SetupScore() {
-#ifdef _DEBUG
-  std::cout << _CT << " PMF SetupScore" << std::endl;
-#endif //_DEBUG
-}
+void PMFIdxSF::SetupScore() { LOG_F(2, "PMFIdxSF PMF SetupScore"); }
 
 double PMFIdxSF::RawScore() const {
+  LOG_F(2, "PMFIdxSF PMF RawScore");
   //	return 0.0;
-#ifdef _DEBUG
-  std::cout << _CT << " PMF RawScore " << std::endl;
-#endif //_DEBUG
   double theScore = 0.0;
 
   // check for existence of  atom list grid
   if (theSurround.Null()) {
-    std::cout << _CT << "No index grid" << std::endl;
+    LOG_F(INFO, "PMFIdxSF::RawScore: No index grid");
     return theScore;
   }
   // enable/disable annotations
@@ -243,8 +218,8 @@ double PMFIdxSF::RawScore() const {
     const AtomRList &rAtomList = theSurround->GetAtomList(ligCoord);
     if (rAtomList.empty())
       continue;
-    // std::cout << _CT << " loop over the receptor atoms around the ligand
-    // atom" << std::endl;
+    LOG_F(1, "PMFIdxSF::RawScore: loop over the receptor atoms around the "
+             "ligand atom");
     for (AtomRListConstIter rIter = rAtomList.begin(); rIter != rAtomList.end();
          rIter++) {
       // get distance of the atom
@@ -253,12 +228,11 @@ double PMFIdxSF::RawScore() const {
 
       if (theDist > GetRange()) // skip distances out of a given distance
         continue;
-      // std::cout << _CT << " theDist " << theDist << std::endl;
+      LOG_F(1, "PMFIdxSF::RawScore: theDist = {}", theDist);
       // to make code readable introduce some local variables
       // hoping cc can optimize them out
       const PMFType rType = (*rIter)->GetPMFType();
-      // std::cout << _CT << " receptor type " << PMFType2Str(rType) <<
-      // std::endl;
+      LOG_F(1, "PMFIdxSF::RawScore: receptor type {}", PMFType2Str(rType));
       const PMFType lType = (*lIter)->GetPMFType();
       // optimal distance for C-C interactions is
       // under 6A. Note NC is the next item in PMFType
@@ -269,22 +243,17 @@ double PMFIdxSF::RawScore() const {
       // if we are in the plateau region
       else if (theDist < theSlopeGrid->GetValue(1, rType, lType)) {
         i_score = GetLinearCloseRangeValue(theDist, rType, lType);
-#ifdef _DEBUG1
-        std::cout << "Plateau reached: " << theDist << " "
-                  << theSlopeGrid->GetValue(1, rType, lType);
-        std::cout << " " << PMFType2Str(rType) << " " << PMFType2Str(lType)
-                  << std::endl;
-#endif // _DEBUG1
+        LOG_F(1, "PMFIdxSF::RawScore: Plateau reached: {} {} {} {}", theDist,
+              theSlopeGrid->GetValue(1, rType, lType), PMFType2Str(rType),
+              PMFType2Str(lType));
       } else {
-        // if(HH==rType || HL==lType || HL==rType || HH==lType)
-        //     std::cout <<
-        //     PMFType2Str(rType)<<PMFType2Str(lType)<<"
-        // should not happen" << std::endl; std::cout << _CT << " ligand type "
-        // << PMFType2Str(lType) << std::endl;
-        // UInt		idx		= thePMFGrid->GetIX(theDist);
-        // Double score		= thePMFGrid->GetValue( idx, rType,
-        // lType
-        // ); theScore += score;
+        if (HH == rType || HL == lType || HL == rType || HH == lType) {
+          LOG_F(1, "{} {} should not happen, ligand type {}",
+                PMFType2Str(rType), PMFType2Str(lType), PMFType2Str(lType));
+        }
+        // unsigned int idx = thePMFGrid->GetIX(theDist);
+        // double score = thePMFGrid->GetValue(idx, rType, lType);
+        // theScore += score;
         // make a linear interpolation
         unsigned int inf_idx = thePMFGrid->GetIX(theDist - delta);
         double inf_score = thePMFGrid->GetValue(inf_idx, rType, lType);
@@ -301,15 +270,14 @@ double PMFIdxSF::RawScore() const {
       theScore += i_score;
     }
   }
-#if 0
-	// check PMF scores: the two values should be the same
-	Double receptorPMFscore = 0.0;
-	for(AtomRListConstIter sIter	= theReceptorRList.begin(); sIter != theReceptorRList.end(); ++sIter) {
-		receptorPMFscore += (*sIter)->GetUser2Value();
-	}
-    std::cout << _CT << " Receptor score is: " << receptorPMFscore << std::endl;
-    std::cout << _CT << " PMF score is     : " << theScore << std::endl;
-#endif
+  // check PMF scores: the two values should be the same
+  double receptorPMFscore = 0.0;
+  for (AtomRListConstIter sIter = theReceptorRList.begin();
+       sIter != theReceptorRList.end(); ++sIter) {
+    receptorPMFscore += (*sIter)->GetUser2Value();
+  }
+  LOG_F(1, "PMFIdxSF::RawScore: Receptor score is: {}", receptorPMFscore);
+  LOG_F(1, "PMFIdxSF::RawScore: PMF score is     : {}", theScore);
 
   // save annotation (if needed)
   // since there is no ligand side here we are assigning the the very first

@@ -17,6 +17,9 @@
 #include "FileError.h"
 #include "RealGrid.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -125,23 +128,16 @@ double RealGrid::GetSmoothedValue(const Coord &c) const {
   unsigned int iX = static_cast<unsigned int>(rx * diff(0) - 0.5);
   unsigned int iY = static_cast<unsigned int>(ry * diff(1) - 0.5);
   unsigned int iZ = static_cast<unsigned int>(rz * diff(2) - 0.5);
-#ifdef _DEBUG
-  std::cout << "GetSmoothedValue" << c << "\tiX,iY,iZ=" << iX << "\t" << iY
-            << "\t" << iZ << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "RealGrid::GetSmoothedValue: {} iX={} iY={} iZ={}", c, iX, iY, iZ);
   // Check this point (iX,iY,iZ) and (iX+1,iY+1,iZ+1) are all in bounds
   // else return the unsmoothed GetValue(c)
   if (!isValid(iX, iY, iZ) || !isValid(iX + 1, iY + 1, iZ + 1)) {
-#ifdef _DEBUG
-    std::cout << "Out of bounds" << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Out of bounds");
     return GetValue(c);
   }
   // p is the vector relative to the lower left corner
   Vector p = c - GetCoord(iX, iY, iZ);
-#ifdef _DEBUG
-  std::cout << "p=" << p << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "p={}", p);
   // Set up B0 and B1 for each of x,y,z axes
   // std::vector<double> bx(2);
   // std::vector<double> by(2);

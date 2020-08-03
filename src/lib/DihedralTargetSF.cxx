@@ -12,6 +12,8 @@
 
 #include "DihedralTargetSF.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -19,17 +21,13 @@ std::string DihedralTargetSF::_CT("DihedralTargetSF");
 
 DihedralTargetSF::DihedralTargetSF(const std::string &strName)
     : BaseSF(_CT, strName) {
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "DihedralTargetSF parameterised constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 DihedralTargetSF::~DihedralTargetSF() {
+  LOG_F(2, "DihedralTargetSF destructor");
   ClearReceptor();
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 

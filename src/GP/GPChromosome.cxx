@@ -14,6 +14,8 @@
 #include "Cell.h"
 #include "Command.h"
 
+#include <loguru.hpp>
+
 #include <fstream>
 
 using namespace rxdock;
@@ -107,13 +109,13 @@ std::ostream &rxdock::geneticprogram::operator<<(std::ostream &s,
 
 void GPChromosome::SetConstant(ReturnType cte, int idx) {
   int cell = idx / (nFunctionsInputs + 1) + nProgramInputs;
-  //    std::cout << cell << std::endl;
+  LOG_F(1, "cell={}", cell);
   cells[cell]->SetConstant(cte);
 }
 
 void GPChromosome::ResetConstant(int idx) {
   int cell = idx / (nFunctionsInputs + 1) + nProgramInputs;
-  //    std::cout << cell << std::endl;
+  LOG_F(1, "cell={}", cell);
   cells[cell]->ResetConstant();
   if (cells[cell]->Evaluated())
     cells[cell]->ResetConstant();

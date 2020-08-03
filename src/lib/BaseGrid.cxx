@@ -17,6 +17,8 @@
 #include "BaseGrid.h"
 #include "FileError.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -162,8 +164,8 @@ void BaseGrid::GetSphereIndices(const Coord &c, double radius,
   unsigned int iMaxX = std::min(GetIX(cubeMax) + 1, m_NX - m_NPad);
   unsigned int iMaxY = std::min(GetIY(cubeMax) + 1, m_NY - m_NPad);
   unsigned int iMaxZ = std::min(GetIZ(cubeMax) + 1, m_NZ - m_NPad);
-  /*std::cout << "iMin: " << iMinX << " " << iMinY << " " << iMinZ << std::endl;
-  std::cout << "iMax: " << iMaxX << " " << iMaxY << " " << iMaxZ << std::endl;*/
+  LOG_F(1, "iMin: {} {} {}; iMax: {} {} {}", iMinX, iMinY, iMinZ, iMaxX, iMaxY,
+        iMaxZ);
 
   // Determine if points are inside sphere by checking x^2 + y^2 + z^2 <= rad^2
   double rad2 = radius * radius;

@@ -15,6 +15,8 @@
 #include "BaseMolecularFileSource.h"
 #include "BaseSF.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 ////////////////////////////////////////
@@ -68,7 +70,7 @@ void BiMolWorkSpace::RemoveSolvent() {
 }
 
 void BiMolWorkSpace::UpdateModelCoordsFromChromRecords(
-    BaseMolecularFileSource *pSource, int iTrace) {
+    BaseMolecularFileSource *pSource) {
   int nModels = GetNumModels();
   for (int iModel = 0; iModel < nModels; iModel++) {
     // if (iModel == LIGAND) continue;
@@ -100,15 +102,12 @@ void BiMolWorkSpace::UpdateModelCoordsFromChromRecords(
               spChrom->SetVector(chromVec);
               spChrom->SyncToModel();
               spModel->UpdatePseudoAtoms();
-            } else if (iTrace > 0) {
-              std::cout << "Mismatched chromosome sizes for model #" << iModel
-                        << std::endl;
-              std::cout << chromField << " record in " << pSource->GetFileName()
-                        << " has " << chromValues.size() << " elements"
-                        << std::endl;
-              std::cout << "Expected number of elements is " << chromLength
-                        << std::endl;
-              std::cout << "Model chromosome not updated" << std::endl;
+            } else {
+              LOG_F(INFO, "Mismatched chromosome sizes for model #{}", iModel);
+              LOG_F(INFO, "{} record in {} has {} elements", chromField,
+                    pSource->GetFileName(), chromValues.size());
+              LOG_F(INFO, "Expected number of elements is {}", chromLength);
+              LOG_F(INFO, "Model chromosome not updated");
             }
           }
         }

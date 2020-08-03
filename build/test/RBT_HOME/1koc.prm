@@ -12,7 +12,6 @@ SECTION MAPPER
         RADIUS          4.0
         REF_MOL         1koc_c.sd
         SMALL_SPHERE    1.0
-        TRACE           1
         MIN_VOLUME      100
         MAX_CAVITIES    1
 END_SECTION

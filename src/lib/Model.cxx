@@ -18,6 +18,9 @@
 #include "FlexData.h"
 #include "ModelError.h"
 #include "Quat.h"
+
+#include <loguru.hpp>
+
 #include <functional>
 #include <iomanip>
 
@@ -50,10 +53,8 @@ Model::Model(AtomList &atomList, BondList &bondList)
 
 // Default destructor
 Model::~Model() {
-#ifdef _DEBUG
-  std::cout << "~Model: deleting " << m_strName << " (" << m_atomList.size()
-            << " atoms, " << m_bondList.size() << " bonds)" << std::endl;
-#endif     //_DEBUG
+  LOG_F(2, "~Model: deleting {} ({} atoms, {} bonds)", m_strName,
+        m_atomList.size(), m_bondList.size());
   Clear(); // clear the current model
   _RBTOBJECTCOUNTER_DESTR_("Model");
 }
@@ -122,40 +123,39 @@ void Model::ClearAllDataFields() { m_dataMap.clear(); }
 // AtomList& i.e. pseudo atom is created inside the method, and
 // PseudoAtomPtr returned
 PseudoAtomPtr Model::AddPseudoAtom(const AtomList &atomList) {
-  // std::cout << "AddPseudoAtom";
-  // for (AtomListConstIter iter = atomList.begin(); iter != atomList.end();
-  // iter++) {
-  //  std::cout << "\t" << (*iter)->GetFullAtomName();
-  //}
-  // std::cout << std::endl;
+  LOG_F(2, "Model::AddPseudoAtom");
+  for (AtomListConstIter iter = atomList.begin(); iter != atomList.end();
+       iter++) {
+    LOG_F(1, "Atom {}", (*iter)->GetFullAtomName());
+  }
+
   // Check if we have this pseudo atom already
   for (PseudoAtomListConstIter pIter = m_pseudoAtomList.begin();
        pIter != m_pseudoAtomList.end(); pIter++) {
-    // std::cout << "Checking pseudo atom #" << (*pIter)->GetAtomId() << "\t" <<
-    // (*pIter)->GetNumAtoms() << " atoms" << std::endl;
+    LOG_F(1, "Checking pseudo atom #{}\t{} atoms", (*pIter)->GetAtomId(),
+          (*pIter)->GetNumAtoms());
     AtomList atomList2 = (*pIter)->GetAtomList();
     if (atomList.size() != atomList2.size()) {
-      // std::cout << "No match: Unequal number of atoms" << std::endl;
+      LOG_F(1, "No match: Unequal number of atoms");
       continue;
     }
     bool bMatch = true;
     for (AtomListConstIter aIter = atomList2.begin();
          aIter != atomList2.end() && bMatch; aIter++) {
-      // std::cout << "Checking " << (*aIter)->GetFullAtomName() << std::endl;
+      LOG_F(1, "Checking {}", (*aIter)->GetFullAtomName());
       bMatch = (GetNumAtomsWithPredicate(
                     atomList, std::bind(isAtomPtr_eq(), std::placeholders::_1,
                                         *aIter)) == 1);
     }
     if (bMatch) {
-      // std::cout << "Match found" << std::endl;
+      LOG_F(1, "Match found");
       return (*pIter);
     }
   }
   int nPseudoAtomId = -1 - m_pseudoAtomList.size();
   PseudoAtomPtr spPseudoAtom(new PseudoAtom(atomList, nPseudoAtomId));
   m_pseudoAtomList.push_back(spPseudoAtom);
-  // std::cout << "No match: creating new pseudo atom #" << nPseudoAtomId <<
-  // std::endl;
+  LOG_F(1, "No match: creating new pseudo atom #{}", nPseudoAtomId);
   return spPseudoAtom;
 }
 
@@ -240,13 +240,11 @@ void Model::UpdateCoords(BaseMolecularFileSource *pMolSource) {
     int nUpdated(0);
     while (modelIter != m_atomList.end()) {
       // DM 31 Oct 2000 - hunt for next matching atom in CRD file
-      // std::cout << "Comparing (CRD) " << (*crdIter)->GetFullAtomName() << "
-      // with (MODEL) " << (*modelIter)->GetFullAtomName() << std::endl;
+      LOG_F(1, "Comparing (CRD) {} with (MODEL) {}",
+            (*crdIter)->GetFullAtomName(), (*modelIter)->GetFullAtomName());
       while (!bIsAtomEq(*modelIter, *crdIter)) {
-        //#ifdef _DEBUG
-        std::cout << (*crdIter)->GetFullAtomName() << " does not match "
-                  << (*modelIter)->GetFullAtomName() << std::endl;
-        //#endif //_DEBUG
+        LOG_F(1, "{} does not match {}", (*crdIter)->GetFullAtomName(),
+              (*modelIter)->GetFullAtomName());
         crdIter++;
       }
       (*modelIter)->SetCoords((*crdIter)->GetCoords());
@@ -269,9 +267,10 @@ void Model::UpdateCoords(BaseMolecularFileSource *pMolSource) {
       m_strName += "::";
       m_strName += ConvertSegmentMapToString(segmentFilterMap);
     }
-    // std::cout << "Model::UpdateCoords: " << nUpdated << " atoms in " <<
-    // pMolSource->GetFileName()
-    // << " found that match atoms in model" << std::endl;
+    LOG_F(1,
+          "Model::UpdateCoords: {} atoms in {} found that match atoms in "
+          "model",
+          nUpdated, pMolSource->GetFileName());
   }
 
   catch (Error &error) {
@@ -457,16 +456,16 @@ void Model::SaveCoords(const std::string &coordName) {
   std::map<std::string, int>::const_iterator iter =
       m_coordNames.find(coordName);
   if (iter != m_coordNames.end()) {
-    // std::cout << "Saving coords under name=" << iter->first << ",index=" <<
-    // iter->second << std::endl; If we find the name, reuse the existing index
+    LOG_F(1, "Saving coords under name={}, index={}", iter->first,
+          iter->second);
+    // If we find the name, reuse the existing index
     SaveAtomCoords(m_atomList, (*iter).second);
     m_currentCoord = (*iter).second;
   } else {
     // Add a new index to the map and save the coords using this index
     unsigned int newIdx = m_coordNames.size();
     m_coordNames[coordName] = newIdx;
-    // std::cout << "Saving coords under name=" << coordName << ",new index=" <<
-    // newIdx << std::endl;
+    LOG_F(1, "Saving coords under name={}, new index={}", coordName, newIdx);
     SaveAtomCoords(m_atomList, newIdx);
     m_currentCoord = newIdx;
   }
@@ -478,16 +477,15 @@ void Model::RevertCoords(const std::string &coordName) {
       m_coordNames.find(coordName);
   if (iter != m_coordNames.end()) {
     // If we find the name, revert the coords
-    // std::cout << "Reverting coords under name=" << iter->first << ",index="
-    // << iter->second << std::endl;
+    LOG_F(1, "Reverting coords under name={}, index={}", iter->first,
+          iter->second);
     RevertAtomCoords(m_atomList, (*iter).second);
     UpdatePseudoAtoms(); // DM 11 Jul 2000 - need to update pseudoatom coords by
                          // hand
     m_currentCoord = (*iter).second;
   } else {
     // Coord name not found, don't try and revert the coords
-    // std::cout << "Error reverting coords, name=" << coordName << " not found"
-    // << std::endl;
+    LOG_F(ERROR, "Error reverting coords, name={} not found", coordName);
     throw InvalidRequest(_WHERE_, "RevertCoords failed on model " + GetName() +
                                       " for coord name=" + coordName);
   }
@@ -495,7 +493,7 @@ void Model::RevertCoords(const std::string &coordName) {
 
 void Model::RevertCoords(int i) {
   if (i != m_currentCoord) {
-    // std::cout << "Model: Reverting to coords #" << i << std::endl;
+    LOG_F(1, "Model: Reverting to coords #{}", i);
     RevertAtomCoords(m_atomList, i);
     UpdatePseudoAtoms();
     m_currentCoord = i;

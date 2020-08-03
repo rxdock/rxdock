@@ -11,6 +11,7 @@
  ***********************************************************************/
 
 #include <fstream>
+#include <iostream>
 
 #include "FileError.h"
 #include "VdwGridSF.h"

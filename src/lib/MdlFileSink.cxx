@@ -14,6 +14,8 @@
 
 #include "MdlFileSink.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 ////////////////////////////////////////
@@ -120,9 +122,8 @@ void MdlFileSink::RenderAtomList(const AtomList &atomList) {
     // DM 19 June 2006. Check if this atom has been rendered previously.
     if (m_atomIdMap.find(spAtom) == m_atomIdMap.end()) {
       unsigned int nextAtomId = m_atomIdMap.size() + 1;
-      // std::cout << "RenderAtom " << spAtom->GetFullAtomName() << " (actual
-      // ID=" << spAtom->GetAtomId()
-      //	 << "); file ID=" << nextAtomId << std::endl;
+      LOG_F(1, "RenderAtom {} (actual ID={}); file ID={}",
+            spAtom->GetFullAtomName(), spAtom->GetAtomId(), nextAtomId);
       m_atomIdMap.insert(std::make_pair(spAtom, nextAtomId));
     } else {
       // Should never happen. Probably best to throw an error at this point.
@@ -165,10 +166,9 @@ void MdlFileSink::RenderBondList(const BondList &bondList) {
     if ((aIter1 != m_atomIdMap.end()) && (aIter2 != m_atomIdMap.end())) {
       unsigned int id1 = (*aIter1).second;
       unsigned int id2 = (*aIter2).second;
-      // std::cout << "RenderBond " << spBond->GetAtom1Ptr()->GetFullAtomName()
-      //	 << spBond->GetAtom2Ptr()->GetFullAtomName()
-      //	 << "; file ID1=" << id1
-      //	 << "; file ID2=" << id2 << std::endl;
+      LOG_F(1, "RenderBond {}-{}; file ID1={}; file ID2={}",
+            spBond->GetAtom1Ptr()->GetFullAtomName(),
+            spBond->GetAtom2Ptr()->GetFullAtomName(), id1, id2);
       std::ostringstream ostr;
       ostr.setf(std::ios_base::right, std::ios_base::adjustfield);
       ostr << std::setw(3) << id1 << std::setw(3) << id2 << std::setw(3)

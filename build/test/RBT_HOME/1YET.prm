@@ -28,7 +28,6 @@ SECTION MAPPER
         RADIUS 6.0
         REF_MOL 1YET_c.sd
         SMALL_SPHERE 1.0
-        TRACE 1
         MIN_VOLUME 100
         MAX_CAVITIES 1
 END_SECTION

@@ -15,6 +15,9 @@
 #include <functional>
 #include <sstream>
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // initialization of the static data of Constraint
@@ -150,7 +153,7 @@ void rxdock::ReadConstraint(std::istream &ifile, ConstraintPtr &cnt,
   ifile >> c;
   ifile >> t;
   ifile >> n;
-  std::cout << c << "\t" << t << "\t" << n << std::endl;
+  LOG_F(1, "ReadConstraint: {}\t{}\t{}", c, t, n);
   if (ifile.fail())
     throw Error(_WHERE_, "Problems reading constraint " + n);
   cnt = CreateConstraint(c, t, n, bCount);
@@ -161,14 +164,14 @@ void rxdock::ReadConstraintFromMoe(std::istream &ifile, ConstraintPtr &cnt,
   std::string n, extra;
   double x, y, z, t;
   ifile >> n;
-  std::cout << n << std::endl;
+  LOG_F(1, "ReadConstraintFromMoe: {}", n);
   ifile >> extra;
   ifile >> x >> y >> z >> t;
   ifile >> extra >> extra;
   if (ifile.fail())
     throw Error(_WHERE_, "Problems reading constraint " + n);
   Coord c(x, y, z);
-  std::cout << c << "\t" << t << "\t" << n << std::endl;
+  LOG_F(1, "ReadConstraintFromMoe: {}\t{}\t{}", c, t, n);
   cnt = CreateConstraint(c, t, n, bCount);
 }
 
@@ -217,9 +220,10 @@ void rxdock::ReadConstraints(std::istream &ifile, ConstraintList &cl,
       }
     }
   }
-  if (cl.size() == 0)
-    std::cout << Constraint::_CT
-              << "** WARNING: number of constraints read is 0\n";
+  if (cl.size() == 0) {
+    LOG_F(WARNING,
+          "Constraint::ReadConstraints: number of constraints read is 0");
+  }
 }
 
 // 07 Feb 2005 (DM) - new constraint type, any heavy atom

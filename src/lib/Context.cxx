@@ -15,6 +15,8 @@
 #include <cstring>
 #include <functional>
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 std::string Context::_CT("Context");
@@ -23,10 +25,8 @@ std::string Context::_CT("Context");
 std::string Vble::_CT("Vble");
 
 Context::Context() {
+  LOG_F(2, "Context base context constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
-#ifdef _DEBUG
-  std::cout << _CT << "base context const\n";
-#endif //_DEBUG
 }
 
 Context::Context(const Context &c) { _RBTOBJECTCOUNTER_COPYCONSTR_(_CT); }
@@ -72,6 +72,7 @@ CellContext::CellContext(const CellContext &c) : Context(c), vm(c.vm) {
 CellContext::~CellContext() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 
 CellContext::CellContext(std::ifstream &ifile) {
+  LOG_F(2, "CellContext constructor");
   int nvbles, nctes;
   ifile >> nvbles >> nctes;
   ninputs = nvbles + nctes;
@@ -87,9 +88,6 @@ CellContext::CellContext(std::ifstream &ifile) {
     vm[key] = new Vble(name, val);
   }
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
-#ifdef _DEBUG
-  std::cout << "cell context const\n";
-#endif //_DEBUG
 }
 
 /*
@@ -198,14 +196,14 @@ double StringContext::Get(ModelPtr spReceptor, DockingSitePtr spDockSite,
   AtomList recepAtomList = spReceptor->GetAtomList();
   AtomList cavAtomList = spDockSite->GetAtomList(recepAtomList, 0.0, cavDist);
   AtomList exposedAtomList; // The list of exposed cavity atoms
+  LOG_F(1, "Solvent exposed atoms:");
   for (AtomListConstIter iter = cavAtomList.begin(); iter != cavAtomList.end();
        iter++) {
     unsigned int nNeighb = GetNumAtomsWithPredicate(
         recepAtomList, isAtomInsideSphere((*iter)->GetCoords(), neighbR));
     nNeighb--;
     if (nNeighb < threshold) {
-      // std::cout << (*iter)->GetFullAtomName() << "\t" << nNeighb <<
-      // std::endl;
+      LOG_F(1, "{}\t{} neighbors", (*iter)->GetFullAtomName(), nNeighb);
       exposedAtomList.push_back(*iter);
     }
   }

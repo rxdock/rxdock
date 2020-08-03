@@ -14,18 +14,18 @@
 // #include <stdlib>
 //#include "FileError.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 PMFDirSource::PMFDirSource(const std::string &aDir) : DirectorySource(aDir) {
-#ifdef _DEBUG
-  std::cout << _CT << " PMFDirSource constructor" << std::endl;
-#endif
+  LOG_F(2, "PMFDirSource constructor");
 }
 
 void PMFDirSource::ReadFiles(std::vector<std::vector<PMFValue>> *aVect,
                              std::vector<std::string> *aNameVect,
                              std::vector<PMFValue> *aSlopeVect) {
-  std::cout << "Reading " << fNum << " PMF files..." << std::endl;
+  LOG_F(INFO, "PMFDirSource::ReadFiles: Reading {} PMF files...", fNum);
   std::string theFileName;             // will be the filename with full path
   std::string theLine;                 // one line from the file
   std::vector<std::string> theStrData; // data represented as strings in vector
@@ -33,15 +33,16 @@ void PMFDirSource::ReadFiles(std::vector<std::vector<PMFValue>> *aVect,
 
   while (fNum--) {
     theFileName += thePath + "/";
-    //         std::cout << "Does not work with Solaris" <<endl;
+    //         LOG_F(1, "Does not work with Solaris");
     //         std::exit(1);
     std::string theFileStr(fNameList[fNum]->d_name); // copy from C-string
     // std::string theFileStr("junk");
     if (theFileName.size() + theFileStr.size() >
         PATH_SIZE) // check size (though should be ok)
     {
-      std::cout << _CT << theFileName << std::endl;
-      std::cout << _CT << theFileStr << std::endl;
+      LOG_F(ERROR,
+            "PMFDirSource::ReadFiles: File {} path string {} is too long",
+            theFileName, theFileStr);
       throw StringTooLong(_WHERE_, "");
     } else
       theFileName += theFileStr; // concatenate to get final size
@@ -52,11 +53,9 @@ void PMFDirSource::ReadFiles(std::vector<std::vector<PMFValue>> *aVect,
     // when file has no .pmf extension, skip. Also check for existence and perm
     if (std::string::npos != theExtIdx && !stat(theFileName.c_str(), &fStat) &&
         S_ISREG(fStat.st_mode)) {
-#ifdef _DEBUG
-      std::cout << _CT << " Processing: " << theFileStr << std::endl;
-#endif // debug
-       // get rid of .pmf and put it into the vector that will be used later to
-       // figure out types
+      LOG_F(1, "PMFDirSource::ReadFiles: Processing {}", theFileStr);
+      // get rid of .pmf and put it into the vector that will be used later to
+      // figure out types
       aNameVect->push_back(theFileStr.erase(theFileStr.find_last_of("."), 4));
       inFile.open(theFileName.c_str(), std::ifstream::in);
       // read file contents into vector
@@ -74,28 +73,20 @@ void PMFDirSource::ReadFiles(std::vector<std::vector<PMFValue>> *aVect,
           // aSlopeVect->back().density  = theValues[i].density;
           break;
         }
+        LOG_F(1,
+              "PMFDirSource::ReadFiles: Starting slope at: {} {} for {} {} {}",
+              aSlopeVect->back().distance, aSlopeVect->back().density,
+              theValues[i].density, theFileStr.substr(0, 2),
+              theFileStr.substr(2, 2));
       }
-#ifdef GETJUNK
-      //#ifdef _DEBUG
-      std::cout << _CT << " Starting slope at: " << aSlopeVect->back()
-                << " for ";
-      std::cout << theValues[i].density << " ";
-      std::cout << theFileStr.substr(0, 2) << " " << theFileStr.substr(2, 2)
-                << std::endl;
-//#endif // _DEBUG
-#endif // GETJUNK
       theStrData.erase(theStrData.begin(),
                        theStrData.end()); // delete vector after parsing
+    } else {
+      LOG_F(1, "PMFDirSource::ReadFiles: Skipping file: {}", theFileName);
     }
-#ifdef _DEBUG
-    else {
-      std::cout << _CT << " Skipping file: " << theFileName << std::endl;
-    }
-#endif //_DEBUG
-
     theFileName.erase();
   }
-  std::cout << " done." << std::endl;
+  LOG_F(INFO, "PMFDirSource::ReadFiles: Reading PMF files done.");
 }
 
 void PMFDirSource::ParseLines(std::vector<std::string> anStrVect,

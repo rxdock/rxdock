@@ -12,6 +12,8 @@
 
 #include "RotSF.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -23,19 +25,15 @@ std::string RotSF::_INCOH("INCOH");
 
 RotSF::RotSF(const std::string &strName)
     : BaseSF(_CT, strName), nRot(0), bIncNH3(false), bIncOH(false) {
+  LOG_F(2, "RotSF parameterised constructor");
   // Add parameters
   AddParameter(_INCNH3, bIncNH3);
   AddParameter(_INCOH, bIncOH);
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RotSF::~RotSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "RotSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 

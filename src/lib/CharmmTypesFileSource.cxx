@@ -12,6 +12,8 @@
 
 #include "CharmmTypesFileSource.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Constructors
@@ -73,10 +75,7 @@ void CharmmTypesFileSource::Parse() {
           // first whitespace character
           chrmType.comment = *fileIter;
           m_typesList.push_back(chrmType);
-#ifdef _DEBUG
-          //	  std::cout << "Type #" << chrmType.nAtomType << " = " <<
-          // chrmType.strAtomType << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "Type #{} = {}", chrmType.nAtomType, chrmType.strAtomType);
         }
       }
       //////////////////////////////////////////////////////////

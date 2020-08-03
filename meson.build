@@ -75,6 +75,18 @@ cpp_compiler = meson.get_compiler('cpp')
 eigen3_dep = dependency('eigen3', fallback : ['eigen', 'eigen_dep'])
 openmp_dep = dependency('openmp', required : false)
 nlohmann_json_dep = dependency('nlohmann_json', fallback : ['nlohmann_json', 'nlohmann_json_dep'])
+fmt_dep = dependency('fmt', fallback : ['fmt', 'fmt_dep'])
+
+emilk_loguru_options = ['loguru_use_fmtlib=enabled']
+# FreeBSD doesn't have the required symbols to support stacktraces while the
+# wrap enables them by default, so they have to be explicitely disabled
+# Related pull request: https://github.com/emilk/loguru/pull/125
+# Windows doesn't have libdl, which is a dependency when stactraces are enabled
+if host_machine.system() == 'freebsd' or host_machine.system() == 'windows'
+  emilk_loguru_options += ['loguru_stacktraces=false']
+endif
+emilk_loguru_dep = dependency('emilk-loguru', fallback : ['emilk-loguru', 'emilk_loguru_dep'],
+                              default_options: emilk_loguru_options)
 
 if host_machine.system() == 'windows'
   tronkko_dirent_proj = subproject('tronkko-dirent')
@@ -96,7 +108,7 @@ endif
 library_soversion = meson.project_version().split('.')[0]
 librxdock = library(
   'rxdock', srcRbt,
-  dependencies : [eigen3_dep, openmp_dep, nlohmann_json_dep, pcg_cpp_dep, tronkko_dirent_dep],
+  dependencies : [eigen3_dep, openmp_dep, nlohmann_json_dep, pcg_cpp_dep, fmt_dep, emilk_loguru_dep, tronkko_dirent_dep],
   soversion : library_soversion,
   version : meson.project_version(),
   include_directories : incRbt, install : true
@@ -106,7 +118,7 @@ cxxopts_dep = dependency('cxxopts', fallback : ['cxxopts', 'cxxopts_dep'])
 
 rbdock = executable(
   'rbdock', 'src/exe/rbdock.cxx', link_with : librxdock,
-  dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, pcg_cpp_dep],
+  dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, pcg_cpp_dep, fmt_dep, emilk_loguru_dep],
   include_directories : incRbt, install : true
 )
 rbcavity = executable(

@@ -14,6 +14,8 @@
 #include "SFRequest.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -21,40 +23,29 @@ std::string BaseObject::_CT("BaseObject");
 std::string BaseObject::_CLASS("CLASS");
 std::string BaseObject::_NAME("NAME");
 std::string BaseObject::_ENABLED("ENABLED");
-std::string BaseObject::_TRACE("TRACE");
-
-std::string &BaseObject::GetTraceStr() { return _TRACE; }
 
 ////////////////////////////////////////
 // Constructors/destructors
 BaseObject::BaseObject(const std::string &strClass, const std::string &strName)
-    : m_workspace(nullptr), m_enabled(true), m_trace(0) {
+    : m_workspace(nullptr), m_enabled(true) {
+  LOG_F(2, "BaseObject parameterised constructor for {}", strClass);
   // Add parameters
   AddParameter(_CLASS, strClass);
   AddParameter(_NAME, strName);
   AddParameter(_ENABLED, m_enabled);
-  AddParameter(_TRACE, m_trace); // DM 1 Mar 2002 - move from BaseTransform
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor for " << strClass
-            << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 // Dummy default constructor for virtual base subclasses
 // Should never get called
 BaseObject::BaseObject() {
-#ifdef _DEBUG
-  std::cout << "WARNING: " << _CT << " default constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(WARNING, "BaseObject default constructor");
   //_RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 BaseObject::~BaseObject() {
+  LOG_F(2, "BaseObject destructor");
   Unregister(); // Unregister object from workspace
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -77,9 +68,6 @@ void BaseObject::Enable() { SetParameter(_ENABLED, true); }
 void BaseObject::Disable() { SetParameter(_ENABLED, false); }
 bool BaseObject::isEnabled() const { return m_enabled; }
 
-int BaseObject::GetTrace() const { return m_trace; }
-void BaseObject::SetTrace(int trace) { SetParameter(_TRACE, trace); }
-
 // WorkSpace handling methods
 // Register scoring function with a workspace
 // Base class version just registers itself
@@ -87,10 +75,7 @@ void BaseObject::Register(WorkSpace *pWorkSpace) {
   // First unregister with current workspace
   Unregister();
   m_workspace = pWorkSpace;
-#ifdef _DEBUG
-  std::cout << _CT << "::Register(): Registering " << GetName()
-            << " with workspace" << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "BaseObject::Register: Registering {} with workspace", GetName());
   m_workspace->Attach(this);
 }
 
@@ -98,10 +83,8 @@ void BaseObject::Register(WorkSpace *pWorkSpace) {
 // Base class version just unregisters itself
 void BaseObject::Unregister() {
   if (m_workspace) {
-#ifdef _DEBUG
-    std::cout << _CT << "::Unregister(): Unregistering " << GetName()
-              << " from workspace" << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "BaseObject::Unregister: Unregistering {} from workspace",
+          GetName());
     m_workspace->Detach(this);
   }
   m_workspace = nullptr;
@@ -114,10 +97,10 @@ WorkSpace *BaseObject::GetWorkSpace() const { return m_workspace; }
 // Notify observer that subject is about to be deleted
 void BaseObject::Deleted(Subject *theDeletedSubject) {
   if (theDeletedSubject == m_workspace) {
-#ifdef _DEBUG
-    std::cout << _CT << "::Deleted(): " << GetName()
-              << " received notice that subject is to be deleted " << std::endl;
-#endif //_DEBUG
+    LOG_F(1,
+          "BaseObject::Deleted: {} received notice that subject "
+          "is to be deleted",
+          GetName());
     Unregister();
   }
 }
@@ -133,10 +116,7 @@ void BaseObject::HandleRequest(RequestPtr spRequest) {
   case ID_REQ_SF_ENABLE:
     Assert<Assertion>(!REQ_CHECK || params.size() == 1);
     if (!params.empty() && (params[0].GetString() == GetFullName())) {
-      if (m_trace > 2) {
-        std::cout << _CT << "::HandleRequest: Enabling " << GetFullName()
-                  << std::endl;
-      }
+      LOG_F(1, "BaseObject::HandleRequest: Enabling {}", GetFullName());
       Enable();
     }
     break;
@@ -146,10 +126,7 @@ void BaseObject::HandleRequest(RequestPtr spRequest) {
   case ID_REQ_SF_DISABLE:
     Assert<Assertion>(!REQ_CHECK || params.size() == 1);
     if (!params.empty() && (params[0].GetString() == GetFullName())) {
-      if (m_trace > 2) {
-        std::cout << _CT << "::HandleRequest: Disabling " << GetFullName()
-                  << std::endl;
-      }
+      LOG_F(1, "BaseObject::HandleRequest: Disabling {}", GetFullName());
       Disable();
     }
     break;
@@ -163,11 +140,8 @@ void BaseObject::HandleRequest(RequestPtr spRequest) {
     // Check if object has this named parameter before calling SetParameter
     if ((params.size() == 3) && (params[0].GetString() == GetFullName()) &&
         isParameterValid(params[1])) {
-      if (m_trace > 2) {
-        std::cout << _CT << "::HandleRequest: Setting parameter " << params[1]
-                  << " to " << params[2] << " for " << GetFullName()
-                  << std::endl;
-      }
+      LOG_F(1, "BaseObject::HandleRequest: Setting parameter {} to {} for {}",
+            params[1].GetString(), params[2].GetString(), GetFullName());
       SetParameter(params[1], params[2]);
     }
     // Or:
@@ -175,28 +149,23 @@ void BaseObject::HandleRequest(RequestPtr spRequest) {
     // params[1] is parameter value
     // Check if object has this named parameter before calling SetParameter
     else if ((params.size() == 2) && isParameterValid(params[0])) {
-      if (m_trace > 2) {
-        std::cout << _CT << "::HandleRequest: Setting parameter " << params[0]
-                  << " to " << params[1] << " for " << GetFullName()
-                  << std::endl;
-      }
+      LOG_F(1, "BaseObject::HandleRequest: Setting parameter {} to {} for {}",
+            params[0].GetString(), params[1].GetString(), GetFullName());
       SetParameter(params[0], params[1]);
     }
     break;
 
     // Ignore all other requests
   default:
-    if (m_trace > 2) {
-      std::cout << _CT << "::HandleRequest: " << GetFullName()
-                << " is ignoring request" << std::endl;
-    }
+    LOG_F(1, "BaseObject::HandleRequest: {} is ignoring request",
+          GetFullName());
     break;
   }
 }
 // Virtual function for dumping parameters to an output stream
 // Called by operator <<
 void BaseObject::Print(std::ostream &s) const {
-  std::cout << std::endl << GetFullName() << std::endl;
+  LOG_F(2, "BaseObject::Print: {}", GetFullName());
   ParamHandler::Print(s);
 }
 
@@ -205,8 +174,6 @@ void BaseObject::Print(std::ostream &s) const {
 void BaseObject::ParameterUpdated(const std::string &strName) {
   if (strName == _ENABLED) {
     m_enabled = GetParameter(_ENABLED);
-  } else if (strName == _TRACE) {
-    m_trace = GetParameter(_TRACE);
   } else {
     ParamHandler::ParameterUpdated(strName);
   }

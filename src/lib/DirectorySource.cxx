@@ -13,7 +13,8 @@
 //#include <cstdlib>				// for getenv
 //#include "FileError.h"
 #include "DirectorySource.h"
-#include <iostream>
+
+#include <loguru.hpp>
 
 using namespace rxdock;
 
@@ -57,15 +58,13 @@ void DirectorySource::CheckDirectory(std::string &aDir) {
   char *theDir =
       (char *)aDir.c_str(); // unbelivable annoying buglet in Solaris gcc 2.95.3
   fNum = scandir(theDir, &fNameList, 0, alphasort); // get dir entries
-  //    std::cout << "Not running on Slowaris" << std::endl;
+  //    LOG_F(1, "Not running on Slowaris");
   //    std::exit(1);
   if (fNum < 1)
     throw NoFileInDir(_WHERE_, " No files in directory. ");
   else
-    std::cout << _CT << " Reading files from " << aDir << std::endl;
+    LOG_F(INFO, "DirectorySource::CheckDirectory: Reading files from {}", aDir);
   //#endif
 }
 
-DirectorySource::~DirectorySource() {
-  std::cout << "DirectorySource destructor" << std::endl;
-}
+DirectorySource::~DirectorySource() { LOG_F(2, "DirectorySource destructor"); }

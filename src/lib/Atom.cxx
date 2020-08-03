@@ -15,6 +15,8 @@
 #include "Model.h"
 #include "PseudoAtom.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -703,11 +705,8 @@ AtomList rxdock::GetMatchingAtomList(const AtomList &atomList,
     if (!componentList[idx].empty()) {
       matchingAtoms = GetAtomListWithPredicate(
           matchingAtoms, isSegmentName_eq(componentList[idx]));
-#ifdef _DEBUG
-      // std::cout << "Matching segment name=" << componentList[idx] << ",
-      // #atoms="
-      // << matchingAtoms.size() << std::endl;
-#endif //_DEBUG
+      LOG_F(1, "Matching segment name={}, #atoms={}", componentList[idx],
+            matchingAtoms.size());
     }
     idx++;
 
@@ -721,27 +720,19 @@ AtomList rxdock::GetMatchingAtomList(const AtomList &atomList,
         if (!subunitList[1].empty()) {
           matchingAtoms = GetAtomListWithPredicate(
               matchingAtoms, isSubunitId_eq(subunitList[1]));
-#ifdef _DEBUG
-          // std::cout << "Matching subunit id=" << subunitList[1] << ",
-          // #atoms=" << matchingAtoms.size() << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "Matching subunit id={}, #atoms={}", subunitList[1],
+                matchingAtoms.size());
         }
       case 1: // Fall-through!! Only the subunit name is specified
         if (!subunitList[0].empty()) {
           matchingAtoms = GetAtomListWithPredicate(
               matchingAtoms, isSubunitName_eq(subunitList[0]));
-#ifdef _DEBUG
-          // std::cout << "Matching subunit name=" << subunitList[0] << ",
-          // #atoms="
-          // << matchingAtoms.size() << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "Matching subunit name={}, #atoms={}", subunitList[0],
+                matchingAtoms.size());
         }
         break;
       default:
-#ifdef _DEBUG
-        // std::cout << "Invalid subunit string in " << strFullName <<
-        // std::endl;
-#endif //_DEBUG
+        LOG_F(1, "Invalid subunit string in {}", strFullName);
         break;
       }
     }
@@ -751,17 +742,14 @@ AtomList rxdock::GetMatchingAtomList(const AtomList &atomList,
     if (!componentList[idx].empty()) {
       matchingAtoms = GetAtomListWithPredicate(
           matchingAtoms, isAtomName_eq(componentList[idx]));
-#ifdef _DEBUG
-      // std::cout << "Matching atom name=" << componentList[idx] << ", #atoms="
-      // << matchingAtoms.size() << std::endl;
-#endif //_DEBUG
+      LOG_F(1, "Matching atom name={}, #atoms={}", componentList[idx],
+            matchingAtoms.size());
     }
     break;
 
   default:
-#ifdef _DEBUG
-    // std::cout << "Too many colons (:) in " << strFullName << std::endl;
-#endif //_DEBUG
+    LOG_IF_F(WARNING, !strFullName.empty(), "Too many colons (:) in {}",
+             strFullName);
     break;
   }
 
@@ -915,17 +903,13 @@ void rxdock::RemoveZwitterions(AtomList &atomList) {
   // Now we can safely neutralise the 1-2 and 1-3 atoms
   for (AtomListIter iter = cationicAtomList.begin(); iter != c14begin; iter++) {
     (*iter)->SetGroupCharge(0.0);
-#ifdef _DEBUG
-    std::cout << "RemoveZwitterions: Neutralising cation "
-              << (*iter)->GetFullAtomName() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Removing zwitterions: neutralising cation {}",
+          (*iter)->GetFullAtomName());
   }
 
   for (AtomListIter iter = anionicAtomList.begin(); iter != a14begin; iter++) {
     (*iter)->SetGroupCharge(0.0);
-#ifdef _DEBUG
-    std::cout << "RemoveZwitterions: Neutralising anion "
-              << (*iter)->GetFullAtomName() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Removing zwitterions: neutralising anion {}",
+          (*iter)->GetFullAtomName());
   }
 }

@@ -12,6 +12,8 @@
 
 #include "Subject.h"
 
+#include <loguru.hpp>
+
 #include <algorithm>
 
 using namespace rxdock;
@@ -21,13 +23,11 @@ Subject::Subject() { _RBTOBJECTCOUNTER_CONSTR_("Subject"); }
 
 // Destructor - notify observers of impending destruction
 Subject::~Subject() {
-#ifdef _DEBUG
-  std::cout << "Subject::~Subject: Notifying observers of impending destruction"
-            << std::endl;
-#endif //_DEBUG
-       // We need to iterate using a while loop because call to Deleted will
-       // trigger a call back to Detach, reducing the size of m_observers, hence
-       // invalidating a conventional iterator
+  LOG_F(2, "Subject destructor");
+  LOG_F(1, "Notifying observers of impending destruction");
+  // We need to iterate using a while loop because call to Deleted will
+  // trigger a call back to Detach, reducing the size of m_observers, hence
+  // invalidating a conventional iterator
   while (m_observers.size() > 0) {
     Observer *pObserver = m_observers.back();
     pObserver->Deleted(this);
@@ -39,6 +39,7 @@ Subject::~Subject() {
 // Public methods
 ////////////////
 void Subject::Attach(Observer *pObserver) {
+  LOG_F(2, "Subject::Attach");
   ObserverListIter iter =
       std::find(m_observers.begin(), m_observers.end(), pObserver);
   if (iter != m_observers.end()) {
@@ -47,14 +48,12 @@ void Subject::Attach(Observer *pObserver) {
         "Subject::Attach(): pObserver is already attached to this subject");
   } else {
     m_observers.push_back(pObserver);
-#ifdef _DEBUG
-    std::cout << "Subject::Attach: Attaching new observer; #observers="
-              << m_observers.size() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Attaching new observer; #observers={}", m_observers.size());
   }
 }
 
 void Subject::Detach(Observer *pObserver) {
+  LOG_F(2, "Subject::Detach");
   ObserverListIter iter =
       std::find(m_observers.begin(), m_observers.end(), pObserver);
   if (iter == m_observers.end()) {
@@ -62,18 +61,13 @@ void Subject::Detach(Observer *pObserver) {
         _WHERE_, "Subject::Detach(): pObserver not attached to this subject");
   } else {
     m_observers.erase(iter);
-#ifdef _DEBUG
-    std::cout << "Subject::Detach: Detaching observer; #observers="
-              << m_observers.size() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Detaching observer; #observers={}", m_observers.size());
   }
 }
 
 void Subject::Notify() {
-#ifdef _DEBUG
-  std::cout << "Subject::Notify: Notifying observers of change of state"
-            << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "Subject::Notify");
+  LOG_F(1, "Notifying observers of change of state");
   for (ObserverListIter iter = m_observers.begin(); iter != m_observers.end();
        iter++) {
     (*iter)->Update(this);

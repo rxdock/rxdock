@@ -54,8 +54,6 @@ public:
   RBTDLL_EXPORT PRMFactory(ParameterFileSource *pParamSource);
   RBTDLL_EXPORT PRMFactory(ParameterFileSource *pParamSource, DockingSite *pDS);
 
-  int GetTrace() const { return m_iTrace; }
-  void SetTrace(int iTrace) { m_iTrace = iTrace; }
   DockingSite *GetDockingSite() const { return m_pDS; }
   void SetDockingSite(DockingSite *pDS) { m_pDS = pDS; }
 
@@ -71,7 +69,6 @@ private:
   void AttachSolventFlexData(Model *pSolvent);
   ParameterFileSource *m_pParamSource;
   DockingSite *m_pDS;
-  int m_iTrace;
 };
 
 } // namespace rxdock

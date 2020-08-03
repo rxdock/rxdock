@@ -59,7 +59,6 @@ public:
 class SFSetParamRequest : public Request {
 public:
   // Request to set a named parameter of all scoring functions to a new value
-  // (e.g. TRACE)
   SFSetParamRequest(const std::string &paramName, const Variant &paramValue)
       : Request(ID_REQ_SF_SETPARAM) {
     AddParameter(paramName);

@@ -99,8 +99,6 @@ TEST_F(SearchTest, GA) {
   TransformAggPtr spTransformAgg(new TransformAgg());
   BaseTransform *pRandPop = new RandPopTransform();
   BaseTransform *pGA = new GATransform();
-  pRandPop->SetParameter(BaseObject::GetTraceStr(), 4);
-  pGA->SetParameter(BaseObject::GetTraceStr(), 4);
   spTransformAgg->Add(pRandPop);
   spTransformAgg->Add(pGA);
   m_workSpace->SetTransform(spTransformAgg);
@@ -119,8 +117,6 @@ TEST_F(SearchTest, Simplex) {
   TransformAggPtr spTransformAgg(new TransformAgg());
   // BaseTransform* pRandPop = new RandPopTransform();
   BaseTransform *pSimplex = new SimplexTransform();
-  // pRandPop->SetParameter(BaseObject::GetTraceStr(), 4);
-  pSimplex->SetParameter(BaseObject::GetTraceStr(), 1);
   pSimplex->SetParameter(SimplexTransform::GetMaxCalls(), 500);
   pSimplex->SetParameter(SimplexTransform::GetNCycles(), 100);
   pSimplex->SetParameter(SimplexTransform::GetStepSize(), 1.0);
@@ -140,7 +136,6 @@ TEST_F(SearchTest, Simplex) {
 // 5 Run a sample simulated annealing
 TEST_F(SearchTest, SimAnn) {
   BaseTransform *pSimAnn = new SimAnnTransform();
-  pSimAnn->SetParameter(BaseObject::GetTraceStr(), 2);
   pSimAnn->SetParameter(SimAnnTransform::GetBlockLength(), 100);
   pSimAnn->SetParameter(SimAnnTransform::GetNumBlocks(), 50);
   pSimAnn->SetParameter(SimAnnTransform::GetStartT(), 300.0);
@@ -164,7 +159,6 @@ TEST_F(SearchTest, SimAnn) {
 TEST_F(SearchTest, Restart) {
   TransformAggPtr spTransformAgg(new TransformAgg());
   BaseTransform *pSimplex = new SimplexTransform();
-  pSimplex->SetParameter(BaseObject::GetTraceStr(), 1);
   pSimplex->SetParameter(SimplexTransform::GetMaxCalls(), 500);
   pSimplex->SetParameter(SimplexTransform::GetNCycles(), 100);
   pSimplex->SetParameter(SimplexTransform::GetStepSize(), 1.0);
@@ -189,11 +183,10 @@ TEST_F(SearchTest, Restart) {
     // Ligand segment is always called H, solvent will be H2, H3 etc.
     spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
     PRMFactory prmFactory(spPrmSource, m_workSpace->GetDockingSite());
-    prmFactory.SetTrace(1);
     m_workSpace->SetReceptor(prmFactory.CreateReceptor());
     m_workSpace->SetLigand(prmFactory.CreateLigand(spMdlFileSource));
     m_workSpace->SetSolvent(prmFactory.CreateSolvent());
-    m_workSpace->UpdateModelCoordsFromChromRecords(spMdlFileSource, 1);
+    m_workSpace->UpdateModelCoordsFromChromRecords(spMdlFileSource);
     restartScore = m_workSpace->GetSF()->Score();
     // StringVariantMap scoreMap;
     // m_workSpace->GetSF()->ScoreMap(scoreMap);

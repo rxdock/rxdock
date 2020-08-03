@@ -14,6 +14,8 @@
 #include "BaseSF.h"
 #include "BaseTransform.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -27,10 +29,8 @@ std::string WorkSpace::_NAME("NAME");
 WorkSpace::WorkSpace(unsigned int nModels)
     : m_models(nModels), m_SF(nullptr), m_transform(nullptr) {
   AddParameter(_NAME, _CT);
-#ifdef _DEBUG
-  std::cout << "WorkSpace::WorkSpace(): Created model list of size "
-            << m_models.size() << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "WorkSpace parametrised constructor");
+  LOG_F(1, "Created model list of size {}", m_models.size());
   _RBTOBJECTCOUNTER_CONSTR_("WorkSpace");
 }
 

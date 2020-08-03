@@ -14,6 +14,8 @@
 #include "AtomFuncs.h"
 #include "Model.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -91,8 +93,7 @@ void ChromDihedralRefData::Setup(BondPtr spBond,
                                    : GetNumSelectedAtomsInList(tetheredAtoms);
   int nHalf = (nTethered == 0) ? (nAtoms - 2) / 2 : (nTethered - 2) / 2;
   if (nSelected > nHalf) {
-    // std::cout << "Over half the molecule selected: " << nSelected << " atoms"
-    // << std::endl;
+    LOG_F(1, "Over half the molecule selected: {} atoms", nSelected);
     InvertAtomSelectionFlags(atomList);
     pAtom2->SetSelectionFlag(false);
     pAtom3->SetSelectionFlag(false);
@@ -100,24 +101,19 @@ void ChromDihedralRefData::Setup(BondPtr spBond,
     m_atom2 = pAtom3;
     m_atom3 = pAtom2;
     m_atom4 = bondedAtoms2.front();
-    // std::cout << "Inverted: " <<
-    // GetNumSelectedAtoms(m_pModel->m_atomList) << " atoms now
-    // selected"
-    // << std::endl; std::cout << "Dihedral spec: " <<
-    // bondedAtoms3.front()->GetName() << "\t" << pAtom3->GetName() <<
-    // "\t"
-    //	   << pAtom2->GetName() << "\t" <<
-    // bondedAtoms2.front()->GetName() << std::endl;
+    LOG_F(1, "Inverted: {} atoms now selected",
+          GetNumSelectedAtomsInList(atomList));
+    LOG_F(1, "Dihedral spec: {}\t{}\t{}\t{}", bondedAtoms3.front()->GetName(),
+          pAtom3->GetName(), pAtom2->GetName(),
+          bondedAtoms2.front()->GetName());
   } else {
     m_atom1 = bondedAtoms2.front();
     m_atom2 = pAtom2;
     m_atom3 = pAtom3;
     m_atom4 = bondedAtoms3.front();
-    // std::cout << "Dihedral spec: " << bondedAtoms2.front()->GetName() <<
-    // "\t"
-    // << pAtom2->GetName() << "\t"
-    //	   << pAtom3->GetName() << "\t" <<
-    // bondedAtoms3.front()->GetName() << std::endl;
+    LOG_F(1, "Dihedral spec: {}\t{}\t{}\t{}", bondedAtoms2.front()->GetName(),
+          pAtom2->GetName(), pAtom3->GetName(),
+          bondedAtoms3.front()->GetName());
   }
 
   // Store the smaller atom list (or free atom list in tethered mode) for this

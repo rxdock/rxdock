@@ -14,6 +14,9 @@
 #include "Population.h"
 #include "SFRequest.h"
 #include "WorkSpace.h"
+
+#include <loguru.hpp>
+
 #include <iomanip>
 
 using namespace rxdock;
@@ -84,26 +87,14 @@ void GATransform::Execute() {
   double popsize = static_cast<double>(pop->GetMaxSize());
   int nrepl = static_cast<int>(newFraction * popsize);
   bool bHistory = nHisFreq > 0;
-  int iTrace = GetTrace();
 
   double bestScore = pop->Best()->GetScore();
   // Number of consecutive cycles with no improvement in best score
   int iConvergence = 0;
 
-  if (iTrace > 0) {
-    std::cout.precision(3);
-    std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
-    std::cout.setf(std::ios_base::right, std::ios_base::adjustfield);
-    std::cout << std::endl
-              << std::setw(5) << "CYCLE" << std::setw(5) << "CONV"
-              << std::setw(10) << "BEST" << std::setw(10) << "MEAN"
-              << std::setw(10) << "VAR" << std::endl;
-
-    std::cout << std::endl
-              << std::setw(5) << "Init" << std::setw(5) << "-" << std::setw(10)
-              << bestScore << std::setw(10) << pop->GetScoreMean()
-              << std::setw(10) << pop->GetScoreVariance() << std::endl;
-  }
+  LOG_F(INFO, "CYCLE CONV      BEST      MEAN       VAR");
+  LOG_F(INFO, " Init    -{:10.3f}{:10.3f}{:10.3f}", bestScore,
+        pop->GetScoreMean(), pop->GetScoreVariance());
 
   for (int iCycle = 0; (iCycle < nCycles) && (iConvergence < nConvergence);
        ++iCycle) {
@@ -120,12 +111,8 @@ void GATransform::Execute() {
     } else {
       iConvergence++;
     }
-    if (iTrace > 0) {
-      std::cout << std::setw(5) << iCycle << std::setw(5) << iConvergence
-                << std::setw(10) << score << std::setw(10)
-                << pop->GetScoreMean() << std::setw(10)
-                << pop->GetScoreVariance() << std::endl;
-    }
+    LOG_F(INFO, "{:5d}{:5d}{:10.3f}{:10.3f}{:10.3f}", iCycle, iConvergence,
+          score, pop->GetScoreMean(), pop->GetScoreVariance());
   }
   pop->Best()->GetChrom()->SyncToModel();
   int ri = GetReceptor()->GetCurrentCoords();

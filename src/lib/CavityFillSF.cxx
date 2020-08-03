@@ -14,6 +14,9 @@
 #include "DockingSite.h"
 #include "WorkSpace.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -23,16 +26,12 @@ std::string CavityFillSF::_CT("CavityFillSF");
 // implicit constructor for BaseInterSF is called second
 CavityFillSF::CavityFillSF(const std::string &strName) : BaseSF(_CT, strName) {
   // Add parameters
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "CavityFillSF parameterised constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 CavityFillSF::~CavityFillSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "CavityFillSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -41,8 +40,6 @@ void CavityFillSF::SetupReceptor() {
   DockingSitePtr spDS = GetWorkSpace()->GetDockingSite();
   if (spDS.Null())
     return;
-
-  int iTrace = GetTrace();
 
   // Recreate the cavity grid
   CavityList cavList = spDS->GetCavityList();
@@ -66,11 +63,9 @@ void CavityFillSF::SetupReceptor() {
     m_spGrid->SetSphere((**iter).GetCoords(), r + 0.3, -1.0, true);
   }
 
-  if (iTrace > 1) {
-    std::cout << std::endl << "EXCLUDE RECEPTOR VOLUME" << std::endl;
-    std::cout << "N(excluded)=" << m_spGrid->Count(-1.0) << std::endl;
-    std::cout << "N(unallocated)=" << m_spGrid->Count(0.0) << std::endl;
-  }
+  LOG_F(INFO, "EXCLUDE RECEPTOR VOLUME");
+  LOG_F(INFO, "N(excluded)={}", m_spGrid->Count(-1.0));
+  LOG_F(INFO, "N(unallocated)={}", m_spGrid->Count(0.0));
 
   for (CavityListConstIter iter = cavList.begin(); iter != cavList.end();
        ++iter) {
@@ -81,22 +76,18 @@ void CavityFillSF::SetupReceptor() {
     }
   }
 
-  if (iTrace > 1) {
-    std::cout << std::endl << "DEFINE CAVITY VOLUME" << std::endl;
-    std::cout << "N(excluded)=" << m_spGrid->Count(-1.0) << std::endl;
-    std::cout << "N(cavity)=" << m_spGrid->Count(1.0) << std::endl;
-    std::cout << "N(unallocated)=" << m_spGrid->Count(0.0) << std::endl;
-  }
+  LOG_F(INFO, "DEFINE CAVITY VOLUME");
+  LOG_F(INFO, "N(excluded)={}", m_spGrid->Count(-1.0));
+  LOG_F(INFO, "N(cavity)={}", m_spGrid->Count(1.0));
+  LOG_F(INFO, "N(unallocated)={}", m_spGrid->Count(0.0));
 
-  // Double largeR = 4.0;
+  // double largeR = 4.0;
   // Map with a large solvent sphere
-  // m_spGrid->SetAccessible(largeR,1.0,-1.0,0.0,false);
-  // if (iTrace > 1) {
-  //  std::cout << std::endl << "MAP WITH LARGE SPHERE" << std::endl;
-  //  std::cout << "N(excluded)=" << m_spGrid->Count(-1.0) << std::endl;
-  //  std::cout << "N(cavity)=" << m_spGrid->Count(1.0) << std::endl;
-  //  std::cout << "N(unallocated)=" << m_spGrid->Count(0.0) << std::endl;
-  //}
+  // m_spGrid->SetAccessible(largeR, 1.0, -1.0, 0.0, false);
+  // LOG_F(INFO, "MAP WITH LARGE SPHERE");
+  // LOG_F(INFO, "N(excluded)={}", m_spGrid->Count(-1.0));
+  // LOG_F(INFO, "N(cavity)={}", m_spGrid->Count(1.0));
+  // LOG_F(INFO, "N(unallocated)={}", m_spGrid->Count(0.0));
 }
 
 void CavityFillSF::SetupLigand() {
@@ -114,7 +105,6 @@ double CavityFillSF::RawScore() const {
   if (m_spGrid.Null())
     return 0.0;
 
-  int iTrace = GetTrace();
   FFTGridPtr gridCopy = new FFTGrid(*m_spGrid);
 
   for (AtomListConstIter iter = m_ligAtomList.begin();
@@ -123,24 +113,20 @@ double CavityFillSF::RawScore() const {
     gridCopy->SetSphere((*iter)->GetCoords(), r + 0.3, -1.0, true);
   }
 
-  if (iTrace > 1) {
-    std::cout << std::endl << "EXCLUDE LIGAND VOLUME" << std::endl;
-    std::cout << "N(excluded)=" << gridCopy->Count(-1.0) << std::endl;
-    std::cout << "N(cavity)=" << gridCopy->Count(1.0) << std::endl;
-    std::cout << "N(unallocated)=" << gridCopy->Count(0.0) << std::endl;
-  }
+  LOG_F(INFO, "EXCLUDE LIGAND VOLUME");
+  LOG_F(INFO, "N(excluded)={}", gridCopy->Count(-1.0));
+  LOG_F(INFO, "N(cavity)={}", gridCopy->Count(1.0));
+  LOG_F(INFO, "N(unallocated)={}", gridCopy->Count(0.0));
 
   // Map with a small solvent sphere
   gridCopy->SetAccessible(2.0, 1.0, -1.0, 0.0, false);
   gridCopy->SetAccessible(1.5, 1.0, -1.0, 2.0, false);
 
-  if (iTrace > 1) {
-    std::cout << std::endl << "VOID DETECTION" << std::endl;
-    std::cout << "N(excluded)=" << gridCopy->Count(-1.0) << std::endl;
-    std::cout << "N(cavity)=" << gridCopy->Count(1.0) << std::endl;
-    std::cout << "N(voids)=" << gridCopy->Count(2.0) << std::endl;
-    std::cout << "N(unallocated)=" << gridCopy->Count(0.0) << std::endl;
-  }
+  LOG_F(INFO, "VOID DETECTION");
+  LOG_F(INFO, "N(excluded)={}", gridCopy->Count(-1.0));
+  LOG_F(INFO, "N(cavity)={}", gridCopy->Count(1.0));
+  LOG_F(INFO, "N(voids)={}", gridCopy->Count(2.0));
+  LOG_F(INFO, "N(unallocated)={}", gridCopy->Count(0.0));
 
   gridCopy->ReplaceValue(-1.0, 0.0);
   gridCopy->ReplaceValue(1.0, 0.0);
@@ -166,11 +152,10 @@ double CavityFillSF::RawScore() const {
   // Sort cavities by volume
   std::sort(cavityList.begin(), cavityList.end(), CavityPtrCmp_Volume());
 
-  if (iTrace > 0) {
-    for (CavityListConstIter cIter = cavityList.begin();
-         cIter != cavityList.end(); cIter++) {
-      std::cout << (**cIter) << std::endl;
-    }
+  LOG_F(1, "Printing {} cavities sorted by volume", cavityList.size());
+  for (CavityListConstIter cIter = cavityList.begin();
+       cIter != cavityList.end(); cIter++) {
+    LOG_F(1, "{}", (**cIter));
   }
 
   return 0.0;

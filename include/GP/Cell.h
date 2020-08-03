@@ -17,6 +17,8 @@
 
 #include "GPTypes.h"
 
+#include <loguru.hpp>
+
 namespace rxdock {
 
 class Cell {
@@ -74,7 +76,7 @@ public:
     if (constant)
       constant = false;
     else
-      std::cout << "ERROR\n";
+      LOG_F(WARNING, "Cell::ResetConstant: no constant");
   }
 
 private:

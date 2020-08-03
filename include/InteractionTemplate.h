@@ -15,6 +15,8 @@
 #include "BaseGrid.h"
 #include "Config.h"
 
+#include <loguru.hpp>
+
 namespace rxdock {
 
 template <class T> class InteractionNode {
@@ -122,8 +124,8 @@ public:
     if (isValid(c)) {
       return m_intnMap[GetIXYZ(c)];
     } else {
-      // std::cout << _CT << "::GetInteractionList," << c << " is off grid" <<
-      // std::endl;
+      LOG_F(1, "InteractionGridTemplate::GetInteractionList: {} is off grid",
+            c);
       return m_emptyList;
     }
   }

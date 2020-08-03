@@ -27,7 +27,6 @@
 #define _RBTERROR_H_
 
 #include <exception>
-#include <iostream>
 #include <sstream>
 
 // Useful macro for reporting errors

@@ -12,6 +12,8 @@
 
 #include "Bond.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Default constructor
@@ -34,14 +36,14 @@ Bond::Bond(int nBondId, AtomPtr &spAtom1, AtomPtr &spAtom2,
   // DM 04 Dec 1998  Register the bond back with the constituent atoms
   bool bOK1 = m_spAtom1->AddBond(this);
   bool bOK2 = m_spAtom2->AddBond(this);
-#ifdef _DEBUG
-  if (!bOK1)
-    std::cout << "FAILED to add bond " << m_nBondId << " to atom "
-              << m_spAtom1->GetAtomId() << std::endl;
-  if (!bOK2)
-    std::cout << "FAILED to add bond " << m_nBondId << " to atom "
-              << m_spAtom2->GetAtomId() << std::endl;
-#endif //_DEBUG
+  if (!bOK1) {
+    LOG_F(ERROR, "Failed to add bond {} to atom {}", m_nBondId,
+          m_spAtom1->GetAtomId());
+  }
+  if (!bOK2) {
+    LOG_F(ERROR, "Failed to add bond {} to atom {}", m_nBondId,
+          m_spAtom2->GetAtomId());
+  }
 
   _RBTOBJECTCOUNTER_CONSTR_("Bond");
 }
@@ -51,14 +53,14 @@ Bond::~Bond() {
   // DM 04 Dec 1998  Unregister the bond with the constituent atoms
   bool bOK1 = m_spAtom1->RemoveBond(this);
   bool bOK2 = m_spAtom2->RemoveBond(this);
-#ifdef _DEBUG
-  if (!bOK1)
-    std::cout << "FAILED to remove bond " << m_nBondId << " from atom "
-              << m_spAtom1->GetAtomId() << std::endl;
-  if (!bOK2)
-    std::cout << "FAILED to remove bond " << m_nBondId << " from atom "
-              << m_spAtom2->GetAtomId() << std::endl;
-#endif //_DEBUG
+  if (!bOK1) {
+    LOG_F(ERROR, "Failed to remove bond {} from atom {}", m_nBondId,
+          m_spAtom1->GetAtomId());
+  }
+  if (!bOK2) {
+    LOG_F(ERROR, "Failed to remove bond {} from atom {}", m_nBondId,
+          m_spAtom2->GetAtomId());
+  }
 
   _RBTOBJECTCOUNTER_DESTR_("Bond");
 }
@@ -267,17 +269,15 @@ bool rxdock::isBondAmide::operator()(Bond *pBond) const {
     AtomList oxygens =
         GetAtomListWithPredicate(GetBondedAtomList(spAtom1), isO);
     int nOSP2 = GetNumAtomsWithPredicate(oxygens, isSP2);
-    // std::cout << "Amide check on " << spAtom1->GetFullAtomName() << " - " <<
-    // spAtom2->GetFullAtomName()
-    //	 << " #OSP2 = " << nOSP2 << std::endl;
+    LOG_F(1, "Amide check on {} - {} #OSP2 = {}", spAtom1->GetFullAtomName(),
+          spAtom2->GetFullAtomName(), nOSP2);
     return (nOSP2 == 1);
   } else if (isC(spAtom2) && isSP2(spAtom2) && isN(spAtom1) && isTRI(spAtom1)) {
     AtomList oxygens =
         GetAtomListWithPredicate(GetBondedAtomList(spAtom2), isO);
     int nOSP2 = GetNumAtomsWithPredicate(oxygens, isSP2);
-    // std::cout << "Amide check on " << spAtom2->GetFullAtomName() << " - " <<
-    // spAtom1->GetFullAtomName()
-    //	 << " #OSP2 = " << nOSP2 << std::endl;
+    LOG_F(1, "Amide check on {} - {} #OSP2 = {}", spAtom2->GetFullAtomName(),
+          spAtom1->GetFullAtomName(), nOSP2);
     return (nOSP2 == 1);
   } else
     return false;

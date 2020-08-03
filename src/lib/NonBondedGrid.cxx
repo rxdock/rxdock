@@ -13,6 +13,8 @@
 #include "NonBondedGrid.h"
 #include "FileError.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -161,11 +163,11 @@ void NonBondedGrid::ClearAtomLists() {
 void NonBondedGrid::UniqueAtomLists() {
   for (AtomListMapIter iter = m_atomMap.begin(); iter != m_atomMap.end();
        iter++) {
-    // std::cout << _CT << ": before = " << (*iter).size();
+    LOG_F(1, "NonBondedGrid::UniqueAtomLists: before = {}", (*iter).size());
     std::sort((*iter).begin(), (*iter).end(), AtomPtrCmp_Ptr());
     AtomRListIter uniqIter = std::unique((*iter).begin(), (*iter).end());
     (*iter).erase(uniqIter, (*iter).end());
-    // std::cout << "; After = " << (*iter).size() << std::endl;
+    LOG_F(1, "NonBondedGrid::UniqueAtomLists: after = {}", (*iter).size());
   }
 }
 

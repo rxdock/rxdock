@@ -58,6 +58,7 @@ protected:
 class PrintVisitor : public FilterExpressionVisitor {
 public:
   PrintVisitor(ContextPtr);
+  ~PrintVisitor();
   virtual void VisitVbleExp(FilterVbleExp *);
   virtual void VisitAddExp(FilterAddExp *);
   virtual void VisitSubExp(FilterSubExp *);
@@ -70,11 +71,13 @@ public:
 
 private:
   ContextPtr contextp;
+  std::ostringstream strbuf;
 };
 
 class PrettyPrintVisitor : public FilterExpressionVisitor {
 public:
   PrettyPrintVisitor(ContextPtr);
+  ~PrettyPrintVisitor();
   virtual void VisitVbleExp(FilterVbleExp *);
   virtual void VisitAddExp(FilterAddExp *);
   virtual void VisitSubExp(FilterSubExp *);
@@ -87,6 +90,7 @@ public:
 
 private:
   ContextPtr contextp;
+  std::ostringstream strbuf;
 };
 
 class EvaluateVisitor : public FilterExpressionVisitor {

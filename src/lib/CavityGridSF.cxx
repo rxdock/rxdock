@@ -18,6 +18,7 @@
 #include "WorkSpace.h"
 
 #include <functional>
+#include <loguru.hpp>
 
 using namespace rxdock;
 
@@ -30,19 +31,15 @@ std::string CavityGridSF::_QUADRATIC("QUADRATIC");
 // implicit constructor for BaseInterSF is called second
 CavityGridSF::CavityGridSF(const std::string &strName)
     : BaseSF(_CT, strName), m_maxDist(0.0), m_rMax(0.1), m_bQuadratic(false) {
+  LOG_F(2, "CavityGridSF parameterised constructor");
   // Add parameters
   AddParameter(_RMAX, m_rMax);
   AddParameter(_QUADRATIC, m_bQuadratic);
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 CavityGridSF::~CavityGridSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "CavityGridSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 

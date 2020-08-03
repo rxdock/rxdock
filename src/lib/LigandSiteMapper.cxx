@@ -15,6 +15,9 @@
 #include "MdlFileSource.h"
 #include "WorkSpace.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -31,6 +34,7 @@ std::string LigandSiteMapper::_MAX_CAVITIES("MAX_CAVITIES");
 
 LigandSiteMapper::LigandSiteMapper(const std::string &strName)
     : SiteMapper(_CT, strName) {
+  LOG_F(2, "LigandSiteMapper parameterised constructor");
   // Add parameters
   AddParameter(_REF_MOL, "ref.sd");
   AddParameter(_VOL_INCR, 0.0);
@@ -39,16 +43,11 @@ LigandSiteMapper::LigandSiteMapper(const std::string &strName)
   AddParameter(_RADIUS, 10.0);
   AddParameter(_MIN_VOLUME, 100.0); // Min cavity volume in A^3
   AddParameter(_MAX_CAVITIES, 99);  // Max number of cavities to return
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 LigandSiteMapper::~LigandSiteMapper() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "LigandSiteMapper destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -65,7 +64,6 @@ CavityList LigandSiteMapper::operator()() {
   double radius = GetParameter(_RADIUS);
   double minVol = GetParameter(_MIN_VOLUME);
   unsigned int maxCavities = GetParameter(_MAX_CAVITIES);
-  int iTrace = GetTrace();
 
   // Grid values
   const double recVal = -1.0; // Receptor volume
@@ -112,13 +110,11 @@ CavityList LigandSiteMapper::operator()() {
     spGrid->SetSphere((*iter), radius, 0.0, true);
   }
 
-  if (iTrace > 1) {
-    std::cout << std::endl << "INITIALISATION" << std::endl;
-    std::cout << "Radius=" << radius << std::endl;
-    std::cout << "Border=" << border << std::endl;
-    std::cout << "N(excluded)=" << spGrid->Count(recVal) << std::endl;
-    std::cout << "N(unallocated)=" << spGrid->Count(0.0) << std::endl;
-  }
+  LOG_F(INFO, "INITIALISATION");
+  LOG_F(INFO, "Radius={}", radius);
+  LOG_F(INFO, "Border={}", border);
+  LOG_F(INFO, "N(excluded)={}", spGrid->Count(recVal));
+  LOG_F(INFO, "N(unallocated)={}", spGrid->Count(0.0));
 
   // Now exclude the receptor volume
   for (AtomListConstIter iter = atomList.begin(); iter != atomList.end();
@@ -127,22 +123,18 @@ CavityList LigandSiteMapper::operator()() {
     spGrid->SetSphere((**iter).GetCoords(), r + rVolIncr, recVal, true);
   }
 
-  if (iTrace > 1) {
-    std::cout << std::endl << "EXCLUDE RECEPTOR VOLUME" << std::endl;
-    std::cout << "N(excluded)=" << spGrid->Count(recVal) << std::endl;
-    std::cout << "N(unallocated)=" << spGrid->Count(0.0) << std::endl;
-  }
+  LOG_F(INFO, "EXCLUDE RECEPTOR VOLUME");
+  LOG_F(INFO, "N(excluded)={}", spGrid->Count(recVal));
+  LOG_F(INFO, "N(unallocated)={}", spGrid->Count(0.0));
 
   // Map with a small solvent sphere
   spGrid->SetAccessible(smallR, 0.0, recVal, cavVal, false);
 
-  if (iTrace > 1) {
-    std::cout << std::endl << "FINAL CAVITIES" << std::endl;
-    std::cout << "N(excluded)=" << spGrid->Count(recVal) << std::endl;
-    std::cout << "N(unallocated)=" << spGrid->Count(0.0) << std::endl;
-    std::cout << "N(cavities)=" << spGrid->Count(cavVal) << std::endl;
-    std::cout << std::endl << "Min cavity size=" << minSize << std::endl;
-  }
+  LOG_F(INFO, "FINAL CAVITIES");
+  LOG_F(INFO, "N(excluded)={}", spGrid->Count(recVal));
+  LOG_F(INFO, "N(unallocated)={}", spGrid->Count(0.0));
+  LOG_F(INFO, "N(cavities)={}", spGrid->Count(cavVal));
+  LOG_F(INFO, "Min cavity size={}", minSize);
 
   // Find the contiguous regions of cavity grid points
   FFTPeakMap peakMap =
@@ -160,20 +152,15 @@ CavityList LigandSiteMapper::operator()() {
   // Sort cavities by volume
   std::sort(cavityList.begin(), cavityList.end(), CavityPtrCmp_Volume());
 
-  if (iTrace > 0) {
-    for (CavityListConstIter cIter = cavityList.begin();
-         cIter != cavityList.end(); cIter++) {
-      std::cout << (**cIter) << std::endl;
-    }
+  for (CavityListConstIter cIter = cavityList.begin();
+       cIter != cavityList.end(); cIter++) {
+    LOG_F(INFO, "{}", **cIter);
   }
 
   // Limit the number of cavities if necessary
   if (cavityList.size() > maxCavities) {
-    if (iTrace > 0) {
-      std::cout << std::endl
-                << cavityList.size() << " cavities identified - limit to "
-                << maxCavities << " largest cavities" << std::endl;
-    }
+    LOG_F(INFO, "{} cavities identified - limit to {} largest cavities",
+          cavityList.size(), maxCavities);
     cavityList.erase(cavityList.begin() + maxCavities, cavityList.end());
   }
 

@@ -40,6 +40,9 @@
 #endif
 #endif
 
+// Same rules apply to Loguru logging library
+#define LOGURU_EXPORT RBTDLL_EXPORT
+
 namespace rxdock {
 
 // Segment is a named part of an Model (usually an intact molecule)

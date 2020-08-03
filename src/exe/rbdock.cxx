@@ -33,6 +33,8 @@
 #include "SFRequest.h"
 #include "TransformFactory.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 namespace rxdock {
@@ -108,7 +110,8 @@ int main(int argc, char *argv[]) {
         "continue if score threshold is met instead of terminating ligand");
   adder("f,filter", "filter file name", cxxopts::value<std::string>());
   adder("T,trace",
-        "controls output level for debugging (0 = minimal, >0 = more verbose)",
+        "controls the amount of logging output (0 = informative, 1 = also adds "
+        "debugging, 2 = also adds function call tracing)",
         cxxopts::value<int>()->default_value("0"));
   adder("s,seed", "random number seed to use instead of std::random_device",
         cxxopts::value<unsigned int>());
@@ -172,6 +175,7 @@ int main(int argc, char *argv[]) {
     }
     bool bTrace = result.count("T");
     int iTrace = result["T"].as<int>(); // Trace level, for debugging
+    loguru::g_stderr_verbosity = iTrace;
 
     // input ligand file, receptor and parameter is compulsory
     if (strLigandMdlFile.empty() || strReceptorPrmFile.empty() ||
@@ -334,14 +338,8 @@ int main(int argc, char *argv[]) {
     TransformAggPtr spTransform(
         spTransformFactory->CreateAggFromFile(spParamSource, _ROOT_TRANSFORM));
 
-    // Override the TRACE levels for the scoring function and transform
     // Dump details to std::cout
     // Register the scoring function and the transform with the workspace
-    if (bTrace) {
-      RequestPtr spTraceReq(new SFSetParamRequest("TRACE", iTrace));
-      spSF->HandleRequest(spTraceReq);
-      spTransform->HandleRequest(spTraceReq);
-    }
     if (iTrace > 0) {
       std::cout << std::endl
                 << "SCORING FUNCTION DETAILS:" << std::endl
@@ -394,7 +392,6 @@ int main(int argc, char *argv[]) {
     }
 
     PRMFactory prmFactory(spRecepPrmSource, spDS);
-    prmFactory.SetTrace(iTrace);
     // Create the receptor model from the file names in the receptor parameter
     // file
     ModelPtr spReceptor = prmFactory.CreateReceptor();
@@ -429,10 +426,6 @@ int main(int argc, char *argv[]) {
       }
     } else {
       spfilter = new Filter(strFilter.str(), true);
-    }
-    if (bTrace) {
-      RequestPtr spTraceReq(new SFSetParamRequest("TRACE", iTrace));
-      spfilter->HandleRequest(spTraceReq);
     }
 
     // Register the Filter with the workspace
@@ -496,7 +489,7 @@ int main(int argc, char *argv[]) {
         std::string strMolName = spLigand->GetName();
         spWS->SetLigand(spLigand);
         // Update any model coords from embedded chromosomes in the ligand file
-        spWS->UpdateModelCoordsFromChromRecords(spMdlFileSource, iTrace);
+        spWS->UpdateModelCoordsFromChromRecords(spMdlFileSource);
 
         // DM 18 May 1999 - store run info in model data
         // Clear any previous rxdock.program.* data fields

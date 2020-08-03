@@ -13,6 +13,8 @@
 #include "VdwSF.h"
 #include "Model.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -28,9 +30,7 @@ std::string &VdwSF::GetEcut() { return _ECUT; }
 VdwSF::VdwSF()
     : m_use_4_8(true), m_use_tripos(false), m_rmax(1.5), m_ecut(1.0),
       m_e0(1.5) {
-#ifdef _DEBUG
-  std::cout << _CT << " default constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "VdwSF default constructor");
   // Add parameters
   AddParameter(_USE_4_8, m_use_4_8);
   AddParameter(_USE_TRIPOS, m_use_tripos);
@@ -44,9 +44,7 @@ VdwSF::VdwSF()
 }
 
 VdwSF::~VdwSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "VdwSF default constructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -98,11 +96,11 @@ double VdwSF::VdwScore(const Atom *pAtom, const AtomRList &atomList) const {
       VdwRowConstIter iter2 = (*iter1).begin() + type2;
       double s = f4_8(R_sq, *iter2);
       // XB NOTE: Apply weight here
-      //   Double wxb = (*iter)->GetReweight();
-      // std::cout << "4-8vdw " << (*iter)->GetName() << " weight: " << wxb
-      // << " score " << s;
-      //   s *=  wxb;
-      // std::cout << " score*w " << s << std::endl;
+      // double wxb = (*iter)->GetReweight();
+      // s *=  wxb;
+      // LOG_F(1, "4-8vdw {}  weight: {} score {} score*w {}",
+      //       (*iter)->GetName(), (*iter)->GetReweight(), s,
+      //       s * (*iter)->GetReweight());
       // XB END MODIFICATIONS
       score += s;
     }
@@ -118,11 +116,11 @@ double VdwSF::VdwScore(const Atom *pAtom, const AtomRList &atomList) const {
       VdwRowConstIter iter2 = (*iter1).begin() + type2;
       double s = f6_12(R_sq, *iter2);
       // XB NOTE: Apply weight here
-      // Double wxb = (*iter)->GetReweight();
-      //   std::cout << "6-12vdw " << (*iter)->GetName() << " weight: " <<
-      //   wxb << " score " << s;
+      // double wxb = (*iter)->GetReweight();
       // s *=  wxb;
-      //   std::cout << " score*w " << s << std::endl;
+      // LOG_F(1, "6-12vdw {}  weight: {} score {} score*w {}",
+      //       (*iter)->GetName(), (*iter)->GetReweight(), s,
+      //       s * (*iter)->GetReweight());
       // XB END MODIFICATIONS
       if (s != 0.0) {
         score += s;
@@ -143,10 +141,11 @@ double VdwSF::VdwScore(const Atom *pAtom, const AtomRList &atomList) const {
       VdwRowConstIter iter2 = (*iter1).begin() + type2;
       double s = f6_12(R_sq, *iter2);
       // XB NOTE: Apply weight here
-      //   Double wxb = (*iter)->GetReweight();
-      //   std::cout << "6-12vdw " << (*iter)->GetName() << " weight: " <<
-      //   wxb << " score " << s; s *=  wxb; std::cout << " score*w " << s <<
-      //   std::endl;
+      // double wxb = (*iter)->GetReweight();
+      // s *=  wxb;
+      // LOG_F(1, "6-12vdw {}  weight: {} score {} score*w {}",
+      //       (*iter)->GetName(), (*iter)->GetReweight(), s,
+      //       s * (*iter)->GetReweight());
       // XB END MODIFICATIONS
       score += s;
     }
@@ -290,12 +289,9 @@ double VdwSF::MaxVdwRange(TriposAtomType::eType t) const {
 
 // Initialise m_vdwTable with appropriate params for each atom type pair
 void VdwSF::Setup() {
+  LOG_F(2, "VdwSF::Setup");
   TriposAtomType triposType;
-  int iTrace = GetTrace();
-  if (iTrace > 3) {
-    std::cout << std::endl << _CT << "::Setup()" << std::endl;
-    std::cout << "TYPE1,TYPE2,A,B,RMIN,KIJ,RMAX" << std::endl;
-  }
+  LOG_F(1, "TYPE1,TYPE2,A,B,RMIN,KIJ,RMA");
   // Dummy read to force parsing of file, otherwise the first SetSection is
   // overridden
   std::vector<std::string> secList = m_spVdwSource->GetSectionList();
@@ -373,12 +369,10 @@ void VdwSF::Setup() {
       prms.B = 2.0 * prms.kij * rmin_pwr;
       m_vdwTable[i][j] = prms;
       m_vdwTable[j][i] = prms;
-      if (iTrace > 3) {
-        std::cout << triposType.Type2Str(TriposAtomType::eType(i)) << ","
-                  << triposType.Type2Str(TriposAtomType::eType(j)) << ","
-                  << prms.A << "," << prms.B << "," << prms.rmin << ","
-                  << prms.kij << "," << std::sqrt(prms.rmax_sq) << std::endl;
-      }
+      LOG_F(1, "{},{},{},{},{},{},{}",
+            triposType.Type2Str(TriposAtomType::eType(i)),
+            triposType.Type2Str(TriposAtomType::eType(j)), prms.A, prms.B,
+            prms.rmin, prms.kij, std::sqrt(prms.rmax_sq));
     }
   }
   // Now we can regenerate the close range params
@@ -386,20 +380,14 @@ void VdwSF::Setup() {
   // Set the overall range automatically from the max range for each atom type
   double range = *(std::max_element(m_maxRange.begin(), m_maxRange.end()));
   SetRange(range);
-  if (iTrace > 1) {
-    std::cout << "Overall max range for scoring function = " << range
-              << std::endl;
-  }
+  LOG_F(INFO, "Overall max range for scoring function = {}", range);
 }
 
 // Regenerate the short-range params only (called more frequently)
 void VdwSF::SetupCloseRange() {
+  LOG_F(2, "VdwSF::SetupCloseRange()");
+  LOG_F(1, "TYPE1,TYPE2,RCUT,ECUT,SLOPE,E0");
   TriposAtomType triposType;
-  int iTrace = GetTrace();
-  if (iTrace > 3) {
-    std::cout << std::endl << _CT << "::SetupCloseRange()" << std::endl;
-    std::cout << "TYPE1,TYPE2,RCUT,ECUT,SLOPE,E0" << std::endl;
-  }
   double x = 1.0 + std::sqrt(1.0 + m_ecut);
   double p = (m_use_4_8) ? std::pow(x, 1.0 / 4.0) : std::pow(x, 1.0 / 6.0);
   double c = 1.0 / p;
@@ -411,16 +399,13 @@ void VdwSF::SetupCloseRange() {
       (*iter2).ecutoff = (*iter2).kij * m_ecut;
       (*iter2).e0 = (*iter2).ecutoff * m_e0;
       (*iter2).slope = ((*iter2).e0 - (*iter2).ecutoff) / (*iter2).rcutoff_sq;
-      if (iTrace > 3) {
-        std::cout << triposType.Type2Str(
-                         TriposAtomType::eType(iter1 - m_vdwTable.begin()))
-                  << ","
-                  << triposType.Type2Str(
-                         TriposAtomType::eType(iter2 - (*iter1).begin()))
-                  << "," << std::sqrt((*iter2).rcutoff_sq) << ","
-                  << (*iter2).ecutoff << "," << (*iter2).slope << ","
-                  << (*iter2).e0 << std::endl;
-      }
+      LOG_F(
+          1, "{},{},{},{},{},{}",
+          triposType.Type2Str(
+              TriposAtomType::eType(iter1 - m_vdwTable.begin())),
+          triposType.Type2Str(TriposAtomType::eType(iter2 - (*iter1).begin())),
+          std::sqrt((*iter2).rcutoff_sq), (*iter2).ecutoff, (*iter2).slope,
+          (*iter2).e0);
     }
   }
 }
@@ -458,14 +443,11 @@ void VdwSF::BuildIntraMap(const AtomRList &atomList1,
       std::copy_if(atomList2.begin(), atomList2.end(),
                    std::back_inserter(intns[id]), isSelected);
     }
-    if (GetTrace() > 2) {
-      std::cout << _CT << "::BuildIntraMap: " << pAtom->GetFullAtomName();
-      if (!intns[id].empty()) {
-        std::cout << "\t" << intns[id].front()->GetFullAtomName() << " to "
-                  << intns[id].back()->GetFullAtomName();
-      }
-      std::cout << "; N = " << intns[id].size() << std::endl;
-    }
+    LOG_F(1, "VdwSF::BuildIntraMap: {}; N = {}", pAtom->GetFullAtomName(),
+          intns[id].size());
+    LOG_IF_F(1, !intns[id].empty(), "{} to {}",
+             intns[id].front()->GetFullAtomName(),
+             intns[id].back()->GetFullAtomName());
   }
 }
 
@@ -479,15 +461,11 @@ void VdwSF::BuildIntraMap(const AtomRList &atomList,
 
 void VdwSF::Partition(const AtomRList &atomList, const AtomRListList &intns,
                       AtomRListList &prtIntns, double dist) const {
-  int iTrace = GetTrace();
-
   // Clear the existing partitioned lists
   for (AtomRListListIter iter = prtIntns.begin(); iter != prtIntns.end();
        iter++)
     (*iter).clear();
-  if (iTrace > 3) {
-    std::cout << _CT << ": Partition (dist=" << dist << ")" << std::endl;
-  }
+  LOG_F(1, "VdwSF::Partition: dist={}", dist);
 
   for (AtomRListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
@@ -501,10 +479,7 @@ void VdwSF::Partition(const AtomRList &atomList, const AtomRListList &intns,
       // Remove partition - simply copy from the master list of vdW interactions
       prtIntns[id] = intns[id];
     }
-    if (iTrace > 3) {
-      std::cout << _CT << ": " << (*iter)->GetFullAtomName()
-                << ": #vdw=" << intns[id].size()
-                << ": #prtn=" << prtIntns[id].size() << std::endl;
-    }
+    LOG_F(1, "VdwSF::Partition: {}; $vdw={}: #prtn={}",
+          (*iter)->GetFullAtomName(), intns[id].size(), prtIntns[id].size());
   }
 }

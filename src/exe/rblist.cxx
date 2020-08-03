@@ -17,6 +17,7 @@
 #include <algorithm> //for min,max
 #include <functional>
 #include <iomanip>
+#include <iostream>
 
 using namespace rxdock;
 

@@ -17,6 +17,8 @@
 #include "StringTokenIter.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 const int STOP = 0;
@@ -33,10 +35,8 @@ std::string Filter::_CT("Filter");
 // that contains the filter (filter = false) This is the most
 // common, so filter's value by default is false
 Filter::Filter(std::string strfilter, bool filter) : BaseObject(_CT, "Filter") {
-#ifdef _DEBUG
-  std::cout << _CT << " default constructor" << std::endl;
-#endif //_DEBUG
-       //  std::string filterfilen = GetParameter("_FILTER_FILE");
+  LOG_F(2, "Filter default constructor");
+  //  std::string filterfilen = GetParameter("_FILTER_FILE");
   SmartPtr<std::istream> filterfile;
   if (filter) // filterfilen is the filter
     filterfile = new std::istringstream(strfilter);
@@ -48,8 +48,7 @@ Filter::Filter(std::string strfilter, bool filter) : BaseObject(_CT, "Filter") {
   contextp = ContextPtr(new StringContext(filterfile));
   Parser p;
   for (int i = 0; i < nTermFilters; i++) {
-    std::cout << "\n------------- Terminate filter " << i << "------------"
-              << std::endl;
+    LOG_F(INFO, "------------- Terminate filter {} -------------", i);
     std::string s;
     getline(*filterfile, s, ',');
     SmartPtr<std::istream> istrp(new std::istringstream(s));
@@ -61,7 +60,7 @@ Filter::Filter(std::string strfilter, bool filter) : BaseObject(_CT, "Filter") {
   }
   (*filterfile) >> nWriteFilters;
   for (int i = 0; i < nWriteFilters; i++) {
-    std::cout << "\n------------- Write filter -----------------" << std::endl;
+    LOG_F(INFO, "------------- Write filter {} -----------------", i);
     std::string s;
     getline(*filterfile, s, ',');
     SmartPtr<std::istream> istrp(new std::istringstream(s));
@@ -72,14 +71,11 @@ Filter::Filter(std::string strfilter, bool filter) : BaseObject(_CT, "Filter") {
     writtingFilter.push_back(filterExpr);
   }
   maxnruns = 1000;
-  std::cout << std::endl;
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 Filter::~Filter() {
-#ifdef _DEBUG
-  std::cout << _CT << "  destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "Filter destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -99,10 +95,7 @@ void Filter::Update(Subject *theChangedSubject) {
     if (pWorkSpace->GetNumModels() >= 1) {
       ModelPtr spReceptor = GetWorkSpace()->GetModel(0);
       if (spReceptor != m_spReceptor) {
-#ifdef _DEBUG
-        std::cout << "BaseInterSF::Update(): Receptor has been updated"
-                  << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "BaseInterSF::Update: Receptor has been updated");
         m_spReceptor = spReceptor;
         SetupReceptor();
       }
@@ -111,10 +104,7 @@ void Filter::Update(Subject *theChangedSubject) {
     if (pWorkSpace->GetNumModels() >= 2) {
       ModelPtr spLigand = GetWorkSpace()->GetModel(1);
       if (spLigand != m_spLigand) {
-#ifdef _DEBUG
-        std::cout << "BaseInterSF::Update(): Ligand has been updated"
-                  << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "BaseInterSF::Update: Ligand has been updated");
         m_spLigand = spLigand;
         SetupLigand();
       }
@@ -153,14 +143,11 @@ bool Filter::Terminate() {
   if (nTermFilters > 0) {
     EvaluateVisitor visitor2(contextp);
     terminationFilters[filteridx]->Accept(visitor2);
-    //    std::cout << filteridx << "\t"
-    //         << terminationFilters[filteridx]->GetValue()
-    //         << "\tnruns: " << nruns << std::endl;
+    LOG_F(1, "{}\t{}\tnruns: {}", filteridx,
+          terminationFilters[filteridx]->GetValue(), nruns);
     double val = terminationFilters[filteridx]->GetValue();
     if (val == STOP) {
-      if (GetTrace() > 1) {
-        std::cout << "Terminate with this ligand\n";
-      }
+      LOG_F(INFO, "Terminate with this ligand");
       bTerm = true;
     } else if (val == NEXT) {
       // keep checking filters until no more or one of them is not passed
@@ -173,15 +160,11 @@ bool Filter::Terminate() {
           contextp->Assign("SCORE.NRUNS", nruns);
           terminationFilters[filteridx]->Accept(visitor2);
           val = terminationFilters[filteridx]->GetValue();
-          if (GetTrace() > 1) {
-            std::cout << "Go to next phase\n";
-          }
+          LOG_F(INFO, "Go to next phase");
         }
       }
       if (filteridx == nTermFilters) {
-        if (GetTrace() > 1) {
-          std::cout << "Terminate with this ligand\n";
-        }
+        LOG_F(INFO, "Terminate with this ligand");
         bTerm = true; // output of filter is next phase, but there are no
                       // more phases
       } else {
@@ -192,16 +175,12 @@ bool Filter::Terminate() {
     } else if (val == CONT) {
       // finish because it's reached limit runs
       if (nruns >= maxnruns) {
-        if (GetTrace() > 1) {
-          std::cout << "Terminate with this ligand\n";
-        }
+        LOG_F(INFO, "Terminate with this ligand");
         bTerm = true;
       } else {
         nruns++;
         contextp->Assign("SCORE.NRUNS", nruns);
-        if (GetTrace() > 1) {
-          std::cout << "Continue in this phase\n";
-        }
+        LOG_F(INFO, "Continue in this phase");
         bTerm = false;
       }
     } else {
@@ -223,7 +202,7 @@ bool Filter::Write() {
   for (int i = 0; i < nWriteFilters; i++) {
     EvaluateVisitor visitor2(contextp);
     writtingFilter[i]->Accept(visitor2);
-    //    std::cout << writtingFilter[i]->GetValue() << std::endl;
+    LOG_F(1, "Filter::Write: {}", writtingFilter[i]->GetValue());
     double val = writtingFilter[i]->GetValue();
     if (val >= 0.0) {
       bWrite = false;
@@ -232,9 +211,10 @@ bool Filter::Write() {
     // else it evaluates next filter. If there are no more, all
     // have returned a negative value and it returns true
   }
-  // if (bWrite)
-  //  std::cout << "write this ligand\n";
-  // else
-  //  std::cout << "Do not write this ligand\n";
+  if (bWrite) {
+    LOG_F(INFO, "Write this ligand");
+  } else {
+    LOG_F(INFO, "Do not write this ligand");
+  }
   return bWrite;
 }

@@ -117,7 +117,6 @@ TEST_F(OccupancyTest, VdwSFSolventModes) {
   BaseSF *sfInter = new SFAgg("INTER");
   BaseSF *sfSystem = new SFAgg("SYSTEM");
   BaseSF *sfVdw = new VdwIdxSF("VDW");
-  sfVdw->SetTrace(0);
   sfAgg->Add(sfInter);
   sfAgg->Add(sfSystem);
   sfInter->Add(sfVdw);

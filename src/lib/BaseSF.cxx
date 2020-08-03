@@ -13,6 +13,8 @@
 #include "BaseSF.h"
 #include "SFRequest.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -27,10 +29,7 @@ std::string BaseSF::_INTRA_SF("SCORE.INTRA");
 BaseSF::BaseSF(const std::string &strClass, const std::string &strName)
     : BaseObject(strClass, strName), m_parent(nullptr), m_weight(1.0),
       m_range(10.0) {
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor for " << strClass
-            << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "BaseSF parameterised constructor for {}", strClass);
   // Add parameters
   AddParameter(_WEIGHT, m_weight);
   AddParameter(_RANGE, m_range);
@@ -40,17 +39,13 @@ BaseSF::BaseSF(const std::string &strClass, const std::string &strName)
 // Dummy default constructor for virtual base subclasses
 // Should never get called
 BaseSF::BaseSF() {
-#ifdef _DEBUG
-  std::cout << "WARNING: " << _CT << " default constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(WARNING, "BaseSF default constructor");
   //_RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 BaseSF::~BaseSF() {
+  LOG_F(2, "BaseSF destructor");
   Orphan(); // Remove object from parent aggregate
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -134,10 +129,8 @@ BaseSF *BaseSF::GetParentSF() const { return m_parent; }
 // Force removal from the parent aggregate
 void BaseSF::Orphan() {
   if (m_parent) {
-#ifdef _DEBUG
-    std::cout << _CT << "::Orphan(): Removing " << GetName() << " from "
-              << m_parent->GetName() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "BaseSF::Orphan: Removing {} from {}", GetName(),
+          m_parent->GetName());
     m_parent->Remove(this);
   }
 }

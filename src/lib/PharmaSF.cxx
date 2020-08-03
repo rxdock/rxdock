@@ -16,6 +16,8 @@
 #include "MdlFileSink.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -29,22 +31,17 @@ std::string PharmaSF::_WRITE_ERRORS("WRITE_ERRORS");
 // implicit constructor for BaseInterSF is called second
 PharmaSF::PharmaSF(const std::string &strName)
     : BaseSF(_CT, strName), m_nopt(0), m_bWriteErrors(false) {
+  LOG_F(2, "PharmaSF parameterised constructor");
   // Add parameters It gets the right name in SetupReceptor
   AddParameter(_CONSTRAINTS_FILE, ".const");
   AddParameter(_OPTIONAL_FILE, "_opt.const");
   AddParameter(_NOPT, m_nopt);
   AddParameter(_WRITE_ERRORS, m_bWriteErrors);
-  SetTrace(1); // Provide a bit of debug output by default
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 PharmaSF::~PharmaSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "PharmaSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -75,21 +72,19 @@ void PharmaSF::SetupReceptor() {
     std::string strOutputFile(p->GetFileName());
     strOutputFile.erase(strOutputFile.find(".sd"), 3);
     strOutputFile += "_errors.sd";
-    if (GetTrace() > 0) {
-      std::cout << _CT << ": Reading mandatory ph4 constraints from "
-                << strConstraintFile << std::endl;
-      std::cout
-          << _CT
-          << ": Ligands missing the mandatory features will be written to "
-          << strOutputFile << std::endl;
-    }
+    LOG_F(INFO,
+          "PharmaSF::SetupReceptor: Reading mandatory ph4 constraints from {}",
+          strConstraintFile);
+    LOG_F(INFO,
+          "PharmaSF::SetupReceptor: Ligands missing the mandatory features "
+          "will be written to {}",
+          strOutputFile);
     m_spErrorFile = MolecularFileSinkPtr(
         new MdlFileSink(strOutputFile.c_str(), GetLigand()));
   }
-  if (GetTrace() > 0) {
-    std::cout << _CT << ": Reading mandatory ph4 constraints from "
-              << strConstraintFile << std::endl;
-  }
+  LOG_F(INFO,
+        "PharmaSF::SetupReceptor: Reading mandatory ph4 constraints from {}",
+        strConstraintFile);
   std::ifstream constrFile(strConstraintFile.c_str(), std::ios_base::in);
   if (!constrFile) {
     throw FileReadError(_WHERE_, "cannot open mandatory constraints file " +
@@ -102,22 +97,21 @@ void PharmaSF::SetupReceptor() {
   // Optional constraints
   std::ifstream optFile(strOptFile.c_str(), std::ios_base::in);
   if (optFile.good()) {
-    if (GetTrace() > 0) {
-      std::cout << _CT << ": Reading optional ph4 constraints from "
-                << strOptFile << std::endl;
-    }
+    LOG_F(INFO,
+          "PharmaSF::SetupReceptor: Reading optional ph4 constraints from ",
+          strOptFile);
     ReadConstraints(optFile, m_optList, false);
     // Keep m_nopt within range
     SetParameter(_NOPT, std::min(m_nopt, int(m_optList.size())));
     SetParameter(_NOPT, std::max(m_nopt, 0));
-    if (GetTrace() > 0) {
-      std::cout << _CT << ": " << m_nopt
-                << " of the optional constraints are required to be satisfied"
-                << std::endl;
-    }
+    LOG_F(INFO,
+          "PharmaSF::SetupReceptor: {} of the optional constraints are "
+          "required to be satisfied",
+          m_nopt);
     optFile.close();
-  } else if (GetTrace() > 0) {
-    std::cout << _CT << ": No optional ph4 constraints file found" << std::endl;
+  } else {
+    LOG_F(INFO,
+          "PharmaSF::SetupReceptor: No optional ph4 constraints file found");
   }
 
   // Initialise the component score vectors
@@ -129,16 +123,12 @@ void PharmaSF::SetupLigand() {
   if (GetLigand().Null())
     return;
   try {
-    if (GetTrace() > 0) {
-      std::cout << _CT << ": Checking mandatory ph4 features..." << std::endl;
-    }
+    LOG_F(INFO, "PharmaSF::SetupReceptor: Checking mandatory ph4 features...");
     for (ConstraintListIter iter = m_constrList.begin();
          iter != m_constrList.end(); iter++) {
       (*iter)->AddAtomList(GetLigand(), true);
     }
-    if (GetTrace() > 0) {
-      std::cout << _CT << ": All mandatory features found" << std::endl;
-    }
+    LOG_F(INFO, "PharmaSF::SetupReceptor: All mandatory features found");
   } catch (LigandError &e) {
     if (m_bWriteErrors) {
       m_spErrorFile->SetModel(GetLigand());
@@ -178,11 +168,8 @@ double PharmaSF::RawScore() const {
   std::vector<double> lowest(m_nopt);
   std::partial_sort_copy(m_optScores.begin(), m_optScores.end(), lowest.begin(),
                          lowest.end());
-  // std::cout << m_nopt << " lowest optional scores:\t";
-  for (unsigned int i = 0; i < lowest.size(); i++) {
-    // std::cout << lowest[i] << "\t";
-  }
-  // std::cout << std::endl;
+  LOG_F(1, "PharmaSF::RawScore: {} lowest optional scores: {}", m_nopt,
+        fmt::join(lowest, ", "));
   total = std::accumulate(lowest.begin(), lowest.end(), total);
   return total;
 }

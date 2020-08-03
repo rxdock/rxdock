@@ -11,6 +11,9 @@
  ***********************************************************************/
 
 #include "SetupPolarSF.h"
+
+#include <loguru.hpp>
+
 #include <functional>
 #include <iomanip>
 
@@ -27,6 +30,7 @@ std::string SetupPolarSF::_GUANFACTOR("GUANFACTOR");
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second
 SetupPolarSF::SetupPolarSF(const std::string &strName) : BaseSF(_CT, strName) {
+  LOG_F(2, "SetupPolarSF parameterised constructor");
   // Add parameters
   AddParameter(_RADIUS, 5.0);
   AddParameter(_NORM, 25);
@@ -34,16 +38,11 @@ SetupPolarSF::SetupPolarSF(const std::string &strName) : BaseSF(_CT, strName) {
   AddParameter(_CHGFACTOR, 0.5);
   AddParameter(_GUANFACTOR, 1.0);
   Disable();
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 SetupPolarSF::~SetupPolarSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "SetupPolarSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -53,8 +52,7 @@ void SetupPolarSF::SetupReceptor() {
   AtomList atomList = GetReceptor()->GetAtomList();
   AtomList heavyAtomList =
       GetAtomListWithPredicate(atomList, std::not1(isAtomicNo_eq(1)));
-  int traceTriggerLevel = 1;
-  SetupAtomList(atomList, heavyAtomList, traceTriggerLevel);
+  SetupAtomList(atomList, heavyAtomList);
 }
 
 void SetupPolarSF::SetupLigand() {
@@ -62,8 +60,7 @@ void SetupPolarSF::SetupLigand() {
     return;
   AtomList atomList = GetLigand()->GetAtomList();
   AtomList emptyList;
-  int traceTriggerLevel = 2;
-  SetupAtomList(atomList, emptyList, traceTriggerLevel);
+  SetupAtomList(atomList, emptyList);
 }
 
 void SetupPolarSF::SetupSolvent() {
@@ -79,19 +76,16 @@ void SetupPolarSF::SetupSolvent() {
               std::back_inserter(solventAtomList));
   }
   AtomList emptyList;
-  int traceTriggerLevel = 1;
-  SetupAtomList(solventAtomList, emptyList, traceTriggerLevel);
+  SetupAtomList(solventAtomList, emptyList);
 }
 
 // Reusable method for setting up an arbitrary atom list
 // If neigbourList is empty, then do not include the neighbour density factor
 void SetupPolarSF::SetupAtomList(AtomList &atomList,
-                                 const AtomList &neighbourList,
-                                 int traceTriggerLevel) {
+                                 const AtomList &neighbourList) {
   if (atomList.empty())
     return;
 
-  int iTrace = GetTrace();
   bool bCalcNeighbourDensity = !neighbourList.empty();
   double radius = GetParameter(_RADIUS);
   double norm = GetParameter(_NORM);
@@ -104,17 +98,8 @@ void SetupPolarSF::SetupAtomList(AtomList &atomList,
   isAtomGuanidiniumCarbon bIsGuan;
   isAtomLipophilic bIsLipo;
 
-  std::ios_base::fmtflags oldflags = std::cout.flags();
-  std::cout.precision(3);
-  std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
-  std::cout.setf(std::ios_base::right, std::ios_base::adjustfield);
-  if (iTrace > traceTriggerLevel) {
-    std::cout << std::endl
-              << _CT
-              << ": Atom\t\t, f(neighb), f(charge), isLipo,  isHBA,  isHBD"
-              << std::endl;
-  }
-
+  LOG_F(1,
+        "SetupPolarSF: Atom\t\t, f(neighb), f(charge), isLipo,  isHBA,  isHBD");
   for (AtomListIter iter = atomList.begin(); iter != atomList.end(); iter++) {
     double fNeighb = 1.0;
     if (bCalcNeighbourDensity) {
@@ -136,26 +121,20 @@ void SetupPolarSF::SetupAtomList(AtomList &atomList,
                             // guanidinium carbons
     }
     // XB apply reweighting factor for receptor's polar atoms:
-    // if (traceTriggerLevel == 1) {
-    //  Double wxb = (*iter)->GetReweight();
-    //  (*iter)->SetUser1Value(fNeighb*charge*wxb);
-    // std::cout << "Atom: " << (*iter)->GetName() << " Polar_User1Value: "
-    // <<
-    // (*iter)->GetUser1Value() << " weigth: " << wxb << std::endl;
-    //}else{
+    // if (reweight)
+    // double wxb = (*iter)->GetReweight();
+    // (*iter)->SetUser1Value(fNeighb * charge * wxb);
+    // LOG_F(1, "Atom: {} Polar_User1Value: {} weight: {}", (*iter)->GetName(),
+    //       (*iter)->GetUser1Value(), (*iter)->GetReweight());
+    // } else {
     (*iter)->SetUser1Value(fNeighb * charge);
     // }
     // XB END MODIFICATIONS
     (*iter)->SetUser1Flag(bIsLipo(*iter));
-    if (iTrace > traceTriggerLevel) {
-      //   std::cout << _CT << ": " << (*iter)->GetFullAtomName() << "\t," <<
-      //   std::setw(10) << fNeighb << "," << std::setw(10) << charge
-      //	   << "," << std::setw(7) << (*iter)->GetUser1Flag() << "," <<
-      // std::setw(7) << bIsHBA(*iter) << "," << std::setw(7) << bIsHBD(*iter)
-      // << std::endl;
-    }
+    LOG_F(1, "SetupPolarSF:{}\t,{:10.3f}{:10.3f},{:7d},{:7d},{:7d}",
+          (*iter)->GetFullAtomName(), fNeighb, charge, (*iter)->GetUser1Flag(),
+          bIsHBA(*iter), bIsHBD(*iter));
   }
-  std::cout.flags(oldflags);
 }
 
 void SetupPolarSF::SetupScore() {

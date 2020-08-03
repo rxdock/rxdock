@@ -19,6 +19,9 @@
 #include "GPParser.h"
 #include "Parser.h"
 #include "TokenIter.h"
+
+#include <loguru.hpp>
+
 #include <cassert>
 #include <fstream>
 #include <sstream>
@@ -69,9 +72,9 @@ void GPFFSpike::ReadTables(std::istream &in, ReturnTypeArray &it,
     i++;
     in >> recordn;
   }
-  std::cout << "Read: " << inputTable[0][0] << std::endl;
+  LOG_F(1, "Read: {}", inputTable[0][0]);
   it = inputTable;
-  //    std::cout << it[0].size() << std::endl;
+  LOG_F(1, "Input table row size: {}", it[0].size());
   sft = SFTable;
 }
 
@@ -101,10 +104,10 @@ double GPFFSpike::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
     EvaluateVisitor visitor(contextp);
     fe->Accept(visitor);
     *(o[0]) = fe->GetValue();
-    // std::cout << *(o[0]) << std::endl;
+    LOG_F(1, "Filter expression value: {}", *(o[0]));
     for (int j = 0; j < GPGenome::GetNO(); j++)
       if (function) {
-        std::cout << "Error, no function possible with spike\n";
+        LOG_F(ERROR, "No function possible with spike");
         std::exit(1);
       } else if (*(o[j]) < 0.0) {
         if (hit < hitlimit)
@@ -155,7 +158,7 @@ double GPFFSpike::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
     EvaluateVisitor visitor(contextp);
     fe->Accept(visitor);
     *(o[0]) = fe->GetValue();
-    //        std::cout << "** " << *(o[0]) << std::endl;
+    LOG_F(1, "Filter expression value: {}", *(o[0]));
     //        assert(oldo == *(o[0]));
     double limit = 0.0;
     for (int j = 0; j < GPGenome::GetNO(); j++) {
@@ -176,8 +179,8 @@ double GPFFSpike::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
     //        c->Clear();
   }
   // objective value always an increasing function
-  std::cout << truehits << "\t" << falsehits << "\t" << truemisses << "\t"
-            << falsemisses << std::endl;
+  LOG_F(1, "True hits: {}, false hits: {}, true misses: {}, false misses: {}",
+        truehits, falsehits, truemisses, falsemisses);
   objective = truehits / (truehits + falsehits);
   fitness = objective;
   // g->SetFitness(fitness);
@@ -193,13 +196,13 @@ void GPFFSpike::CreateRandomCtes(int nctes) {
     double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
-    std::cout << "c0 \t0.0" << std::endl;
-    std::cout << "c1 \t1.0" << std::endl;
+    LOG_F(1, "c0=0.0");
+    LOG_F(1, "c1=1.0");
     for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * std::pow(10, b);
-      std::cout << "c" << i + 2 << " \t" << c << std::endl;
+      LOG_F(1, "c{}={}", i + 2, c);
       ctes.push_back(c);
     }
   }

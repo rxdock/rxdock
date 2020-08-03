@@ -14,6 +14,8 @@
 #include "Atom.h"
 #include "Bond.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 HHSType::HHSType() { SetupTypeNames(); }
@@ -402,9 +404,8 @@ void HHS_Solvation::Partition(double d) {
          iter++) {
       if (Length2((*iter)->atom->GetCoords(), atom->GetCoords()) < dd) {
         m_prt.push_back(*iter);
-        // std::cout << "Partitioned " << (*iter)->atom->GetFullAtomName() << "
-        // - "
-        // << atom->GetFullAtomName() << std::endl;
+        LOG_F(1, "HHS_Solvation: Partitioned {} - {}",
+              (*iter)->atom->GetFullAtomName(), atom->GetFullAtomName());
       }
     }
   } else {

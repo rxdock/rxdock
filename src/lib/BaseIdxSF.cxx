@@ -13,6 +13,8 @@
 #include "BaseIdxSF.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -21,10 +23,8 @@ std::string BaseIdxSF::_GRIDSTEP("GRIDSTEP");
 std::string BaseIdxSF::_BORDER("BORDER");
 
 BaseIdxSF::BaseIdxSF() : m_gridStep(0.5), m_border(1.0) {
-#ifdef _DEBUG
-  std::cout << _CT << " default constructor" << std::endl;
-#endif //_DEBUG
-       // Add parameters
+  LOG_F(2, "BaseIdxSF default constructor");
+  // Add parameters
   AddParameter(_GRIDSTEP, m_gridStep);
   AddParameter(_BORDER, m_border);
   _RBTOBJECTCOUNTER_CONSTR_(_CT);

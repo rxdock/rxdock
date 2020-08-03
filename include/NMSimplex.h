@@ -17,9 +17,10 @@
 #define EIGEN_DONT_VECTORIZE
 #endif
 #include <Eigen/Core>
-#include <iostream>
 
 #include "NMState.h"
+
+#include <loguru.hpp>
 
 namespace rxdock {
 
@@ -81,10 +82,8 @@ private:
 
   void Display(Function &fun, const ParameterType &parameters) // const
   {
-#ifdef _DEBUG
-    std::cout << "Point: " << parameters << std::endl;
-    std::cout << "Value: " << fun(parameters) << std::endl;
-#endif // _DEBUG
+    LOG_F(1, "Point: {}", parameters);
+    LOG_F(1, "Value: {}", fun(parameters));
   }
 
   void FindBestWorstNearWorst(Function &fun, int &best, int &worst,
@@ -109,17 +108,12 @@ private:
         near_worst = i;
       }
     }
-#ifdef _DEBUG
-    std::cout << "Worst value is in position " << worst << "\t"
-              << m_polytopeValues(0, worst) << std::endl
-              << m_polytopePoints.col(worst) << std::endl;
-    std::cout << "Near-worst value is in position " << near_worst << "\t"
-              << m_polytopeValues(0, near_worst) << std::endl
-              << m_polytopePoints.col(near_worst) << std::endl;
-    std::cout << "Best value is in position " << best << "\t"
-              << m_polytopeValues(0, best) << std::endl
-              << m_polytopePoints.col(best) << std::endl;
-#endif // _DEBUG
+    LOG_F(1, "Worst value is in position {} {}\n{}", worst,
+          m_polytopeValues(0, worst), m_polytopePoints.col(worst));
+    LOG_F(1, "Near-worst value is in position {} {}\n{}", near_worst,
+          m_polytopeValues(0, near_worst), m_polytopePoints.col(near_worst));
+    LOG_F(1, "Best value is in position {} {}\n{}", best,
+          m_polytopeValues(0, best), m_polytopePoints.col(best));
   }
 
   ParameterType CreateNewParameters(const ParameterType &sum,
@@ -148,9 +142,7 @@ public:
     }
 
     while (m_criterion(m_state)) {
-#ifdef _DEBUG
-      std::cout << "Starting iteration " << m_state.iteration << std::endl;
-#endif // _DEBUG
+      LOG_F(1, "Starting iteration {}", m_state.iteration);
       int best, worst, near_worst;
       FindBestWorstNearWorst(fun, best, worst, near_worst);
       m_state.currentValue = m_polytopeValues(0, best);
@@ -166,18 +158,14 @@ public:
       ParameterType new_parameters = CreateNewParameters(
           m_polytopePoints.rowwise().sum(), m_polytopePoints.col(worst), -1);
       DataType new_value = fun(new_parameters);
-#ifdef _DEBUG
-      std::cout << "Trying normal" << std::endl;
+      LOG_F(1, "Trying normal");
       Display(fun, new_parameters);
-#endif // _DEBUG
       if (new_value < m_state.bestValue) {
         ParameterType expansion_parameters = CreateNewParameters(
             m_polytopePoints.rowwise().sum(), m_polytopePoints.col(worst), -2);
         DataType expansion_value = fun(expansion_parameters);
-#ifdef _DEBUG
-        std::cout << "Trying expansion" << std::endl;
+        LOG_F(1, "Trying expansion");
         Display(fun, expansion_parameters);
-#endif // _DEBUG
         if (expansion_value < m_state.bestValue) {
           m_state.currentValue = m_polytopeValues(0, worst) = expansion_value;
           m_state.currentParameters = m_polytopePoints.col(worst) =
@@ -192,22 +180,14 @@ public:
         ParameterType contraction_parameters = CreateNewParameters(
             m_polytopePoints.rowwise().sum(), m_polytopePoints.col(worst), -.5);
         DataType contraction_value = fun(contraction_parameters);
-#ifdef _DEBUG
-        std::cout << "Trying contraction" << std::endl;
+        LOG_F(1, "Trying contraction");
         Display(fun, contraction_parameters);
-#endif // _DEBUG
         if (contraction_value > new_value) {
-#ifdef _DEBUG
-          std::cout << "Contraction around lowest" << std::endl;
+          LOG_F(1, "Contraction around lowest");
           Display(fun, contraction_parameters);
-#endif // _DEBUG
           ParameterType best_parameters = m_polytopePoints.col(best);
-#ifdef _DEBUG
-          std::cout << "Difference from the best" << std::endl;
-          std::cout << ((m_polytopePoints.colwise() - best_parameters.array()) /
-                        2)
-                    << std::endl;
-#endif // _DEBUG
+          LOG_F(1, "Difference from the best {}",
+                ((m_polytopePoints.colwise() - best_parameters.array()) / 2));
           m_polytopePoints =
               ((m_polytopePoints.colwise() - best_parameters.array()) / 2)
                   .colwise() +
@@ -271,4 +251,4 @@ CreateSimplex(Function &fun, const Criterion &criterion) // const
 
 } // namespace rxdock
 
-#endif // _DEBUG /* _RBTNMSIMPLEX_H_ */
+#endif /* _RBTNMSIMPLEX_H_ */

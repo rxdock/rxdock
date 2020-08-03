@@ -12,6 +12,9 @@
 
 #include "PdbFileSource.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Constructors
@@ -77,42 +80,42 @@ void PdbFileSource::Parse() {
           if (length > 10) {
             std::istringstream istr((*fileIter).substr(6, 5).c_str());
             istr >> nAtomId;
-            // std::cout << "Atom ID      =" << nAtomId << std::endl;
+            LOG_F(1, "Atom ID      = {}", nAtomId);
           }
           if (length > 15) {
             std::istringstream istr((*fileIter).substr(12, 4).c_str());
             istr >> strAtomName;
-            // std::cout << "Atom name    =" << strAtomName << std::endl;
+            LOG_F(1, "Atom name    = {}", strAtomName);
           }
           if (length > 19) {
             std::istringstream istr((*fileIter).substr(17, 3).c_str());
             istr >> strSubunitName;
-            // std::cout << "Subunit name =" << strSubunitName << std::endl;
+            LOG_F(1, "Subunit name = {}", strSubunitName);
           }
           if (length > 21) {
             std::istringstream istr((*fileIter).substr(21, 1).c_str());
             istr >> strSegmentName;
-            // std::cout << "Segment name =" << strSegmentName << std::endl;
+            LOG_F(1, "Segment name = {}", strSegmentName);
           }
           if (length > 25) {
             std::istringstream istr((*fileIter).substr(22, 4).c_str());
             istr >> strSubunitId;
-            // std::cout << "Subunit ID   =" << strSubunitId << std::endl;
+            LOG_F(1, "Subunit ID   = {}", strSubunitId);
           }
           if (length > 53) {
             std::istringstream istr((*fileIter).substr(30, 24).c_str());
             istr >> coord.xyz(0) >> coord.xyz(1) >> coord.xyz(2);
-            // std::cout << "coord        =" << coord << std::endl;
+            LOG_F(1, "coord        = {}", coord);
           }
           if (length > 59) {
             std::istringstream istr((*fileIter).substr(54, 6).c_str());
             istr >> occupancy;
-            // std::cout << "occupancy    =" << occupancy << std::endl;
+            LOG_F(1, "occupancy    = {}", occupancy);
           }
           if (length > 65) {
             std::istringstream istr((*fileIter).substr(60, 6).c_str());
             istr >> tempFactor;
-            // std::cout << "tempFactor   =" << tempFactor << std::endl;
+            LOG_F(1, "tempFactor   = {}", tempFactor);
           }
 
           // Construct a new atom (constructor only accepts the 2D params)

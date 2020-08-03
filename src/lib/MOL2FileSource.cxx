@@ -20,6 +20,9 @@
 #include "MOL2FileSource.h"
 #include "ModelError.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 std::string MOL2FileSource::_CT("MOL2FileSource");
@@ -81,7 +84,7 @@ void MOL2FileSource::Parse(void) {
            lineIter < m_lineRecs.end(); ++lineIter) {
         // Ignore blank lines and comment lines
         if ((*lineIter).empty() || ((*lineIter).at(0) == '#')) {
-          // std::cout << "Skipping blank/comment record" << std::endl;
+          LOG_F(1, "Skipping blank/comment record");
           continue;
         }
         // check wether is it a record field delimiter (tag like:
@@ -92,11 +95,10 @@ void MOL2FileSource::Parse(void) {
           std::map<std::string, fcPtr>::const_iterator i =
               theSwitchBoard.find(theNewTag);
           if (i == theSwitchBoard.end()) {
-            // std::cout << "INFO Skipping unsupported record: " << theNewTag <<
-            // std::endl;
+            LOG_F(1, "Skipping unsupported record: {}", theNewTag);
             theCurrentParser = theSwitchBoard["UNSUPPORTED"];
           } else {
-            // std::cout << "Reading " << theNewTag << std::endl;
+            LOG_F(INFO, "Reading {}", theNewTag);
             theCurrentParser = theSwitchBoard[theNewTag];
           }
         } else { // call the parser
@@ -112,8 +114,8 @@ void MOL2FileSource::Parse(void) {
            iter != m_ssAtoms.end(); iter++) {
         int subst_id = iter->first;
         AtomList ssAtomList = iter->second;
-        // std::cout << "Found " << ssAtomList.size() << " atoms in
-        // SUBSTRUCTURE#" << subst_id << std::endl;
+        LOG_F(1, "Found {} atoms in SUBSTRUCTURE #{}", ssAtomList.size(),
+              subst_id);
         std::copy(ssAtomList.begin(), ssAtomList.end(),
                   std::back_inserter(m_atomList));
         MOL2SubstructureMapConstIter ssIter = m_ssInfo.find(subst_id);
@@ -129,23 +131,26 @@ void MOL2FileSource::Parse(void) {
             std::string atom_sID = (*aIter)->GetSubunitId();
             std::string atom_sName = (*aIter)->GetSubunitName();
             if ((sID != atom_sID) || (sName != atom_sName)) {
-              std::cout << _CT << ": WARNING Mismatch between SUBSTRUCTURE ("
-                        << sName << sID << ") and ATOM (" << atom_sName
-                        << atom_sID << ") info" << std::endl;
+              LOG_F(WARNING,
+                    "MOL2FileSource::Parse: Mismatch between SUBSTRUCTURE ({} "
+                    "{}) and ATOM ({} {}) info",
+                    sName, sID, atom_sName, atom_sID);
             }
             if ((atom_sName == "UNK") && (sub_type != "UNK")) {
-              std::cout << _CT << ": INFO Could use sub_type (" << sub_type
-                        << ") to update SubunitName for "
-                        << (*aIter)->GetFullAtomName() << std::endl;
+              LOG_F(INFO,
+                    "MOL2FileSource::Parse: Could use sub_type ({}) to update "
+                    "SubunitName for {}",
+                    sub_type, (*aIter)->GetFullAtomName());
             }
             (*aIter)->SetSegmentName(chain);
-            // std::cout << "Updating segment name to " << chain << " for " <<
-            // (*aIter)->GetFullAtomName() << std::endl;
+            LOG_F(1, "Updating segment name to {} for {}", chain,
+                  (*aIter)->GetFullAtomName());
           }
         } else {
-          // std::cout << _CT << ": INFO No SUBSTRUCTURE record found for
-          // subst_id="
-          // << subst_id << std::endl;
+          LOG_F(1,
+                "MOL2FileSource::Parse: No SUBSTRUCTURE record found for "
+                "subst_id={}",
+                subst_id);
         }
         // Set the group charges on a residue-by-residue basis
         // so we can check for presence or absence of all required atoms
@@ -154,20 +159,22 @@ void MOL2FileSource::Parse(void) {
       }
 
       if (m_atomList.size() != nAtoms) {
-        std::cout << _CT
-                  << ": WARNING Mismatch in #ATOMS read: Expected=" << nAtoms
-                  << "; Actual = " << m_atomList.size() << std::endl;
+        LOG_F(WARNING,
+              "MOL2FileSource::Parse: Mismatch in #ATOMS read: Expected = {}; "
+              "Actual = {}",
+              nAtoms, m_atomList.size());
       }
       if (m_bondList.size() != nBonds) {
-        std::cout << _CT
-                  << ": WARNING Mismatch in #BONDS read: Expected=" << nBonds
-                  << "; Actual = " << m_bondList.size() << std::endl;
+        LOG_F(WARNING,
+              "MOL2FileSource::Parse: Mismatch in #BONDS read: Expected = {}; "
+              "Actual = {}",
+              nBonds, m_bondList.size());
       }
       if (m_ssInfo.size() != nSubstructures) {
-        std::cout << _CT
-                  << ": WARNING Mismatch in #SUBSTRUCTURES read: Expected="
-                  << nSubstructures << "; Actual = " << m_ssInfo.size()
-                  << std::endl;
+        LOG_F(WARNING,
+              "MOL2FileSource::Parse: Mismatch in #SUBSTRUCTURES read: "
+              "Expected = {}; Actual = {}",
+              nSubstructures, m_ssInfo.size());
       }
 
       SetupAtomParams();
@@ -179,16 +186,15 @@ void MOL2FileSource::Parse(void) {
         TriposAtomType::eType tt_file = (*iter)->GetTriposType();
         TriposAtomType::eType tt_auto = m_typer(*iter, true);
         if (tt_file == TriposAtomType::UNDEFINED) {
-          std::cout << _CT << ": WARNING Undefined Tripos type for "
-                    << (*iter)->GetFullAtomName() << std::endl;
+          LOG_F(WARNING, "MOL2FileSource::Parse: Undefined Tripos type for {}",
+                (*iter)->GetFullAtomName());
         }
         if (tt_file != tt_auto) {
-#ifdef _DEBUG
-          std::cout << _CT << ": INFO Disagreement in Tripos atom types for "
-                    << (*iter)->GetFullAtomName();
-          std::cout << ": File=" << m_typer.Type2Str(tt_file)
-                    << "; Auto=" << m_typer.Type2Str(tt_auto) << std::endl;
-#endif //_DEBUG
+          LOG_F(INFO,
+                "MOL2FileSource::Parse: Disagreement in Tripos atom types "
+                "for {} File={}; Auto={}",
+                (*iter)->GetFullAtomName(), m_typer.Type2Str(tt_file),
+                m_typer.Type2Str(tt_auto));
         }
       }
 
@@ -223,10 +229,7 @@ void MOL2FileSource::Parse(void) {
 // it is the m_titleList that is set up here only
 //
 void MOL2FileSource::ParseRecordMOLECULE(const std::string &aLine) {
-#ifdef _DEBUG_
-  std::cout << "MOLECULE " << aLine << "   " << m_NL << std::endl;
-#endif // _DEBUG_
-
+  LOG_F(1, "MOLECULE {}\t{}", aLine, m_NL);
   switch (m_NL) {
   case 0:                         // first line
     m_titleList.push_back(aLine); // put it into title
@@ -284,17 +287,16 @@ void MOL2FileSource::ParseRecordATOM(const std::string &aLine) {
   // is to pick up the atomic number (can do this from the atom type string)
   if (tt == TriposAtomType::UNDEFINED) {
     std::string el = atom_type.substr(0, 2);
-    std::cout
-        << _CT
-        << ": INFO Attempting to identify element by 1st 2 chars of FFType "
-           "string: "
-        << el << std::endl;
+    LOG_F(INFO,
+          "MOL2FileSource::ParseRecordATOM: Attempting to identify element by "
+          "1st 2 chars of FFType string: {}",
+          el);
     if (m_spElementData->isElementNamePresent(el)) {
       atomic_number = m_spElementData->GetElementData(el).atomicNo;
-      std::cout << _CT << ": INFO Atomic number = " << atomic_number
-                << std::endl;
+      LOG_F(INFO, "MOL2FileSource::ParseRecordATOM: Atomic number = {}",
+            atomic_number);
     } else {
-      std::cout << _CT << ": INFO Element not found" << std::endl;
+      LOG_F(INFO, "MOL2FileSource::ParseRecordATOM: Element not found");
     }
   }
   ElementData elementData = m_spElementData->GetElementData(atomic_number);
@@ -315,7 +317,7 @@ void MOL2FileSource::ParseRecordATOM(const std::string &aLine) {
 
   m_atomList.push_back(newAtom);
   m_ssAtoms[subst_id].push_back(newAtom);
-  // std::cout << "ParseRecordATOM: " << *newAtom << std::endl;
+  LOG_F(1, "MOL2FileSource::ParseRecordATOM: {}", *newAtom);
 }
 
 void MOL2FileSource::ParseRecordBOND(const std::string &aLine) {
@@ -352,7 +354,7 @@ void MOL2FileSource::ParseRecordBOND(const std::string &aLine) {
   AtomPtr spAtom2(m_atomList[target_bond_id - 1]);
   BondPtr spBond(new Bond(bond_id, spAtom1, spAtom2, bond_order));
   m_bondList.push_back(spBond);
-  // std::cout << "ParseRecordBOND: " << *spBond << std::endl;
+  LOG_F(1, "MOL2FileSource::ParseRecordBOND: {}", *spBond);
 }
 
 void MOL2FileSource::ParseRecordSUBSTRUCTURE(const std::string &aLine) {
@@ -376,10 +378,8 @@ void MOL2FileSource::ParseRecordSUBSTRUCTURE(const std::string &aLine) {
 
   MOL2Substructure ss(subst_name, root_atom, chain, sub_type);
   m_ssInfo[subst_id] = ss;
-  // std::cout << "ParseRecordSUBSTRUCTURE: " << subst_id << "," << subst_name
-  // << ","
-  // << root_atom << ","
-  //     << chain << "," << sub_type << std::endl;
+  LOG_F(1, "MOL2FileSource::ParseRecordSUBSTRUCTURE: {},{},{},{},{}", subst_id,
+        subst_name, root_atom, chain, sub_type);
 }
 
 void MOL2FileSource::ParseRecordUNSUPPORTED(const std::string &aLine) {
@@ -396,8 +396,7 @@ std::string MOL2FileSource::GetMOL2Tag(const std::string &aLine) {
     Tokenize(aLine, tokens);
     // get rid of the "@<TRIPOS>" part
     if (tokens[0].size() <= _TRIPOS_DELIM_SIZE) {
-      std::cout << "Corrupted MOL2: no tag identifier after @<TRIPOS>."
-                << std::endl;
+      LOG_F(ERROR, "Corrupted MOL2: no tag identifier after @<TRIPOS>.");
       // why the heck is a segfault here?
       throw FileParseError(
           _WHERE_, "Corrupted MOL2: no tag identifier after @<TRIPOS>.");
@@ -426,11 +425,12 @@ void MOL2FileSource::ParseCountFields(const std::string &aLine) {
     nFeatures = std::atoi(tokens[3].c_str());
   if (tokens.size() > 4) // substructures
     nSets = std::atoi(tokens[4].c_str());
-  // std::cout << "nAtoms " << nAtoms << std::endl;
-  // std::cout << "nBonds " << nBonds << std::endl;
-  // std::cout << "nSubstructures " << nSubstructures << std::endl;
-  // std::cout << "nFeatures " << nFeatures << std::endl;
-  // std::cout << "nSets "<< nSets << std::endl;
+  LOG_F(1, "MOL2FileSource::ParseCountFields: nAtoms {}", nAtoms);
+  LOG_F(1, "MOL2FileSource::ParseCountFields: nBonds {}", nBonds);
+  LOG_F(1, "MOL2FileSource::ParseCountFields: nSubstructures {}",
+        nSubstructures);
+  LOG_F(1, "MOL2FileSource::ParseCountFields: nFeatures {}", nFeatures);
+  LOG_F(1, "MOL2FileSource::ParseCountFields: nSets {}", nSets);
 }
 
 // Correct all the atom attributes that could not be set explicitly when
@@ -442,8 +442,8 @@ void MOL2FileSource::SetupAtomParams() {
     // Quick fix: remove all "Lone Pair" atoms as well
     AtomList lpList = GetAtomListWithPredicate(m_atomList, isFFType_eq("LP"));
     for (AtomListIter iter = lpList.begin(); iter != lpList.end(); iter++) {
-      // std::cout << "INFO Removing Lone Pair " << (*iter)->GetFullAtomName()
-      // << std::endl;
+      LOG_F(1, "MOL2FileSource::SetupAtomParams: Removing Lone Pair {}",
+            (*iter)->GetFullAtomName());
       RemoveAtom(*iter);
     }
     RenumberAtomsAndBonds();
@@ -480,17 +480,20 @@ void MOL2FileSource::FixImplicitHydrogenCount() {
     if ((hyb == Atom::AROM) && (nImplH > 0)) {
       int nExplH = (*iter)->GetCoordinationNumber(1);
       if ((nImplH + nExplH) > 1) {
-        std::cout << _CT << ": INFO Too few bonds detected to aromatic carbon "
-                  << (*iter)->GetFullAtomName() << "; #hydrogens capped at 1"
-                  << std::endl;
+        LOG_F(INFO,
+              "MOL2FileSource::FixImplicitHydrogenCount: Too few bonds "
+              "detected to aromatic carbon {}; #hydrogens capped at 1",
+              (*iter)->GetFullAtomName());
         nImplH = 1 - nExplH;
       }
     }
     if (nImplH > 0) {
       (*iter)->SetNumImplicitHydrogens(nImplH);
     } else if (nImplH < 0) {
-      std::cout << _CT << ": INFO Too many bonds detected to "
-                << (*iter)->GetFullAtomName() << std::endl;
+      LOG_F(INFO,
+            "MOL2FileSource::FixImplicitHydrogenCount: Too many bonds detected "
+            "to {}",
+            (*iter)->GetFullAtomName());
     }
   }
 }
@@ -511,8 +514,7 @@ void MOL2FileSource::FixHybridState() {
       bondedAtomList = GetBondedAtomList(*iter);
       if (FindAtomInList(bondedAtomList, isPiAtom()) != bondedAtomList.end()) {
         (*iter)->SetHybridState(Atom::TRI);
-        // std::cout << "Changing " << (*iter)->GetFullAtomName() << " from SP3
-        // to TRI" << std::endl;
+        LOG_F(1, "Changing {} from SP3 to TRI", (*iter)->GetFullAtomName());
       }
       break;
     default:
@@ -553,10 +555,9 @@ void MOL2FileSource::FixTriposTypes() {
         break;
       }
       if (xt != t) {
-        //     std::cout << "Correcting Tripos type for " <<
-        //(*iter)->GetFullAtomName() << " from "
-        //     << m_typer.Type2Str(t) << " to " << m_typer.Type2Str(xt) <<
-        //     std::endl;
+        LOG_F(1, "Correcting Tripos type for {} from {} to {}",
+              (*iter)->GetFullAtomName(), m_typer.Type2Str(t),
+              m_typer.Type2Str(xt));
         (*iter)->SetTriposType(xt);
       }
     }
@@ -566,10 +567,9 @@ void MOL2FileSource::FixTriposTypes() {
     TriposAtomType::eType t = (*iter)->GetTriposType();
     TriposAtomType::eType xt = TriposAtomType::H_P;
     if (xt != t) {
-      // std::cout << "Correcting Tripos type for " <<
-      // (*iter)->GetFullAtomName() << " from "
-      //   << m_typer.Type2Str(t) << " to " << m_typer.Type2Str(xt) <<
-      //   std::endl;
+      LOG_F(1, "Correcting Tripos type for {} from {} to {}",
+            (*iter)->GetFullAtomName(), m_typer.Type2Str(t),
+            m_typer.Type2Str(xt));
       (*iter)->SetTriposType(xt);
     }
   }
@@ -590,8 +590,10 @@ void MOL2FileSource::RemoveNonPolarHydrogens() {
       }
       // Adjust number of implicit hydrogens
       cIter->SetNumImplicitHydrogens(cIter->GetNumImplicitHydrogens() + nH);
-      // std::cout << "Removing " << nH << " hydrogens from " <<
-      // (*cIter)->GetFullAtomName() << std::endl;
+      LOG_F(1,
+            "MOL2FileSource::RemoveNonPolarHydrogens: Removing {} hydrogens "
+            "from {}",
+            nH, cIter->GetFullAtomName());
     }
   }
 
@@ -599,8 +601,10 @@ void MOL2FileSource::RemoveNonPolarHydrogens() {
   AtomList hList = GetAtomListWithPredicate(m_atomList, isAtomicNo_eq(1));
   hList = GetAtomListWithPredicate(hList, isCoordinationNumber_eq(0));
   for (const auto &hIter : hList) {
-    std::cout << _CT << ": INFO Removing orphan hydrogen "
-              << hIter->GetFullAtomName() << std::endl;
+    LOG_F(
+        1,
+        "MOL2FileSource::RemoveNonPolarHydrogens: Removing orphan hydrogen {}",
+        hIter->GetFullAtomName());
     RemoveAtom(hIter);
   }
 }
@@ -641,11 +645,8 @@ void MOL2FileSource::SetupVdWRadii() {
     }
     // Finally we can set the radius
     iter->SetVdwRadius(vdwRadius);
-#ifdef _DEBUG
-    // std::cout << (*iter)->GetFullAtomName() << ": #H=" << nImplH
-    //<< "; vdwR=" << (*iter)->GetVdwRadius()
-    //<< "; mass=" << (*iter)->GetAtomicMass() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "{}: #H={}; vdwR={}; mass={}", iter->GetFullAtomName(), nImplH,
+          iter->GetVdwRadius(), iter->GetAtomicMass());
   }
 }
 

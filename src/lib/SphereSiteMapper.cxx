@@ -13,6 +13,9 @@
 #include "SphereSiteMapper.h"
 #include "FFTGrid.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -30,6 +33,7 @@ std::string SphereSiteMapper::_MAX_CAVITIES("MAX_CAVITIES");
 
 SphereSiteMapper::SphereSiteMapper(const std::string &strName)
     : SiteMapper(_CT, strName) {
+  LOG_F(2, "SphereSiteMapper parameterised constructor");
   // Add parameters
   AddParameter(_VOL_INCR, 0.0);
   AddParameter(_SMALL_SPHERE, 1.5);
@@ -39,16 +43,11 @@ SphereSiteMapper::SphereSiteMapper(const std::string &strName)
   AddParameter(_RADIUS, 10.0);
   AddParameter(_MIN_VOLUME, 100.0); // Min cavity volume in A^3
   AddParameter(_MAX_CAVITIES, 99);  // Max number of cavities to return
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 SphereSiteMapper::~SphereSiteMapper() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "SphereSiteMapper destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -66,7 +65,6 @@ CavityList SphereSiteMapper::operator()() {
   double radius = GetParameter(_RADIUS);
   double minVol = GetParameter(_MIN_VOLUME);
   unsigned int maxCavities = GetParameter(_MAX_CAVITIES);
-  int iTrace = GetTrace();
 
   // Grid values
   const double recVal = -1.0;  // Receptor volume
@@ -104,15 +102,13 @@ CavityList SphereSiteMapper::operator()() {
   spReceptorGrid->SetAllValues(excVal);
   spReceptorGrid->SetSphere(center, radius + largeR, borVal, true);
   spReceptorGrid->SetSphere(center, radius, 0.0, true);
-  if (iTrace > 1) {
-    std::cout << std::endl << "INITIALISATION" << std::endl;
-    std::cout << "Center=" << center << std::endl;
-    std::cout << "Radius=" << radius << std::endl;
-    std::cout << "Border=" << border << std::endl;
-    std::cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << std::endl;
-    std::cout << "N(border)=" << spReceptorGrid->Count(borVal) << std::endl;
-    std::cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << std::endl;
-  }
+  LOG_F(INFO, "INITIALISATION");
+  LOG_F(INFO, "Center={}", center);
+  LOG_F(INFO, "Radius={}", radius);
+  LOG_F(INFO, "Border={}", border);
+  LOG_F(INFO, "N(excluded)={}", spReceptorGrid->Count(excVal));
+  LOG_F(INFO, "N(border)={}", spReceptorGrid->Count(borVal));
+  LOG_F(INFO, "N(unallocated)={}", spReceptorGrid->Count(0.0));
 
   // Set all vdW volume grid points to the value -1
   // Add increment to all vdw radii
@@ -124,41 +120,31 @@ CavityList SphereSiteMapper::operator()() {
     double r = (**iter).GetVdwRadius();
     spReceptorGrid->SetSphere((**iter).GetCoords(), r + rVolIncr, recVal, true);
   }
-
-  if (iTrace > 1) {
-    std::cout << std::endl << "EXCLUDE RECEPTOR VOLUME" << std::endl;
-    std::cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << std::endl;
-    std::cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << std::endl;
-    std::cout << "N(border)=" << spReceptorGrid->Count(borVal) << std::endl;
-    std::cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << std::endl;
-  }
+  LOG_F(INFO, "EXCLUDE RECEPTOR VOLUME");
+  LOG_F(INFO, "N(receptor)={}", spReceptorGrid->Count(recVal));
+  LOG_F(INFO, "N(excluded)={}", spReceptorGrid->Count(excVal));
+  LOG_F(INFO, "N(border)={}", spReceptorGrid->Count(borVal));
+  LOG_F(INFO, "N(unallocated)={}", spReceptorGrid->Count(0.0));
 
   // Now map the solvent accessible regions with a large sphere
   // We first map the border region, which will also sweep out and exclude
   // regions of the user-specified inner region This is the first key step for
   // preventing edge effects.
   spReceptorGrid->SetAccessible(largeR, borVal, recVal, larVal, false);
-  if (iTrace > 1) {
-    std::cout << std::endl
-              << "EXCLUDE LARGE SPHERE (Border region)" << std::endl;
-    std::cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << std::endl;
-    std::cout << "N(large sphere)=" << spReceptorGrid->Count(larVal)
-              << std::endl;
-    std::cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << std::endl;
-    std::cout << "N(border)=" << spReceptorGrid->Count(borVal) << std::endl;
-    std::cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << std::endl;
-  }
+  LOG_F(INFO, "EXCLUDE LARGE SPHERE (Border region)");
+  LOG_F(INFO, "N(receptor)={}", spReceptorGrid->Count(recVal));
+  LOG_F(INFO, "N(large sphere)={}", spReceptorGrid->Count(larVal));
+  LOG_F(INFO, "N(excluded)={}", spReceptorGrid->Count(excVal));
+  LOG_F(INFO, "N(border)={}", spReceptorGrid->Count(borVal));
+  LOG_F(INFO, "N(unallocated)={}", spReceptorGrid->Count(0.0));
+
   spReceptorGrid->SetAccessible(largeR, 0.0, recVal, larVal, false);
-  if (iTrace > 1) {
-    std::cout << std::endl
-              << "EXCLUDE LARGE SPHERE (Unallocated inner region)" << std::endl;
-    std::cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << std::endl;
-    std::cout << "N(large sphere)=" << spReceptorGrid->Count(larVal)
-              << std::endl;
-    std::cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << std::endl;
-    std::cout << "N(border)=" << spReceptorGrid->Count(borVal) << std::endl;
-    std::cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << std::endl;
-  }
+  LOG_F(INFO, "EXCLUDE LARGE SPHERE (Unallocated inner region)");
+  LOG_F(INFO, "N(receptor)={}", spReceptorGrid->Count(recVal));
+  LOG_F(INFO, "N(large sphere)={}", spReceptorGrid->Count(larVal));
+  LOG_F(INFO, "N(excluded)={}", spReceptorGrid->Count(excVal));
+  LOG_F(INFO, "N(border)={}", spReceptorGrid->Count(borVal));
+  LOG_F(INFO, "N(unallocated)={}", spReceptorGrid->Count(0.0));
 
   // Finally with a smaller radius. This is the region we want to search for
   // peaks in, so set to a positive value But first we need to replace all
@@ -168,18 +154,14 @@ CavityList SphereSiteMapper::operator()() {
   spReceptorGrid->ReplaceValue(excVal, recVal);
   spReceptorGrid->ReplaceValue(larVal, recVal);
   spReceptorGrid->SetAccessible(smallR, 0.0, recVal, cavVal, false);
-
-  if (iTrace > 1) {
-    std::cout << std::endl << "FINAL CAVITIES" << std::endl;
-    std::cout << "N(receptor)=" << spReceptorGrid->Count(recVal) << std::endl;
-    std::cout << "N(large sphere)=" << spReceptorGrid->Count(larVal)
-              << std::endl;
-    std::cout << "N(excluded)=" << spReceptorGrid->Count(excVal) << std::endl;
-    std::cout << "N(border)=" << spReceptorGrid->Count(borVal) << std::endl;
-    std::cout << "N(unallocated)=" << spReceptorGrid->Count(0.0) << std::endl;
-    std::cout << "N(cavities)=" << spReceptorGrid->Count(cavVal) << std::endl;
-    std::cout << std::endl << "Min cavity size=" << minSize << std::endl;
-  }
+  LOG_F(INFO, "FINAL CAVITIES");
+  LOG_F(INFO, "N(receptor)={}", spReceptorGrid->Count(recVal));
+  LOG_F(INFO, "N(large sphere)={}", spReceptorGrid->Count(larVal));
+  LOG_F(INFO, "N(excluded)={}", spReceptorGrid->Count(excVal));
+  LOG_F(INFO, "N(border)={}", spReceptorGrid->Count(borVal));
+  LOG_F(INFO, "N(unallocated)={}", spReceptorGrid->Count(0.0));
+  LOG_F(INFO, "N(cavities)={}", spReceptorGrid->Count(cavVal));
+  LOG_F(INFO, "Min cavity size={}", minSize);
 
   // Find the contiguous regions of cavity grid points
   FFTPeakMap peakMap =
@@ -197,20 +179,15 @@ CavityList SphereSiteMapper::operator()() {
   // Sort cavities by volume
   std::sort(cavityList.begin(), cavityList.end(), CavityPtrCmp_Volume());
 
-  if (iTrace > 0) {
-    for (CavityListConstIter cIter = cavityList.begin();
-         cIter != cavityList.end(); cIter++) {
-      std::cout << (**cIter) << std::endl;
-    }
+  for (CavityListConstIter cIter = cavityList.begin();
+       cIter != cavityList.end(); cIter++) {
+    LOG_F(1, "{}", (**cIter));
   }
 
   // Limit the number of cavities if necessary
   if (cavityList.size() > maxCavities) {
-    if (iTrace > 0) {
-      std::cout << std::endl
-                << cavityList.size() << " cavities identified - limit to "
-                << maxCavities << " largest cavities" << std::endl;
-    }
+    LOG_F(INFO, "{} cavities identified - limit to {} largest cavities",
+          cavityList.size(), maxCavities);
     cavityList.erase(cavityList.begin() + maxCavities, cavityList.end());
   }
 

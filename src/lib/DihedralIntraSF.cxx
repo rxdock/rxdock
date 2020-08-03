@@ -12,6 +12,8 @@
 
 #include "DihedralIntraSF.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -19,17 +21,13 @@ std::string DihedralIntraSF::_CT("DihedralIntraSF");
 
 DihedralIntraSF::DihedralIntraSF(const std::string &strName)
     : BaseSF(_CT, strName) {
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "DihedralIntraSF parameterised constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 DihedralIntraSF::~DihedralIntraSF() {
   ClearModel();
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "DihedralIntraSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 

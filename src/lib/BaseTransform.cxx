@@ -14,6 +14,8 @@
 #include "BaseSF.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -24,17 +26,13 @@ std::string BaseTransform::_CT("BaseTransform");
 BaseTransform::BaseTransform(const std::string &strClass,
                              const std::string &strName)
     : BaseObject(strClass, strName), m_parent(nullptr) {
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "BaseTransform parameterised constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 BaseTransform::~BaseTransform() {
+  LOG_F(2, "BaseTransform destructor");
   Orphan(); // Remove object from parent aggregate
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -82,10 +80,8 @@ BaseTransform *BaseTransform::GetParentTransform() const { return m_parent; }
 // Force removal from the parent aggregate
 void BaseTransform::Orphan() {
   if (m_parent) {
-#ifdef _DEBUG
-    std::cout << "BaseTransform::Orphan(): Removing " << GetName() << " from "
-              << m_parent->GetName() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "BaseTransform::Orphan: Removing {} from {}", GetName(),
+          m_parent->GetName());
     m_parent->Remove(this);
   }
 }

@@ -13,6 +13,8 @@
 #include "AromIdxSF.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -28,6 +30,7 @@ std::string AromIdxSF::_THRESHOLD("THRESHOLD");
 AromIdxSF::AromIdxSF(const std::string &strName)
     : BaseSF(_CT, strName), m_R12(3.5), m_DR12Min(0.25), m_DR12Max(0.6),
       m_DAMin(20.0), m_DAMax(30.0), m_nArom(0), m_nGuan(0), m_threshold(0.25) {
+  LOG_F(2, "AromIdxSF parameterised constructor");
   // Add parameters
   AddParameter(_INCR, 5.0);
   AddParameter(_R12, m_R12);
@@ -36,18 +39,13 @@ AromIdxSF::AromIdxSF(const std::string &strName)
   AddParameter(_DAMIN, m_DAMin);
   AddParameter(_DAMAX, m_DAMax);
   AddParameter(_THRESHOLD, m_threshold);
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 AromIdxSF::~AromIdxSF() {
+  LOG_F(2, "AromIdxSF destructor");
   ClearReceptor();
   ClearLigand();
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -130,7 +128,7 @@ void AromIdxSF::SetupReceptor() {
     }
 
     for (int i = 1; i <= nCoords; i++) {
-      std::cout << _CT << ": Indexing receptor coords # " << i << std::endl;
+      LOG_F(1, "AromIdxSF setup indexing receptor coords #{}", i);
       GetReceptor()->RevertCoords(i);
       for (InteractionCenterListConstIter iter = m_recepAromList.begin();
            iter != m_recepAromList.end(); iter++) {

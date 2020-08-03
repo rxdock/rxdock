@@ -13,6 +13,8 @@
 #ifndef _RBTNMCRITERIA_H_
 #define _RBTNMCRITERIA_H_
 
+#include <loguru.hpp>
+
 #include <cmath>
 #include <limits>
 
@@ -29,9 +31,7 @@ public:
 
   template <class State> bool operator()(const State &state) {
     bool result = state.iteration < m_maxIterations;
-#ifdef _DEBUG
-    std::cout << "IterationCriteria: " << result << std::endl;
-#endif // _DEBUG
+    LOG_F(1, "IterationCriteria: {}", result);
     return result;
   }
 };
@@ -49,9 +49,7 @@ public:
             (std::abs(state.currentValue) + std::abs(state.formerValue) +
              std::numeric_limits<DataType>::epsilon()) >
         m_ftol;
-#ifdef _DEBUG
-    std::cout << "RelativeValueCriterion: " << result << std::endl;
-#endif // _DEBUG
+    LOG_F(1, "RelativeValueCriterion: {}", result);
     return result;
   }
 };

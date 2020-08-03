@@ -13,6 +13,9 @@
 #include "TetherSF.h"
 #include "MdlFileSource.h"
 #include "WorkSpace.h"
+
+#include <loguru.hpp>
+
 #include <sstream>
 
 using namespace rxdock;
@@ -24,18 +27,14 @@ std::string TetherSF::_REFERENCE_FILE("REFERENCE_FILE");
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second
 TetherSF::TetherSF(const std::string &strName) : BaseSF(_CT, strName) {
+  LOG_F(2, "TetherSF parameterised constructor");
   // Add parameters It gets the right name in SetupReceptor
   AddParameter(_REFERENCE_FILE, "_reference.sd");
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 TetherSF::~TetherSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "TetherSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -73,6 +72,7 @@ void TetherSF::SetupReceptor() {
 }
 
 void TetherSF::SetupLigand() {
+  LOG_F(2, "TetherSF::SetupLigand");
   m_ligAtomList.clear();
   if (GetLigand().Null())
     return;
@@ -86,10 +86,7 @@ void TetherSF::SetupLigand() {
                       "should be the same than in the reference SD file");
 
   m_ligAtomList = GetLigand()->GetAtomList();
-#ifdef _DEBUG
-  std::cout << _CT << "::SetupLigand(): #ATOMS = " << m_ligAtomList.size()
-            << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "#atoms = {}", m_ligAtomList.size());
 }
 
 void TetherSF::SetupScore() {

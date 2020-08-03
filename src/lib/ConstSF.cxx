@@ -12,6 +12,8 @@
 
 #include "ConstSF.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data member for class type
@@ -20,17 +22,13 @@ std::string ConstSF::_SOLVENT_PENALTY("SOLVENT_PENALTY");
 
 ConstSF::ConstSF(const std::string &strName)
     : BaseSF(_CT, strName), m_solventPenalty(0.5) {
+  LOG_F(2, "ConstSF parameterised constructor");
   AddParameter(_SOLVENT_PENALTY, m_solventPenalty);
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 ConstSF::~ConstSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "ConstSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 

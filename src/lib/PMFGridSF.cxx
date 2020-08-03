@@ -14,6 +14,8 @@
 #include "FileError.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -24,21 +26,19 @@ std::string PMFGridSF::_SMOOTHED("SMOOTHED");
 
 PMFGridSF::PMFGridSF(const std::string &strName)
     : BaseSF(_CT, strName), m_bSmoothed(true) {
+  LOG_F(2, "PMFGridSF parameterised constructor");
   AddParameter(_GRID, ".grd");
   AddParameter(_SMOOTHED, m_bSmoothed);
-
-  std::cout << _CT << " parameterised constructor" << std::endl;
-
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 PMFGridSF::~PMFGridSF() {
-  std::cout << _CT << " destructor" << std::endl;
+  LOG_F(2, "PMFGridSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
 void PMFGridSF::SetupReceptor() {
-  std::cout << _CT << "::SetupReceptor()" << std::endl;
+  LOG_F(2, "PMFGridSF::SetupReceptor");
   theGrids.clear();
 
   if (GetReceptor().Null())
@@ -48,7 +48,7 @@ void PMFGridSF::SetupReceptor() {
 
   std::string strSuffix = GetParameter(_GRID);
   std::string strFile = GetDataFileName("data/grids", strWSName + strSuffix);
-  std::cout << _CT << " Reading PMF grid from " << strFile << std::endl;
+  LOG_F(INFO, "PMFGridSF::SetupReceptor: Reading PMF grid from {}", strFile);
   std::ifstream file(strFile.c_str());
   json pmfGrids;
   file >> pmfGrids;
@@ -64,10 +64,7 @@ void PMFGridSF::SetupLigand() {
   // get the  non-H atoms only
   theLigandList = GetAtomListWithPredicate(GetLigand()->GetAtomList(),
                                            std::not1(isAtomicNo_eq(1)));
-#ifdef _DEBUG
-  std::cout << _CT << "::SetupLigand(): #ATOMS = " << theLigandList.size()
-            << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "PMFGridSF::SetupLigand: #ATOMS = {}", theLigandList.size());
 }
 
 double PMFGridSF::RawScore() const {
@@ -95,27 +92,20 @@ double PMFGridSF::RawScore() const {
 }
 
 void PMFGridSF::ReadGrids(json pmfGrids) {
-  std::cout << "**************************************************************"
-            << std::endl;
-  std::cout << "                    Reading grid..." << std::endl;
-  std::cout << "**************************************************************"
-            << std::endl;
-  std::cout << _CT << "::ReadGrids(std::istream&)" << std::endl;
+  LOG_F(2, "PMFGridSF::ReadGrids");
   theGrids.clear();
 
   // Now read number of grids
-  std::cout << "Reading " << pmfGrids.size() << " grids..." << std::endl;
+  LOG_F(INFO, "Reading {} grids...", pmfGrids.size());
   theGrids.reserve(pmfGrids.size());
   for (int i = CF; i <= pmfGrids.size(); i++) {
-    std::cout << "Grid# " << i << " ";
     // Read type
     std::string strType;
     pmfGrids.at(i).at("pmf-type").get_to(strType);
     PMFType theType = PMFStr2Type(strType);
-    std::cout << "type " << strType;
     // Now we can read the grid
     RealGridPtr spGrid(new RealGrid(pmfGrids.at(i).at("real-grid")));
-    std::cout << " done" << std::endl;
+    LOG_F(INFO, "Grid# {} type {} done", i, strType);
     theGrids.push_back(spGrid);
   }
 }

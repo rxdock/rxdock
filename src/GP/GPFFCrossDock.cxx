@@ -14,6 +14,9 @@
 #include "Debug.h"
 #include "GPGenome.h"
 #include "GPParser.h"
+
+#include <loguru.hpp>
+
 #include <fstream>
 #include <sstream>
 
@@ -63,7 +66,7 @@ void GPFFCrossDock::ReadTables(std::istream &in, ReturnTypeArray &it,
     i++;
     in >> recordn;
   }
-  std::cout << "Read: " << inputTable[0][0] << std::endl;
+  LOG_F(1, "Read: {}", inputTable[0][0]);
   it = inputTable;
   sft = SFTable;
 }
@@ -71,7 +74,7 @@ void GPFFCrossDock::ReadTables(std::istream &in, ReturnTypeArray &it,
 double GPFFCrossDock::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
                                        ReturnTypeArray &sft, bool function) {
   if (function) {
-    std::cout << "Error, no function possible with Cross Docking\n";
+    LOG_F(ERROR, "No function possible with Cross Docking");
     std::exit(1);
   }
   GPParser p(g->GetNIP(), g->GetNIF(), g->GetNN(), g->GetNO());
@@ -92,14 +95,14 @@ double GPFFCrossDock::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
     ntm = 0;
     nm = 0;
     while (hit > hitlimit) {
-      /*            std::cout << "input  : ";
-                  for (Int j = 0 ; j < inputs.size() ; j++)
-                      std::cout << *(inputs[j]) << " ";
-                  std::cout << std::endl; */
+      LOG_F(1, "input:");
+      for (unsigned int j = 0; j < inputs.size(); j++) {
+        LOG_F(1, "{}", *(inputs[j]));
+      }
       GPChromosomePtr c = g->GetChrom();
       o = p.Parse(c, inputs);
       c->Clear();
-      // std::cout << *(o[0]) << std::endl;
+      LOG_F(1, "parsed: {}", *(o[0]));
       if (*(o[0]) >= hitlimit)
         ntm++;
       nm++;
@@ -152,14 +155,14 @@ double GPFFCrossDock::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
     ntm = 0;
     nm = 0;
     while (hit > hitlimit) {
-      /*            std::cout << "input  : ";
-                  for (Int j = 0 ; j < inputs.size() ; j++)
-                      std::cout << *(inputs[j]) << " ";
-                  std::cout << std::endl; */
+      LOG_F(1, "input:");
+      for (unsigned int j = 0; j < inputs.size(); j++) {
+        LOG_F(1, "{}", *(inputs[j]));
+      }
       GPChromosomePtr c = g->GetChrom();
       o = p.Parse(c, inputs);
       c->Clear();
-      // std::cout << *(o[0]) << std::endl;
+      LOG_F(1, "parsed: {}", *(o[0]));
       double limit = 0.0;
       if (*(o[0]) >= limit)
         ntm++;
@@ -182,7 +185,7 @@ double GPFFCrossDock::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
     i++;
   }
   // objective value always an increasing function
-  std::cout << good << "\t" << neutral << "\t" << bad << std::endl;
+  LOG_F(1, "good={}, neutral={}, bad={}", good, neutral, bad);
   objective = good / (good + bad);
   fitness = objective;
   // g->SetFitness(fitness);
@@ -198,13 +201,13 @@ void GPFFCrossDock::CreateRandomCtes(int nctes) {
     double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
-    std::cout << "c0 \t0.0" << std::endl;
-    std::cout << "c1 \t1.0" << std::endl;
+    LOG_F(1, "c0=0.0");
+    LOG_F(1, "c1=1.0");
     for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * std::pow(10, b);
-      std::cout << "c" << i + 2 << " \t" << c << std::endl;
+      LOG_F(1, "c{}={}", i + 2, c);
       ctes.push_back(c);
     }
   }

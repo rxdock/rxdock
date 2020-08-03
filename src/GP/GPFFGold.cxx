@@ -14,6 +14,9 @@
 #include "Debug.h"
 #include "GPGenome.h"
 #include "GPParser.h"
+
+#include <loguru.hpp>
+
 #include <fstream>
 #include <sstream>
 
@@ -71,7 +74,7 @@ double GPFFGold::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
     double rmsd = *(SFValues[1]);
     GPChromosomePtr c(g->GetChrom());
     o = p.Parse(c, inputs);
-    //        std::cout << *(o[0]) << std::endl;
+    LOG_F(1, "parsed: ", *(o[0]));
     for (int j = 0; j < GPGenome::GetNO(); j++)
       if (function) {
         double d = 2.5 * rmsd + scoreM - *(o[j]);
@@ -118,13 +121,13 @@ double GPFFGold::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
     ReturnTypeList SFValues = sft[i];
     double scoreM = *(SFValues[0]);
     double rmsd = *(SFValues[1]);
-    /*        std::cout << "input  : ";
-            for (Int j = 0 ; j < inputs.size() ; j++)
-                std::cout << *(inputs[j]) << " ";
-            std::cout << std::endl; */
+    LOG_F(1, "inputs:");
+    for (unsigned int j = 0; j < inputs.size(); j++) {
+      LOG_F(1, "{}", *(inputs[j]));
+    }
     GPChromosomePtr c = g->GetChrom();
     o = p.Parse(c, inputs);
-    //        std::cout << *(o[0]) << std::endl;
+    LOG_F(1, "parsed: ", *(o[0]));
     double limit = function ? scoreM + 5 : 0.0;
     for (int j = 0; j < GPGenome::GetNO(); j++) {
       if (rmsd < hitlimit)
@@ -144,8 +147,8 @@ double GPFFGold::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
     c->Clear();
   }
   // objective value always an increasing function
-  std::cout << truehits << "\t" << falsehits << "\t" << truemisses << "\t"
-            << falsemisses << std::endl;
+  LOG_F(1, "True hits: {}, false hits: {}, true misses: {}, false misses: {}",
+        truehits, falsehits, truemisses, falsemisses);
   objective = truehits / (truehits + falsehits);
   fitness = objective;
   g->SetFitness(fitness);

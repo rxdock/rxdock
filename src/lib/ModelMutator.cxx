@@ -14,21 +14,11 @@
 #include "AtomFuncs.h"
 #include "Model.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
-
-#ifdef _DEBUG
-namespace Tmp {
-void PrintAtomList(AtomRListConstIter i1, AtomRListConstIter i2) {
-  for (AtomRListConstIter iter = i1; iter != i2; iter++) {
-    std::cout << "\t" << (*iter)->GetFullAtomName() << " ("
-              << (*iter)->GetAtomId() << ")";
-  }
-  std::cout << std::endl;
-}
-} // namespace Tmp
-#endif //_DEBUG
 
 ////////////////////////////////////////
 // Constructors/destructors
@@ -101,8 +91,7 @@ void ModelMutator::Setup() {
                         : GetNumSelectedAtomsInList(m_tetheredAtoms);
     int nHalf = (nTethered == 0) ? (nAtoms - 2) / 2 : (nTethered - 2) / 2;
     if (nSelected > nHalf) {
-      // std::cout << "Over half the molecule selected: " << nSelected << "
-      // atoms" << std::endl;
+      LOG_F(1, "Over half the molecule selected: {} atoms", nSelected);
       InvertAtomSelectionFlags(m_pModel->m_atomList);
       pAtom2->SetSelectionFlag(false);
       pAtom3->SetSelectionFlag(false);
@@ -110,24 +99,19 @@ void ModelMutator::Setup() {
       m_dih2Atoms.push_back(pAtom3);
       m_dih3Atoms.push_back(pAtom2);
       m_dih4Atoms.push_back(bondedAtoms2.front());
-      // std::cout << "Inverted: " <<
-      // GetNumSelectedAtoms(m_pModel->m_atomList)
-      // << " atoms now selected" << std::endl; std::cout << "Dihedral spec: "
-      // << bondedAtoms3.front()->GetName() << "\t" << pAtom3->GetName()
-      // <<
-      // "\t"
-      //	   << pAtom2->GetName() << "\t" <<
-      // bondedAtoms2.front()->GetName() << std::endl;
+      LOG_F(1, "Inverted: {} atoms now selected",
+            GetNumSelectedAtomsInList(m_pModel->m_atomList));
+      LOG_F(1, "Dihedral spec: {}\t{}\t{}\t{}", bondedAtoms3.front()->GetName(),
+            pAtom3->GetName(), pAtom2->GetName(),
+            bondedAtoms2.front()->GetName());
     } else {
       m_dih1Atoms.push_back(bondedAtoms2.front());
       m_dih2Atoms.push_back(pAtom2);
       m_dih3Atoms.push_back(pAtom3);
       m_dih4Atoms.push_back(bondedAtoms3.front());
-      // std::cout << "Dihedral spec: " << bondedAtoms2.front()->GetName()
-      // <<
-      // "\t" << pAtom2->GetName() << "\t"
-      //	   << pAtom3->GetName() << "\t" <<
-      // bondedAtoms3.front()->GetName() << std::endl;
+      LOG_F(1, "Dihedral spec: {}\t{}\t{}\t{}", bondedAtoms2.front()->GetName(),
+            pAtom2->GetName(), pAtom3->GetName(),
+            bondedAtoms3.front()->GetName());
     }
 
     // Store the smaller atom list (or free atom list in tethered mode) for this
@@ -196,18 +180,17 @@ void ModelMutator::Setup() {
       // std::unique will shuffle all the duplicate elements to the end of the
       // vector and return an iterator to the end of the unique elements
       AtomRListIter uniqIter = std::unique((*lIter).begin(), (*lIter).end());
-#ifdef _DEBUG
-      int id = lIter - m_flexIntns.begin();
+      unsigned int id = lIter - m_flexIntns.begin();
       Atom *pAtom = m_pModel->m_atomList[id];
-      std::cout << "Atom " << pAtom->GetFullAtomName() << " (" << id + 1
-                << "): with dups=" << (*lIter).size();
-#endif //_DEBUG
+      LOG_F(1, "Atom {} ({}): with dups={}", pAtom->GetFullAtomName(), id + 1,
+            (*lIter).size());
       // Remove duplicates
       (*lIter).erase(uniqIter, (*lIter).end());
-#ifdef _DEBUG
-      std::cout << "; unique=" << (*lIter).size() << std::endl;
-      Tmp::PrintAtomList((*lIter).begin(), (*lIter).end());
-#endif //_DEBUG
+      LOG_F(1, "Atom unique={}", (*lIter).size());
+      for (AtomRListConstIter iter = (*lIter).begin(); iter != (*lIter).end();
+           iter++) {
+        LOG_F(1, "{} ({})", (*iter)->GetFullAtomName(), (*iter)->GetAtomId());
+      }
     }
   }
 }

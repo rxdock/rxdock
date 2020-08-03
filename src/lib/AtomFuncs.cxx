@@ -12,6 +12,8 @@
 
 #include "AtomFuncs.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // DM 31 Oct 2000
@@ -63,9 +65,7 @@ bool rxdock::FindCyclic(BondPtr spBond, AtomList &atomList,
         AtomPtr spA2 =
             ((*bIter).second) ? pBnd->GetAtom2Ptr() : pBnd->GetAtom1Ptr();
         if (spA2 == spAtom1) {
-#ifdef _DEBUG
-          std::cout << spAtom1->GetFullAtomName() << " is cyclic" << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "{} is cyclic", spAtom1->GetFullAtomName());
           return true;
         } else if (!spA2->GetSelectionFlag()) {
           // Mark the atom and bond as selected and add the atom to the pending
@@ -109,18 +109,14 @@ bool rxdock::ToSpin(BondPtr spBond, AtomList &atomList, BondList &bondList) {
   spBond->SetSelectionFlag(true);
   pendingAtomList.push_back(spAtom2);
 
-#ifdef _DEBUG
-  // std::cout << "ToSpin: Bond ID=" << spBond->GetBondId() << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "ToSpin: Bond ID={}", spBond->GetBondId());
 
   // While we still have atoms to process
   while (!pendingAtomList.empty()) {
     // Take the last atom from the list and remove it
     AtomPtr spA1 = pendingAtomList.back();
     pendingAtomList.pop_back();
-#ifdef _DEBUG
-    // std::cout << "ToSpin: Checking atom " << spA1->GetAtomId() << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "ToSpin: Checking atom {}", spA1->GetAtomId());
 
     // Get the bonds this atom is in
     const BondMap &bondMap = spA1->GetBondMap();
@@ -135,31 +131,24 @@ bool rxdock::ToSpin(BondPtr spBond, AtomList &atomList, BondList &bondList) {
         // ptr, else get atom 1 ptr
         AtomPtr spA2 =
             ((*bIter).second) ? pBnd->GetAtom2Ptr() : pBnd->GetAtom1Ptr();
-#ifdef _DEBUG
-        // std::cout << "ToSpin: Checking bond " << spBnd->GetBondId() << " to
-        // atom " << spA2->GetAtomId() << std::endl;
-#endif //_DEBUG
-       // If we've got back to atom 1 of the bond passed into ToSpin, then the
-       // bond must be in a ring so set the cyclic flag but don't consider this
-       // atom any further (we don't want to set the selection flag otherwise
-       // we'd end up selecting the entire molecule).
+        LOG_F(1, "ToSpin: Checking bond {} to atom {}", pBnd->GetBondId(),
+              spA2->GetAtomId());
+        // If we've got back to atom 1 of the bond passed into ToSpin, then the
+        // bond must be in a ring so set the cyclic flag but don't consider this
+        // atom any further (we don't want to set the selection flag otherwise
+        // we'd end up selecting the entire molecule).
         if (spA2 == spAtom1) {
           bIsCyclic = true;
-#ifdef _DEBUG
-          // std::cout << "ToSpin: We've hit " << spAtom1->GetAtomId() << " so
-          // must be cyclic!!" << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "ToSpin: We've hit {} so compound must be cyclic",
+                spAtom1->GetAtomId());
         } else if (!spA2->GetSelectionFlag()) {
           // Mark the atom and bond as selected and add the atom to the pending
           // list
           spA2->SetSelectionFlag(true);
           pBnd->SetSelectionFlag(true);
           pendingAtomList.push_back(spA2);
-#ifdef _DEBUG
-          //	  std::cout << "ToSpin: Adding atom " << spA2->GetAtomId() << "
-          // to
-          // the pending list" << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "ToSpin: Adding atom {} to the pending list",
+                spA2->GetAtomId());
         }
       }
     }
@@ -223,10 +212,7 @@ AtomList rxdock::FindRing(AtomPtr spAtom, BondList &bondList) {
     // First replicate any partial rings whose head atom is at a ring branch
     // point (defined by having >1 unselected cyclic bond)
     unsigned int nRings = partialRings.size();
-#ifdef _DEBUG
-    // std::cout << "FindRing: " << nRings << " rings prior to forking" <<
-    // std::endl;
-#endif //_DEBUG
+    LOG_F(1, "FindRing: {} rings prior to forking", nRings);
 
     // Use indices rather than iterators, as we may be increasing the number of
     // partial rings in the ring list (Iterators are unstable if the container
@@ -244,19 +230,14 @@ AtomList rxdock::FindRing(AtomPtr spAtom, BondList &bondList) {
         if (!(*bIter).first->GetSelectionFlag())
           nUnSelected++;
       }
-#ifdef _DEBUG
-      // std::cout << "FindRing: #Unselected cyclic bonds = " << nUnSelected <<
-      // " for " << ringIter << " at atom " << spHeadAtom->GetAtomId() <<
-      // std::endl;
-#endif //_DEBUG
+      LOG_F(1, "FindRing: #Unselected cyclic bonds={} for {} at atom {}",
+            nUnSelected, ringIter, spHeadAtom->GetAtomId());
 
       // Add a new copy of the partial ring for each unselected cyclic bond from
       // this atom above the normal one
       for (int forkIter = 0; forkIter < (nUnSelected - 1); forkIter++) {
-#ifdef _DEBUG
-        // std::cout << "FindRing: Forking ring path " << ringIter << " at atom
-        // " << spHeadAtom->GetAtomId() << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "FindRing: Forking ring path {} at atom {}", ringIter,
+              spHeadAtom->GetAtomId());
         partialRings.push_back(partialRings[ringIter]);
       }
     }
@@ -278,17 +259,11 @@ AtomList rxdock::FindRing(AtomPtr spAtom, BondList &bondList) {
           AtomPtr spA2 = GetBondedAtomPtr(*bIter);
           // We've hit atom 1 so this must be the smallest ring
           if (spA2 == spAtom) {
-#ifdef _DEBUG
-            // std::cout << "FindRing: Found seed atom " << spAtom->GetAtomId()
-            // << std::endl;
-#endif //_DEBUG
+            LOG_F(1, "FindRing: Found seed atom {}", spAtom->GetAtomId());
             return *rIter;
           } else {
-#ifdef _DEBUG
-            // std::cout << "FindRing: Adding atom " << spA2->GetAtomId() << "
-            // to "
-            // << spHeadAtom->GetAtomId() << std::endl;
-#endif //_DEBUG
+            LOG_F(1, "FindRing: Adding atom {} to {}", spA2->GetAtomId(),
+                  spHeadAtom->GetAtomId());
             (*rIter).push_back(spA2);
             pBnd->SetSelectionFlag(true);
             break; // Break because we only want to add one atom to each head

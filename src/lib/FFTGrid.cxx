@@ -18,6 +18,9 @@
 #include "FFTGrid.h"
 #include "FileError.h"
 
+#include <fmt/ostream.h>
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -110,10 +113,8 @@ FFTPeakMap FFTGrid::FindPeaks(double threshold, unsigned int minVol) {
       stillToProcess.insert(i);
   }
 
-#ifdef _DEBUG
-  std::cout << stillToProcess.size() << " data points found higher than  "
-            << threshold << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "{} data points found higher than {}", stillToProcess.size(),
+        threshold);
 
   // Repeat while we still have data points to process
   while (!stillToProcess.empty()) {
@@ -131,9 +132,7 @@ FFTPeakMap FFTGrid::FindPeaks(double threshold, unsigned int minVol) {
     toAddToPeak.push(iXYZ0);
     stillToProcess.erase(iter);
 
-#ifdef _DEBUG
-    // std::cout << "Seeding new peak at point " << iXYZ0 << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Seeding new peak at point {}", iXYZ0);
 
     // Repeat while the peak keeps growing
     while (!toAddToPeak.empty()) {
@@ -151,9 +150,7 @@ FFTPeakMap FFTGrid::FindPeaks(double threshold, unsigned int minVol) {
       }
       // Add the point to the current peak
       currentPeak.insert(iXYZ0);
-#ifdef _DEBUG
-      // std::cout << "Popping point " << iXYZ0 << std::endl;
-#endif //_DEBUG
+      LOG_F(1, "Popping point {}", iXYZ0);
 
       // Now check if any neighbours of the point can also be added to the queue
 
@@ -166,9 +163,7 @@ FFTPeakMap FFTGrid::FindPeaks(double threshold, unsigned int minVol) {
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
-#ifdef _DEBUG
-          // std::cout << "Pushing X+1 point " << iXYZ1 << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "Pushing X+1 point {}", iXYZ1);
         }
       }
       // Is X-1 within range ?
@@ -179,9 +174,7 @@ FFTPeakMap FFTGrid::FindPeaks(double threshold, unsigned int minVol) {
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
-#ifdef _DEBUG
-          // std::cout << "Pushing X-1 point " << iXYZ1 << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "Pushing X-1 point {}", iXYZ1);
         }
       }
       // Is Y+1 within range ?
@@ -192,9 +185,7 @@ FFTPeakMap FFTGrid::FindPeaks(double threshold, unsigned int minVol) {
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
-#ifdef _DEBUG
-          // std::cout << "Pushing Y+1 point " << iXYZ1 << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "Pushing Y+1 point {}", iXYZ1);
         }
       }
       // Is Y-1 within range ?
@@ -205,9 +196,7 @@ FFTPeakMap FFTGrid::FindPeaks(double threshold, unsigned int minVol) {
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
-#ifdef _DEBUG
-          // std::cout << "Pushing Y-1 point " << iXYZ1 << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "Pushing Y-1 point {}", iXYZ1);
         }
       }
       // Is Z+1 within range ?
@@ -218,9 +207,7 @@ FFTPeakMap FFTGrid::FindPeaks(double threshold, unsigned int minVol) {
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
-#ifdef _DEBUG
-          // std::cout << "Pushing Z+1 point " << iXYZ1 << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "Pushing Z+1 point {}", iXYZ1);
         }
       }
       // Is Z-1 within range ?
@@ -231,9 +218,7 @@ FFTPeakMap FFTGrid::FindPeaks(double threshold, unsigned int minVol) {
         if (iter != stillToProcess.end()) {
           toAddToPeak.push(iXYZ1);
           stillToProcess.erase(iter);
-#ifdef _DEBUG
-          // std::cout << "Pushing Z-1 point " << iXYZ1 << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "Pushing Z-1 point {}", iXYZ1);
         }
       }
     }
@@ -247,14 +232,8 @@ FFTPeakMap FFTGrid::FindPeaks(double threshold, unsigned int minVol) {
       spPeak->volume = currentPeak.size();
       spPeak->points = currentPeak;
       peakMap.insert(std::pair<double, FFTPeakPtr>(peakHeight, spPeak));
-#ifdef _DEBUG
-      std::cout.precision(3);
-      std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
-      std::cout << "Finished growing peak #" << peakMap.size()
-                << ", pos=" << spPeak->coord << ", height=" << spPeak->height
-                << ", volume=" << spPeak->volume << std::endl
-                << std::endl;
-#endif //_DEBUG
+      LOG_F(1, "Finished growing peak #{}, pos={}, height={:.3f}, volume={}",
+            peakMap.size(), spPeak->coord, spPeak->height, spPeak->volume);
     }
   }
   return peakMap;

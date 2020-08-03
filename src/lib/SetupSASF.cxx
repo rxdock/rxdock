@@ -12,54 +12,39 @@
 
 #include "SetupSASF.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 std::string SetupSASF::_CT("SetupSASF");
 
 SetupSASF::SetupSASF(const std::string &strName) : BaseSF(_CT, strName) {
-#ifdef _DEBUG
-  std::cout << _CT << "parameterized constructor      <--------" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "SetupSASF parameterized constructor");
   Disable();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 SetupSASF::~SetupSASF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor                    <--------" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "SetupSASF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
 void SetupSASF::SetupReceptor() {
-#ifdef _DEBUG
-  std::cout << _CT << " SetupReceptor                 <--------" << std::endl;
-#endif //_DEBUG
-       // get receptor atoms
-       // theReceptorList =
-       // GetAtomListWithPredicate(GetReceptor()->GetAtomList(),std::not1(isAtomicNo_eq(1)));
+  LOG_F(2, "SetupSASF::SetupReceptor");
+  // get receptor atoms
+  // theReceptorList =
+  // GetAtomListWithPredicate(GetReceptor()->GetAtomList(),
+  // std::not1(isAtomicNo_eq(1)));
   theReceptorList = GetReceptor()->GetAtomList();
-#ifdef _DEBUG
-  std::cout << _CT << "::SetupReceptor(): #ATOMS = " << theReceptorList.size()
-            << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "SetupSASF::SetupReceptor: #atoms = {}", theReceptorList.size());
 }
 
-void SetupSASF::SetupScore() {
-#ifdef _DEBUG
-  std::cout << _CT << " SetupScore                    <--------" << std::endl;
-#endif //_DEBUG
-}
+void SetupSASF::SetupScore() { LOG_F(2, "SetupSASF::SetupScore"); }
 
 void SetupSASF::SetupLigand() {
-#ifdef _DEBUG
-  std::cout << _CT << " SetupLigand                   <--------" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "SetupSASF::SetupLigand");
   theLigandList = GetLigand()->GetAtomList();
-#ifdef _DEBUG
-  std::cout << _CT << "::SetupLigand(): #ATOMS = " << theLigandList.size()
-            << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "SetupSASF::SetupLigand: #atoms= {}", theLigandList.size());
 }
 
 double SetupSASF::RawScore() const { return 0.0; }

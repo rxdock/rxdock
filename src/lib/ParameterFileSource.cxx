@@ -15,6 +15,8 @@
 #include "FileError.h"
 #include "ParameterFileSource.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Constructors
@@ -167,26 +169,20 @@ void ParameterFileSource::Parse() {
       while (++fileIter != fileEnd) {
         // Ignore blank lines and comment lines
         if (((*fileIter).length() == 0) || ((*fileIter).at(0) == '#')) {
-#ifdef _DEBUG
-          // std::cout << "Comment record" << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "ParameterFileSource::Parse: Comment record");
           continue;
         }
         // Check for Title record
         else if ((*fileIter).find(strTitleKey) == 0) {
           m_strTitle = *fileIter;
           m_strTitle.erase(0, strTitleKey.length());
-#ifdef _DEBUG
-          // std::cout << "Title = " << m_strTitle << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "ParameterFileSource::Parse: Title = ", m_strTitle);
         }
         // Check for Version record
         else if ((*fileIter).find(strVersionKey) == 0) {
           m_strVersion = *fileIter;
           m_strVersion.erase(0, strVersionKey.length());
-#ifdef _DEBUG
-          // std::cout << "Version = " << m_strVersion << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "ParameterFileSource::Parse: Version = ", m_strVersion);
         }
         // Check for Section record
         else if ((*fileIter).find(strSectionKey) == 0) {
@@ -214,9 +210,8 @@ void ParameterFileSource::Parse() {
           // Hopefully, this will ensure unique parameter names between sections
           strParamName = GetFullParameterName(strParamName);
           m_paramsMap[strParamName] = Variant(strParamValue);
-#ifdef _DEBUG
-          // std::cout << strParamName<< " = " << dParamValue << std::endl;
-#endif //_DEBUG
+          LOG_F(1, "ParameterFileSource::Parse: {} = {}", strParamName,
+                strParamValue);
         }
       }
       //////////////////////////////////////////////////////////

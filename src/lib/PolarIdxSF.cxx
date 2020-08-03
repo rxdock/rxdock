@@ -14,6 +14,8 @@
 #include "Plane.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -32,24 +34,20 @@ std::string &PolarIdxSF::GetIncr() { return _INCR; }
 PolarIdxSF::PolarIdxSF(const std::string &strName)
     : BaseSF(_CT, strName), m_bAttr(true), m_bFlexRec(false), m_bSolvent(false),
       m_nPos(0), m_nNeg(0), m_posThreshold(0.25), m_negThreshold(0.25) {
+  LOG_F(2, "PolarIdxSF parameterised constructor");
   // Add parameters
   AddParameter(_INCR, 2.4);
   AddParameter(_ATTR, m_bAttr);
   AddParameter(_THRESHOLD_POS, m_posThreshold);
   AddParameter(_THRESHOLD_NEG, m_negThreshold);
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 PolarIdxSF::~PolarIdxSF() {
+  LOG_F(2, "PolarIdxSF destructor");
   ClearReceptor();
   ClearLigand();
   ClearSolvent();
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -108,7 +106,6 @@ void PolarIdxSF::SetupReceptor() {
   double flexDist =
       2.0; // Additional indexing increment for flexibile OH and NH3
   DockingSitePtr spDS = GetWorkSpace()->GetDockingSite();
-  int iTrace = GetTrace();
 
   int nCoords = GetReceptor()->GetNumSavedCoords() - 1;
   if (nCoords > 0) {
@@ -118,9 +115,7 @@ void PolarIdxSF::SetupReceptor() {
     m_spNegGrid = CreateInteractionGrid();
     m_recepNegList = CreateAcceptorInteractionCenters(atomList);
     for (int i = 1; i <= nCoords; i++) {
-      if (iTrace > 0) {
-        std::cout << _CT << ": Indexing receptor coords # " << i << std::endl;
-      }
+      LOG_F(1, "PolarIdxSF::SetupReceptor: Indexing receptor coords # {}", i);
       GetReceptor()->RevertCoords(i);
       for (InteractionCenterListConstIter iter = m_recepPosList.begin();
            iter != m_recepPosList.end(); iter++) {
@@ -204,11 +199,8 @@ void PolarIdxSF::SetupReceptor() {
         double rvdw = (*iter)->GetAtom1Ptr()->GetVdwRadius();
         m_spNegGrid->SetInteractionLists(*iter, rvdw + idxIncr + flexDist);
       }
-      if (iTrace > 0) {
-        double score = ReceptorScore();
-        std::cout << GetWorkSpace()->GetName() << " " << GetFullName()
-                  << ": Intra-receptor score = " << score << std::endl;
-      }
+      LOG_F(1, "{} {}: Intra-receptor score = {}", GetWorkSpace()->GetName(),
+            GetFullName(), ReceptorScore());
     }
 
     // Index the rigid interaction centers as usual

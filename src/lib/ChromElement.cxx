@@ -13,6 +13,8 @@
 #include "ChromElement.h"
 #include "Rand.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 std::string ChromElement::_CT = "ChromElement";
@@ -154,8 +156,7 @@ void rxdock::Crossover(ChromElement *pChr1, ChromElement *pChr2,
                   ? rand.GetRandomInt(length1 - 1) + 1
                   : rand.GetRandomInt(length1 - ixbegin) + ixbegin + 1;
 
-  // std::cout << "XOVER: ixbegin = " << ixbegin << ", ixend = " << ixend <<
-  // std::endl;
+  LOG_F(1, "Crossover: ixbegin = {}, ixend = {}", ixbegin, ixend);
   std::swap_ranges(v1.begin() + ixbegin, v1.begin() + ixend,
                    v2.begin() + ixbegin);
   // Now we can update the two children

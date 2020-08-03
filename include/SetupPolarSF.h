@@ -46,8 +46,7 @@ protected:
   virtual double RawScore() const;
 
 private:
-  void SetupAtomList(AtomList &atomList, const AtomList &neighbourList,
-                     int traceTriggerLevel);
+  void SetupAtomList(AtomList &atomList, const AtomList &neighbourList);
 };
 
 } // namespace rxdock

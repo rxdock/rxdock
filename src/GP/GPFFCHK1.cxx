@@ -20,6 +20,9 @@
 #include "Parser.h"
 #include "Rand.h"
 #include "TokenIter.h"
+
+#include <loguru.hpp>
+
 #include <fstream>
 #include <sstream>
 
@@ -69,7 +72,7 @@ void GPFFCHK1::ReadTables(std::istream &in, ReturnTypeArray &it,
     i++;
     in >> recordn;
   }
-  std::cout << "Read: " << inputTable[0][0] << std::endl;
+  LOG_F(1, "Read: {}", inputTable[0][0]);
   it = inputTable;
   sft = SFTable;
 }
@@ -107,7 +110,7 @@ double GPFFCHK1::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
       else
         fp++; // hit predicted: False Positive
     }
-    //        std::cout << tp
+    LOG_F(1, "tp={}", tp);
   }
   /*
   objective = 1.0 * (tp - fn) - fp;
@@ -158,7 +161,7 @@ double GPFFCHK1::CalculateFitness(GPGenomePtr g, ReturnTypeArray &it,
   }
   objective = (tp / (tp + fp)) * (tp / (tp + fn));
   // precision * true positive rate
-  std::cout << fn << "\t" << tn << "\t" << fp << "\t" << tp << std::endl;
+  LOG_F(1, "fn={}, tn={}, fp={}, tp={}", fn, tn, fp, tp);
   fitness = objective;
   // g->SetFitness(fitness);
   // For now, I am using tournament selection. So the fitness
@@ -173,13 +176,13 @@ void GPFFCHK1::CreateRandomCtes(int nctes) {
     double c;
     ctes.push_back(0.0);
     ctes.push_back(1.0);
-    std::cout << "c0 \t0.0" << std::endl;
-    std::cout << "c1 \t1.0" << std::endl;
+    LOG_F(1, "c0=0.0");
+    LOG_F(1, "c1=1.0");
     for (int i = 0; i < (nctes - 2); i++) {
       a = m_rand.GetRandomInt(200) - 100;
       b = m_rand.GetRandomInt(10) - 5;
       c = (a / 10.0) * std::pow(10, b);
-      std::cout << "c" << i + 2 << " \t" << c << std::endl;
+      LOG_F(1, "c{}={}", i + 2, c);
       ctes.push_back(c);
     }
   }

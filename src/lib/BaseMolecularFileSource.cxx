@@ -15,6 +15,8 @@
 
 #include <functional>
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Constructors
@@ -234,11 +236,9 @@ void BaseMolecularFileSource::RemoveAtom(AtomPtr spAtom) {
   for (const auto &mapIter : bondMap) {
     auto bIter = FindBond(m_bondList, isBond_eq((mapIter).first));
     if (bIter != m_bondList.end()) {
-#ifdef _DEBUG
-      std::cout << "Removing bond #" << (*bIter)->GetBondId() << " ("
-                << (*bIter)->GetAtom1Ptr()->GetName() << "-"
-                << (*bIter)->GetAtom2Ptr()->GetName() << ")" << std::endl;
-#endif                         //_DEBUG
+      LOG_F(1, "Removing bond #{} ({}-{})", (*bIter)->GetBondId(),
+            (*bIter)->GetAtom1Ptr()->GetName(),
+            (*bIter)->GetAtom2Ptr()->GetName());
       m_bondList.erase(bIter); // Erase the bond
     }
   }
@@ -252,10 +252,8 @@ void BaseMolecularFileSource::RemoveAtom(AtomPtr spAtom) {
   auto aIter = FindAtomInList(
       m_atomList, std::bind(isAtom_eq(), std::placeholders::_1, spAtom));
   if (aIter != m_atomList.end()) {
-#ifdef _DEBUG
-    std::cout << "Removing atom #" << (*aIter)->GetAtomId() << ", "
-              << (*aIter)->GetName() << std::endl;
-#endif                       //_DEBUG
+    LOG_F(1, "Removing atom #{}, {}", (*aIter)->GetAtomId(),
+          (*aIter)->GetName());
     m_atomList.erase(aIter); // Erase the atom
   }
 }
@@ -361,8 +359,7 @@ void BaseMolecularFileSource::SetupPartialIonicGroups(
   const std::string _MANDATORY("MANDATORY");
   const std::string _FORBIDDEN("FORBIDDEN");
   if (atoms.empty()) {
-    std::cout << "WARNING SetupPartialIonicGroups: Empty atom list"
-              << std::endl;
+    LOG_F(WARNING, "SetupPartialIonicGroups: Empty atom list");
     return;
   }
   AtomPtr leadAtom = atoms.front();
@@ -370,16 +367,16 @@ void BaseMolecularFileSource::SetupPartialIonicGroups(
   std::string match = leadAtom->GetSegmentName() + ":" + subunitName + "_" +
                       leadAtom->GetSubunitId() + ":";
   if (GetNumMatchingAtoms(atoms, match) != atoms.size()) {
-    std::cout
-        << "WARNING SetupPartialIonicGroups: Inconsistent subunit names in "
-           "atom list headed by "
-        << leadAtom->GetFullAtomName() << std::endl;
+    LOG_F(WARNING,
+          "SetupPartialIonicGroups: Inconsistent subunit names in "
+          "atom list headed by {}",
+          leadAtom->GetFullAtomName());
     return;
   }
   std::vector<std::string> resList(spParamSource->GetSectionList());
   if (std::find(resList.begin(), resList.end(), subunitName) == resList.end()) {
-    // std::cout << "INFO SetupPartialIonicGroups: No section for residue " <<
-    // subunitName << std::endl;
+    LOG_F(INFO, "SetupPartialIonicGroups: No section for residue {}",
+          subunitName);
     return;
   }
 
@@ -392,12 +389,10 @@ void BaseMolecularFileSource::SetupPartialIonicGroups(
         ConvertDelimitedStringToList(mandatory);
     unsigned int nPresent = GetNumMatchingAtoms(atoms, mandAtoms);
     if (nPresent != mandAtoms.size()) {
-#ifdef _DEBUG
-      std::cout << "INFO SetupPartialIonicGroups: Only " << nPresent
-                << " out of " << mandAtoms.size()
-                << " mandatory atoms present in atom list headed by "
-                << leadAtom->GetFullAtomName() << std::endl;
-#endif //_DEBUG
+      LOG_F(INFO,
+            "SetupPartialIonicGroups: Only {} out of {} mandatory atoms "
+            "present in atom list headed by {}",
+            nPresent, mandAtoms.size(), leadAtom->GetFullAtomName());
       return;
     }
     std::remove(atList.begin(), atList.end(), _MANDATORY);
@@ -409,11 +404,10 @@ void BaseMolecularFileSource::SetupPartialIonicGroups(
         ConvertDelimitedStringToList(forbidden);
     int nPresent = GetNumMatchingAtoms(atoms, forbAtoms);
     if (nPresent > 0) {
-#ifdef _DEBUG
-      std::cout << "INFO SetupPartialIonicGroups: " << nPresent
-                << " forbidden atoms present in atom list headed by "
-                << leadAtom->GetFullAtomName() << std::endl;
-#endif //_DEBUG
+      LOG_F(INFO,
+            "SetupPartialIonicGroups: {} forbidden atoms present in "
+            "atom list headed by {}",
+            nPresent, leadAtom->GetFullAtomName());
       return;
     }
     std::remove(atList.begin(), atList.end(), _FORBIDDEN);
@@ -423,19 +417,15 @@ void BaseMolecularFileSource::SetupPartialIonicGroups(
        aIter != atList.end(); aIter++) {
     double partialCharge(spParamSource->GetParameterValue(
         *aIter)); // Get the partial charge value
-#ifdef _DEBUG
-    std::cout << std::endl << "Trying to match " << *aIter << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "SetupPartialIonicGroups: Trying to match {}", *aIter);
     // Find the atoms which match the specifier string
     AtomList selectedAtoms = GetMatchingAtomList(atoms, *aIter);
     // Now we've got the matching atoms, set the group charge on each atom
     for (AtomListIter iter = selectedAtoms.begin(); iter != selectedAtoms.end();
          iter++) {
       (*iter)->SetGroupCharge(partialCharge);
-#ifdef _DEBUG
-      std::cout << "INFO Setting group charge on " << (*iter)->GetFullAtomName()
-                << " to " << partialCharge << std::endl;
-#endif //_DEBUG
+      LOG_F(INFO, "Setting group charge on {} to {}",
+            (*iter)->GetFullAtomName(), partialCharge);
     }
   }
 }

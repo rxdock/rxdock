@@ -14,6 +14,8 @@
 #include "Model.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -25,29 +27,22 @@ std::string SFAgg::_CT("SFAgg");
 // Constructors/destructors
 SFAgg::SFAgg(const std::string &strName)
     : BaseSF(_CT, strName), m_nNonHLigandAtoms(0) {
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "SFAgg parameterised constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 SFAgg::~SFAgg() {
+  LOG_F(2, "SFAgg destructor");
   // Delete all our children
-#ifdef _DEBUG
-  std::cout << _CT << "::~" << _CT << "(): Deleting child scoring functions of "
-            << GetName() << std::endl;
-#endif //_DEBUG
-       // We need to iterate using a while loop because each deletion will
-       // reduce the size of m_sf, hence conventional iterators would become
-       // invalid
+  // We need to iterate using a while loop because each deletion will
+  // reduce the size of m_sf, hence conventional iterators would become
+  // invalid
+  LOG_F(1, "Deleting child scoring functions of {}", GetName());
   while (m_sf.size() > 0) {
     BaseSF *pSF = m_sf.back();
     // Assertion: parent of child is this object
     Assert<Assertion>(!SFAGG_CHECK || pSF->m_parent == this);
-#ifdef _DEBUG
-    std::cout << "Deleting " << pSF->GetName() << " from " << GetName()
-              << std::endl;
-#endif //_DEBUG
+    LOG_F(1, "Deleting {} from {}", pSF->GetName(), GetName());
     delete pSF;
   }
   _RBTOBJECTCOUNTER_DESTR_(_CT);
@@ -96,10 +91,7 @@ void SFAgg::Add(BaseSF *pSF) {
   // we handle attempts to readd existing children automatically,
   pSF->Orphan();
   pSF->m_parent = this;
-#ifdef _DEBUG
-  std::cout << _CT << "::Add(): Adding " << pSF->GetName() << " to "
-            << GetName() << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "SFAgg::Add: Adding {} to {}", pSF->GetName(), GetName());
   m_sf.push_back(pSF);
 }
 
@@ -111,10 +103,7 @@ void SFAgg::Remove(BaseSF *pSF) {
   } else {
     // Assertion: parent of child is this object
     Assert<Assertion>(!SFAGG_CHECK || pSF->m_parent == this);
-#ifdef _DEBUG
-    std::cout << _CT << "::Remove(): Removing " << pSF->GetName() << " from "
-              << GetName() << std::endl;
-#endif //_DEBUG
+    LOG_F(2, "SFAgg::Remove: Removing {} from {}", pSF->GetName(), GetName());
     m_sf.erase(iter);
     pSF->m_parent = nullptr; // Nullify the parent pointer of the child that has
                              // been removed
@@ -140,10 +129,8 @@ void SFAgg::Register(WorkSpace *pWorkSpace) {
   // as we need the number of heavy atoms in the ligand for calculating
   // the normalised scores
   BaseObject::Register(pWorkSpace);
-#ifdef _DEBUG
-  std::cout << _CT << "::Register(): Registering child scoring functions of "
-            << GetName() << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "SFAgg::Register: Registering child scoring functions of {}",
+        GetName());
   for (BaseSFListIter iter = m_sf.begin(); iter != m_sf.end(); iter++) {
     (*iter)->Register(pWorkSpace);
   }
@@ -153,11 +140,8 @@ void SFAgg::Register(WorkSpace *pWorkSpace) {
 // Aggregate version unregisters all children, AND itself (new behaviour, 7 Feb
 // 2005 (DM))
 void SFAgg::Unregister() {
-#ifdef _DEBUG
-  std::cout << _CT
-            << "::Unregister(): Unregistering child scoring functions of "
-            << GetName() << std::endl;
-#endif //_DEBUG
+  LOG_F(1, "SFAgg::Unregister: Unregistering child scoring functions of {}",
+        GetName());
   for (BaseSFListIter iter = m_sf.begin(); iter != m_sf.end(); iter++) {
     (*iter)->Unregister();
   }

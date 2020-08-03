@@ -15,6 +15,8 @@
 #include <cstring>
 #include <sys/stat.h>
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Constructors
@@ -161,9 +163,7 @@ void BaseFileSource::Read(bool aDelimiterAtEnd) {
           int n = strlen(cszRecDelim);
           while ((m_fileIn.getline(m_szBuf, MAXLINELENGTH)) &&
                  (strncmp(m_szBuf, cszRecDelim, n) != 0)) {
-#ifdef _DEBUG
-            std::cout << m_szBuf << std::endl;
-#endif //_DEBUG
+            LOG_F(1, "File line read is {}", m_szBuf);
             bytesLastRead += std::strlen(m_szBuf) + 1;
             // adding 1 byte per getline for newline (LF) character, no need
             // to check for CRLF as they are considered unsupported
@@ -206,9 +206,7 @@ void BaseFileSource::Read(bool aDelimiterAtEnd) {
             ;
           while ((m_fileIn.getline(m_szBuf, MAXLINELENGTH)) &&
                  (strncmp(m_szBuf, cszRecDelim, n) != 0)) {
-#ifdef _DEBUG
-            std::cout << m_szBuf << std::endl;
-#endif //_DEBUG
+            LOG_F(1, "File line read is {}", m_szBuf);
             bytesLastRead += std::strlen(m_szBuf) + 1;
             m_lineRecs.push_back(m_szBuf);
           }

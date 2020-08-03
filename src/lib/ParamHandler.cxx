@@ -12,6 +12,8 @@
 
 #include "ParamHandler.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 ParamHandler::ParamHandler() { _RBTOBJECTCOUNTER_CONSTR_("ParamHandler"); }
@@ -91,7 +93,7 @@ void ParamHandler::ClearParameters() { m_parameters.clear(); }
 void ParamHandler::Print(std::ostream &s) const {
   for (StringVariantMapConstIter iter = m_parameters.begin();
        iter != m_parameters.end(); iter++) {
-    std::cout << (*iter).first << "\t" << (*iter).second << std::endl;
+    LOG_F(1, "{}\t{}", (*iter).first, (*iter).second.GetString());
   }
 }
 

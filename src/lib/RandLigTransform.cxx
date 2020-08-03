@@ -12,6 +12,8 @@
 
 #include "RandLigTransform.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data member for class type
@@ -23,18 +25,14 @@ std::string RandLigTransform::_TORS_STEP("TORS_STEP");
 // Constructors/destructors
 RandLigTransform::RandLigTransform(const std::string &strName)
     : BaseUniMolTransform(_CT, strName), m_rand(GetRandInstance()) {
+  LOG_F(2, "RandLigTransform parameterised constructor");
   // Add parameters
   AddParameter(_TORS_STEP, 180);
-#ifdef _DEBUG
-  std::cout << _CT << " parameterised constructor" << std::endl;
-#endif //_DEBUG
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 RandLigTransform::~RandLigTransform() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "RandLigTransform destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 

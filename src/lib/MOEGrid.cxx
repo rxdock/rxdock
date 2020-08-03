@@ -18,6 +18,8 @@
 #include "ParameterFileSource.h"
 #include "RealGrid.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 const std::string GRID_SIGNATURE = "SVLgrid\n";
@@ -99,9 +101,9 @@ MOEGridShape::MOEGridShape(std::vector<double> grid_origin,
                            double grid_steps) {
   // grid origin should to be a N-dimensional point with the
   // same dimensions as the extends
-  if (grid_origin.size() != grid_extents.size())
-    std::cout << "Warning: grid origin and extents dimension mismatch."
-              << std::endl;
+  if (grid_origin.size() != grid_extents.size()) {
+    LOG_F(WARNING, "Grid origin and extents dimension mismatch.");
+  }
   // copying ctor parameter vectors (it is not guaranteed they will
   // live forever during the code)
   std::vector<double>::iterator o_iter,
@@ -167,12 +169,11 @@ void MOEGrid::GetDockingSiteExtents(std::string &a_strPrmFile) {
 // reads all the .prm files and calculates the common extents for all
 // cavities to get a grid that includes them all
 void MOEGrid::CalculateCommonExtents(std::vector<std::string> strPrmFiles) {
-
-  std::cout << "Receptors: " << std::endl;
+  LOG_F(1, "Receptors:");
   std::vector<std::string>::iterator strPrmFilesIter;
   for (strPrmFilesIter = strPrmFiles.begin();
        strPrmFilesIter != strPrmFiles.end(); ++strPrmFilesIter) {
-    std::cout << "\t" << (*strPrmFilesIter) << std::endl;
+    LOG_F(1, "{}", *strPrmFilesIter);
     // initialize values with the very first
     if (strPrmFilesIter == strPrmFiles.begin()) {
       GetDockingSiteExtents((*strPrmFilesIter));

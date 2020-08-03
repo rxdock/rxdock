@@ -10,5 +10,4 @@ SECTION VDW_5
 	RMAX			1.5	# Truncate at RMAX*rmin
 	ECUT			5.0	# Switch to quadratic at E=ECUT*kij
 	E0			1.5	# At r=0, E=E0*ECUT*kij
-	TRACE			0
 END_SECTION

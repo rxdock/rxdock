@@ -14,6 +14,8 @@
 #include "Plane.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -51,9 +53,7 @@ PolarSF::PolarSF()
       m_PHI_lp_prms(m_LP_PHI, m_LP_DPHIMin, m_LP_DPHIMax),
       m_PHI_plane_prms(0.0, m_LP_PHI + m_LP_DPHIMin, m_LP_PHI + m_LP_DPHIMax),
       m_THETAprms(0.0, m_LP_DTHETAMin, m_LP_DTHETAMax) {
-#ifdef _DEBUG
-  std::cout << _CT << " default constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "PolarSF default constructor");
   // Add parameters
   AddParameter(_R12FACTOR, m_R12Factor);
   AddParameter(_R12INCR, m_R12Incr);
@@ -81,9 +81,7 @@ PolarSF::PolarSF()
 }
 
 PolarSF::~PolarSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "PolarSF destructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -192,8 +190,7 @@ PolarSF::CreateAcceptorInteractionCenters(const AtomList &atomList) const {
               intnList.push_back(
                   new InteractionCenter(*iter, spAcceptorParent, spGrandParent,
                                         InteractionCenter::LONEPAIR));
-              // std::cout << "LONEPAIR acceptor: " <<
-              // (*iter)->GetFullAtomName() << std::endl;
+              LOG_F(1, "LONEPAIR acceptor: {}", (*iter)->GetFullAtomName());
             }
             // else define interaction center with PLANE geometry (in-plane of
             // LP, broader directionality)
@@ -201,8 +198,7 @@ PolarSF::CreateAcceptorInteractionCenters(const AtomList &atomList) const {
               intnList.push_back(
                   new InteractionCenter(*iter, spAcceptorParent, spGrandParent,
                                         InteractionCenter::PLANE));
-              // std::cout << "PLANE acceptor: " << (*iter)->GetFullAtomName()
-              // << std::endl;
+              LOG_F(1, "PLANE acceptor: {}", (*iter)->GetFullAtomName());
             }
           } else {
             intnList.push_back(new InteractionCenter(*iter, spAcceptorParent));
@@ -259,14 +255,10 @@ void PolarSF::BuildIntraMap(const InteractionCenterList &ICList1,
       std::copy_if(ICList2.begin(), ICList2.end(),
                    std::back_inserter(intns[id]), isSelected);
     }
-    if (GetTrace() > 2) {
-      std::cout << GetFullName() << ": Intns to " << pAtom->GetFullAtomName()
-                << std::endl;
-      for (InteractionCenterListConstIter i = intns[id].begin();
-           i != intns[id].end(); i++) {
-        std::cout << "\t" << (*i)->GetAtom1Ptr()->GetFullAtomName()
-                  << std::endl;
-      }
+    LOG_F(1, "{}: Intns to {}", GetFullName(), pAtom->GetFullAtomName());
+    for (InteractionCenterListConstIter i = intns[id].begin();
+         i != intns[id].end(); i++) {
+      LOG_F(1, "    {}", (*i)->GetAtom1Ptr()->GetFullAtomName());
     }
   }
 }
@@ -298,10 +290,10 @@ double PolarSF::IntraScore(const InteractionCenterList &posList,
       int id = pAtom->GetAtomId() - 1;
       // NO CHECK ON ID IN RANGE
       s = PolarScore(*iter, intns[id], Rprms, A1prms, A2prms);
-      // if (std::fabs(s) > 0) {
-      // std::cout << GetFullName() << ": pos-neg " << pAtom->GetFullAtomName()
-      // << "; s=" << s << std::endl;
-      //}
+      if (std::fabs(s) > 0) {
+        LOG_F(1, "{}: pos-neg {}; s={}", GetFullName(),
+              pAtom->GetFullAtomName(), s);
+      }
       score += pAtom->GetUser1Value() * s;
     }
     // Neg-pos
@@ -311,10 +303,10 @@ double PolarSF::IntraScore(const InteractionCenterList &posList,
       int id = pAtom->GetAtomId() - 1;
       // NO CHECK ON ID IN RANGE
       s = PolarScore(*iter, intns[id], Rprms, A2prms, A1prms);
-      // if (std::fabs(s) > 0) {
-      // std::cout << GetFullName() << ": neg-pos " << pAtom->GetFullAtomName()
-      // << "; s=" << s << std::endl;
-      //}
+      if (std::fabs(s) > 0) {
+        LOG_F(1, "{}: neg-pos {}; s={}", GetFullName(),
+              pAtom->GetFullAtomName(), s);
+      }
       score += pAtom->GetUser1Value() * s;
     }
   } else {
@@ -325,10 +317,10 @@ double PolarSF::IntraScore(const InteractionCenterList &posList,
       int id = pAtom->GetAtomId() - 1;
       // NO CHECK ON ID IN RANGE
       s = PolarScore(*iter, intns[id], Rprms, A1prms, A1prms);
-      // if (std::fabs(s) > 0) {
-      //     std::cout << GetFullName() << ": pos-pos " <<
-      // pAtom->GetFullAtomName() << "; s=" << s << std::endl;
-      //}
+      if (std::fabs(s) > 0) {
+        LOG_F(1, "{}: pos-pos {}; s={}", GetFullName(),
+              pAtom->GetFullAtomName(), s);
+      }
       score += pAtom->GetUser1Value() * s;
     }
     // neg-neg
@@ -338,10 +330,10 @@ double PolarSF::IntraScore(const InteractionCenterList &posList,
       int id = pAtom->GetAtomId() - 1;
       // NO CHECK ON ID IN RANGE
       s = PolarScore(*iter, intns[id], Rprms, A2prms, A2prms);
-      // if (std::fabs(s) > 0) {
-      //     std::cout << GetFullName() << ": neg-neg " <<
-      // pAtom->GetFullAtomName() << "; s=" << s << std::endl;
-      //}
+      if (std::fabs(s) > 0) {
+        LOG_F(1, "{}: neg-neg {}; s={}", GetFullName(),
+              pAtom->GetFullAtomName(), s);
+      }
       score += pAtom->GetUser1Value() * s;
     }
   }
@@ -352,15 +344,11 @@ void PolarSF::Partition(const InteractionCenterList &posList,
                         const InteractionCenterList &negList,
                         const InteractionListMap &intns,
                         InteractionListMap &prtIntns, double dist) const {
-  int iTrace = GetTrace();
-
   // Clear the existing partitioned lists
   for (InteractionListMapIter iter = prtIntns.begin(); iter != prtIntns.end();
        iter++)
     (*iter).clear();
-  if (iTrace > 3) {
-    std::cout << "Partition (dist=" << dist << ")" << std::endl;
-  }
+  LOG_F(1, "Partition (dist={})", dist);
 
   for (InteractionCenterListConstIter iter = posList.begin();
        iter != posList.end(); iter++) {
@@ -375,11 +363,9 @@ void PolarSF::Partition(const InteractionCenterList &posList,
       // Remove partition - simply copy from the master list of vdW interactions
       prtIntns[id] = intns[id];
     }
-    if (iTrace > 3) {
-      std::cout << (*iter)->GetAtom1Ptr()->GetFullAtomName()
-                << ": #intn=" << intns[id].size()
-                << ": #prtn=" << prtIntns[id].size() << std::endl;
-    }
+    LOG_F(1, "{}: #intn={}: #prtn={}",
+          (*iter)->GetAtom1Ptr()->GetFullAtomName(), intns[id].size(),
+          prtIntns[id].size());
   }
 
   for (InteractionCenterListConstIter iter = negList.begin();
@@ -395,11 +381,9 @@ void PolarSF::Partition(const InteractionCenterList &posList,
       // Remove partition - simply copy from the master list of vdW interactions
       prtIntns[id] = intns[id];
     }
-    if (iTrace > 3) {
-      std::cout << (*iter)->GetAtom1Ptr()->GetFullAtomName()
-                << ": #intn=" << intns[id].size()
-                << ": #prtn=" << prtIntns[id].size() << std::endl;
-    }
+    LOG_F(1, "{}: #intn={}: #prtn={}",
+          (*iter)->GetAtom1Ptr()->GetFullAtomName(), intns[id].size(),
+          prtIntns[id].size());
   }
 }
 
@@ -470,23 +454,20 @@ double PolarSF::PolarScore(const InteractionCenter *pIC1,
     double DR = R - R12;
     double f = m_bAbsDR12 ? f1(std::fabs(DR), Rprms) : f1(DR, Rprms);
     if (f > 0.0) {
-      // std::cout << std::endl << "R12:\t" << pAtom1_1->GetFullAtomName() <<
-      // "," << pAtom2_1->GetFullAtomName() << "," << R12
-      //	   << "," << DR << ", f=" << f << std::endl;
+      LOG_F(1, "R12: {}, {}, {}, {}, f={}", pAtom1_1->GetFullAtomName(),
+            pAtom2_1->GetFullAtomName(), R12, DR, f);
       // For guanidinium bPlane2 interacting with C=O lone pair bLP1, we want to
       // use the regular angular dependence
       if (bAngle1 || (bPlane2 && bLP1)) {
         double DA1 = Angle(cAtom1_2, cAtom1_1, cAtom2_1) - A1prms.R0;
         f *= f1(std::fabs(DA1), A1prms);
-        // std::cout << "A1:\t" << A1prms.R0 << "," << DA1 << ", f=" << f <<
-        // std::endl;
+        LOG_F(1, "A1: {}, {}, f={}", A1prms.R0, DA1, f);
       } else if (bPlane1) {
         double A =
             std::acos(-std::fabs(Dot(v12.Unit(), pl1.VNorm()))) * 180.0 / M_PI;
         double DA1 = A - A1prms.R0;
         f *= f1(std::fabs(DA1), A1prms);
-        // std::cout << "Pl1:\t" << A1prms.R0 << "," << DA1 << ", f=" << f <<
-        // std::endl;
+        LOG_F(1, "Pl1: {}, {}, f={}", A1prms.R0, DA1, f);
       }
       // Lone pair geometry dependence around Osp2
       else if (bLP1) {
@@ -494,9 +475,9 @@ double PolarSF::PolarScore(const InteractionCenter *pIC1,
         double dPerp = DistanceFromPointToPlane(cAtom2_1, pl1);
         // Coordinate of donor H projected into plane of lone pairs
         Coord cPerp = cAtom2_1 - dPerp * pl1.VNorm();
-        // std::cout << "dPerp = " << dPerp << " check cPerp = " <<
-        // DistanceFromPointToPlane(cPerp, pl1) << std::endl; Can
-        // calculate std::sin(theta) directly from the two distances we have
+        LOG_F(1, "dPerp = {} check cPerp = {}", dPerp,
+              DistanceFromPointToPlane(cPerp, pl1));
+        // Can calculate std::sin(theta) directly from the two distances we have
         // already
         double theta = std::asin(dPerp / R) * 180.0 / M_PI;
         f *= f1(std::fabs(theta), m_THETAprms);
@@ -504,9 +485,7 @@ double PolarSF::PolarScore(const InteractionCenter *pIC1,
           double phi = 180.0 - Angle(cPerp, cAtom1_1, cAtom1_2);
           double Dphi = phi - PHI1prms.R0;
           f *= f1(std::fabs(Dphi), PHI1prms);
-          // std::cout << "LP1:\t" << theta << "," << PHI1prms.R0 << "," << Dphi
-          // <<
-          // ", f=" << f << std::endl;
+          LOG_F(1, "LP1: {}, {}, {}, f={}", theta, PHI1prms.R0, Dphi, f);
         }
       }
       if (f > 0.0) {
@@ -516,8 +495,7 @@ double PolarSF::PolarScore(const InteractionCenter *pIC1,
           const Coord &cAtom2_2 = pAtom2_2->GetCoords();
           double DA2 = Angle(cAtom1_1, cAtom2_1, cAtom2_2) - A2prms.R0;
           f *= f1(std::fabs(DA2), A2prms);
-          // std::cout << "A2:\t" << A2prms.R0 << "," << DA2 << ", f=" << f <<
-          // std::endl;
+          LOG_F(1, "A2: {}, {}, f={}", A2prms.R0, DA2, f);
         } else if (bPlane2) {
           const Coord &cAtom2_2 = pAtom2_2->GetCoords();
           const Coord &cAtom2_3 = pAtom2_3->GetCoords();
@@ -526,8 +504,7 @@ double PolarSF::PolarScore(const InteractionCenter *pIC1,
                      180.0 / M_PI;
           double DA2 = A - A2prms.R0;
           f *= f1(std::fabs(DA2), A2prms);
-          // std::cout << "Pl2:\t" << A2prms.R0 << "," << DA2 << ", f=" << f <<
-          // std::endl;
+          LOG_F(1, "Pl2: {}, {}, f={}", A2prms.R0, DA2, f);
         } else if (bLP2) {
           const Coord &cAtom2_2 = pAtom2_2->GetCoords();
           const Coord &cAtom2_3 = pAtom2_3->GetCoords();
@@ -537,25 +514,21 @@ double PolarSF::PolarScore(const InteractionCenter *pIC1,
           Plane pl2 = Plane(cAtom2_1, cAtom2_2, cAtom2_3);
           double dPerp = DistanceFromPointToPlane(cAtom1_1, pl2);
           Coord cPerp = cAtom1_1 - dPerp * pl2.VNorm();
-          // std::cout << "dPerp = " << dPerp << " check cPerp = " <<
-          // DistanceFromPointToPlane(cPerp, pl2) << std::endl;
+          LOG_F(1, "dPerp = {} check cPerp = {}", dPerp,
+                DistanceFromPointToPlane(cPerp, pl2));
           double theta = std::asin(dPerp / R) * 180.0 / M_PI;
           f *= f1(std::fabs(theta), m_THETAprms);
           if (f > 0.0) {
             double phi = 180.0 - Angle(cPerp, cAtom2_1, cAtom2_2);
             double Dphi = phi - PHI2prms.R0;
             f *= f1(std::fabs(Dphi), PHI2prms);
-            // std::cout << "LP2:\t" << theta << "," << PHI2prms.R0 << "," <<
-            // Dphi <<
-            // ", f=" << f << std::endl;
+            LOG_F(1, "LP1: {}, {}, {}, f={}", theta, PHI2prms.R0, Dphi, f);
           }
         }
         if (f > 0.0) {
-          // XB uncommented next 2 lines
-          //	  std::cout << pAtom1_1->GetFullAtomName() << "\t" <<
-          // pAtom1_1->GetUser1Value() << "\t"
-          //             << pAtom2_1->GetFullAtomName() << "\t" <<
-          //             pAtom2_1->GetUser1Value() << "\t" << f << std::endl;
+          LOG_F(1, "{} {} {} {} {}", pAtom1_1->GetFullAtomName(),
+                pAtom1_1->GetUser1Value(), pAtom2_1->GetFullAtomName(),
+                pAtom2_1->GetUser1Value(), f);
           s += pAtom2_1->GetUser1Value() * f;
           if (bAnnotate) {
             // DM 6 Feb 2003. Include the charge and receptor density scaling

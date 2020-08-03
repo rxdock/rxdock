@@ -13,6 +13,8 @@
 #include "BaseInterSF.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 using namespace rxdock;
 
 // Static data members
@@ -21,16 +23,12 @@ std::string BaseInterSF::_CT("BaseInterSF");
 ////////////////////////////////////////
 // Constructors/destructors
 BaseInterSF::BaseInterSF() {
-#ifdef _DEBUG
-  std::cout << _CT << " default constructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "BaseInterSF default constructor");
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
 
 BaseInterSF::~BaseInterSF() {
-#ifdef _DEBUG
-  std::cout << _CT << "  destructor" << std::endl;
-#endif //_DEBUG
+  LOG_F(2, "BaseInterSF default constructor");
   _RBTOBJECTCOUNTER_DESTR_(_CT);
 }
 
@@ -52,10 +50,7 @@ void BaseInterSF::Update(Subject *theChangedSubject) {
     if (numModels >= 1) {
       ModelPtr spReceptor = pWorkSpace->GetModel(0);
       if (spReceptor != m_spReceptor) {
-#ifdef _DEBUG
-        std::cout << "BaseInterSF::Update(): Receptor has been updated"
-                  << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "BaseInterSF::Update(): Receptor has been updated");
         m_spReceptor = spReceptor;
         SetupReceptor();
       }
@@ -64,10 +59,7 @@ void BaseInterSF::Update(Subject *theChangedSubject) {
     if (numModels >= 2) {
       ModelPtr spLigand = pWorkSpace->GetModel(1);
       if (spLigand != m_spLigand) {
-#ifdef _DEBUG
-        std::cout << "BaseInterSF::Update(): Ligand has been updated"
-                  << std::endl;
-#endif //_DEBUG
+        LOG_F(1, "BaseInterSF::Update(): Ligand has been updated");
         m_spLigand = spLigand;
         SetupLigand();
       }

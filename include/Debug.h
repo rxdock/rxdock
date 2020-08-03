@@ -18,7 +18,6 @@
 
 #ifdef _RBTOBJECTCOUNTER
 
-#include <iostream>
 #include <map>
 
 namespace rxdock {

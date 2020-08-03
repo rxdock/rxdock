@@ -14,6 +14,8 @@
 #include "SFRequest.h"
 #include "WorkSpace.h"
 
+#include <loguru.hpp>
+
 #include <functional>
 
 using namespace rxdock;
@@ -48,7 +50,6 @@ void SAIdxSF::SetupReceptor() {
   ClearReceptor();
   if (GetReceptor().Null())
     return;
-  int iTrace = GetTrace();
 
   // Trap multiple receptor conformations here: this SF does not support them
   // yet
@@ -143,11 +144,10 @@ void SAIdxSF::SetupReceptor() {
       theCavList.push_back(*iter);
     } else if (m_bFlexRec && isSelected(pAtom)) {
       thePeriphList.push_back(*iter);
-      if (iTrace > 1) {
-        std::cout << _CT
-                  << ": Peripheral rigid atom within range of flexible atoms: "
-                  << pAtom->GetFullAtomName() << std::endl;
-      }
+      LOG_F(INFO,
+            "SAIdxSF::SetupReceptor: Peripheral rigid atom within range of "
+            "flexible atoms: {}",
+            pAtom->GetFullAtomName());
     }
   }
 
@@ -163,66 +163,48 @@ void SAIdxSF::SetupReceptor() {
     m_site_0 += TotalEnergy(theFlexList);
   }
 
-  if (iTrace > 1) {
-    std::cout << std::endl
-              << _CT << ": Rigid receptor atoms within range of docking site"
-              << std::endl
-              << std::endl;
-    std::cout << _CT << ": ATOM, TYPE, ASP, SOLV" << std::endl;
-    HHSType hhsType;
-    for (HHS_SolvationRListConstIter iter = theCavList.begin();
-         iter != theCavList.end(); iter++) {
-      HHSType::eType t = (*iter)->GetHHSType();
-      Atom *pAtom = (*iter)->GetAtom();
-      double sasa = (*iter)->GetArea();
-      double asp = (*iter)->GetSigma();
-      double energy = (*iter)->GetEnergy();
-      std::cout << _CT << ": " << pAtom->GetFullAtomName() << ", "
-                << hhsType.Type2Str(t) << ", " << sasa << ", " << asp << ", "
-                << energy << std::endl;
-    }
-    if (m_bFlexRec) {
-      std::cout << std::endl
-                << _CT
-                << ": Flexible receptor atoms within range of docking site"
-                << std::endl
-                << std::endl;
-      std::cout << _CT << ": ATOM, TYPE, ASP, SOLV" << std::endl;
-      HHSType hhsType;
-      for (HHS_SolvationRListConstIter iter = theFlexList.begin();
-           iter != theFlexList.end(); iter++) {
-        HHSType::eType t = (*iter)->GetHHSType();
-        Atom *pAtom = (*iter)->GetAtom();
-        double sasa = (*iter)->GetArea();
-        double asp = (*iter)->GetSigma();
-        double energy = (*iter)->GetEnergy();
-        std::cout << _CT << ": " << pAtom->GetFullAtomName() << ", "
-                  << hhsType.Type2Str(t) << ", " << sasa << ", " << asp << ", "
-                  << energy << std::endl;
-      }
+  LOG_F(INFO, "SAIdxSF::SetupReceptor: Rigid receptor atoms within range of "
+              "docking site");
+  LOG_F(INFO, "SAIdxSF::SetupReceptor: ATOM, TYPE, ASP, SOLV");
+  HHSType hhsType;
+  for (HHS_SolvationRListConstIter iter = theCavList.begin();
+       iter != theCavList.end(); iter++) {
+    LOG_F(INFO, "SAIdxSF: {}, {}, {}, {}, {}",
+          (*iter)->GetAtom()->GetFullAtomName(),
+          hhsType.Type2Str((*iter)->GetHHSType()), (*iter)->GetArea(),
+          (*iter)->GetSigma(), (*iter)->GetEnergy());
+  }
+
+  if (m_bFlexRec) {
+    LOG_F(INFO, "SAIdxSF::SetupReceptor: Flexible receptor atoms within range "
+                "of docking site");
+    LOG_F(INFO, "SAIdxSF::SetupReceptor: ATOM, TYPE, ASP, SOLV");
+    for (HHS_SolvationRListConstIter iter = theFlexList.begin();
+         iter != theFlexList.end(); iter++) {
+      LOG_F(INFO, "SAIdxSF: {}, {}, {}, {}, {}",
+            (*iter)->GetAtom()->GetFullAtomName(),
+            hhsType.Type2Str((*iter)->GetHHSType()), (*iter)->GetArea(),
+            (*iter)->GetSigma(), (*iter)->GetEnergy());
     }
   }
 
-  if (iTrace > 0) {
-    std::cout << std::endl;
-    std::cout << "Initial site dG(solv)        : " << m_site_0 << " kcal/mol"
-              << std::endl;
-    // Count the number of undefined types
-    isHHSType_eq isUndefined(HHSType::UNDEFINED);
-    int nUndefRec =
-        std::count_if(theRSPList.begin(), theRSPList.end(), isUndefined);
-    int nUndefSite =
-        std::count_if(theCavList.begin(), theCavList.end(), isUndefined);
+  LOG_F(INFO, "SAIdxSF: Initial site dG(solv): {} kcal/mol", m_site_0);
 
-    std::cout << "#UNDEFINED TYPES (rigid recep)  : " << nUndefRec << std::endl;
-    std::cout << "#UNDEFINED TYPES (rigid site)   : " << nUndefSite
-              << std::endl;
-    if (m_bFlexRec) {
-      int nUndefFlex =
-          std::count_if(theFlexList.begin(), theFlexList.end(), isUndefined);
-      std::cout << "#UNDEFINED TYPES (flex site)    : " << nUndefFlex
-                << std::endl;
-    }
+  // Count the number of undefined types
+  isHHSType_eq isUndefined(HHSType::UNDEFINED);
+  int nUndefRec =
+      std::count_if(theRSPList.begin(), theRSPList.end(), isUndefined);
+  int nUndefSite =
+      std::count_if(theCavList.begin(), theCavList.end(), isUndefined);
+  LOG_IF_F(WARNING, nUndefRec > 0, "#UNDEFINED TYPES (rigid recep): {}",
+           nUndefRec);
+  LOG_IF_F(WARNING, nUndefSite > 0, "#UNDEFINED TYPES (rigid site): {}",
+           nUndefSite);
+  if (m_bFlexRec) {
+    int nUndefFlex =
+        std::count_if(theFlexList.begin(), theFlexList.end(), isUndefined);
+    LOG_IF_F(WARNING, nUndefFlex > 0, "#UNDEFINED TYPES (flex site): {}",
+             nUndefFlex);
   }
 }
 /////////////////////////////////////////////////////////////////
@@ -241,7 +223,6 @@ void SAIdxSF::SetupLigand() {
   // Store the per-atom invariant free areas for later retrieval
   SaveHHS saveInvariantArea;
   std::for_each(theLSPList.begin(), theLSPList.end(), saveInvariantArea);
-  int iTrace = GetTrace();
   // The solvation term also describes the intramolecular solvation energy of
   // the ligand so, as with the intramolecular terms, we want to take the "zero"
   // point energy from the initial (Corina) conformation of the ligand. Read the
@@ -249,42 +230,28 @@ void SAIdxSF::SetupLigand() {
   // calculate here
   std::string name = BaseSF::_INTRA_SF + "." + GetName() + ".lig_0";
   if (spModel->isDataFieldPresent(name)) {
-    if (iTrace > 0) {
-      std::cout << "Restoring initial ligand solvation energy from file..."
-                << std::endl;
-    }
+    LOG_F(INFO, "Restoring initial ligand solvation energy from file...");
     m_lig_0 = spModel->GetDataValue(name);
   } else {
-    if (iTrace > 0) {
-      std::cout << "Calculating initial ligand solvation energy..."
-                << std::endl;
-    }
+    LOG_F(INFO, "Calculating initial ligand solvation energy...");
     // Variable distances
     OverlapVariableHHS updateVariableArea;
     std::for_each(theLSPList.begin(), theLSPList.end(), updateVariableArea);
     // Total solv energy for initial ligand conf
     m_lig_0 = TotalEnergy(theLSPList);
-    if (iTrace > 2) {
-      PrintWeightMatrix();
-    }
+    PrintWeightMatrix();
   }
 
-  if (iTrace > 0) {
-    std::cout << std::endl;
-    std::cout << "Initial ligand dG(solv):     " << m_lig_0 << " kcal/mol"
-              << std::endl;
-    // Count the number of undefined types
-    isHHSType_eq isUndefined(HHSType::UNDEFINED);
-    int nUndef =
-        std::count_if(theLSPList.begin(), theLSPList.end(), isUndefined);
-    std::cout << "#UNDEFINED TYPES (lig)    : " << nUndef << std::endl;
-  }
+  LOG_F(INFO, "Initial ligand dG(solv): {} kcal/mol", m_lig_0);
+  // Count the number of undefined types
+  isHHSType_eq isUndefined(HHSType::UNDEFINED);
+  int nUndef = std::count_if(theLSPList.begin(), theLSPList.end(), isUndefined);
+  LOG_IF_F(WARNING, nUndef > 0, "#UNDEFINED TYPES (lig): {}", nUndef);
 }
 
 void SAIdxSF::SetupSolvent() {
   ClearSolvent();
   ModelList solventModelList = GetSolvent();
-  int iTrace = GetTrace();
   // Process the solvent models individually in order to build up each
   // intra-solvent interaction map correctly.
   for (ModelListConstIter iter = solventModelList.begin();
@@ -320,16 +287,12 @@ void SAIdxSF::SetupSolvent() {
   // solvent models.
   // std::for_each(theSolventList.begin(),theSolventList.end(),OverlapVariableHHS());
   m_solvent_0 = TotalEnergy(theSolventList);
-  if (iTrace > 0) {
-    std::cout << std::endl;
-    std::cout << "Initial solvent dG(solv):     " << m_solvent_0 << " kcal/mol"
-              << std::endl;
-    // Count the number of undefined types
-    isHHSType_eq isUndefined(HHSType::UNDEFINED);
-    int nUndef = std::count_if(theSolventList.begin(), theSolventList.end(),
-                               isUndefined);
-    std::cout << "#UNDEFINED TYPES (sol)    : " << nUndef << std::endl;
-  }
+  LOG_F(INFO, "Initial solvent dG(solv): {} kcal/mol", m_solvent_0);
+  // Count the number of undefined types
+  isHHSType_eq isUndefined(HHSType::UNDEFINED);
+  int nUndef =
+      std::count_if(theSolventList.begin(), theSolventList.end(), isUndefined);
+  LOG_IF_F(WARNING, nUndef > 0, "#UNDEFINED TYPES (sol): {}", nUndef);
 }
 
 void SAIdxSF::SetupScore() {}
@@ -464,15 +427,16 @@ void SAIdxSF::PrintWeightMatrix(void) const {
   std::vector<int> count;   // count of atoms contributing the area
   std::vector<double> area; // total SASA by a single atom type
 
+  std::ostringstream typebuf;
   HHSType hhsType;
-  std::cout << "TYPE";
   // go through on each atom type
   for (int i = 0; i < HHSType::MAXTYPES; ++i) {
     count.push_back(0);
     area.push_back(0.0);
-    std::cout << "," << hhsType.Type2Str(HHSType::eType(i));
+    typebuf << "," << hhsType.Type2Str(HHSType::eType(i));
   }
-  std::cout << std::endl;
+  LOG_F(1, "TYPE{}", typebuf.str());
+
   for (HHS_SolvationRListConstIter iter = theLSPList.begin();
        iter != theLSPList.end(); iter++) {
     HHSType::eType hhsType = (*iter)->GetHHSType();
@@ -485,16 +449,20 @@ void SAIdxSF::PrintWeightMatrix(void) const {
     }
     area[hhsType] += sa;
   }
-  std::cout << "CT"; // stands for Weight Matrix (and helps grepping)
+
+  std::ostringstream ctbuf;
   for (int i = 0; i < HHSType::MAXTYPES; ++i) {
-    std::cout << "," << count[i];
+    ctbuf << "," << count[i];
   }
-  std::cout << std::endl;
-  std::cout << "WM"; // stands for Weight Matrix (and helps grepping)
+  LOG_F(1, "CT{}",
+        ctbuf.str()); // stands for Weight Matrix (and helps grepping)
+
+  std::ostringstream wmbuf;
   for (int i = 0; i < HHSType::MAXTYPES; ++i) {
-    std::cout << "," << area[i];
+    wmbuf << "," << area[i];
   }
-  std::cout << std::endl;
+  LOG_F(1, "WM{}",
+        wmbuf.str()); // stands for Weight Matrix (and helps grepping)
 }
 
 void SAIdxSF::ClearReceptor(void) {
@@ -550,12 +518,7 @@ void SAIdxSF::ScoreMap(StringVariantMap &scoreMap) const {
     // First we need to force the calculation of all the raw score components
     EnableAnnotations(true);
     double rs = RawScore();
-    int iTrace = GetTrace();
-    if (iTrace > 1) {
-      std::cout << std::endl << _CT << "::ScoreMap()" << std::endl;
-      std::cout << _CT << ": Maximum radius of any atom type =" << rs
-                << std::endl;
-    }
+    LOG_F(1, "SAIdxSF::ScoreMap: Maximum radius of any atom type = {}", rs);
     EnableAnnotations(false);
     std::string name = GetFullName();
 
@@ -599,12 +562,8 @@ void SAIdxSF::ScoreMap(StringVariantMap &scoreMap) const {
 
 void SAIdxSF::Setup() {
   HHSType hhsType;
-  int iTrace = GetTrace();
   m_maxR = 0.0; // keep track of maximum radius for any atom type
-  if (iTrace > 1) {
-    std::cout << std::endl << _CT << "::Setup()" << std::endl;
-    std::cout << "TYPE,R,P,ASP,CHG_SCALING" << std::endl;
-  }
+  LOG_F(1, "SAIdxSF::Setup: TYPE,R,P,ASP,CHG_SCALING");
   // Dummy read to force parsing of file, otherwise the first SetSection is
   // overridden
   std::vector<std::string> secList = m_spSolvSource->GetSectionList();
@@ -622,10 +581,7 @@ void SAIdxSF::Setup() {
     double asp = m_spSolvSource->GetParameterValue(_ASP);
     bool chg_scaling = m_spSolvSource->isParameterPresent(_CHG_SCALING);
     m_solvTable.push_back(solvprms(r, p, asp, chg_scaling));
-    if (iTrace > 1) {
-      std::cout << stri << "," << r << "," << p << "," << asp << ","
-                << chg_scaling << std::endl;
-    }
+    LOG_F(1, "{},{},{},{},{}", stri, r, p, asp, chg_scaling);
     m_maxR = std::max(m_maxR, r);
   }
   // Overall maximum range of the scoring function
@@ -633,12 +589,9 @@ void SAIdxSF::Setup() {
   // Similar, but this represents the increment to any particular atom radius
   // to give the maximum range for that atom (used for indexing)
   SetParameter(_INCR, m_maxR + 2 * HHS_Solvation::r_s);
-  if (iTrace > 1) {
-    std::cout << _CT << ": Maximum radius of any atom type = " << m_maxR
-              << std::endl;
-    std::cout << _CT << "::RANGE = " << GetRange() << std::endl;
-    std::cout << _CT << "::INCR = " << GetParameter(_INCR) << std::endl;
-  }
+  LOG_F(1, "SAIdxSF: Maximum radius of any atom type = {}", m_maxR);
+  LOG_F(1, "SAIdxSF::RANGE = {}", GetRange());
+  LOG_F(1, "SAIdxSF::INCR = {}", GetParameter(_INCR).GetString());
 }
 
 // Sum the exposed areas and energies (ASP*area) for the list of solvation
@@ -657,7 +610,6 @@ double SAIdxSF::TotalEnergy(const HHS_SolvationRList &intnCenters) const {
 // Handles the Partition request
 void SAIdxSF::HandleRequest(RequestPtr spRequest) {
   VariantList params = spRequest->GetParameters();
-  int iTrace = GetTrace();
 
   switch (spRequest->GetID()) {
 
@@ -667,27 +619,21 @@ void SAIdxSF::HandleRequest(RequestPtr spRequest) {
     //         param[1] = distance => Partition a named scoring function
   case ID_REQ_SF_PARTITION:
     if (params.size() == 1) {
-      if (iTrace > 2) {
-        std::cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
-                  << " at distance=" << params[0] << std::endl;
-      }
+      LOG_F(1, "SAIdxSF::HandleRequest: Partitioning {} at distance = {}",
+            GetFullName(), params[0].GetString());
       Partition(theLSPList, params[0]);
     } else if ((params.size() == 2) &&
                (params[0].GetString() == GetFullName())) {
-      if (iTrace > 2) {
-        std::cout << _CT << "::HandleRequest: Partitioning " << GetFullName()
-                  << " at distance=" << params[1] << std::endl;
-      }
+      LOG_F(1, "SAIdxSF::HandleRequest: Partitioning {} at distance = {}",
+            GetFullName(), params[1].GetString());
       Partition(theLSPList, params[1]);
     }
     break;
 
     // Pass all other requests to base handler
   default:
-    if (iTrace > 2) {
-      std::cout << _CT << "::HandleRequest: " << GetFullName()
-                << " passing request to base handler" << std::endl;
-    }
+    LOG_F(1, "SAIdxSF::HandleRequest: {} passing request to base handler",
+          GetFullName());
     BaseObject::HandleRequest(spRequest);
     break;
   }
@@ -705,7 +651,6 @@ SAIdxSF::CreateInteractionCenters(const AtomList &atomList) const {
   HHS_SolvationRList retList;
   // assign atom types and ASP parameters
   HHSType hhsType;
-  int iTrace = GetTrace();
   for (AtomListConstIter iter = atomList.begin(); iter != atomList.end();
        iter++) {
     HHSType::eType t = hhsType(*iter);
@@ -719,11 +664,11 @@ SAIdxSF::CreateInteractionCenters(const AtomList &atomList) const {
       double sigma = GetASP(t, (*iter)->GetGroupCharge());
       retList.push_back(new HHS_Solvation(t, *iter, p_i, r_i, sigma));
       if (t == HHSType::UNDEFINED)
-        std::cout << _CT << ": WARNING - CANNOT ASSIGN SOLVATION ATOM TYPE FOR "
-                  << (*iter)->GetFullAtomName() << std::endl;
-    } else if (iTrace > 1)
-      std::cout << _CT << ": INFO - ignoring non-polar H "
-                << (*iter)->GetFullAtomName() << std::endl;
+        LOG_F(WARNING, "SAIdxSF: Cannot assign solvation atom type for {}",
+              (*iter)->GetFullAtomName());
+    } else {
+      LOG_F(1, "SAIdxSF: Ignoring non-polar H {}", (*iter)->GetFullAtomName());
+    }
   }
 
   return retList;
