@@ -4,7 +4,7 @@
 // This subroutines assume that atomId starts from 1 and goes incrementally
 // It will fail if this is not true.
 
-#include "Smarts.h"
+#include "daylight/Smarts.h"
 #include "dt_smarts.h"
 #include "dt_smiles.h"
 

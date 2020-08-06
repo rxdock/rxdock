@@ -1,73 +1,73 @@
 project('RxDock', 'cpp', version : '0.1.0', default_options : ['cpp_std=c++11'])
 
-incRbt = include_directories('include', 'include/GP')
+incRbt = include_directories('include/rxdock', 'include/rxdock/geneticprogram')
 srcRbt = [
-  'src/GP/GPChromosome.cxx', 'src/GP/GPFFCHK1.cxx',
-  'src/GP/GPFFCrossDock.cxx', 'src/GP/GPFFGold.cxx',
-  'src/GP/GPFFHSP90.cxx', 'src/GP/GPFFSpike.cxx',
-  'src/GP/GPFitnessFunction.cxx', 'src/GP/GPGenome.cxx',
-  'src/GP/GPParser.cxx', 'src/GP/GPPopulation.cxx',
-  'src/lib/AlignTransform.cxx', 'src/lib/Annotation.cxx',
-  'src/lib/AnnotationHandler.cxx', 'src/lib/AromIdxSF.cxx',
-  'src/lib/Atom.cxx', 'src/lib/AtomFuncs.cxx',
-  'src/lib/BaseBiMolTransform.cxx', 'src/lib/BaseFileSink.cxx',
-  'src/lib/BaseFileSource.cxx', 'src/lib/BaseGrid.cxx',
-  'src/lib/BaseIdxSF.cxx', 'src/lib/BaseInterSF.cxx',
-  'src/lib/BaseIntraSF.cxx', 'src/lib/BaseMolecularFileSink.cxx',
-  'src/lib/BaseMolecularFileSource.cxx', 'src/lib/BaseObject.cxx',
-  'src/lib/BaseSF.cxx', 'src/lib/BaseTransform.cxx',
-  'src/lib/BaseUniMolTransform.cxx', 'src/lib/BiMolWorkSpace.cxx',
-  'src/lib/Bond.cxx', 'src/lib/CavityFillSF.cxx',
-  'src/lib/CavityGridSF.cxx', 'src/lib/CellTokenIter.cxx',
-  'src/lib/CharmmDataSource.cxx', 'src/lib/CharmmTypesFileSource.cxx',
-  'src/lib/Chrom.cxx', 'src/lib/ChromDihedralElement.cxx',
-  'src/lib/ChromDihedralRefData.cxx', 'src/lib/ChromElement.cxx',
-  'src/lib/ChromFactory.cxx', 'src/lib/ChromOccupancyElement.cxx',
-  'src/lib/ChromOccupancyRefData.cxx', 'src/lib/ChromPositionElement.cxx',
-  'src/lib/ChromPositionRefData.cxx', 'src/lib/Constraint.cxx',
-  'src/lib/ConstSF.cxx', 'src/lib/Context.cxx',
-  'src/lib/CrdFileSink.cxx', 'src/lib/CrdFileSource.cxx',
-  'src/lib/CSVFileSink.cxx',
-  'src/lib/Rbt.cxx', 'src/lib/Debug.cxx', 'src/lib/DihedralIntraSF.cxx',
-  'src/lib/DihedralSF.cxx', 'src/lib/DihedralTargetSF.cxx',
-  'src/lib/DirectorySource.cxx', 'src/lib/DockingSite.cxx',
-  'src/lib/ElementFileSource.cxx', 'src/lib/Euler.cxx',
-  'src/lib/FFTGrid.cxx', 'src/lib/Filter.cxx',
-  'src/lib/FilterExpression.cxx', 'src/lib/FilterExpressionVisitor.cxx',
-  'src/lib/FlexAtomFactory.cxx', 'src/lib/GATransform.cxx',
-  'src/lib/Genome.cxx', 'src/lib/InteractionGrid.cxx',
-  'src/lib/LigandFlexData.cxx', 'src/lib/LigandSiteMapper.cxx',
-  'src/lib/MdlFileSink.cxx', 'src/lib/MdlFileSource.cxx',
-  'src/lib/Model.cxx', 'src/lib/ModelMutator.cxx',
-  'src/lib/MOEGrid.cxx', 'src/lib/MOL2FileSource.cxx',
-  'src/lib/NmrRestraintFileSource.cxx', 'src/lib/NmrSF.cxx',
-  'src/lib/NoeRestraint.cxx', 'src/lib/NonBondedGrid.cxx',
-  'src/lib/NonBondedHHSGrid.cxx', 'src/lib/NullTransform.cxx',
-  'src/lib/Observer.cxx', 'src/lib/ParameterFileSource.cxx',
-  'src/lib/ParamHandler.cxx', 'src/lib/Parser.cxx',
-  'src/lib/PdbFileSource.cxx', 'src/lib/PharmaSF.cxx',
-  'src/lib/PMF.cxx', 'src/lib/PMFDirSource.cxx',
-  'src/lib/PMFGridSF.cxx', 'src/lib/PMFIdxSF.cxx',
-  'src/lib/PolarIdxSF.cxx', 'src/lib/PolarIntraSF.cxx',
-  'src/lib/PolarSF.cxx', 'src/lib/Population.cxx',
-  'src/lib/PrincipalAxes.cxx', 'src/lib/PRMFactory.cxx',
-  'src/lib/PseudoAtom.cxx', 'src/lib/PsfFileSink.cxx',
-  'src/lib/PsfFileSource.cxx', 'src/lib/Rand.cxx',
-  'src/lib/RandLigTransform.cxx', 'src/lib/RandPopTransform.cxx',
-  'src/lib/RealGrid.cxx', 'src/lib/ReceptorFlexData.cxx',
-  'src/lib/RotSF.cxx', 'src/lib/SAIdxSF.cxx',
-  'src/lib/SATypes.cxx', 'src/lib/SetupPMFSF.cxx',
-  'src/lib/SetupPolarSF.cxx', 'src/lib/SetupSASF.cxx',
-  'src/lib/SFAgg.cxx', 'src/lib/SFFactory.cxx',
-  'src/lib/SimAnnTransform.cxx', 'src/lib/SimplexTransform.cxx',
-  'src/lib/SiteMapper.cxx', 'src/lib/SiteMapperFactory.cxx',
-  'src/lib/SolventFlexData.cxx', 'src/lib/SphereSiteMapper.cxx',
-  'src/lib/StringTokenIter.cxx', 'src/lib/Subject.cxx',
-  'src/lib/TetherSF.cxx', 'src/lib/Token.cxx',
-  'src/lib/TransformAgg.cxx', 'src/lib/TransformFactory.cxx',
-  'src/lib/TriposAtomType.cxx', 'src/lib/VdwGridSF.cxx',
-  'src/lib/VdwIdxSF.cxx', 'src/lib/VdwIntraSF.cxx',
-  'src/lib/VdwSF.cxx', 'src/lib/WorkSpace.cxx'
+  'lib/geneticprogram/GPChromosome.cxx', 'lib/geneticprogram/GPFFCHK1.cxx',
+  'lib/geneticprogram/GPFFCrossDock.cxx', 'lib/geneticprogram/GPFFGold.cxx',
+  'lib/geneticprogram/GPFFHSP90.cxx', 'lib/geneticprogram/GPFFSpike.cxx',
+  'lib/geneticprogram/GPFitnessFunction.cxx', 'lib/geneticprogram/GPGenome.cxx',
+  'lib/geneticprogram/GPParser.cxx', 'lib/geneticprogram/GPPopulation.cxx',
+  'lib/AlignTransform.cxx', 'lib/Annotation.cxx',
+  'lib/AnnotationHandler.cxx', 'lib/AromIdxSF.cxx',
+  'lib/Atom.cxx', 'lib/AtomFuncs.cxx',
+  'lib/BaseBiMolTransform.cxx', 'lib/BaseFileSink.cxx',
+  'lib/BaseFileSource.cxx', 'lib/BaseGrid.cxx',
+  'lib/BaseIdxSF.cxx', 'lib/BaseInterSF.cxx',
+  'lib/BaseIntraSF.cxx', 'lib/BaseMolecularFileSink.cxx',
+  'lib/BaseMolecularFileSource.cxx', 'lib/BaseObject.cxx',
+  'lib/BaseSF.cxx', 'lib/BaseTransform.cxx',
+  'lib/BaseUniMolTransform.cxx', 'lib/BiMolWorkSpace.cxx',
+  'lib/Bond.cxx', 'lib/CavityFillSF.cxx',
+  'lib/CavityGridSF.cxx', 'lib/CellTokenIter.cxx',
+  'lib/CharmmDataSource.cxx', 'lib/CharmmTypesFileSource.cxx',
+  'lib/Chrom.cxx', 'lib/ChromDihedralElement.cxx',
+  'lib/ChromDihedralRefData.cxx', 'lib/ChromElement.cxx',
+  'lib/ChromFactory.cxx', 'lib/ChromOccupancyElement.cxx',
+  'lib/ChromOccupancyRefData.cxx', 'lib/ChromPositionElement.cxx',
+  'lib/ChromPositionRefData.cxx', 'lib/Constraint.cxx',
+  'lib/ConstSF.cxx', 'lib/Context.cxx',
+  'lib/CrdFileSink.cxx', 'lib/CrdFileSource.cxx',
+  'lib/CSVFileSink.cxx',
+  'lib/Rbt.cxx', 'lib/Debug.cxx', 'lib/DihedralIntraSF.cxx',
+  'lib/DihedralSF.cxx', 'lib/DihedralTargetSF.cxx',
+  'lib/DirectorySource.cxx', 'lib/DockingSite.cxx',
+  'lib/ElementFileSource.cxx', 'lib/Euler.cxx',
+  'lib/FFTGrid.cxx', 'lib/Filter.cxx',
+  'lib/FilterExpression.cxx', 'lib/FilterExpressionVisitor.cxx',
+  'lib/FlexAtomFactory.cxx', 'lib/GATransform.cxx',
+  'lib/Genome.cxx', 'lib/InteractionGrid.cxx',
+  'lib/LigandFlexData.cxx', 'lib/LigandSiteMapper.cxx',
+  'lib/MdlFileSink.cxx', 'lib/MdlFileSource.cxx',
+  'lib/Model.cxx', 'lib/ModelMutator.cxx',
+  'lib/MOEGrid.cxx', 'lib/MOL2FileSource.cxx',
+  'lib/NmrRestraintFileSource.cxx', 'lib/NmrSF.cxx',
+  'lib/NoeRestraint.cxx', 'lib/NonBondedGrid.cxx',
+  'lib/NonBondedHHSGrid.cxx', 'lib/NullTransform.cxx',
+  'lib/Observer.cxx', 'lib/ParameterFileSource.cxx',
+  'lib/ParamHandler.cxx', 'lib/Parser.cxx',
+  'lib/PdbFileSource.cxx', 'lib/PharmaSF.cxx',
+  'lib/PMF.cxx', 'lib/PMFDirSource.cxx',
+  'lib/PMFGridSF.cxx', 'lib/PMFIdxSF.cxx',
+  'lib/PolarIdxSF.cxx', 'lib/PolarIntraSF.cxx',
+  'lib/PolarSF.cxx', 'lib/Population.cxx',
+  'lib/PrincipalAxes.cxx', 'lib/PRMFactory.cxx',
+  'lib/PseudoAtom.cxx', 'lib/PsfFileSink.cxx',
+  'lib/PsfFileSource.cxx', 'lib/Rand.cxx',
+  'lib/RandLigTransform.cxx', 'lib/RandPopTransform.cxx',
+  'lib/RealGrid.cxx', 'lib/ReceptorFlexData.cxx',
+  'lib/RotSF.cxx', 'lib/SAIdxSF.cxx',
+  'lib/SATypes.cxx', 'lib/SetupPMFSF.cxx',
+  'lib/SetupPolarSF.cxx', 'lib/SetupSASF.cxx',
+  'lib/SFAgg.cxx', 'lib/SFFactory.cxx',
+  'lib/SimAnnTransform.cxx', 'lib/SimplexTransform.cxx',
+  'lib/SiteMapper.cxx', 'lib/SiteMapperFactory.cxx',
+  'lib/SolventFlexData.cxx', 'lib/SphereSiteMapper.cxx',
+  'lib/StringTokenIter.cxx', 'lib/Subject.cxx',
+  'lib/TetherSF.cxx', 'lib/Token.cxx',
+  'lib/TransformAgg.cxx', 'lib/TransformFactory.cxx',
+  'lib/TriposAtomType.cxx', 'lib/VdwGridSF.cxx',
+  'lib/VdwIdxSF.cxx', 'lib/VdwIntraSF.cxx',
+  'lib/VdwSF.cxx', 'lib/WorkSpace.cxx'
 ]
 
 cpp_compiler = meson.get_compiler('cpp')
@@ -117,37 +117,37 @@ librxdock = library(
 cxxopts_dep = dependency('cxxopts', fallback : ['cxxopts', 'cxxopts_dep'])
 
 rbdock = executable(
-  'rbdock', 'src/exe/rbdock.cxx', link_with : librxdock,
+  'rbdock', 'tools/legacy/rbdock.cxx', link_with : librxdock,
   dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, pcg_cpp_dep, fmt_dep, emilk_loguru_dep],
   include_directories : incRbt, install : true
 )
 rbcavity = executable(
-  'rbcavity', 'src/exe/rbcavity.cxx', link_with : librxdock,
+  'rbcavity', 'tools/legacy/rbcavity.cxx', link_with : librxdock,
   dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, pcg_cpp_dep],
   include_directories : incRbt, install : true
 )
 executable(
-  'rbrms', 'src/exe/rbrms.cxx', link_with : librxdock,
+  'rbrms', 'tools/legacy/rbrms.cxx', link_with : librxdock,
   dependencies : [eigen3_dep, nlohmann_json_dep],
   include_directories : incRbt, install: true
 )
 executable(
-  'rbmoegrid', 'src/exe/rbmoegrid.cxx', link_with : librxdock,
+  'rbmoegrid', 'tools/legacy/rbmoegrid.cxx', link_with : librxdock,
   dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, pcg_cpp_dep],
   include_directories : incRbt, install : true
 )
 executable(
-  'rblist', 'src/exe/rblist.cxx', link_with : librxdock,
+  'rblist', 'tools/legacy/rblist.cxx', link_with : librxdock,
   dependencies : [eigen3_dep, nlohmann_json_dep],
   include_directories : incRbt, install : true
 )
 executable(
-  'rbcalcgrid', 'src/exe/rbcalcgrid.cxx', link_with : librxdock,
+  'rbcalcgrid', 'tools/legacy/rbcalcgrid.cxx', link_with : librxdock,
   dependencies : [eigen3_dep, nlohmann_json_dep, pcg_cpp_dep], include_directories : incRbt,
   install : true
 )
 executable(
-  'rbconvgrid', 'src/exe/rbconvgrid.cxx', link_with : librxdock,
+  'rbconvgrid', 'tools/legacy/rbconvgrid.cxx', link_with : librxdock,
   dependencies : [eigen3_dep, nlohmann_json_dep], include_directories : incRbt, install : true
 )
 
@@ -155,17 +155,17 @@ dt_smarts_dep = dependency('dt_smarts', required : false)
 dt_smiles_dep = dependency('dt_smiles', required : false)
 if dt_smarts_dep.found() and dt_smiles_dep.found()
   libRbtSmarts = library(
-    'RbtSmarts', 'src/daylight/Smarts.cxx', soversion : library_soversion,
+    'RbtSmarts', 'lib/daylight/Smarts.cxx', soversion : library_soversion,
     version : library_soversion + '.' + meson.project_name(),
     dependencies : [dt_smarts_dep, dt_smiles_dep], include_directories : incRbt
   )
   executable(
-    'rbtether', 'src/exe/rbtether.cxx',
+    'rbtether', 'tools/legacy/rbtether.cxx',
     dependencies : [dt_smarts_dep, dt_smiles_dep],
     link_with : [librxdock, libRbtSmarts], include_directories : incRbt
   )
   executable(
-    'smart_rms', 'src/exe/smart_rms.cxx',
+    'smart_rms', 'tools/legacy/smart_rms.cxx',
     dependencies : [dt_smarts_dep, dt_smiles_dep],
     link_with : [librxdock, libRbtSmarts], include_directories : incRbt
   )
@@ -369,17 +369,17 @@ if tests_opt
     'gtest', fallback : ['gtest', 'gtest_dep'], required : false
   )
   if gtest_dep.found()
-    incTest = include_directories('build/test')
+    incTest = include_directories('tests')
     srcTest = [
-      'build/test/Main.cxx', 'build/test/OccupancyTest.cxx',
-      'build/test/ChromTest.cxx', 'build/test/SearchTest.cxx'
+      'tests/Main.cxx', 'tests/OccupancyTest.cxx',
+      'tests/ChromTest.cxx', 'tests/SearchTest.cxx'
     ]
     unit_test = executable(
       'unit-test', srcTest,
       dependencies : [pcg_cpp_dep, gtest_dep, eigen3_dep, nlohmann_json_dep],
       link_with : librxdock, include_directories : [incTest, incRbt]
     )
-    rbtHomePath = '/build/test/RBT_HOME'
+    rbtHomePath = '/tests/data'
     test(
       'rbcavity-1koc', rbcavity, args : [
         '-r', meson.current_source_dir() + rbtHomePath + '/1koc.prm',
