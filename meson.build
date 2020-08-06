@@ -213,6 +213,13 @@ librxdock = library(
   include_directories : incRbt, install : true
 )
 
+pkgc = import('pkgconfig')
+pkgc.generate(librxdock,
+    name: 'rxdock',
+    version: meson.project_version(),
+    description: 'A fast, versatile, and open-source library for docking ligands to proteins and nucleic acids',
+)
+
 cxxopts_dep = dependency('cxxopts', fallback : ['cxxopts', 'cxxopts_dep'])
 
 rbdock = executable(
