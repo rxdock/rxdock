@@ -14,8 +14,8 @@
 #ifndef _RBTBASESF_H_
 #define _RBTBASESF_H_
 
-#include "BaseObject.h"
-#include "Config.h"
+#include "rxdock/BaseObject.h"
+#include "rxdock/Config.h"
 
 namespace rxdock {
 

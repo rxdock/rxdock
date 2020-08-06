@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Chrom.h"
+#include "rxdock/Chrom.h"
 
 using namespace rxdock;
 

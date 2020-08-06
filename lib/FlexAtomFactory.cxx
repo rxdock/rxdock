@@ -10,11 +10,11 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "FlexAtomFactory.h"
-#include "ChromElement.h"
-#include "LigandFlexData.h"
-#include "ReceptorFlexData.h"
-#include "SolventFlexData.h"
+#include "rxdock/FlexAtomFactory.h"
+#include "rxdock/ChromElement.h"
+#include "rxdock/LigandFlexData.h"
+#include "rxdock/ReceptorFlexData.h"
+#include "rxdock/SolventFlexData.h"
 
 using namespace rxdock;
 

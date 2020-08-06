@@ -17,8 +17,8 @@
 #ifndef _RBTBASEGRID_H_
 #define _RBTBASEGRID_H_
 
-#include "Config.h"
-#include "Coord.h"
+#include "rxdock/Config.h"
+#include "rxdock/Coord.h"
 
 #include <set>
 

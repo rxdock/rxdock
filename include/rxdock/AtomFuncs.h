@@ -15,8 +15,8 @@
 #ifndef _RBTATOMFUNCS_H_
 #define _RBTATOMFUNCS_H_
 
-#include "Atom.h"
-#include "Bond.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Bond.h"
 
 namespace rxdock {
 

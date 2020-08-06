@@ -16,10 +16,10 @@
 #ifndef _RBT_GPFFGOLD_H_
 #define _RBT_GPFFGOLD_H_
 
-#include "GPFitnessFunction.h"
-#include "GPGenome.h"
-#include "GPTypes.h"
-#include "Rand.h"
+#include "rxdock/Rand.h"
+#include "rxdock/geneticprogram/GPFitnessFunction.h"
+#include "rxdock/geneticprogram/GPGenome.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 // #include <cmath>
 
 namespace rxdock {

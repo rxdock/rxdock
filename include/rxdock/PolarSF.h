@@ -17,9 +17,9 @@
 #ifndef _RBTPOLARSF_H_
 #define _RBTPOLARSF_H_
 
-#include "AnnotationHandler.h"
-#include "BaseSF.h"
-#include "InteractionGrid.h"
+#include "rxdock/AnnotationHandler.h"
+#include "rxdock/BaseSF.h"
+#include "rxdock/InteractionGrid.h"
 
 namespace rxdock {
 

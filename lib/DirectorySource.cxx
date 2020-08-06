@@ -11,8 +11,8 @@
  ***********************************************************************/
 
 //#include <cstdlib>				// for getenv
-//#include "FileError.h"
-#include "DirectorySource.h"
+//#include "rxdock/FileError.h"
+#include "rxdock/DirectorySource.h"
 
 #include <loguru.hpp>
 

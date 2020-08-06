@@ -17,9 +17,9 @@
 #ifndef _RBTTRANSFORMFACTORY_H_
 #define _RBTTRANSFORMFACTORY_H_
 
-#include "Config.h"
-#include "ParameterFileSource.h"
-#include "TransformAgg.h"
+#include "rxdock/Config.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/TransformAgg.h"
 
 namespace rxdock {
 

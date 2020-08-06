@@ -13,7 +13,7 @@
 #ifndef _RBT_GPTYPES_H_
 #define _RBT_GPTYPES_H_
 
-#include "Config.h"
+#include "rxdock/Config.h"
 
 namespace rxdock {
 

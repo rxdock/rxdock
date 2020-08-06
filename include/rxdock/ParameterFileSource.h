@@ -15,8 +15,8 @@
 #ifndef _RBTPARAMETERFILESOURCE_H_
 #define _RBTPARAMETERFILESOURCE_H_
 
-#include "BaseFileSource.h"
-#include "Variant.h"
+#include "rxdock/BaseFileSource.h"
+#include "rxdock/Variant.h"
 
 namespace rxdock {
 

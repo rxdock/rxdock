@@ -13,7 +13,7 @@
 #ifndef _RBTSATYPES_H_
 #define _RBTSATYPES_H_
 
-#include "Config.h"
+#include "rxdock/Config.h"
 
 #include <functional>
 

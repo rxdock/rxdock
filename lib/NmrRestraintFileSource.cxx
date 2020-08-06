@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "NmrRestraintFileSource.h"
-#include "FileError.h"
+#include "rxdock/NmrRestraintFileSource.h"
+#include "rxdock/FileError.h"
 
 using namespace rxdock;
 

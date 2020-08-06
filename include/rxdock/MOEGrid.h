@@ -35,13 +35,13 @@
 #ifndef _RBTMOEGRID_H_
 #define _RBTMOEGRID_H_
 
-#include "Coord.h"
-#include "Rbt.h"
+#include "rxdock/Coord.h"
+#include "rxdock/Rbt.h"
 #include <cstdlib>
 #include <fstream>
 #include <vector>
 
-#include "BiMolWorkSpace.h"
+#include "rxdock/BiMolWorkSpace.h"
 
 namespace rxdock {
 

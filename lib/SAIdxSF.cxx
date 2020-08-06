@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SAIdxSF.h"
-#include "SFRequest.h"
-#include "WorkSpace.h"
+#include "rxdock/SAIdxSF.h"
+#include "rxdock/SFRequest.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

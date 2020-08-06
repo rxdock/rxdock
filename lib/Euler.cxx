@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Euler.h"
+#include "rxdock/Euler.h"
 
 using namespace rxdock;
 

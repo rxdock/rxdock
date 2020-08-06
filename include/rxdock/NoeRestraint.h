@@ -15,7 +15,7 @@
 #ifndef _RBTNOERESTRAINT_H_
 #define _RBTNOERESTRAINT_H_
 
-#include "Atom.h"
+#include "rxdock/Atom.h"
 
 namespace rxdock {
 

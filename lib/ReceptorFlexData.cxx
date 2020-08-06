@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ReceptorFlexData.h"
+#include "rxdock/ReceptorFlexData.h"
 
 using namespace rxdock;
 

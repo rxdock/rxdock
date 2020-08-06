@@ -12,7 +12,7 @@
 
 #include <iomanip>
 
-#include "MdlFileSink.h"
+#include "rxdock/MdlFileSink.h"
 
 #include <loguru.hpp>
 

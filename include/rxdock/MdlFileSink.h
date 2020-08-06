@@ -15,8 +15,8 @@
 #ifndef _RBTMDLFILESINK_H_
 #define _RBTMDLFILESINK_H_
 
-#include "BaseMolecularFileSink.h"
-#include "ElementFileSource.h"
+#include "rxdock/BaseMolecularFileSink.h"
+#include "rxdock/ElementFileSource.h"
 
 namespace rxdock {
 

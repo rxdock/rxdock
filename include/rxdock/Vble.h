@@ -15,7 +15,7 @@
 #ifndef _RBT_VBLE_H_
 #define _RBT_VBLE_H_
 
-#include "GPTypes.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 
 namespace rxdock {
 

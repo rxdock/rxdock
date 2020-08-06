@@ -15,7 +15,7 @@
 #ifndef _RBTTETHERSF_H_
 #define _RBTTETHERSF_H_
 
-#include "BaseInterSF.h"
+#include "rxdock/BaseInterSF.h"
 
 namespace rxdock {
 

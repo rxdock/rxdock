@@ -10,12 +10,12 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "CavityGridSF.h"
-#include "ChromPositionRefData.h"
-#include "LigandFlexData.h"
-#include "ReceptorFlexData.h"
-#include "SolventFlexData.h"
-#include "WorkSpace.h"
+#include "rxdock/CavityGridSF.h"
+#include "rxdock/ChromPositionRefData.h"
+#include "rxdock/LigandFlexData.h"
+#include "rxdock/ReceptorFlexData.h"
+#include "rxdock/SolventFlexData.h"
+#include "rxdock/WorkSpace.h"
 
 #include <functional>
 #include <loguru.hpp>

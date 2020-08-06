@@ -15,11 +15,11 @@
 #ifndef _RBTATOM_H_
 #define _RBTATOM_H_
 
-#include "Config.h"
-#include "Coord.h"
-#include "PMF.h"
-#include "Quat.h"
-#include "TriposAtomType.h"
+#include "rxdock/Config.h"
+#include "rxdock/Coord.h"
+#include "rxdock/PMF.h"
+#include "rxdock/Quat.h"
+#include "rxdock/TriposAtomType.h"
 
 #include <list>
 

@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "AnnotationHandler.h"
+#include "rxdock/AnnotationHandler.h"
 
 using namespace rxdock;
 

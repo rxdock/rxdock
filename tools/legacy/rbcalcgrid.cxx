@@ -12,12 +12,12 @@
 
 // Calculates vdW grids for use by VdwGridSF scoring function class
 
-#include "BiMolWorkSpace.h"
-#include "PRMFactory.h"
-#include "ParameterFileSource.h"
-#include "RealGrid.h"
-#include "SFFactory.h"
-#include "TriposAtomType.h"
+#include "rxdock/BiMolWorkSpace.h"
+#include "rxdock/PRMFactory.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/RealGrid.h"
+#include "rxdock/SFFactory.h"
+#include "rxdock/TriposAtomType.h"
 #include <cstring>
 #include <fstream>
 #include <iomanip>

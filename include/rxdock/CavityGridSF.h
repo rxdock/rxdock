@@ -14,9 +14,9 @@
 #ifndef _RBTCAVITYGRIDSF_H_
 #define _RBTCAVITYGRIDSF_H_
 
-#include "BaseInterSF.h"
-#include "FlexDataVisitor.h"
-#include "RealGrid.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/FlexDataVisitor.h"
+#include "rxdock/RealGrid.h"
 
 namespace rxdock {
 

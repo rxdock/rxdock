@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "GPParser.h"
-#include "Cell.h"
-#include "Command.h"
+#include "rxdock/geneticprogram/GPParser.h"
+#include "rxdock/geneticprogram/Cell.h"
+#include "rxdock/geneticprogram/Command.h"
 #include <fstream>
 #include <sstream>
 

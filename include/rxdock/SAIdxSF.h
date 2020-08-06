@@ -16,12 +16,12 @@
 #ifndef _RBTSAIDXSF_H_
 #define _RBTSAIDXSF_H_
 
-#include "AnnotationHandler.h"
-#include "BaseIdxSF.h"
-#include "BaseInterSF.h"
-#include "NonBondedHHSGrid.h"
-#include "ParameterFileSource.h"
-#include "SATypes.h"
+#include "rxdock/AnnotationHandler.h"
+#include "rxdock/BaseIdxSF.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/NonBondedHHSGrid.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/SATypes.h"
 
 namespace rxdock {
 

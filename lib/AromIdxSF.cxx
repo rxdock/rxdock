@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "AromIdxSF.h"
-#include "WorkSpace.h"
+#include "rxdock/AromIdxSF.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

@@ -15,8 +15,8 @@
 #ifndef _RBTBOND_H_
 #define _RBTBOND_H_
 
-#include "Atom.h"
-#include "Config.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Config.h"
 
 namespace rxdock {
 

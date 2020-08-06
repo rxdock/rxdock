@@ -17,8 +17,8 @@
 #ifndef _RBTBIMOLWORKSPACE_H_
 #define _RBTBIMOLWORKSPACE_H_
 
-#include "Population.h"
-#include "WorkSpace.h"
+#include "rxdock/Population.h"
+#include "rxdock/WorkSpace.h"
 
 namespace rxdock {
 

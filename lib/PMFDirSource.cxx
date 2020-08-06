@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PMFDirSource.h"
+#include "rxdock/PMFDirSource.h"
 // #include <stdlib>
-//#include "FileError.h"
+//#include "rxdock/FileError.h"
 
 #include <loguru.hpp>
 

@@ -13,8 +13,8 @@
 #ifndef _RBTPMFGRIDSF_H_
 #define _RBTPMFGRIDSF_H_
 
-#include "BaseInterSF.h"
-#include "RealGrid.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/RealGrid.h"
 
 namespace rxdock {
 

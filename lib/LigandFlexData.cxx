@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "LigandFlexData.h"
-#include "ChromElement.h"
+#include "rxdock/LigandFlexData.h"
+#include "rxdock/ChromElement.h"
 
 using namespace rxdock;
 

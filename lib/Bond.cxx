@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Bond.h"
+#include "rxdock/Bond.h"
 
 #include <loguru.hpp>
 

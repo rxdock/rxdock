@@ -19,7 +19,7 @@
 
 #include <sstream>
 
-#include "Coord.h"
+#include "rxdock/Coord.h"
 
 namespace rxdock {
 

@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "BaseIntraSF.h"
-#include "WorkSpace.h"
+#include "rxdock/BaseIntraSF.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

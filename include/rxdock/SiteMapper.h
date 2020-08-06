@@ -20,10 +20,10 @@
 #ifndef _RBTSITEMAPPER_H_
 #define _RBTSITEMAPPER_H_
 
-#include "BaseObject.h"
-#include "Cavity.h"
-#include "Config.h"
-#include "Model.h"
+#include "rxdock/BaseObject.h"
+#include "rxdock/Cavity.h"
+#include "rxdock/Config.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

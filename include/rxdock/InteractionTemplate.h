@@ -12,8 +12,8 @@
 
 #ifndef _RBTINTERACTIONTEMPLATE_H_
 #define _RBTINTERACTIONTEMPLATE_H_
-#include "BaseGrid.h"
-#include "Config.h"
+#include "rxdock/BaseGrid.h"
+#include "rxdock/Config.h"
 
 #include <loguru.hpp>
 

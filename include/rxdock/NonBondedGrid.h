@@ -15,8 +15,8 @@
 #ifndef _RBTNONBONDEDGRID_H_
 #define _RBTNONBONDEDGRID_H_
 
-#include "Atom.h"
-#include "BaseGrid.h"
+#include "rxdock/Atom.h"
+#include "rxdock/BaseGrid.h"
 
 namespace rxdock {
 

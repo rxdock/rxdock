@@ -13,11 +13,11 @@
 // Simple, non-adaptive simulated annealing protocol
 #include <iomanip>
 
-#include "BaseSF.h"
-#include "Chrom.h"
-#include "SFRequest.h"
-#include "SimAnnTransform.h"
-#include "WorkSpace.h"
+#include "rxdock/BaseSF.h"
+#include "rxdock/Chrom.h"
+#include "rxdock/SFRequest.h"
+#include "rxdock/SimAnnTransform.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

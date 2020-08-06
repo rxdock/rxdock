@@ -14,9 +14,9 @@
 #ifndef RBTCHROMOCCUPANCYELEMENT_H_
 #define RBTCHROMOCCUPANCYELEMENT_H_
 
-#include "ChromElement.h"
-#include "ChromOccupancyRefData.h"
-#include "Rand.h"
+#include "rxdock/ChromElement.h"
+#include "rxdock/ChromOccupancyRefData.h"
+#include "rxdock/Rand.h"
 
 namespace rxdock {
 

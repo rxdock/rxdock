@@ -10,10 +10,10 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Atom.h"
-#include "Bond.h"
-#include "Model.h"
-#include "PseudoAtom.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Bond.h"
+#include "rxdock/Model.h"
+#include "rxdock/PseudoAtom.h"
 
 #include <loguru.hpp>
 

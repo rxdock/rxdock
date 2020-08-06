@@ -18,7 +18,7 @@
 #ifndef _RBTREQUEST_H_
 #define _RBTREQUEST_H_
 
-#include "Variant.h"
+#include "rxdock/Variant.h"
 
 namespace rxdock {
 

@@ -15,7 +15,7 @@
 #ifndef _RBTPLANE_H_
 #define _RBTPLANE_H_
 
-#include "Coord.h"
+#include "rxdock/Coord.h"
 
 namespace rxdock {
 

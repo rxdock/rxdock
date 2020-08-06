@@ -15,13 +15,13 @@
 #ifndef _RBT_CELLTOKENITER_H_
 #define _RBT_CELLTOKENITER_H_
 
-#include "Config.h"
-#include "Context.h"
-#include "GPChromosome.h"
-#include "Token.h"
+#include "rxdock/Config.h"
+#include "rxdock/Context.h"
+#include "rxdock/Token.h"
+#include "rxdock/geneticprogram/GPChromosome.h"
 #include <stack>
 
-#include "TokenIter.h"
+#include "rxdock/TokenIter.h"
 
 namespace rxdock {
 

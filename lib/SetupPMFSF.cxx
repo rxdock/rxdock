@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SetupPMFSF.h"
+#include "rxdock/SetupPMFSF.h"
 
 #include <loguru.hpp>
 

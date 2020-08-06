@@ -12,8 +12,8 @@
 
 // SD file dump, listing number of atoms, bonds, interaction centers etc
 
-#include "MdlFileSink.h"
-#include "MdlFileSource.h"
+#include "rxdock/MdlFileSink.h"
+#include "rxdock/MdlFileSource.h"
 #include <algorithm> //for min,max
 #include <functional>
 #include <iomanip>

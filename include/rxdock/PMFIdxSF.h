@@ -15,14 +15,14 @@
 #ifndef _RBTPMFIDXSF_H_
 #define _RBTPMFIDXSF_H_
 
-#include "AnnotationHandler.h"
-#include "BaseIdxSF.h"
-#include "BaseInterSF.h"
-#include "PMF.h"
+#include "rxdock/AnnotationHandler.h"
+#include "rxdock/BaseIdxSF.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/PMF.h"
 // for PMF pseudogrids where
 // X is distance, X and Y are receptor and ligand
 // distances respectively
-#include "RealGrid.h"
+#include "rxdock/RealGrid.h"
 
 namespace rxdock {
 

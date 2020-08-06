@@ -15,8 +15,8 @@
 #ifndef _RBTCHARMMDATASOURCE_H_
 #define _RBTCHARMMDATASOURCE_H_
 
-#include "Atom.h"
-#include "Config.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Config.h"
 
 namespace rxdock {
 

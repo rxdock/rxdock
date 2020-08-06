@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SphereSiteMapper.h"
-#include "FFTGrid.h"
+#include "rxdock/SphereSiteMapper.h"
+#include "rxdock/FFTGrid.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

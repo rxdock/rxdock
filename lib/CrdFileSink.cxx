@@ -12,7 +12,7 @@
 
 #include <iomanip>
 
-#include "CrdFileSink.h"
+#include "rxdock/CrdFileSink.h"
 
 using namespace rxdock;
 

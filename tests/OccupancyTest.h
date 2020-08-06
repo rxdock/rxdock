@@ -15,8 +15,8 @@
 
 #include <gtest/gtest.h>
 
-#include "BiMolWorkSpace.h"
-#include "Model.h"
+#include "rxdock/BiMolWorkSpace.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

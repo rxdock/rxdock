@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SATypes.h"
-#include "Atom.h"
-#include "Bond.h"
+#include "rxdock/SATypes.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Bond.h"
 
 #include <loguru.hpp>
 

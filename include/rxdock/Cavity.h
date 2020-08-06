@@ -16,10 +16,10 @@
 #ifndef _RBTCAVITY_H_
 #define _RBTCAVITY_H_
 
-#include "Config.h"
-#include "Coord.h"
-#include "PrincipalAxes.h"
-#include "RealGrid.h"
+#include "rxdock/Config.h"
+#include "rxdock/Coord.h"
+#include "rxdock/PrincipalAxes.h"
+#include "rxdock/RealGrid.h"
 
 namespace rxdock {
 

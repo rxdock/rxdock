@@ -15,7 +15,7 @@
 #ifndef _RBTPSEUDOATOM_H_
 #define _RBTPSEUDOATOM_H_
 
-#include "Atom.h"
+#include "rxdock/Atom.h"
 
 namespace rxdock {
 

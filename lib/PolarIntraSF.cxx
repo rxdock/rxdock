@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PolarIntraSF.h"
-#include "SFRequest.h"
+#include "rxdock/PolarIntraSF.h"
+#include "rxdock/SFRequest.h"
 
 #include <loguru.hpp>
 

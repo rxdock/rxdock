@@ -15,11 +15,11 @@
 #ifndef _RBTVDWSF_H_
 #define _RBTVDWSF_H_
 
-#include "AnnotationHandler.h"
-#include "Atom.h"
-#include "BaseSF.h"
-#include "ParameterFileSource.h"
-#include "TriposAtomType.h"
+#include "rxdock/AnnotationHandler.h"
+#include "rxdock/Atom.h"
+#include "rxdock/BaseSF.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/TriposAtomType.h"
 
 namespace rxdock {
 

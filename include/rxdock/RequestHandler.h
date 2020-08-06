@@ -17,7 +17,7 @@
 #ifndef _RBTREQUESTHANDLER_H_
 #define _RBTREQUESTHANDLER_H_
 
-#include "Request.h"
+#include "rxdock/Request.h"
 
 namespace rxdock {
 

@@ -13,10 +13,10 @@
 #include <cstdlib>
 #include <fstream>
 
-#include "MOEGrid.h"
+#include "rxdock/MOEGrid.h"
 
-#include "ParameterFileSource.h"
-#include "RealGrid.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/RealGrid.h"
 
 #include <loguru.hpp>
 

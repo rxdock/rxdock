@@ -16,7 +16,7 @@
 #ifndef _RBTROTSF_H_
 #define _RBTROTSF_H_
 
-#include "BaseInterSF.h"
+#include "rxdock/BaseInterSF.h"
 
 namespace rxdock {
 

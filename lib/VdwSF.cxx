@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "VdwSF.h"
-#include "Model.h"
+#include "rxdock/VdwSF.h"
+#include "rxdock/Model.h"
 
 #include <loguru.hpp>
 

@@ -10,11 +10,11 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PharmaSF.h"
-#include "FileError.h"
-#include "LigandError.h"
-#include "MdlFileSink.h"
-#include "WorkSpace.h"
+#include "rxdock/PharmaSF.h"
+#include "rxdock/FileError.h"
+#include "rxdock/LigandError.h"
+#include "rxdock/MdlFileSink.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

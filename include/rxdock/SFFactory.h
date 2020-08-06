@@ -16,9 +16,9 @@
 #ifndef _RBTSFFACTORY_H_
 #define _RBTSFFACTORY_H_
 
-#include "Config.h"
-#include "ParameterFileSource.h"
-#include "SFAgg.h"
+#include "rxdock/Config.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/SFAgg.h"
 
 namespace rxdock {
 

@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ChromDihedralElement.h"
+#include "rxdock/ChromDihedralElement.h"
 
 using namespace rxdock;
 

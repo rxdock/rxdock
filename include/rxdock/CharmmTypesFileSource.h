@@ -16,7 +16,7 @@
 #ifndef _RBTCHARMMTYPESFILESOURCE_H_
 #define _RBTCHARMMTYPESFILESOURCE_H_
 
-#include "BaseFileSource.h"
+#include "rxdock/BaseFileSource.h"
 
 namespace rxdock {
 

@@ -17,8 +17,8 @@
 #ifndef _RBTBASEMOLECULARFILESINK_H_
 #define _RBTBASEMOLECULARFILESINK_H_
 
-#include "BaseFileSink.h"
-#include "Model.h"
+#include "rxdock/BaseFileSink.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

@@ -13,9 +13,9 @@
 #ifndef _RBTMOL2FILESOURCE_H_
 #define _RBTMOL2FILESOURCE_H_
 
-#include "BaseMolecularFileSource.h"
-#include "ElementFileSource.h"
-#include "ParameterFileSource.h"
+#include "rxdock/BaseMolecularFileSource.h"
+#include "rxdock/ElementFileSource.h"
+#include "rxdock/ParameterFileSource.h"
 
 namespace rxdock {
 

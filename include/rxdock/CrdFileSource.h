@@ -15,7 +15,7 @@
 #ifndef _RBTCRDFILESOURCE_H_
 #define _RBTCRDFILESOURCE_H_
 
-#include "BaseMolecularFileSource.h"
+#include "rxdock/BaseMolecularFileSource.h"
 
 namespace rxdock {
 

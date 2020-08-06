@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ConstSF.h"
+#include "rxdock/ConstSF.h"
 
 #include <loguru.hpp>
 

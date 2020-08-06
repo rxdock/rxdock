@@ -16,7 +16,7 @@
 #ifndef _RBTFFTGRID_H_
 #define _RBTFFTGRID_H_
 
-#include "RealGrid.h"
+#include "rxdock/RealGrid.h"
 
 namespace rxdock {
 

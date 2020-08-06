@@ -25,7 +25,7 @@
 #endif
 #include <random>
 
-#include "Coord.h"
+#include "rxdock/Coord.h"
 
 namespace rxdock {
 

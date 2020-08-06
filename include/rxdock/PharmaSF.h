@@ -15,9 +15,9 @@
 #ifndef _RBTPHARMASF_H_
 #define _RBTPHARMASF_H_
 
-#include "BaseInterSF.h"
-#include "BaseMolecularFileSink.h"
-#include "Constraint.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/BaseMolecularFileSink.h"
+#include "rxdock/Constraint.h"
 
 namespace rxdock {
 

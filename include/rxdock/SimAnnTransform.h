@@ -14,9 +14,9 @@
 #ifndef _RBTSIMANNTRANSFORM_H_
 #define _RBTSIMANNTRANSFORM_H_
 
-#include "BaseBiMolTransform.h"
-#include "ChromElement.h"
-#include "Rand.h"
+#include "rxdock/BaseBiMolTransform.h"
+#include "rxdock/ChromElement.h"
+#include "rxdock/Rand.h"
 
 namespace rxdock {
 

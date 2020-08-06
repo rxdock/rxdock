@@ -16,7 +16,7 @@
 #ifndef _RBTSFAGG_H_
 #define _RBTSFAGG_H_
 
-#include "BaseSF.h"
+#include "rxdock/BaseSF.h"
 
 namespace rxdock {
 

@@ -23,7 +23,7 @@
 #endif
 #include <unsupported/Eigen/CXX11/Tensor>
 
-#include "BaseGrid.h"
+#include "rxdock/BaseGrid.h"
 
 namespace rxdock {
 

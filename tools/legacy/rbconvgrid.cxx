@@ -13,8 +13,8 @@
 #include <fstream>
 #include <iostream>
 
-#include "FileError.h"
-#include "VdwGridSF.h"
+#include "rxdock/FileError.h"
+#include "rxdock/VdwGridSF.h"
 
 using namespace rxdock;
 

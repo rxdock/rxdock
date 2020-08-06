@@ -17,7 +17,7 @@
 #ifndef _RBTANNOTATIONHANDLER_H_
 #define _RBTANNOTATIONHANDLER_H_
 
-#include "Annotation.h"
+#include "rxdock/Annotation.h"
 
 namespace rxdock {
 

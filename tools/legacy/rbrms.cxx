@@ -16,10 +16,10 @@
 #include <iostream>
 #include <sstream>
 
-#include "MdlFileSink.h"
-#include "MdlFileSource.h"
-#include "Model.h"
-#include "ModelError.h"
+#include "rxdock/MdlFileSink.h"
+#include "rxdock/MdlFileSource.h"
+#include "rxdock/Model.h"
+#include "rxdock/ModelError.h"
 
 using namespace rxdock;
 

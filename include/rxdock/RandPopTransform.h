@@ -14,8 +14,8 @@
 #ifndef _RBTRANDPOPTRANSFORM_H_
 #define _RBTRANDPOPTRANSFORM_H_
 
-#include "BaseBiMolTransform.h"
-#include "ChromElement.h"
+#include "rxdock/BaseBiMolTransform.h"
+#include "rxdock/ChromElement.h"
 
 namespace rxdock {
 

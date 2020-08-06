@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ParamHandler.h"
+#include "rxdock/ParamHandler.h"
 
 #include <loguru.hpp>
 

@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "NoeRestraint.h"
+#include "rxdock/NoeRestraint.h"
 
 using namespace rxdock;
 

@@ -15,10 +15,10 @@
 #ifndef _RBTBASEMOLECULARDATASOURCE_H_
 #define _RBTBASEMOLECULARDATASOURCE_H_
 
-#include "Atom.h"
-#include "Bond.h"
-#include "Config.h"
-#include "Variant.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Bond.h"
+#include "rxdock/Config.h"
+#include "rxdock/Variant.h"
 
 namespace rxdock {
 

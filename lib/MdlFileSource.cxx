@@ -13,11 +13,11 @@
 #include <functional>
 #include <iomanip>
 
-#include "AtomFuncs.h"
-#include "FileError.h"
-#include "MdlFileSource.h"
-#include "ModelError.h"
-#include "Plane.h"
+#include "rxdock/AtomFuncs.h"
+#include "rxdock/FileError.h"
+#include "rxdock/MdlFileSource.h"
+#include "rxdock/ModelError.h"
+#include "rxdock/Plane.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

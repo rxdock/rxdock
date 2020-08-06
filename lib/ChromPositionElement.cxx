@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ChromPositionElement.h"
+#include "rxdock/ChromPositionElement.h"
 
 using namespace rxdock;
 

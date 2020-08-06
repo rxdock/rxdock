@@ -17,9 +17,9 @@
 #ifndef _RBTMODELMUTATOR_H_
 #define _RBTMODELMUTATOR_H_
 
-#include "Atom.h"
-#include "Bond.h"
-#include "PrincipalAxes.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Bond.h"
+#include "rxdock/PrincipalAxes.h"
 
 namespace rxdock {
 

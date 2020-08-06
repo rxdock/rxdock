@@ -10,14 +10,14 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Model.h"
-#include "AtomFuncs.h"
-#include "BaseMolecularFileSource.h"
-#include "ChromElement.h"
-#include "ChromFactory.h"
-#include "FlexData.h"
-#include "ModelError.h"
-#include "Quat.h"
+#include "rxdock/Model.h"
+#include "rxdock/AtomFuncs.h"
+#include "rxdock/BaseMolecularFileSource.h"
+#include "rxdock/ChromElement.h"
+#include "rxdock/ChromFactory.h"
+#include "rxdock/FlexData.h"
+#include "rxdock/ModelError.h"
+#include "rxdock/Quat.h"
 
 #include <loguru.hpp>
 

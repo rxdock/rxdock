@@ -15,7 +15,7 @@
 #ifndef _RBTMODELERROR_H_
 #define _RBTMODELERROR_H_
 
-#include "Error.h"
+#include "rxdock/Error.h"
 
 namespace rxdock {
 

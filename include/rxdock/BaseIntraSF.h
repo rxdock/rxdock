@@ -15,8 +15,8 @@
 #ifndef _RBTBASEINTRASF_H_
 #define _RBTBASEINTRASF_H_
 
-#include "BaseSF.h"
-#include "Model.h"
+#include "rxdock/BaseSF.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

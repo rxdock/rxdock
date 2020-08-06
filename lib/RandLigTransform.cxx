@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "RandLigTransform.h"
+#include "rxdock/RandLigTransform.h"
 
 #include <loguru.hpp>
 

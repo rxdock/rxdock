@@ -14,9 +14,9 @@
 #ifndef _RBTGATRANSFORM_H_
 #define _RBTGATRANSFORM_H_
 
-#include "BaseBiMolTransform.h"
-#include "Population.h"
-#include "Rand.h"
+#include "rxdock/BaseBiMolTransform.h"
+#include "rxdock/Population.h"
+#include "rxdock/Rand.h"
 
 namespace rxdock {
 

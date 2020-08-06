@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "BaseFileSource.h"
-#include "FileError.h"
+#include "rxdock/BaseFileSource.h"
+#include "rxdock/FileError.h"
 #include <cstring>
 #include <sys/stat.h>
 

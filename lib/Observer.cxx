@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Observer.h"
-#include "Debug.h"
+#include "rxdock/Observer.h"
+#include "rxdock/Debug.h"
 
 using namespace rxdock;
 

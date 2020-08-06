@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ChromPositionRefData.h"
+#include "rxdock/ChromPositionRefData.h"
 
 using namespace rxdock;
 

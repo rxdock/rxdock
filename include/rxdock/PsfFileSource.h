@@ -15,10 +15,10 @@
 #ifndef _RBTPSFFILESOURCE_H_
 #define _RBTPSFFILESOURCE_H_
 
-#include "BaseMolecularFileSource.h"
-#include "CharmmDataSource.h"
-#include "ElementFileSource.h"
-#include "ParameterFileSource.h"
+#include "rxdock/BaseMolecularFileSource.h"
+#include "rxdock/CharmmDataSource.h"
+#include "rxdock/ElementFileSource.h"
+#include "rxdock/ParameterFileSource.h"
 
 namespace rxdock {
 

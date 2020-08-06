@@ -15,7 +15,7 @@
 #ifndef _RBTFILEERROR_H_
 #define _RBTFILEERROR_H_
 
-#include "Error.h"
+#include "rxdock/Error.h"
 
 namespace rxdock {
 

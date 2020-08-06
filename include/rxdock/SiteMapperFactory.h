@@ -15,9 +15,9 @@
 #ifndef _RBTSITEMAPPERFACTORY_H_
 #define _RBTSITEMAPPERFACTORY_H_
 
-#include "Config.h"
-#include "ParameterFileSource.h"
-#include "SiteMapper.h"
+#include "rxdock/Config.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/SiteMapper.h"
 
 namespace rxdock {
 

@@ -15,8 +15,8 @@
 #ifndef _RBTVDWINTRASF_H_
 #define _RBTVDWINTRASF_H_
 
-#include "BaseIntraSF.h"
-#include "VdwSF.h"
+#include "rxdock/BaseIntraSF.h"
+#include "rxdock/VdwSF.h"
 
 namespace rxdock {
 

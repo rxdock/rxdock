@@ -18,8 +18,8 @@
 #endif
 #include <Eigen/Core>
 
-#include "BaseSF.h"
-#include "ChromElement.h"
+#include "rxdock/BaseSF.h"
+#include "rxdock/ChromElement.h"
 
 namespace rxdock {
 

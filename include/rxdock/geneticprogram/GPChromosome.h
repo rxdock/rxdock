@@ -16,9 +16,9 @@
 #ifndef _RBT_GPCHROMOSOME_H
 #define _RBT_GPCHROMOSOME_H
 
-#include "Cell.h"
-#include "Commands.h"
-#include "GPTypes.h"
+#include "rxdock/Commands.h"
+#include "rxdock/geneticprogram/Cell.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 
 namespace rxdock {
 

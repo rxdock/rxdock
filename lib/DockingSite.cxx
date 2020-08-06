@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "DockingSite.h"
-#include "FileError.h"
+#include "rxdock/DockingSite.h"
+#include "rxdock/FileError.h"
 #include <cstring>
 
 #include <loguru.hpp>

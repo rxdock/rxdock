@@ -16,13 +16,13 @@
 #include <cxxopts.hpp>
 #include <iomanip>
 
-#include "BiMolWorkSpace.h"
-#include "CrdFileSink.h"
-#include "DockingSite.h"
-#include "PRMFactory.h"
-#include "ParameterFileSource.h"
-#include "PsfFileSink.h"
-#include "SiteMapperFactory.h"
+#include "rxdock/BiMolWorkSpace.h"
+#include "rxdock/CrdFileSink.h"
+#include "rxdock/DockingSite.h"
+#include "rxdock/PRMFactory.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/PsfFileSink.h"
+#include "rxdock/SiteMapperFactory.h"
 
 using namespace rxdock;
 

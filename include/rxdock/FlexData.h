@@ -16,8 +16,8 @@
 #ifndef _RBTFLEXDATA_
 #define _RBTFLEXDATA_
 
-#include "FlexDataVisitor.h"
-#include "ParamHandler.h"
+#include "rxdock/FlexDataVisitor.h"
+#include "rxdock/ParamHandler.h"
 
 namespace rxdock {
 

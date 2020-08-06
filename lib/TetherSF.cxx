@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "TetherSF.h"
-#include "MdlFileSource.h"
-#include "WorkSpace.h"
+#include "rxdock/TetherSF.h"
+#include "rxdock/MdlFileSource.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

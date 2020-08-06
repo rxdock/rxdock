@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "InteractionGrid.h"
-#include "FileError.h"
-#include "PseudoAtom.h"
+#include "rxdock/InteractionGrid.h"
+#include "rxdock/FileError.h"
+#include "rxdock/PseudoAtom.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

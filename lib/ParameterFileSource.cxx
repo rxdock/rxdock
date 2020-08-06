@@ -12,8 +12,8 @@
 
 #include <algorithm> //For std::find
 
-#include "FileError.h"
-#include "ParameterFileSource.h"
+#include "rxdock/FileError.h"
+#include "rxdock/ParameterFileSource.h"
 
 #include <loguru.hpp>
 

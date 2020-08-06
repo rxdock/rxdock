@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "TriposAtomType.h"
-#include "Atom.h"
-#include "Bond.h"
+#include "rxdock/TriposAtomType.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Bond.h"
 
 using namespace rxdock;
 

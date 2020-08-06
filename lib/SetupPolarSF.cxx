@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SetupPolarSF.h"
+#include "rxdock/SetupPolarSF.h"
 
 #include <loguru.hpp>
 

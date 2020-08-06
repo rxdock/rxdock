@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "StringTokenIter.h"
-#include "Commands.h"
+#include "rxdock/StringTokenIter.h"
+#include "rxdock/Commands.h"
 #include <cerrno>
 #include <cstdlib>
 

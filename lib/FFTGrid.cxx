@@ -15,8 +15,8 @@
 #include <iomanip>
 #include <queue>
 
-#include "FFTGrid.h"
-#include "FileError.h"
+#include "rxdock/FFTGrid.h"
+#include "rxdock/FileError.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

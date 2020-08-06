@@ -10,48 +10,48 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SFFactory.h"
+#include "rxdock/SFFactory.h"
 // Precalculated-grid scoring functions
-#include "CavityFillSF.h"
-#include "CavityGridSF.h"
-#include "VdwGridSF.h"
+#include "rxdock/CavityFillSF.h"
+#include "rxdock/CavityGridSF.h"
+#include "rxdock/VdwGridSF.h"
 
 // Indexed-grid scoring functions
-#include "AromIdxSF.h"
-#include "PolarIdxSF.h"
-#include "VdwIdxSF.h"
+#include "rxdock/AromIdxSF.h"
+#include "rxdock/PolarIdxSF.h"
+#include "rxdock/VdwIdxSF.h"
 
 // Intramolecular scoring functions
-#include "DihedralIntraSF.h"
-#include "DihedralTargetSF.h"
-#include "PolarIntraSF.h"
-#include "VdwIntraSF.h"
+#include "rxdock/DihedralIntraSF.h"
+#include "rxdock/DihedralTargetSF.h"
+#include "rxdock/PolarIntraSF.h"
+#include "rxdock/VdwIntraSF.h"
 
-#include "NmrSF.h"
+#include "rxdock/NmrSF.h"
 
 // PMF scoring
-#include "PMFGridSF.h"
-#include "PMFIdxSF.h"
-#include "SetupPMFSF.h"
+#include "rxdock/PMFGridSF.h"
+#include "rxdock/PMFIdxSF.h"
+#include "rxdock/SetupPMFSF.h"
 
 // SA scoring
-#include "SAIdxSF.h"
-#include "SetupSASF.h"
+#include "rxdock/SAIdxSF.h"
+#include "rxdock/SetupSASF.h"
 
 // Tethered Atoms scoring
-#include "TetherSF.h"
+#include "rxdock/TetherSF.h"
 
 // Pharmacophore scoring
-#include "PharmaSF.h"
+#include "rxdock/PharmaSF.h"
 
 // Misc scoring functions
-#include "ConstSF.h"
-#include "RotSF.h"
+#include "rxdock/ConstSF.h"
+#include "rxdock/RotSF.h"
 
 // Pseudo-scoring functions
-#include "SetupPolarSF.h"
+#include "rxdock/SetupPolarSF.h"
 
-#include "FileError.h"
+#include "rxdock/FileError.h"
 
 using namespace rxdock;
 

@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "FilterExpressionVisitor.h"
+#include "rxdock/FilterExpressionVisitor.h"
 
 #include <loguru.hpp>
 

@@ -12,10 +12,10 @@
 
 #include <sstream>
 
-#include "CharmmDataSource.h"
-#include "CharmmTypesFileSource.h"
-#include "ElementFileSource.h"
-#include "FileError.h"
+#include "rxdock/CharmmDataSource.h"
+#include "rxdock/CharmmTypesFileSource.h"
+#include "rxdock/ElementFileSource.h"
+#include "rxdock/FileError.h"
 
 using namespace rxdock;
 

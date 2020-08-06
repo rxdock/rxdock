@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "WorkSpace.h"
-#include "BaseSF.h"
-#include "BaseTransform.h"
+#include "rxdock/WorkSpace.h"
+#include "rxdock/BaseSF.h"
+#include "rxdock/BaseTransform.h"
 
 #include <loguru.hpp>
 

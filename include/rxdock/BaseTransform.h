@@ -15,8 +15,8 @@
 #ifndef _RBTBASETRANSFORM_H_
 #define _RBTBASETRANSFORM_H_
 
-#include "BaseObject.h"
-#include "Config.h"
+#include "rxdock/BaseObject.h"
+#include "rxdock/Config.h"
 
 namespace rxdock {
 

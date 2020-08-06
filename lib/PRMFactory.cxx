@@ -10,17 +10,17 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PRMFactory.h"
-#include "ChromPositionRefData.h"
-#include "CrdFileSource.h"
-#include "LigandFlexData.h"
-#include "MOL2FileSource.h"
-#include "MdlFileSource.h"
-#include "ParameterFileSource.h"
-#include "PdbFileSource.h"
-#include "PsfFileSource.h"
-#include "ReceptorFlexData.h"
-#include "SolventFlexData.h"
+#include "rxdock/PRMFactory.h"
+#include "rxdock/ChromPositionRefData.h"
+#include "rxdock/CrdFileSource.h"
+#include "rxdock/LigandFlexData.h"
+#include "rxdock/MOL2FileSource.h"
+#include "rxdock/MdlFileSource.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/PdbFileSource.h"
+#include "rxdock/PsfFileSource.h"
+#include "rxdock/ReceptorFlexData.h"
+#include "rxdock/SolventFlexData.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "CharmmTypesFileSource.h"
+#include "rxdock/CharmmTypesFileSource.h"
 
 #include <loguru.hpp>
 

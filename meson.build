@@ -1,6 +1,6 @@
 project('RxDock', 'cpp', version : '0.1.0', default_options : ['cpp_std=c++11'])
 
-incRbt = include_directories('include/rxdock', 'include/rxdock/geneticprogram')
+incRbt = include_directories('include')
 srcRbt = [
   'lib/geneticprogram/GPChromosome.cxx', 'lib/geneticprogram/GPFFCHK1.cxx',
   'lib/geneticprogram/GPFFCrossDock.cxx', 'lib/geneticprogram/GPFFGold.cxx',

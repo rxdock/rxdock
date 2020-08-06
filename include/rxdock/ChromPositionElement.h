@@ -14,9 +14,9 @@
 #ifndef RBTCHROMPOSITIONELEMENT_H_
 #define RBTCHROMPOSITIONELEMENT_H_
 
-#include "ChromElement.h"
-#include "ChromPositionRefData.h"
-#include "Rand.h"
+#include "rxdock/ChromElement.h"
+#include "rxdock/ChromPositionRefData.h"
+#include "rxdock/Rand.h"
 
 namespace rxdock {
 

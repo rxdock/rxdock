@@ -15,9 +15,9 @@
 #ifndef _RBT_TOKEN_H_
 #define _RBT_TOKEN_H_
 
-#include "Commands.h"
-#include "Config.h"
-#include "Vble.h"
+#include "rxdock/Commands.h"
+#include "rxdock/Config.h"
+#include "rxdock/Vble.h"
 
 namespace rxdock {
 

@@ -18,10 +18,10 @@
 #ifndef RBTCHROMPOSITIONREFDATA_H_
 #define RBTCHROMPOSITIONREFDATA_H_
 
-#include "ChromElement.h"
-#include "DockingSite.h"
-#include "Euler.h"
-#include "Model.h"
+#include "rxdock/ChromElement.h"
+#include "rxdock/DockingSite.h"
+#include "rxdock/Euler.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

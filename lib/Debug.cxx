@@ -11,7 +11,7 @@
  ***********************************************************************/
 
 #ifdef _RBTOBJECTCOUNTER
-#include "Debug.h"
+#include "rxdock/Debug.h"
 
 using namespace rxdock;
 

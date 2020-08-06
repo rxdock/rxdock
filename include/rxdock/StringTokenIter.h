@@ -16,10 +16,10 @@
 #ifndef _RBT_STRINGTOKENITER_H_
 #define _RBT_STRINGTOKENITER_H_
 
-#include "Config.h"
-#include "Context.h"
-#include "GPChromosome.h"
-#include "TokenIter.h"
+#include "rxdock/Config.h"
+#include "rxdock/Context.h"
+#include "rxdock/TokenIter.h"
+#include "rxdock/geneticprogram/GPChromosome.h"
 #include <fstream>
 #include <stack>
 

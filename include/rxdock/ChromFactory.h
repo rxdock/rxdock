@@ -19,8 +19,8 @@
 #ifndef _RBTCHROMFACTORY_H_
 #define _RBTCHROMFACTORY_H_
 
-#include "FlexDataVisitor.h"
-#include "ModelMutator.h"
+#include "rxdock/FlexDataVisitor.h"
+#include "rxdock/ModelMutator.h"
 
 namespace rxdock {
 

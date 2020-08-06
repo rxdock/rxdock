@@ -16,10 +16,10 @@
 #ifndef _RBTGPPOPULATION_H_
 #define _RBTGPPOPULATION_H_
 
-#include "Error.h"
-#include "GPFFGold.h"
-#include "GPFitnessFunction.h"
-#include "GPGenome.h"
+#include "rxdock/Error.h"
+#include "rxdock/geneticprogram/GPFFGold.h"
+#include "rxdock/geneticprogram/GPFitnessFunction.h"
+#include "rxdock/geneticprogram/GPGenome.h"
 
 namespace rxdock {
 

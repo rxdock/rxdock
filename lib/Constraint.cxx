@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Constraint.h"
-#include "LigandError.h"
+#include "rxdock/Constraint.h"
+#include "rxdock/LigandError.h"
 #include <functional>
 #include <sstream>
 

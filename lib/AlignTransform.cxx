@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "AlignTransform.h"
-#include "DockingSite.h"
-#include "WorkSpace.h"
+#include "rxdock/AlignTransform.h"
+#include "rxdock/DockingSite.h"
+#include "rxdock/WorkSpace.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

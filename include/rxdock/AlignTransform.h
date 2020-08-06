@@ -15,9 +15,9 @@
 #ifndef _RBTALIGNTRANSFORM_H_
 #define _RBTALIGNTRANSFORM_H_
 
-#include "BaseBiMolTransform.h"
-#include "Cavity.h"
-#include "Rand.h"
+#include "rxdock/BaseBiMolTransform.h"
+#include "rxdock/Cavity.h"
+#include "rxdock/Rand.h"
 
 namespace rxdock {
 

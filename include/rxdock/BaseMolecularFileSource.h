@@ -15,9 +15,9 @@
 #ifndef _RBTBASEMOLECULARFILESOURCE_H_
 #define _RBTBASEMOLECULARFILESOURCE_H_
 
-#include "BaseFileSource.h"
-#include "BaseMolecularDataSource.h"
-#include "ParameterFileSource.h"
+#include "rxdock/BaseFileSource.h"
+#include "rxdock/BaseMolecularDataSource.h"
+#include "rxdock/ParameterFileSource.h"
 
 namespace rxdock {
 

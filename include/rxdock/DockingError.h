@@ -16,7 +16,7 @@
 #ifndef _RBTDOCKINGERROR_H_
 #define _RBTDOCKINGERROR_H_
 
-#include "Error.h"
+#include "rxdock/Error.h"
 
 namespace rxdock {
 

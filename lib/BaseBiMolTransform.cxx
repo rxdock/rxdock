@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "BaseBiMolTransform.h"
-#include "WorkSpace.h"
+#include "rxdock/BaseBiMolTransform.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

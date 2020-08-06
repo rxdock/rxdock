@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "BaseMolecularFileSink.h"
+#include "rxdock/BaseMolecularFileSink.h"
 
 using namespace rxdock;
 

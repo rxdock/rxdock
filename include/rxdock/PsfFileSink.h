@@ -15,7 +15,7 @@
 #ifndef _RBTPSFFILESINK_H_
 #define _RBTPSFFILESINK_H_
 
-#include "BaseMolecularFileSink.h"
+#include "rxdock/BaseMolecularFileSink.h"
 
 namespace rxdock {
 

@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "BaseMolecularFileSource.h"
-#include "FileError.h"
+#include "rxdock/BaseMolecularFileSource.h"
+#include "rxdock/FileError.h"
 
 #include <functional>
 

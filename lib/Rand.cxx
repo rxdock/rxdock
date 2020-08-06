@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Rand.h"
-#include "Singleton.h"
+#include "rxdock/Rand.h"
+#include "rxdock/Singleton.h"
 
 using namespace rxdock;
 

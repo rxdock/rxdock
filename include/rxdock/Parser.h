@@ -16,10 +16,10 @@
 #ifndef _RBT_PARSER_H_
 #define _RBT_PARSER_H_
 
-#include "Context.h"
-#include "FilterExpression.h"
-#include "Token.h"
-#include "TokenIter.h"
+#include "rxdock/Context.h"
+#include "rxdock/FilterExpression.h"
+#include "rxdock/Token.h"
+#include "rxdock/TokenIter.h"
 
 namespace rxdock {
 

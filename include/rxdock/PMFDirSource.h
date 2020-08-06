@@ -13,8 +13,8 @@
 #ifndef _RBTPMFDIRSOURCE_H_
 #define _RBTPMFDIRSOURCE_H_
 
-#include "DirectorySource.h"
-#include "PMF.h"
+#include "rxdock/DirectorySource.h"
+#include "rxdock/PMF.h"
 
 namespace rxdock {
 

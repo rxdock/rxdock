@@ -15,8 +15,8 @@
 #ifndef _RBTDIHEDRALTARGETSF_H_
 #define _RBTDIHEDRALTARGETSF_H_
 
-#include "BaseInterSF.h"
-#include "DihedralSF.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/DihedralSF.h"
 
 namespace rxdock {
 

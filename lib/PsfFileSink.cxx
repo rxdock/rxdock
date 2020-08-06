@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PsfFileSink.h"
+#include "rxdock/PsfFileSink.h"
 #include <cstdio>
 #include <iomanip>
 #include <sstream>

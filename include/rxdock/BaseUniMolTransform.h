@@ -15,8 +15,8 @@
 #ifndef _RBTBASEUNIMOLTRANSFORM_H_
 #define _RBTBASEUNIMOLTRANSFORM_H_
 
-#include "BaseTransform.h"
-#include "Model.h"
+#include "rxdock/BaseTransform.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

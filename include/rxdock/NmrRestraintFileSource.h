@@ -37,8 +37,8 @@
 #ifndef _RBTNMRRESTRAINTFILESOURCE_H_
 #define _RBTNMRRESTRAINTFILESOURCE_H_
 
-#include "BaseFileSource.h"
-#include "NoeRestraint.h"
+#include "rxdock/BaseFileSource.h"
+#include "rxdock/NoeRestraint.h"
 
 namespace rxdock {
 

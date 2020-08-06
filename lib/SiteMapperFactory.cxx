@@ -10,11 +10,11 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SiteMapperFactory.h"
+#include "rxdock/SiteMapperFactory.h"
 
-#include "FileError.h"
-#include "LigandSiteMapper.h"
-#include "SphereSiteMapper.h"
+#include "rxdock/FileError.h"
+#include "rxdock/LigandSiteMapper.h"
+#include "rxdock/SphereSiteMapper.h"
 
 using namespace rxdock;
 

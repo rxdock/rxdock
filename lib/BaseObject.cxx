@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "BaseObject.h"
-#include "SFRequest.h"
-#include "WorkSpace.h"
+#include "rxdock/BaseObject.h"
+#include "rxdock/SFRequest.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

@@ -12,8 +12,8 @@
 
 #include <sstream>
 
-#include "ElementFileSource.h"
-#include "FileError.h"
+#include "rxdock/ElementFileSource.h"
+#include "rxdock/FileError.h"
 
 using namespace rxdock;
 

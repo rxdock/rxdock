@@ -37,7 +37,7 @@
 #ifndef RBTEULER_H_
 #define RBTEULER_H_
 
-#include "Quat.h"
+#include "rxdock/Quat.h"
 
 namespace rxdock {
 

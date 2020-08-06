@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "CellTokenIter.h"
+#include "rxdock/CellTokenIter.h"
 
 using namespace rxdock;
 

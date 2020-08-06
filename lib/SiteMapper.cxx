@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SiteMapper.h"
-#include "WorkSpace.h"
+#include "rxdock/SiteMapper.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

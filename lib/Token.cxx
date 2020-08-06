@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Token.h"
-#include "Commands.h"
-#include "Debug.h"
+#include "rxdock/Token.h"
+#include "rxdock/Commands.h"
+#include "rxdock/Debug.h"
 
 using namespace rxdock;
 

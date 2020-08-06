@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PsfFileSource.h"
-#include "ElementFileSource.h"
-#include "FileError.h"
+#include "rxdock/PsfFileSource.h"
+#include "rxdock/ElementFileSource.h"
+#include "rxdock/FileError.h"
 
 #include <loguru.hpp>
 

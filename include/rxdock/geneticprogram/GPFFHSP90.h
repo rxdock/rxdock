@@ -16,11 +16,11 @@
 #ifndef _RBT_GPFFHSP90_H_
 #define _RBT_GPFFHSP90_H_
 
-#include "Context.h"
-#include "GPFitnessFunction.h"
-#include "GPGenome.h"
-#include "GPTypes.h"
-#include "Rand.h"
+#include "rxdock/Context.h"
+#include "rxdock/Rand.h"
+#include "rxdock/geneticprogram/GPFitnessFunction.h"
+#include "rxdock/geneticprogram/GPGenome.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 
 namespace rxdock {
 

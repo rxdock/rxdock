@@ -13,13 +13,13 @@
 #ifndef _RBTMODEL_H_
 #define _RBTMODEL_H_
 
-#include "Atom.h"
-#include "Bond.h"
-#include "Config.h"
-#include "ModelMutator.h"
-#include "PrincipalAxes.h"
-#include "PseudoAtom.h"
-#include "Variant.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Bond.h"
+#include "rxdock/Config.h"
+#include "rxdock/ModelMutator.h"
+#include "rxdock/PrincipalAxes.h"
+#include "rxdock/PseudoAtom.h"
+#include "rxdock/Variant.h"
 
 namespace rxdock {
 

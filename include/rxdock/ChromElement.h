@@ -14,8 +14,8 @@
 #ifndef RBTCHROMELEMENT_H_
 #define RBTCHROMELEMENT_H_
 
-#include "Config.h"
-#include "Rand.h"
+#include "rxdock/Config.h"
+#include "rxdock/Rand.h"
 
 namespace rxdock {
 

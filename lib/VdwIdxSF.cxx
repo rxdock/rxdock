@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "VdwIdxSF.h"
-#include "FlexAtomFactory.h"
-#include "WorkSpace.h"
+#include "rxdock/VdwIdxSF.h"
+#include "rxdock/FlexAtomFactory.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

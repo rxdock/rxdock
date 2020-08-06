@@ -15,10 +15,10 @@
 #ifndef _RBT_GPPARSER_H_
 #define _RBT_GPPARSER_H_
 
-#include "Cell.h"
-#include "Command.h"
-#include "GPChromosome.h"
-#include "GPTypes.h"
+#include "rxdock/geneticprogram/Cell.h"
+#include "rxdock/geneticprogram/Command.h"
+#include "rxdock/geneticprogram/GPChromosome.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 
 namespace rxdock {
 

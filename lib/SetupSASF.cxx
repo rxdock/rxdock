@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SetupSASF.h"
+#include "rxdock/SetupSASF.h"
 
 #include <loguru.hpp>
 

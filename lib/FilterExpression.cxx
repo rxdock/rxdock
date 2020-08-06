@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "FilterExpression.h"
+#include "rxdock/FilterExpression.h"
 
 using namespace rxdock;
 

@@ -15,11 +15,11 @@
 
 #include <gtest/gtest.h>
 
-#include "BiMolWorkSpace.h"
-#include "Chrom.h"
-#include "DockingSite.h"
-#include "Model.h"
-#include "SFAgg.h"
+#include "rxdock/BiMolWorkSpace.h"
+#include "rxdock/Chrom.h"
+#include "rxdock/DockingSite.h"
+#include "rxdock/Model.h"
+#include "rxdock/SFAgg.h"
 
 namespace rxdock {
 

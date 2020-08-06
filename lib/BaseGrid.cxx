@@ -14,8 +14,8 @@
 #include <cstring>   //for strlen
 #include <iomanip>
 
-#include "BaseGrid.h"
-#include "FileError.h"
+#include "rxdock/BaseGrid.h"
+#include "rxdock/FileError.h"
 
 #include <loguru.hpp>
 

@@ -17,7 +17,7 @@
 
 #include <cmath> //for sqrt
 
-#include "Coord.h"
+#include "rxdock/Coord.h"
 
 namespace rxdock {
 

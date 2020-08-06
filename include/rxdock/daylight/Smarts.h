@@ -16,7 +16,7 @@
 #ifndef _RBT_SMARTS_H_
 #define _RBT_SMARTS_H_
 
-#include "Model.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

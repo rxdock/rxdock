@@ -17,9 +17,9 @@
 #ifndef _RBT_FILTER_H_
 #define _RBT_FILTER_H_
 
-#include "BaseObject.h"
-#include "Context.h"
-#include "FilterExpression.h"
+#include "rxdock/BaseObject.h"
+#include "rxdock/Context.h"
+#include "rxdock/FilterExpression.h"
 
 namespace rxdock {
 

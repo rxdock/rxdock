@@ -15,9 +15,9 @@
 #ifndef _RBT_GPGENOME_H_
 #define _RBT_GPGENOME_H_
 
-#include "GPChromosome.h"
-#include "GPTypes.h"
-#include "Rand.h"
+#include "rxdock/Rand.h"
+#include "rxdock/geneticprogram/GPChromosome.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 // #include <cmath>
 
 namespace rxdock {

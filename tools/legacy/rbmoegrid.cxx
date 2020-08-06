@@ -14,13 +14,13 @@
 #include <fstream>
 #include <iomanip>
 
-#include "BiMolWorkSpace.h"
-#include "MOEGrid.h"
-#include "PRMFactory.h"
-#include "ParameterFileSource.h"
-#include "RealGrid.h"
-#include "SFFactory.h"
-#include "TriposAtomType.h"
+#include "rxdock/BiMolWorkSpace.h"
+#include "rxdock/MOEGrid.h"
+#include "rxdock/PRMFactory.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/RealGrid.h"
+#include "rxdock/SFFactory.h"
+#include "rxdock/TriposAtomType.h"
 
 using namespace rxdock;
 

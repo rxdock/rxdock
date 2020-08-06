@@ -16,8 +16,8 @@
 #ifndef _RBTCAVITYFILLSF_H_
 #define _RBTCAVITYFILLSF_H_
 
-#include "BaseInterSF.h"
-#include "FFTGrid.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/FFTGrid.h"
 
 namespace rxdock {
 

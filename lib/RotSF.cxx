@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "RotSF.h"
+#include "rxdock/RotSF.h"
 
 #include <loguru.hpp>
 

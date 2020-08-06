@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "CrdFileSource.h"
-#include "FileError.h"
+#include "rxdock/CrdFileSource.h"
+#include "rxdock/FileError.h"
 
 using namespace rxdock;
 

@@ -16,7 +16,7 @@
 #ifndef _RBTNULLTRANSFORM_H_
 #define _RBTNULLTRANSFORM_H_
 
-#include "BaseTransform.h"
+#include "rxdock/BaseTransform.h"
 
 namespace rxdock {
 

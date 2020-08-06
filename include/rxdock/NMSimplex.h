@@ -18,7 +18,7 @@
 #endif
 #include <Eigen/Core>
 
-#include "NMState.h"
+#include "rxdock/NMState.h"
 
 #include <loguru.hpp>
 

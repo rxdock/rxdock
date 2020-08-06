@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "GPChromosome.h"
-#include "Cell.h"
-#include "Command.h"
+#include "rxdock/geneticprogram/GPChromosome.h"
+#include "rxdock/geneticprogram/Cell.h"
+#include "rxdock/geneticprogram/Command.h"
 
 #include <loguru.hpp>
 

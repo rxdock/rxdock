@@ -15,10 +15,10 @@
 #include <functional>
 #include <sstream>
 
-#include "AtomFuncs.h"
-#include "FileError.h"
-#include "MOL2FileSource.h"
-#include "ModelError.h"
+#include "rxdock/AtomFuncs.h"
+#include "rxdock/FileError.h"
+#include "rxdock/MOL2FileSource.h"
+#include "rxdock/ModelError.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

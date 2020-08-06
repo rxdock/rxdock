@@ -10,10 +10,10 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "LigandSiteMapper.h"
-#include "FFTGrid.h"
-#include "MdlFileSource.h"
-#include "WorkSpace.h"
+#include "rxdock/LigandSiteMapper.h"
+#include "rxdock/FFTGrid.h"
+#include "rxdock/MdlFileSource.h"
+#include "rxdock/WorkSpace.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

@@ -10,10 +10,10 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "RandPopTransform.h"
-#include "Chrom.h"
-#include "Population.h"
-#include "WorkSpace.h"
+#include "rxdock/RandPopTransform.h"
+#include "rxdock/Chrom.h"
+#include "rxdock/Population.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

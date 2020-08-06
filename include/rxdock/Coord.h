@@ -36,7 +36,7 @@ using json = nlohmann::json;
 #define M_PI 3.14159265358979323846
 #endif
 
-#include "Config.h"
+#include "rxdock/Config.h"
 
 extern std::istream &eatSeps(std::istream &is);
 

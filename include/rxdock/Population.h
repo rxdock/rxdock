@@ -15,8 +15,8 @@
 #ifndef _RBTPOPULATION_H_
 #define _RBTPOPULATION_H_
 
-#include "Error.h"
-#include "Genome.h"
+#include "rxdock/Error.h"
+#include "rxdock/Genome.h"
 
 namespace rxdock {
 

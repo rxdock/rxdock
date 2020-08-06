@@ -10,10 +10,10 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "GPFitnessFunction.h"
-#include "Debug.h"
-#include "GPGenome.h"
-#include "GPParser.h"
+#include "rxdock/geneticprogram/GPFitnessFunction.h"
+#include "rxdock/Debug.h"
+#include "rxdock/geneticprogram/GPGenome.h"
+#include "rxdock/geneticprogram/GPParser.h"
 #include <fstream>
 #include <sstream>
 

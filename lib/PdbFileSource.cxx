@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PdbFileSource.h"
+#include "rxdock/PdbFileSource.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

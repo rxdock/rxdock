@@ -12,10 +12,10 @@
 
 #include <sstream>
 
-#include "Filter.h"
-#include "Parser.h"
-#include "StringTokenIter.h"
-#include "WorkSpace.h"
+#include "rxdock/Filter.h"
+#include "rxdock/Parser.h"
+#include "rxdock/StringTokenIter.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

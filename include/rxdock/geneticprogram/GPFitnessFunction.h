@@ -16,10 +16,10 @@
 #ifndef _RBT_GPFITNESSFUNCTION_H_
 #define _RBT_GPFITNESSFUNCTION_H_
 
-#include "Context.h"
-#include "GPGenome.h"
-#include "GPTypes.h"
-#include "Rand.h"
+#include "rxdock/Context.h"
+#include "rxdock/Rand.h"
+#include "rxdock/geneticprogram/GPGenome.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 // #include <cmath>
 
 namespace rxdock {

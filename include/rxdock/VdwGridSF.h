@@ -15,8 +15,8 @@
 #ifndef _RBTVDWGRIDSF_H_
 #define _RBTVDWGRIDSF_H_
 
-#include "BaseInterSF.h"
-#include "RealGrid.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/RealGrid.h"
 
 namespace rxdock {
 

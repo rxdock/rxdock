@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ChromElement.h"
-#include "Rand.h"
+#include "rxdock/ChromElement.h"
+#include "rxdock/Rand.h"
 
 #include <loguru.hpp>
 

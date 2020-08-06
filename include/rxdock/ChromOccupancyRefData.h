@@ -16,7 +16,7 @@
 #ifndef RBTCHROMOCCUPANCYREFDATA_H_
 #define RBTCHROMOCCUPANCYREFDATA_H_
 
-#include "Config.h"
+#include "rxdock/Config.h"
 
 namespace rxdock {
 

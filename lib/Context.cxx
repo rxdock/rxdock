@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Context.h"
-#include "Debug.h"
+#include "rxdock/Context.h"
+#include "rxdock/Debug.h"
 #include <cstring>
 #include <functional>
 

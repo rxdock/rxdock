@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "BaseFileSink.h"
-#include "FileError.h"
+#include "rxdock/BaseFileSink.h"
+#include "rxdock/FileError.h"
 
 using namespace rxdock;
 

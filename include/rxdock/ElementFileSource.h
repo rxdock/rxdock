@@ -16,7 +16,7 @@
 #ifndef _RBTELEMENTFILESOURCE_H_
 #define _RBTELEMENTFILESOURCE_H_
 
-#include "BaseFileSource.h"
+#include "rxdock/BaseFileSource.h"
 
 namespace rxdock {
 

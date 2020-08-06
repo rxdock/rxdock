@@ -17,7 +17,7 @@
 #include <map>
 #include <vector>
 
-#include "Error.h"
+#include "rxdock/Error.h"
 
 #if defined _WIN32 || defined __CYGWIN__
 #ifdef __GNUC__

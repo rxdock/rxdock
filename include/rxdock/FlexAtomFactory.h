@@ -15,8 +15,8 @@
 #ifndef _RBTFLEXATOMFACTORY_H_
 #define _RBTFLEXATOMFACTORY_H_
 
-#include "FlexDataVisitor.h"
-#include "Model.h"
+#include "rxdock/FlexDataVisitor.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

@@ -10,12 +10,12 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Debug.h"
-#include "GPFFCHK1.h"
-#include "GPFitnessFunction.h"
-#include "GPGenome.h"
-#include "GPPopulation.h"
-#include "Parser.h"
+#include "rxdock/Debug.h"
+#include "rxdock/Parser.h"
+#include "rxdock/geneticprogram/GPFFCHK1.h"
+#include "rxdock/geneticprogram/GPFitnessFunction.h"
+#include "rxdock/geneticprogram/GPGenome.h"
+#include "rxdock/geneticprogram/GPPopulation.h"
 #include <cstdio>
 #include <fstream>
 

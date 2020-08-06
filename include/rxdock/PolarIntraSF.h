@@ -16,9 +16,9 @@
 #ifndef _RBTPOLARINTRASF_H_
 #define _RBTPOLARINTRASF_H_
 
-#include "BaseIntraSF.h"
-#include "InteractionGrid.h"
-#include "PolarSF.h"
+#include "rxdock/BaseIntraSF.h"
+#include "rxdock/InteractionGrid.h"
+#include "rxdock/PolarSF.h"
 
 namespace rxdock {
 

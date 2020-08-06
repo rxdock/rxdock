@@ -15,10 +15,10 @@
 #ifndef _RBTAROMIDXSF_H_
 #define _RBTAROMIDXSF_H_
 
-#include "AnnotationHandler.h"
-#include "BaseIdxSF.h"
-#include "BaseInterSF.h"
-#include "Plane.h"
+#include "rxdock/AnnotationHandler.h"
+#include "rxdock/BaseIdxSF.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/Plane.h"
 
 namespace rxdock {
 

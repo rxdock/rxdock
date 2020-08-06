@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Annotation.h"
-#include "PseudoAtom.h"
+#include "rxdock/Annotation.h"
+#include "rxdock/PseudoAtom.h"
 
 #include <functional>
 

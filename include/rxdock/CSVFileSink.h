@@ -18,8 +18,8 @@
 #ifndef _RBTCSVFILESINK_H_
 #define _RBTCSVFILESINK_H_
 
-#include "BaseMolecularFileSink.h"
-#include "ElementFileSource.h"
+#include "rxdock/BaseMolecularFileSink.h"
+#include "rxdock/ElementFileSource.h"
 
 namespace rxdock {
 

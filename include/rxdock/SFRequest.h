@@ -15,7 +15,7 @@
 #ifndef _RBTSFREQUEST_H_
 #define _RBTSFREQUEST_H_
 
-#include "Request.h"
+#include "rxdock/Request.h"
 
 namespace rxdock {
 

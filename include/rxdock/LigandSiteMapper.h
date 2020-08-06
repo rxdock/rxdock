@@ -15,7 +15,7 @@
 #ifndef _RBTLIGANDSITEMAPPER_H_
 #define _RBTLIGANDSITEMAPPER_H_
 
-#include "SiteMapper.h"
+#include "rxdock/SiteMapper.h"
 
 namespace rxdock {
 

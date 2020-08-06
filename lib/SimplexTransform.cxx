@@ -16,13 +16,13 @@
 #include <Eigen/Core>
 #include <iomanip>
 
-#include "Chrom.h"
-#include "NMCriteria.h"
-#include "NMSimplex.h"
-#include "SFRequest.h"
-#include "SimplexCostFunction.h"
-#include "SimplexTransform.h"
-#include "WorkSpace.h"
+#include "rxdock/Chrom.h"
+#include "rxdock/NMCriteria.h"
+#include "rxdock/NMSimplex.h"
+#include "rxdock/SFRequest.h"
+#include "rxdock/SimplexCostFunction.h"
+#include "rxdock/SimplexTransform.h"
+#include "rxdock/WorkSpace.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

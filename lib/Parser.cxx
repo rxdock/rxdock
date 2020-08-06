@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Parser.h"
-#include "Debug.h"
+#include "rxdock/Parser.h"
+#include "rxdock/Debug.h"
 
 using namespace rxdock;
 

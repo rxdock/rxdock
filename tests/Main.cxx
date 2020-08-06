@@ -1,5 +1,5 @@
-#include "Config.h"
-#include "Debug.h"
+#include "rxdock/Config.h"
+#include "rxdock/Debug.h"
 #include <gtest/gtest.h>
 
 using namespace rxdock;

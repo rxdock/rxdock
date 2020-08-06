@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "NonBondedGrid.h"
-#include "FileError.h"
+#include "rxdock/NonBondedGrid.h"
+#include "rxdock/FileError.h"
 
 #include <loguru.hpp>
 

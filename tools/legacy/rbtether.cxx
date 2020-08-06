@@ -16,12 +16,12 @@
 #include <iomanip>
 #include <sstream>
 
-#include "BiMolWorkSpace.h"
-#include "MdlFileSink.h"
-#include "MdlFileSource.h"
-#include "PRMFactory.h"
-#include "ParameterFileSource.h"
-#include "Smarts.h"
+#include "rxdock/BiMolWorkSpace.h"
+#include "rxdock/MdlFileSink.h"
+#include "rxdock/MdlFileSource.h"
+#include "rxdock/PRMFactory.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/daylight/Smarts.h"
 
 using namespace rxdock;
 

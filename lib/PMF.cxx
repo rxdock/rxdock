@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PMF.h"
+#include "rxdock/PMF.h"
 
 using namespace rxdock;
 

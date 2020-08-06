@@ -16,9 +16,9 @@
 #ifndef RBTPRMFACTORY_H_
 #define RBTPRMFACTORY_H_
 
-#include "BaseMolecularFileSource.h"
-#include "Error.h"
-#include "Model.h"
+#include "rxdock/BaseMolecularFileSource.h"
+#include "rxdock/Error.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

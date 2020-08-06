@@ -10,10 +10,10 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "BiMolWorkSpace.h"
-#include "AnnotationHandler.h"
-#include "BaseMolecularFileSource.h"
-#include "BaseSF.h"
+#include "rxdock/BiMolWorkSpace.h"
+#include "rxdock/AnnotationHandler.h"
+#include "rxdock/BaseMolecularFileSource.h"
+#include "rxdock/BaseSF.h"
 
 #include <loguru.hpp>
 

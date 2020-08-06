@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ChromOccupancyElement.h"
+#include "rxdock/ChromOccupancyElement.h"
 
 using namespace rxdock;
 

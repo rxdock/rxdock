@@ -15,10 +15,10 @@
 #ifndef _RBT_FILTEREXPRESSION_H_
 #define _RBT_FILTEREXPRESSION_H_
 
-#include "Error.h"
-#include "FilterExpressionVisitor.h"
-#include "GPTypes.h"
-#include "TokenIter.h"
+#include "rxdock/Error.h"
+#include "rxdock/FilterExpressionVisitor.h"
+#include "rxdock/TokenIter.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 
 #include <iostream>
 

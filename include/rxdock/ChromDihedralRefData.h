@@ -17,9 +17,9 @@
 #ifndef RBTCHROMDIHEDRALREFDATA_H_
 #define RBTCHROMDIHEDRALREFDATA_H_
 
-#include "Atom.h"
-#include "Bond.h"
-#include "ChromElement.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Bond.h"
+#include "rxdock/ChromElement.h"
 
 namespace rxdock {
 

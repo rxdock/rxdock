@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PolarIdxSF.h"
-#include "Plane.h"
-#include "WorkSpace.h"
+#include "rxdock/PolarIdxSF.h"
+#include "rxdock/Plane.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

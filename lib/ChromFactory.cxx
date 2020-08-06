@@ -10,15 +10,15 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ChromFactory.h"
-#include "Chrom.h"
-#include "ChromDihedralElement.h"
-#include "ChromOccupancyElement.h"
-#include "ChromPositionElement.h"
-#include "LigandFlexData.h"
-#include "Model.h"
-#include "ReceptorFlexData.h"
-#include "SolventFlexData.h"
+#include "rxdock/ChromFactory.h"
+#include "rxdock/Chrom.h"
+#include "rxdock/ChromDihedralElement.h"
+#include "rxdock/ChromOccupancyElement.h"
+#include "rxdock/ChromPositionElement.h"
+#include "rxdock/LigandFlexData.h"
+#include "rxdock/Model.h"
+#include "rxdock/ReceptorFlexData.h"
+#include "rxdock/SolventFlexData.h"
 
 #include <loguru.hpp>
 

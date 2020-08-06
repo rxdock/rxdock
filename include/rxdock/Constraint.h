@@ -15,10 +15,10 @@
 #ifndef _RBT_CONSTRAINT_H_
 #define _RBT_CONSTRAINT_H_
 
-#include "Atom.h"
-#include "Coord.h"
-#include "Error.h"
-#include "Model.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Coord.h"
+#include "rxdock/Error.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

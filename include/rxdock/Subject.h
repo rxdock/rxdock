@@ -27,8 +27,8 @@
 #ifndef _RBTSUBJECT_H_
 #define _RBTSUBJECT_H_
 
-#include "Config.h"
-#include "Observer.h"
+#include "rxdock/Config.h"
+#include "rxdock/Observer.h"
 
 namespace rxdock {
 

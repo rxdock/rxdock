@@ -34,7 +34,7 @@
 #ifndef _RBTSMARTPOINTER_H_
 #define _RBTSMARTPOINTER_H_
 
-//#include "Error.h"
+//#include "rxdock/Error.h"
 
 namespace rxdock {
 

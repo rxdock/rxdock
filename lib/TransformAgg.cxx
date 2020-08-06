@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "TransformAgg.h"
+#include "rxdock/TransformAgg.h"
 
 #include <loguru.hpp>
 

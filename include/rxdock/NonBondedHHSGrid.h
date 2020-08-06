@@ -13,8 +13,8 @@
 #ifndef _RBTNONBONDEDHHSGRID_H_
 #define _RBTNONBONDEDHHSGRID_H_
 
-#include "BaseGrid.h"
-#include "SATypes.h"
+#include "rxdock/BaseGrid.h"
+#include "rxdock/SATypes.h"
 
 namespace rxdock {
 

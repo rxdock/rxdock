@@ -10,10 +10,10 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PMFIdxSF.h"
-#include "Atom.h"
-#include "PMFDirSource.h"
-#include "WorkSpace.h"
+#include "rxdock/PMFIdxSF.h"
+#include "rxdock/Atom.h"
+#include "rxdock/PMFDirSource.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

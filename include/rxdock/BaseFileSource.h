@@ -17,7 +17,7 @@
 
 #include <fstream>
 
-#include "Config.h"
+#include "rxdock/Config.h"
 
 namespace rxdock {
 

@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "BaseIdxSF.h"
-#include "WorkSpace.h"
+#include "rxdock/BaseIdxSF.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

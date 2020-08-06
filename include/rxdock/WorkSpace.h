@@ -21,14 +21,14 @@
 #ifndef _RBTWORKSPACE_H_
 #define _RBTWORKSPACE_H_
 
-#include "BaseMolecularFileSink.h"
-#include "Config.h"
-#include "DockingSite.h"
-#include "Filter.h"
-#include "Model.h"
-#include "ParamHandler.h"
-#include "Population.h"
-#include "Subject.h"
+#include "rxdock/BaseMolecularFileSink.h"
+#include "rxdock/Config.h"
+#include "rxdock/DockingSite.h"
+#include "rxdock/Filter.h"
+#include "rxdock/Model.h"
+#include "rxdock/ParamHandler.h"
+#include "rxdock/Population.h"
+#include "rxdock/Subject.h"
 
 namespace rxdock {
 

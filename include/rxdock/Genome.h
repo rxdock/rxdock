@@ -16,7 +16,7 @@
 #ifndef _RBT_GENOME_H_
 #define _RBT_GENOME_H_
 
-#include "ChromElement.h"
+#include "rxdock/ChromElement.h"
 
 namespace rxdock {
 

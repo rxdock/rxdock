@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "NullTransform.h"
-#include "Population.h"
-#include "WorkSpace.h"
+#include "rxdock/NullTransform.h"
+#include "rxdock/Population.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

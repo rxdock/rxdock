@@ -16,10 +16,10 @@
 #ifndef _RBTBASEOBJECT_H_
 #define _RBTBASEOBJECT_H_
 
-#include "Config.h"
-#include "Observer.h"
-#include "ParamHandler.h"
-#include "RequestHandler.h"
+#include "rxdock/Config.h"
+#include "rxdock/Observer.h"
+#include "rxdock/ParamHandler.h"
+#include "rxdock/RequestHandler.h"
 
 namespace rxdock {
 

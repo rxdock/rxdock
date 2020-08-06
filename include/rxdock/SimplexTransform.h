@@ -14,8 +14,8 @@
 #ifndef _RBTSIMPLEXTRANSFORM_H_
 #define _RBTSIMPLEXTRANSFORM_H_
 
-#include "BaseBiMolTransform.h"
-#include "ChromElement.h"
+#include "rxdock/BaseBiMolTransform.h"
+#include "rxdock/ChromElement.h"
 
 namespace rxdock {
 

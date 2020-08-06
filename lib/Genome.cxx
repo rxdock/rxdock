@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Genome.h"
-#include "BaseSF.h"
-#include "ChromElement.h"
+#include "rxdock/Genome.h"
+#include "rxdock/BaseSF.h"
+#include "rxdock/ChromElement.h"
 
 using namespace rxdock;
 

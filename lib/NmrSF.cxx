@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "NmrSF.h"
-#include "NmrRestraintFileSource.h"
-#include "WorkSpace.h"
+#include "rxdock/NmrSF.h"
+#include "rxdock/NmrRestraintFileSource.h"
+#include "rxdock/WorkSpace.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "DihedralSF.h"
+#include "rxdock/DihedralSF.h"
 
 #include <loguru.hpp>
 

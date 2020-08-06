@@ -16,8 +16,8 @@
 #ifndef _RBTANNOTATION_H_
 #define _RBTANNOTATION_H_
 
-#include "Atom.h"
-#include "Config.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Config.h"
 
 namespace rxdock {
 

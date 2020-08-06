@@ -19,19 +19,19 @@
 #include <sstream>
 
 #ifndef _RBTSMARTPOINTER_H_
-#include "SmartPointer.h"
+#include "rxdock/SmartPointer.h"
 #endif //_RBTSMARTPOINTER_H_
 
 #ifndef _RBTDEBUG_H_
-#include "Debug.h"
+#include "rxdock/Debug.h"
 #endif //_RBTDEBUG_H_
 
 #ifndef _RBT_H_
-#include "Rbt.h"
+#include "rxdock/Rbt.h"
 #endif //_RBT_H_
 
 #ifndef _RBTERROR_H_
-#include "Error.h"
+#include "rxdock/Error.h"
 #endif //_RBTERROR_H_
 
 #endif //_RBTCONFIG_H_

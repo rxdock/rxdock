@@ -16,9 +16,9 @@
 #ifndef _RBTPOLARIDXSF_H_
 #define _RBTPOLARIDXSF_H_
 
-#include "BaseIdxSF.h"
-#include "BaseInterSF.h"
-#include "PolarSF.h"
+#include "rxdock/BaseIdxSF.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/PolarSF.h"
 
 namespace rxdock {
 

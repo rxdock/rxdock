@@ -14,8 +14,8 @@
 #include <cstring>
 #include <iomanip>
 
-#include "FileError.h"
-#include "RealGrid.h"
+#include "rxdock/FileError.h"
+#include "rxdock/RealGrid.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

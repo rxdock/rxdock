@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "VdwGridSF.h"
-#include "FileError.h"
-#include "WorkSpace.h"
+#include "rxdock/VdwGridSF.h"
+#include "rxdock/FileError.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

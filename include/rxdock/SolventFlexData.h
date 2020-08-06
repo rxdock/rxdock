@@ -14,7 +14,7 @@
 #ifndef _RBTSOLVENTFLEXDATA_
 #define _RBTSOLVENTFLEXDATA_
 
-#include "LigandFlexData.h"
+#include "rxdock/LigandFlexData.h"
 
 namespace rxdock {
 

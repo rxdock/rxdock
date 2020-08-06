@@ -14,7 +14,7 @@
 #ifndef _RBTLIGANDFLEXDATA_
 #define _RBTLIGANDFLEXDATA_
 
-#include "FlexData.h"
+#include "rxdock/FlexData.h"
 
 namespace rxdock {
 

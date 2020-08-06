@@ -19,11 +19,11 @@
 #ifndef _RBTDOCKINGSITE_H_
 #define _RBTDOCKINGSITE_H_
 
-#include "Atom.h"
-#include "Cavity.h"
-#include "Config.h"
-#include "Error.h"
-#include "RealGrid.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Cavity.h"
+#include "rxdock/Config.h"
+#include "rxdock/Error.h"
+#include "rxdock/RealGrid.h"
 
 namespace rxdock {
 

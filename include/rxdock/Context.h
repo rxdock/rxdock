@@ -17,11 +17,11 @@
 #ifndef _RBT_CONTEXT_H_
 #define _RBT_CONTEXT_H_
 
-#include "BaseSF.h"
-#include "DockingSite.h"
-#include "GPTypes.h"
-#include "Model.h"
-#include "Vble.h"
+#include "rxdock/BaseSF.h"
+#include "rxdock/DockingSite.h"
+#include "rxdock/Model.h"
+#include "rxdock/Vble.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 #include <fstream>
 
 namespace rxdock {

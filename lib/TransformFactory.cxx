@@ -10,18 +10,18 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "TransformFactory.h"
+#include "rxdock/TransformFactory.h"
 // Component transforms
-#include "AlignTransform.h"
-#include "GATransform.h"
-#include "NullTransform.h"
-#include "RandLigTransform.h"
-#include "RandPopTransform.h"
-#include "SimAnnTransform.h"
-#include "SimplexTransform.h"
+#include "rxdock/AlignTransform.h"
+#include "rxdock/GATransform.h"
+#include "rxdock/NullTransform.h"
+#include "rxdock/RandLigTransform.h"
+#include "rxdock/RandPopTransform.h"
+#include "rxdock/SimAnnTransform.h"
+#include "rxdock/SimplexTransform.h"
 
-#include "FileError.h"
-#include "SFRequest.h"
+#include "rxdock/FileError.h"
+#include "rxdock/SFRequest.h"
 
 using namespace rxdock;
 

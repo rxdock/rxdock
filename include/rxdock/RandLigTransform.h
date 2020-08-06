@@ -16,8 +16,8 @@
 #ifndef _RBTRANDLIGTRANSFORM_H_
 #define _RBTRANDLIGTRANSFORM_H_
 
-#include "BaseUniMolTransform.h"
-#include "Rand.h"
+#include "rxdock/BaseUniMolTransform.h"
+#include "rxdock/Rand.h"
 
 namespace rxdock {
 

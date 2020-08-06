@@ -13,11 +13,11 @@
 #ifndef _RBTDIRECTORYSOURCE_H_
 #define _RBTDIRECTORYSOURCE_H_
 
-#include "Config.h"
-#include "FileError.h" // for exception types
-#include <dirent.h>    // for scandir()
-#include <fstream>     // ditto
-#include <sys/stat.h>  // for stat()
+#include "rxdock/Config.h"
+#include "rxdock/FileError.h" // for exception types
+#include <dirent.h>           // for scandir()
+#include <fstream>            // ditto
+#include <sys/stat.h>         // for stat()
 #include <sys/types.h>
 
 namespace rxdock {

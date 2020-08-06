@@ -15,9 +15,9 @@
 #ifndef _RBTNMRSF_H_
 #define _RBTNMRSF_H_
 
-#include "BaseIdxSF.h"
-#include "BaseInterSF.h"
-#include "NoeRestraint.h"
+#include "rxdock/BaseIdxSF.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/NoeRestraint.h"
 
 namespace rxdock {
 

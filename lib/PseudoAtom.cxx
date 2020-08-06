@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PseudoAtom.h"
+#include "rxdock/PseudoAtom.h"
 
 using namespace rxdock;
 

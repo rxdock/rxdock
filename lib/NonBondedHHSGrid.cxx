@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "NonBondedHHSGrid.h"
-#include "Atom.h"
-#include "FileError.h"
+#include "rxdock/NonBondedHHSGrid.h"
+#include "rxdock/Atom.h"
+#include "rxdock/FileError.h"
 
 using namespace rxdock;
 

@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "PMFGridSF.h"
-#include "FileError.h"
-#include "WorkSpace.h"
+#include "rxdock/PMFGridSF.h"
+#include "rxdock/FileError.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

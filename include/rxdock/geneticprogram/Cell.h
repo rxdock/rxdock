@@ -15,7 +15,7 @@
 #ifndef _RBT_CELL_H_
 #define _RBT_CELL_H_
 
-#include "GPTypes.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 
 #include <loguru.hpp>
 

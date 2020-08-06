@@ -14,9 +14,9 @@
 #ifndef RBTCHROMDIHEDRALELEMENT_H_
 #define RBTCHROMDIHEDRALELEMENT_H_
 
-#include "ChromDihedralRefData.h"
-#include "ChromElement.h"
-#include "Rand.h"
+#include "rxdock/ChromDihedralRefData.h"
+#include "rxdock/ChromElement.h"
+#include "rxdock/Rand.h"
 
 namespace rxdock {
 

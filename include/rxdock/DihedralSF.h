@@ -18,11 +18,11 @@
 #ifndef _RBTDIHEDRALSF_H_
 #define _RBTDIHEDRALSF_H_
 
-#include "Atom.h"
-#include "BaseSF.h"
-#include "Bond.h"
-#include "ParameterFileSource.h"
-#include "TriposAtomType.h"
+#include "rxdock/Atom.h"
+#include "rxdock/BaseSF.h"
+#include "rxdock/Bond.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/TriposAtomType.h"
 
 namespace rxdock {
 

@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Population.h"
-#include "Debug.h"
-#include "DockingError.h"
+#include "rxdock/Population.h"
+#include "rxdock/Debug.h"
+#include "rxdock/DockingError.h"
 #include <algorithm>
 
 using namespace rxdock;

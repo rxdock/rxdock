@@ -18,8 +18,8 @@
 #ifndef _RBTPARAMHANDLER_H_
 #define _RBTPARAMHANDLER_H_
 
-#include "Config.h"
-#include "Variant.h"
+#include "rxdock/Config.h"
+#include "rxdock/Variant.h"
 
 namespace rxdock {
 

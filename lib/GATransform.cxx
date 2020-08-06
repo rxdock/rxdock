@@ -10,10 +10,10 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "GATransform.h"
-#include "Population.h"
-#include "SFRequest.h"
-#include "WorkSpace.h"
+#include "rxdock/GATransform.h"
+#include "rxdock/Population.h"
+#include "rxdock/SFRequest.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

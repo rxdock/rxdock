@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ChromDihedralRefData.h"
-#include "AtomFuncs.h"
-#include "Model.h"
+#include "rxdock/ChromDihedralRefData.h"
+#include "rxdock/AtomFuncs.h"
+#include "rxdock/Model.h"
 
 #include <loguru.hpp>
 

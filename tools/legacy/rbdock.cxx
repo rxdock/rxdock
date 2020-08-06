@@ -16,22 +16,22 @@
 #include <cxxopts.hpp>
 #include <iomanip>
 
-#include "BiMolWorkSpace.h"
-#include "CrdFileSink.h"
-#include "DockingError.h"
-#include "FileError.h"
-#include "Filter.h"
-#include "LigandError.h"
-#include "MdlFileSink.h"
-#include "MdlFileSource.h"
-#include "ModelError.h"
-#include "PRMFactory.h"
-#include "ParameterFileSource.h"
-#include "Rand.h"
-#include "Rbt.h"
-#include "SFFactory.h"
-#include "SFRequest.h"
-#include "TransformFactory.h"
+#include "rxdock/BiMolWorkSpace.h"
+#include "rxdock/CrdFileSink.h"
+#include "rxdock/DockingError.h"
+#include "rxdock/FileError.h"
+#include "rxdock/Filter.h"
+#include "rxdock/LigandError.h"
+#include "rxdock/MdlFileSink.h"
+#include "rxdock/MdlFileSource.h"
+#include "rxdock/ModelError.h"
+#include "rxdock/PRMFactory.h"
+#include "rxdock/ParameterFileSource.h"
+#include "rxdock/Rand.h"
+#include "rxdock/Rbt.h"
+#include "rxdock/SFFactory.h"
+#include "rxdock/SFRequest.h"
+#include "rxdock/TransformFactory.h"
 
 #include <loguru.hpp>
 

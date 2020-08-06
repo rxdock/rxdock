@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "Subject.h"
+#include "rxdock/Subject.h"
 
 #include <loguru.hpp>
 

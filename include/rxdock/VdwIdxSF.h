@@ -14,9 +14,9 @@
 #ifndef _RBTVDWIDXSF_H_
 #define _RBTVDWIDXSF_H_
 
-#include "BaseIdxSF.h"
-#include "BaseInterSF.h"
-#include "VdwSF.h"
+#include "rxdock/BaseIdxSF.h"
+#include "rxdock/BaseInterSF.h"
+#include "rxdock/VdwSF.h"
 
 namespace rxdock {
 

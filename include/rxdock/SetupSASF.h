@@ -13,7 +13,7 @@
 #ifndef _RBTSETUPSASF_H_
 #define _RBTSETUPSASF_H_
 
-#include "BaseInterSF.h"
+#include "rxdock/BaseInterSF.h"
 
 namespace rxdock {
 

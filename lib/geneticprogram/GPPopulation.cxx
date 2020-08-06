@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "GPPopulation.h"
-#include "Debug.h"
+#include "rxdock/geneticprogram/GPPopulation.h"
+#include "rxdock/Debug.h"
 
 #include <loguru.hpp>
 

@@ -15,8 +15,8 @@
 #ifndef _RBTPRINCIPALAXES_H_
 #define _RBTPRINCIPALAXES_H_
 
-#include "Atom.h"
-#include "Config.h"
+#include "rxdock/Atom.h"
+#include "rxdock/Config.h"
 
 namespace rxdock {
 

@@ -14,7 +14,7 @@
 #ifndef _RBTRECEPTORFLEXDATA_
 #define _RBTRECEPTORFLEXDATA_
 
-#include "FlexData.h"
+#include "rxdock/FlexData.h"
 
 namespace rxdock {
 

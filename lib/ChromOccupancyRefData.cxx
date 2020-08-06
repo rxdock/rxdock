@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "ChromOccupancyRefData.h"
-#include "Model.h"
+#include "rxdock/ChromOccupancyRefData.h"
+#include "rxdock/Model.h"
 
 using namespace rxdock;
 

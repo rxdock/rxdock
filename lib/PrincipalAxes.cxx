@@ -19,9 +19,9 @@
 #include <cerrno>
 #include <iomanip>
 
-#include "Error.h"
-#include "Plane.h"
-#include "PrincipalAxes.h"
+#include "rxdock/Error.h"
+#include "rxdock/Plane.h"
+#include "rxdock/PrincipalAxes.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

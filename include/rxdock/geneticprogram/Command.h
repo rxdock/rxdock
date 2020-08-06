@@ -15,7 +15,7 @@
 #ifndef _RBT_COMMAND_H_
 #define _RBT_COMMAND_H_
 
-#include "GPTypes.h"
+#include "rxdock/geneticprogram/GPTypes.h"
 
 #include <cmath>
 

@@ -14,8 +14,8 @@
 #ifndef _RBTDIHEDRALINTRASF_H_
 #define _RBTDIHEDRALINTRASF_H_
 
-#include "BaseIntraSF.h"
-#include "DihedralSF.h"
+#include "rxdock/BaseIntraSF.h"
+#include "rxdock/DihedralSF.h"
 
 namespace rxdock {
 

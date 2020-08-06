@@ -10,8 +10,8 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "VdwIntraSF.h"
-#include "SFRequest.h"
+#include "rxdock/VdwIntraSF.h"
+#include "rxdock/SFRequest.h"
 
 #include <loguru.hpp>
 

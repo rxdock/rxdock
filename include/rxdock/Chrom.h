@@ -17,9 +17,9 @@
 #ifndef RBTCHROM_H_
 #define RBTCHROM_H_
 
-#include "ChromElement.h"
-#include "Error.h"
-#include "Model.h"
+#include "rxdock/ChromElement.h"
+#include "rxdock/Error.h"
+#include "rxdock/Model.h"
 
 namespace rxdock {
 

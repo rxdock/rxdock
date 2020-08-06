@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "AtomFuncs.h"
+#include "rxdock/AtomFuncs.h"
 
 #include <loguru.hpp>
 

@@ -10,7 +10,7 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SolventFlexData.h"
+#include "rxdock/SolventFlexData.h"
 
 using namespace rxdock;
 

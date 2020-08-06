@@ -15,7 +15,7 @@
 #ifndef _RBTTRIPOSATOMTYPE_H_
 #define _RBTTRIPOSATOMTYPE_H_
 
-#include "Config.h"
+#include "rxdock/Config.h"
 
 namespace rxdock {
 

@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "SFAgg.h"
-#include "Model.h"
-#include "WorkSpace.h"
+#include "rxdock/SFAgg.h"
+#include "rxdock/Model.h"
+#include "rxdock/WorkSpace.h"
 
 #include <loguru.hpp>
 

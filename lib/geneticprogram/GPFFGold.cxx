@@ -10,10 +10,10 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "GPFFGold.h"
-#include "Debug.h"
-#include "GPGenome.h"
-#include "GPParser.h"
+#include "rxdock/geneticprogram/GPFFGold.h"
+#include "rxdock/Debug.h"
+#include "rxdock/geneticprogram/GPGenome.h"
+#include "rxdock/geneticprogram/GPParser.h"
 
 #include <loguru.hpp>
 

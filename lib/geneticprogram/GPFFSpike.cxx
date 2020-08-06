@@ -10,15 +10,15 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "GPFFSpike.h"
-#include "CellTokenIter.h"
-#include "Debug.h"
-#include "FilterExpression.h"
-#include "FilterExpressionVisitor.h"
-#include "GPGenome.h"
-#include "GPParser.h"
-#include "Parser.h"
-#include "TokenIter.h"
+#include "rxdock/geneticprogram/GPFFSpike.h"
+#include "rxdock/CellTokenIter.h"
+#include "rxdock/Debug.h"
+#include "rxdock/FilterExpression.h"
+#include "rxdock/FilterExpressionVisitor.h"
+#include "rxdock/Parser.h"
+#include "rxdock/TokenIter.h"
+#include "rxdock/geneticprogram/GPGenome.h"
+#include "rxdock/geneticprogram/GPParser.h"
 
 #include <loguru.hpp>
 

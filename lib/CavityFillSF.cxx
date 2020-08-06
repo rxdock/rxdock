@@ -10,9 +10,9 @@
  * http://rdock.sourceforge.net/
  ***********************************************************************/
 
-#include "CavityFillSF.h"
-#include "DockingSite.h"
-#include "WorkSpace.h"
+#include "rxdock/CavityFillSF.h"
+#include "rxdock/DockingSite.h"
+#include "rxdock/WorkSpace.h"
 
 #include <fmt/ostream.h>
 #include <loguru.hpp>

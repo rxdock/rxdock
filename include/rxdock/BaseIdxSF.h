@@ -16,10 +16,10 @@
 #ifndef _RBTBASEIDXSF_H_
 #define _RBTBASEIDXSF_H_
 
-#include "BaseSF.h"
-#include "InteractionGrid.h"
-#include "NonBondedGrid.h"
-#include "NonBondedHHSGrid.h"
+#include "rxdock/BaseSF.h"
+#include "rxdock/InteractionGrid.h"
+#include "rxdock/NonBondedGrid.h"
+#include "rxdock/NonBondedHHSGrid.h"
 
 namespace rxdock {
 

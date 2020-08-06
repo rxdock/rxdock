@@ -32,9 +32,9 @@
 #include <unistd.h> //For POSIX getcwd
 #endif
 //#include <ios>
-#include "FileError.h"
-#include "Rbt.h"
-#include "Resources.h"
+#include "rxdock/FileError.h"
+#include "rxdock/Rbt.h"
+#include "rxdock/Resources.h"
 
 #include <loguru.hpp>
 
