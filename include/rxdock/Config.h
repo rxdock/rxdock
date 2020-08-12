@@ -15,9 +15,6 @@
 #ifndef _RBTCONFIG_H_
 #define _RBTCONFIG_H_
 
-// For g++ 3.4.3 (libstdc++)
-#include <sstream>
-
 #ifndef _RBTSMARTPOINTER_H_
 #include "rxdock/SmartPointer.h"
 #endif //_RBTSMARTPOINTER_H_

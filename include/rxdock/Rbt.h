@@ -14,34 +14,12 @@
 #ifndef _RBT_H_
 #define _RBT_H_
 
+#include "rxdock/support/Export.h"
+
+#include <istream>
 #include <map>
+#include <ostream>
 #include <vector>
-
-#include "rxdock/Error.h"
-
-#if defined _WIN32 || defined __CYGWIN__
-#ifdef __GNUC__
-#define RBTDLL_EXPORT __attribute__((dllexport))
-#define RBTDLL_IMPORT __attribute__((dllimport))
-#else
-#define RBTDLL_EXPORT __declspec(dllexport)
-#define RBTDLL_IMPORT __declspec(dllimport)
-#endif
-#define RBTDLL_LOCAL
-#else
-#if __GNUC__ >= 4
-#define RBTDLL_EXPORT __attribute__((visibility("default")))
-#define RBTDLL_IMPORT __attribute__((visibility("default")))
-#define RBTDLL_LOCAL __attribute__((visibility("hidden")))
-#else
-#define RBTDLL_EXPORT
-#define RBTDLL_IMPORT
-#define RBTDLL_LOCAL
-#endif
-#endif
-
-// Same rules apply to Loguru logging library
-#define LOGURU_EXPORT RBTDLL_EXPORT
 
 namespace rxdock {
 
