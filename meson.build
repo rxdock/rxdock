@@ -99,6 +99,11 @@ install_headers(
     'include/rxdock/geneticprogram/GPTypes.h'),
   subdir: 'rxdock/geneticprogram'
 )
+install_headers(
+  files('include/rxdock/support/Number.h',
+    'include/rxdock/support/Quote.h'),
+  subdir: 'rxdock/support'
+)
 
 srcRbt = [
   'lib/geneticprogram/GPChromosome.cxx', 'lib/geneticprogram/GPFFCHK1.cxx',
@@ -106,6 +111,7 @@ srcRbt = [
   'lib/geneticprogram/GPFFHSP90.cxx', 'lib/geneticprogram/GPFFSpike.cxx',
   'lib/geneticprogram/GPFitnessFunction.cxx', 'lib/geneticprogram/GPGenome.cxx',
   'lib/geneticprogram/GPParser.cxx', 'lib/geneticprogram/GPPopulation.cxx',
+  'lib/support/Number.cxx', 'lib/support/Quote.cxx',
   'lib/AlignTransform.cxx', 'lib/Annotation.cxx',
   'lib/AnnotationHandler.cxx', 'lib/AromIdxSF.cxx',
   'lib/Atom.cxx', 'lib/AtomFuncs.cxx',
