@@ -63,6 +63,9 @@ public:
   // Titles
   int GetNumTitles() const { return m_titleList.size(); }
   std::vector<std::string> GetTitleList() const { return m_titleList; }
+  void SetTitle(std::size_t index, const std::string &strTitle) {
+    m_titleList[index] = strTitle;
+  }
 
   // Atoms
   int GetNumAtoms() const { return m_atomList.size(); }

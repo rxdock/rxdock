@@ -36,7 +36,7 @@ typedef SegmentMap::const_iterator SegmentMapConstIter;
 // RESOURCE HANDLING FUNCTIONS
 //
 // GetRoot - returns value of RBT_ROOT env variable
-std::string GetRoot();
+RBTDLL_EXPORT std::string GetRoot();
 // GetHome - returns value of RBT_HOME env variable
 //(or HOME if RBT_HOME is undefined)
 std::string GetHome();
@@ -45,7 +45,7 @@ RBTDLL_EXPORT std::string GetProgramName();
 // GetMetaDataPrefix - returns meta data prefix
 RBTDLL_EXPORT std::string GetMetaDataPrefix();
 // GetCopyright - returns legalese statement
-std::string GetCopyright();
+RBTDLL_EXPORT std::string GetCopyright();
 // GetProgramVersion - returns current library version
 RBTDLL_EXPORT std::string GetProgramVersion();
 // GetProduct - returns library product name

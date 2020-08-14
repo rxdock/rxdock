@@ -100,10 +100,16 @@ install_headers(
   subdir: 'rxdock/geneticprogram'
 )
 install_headers(
+  files('include/rxdock/operation/Tabularize.h',
+    'include/rxdock/operation/Transform.h'),
+  subdir: 'rxdock/operation'
+)
+install_headers(
   files('include/rxdock/support/Number.h',
     'include/rxdock/support/Quote.h'),
   subdir: 'rxdock/support'
 )
+install_headers(files('include/rxdock.h'))
 
 srcRbt = [
   'lib/geneticprogram/GPChromosome.cxx', 'lib/geneticprogram/GPFFCHK1.cxx',
@@ -111,6 +117,7 @@ srcRbt = [
   'lib/geneticprogram/GPFFHSP90.cxx', 'lib/geneticprogram/GPFFSpike.cxx',
   'lib/geneticprogram/GPFitnessFunction.cxx', 'lib/geneticprogram/GPGenome.cxx',
   'lib/geneticprogram/GPParser.cxx', 'lib/geneticprogram/GPPopulation.cxx',
+  'lib/operation/Tabularize.cxx', 'lib/operation/Transform.cxx',
   'lib/support/Number.cxx', 'lib/support/Quote.cxx',
   'lib/AlignTransform.cxx', 'lib/Annotation.cxx',
   'lib/AnnotationHandler.cxx', 'lib/AromIdxSF.cxx',
@@ -261,6 +268,17 @@ executable(
 executable(
   'rbconvgrid', 'tools/legacy/rbconvgrid.cxx', link_with : librxdock,
   dependencies : [eigen3_dep, nlohmann_json_dep], include_directories : incRbt, install : true
+)
+
+incRxCmd = include_directories('include', 'tools/rxcmd')
+executable(
+  'rxcmd',
+  ['tools/rxcmd/ParseTabularize.cxx', 'tools/rxcmd/ParseTransform.cxx',
+   'tools/rxcmd/rxcmd.cxx'],
+  link_with : librxdock,
+  dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, fmt_dep,
+                  emilk_loguru_dep],
+  include_directories : incRxCmd, install : true
 )
 
 dt_smarts_dep = dependency('dt_smarts', required : false)
