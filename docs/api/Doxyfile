@@ -827,13 +827,16 @@ INPUT                  = index.dox \
                          ../../include/rxdock \
                          ../../include/rxdock/daylight \
                          ../../include/rxdock/geneticprogram \
+                         ../../include/rxdock/operation \
                          ../../include/rxdock/support \
                          ../../lib \
                          ../../lib/daylight \
                          ../../lib/geneticprogram \
+                         ../../lib/operation \
                          ../../lib/support \
                          ../../tests \
-                         ../../tools/legacy
+                         ../../tools/legacy \
+                         ../../tools/rxcmd
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
