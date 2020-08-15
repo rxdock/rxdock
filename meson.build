@@ -100,7 +100,9 @@ install_headers(
   subdir: 'rxdock/geneticprogram'
 )
 install_headers(
-  files('include/rxdock/operation/Tabularize.h',
+  files('include/rxdock/operation/CavitySearch.h',
+    'include/rxdock/operation/Dock.h',
+    'include/rxdock/operation/Tabularize.h',
     'include/rxdock/operation/Transform.h'),
   subdir: 'rxdock/operation'
 )
@@ -117,6 +119,7 @@ srcRbt = [
   'lib/geneticprogram/GPFFHSP90.cxx', 'lib/geneticprogram/GPFFSpike.cxx',
   'lib/geneticprogram/GPFitnessFunction.cxx', 'lib/geneticprogram/GPGenome.cxx',
   'lib/geneticprogram/GPParser.cxx', 'lib/geneticprogram/GPPopulation.cxx',
+  'lib/operation/CavitySearch.cxx', 'lib/operation/Dock.cxx',
   'lib/operation/Tabularize.cxx', 'lib/operation/Transform.cxx',
   'lib/support/Number.cxx', 'lib/support/Quote.cxx',
   'lib/AlignTransform.cxx', 'lib/Annotation.cxx',
@@ -235,16 +238,6 @@ pkgc.generate(librxdock,
 
 cxxopts_dep = dependency('cxxopts', fallback : ['cxxopts', 'cxxopts_dep'])
 
-rbdock = executable(
-  'rbdock', 'tools/legacy/rbdock.cxx', link_with : librxdock,
-  dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, pcg_cpp_dep, fmt_dep, emilk_loguru_dep],
-  include_directories : incRbt, install : true
-)
-rbcavity = executable(
-  'rbcavity', 'tools/legacy/rbcavity.cxx', link_with : librxdock,
-  dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, pcg_cpp_dep],
-  include_directories : incRbt, install : true
-)
 executable(
   'rbrms', 'tools/legacy/rbrms.cxx', link_with : librxdock,
   dependencies : [eigen3_dep, nlohmann_json_dep],
@@ -271,9 +264,10 @@ executable(
 )
 
 incRxCmd = include_directories('include', 'tools/rxcmd')
-executable(
+rxcmd = executable(
   'rxcmd',
-  ['tools/rxcmd/ParseTabularize.cxx', 'tools/rxcmd/ParseTransform.cxx',
+  ['tools/rxcmd/ParseCavitySearch.cxx', 'tools/rxcmd/ParseDock.cxx',
+   'tools/rxcmd/ParseTabularize.cxx', 'tools/rxcmd/ParseTransform.cxx',
    'tools/rxcmd/rxcmd.cxx'],
   link_with : librxdock,
   dependencies : [cxxopts_dep, eigen3_dep, nlohmann_json_dep, fmt_dep,
@@ -515,7 +509,8 @@ if tests_opt
     )
     rbtHomePath = '/tests/data'
     test(
-      'rbcavity-1koc', rbcavity, args : [
+      'cavity-search-1koc', rxcmd, args : [
+        'cavity-search',
         '-r', meson.current_source_dir() + rbtHomePath + '/1koc.prm',
         '-W'
       ],
@@ -526,7 +521,8 @@ if tests_opt
       timeout : 900
     )
     test(
-      'rbcavity-1yet', rbcavity, args : [
+      'cavity-search-1yet', rxcmd, args : [
+        'cavity-search',
         '-r', meson.current_source_dir() + rbtHomePath + '/1YET.prm',
         '-W'
       ],
@@ -537,7 +533,8 @@ if tests_opt
       timeout : 900
     )
     test(
-      'rbcavity-1yet-test', rbcavity, args : [
+      'cavity-search-1yet-test', rxcmd, args : [
+        'cavity-search',
         '-r', meson.current_source_dir() + rbtHomePath + '/1YET_test.prm',
         '-W'
       ],
@@ -557,11 +554,12 @@ if tests_opt
       timeout : 900
     )
     test(
-      'rbdock-1yet-test', rbdock, args : [
+      'dock-1yet-test', rxcmd, args : [
+        'dock',
         '-r', meson.current_source_dir() + rbtHomePath + '/1YET_test.prm',
         '-i', meson.current_source_dir() + rbtHomePath + '/1YET_c.sd',
         '-p', 'dock.prm', '-n', '1', '-s', '48151623',
-        '-o', meson.current_source_dir() + rbtHomePath + '/1YET_test_out'
+        '-o', meson.current_source_dir() + rbtHomePath + '/1YET_test_out.sd'
       ],
       env : [
         'RBT_ROOT=' + meson.current_source_dir(),

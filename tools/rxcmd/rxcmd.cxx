@@ -15,6 +15,8 @@
 ///
 //===----------------------------------------------------------------------===//
 
+#include "ParseCavitySearch.h"
+#include "ParseDock.h"
 #include "ParseTabularize.h"
 #include "ParseTransform.h"
 
@@ -92,8 +94,8 @@ int main(int argc, char *argv[]) {
   fmt::print("Command line: {}\n", fmt::join(args, " "));
 
   std::map<std::string, std::function<int(int, char **)>> commandFunctions = {
-      {"dock", parseNull},          // rbdock
-      {"cavity-search", parseNull}, // rbcavity
+      {"dock", parseDock},                  // rbdock
+      {"cavity-search", parseCavitySearch}, // rbcavity
       {"grid", parseNull},   // rbcalcgrid, make_grid.csh, rbconvgrid, rbmoegrid
       {"tether", parseNull}, // sdtether
       {"rmsd", parseNull},   // rbrms, sdrmsd

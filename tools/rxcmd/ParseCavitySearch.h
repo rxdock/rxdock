@@ -1,4 +1,4 @@
-//===-- rxdock.h - RxDock public API ----------------------------*- C++ -*-===//
+//===-- ParseCavitySearch.h - Parse CLI params for CavSearch ----*- C++ -*-===//
 //
 // Part of the RxDock project, under the GNU LGPL version 3.
 // Visit https://www.rxdock.org/ for more information.
@@ -11,16 +11,17 @@
 //===----------------------------------------------------------------------===//
 ///
 /// \file
-/// The public application programming interface of RxDock.
+/// Parse command-line interface parameters for CavitySearch operation.
 ///
 //===----------------------------------------------------------------------===//
 
-#ifndef RXDOCK_PUBLIC_API_H
-#define RXDOCK_PUBLIC_API_H
+#ifndef RXDOCK_TOOLS_RXCMD_PARSECAVITYSEARCH_H
+#define RXDOCK_TOOLS_RXCMD_PARSECAVITYSEARCH_H
 
-#include "rxdock/operation/CavitySearch.h"
-#include "rxdock/operation/Dock.h"
-#include "rxdock/operation/Tabularize.h"
-#include "rxdock/operation/Transform.h"
+namespace rxdock {
 
-#endif // RXDOCK_PUBLIC_API_H
+int parseCavitySearch(int argc, char *argv[]);
+
+} // namespace rxdock
+
+#endif // RXDOCK_TOOLS_RXCMD_PARSECAVITYSEARCH_H
