@@ -24,7 +24,7 @@ class SetupPMFSF : public BaseInterSF {
 public:
   static std::string _CT;
 
-  SetupPMFSF(const std::string &strName = "SETUP_PMF");
+  SetupPMFSF(const std::string &strName = "setup-pmf");
   ~SetupPMFSF();
 
 protected:

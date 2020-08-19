@@ -26,7 +26,7 @@ using namespace rxdock;
 
 namespace rxdock {
 
-const std::string _ROOT_SF = "SCORE";
+const std::string _ROOT_SF = "rxdock.score";
 
 // Creates list of probe models
 // NOTE: MUST BE IN ORDER OF ASCENDING RADII

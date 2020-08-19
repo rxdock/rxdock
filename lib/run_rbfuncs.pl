@@ -281,8 +281,8 @@ sub get_filter_table {
 #Get the list of files ending in .filter
   @filter_list = ((glob "$pwd/*.filter"), (glob "$filter_dir/*.filter"));
   $filter_table{"1no_other_filters"} = "";
-  # $filter_table{"1threshold"} = "\tSCORE.INTER < $tmp";
-  # $filter_table{"2cavity"} = "\t\tSCORE.RESTR.CAVITY < 1 ";
+  # $filter_table{"1threshold"} = "\tscore.inter < $tmp";
+  # $filter_table{"2cavity"} = "\t\tscore.restr.cavity < 1 ";
 
 #Read each file and extract the title record
   foreach $file (@filter_list) {

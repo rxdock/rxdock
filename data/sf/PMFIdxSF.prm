@@ -10,7 +10,7 @@ VERSION $Id: //depot/dev/client3/rdock/2013.1/data/sf/PMFIdxSF.prm#2 $
 ################################################################################
 # Constant scoring function
 # Represents loss of translation, rotational entropy of ligand
-SECTION CONST
+SECTION const
 	SCORING_FUNCTION	ConstSF
 	WEIGHT			+5.4	# Free-energy weighting
 END_SECTION
@@ -18,20 +18,20 @@ END_SECTION
 ################################################################################
 # Rotational scoring function
 # Represents loss of torsional entropy of ligand
-SECTION ROT
+SECTION rot
 	SCORING_FUNCTION	RotSF
 	WEIGHT			+1.0	# Free-energy weighting
 END_SECTION
 
 ################################################################################
 # Setup PMF atom types
-SECTION SETUP_PMF
+SECTION setup-pmf
     	SCORING_FUNCTION    	SetupPMFSF
 END_SECTION
 
 ################################################################################
 # Intermolecular PMF
-SECTION PMF
+SECTION pmf
         SCORING_FUNCTION        PMFIdxSF
         SLOPE                   -3.0		# slope of the repulsive short-range linear term
         CC_CUTOFF                6.0		# count only shorter C_receptor - C_ligand interactions

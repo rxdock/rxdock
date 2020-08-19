@@ -120,91 +120,91 @@ libRbt.so (2006.1, Build901 2006/09/27)
 >  <rxdock.program.receptor>
 1YET.prm
 
->  <SCORE>
+>  <rxdock.score>
 -44.8298
 
->  <SCORE.INTER>
+>  <rxdock.score.inter>
 -23.9918
 
->  <SCORE.INTER.CONST>
+>  <rxdock.score.inter.const>
 1
 
->  <SCORE.INTER.POLAR>
+>  <rxdock.score.inter.polar>
 -2.0203
 
->  <SCORE.INTER.REPUL>
+>  <rxdock.score.inter.repul>
 0
 
->  <SCORE.INTER.ROT>
+>  <rxdock.score.inter.rot>
 5
 
->  <SCORE.INTER.VDW>
+>  <rxdock.score.inter.vdw>
 -27.5227
 
->  <SCORE.INTER.norm>
+>  <rxdock.score.inter.norm>
 -0.599794
 
->  <SCORE.INTRA>
+>  <rxdock.score.intra>
 -10.2712
 
->  <SCORE.INTRA.DIHEDRAL>
+>  <rxdock.score.intra.dihedral>
 -7.26837
 
->  <SCORE.INTRA.DIHEDRAL.0>
+>  <rxdock.score.intra.dihedral.0>
 15.3889
 
->  <SCORE.INTRA.POLAR>
+>  <rxdock.score.intra.polar>
 0
 
->  <SCORE.INTRA.POLAR.0>
+>  <rxdock.score.intra.polar.0>
 0
 
->  <SCORE.INTRA.REPUL>
+>  <rxdock.score.intra.repul>
 0
 
->  <SCORE.INTRA.REPUL.0>
+>  <rxdock.score.intra.repul.0>
 0
 
->  <SCORE.INTRA.VDW>
+>  <rxdock.score.intra.vdw>
 -6.63705
 
->  <SCORE.INTRA.VDW.0>
+>  <rxdock.score.intra.vdw.0>
 7.09596
 
->  <SCORE.INTRA.norm>
+>  <rxdock.score.intra.norm>
 -0.256781
 
->  <SCORE.RESTR>
+>  <rxdock.score.restr>
 0
 
->  <SCORE.RESTR.CAVITY>
+>  <rxdock.score.restr.cavity>
 0
 
->  <SCORE.RESTR.norm>
+>  <rxdock.score.restr.norm>
 0
 
->  <SCORE.SYSTEM>
+>  <rxdock.score.system>
 -10.5668
 
->  <SCORE.SYSTEM.CONST>
+>  <rxdock.score.system.const>
 0
 
->  <SCORE.SYSTEM.DIHEDRAL>
+>  <rxdock.score.system.dihedral>
 0.627995
 
->  <SCORE.SYSTEM.POLAR>
+>  <rxdock.score.system.polar>
 -2.86952
 
->  <SCORE.SYSTEM.VDW>
+>  <rxdock.score.system.vdw>
 -1.12445
 
->  <SCORE.SYSTEM.norm>
+>  <rxdock.score.system.norm>
 -0.26417
 
->  <SCORE.heavy>
+>  <rxdock.score.heavy>
 40
 
->  <SCORE.norm>
+>  <rxdock.score.norm>
 -1.12075
 
 $$$$

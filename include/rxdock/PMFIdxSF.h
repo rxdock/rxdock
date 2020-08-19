@@ -49,7 +49,7 @@ class PMFIdxSF : public BaseInterSF,
   RealGridPtr theSlopeGrid; // grid to store values where the plateaus starts
 
 public:
-  PMFIdxSF(const std::string &strName = "PMF"); /**< The only one constructor */
+  PMFIdxSF(const std::string &strName = "pmf"); /**< The only one constructor */
   virtual ~PMFIdxSF();                          /**< The virtual destructor */
 
   /**

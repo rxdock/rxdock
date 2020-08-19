@@ -30,7 +30,7 @@ public:
   static std::string
       _QUADRATIC; // True = quadratic penalty function; false = linear
 
-  NmrSF(const std::string &strName = "NMR");
+  NmrSF(const std::string &strName = "nmr");
   virtual ~NmrSF();
 
 protected:

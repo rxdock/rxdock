@@ -46,7 +46,8 @@ public:
   ////////////////////////////////////////
   // Public methods
   ////////////////
-  // Fully qualified name, prefixed by all ancestors (e.g. SCORE.INTER.HBOND)
+  // Fully qualified name, prefixed by all ancestors (e.g.
+  // rxdock.score.inter.hbond)
   std::string GetFullName() const;
   double GetWeight() const;
   void SetWeight(double);

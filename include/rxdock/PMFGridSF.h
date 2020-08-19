@@ -31,7 +31,7 @@ public:
   static std::string _GRID;     // filename extension (.grd)
   static std::string _SMOOTHED; // controls wether to smooth the grid values
 
-  PMFGridSF(const std::string &strName = "PMFGRID");
+  PMFGridSF(const std::string &strName = "pmf-grid");
   virtual ~PMFGridSF();
 
 protected:

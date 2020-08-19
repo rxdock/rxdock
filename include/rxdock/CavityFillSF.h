@@ -26,7 +26,7 @@ public:
   // Class type string
   static std::string _CT;
   // Parameter names
-  CavityFillSF(const std::string &strName = "CAVFILL");
+  CavityFillSF(const std::string &strName = "cavity-fill");
   virtual ~CavityFillSF();
 
 protected:

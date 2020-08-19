@@ -5,7 +5,7 @@ VERSION $Id: //depot/dev/client3/rdock/2013.1/data/sf/InterGridSF.prm#2 $
 ################################################################################
 # Constant scoring function
 # Represents loss of translation, rotational entropy of ligand
-SECTION CONST
+SECTION const
 	SCORING_FUNCTION	ConstSF
 	WEIGHT			+5.4
 END_SECTION
@@ -13,14 +13,14 @@ END_SECTION
 ################################################################################
 # Rotational scoring function
 # Represents loss of torsional entropy of ligand
-SECTION ROT
+SECTION rot
 	SCORING_FUNCTION	RotSF
 	WEIGHT			+1.0
 END_SECTION
 
 ################################################################################
 # Pseudo SFs for setting up atomic attributes for polar and lipo atoms
-SECTION SETUP_POLAR
+SECTION setup-polar
 	SCORING_FUNCTION	SetupPolarSF
 	RADIUS			5.0
 	NORM			25
@@ -31,7 +31,7 @@ END_SECTION
 
 ################################################################################
 # Hydrogen-bond scoring function (also Metal-acceptor, C.cat - acceptor)
-SECTION POLAR
+SECTION polar
 	SCORING_FUNCTION	PolarIdxSF
 	WEIGHT			3.4
 	R12FACTOR		1.0
@@ -64,7 +64,7 @@ END_SECTION
 
 ################################################################################
 # Repulsive polar scoring function (donor-donor, acceptor-acceptor, metal-donor, C.cat-donor etc)
-SECTION REPUL
+SECTION repul
 	SCORING_FUNCTION	PolarIdxSF
 	WEIGHT			5.0
 	R12FACTOR		1.0
@@ -112,7 +112,7 @@ END_SECTION
 # Each is initially disabled
 # We also load an indexed-grid version which is enabled
 #
-SECTION VDW1
+SECTION vdw1
 	SCORING_FUNCTION	VdwGridSF
 	WEIGHT			1.0
         GRID		        _vdw1.grd
@@ -120,7 +120,7 @@ SECTION VDW1
         ENABLED			FALSE
 END_SECTION
 
-SECTION VDW5
+SECTION vdw5
 	SCORING_FUNCTION	VdwGridSF
 	WEIGHT			1.0
         GRID		        _vdw5.grd
@@ -128,7 +128,7 @@ SECTION VDW5
         ENABLED			FALSE
 END_SECTION
 
-SECTION VDW
+SECTION vdw
 	SCORING_FUNCTION	VdwIdxSF
 	WEIGHT			1.0
 	USE_4_8			FALSE

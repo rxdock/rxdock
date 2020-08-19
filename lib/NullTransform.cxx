@@ -46,7 +46,7 @@ void NullTransform::Execute() {
   // Trace level 1 = just output the current conformation (presumed to be the
   // best from the previous transform) to the history file
   GetWorkSpace()->SaveHistory(true);
-  LOG_F(1, "NullTransform::Execute: SCORE = {}",
+  LOG_F(1, "NullTransform::Execute: {}score = {}", GetMetaDataPrefix(),
         GetWorkSpace()->GetSF()->Score());
   // Trace level 2 = output entire GA population to history file, unless pop
   // does not exist, in which case same as level 1

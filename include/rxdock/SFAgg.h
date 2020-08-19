@@ -36,7 +36,8 @@ public:
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RBTDLL_EXPORT SFAgg(const std::string &strName = "SCORE");
+  RBTDLL_EXPORT SFAgg(const std::string &strName = GetMetaDataPrefix() +
+                                                   "score");
   virtual ~SFAgg();
 
   ////////////////////////////////////////

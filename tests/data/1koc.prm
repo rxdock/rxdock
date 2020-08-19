@@ -16,7 +16,7 @@ SECTION MAPPER
         MAX_CAVITIES    1
 END_SECTION
 # Restraints definition
-SECTION CAVITY
+SECTION cavity
         SCORING_FUNCTION        CavityGridSF
         WEIGHT                  1.0
 END_SECTION	

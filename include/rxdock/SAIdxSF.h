@@ -27,7 +27,7 @@ namespace rxdock {
 
 class SAIdxSF : public BaseInterSF, public BaseIdxSF, public AnnotationHandler {
 public:
-  RBTDLL_EXPORT SAIdxSF(const std::string &strName = "SAIdxSF");
+  RBTDLL_EXPORT SAIdxSF(const std::string &strName = "solv");
   virtual ~SAIdxSF();
   // write score components
   virtual void ScoreMap(StringVariantMap &scoreMap) const;

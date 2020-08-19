@@ -31,7 +31,7 @@ public:
   static std::string _NOPT;
   static std::string _WRITE_ERRORS;
 
-  PharmaSF(const std::string &strName = "PHARMA");
+  PharmaSF(const std::string &strName = "pharma");
   virtual ~PharmaSF();
   // Override BaseSF::ScoreMap to provide additional raw descriptors
   virtual void ScoreMap(StringVariantMap &scoreMap) const;

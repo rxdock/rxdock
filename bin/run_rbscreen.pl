@@ -81,7 +81,7 @@ my $mol2_file;
 # thus forcing a naming convention for the restraint terms that is not mandatory in the C++ code itself
 #
 # Pharmacophore restraint file
-# SECTION PHARMA
+# SECTION pharma
 # CONSTRAINTS_FILE = explicit filename
 # OPTIONAL_FILE = explicit filename
 my $ph4_filename    = ".const"; #synchronise with RbtPharmaSF::_CONSTRAINTS_FILE
@@ -89,14 +89,14 @@ my $ph4_optfilename = "";
 my $has_ph4         = 0;
 
 # Tether restraint file
-# SECTION TETHER
+# SECTION tether
 # REFERENCE_FILE = suffix to the root receptor.prm filename
 my $tether_suffix =
   "_reference.sd";    #synchronise with RbtTetherSF::_REFERENCE_FILE
 my $has_tether = 0;
 
 # Nmr restraint file
-# SECTION NMR
+# SECTION nmr
 # FILENAME = explicit filename (not suffix)
 my $nmr_filename = "default.noe";    #synchronise with RbtTetherSF::_FILENAME
 my $has_nmr      = 0;
@@ -116,7 +116,7 @@ while (<PRMHANDLE>) {
     $has_ph4 = 1
       if ( ( $nfields > 1 )
         && ( $fields[0] eq 'SECTION' )
-        && ( $fields[1] eq 'PHARMA' ) );
+        && ( $fields[1] eq 'pharma' ) );
     $ph4_filename = "$rbthome/" . $fields[1]
       if ( ( $nfields > 1 )
         && ( $fields[0] eq 'CONSTRAINTS_FILE' )
@@ -126,7 +126,7 @@ while (<PRMHANDLE>) {
     $has_tether = 1
       if ( ( $nfields > 1 )
         && ( $fields[0] eq 'SECTION' )
-        && ( $fields[1] eq 'TETHER' ) );
+        && ( $fields[1] eq 'tether' ) );
     $tether_suffix = $fields[1]
       if ( ( $nfields > 1 )
         && ( $fields[0] eq 'REFERENCE_FILE' )
@@ -134,7 +134,7 @@ while (<PRMHANDLE>) {
     $has_nmr = 1
       if ( ( $nfields > 1 )
         && ( $fields[0] eq 'SECTION' )
-        && ( $fields[1] eq 'NMR' ) );
+        && ( $fields[1] eq 'nmr' ) );
     $nmr_filename = "$rbthome/" . $fields[1]
       if ( ( $nfields > 1 ) && ( $fields[0] eq 'FILENAME' ) && $has_nmr );
 }
@@ -204,7 +204,7 @@ if ( $mode eq "ED" ) {
     my $run = get_input( "Enter number of runs/ligand", 50 );
     $flags = $flags . " -n" . $run;
     $run--;
-    $filter = "1\nif - SCORE.NRUNS $run 0.0 -1.0,\n0\n";
+    $filter = "1\nif - rxdock.score.NRUNS $run 0.0 -1.0,\n0\n";
 }
 else {
     $HT      = 1;
@@ -248,18 +248,18 @@ else {
     for ( my $n = 0 ; $n < $nStages ; $n++ ) {
         $nr = $runs[$n] - 1;
         $filter .=
-          "if - $targets[$n] SCORE.INTER 1.0 if - SCORE.NRUNS $nr 0.0 -1.0,\n";
+          "if - $targets[$n] rxdock.score.inter 1.0 if - rxdock.score.NRUNS $nr 0.0 -1.0,\n";
     }
     if ( $nRedock > 0 ) {
         $nr = $nRedock - 1;
-        $filter .= "if - SCORE.NRUNS $nr 0.0 -1.0,\n";
+        $filter .= "if - rxdock.score.NRUNS $nr 0.0 -1.0,\n";
     }
     my %filter_table = get_filter_table( $filterDir, $redockTarget );
     my @wfilters;
     do {
         print "\nSelect filters. Only the conformations that pass all the\n",
-          "filters chosen AND have SCORE.INTER lower than ", $redockTarget,
-          "\nAND SCORE.RESTR.CAVITY < 1.0 will be written down\n";
+          "filters chosen AND have rxdock.score.inter lower than ", $redockTarget,
+          "\nAND rxdock.score.restr.cavity < 1.0 will be written down\n";
         @wfilters = get_multiple_selection( \%filter_table, "filters" );
         $isOK     = get_input( "\nIs this OK (Y/N)", "Y" );
     } until ( $isOK eq "Y" );
@@ -273,8 +273,8 @@ else {
 
     my $nwfilters = @wfilters + 2;
     $filter .= "$nwfilters\n";
-    $filter .= "- SCORE.INTER $redockTarget,\n";
-    $filter .= "- SCORE.RESTR.CAVITY 1.0,\n";
+    $filter .= "- rxdock.score.inter $redockTarget,\n";
+    $filter .= "- rxdock.score.restr.cavity 1.0,\n";
     foreach my $wfilter (@wfilters) {
         open( FF, "$filterDir/$wfilter" )
           || open( FF, "./$wfilter" )
@@ -431,10 +431,10 @@ print CLEANHANDLE "touch \${sdout}\n";
 print CLEANHANDLE "foreach file (../sd/*.sd.gz)\n";
 print CLEANHANDLE "  echo Sorting and concatenating \${file}...\n";
 print CLEANHANDLE
-  "  zcat \${file} | \${RBT_ROOT}/bin/sdsort -n -fSCORE -s >> \${sdout}\n";
+  "  zcat \${file} | \${RBT_ROOT}/bin/sdsort -n -fscore -s >> \${sdout}\n";
 print CLEANHANDLE "end\n";
 print CLEANHANDLE
-"echo Each block of consecutive records per ligand have been presorted by SCORE ";
+"echo Each block of consecutive records per ligand have been presorted by score ";
 print CLEANHANDLE "ready for filtering\n";
 print CLEANHANDLE "echo Compressing \${sdout}...\n";
 print CLEANHANDLE "gzip -9vf \${sdout}\n";

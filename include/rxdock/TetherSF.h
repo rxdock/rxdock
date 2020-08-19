@@ -26,7 +26,7 @@ public:
   // Parameter names
   static std::string _REFERENCE_FILE;
 
-  TetherSF(const std::string &strName = "TETHER");
+  TetherSF(const std::string &strName = "tether");
   virtual ~TetherSF();
 
 protected:

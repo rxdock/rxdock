@@ -35,7 +35,7 @@ public:
 
   ////////////////////////////////////////
   // Constructors/destructors
-  RBTDLL_EXPORT TransformAgg(const std::string &strName = "DOCK");
+  RBTDLL_EXPORT TransformAgg(const std::string &strName = "dock");
   virtual ~TransformAgg();
 
   ////////////////////////////////////////

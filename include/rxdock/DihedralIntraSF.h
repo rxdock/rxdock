@@ -25,7 +25,7 @@ public:
   static std::string _CT;
   // Parameter names
 
-  DihedralIntraSF(const std::string &strName = "DIHEDRAL");
+  DihedralIntraSF(const std::string &strName = "dihedral");
   virtual ~DihedralIntraSF();
 
 protected:

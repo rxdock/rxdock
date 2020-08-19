@@ -11,7 +11,7 @@ VERSION $Id: //depot/dev/client3/rdock/2013.1/data/sf/SolvIdxSF.prm#3 $
 # solvent binding penalty = N(enabled solvent) * SOLVENT_PENALTY * WEIGHT
 # 0.37 * 5.4 = 2.0 kJ/mol, which corresponds to GOLD Chemscore penalty
 # Verdonk et al, J. Med. Chem. 2005 (48) 6504-6515
-SECTION CONST
+SECTION const
         SCORING_FUNCTION        ConstSF
         SOLVENT_PENALTY         0.37
         WEIGHT                  +5.4
@@ -20,14 +20,14 @@ END_SECTION
 ################################################################################
 # Rotational scoring function
 # Represents loss of torsional entropy of ligand
-SECTION ROT
+SECTION rot
 	SCORING_FUNCTION	RotSF
 	WEIGHT			+1.0
 END_SECTION
 
 ################################################################################
 # Pseudo SFs for setting up atomic attributes for polar and lipo atoms
-SECTION SETUP_POLAR
+SECTION setup-polar
 	SCORING_FUNCTION	SetupPolarSF
 	RADIUS			5.0
 	NORM			25
@@ -38,7 +38,7 @@ END_SECTION
 
 ################################################################################
 # Hydrogen-bond scoring function (also Metal-acceptor, C.cat - acceptor)
-SECTION POLAR
+SECTION polar
 	SCORING_FUNCTION	PolarIdxSF
 	WEIGHT			5.0
 	R12FACTOR		1.0
@@ -71,7 +71,7 @@ END_SECTION
 
 ################################################################################
 # Van der Waals scoring function
-SECTION VDW
+SECTION vdw
 	SCORING_FUNCTION	VdwIdxSF
 	WEIGHT			1.5
 	USE_4_8			FALSE
@@ -83,7 +83,7 @@ END_SECTION
 
 ################################################################################
 # Desolvation scoring function
-SECTION SOLV
+SECTION solv
         SCORING_FUNCTION        SAIdxSF
 	WEIGHT			0.5
 	GRIDSTEP		0.5

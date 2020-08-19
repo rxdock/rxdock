@@ -31,7 +31,7 @@ public:
       vt = LIG;
     else if (s.find("SITE_") == 0)
       vt = SITE;
-    else if (s.find("SCORE") == 0)
+    else if (s.find(GetMetaDataPrefix() + "score") == 0)
       vt = SCORE;
     else
       vt = CTE;

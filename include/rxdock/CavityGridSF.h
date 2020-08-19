@@ -44,7 +44,7 @@ public:
   static std::string
       _QUADRATIC; // True = quadratic penalty function; false = linear
 
-  CavityGridSF(const std::string &strName = "CAVITY");
+  CavityGridSF(const std::string &strName = "cavity");
   virtual ~CavityGridSF();
 
 protected:

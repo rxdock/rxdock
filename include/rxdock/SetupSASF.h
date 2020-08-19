@@ -30,7 +30,7 @@ class SetupSASF : public BaseInterSF {
 public:
   static std::string _CT;
 
-  SetupSASF(const std::string &strName = "SETUP_SA");
+  SetupSASF(const std::string &strName = "setup-sa");
   ~SetupSASF();
 
 protected:

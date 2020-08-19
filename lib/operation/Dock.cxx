@@ -37,8 +37,8 @@
 namespace rxdock {
 namespace operation {
 
-static const std::string _ROOT_SF = "SCORE";
-static const std::string _RESTRAINT_SF = "RESTR";
+static const std::string _ROOT_SF = "rxdock.score";
+static const std::string _RESTRAINT_SF = "restr";
 static const std::string _ROOT_TRANSFORM = "DOCK";
 
 } // namespace operation
@@ -72,24 +72,24 @@ int rxdock::operation::dock(
     fmt::print("Receptor: {} {}\n", spRecepPrmSource->GetFileName(),
                spRecepPrmSource->GetTitle());
 
-    // Create the scoring function from the SCORE section of the docking
-    // protocol prm file Format is: SECTION SCORE
-    //    INTER    InterSF.prm
-    //    INTRA IntraSF.prm
+    // Create the scoring function from the rxdock.score section of the docking
+    // protocol prm file Format is: SECTION rxdock.score
+    //    inter    InterSF.prm
+    //    intra IntraSF.prm
     // END_SECTION
     //
     // Notes:
-    // Section name must be SCORE. This is also the name of the root SF
+    // Section name must be rxdock.score. This is also the name of the root SF
     // aggregate An aggregate is created for each parameter in the section.
-    // Parameter name becomes the name of the subaggregate (e.g. SCORE.INTER)
-    // Parameter value is the file name for the subaggregate definition
-    // Default directory is $RBT_ROOT/data/sf
+    // Parameter name becomes the name of the subaggregate (e.g.
+    // rxdock.score.inter) Parameter value is the file name for the subaggregate
+    // definition Default directory is $RBT_ROOT/data/sf
     SFFactoryPtr spSFFactory(
         new SFFactory());               // Factory class for scoring functions
     SFAggPtr spSF(new SFAgg(_ROOT_SF)); // Root SF aggregate
     spParamSource->SetSection(_ROOT_SF);
     std::vector<std::string> sfList(spParamSource->GetParameterList());
-    // Loop over all parameters in the SCORE section
+    // Loop over all parameters in the rxdock.score section
     for (std::vector<std::string>::const_iterator sfIter = sfList.begin();
          sfIter != sfList.end(); sfIter++) {
       // sfFile = file name for scoring function subaggregate
@@ -185,26 +185,32 @@ int rxdock::operation::dock(
         fmt::print("Lower target intermolecular score = {}\n", dTargetScore);
         if (!bDockingRuns) // -t<TS> only
         {
-          strFilter << "0 1 - SCORE.INTER " << dTargetScore << std::endl;
+          strFilter << fmt::format("0 1 - {}score.inter ", GetMetaDataPrefix())
+                    << dTargetScore << std::endl;
         } else             // -t<TS> -n<N> need to check if -cont present
                            // for all other cases it doesn't matter
             if (bContinue) // -t<TS> -n<N> -cont
         {
-          strFilter << "1 if - SCORE.NRUNS " << (nDockingRuns - 1)
-                    << " 0.0 -1.0,\n1 - SCORE.INTER " << dTargetScore
-                    << std::endl;
+          strFilter << fmt::format("1 if - {}score.NRUNS ", GetMetaDataPrefix())
+                    << (nDockingRuns - 1)
+                    << fmt::format(" 0.0 -1.0,\n1 - {}score.inter ",
+                                   GetMetaDataPrefix())
+                    << dTargetScore << std::endl;
         } else // -t<TS> -n<N>
         {
-          strFilter << "1 if - " << dTargetScore << " SCORE.INTER 0.0 "
-                    << "if - SCORE.NRUNS " << (nDockingRuns - 1)
-                    << " 0.0 -1.0,\n1 - SCORE.INTER " << dTargetScore
-                    << std::endl;
+          strFilter << "1 if - " << dTargetScore
+                    << fmt::format(" {}score.inter 0.0 ", GetMetaDataPrefix())
+                    << fmt::format("if - {}score.NRUNS ", GetMetaDataPrefix())
+                    << (nDockingRuns - 1)
+                    << fmt::format(" 0.0 -1.0,\n1 - {}score.inter ",
+                                   GetMetaDataPrefix())
+                    << dTargetScore << std::endl;
         }
       }                      // no target score, no filter
       else if (bDockingRuns) // -n<N>
       {
-        strFilter << "1 if - SCORE.NRUNS " << (nDockingRuns - 1)
-                  << " 0.0 -1.0,\n0";
+        strFilter << fmt::format("1 if - {}score.NRUNS ", GetMetaDataPrefix())
+                  << (nDockingRuns - 1) << " 0.0 -1.0,\n0";
       } else // no -t no -n
       {
         strFilter << "0 0\n";

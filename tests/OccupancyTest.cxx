@@ -53,9 +53,9 @@ void OccupancyTest::TearDown() {
 // 1) Check that the total desolvation score for receptor / ligand / (disabled)
 // solvent matches the total score with no solvent present
 TEST_F(OccupancyTest, SolvationSF) {
-  BaseSF *sfAgg = new SFAgg("SCORE");
-  BaseSF *sfInter = new SFAgg("INTER");
-  BaseSF *sfSolv = new SAIdxSF("SOLV");
+  BaseSF *sfAgg = new SFAgg(GetMetaDataPrefix() + "score");
+  BaseSF *sfInter = new SFAgg("inter");
+  BaseSF *sfSolv = new SAIdxSF("solv");
   sfAgg->Add(sfInter);
   sfInter->Add(sfSolv);
   m_workSpace->SetSF(sfAgg);
@@ -71,10 +71,10 @@ TEST_F(OccupancyTest, SolvationSF) {
 // 2) Check that the total polar score for receptor / ligand / (disabled)
 // solvent matches the total score with no solvent present
 TEST_F(OccupancyTest, PolarSF) {
-  BaseSF *sfAgg = new SFAgg("SCORE");
-  BaseSF *sfInter = new SFAgg("INTER");
-  BaseSF *sfSetupPolar = new SetupPolarSF("SETUP");
-  BaseSF *sfPolar = new PolarIdxSF("POLAR");
+  BaseSF *sfAgg = new SFAgg(GetMetaDataPrefix() + "score");
+  BaseSF *sfInter = new SFAgg("inter");
+  BaseSF *sfSetupPolar = new SetupPolarSF("setup");
+  BaseSF *sfPolar = new PolarIdxSF("polar");
   sfAgg->Add(sfInter);
   // For this term we have to set the interaction range and increment manually
   // These values match those in the standard scoring function
@@ -97,9 +97,9 @@ TEST_F(OccupancyTest, PolarSF) {
 // 3) Check that the total vdW score for receptor / ligand / (disabled) solvent
 // matches the total score with no solvent present
 TEST_F(OccupancyTest, VdwSF) {
-  BaseSF *sfAgg = new SFAgg("SCORE");
-  BaseSF *sfInter = new SFAgg("INTER");
-  BaseSF *sfVdw = new VdwIdxSF("VDW");
+  BaseSF *sfAgg = new SFAgg(GetMetaDataPrefix() + "score");
+  BaseSF *sfInter = new SFAgg("inter");
+  BaseSF *sfVdw = new VdwIdxSF("vdw");
   sfAgg->Add(sfInter);
   sfInter->Add(sfVdw);
   m_workSpace->SetSF(sfAgg);
@@ -113,10 +113,10 @@ TEST_F(OccupancyTest, VdwSF) {
 }
 
 TEST_F(OccupancyTest, VdwSFSolventModes) {
-  BaseSF *sfAgg = new SFAgg("SCORE");
-  BaseSF *sfInter = new SFAgg("INTER");
-  BaseSF *sfSystem = new SFAgg("SYSTEM");
-  BaseSF *sfVdw = new VdwIdxSF("VDW");
+  BaseSF *sfAgg = new SFAgg(GetMetaDataPrefix() + "score");
+  BaseSF *sfInter = new SFAgg("inter");
+  BaseSF *sfSystem = new SFAgg("system");
+  BaseSF *sfVdw = new VdwIdxSF("vdw");
   sfAgg->Add(sfInter);
   sfAgg->Add(sfSystem);
   sfInter->Add(sfVdw);

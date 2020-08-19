@@ -38,7 +38,7 @@ public:
   // DM 12 Jun 2002 - score threshold used for counting aromatic interactions
   static std::string _THRESHOLD;
 
-  AromIdxSF(const std::string &strName = "AROM");
+  AromIdxSF(const std::string &strName = "arom");
   virtual ~AromIdxSF();
 
   // Override BaseSF::ScoreMap to provide additional raw descriptors
