@@ -83,7 +83,7 @@ int rxdock::operation::transform(
     auto dataFieldCmp = [&sortDataField](ModelPtr a, ModelPtr b) {
       Variant va = a->GetDataValue(sortDataField);
       Variant vb = b->GetDataValue(sortDataField);
-      // FIXME will work for SCORE, what about the rest?
+      // FIXME will work for rxdock.score, what about the rest?
       return va.GetDouble() < vb.GetDouble();
     };
 

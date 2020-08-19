@@ -162,9 +162,11 @@ int main(int argc, char *argv[]) {
           rms = std::min(rms, rms1);
         }
         spModel->SetDataValue("RMSD", rms);
-        double score = spModel->GetDataValue("SCORE");
-        double scoreInter = spModel->GetDataValue("SCORE.INTER");
-        double scoreIntra = spModel->GetDataValue("SCORE.INTRA");
+        double score = spModel->GetDataValue(GetMetaDataPrefix() + "score");
+        double scoreInter =
+            spModel->GetDataValue(GetMetaDataPrefix() + "score.inter");
+        double scoreIntra =
+            spModel->GetDataValue(GetMetaDataPrefix() + "score.intra");
         scoreVec.push_back(score);
         rmsVec.push_back(rms);
 

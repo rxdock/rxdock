@@ -1,14 +1,14 @@
-+ * log - + SCORE.INTRA.VDW SCORE.INTRA.VDW.0 0.9913
-    exp * SCORE.INTER.AROM.narom
-        * exp SCORE.INTER.POLAR.nhbd
++ * log - + rxdock.score.intra.vdw rxdock.score.intra.vdw.0 0.9913
+    exp * rxdock.score.inter.AROM.narom
+        * exp rxdock.score.inter.polar.nhbd
           LIG_POS_CHG
 - * 684
-    if SCORE.INTER.REPUL.nhba
+    if rxdock.score.inter.repul.nhba
        LIG_NEG_CHG
-       / SCORE.INTER.VDW.nrep
+       / rxdock.score.inter.vdw.nrep
            SITE_PERC_AROMATOMS
-  if + - SCORE.INTER.POLAR.nhbd
-         + SCORE.INTRA.REPUL SCORE.INTRA.REPUL.0
+  if + - rxdock.score.inter.polar.nhbd
+         + rxdock.score.intra.repul rxdock.score.intra.repul.0
        LIG_TOT_CHG
      SITE_NLIPOC
      - exp SITE_NEG_CHG

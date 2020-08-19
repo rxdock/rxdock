@@ -76,8 +76,8 @@ void SFAgg::ScoreMap(StringVariantMap &scoreMap) const {
     if (m_nNonHLigandAtoms > 0) {
       double norm_s = rs / m_nNonHLigandAtoms;
       scoreMap[name + ".norm"] = norm_s;
-      // Only record the number of heavy atoms for the root aggregate (SCORE)
-      // root = has no parent
+      // Only record the number of heavy atoms for the root aggregate
+      // (rxdock.score) root = has no parent
       if (!GetParentSF()) {
         scoreMap[name + ".heavy"] = m_nNonHLigandAtoms;
       }

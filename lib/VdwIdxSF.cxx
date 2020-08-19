@@ -76,13 +76,13 @@ void VdwIdxSF::ScoreMap(StringVariantMap &scoreMap) const {
     AddToParentMapEntry(scoreMap, rs);
 
     // Now deal with the system raw scores which need to be stored in
-    // SCORE.INTER.VDW
+    // rxdock.score.inter.vdw
     double system_rs =
         ReceptorScore() + SolventScore() + ReceptorSolventScore();
     if (system_rs != 0.0) {
       std::string systemName = BaseSF::_SYSTEM_SF + "." + GetName();
       scoreMap[systemName] = system_rs;
-      // increment the SCORE.SYSTEM total
+      // increment the rxdock.score.system total
       double parentScore = scoreMap[BaseSF::_SYSTEM_SF];
       parentScore += system_rs * GetWeight();
       scoreMap[BaseSF::_SYSTEM_SF] = parentScore;

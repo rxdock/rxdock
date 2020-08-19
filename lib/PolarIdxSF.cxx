@@ -73,13 +73,13 @@ void PolarIdxSF::ScoreMap(StringVariantMap &scoreMap) const {
     AddToParentMapEntry(scoreMap, rs);
 
     // Now deal with the system raw scores which need to be stored in
-    // SCORE.INTER.POLAR
+    // rxdock.score.inter.polar
     double system_rs =
         ReceptorScore() + SolventScore() + ReceptorSolventScore();
     if (system_rs != 0.0) {
       std::string systemName = BaseSF::_SYSTEM_SF + "." + GetName();
       scoreMap[systemName] = system_rs;
-      // increment the parent SCORE.SYSTEM total with the weighted score
+      // increment the parent rxdock.score.system total with the weighted score
       double parentScore = scoreMap[BaseSF::_SYSTEM_SF];
       parentScore += system_rs * GetWeight();
       scoreMap[BaseSF::_SYSTEM_SF] = parentScore;

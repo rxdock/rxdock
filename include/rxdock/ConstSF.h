@@ -27,7 +27,7 @@ public:
   static std::string _CT;
   static std::string _SOLVENT_PENALTY;
 
-  ConstSF(const std::string &strName = "CONST");
+  ConstSF(const std::string &strName = "const");
   virtual ~ConstSF();
 
   virtual void ScoreMap(StringVariantMap &scoreMap) const;

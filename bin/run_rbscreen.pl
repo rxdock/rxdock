@@ -204,7 +204,7 @@ if ( $mode eq "ED" ) {
     my $run = get_input( "Enter number of runs/ligand", 50 );
     $flags = $flags . " -n" . $run;
     $run--;
-    $filter = "1\nif - SCORE.NRUNS $run 0.0 -1.0,\n0\n";
+    $filter = "1\nif - rxdock.score.NRUNS $run 0.0 -1.0,\n0\n";
 }
 else {
     $HT      = 1;
@@ -248,18 +248,18 @@ else {
     for ( my $n = 0 ; $n < $nStages ; $n++ ) {
         $nr = $runs[$n] - 1;
         $filter .=
-          "if - $targets[$n] SCORE.INTER 1.0 if - SCORE.NRUNS $nr 0.0 -1.0,\n";
+          "if - $targets[$n] rxdock.score.inter 1.0 if - rxdock.score.NRUNS $nr 0.0 -1.0,\n";
     }
     if ( $nRedock > 0 ) {
         $nr = $nRedock - 1;
-        $filter .= "if - SCORE.NRUNS $nr 0.0 -1.0,\n";
+        $filter .= "if - rxdock.score.NRUNS $nr 0.0 -1.0,\n";
     }
     my %filter_table = get_filter_table( $filterDir, $redockTarget );
     my @wfilters;
     do {
         print "\nSelect filters. Only the conformations that pass all the\n",
-          "filters chosen AND have SCORE.INTER lower than ", $redockTarget,
-          "\nAND SCORE.RESTR.CAVITY < 1.0 will be written down\n";
+          "filters chosen AND have rxdock.score.inter lower than ", $redockTarget,
+          "\nAND rxdock.score.restr.cavity < 1.0 will be written down\n";
         @wfilters = get_multiple_selection( \%filter_table, "filters" );
         $isOK     = get_input( "\nIs this OK (Y/N)", "Y" );
     } until ( $isOK eq "Y" );
@@ -273,8 +273,8 @@ else {
 
     my $nwfilters = @wfilters + 2;
     $filter .= "$nwfilters\n";
-    $filter .= "- SCORE.INTER $redockTarget,\n";
-    $filter .= "- SCORE.RESTR.CAVITY 1.0,\n";
+    $filter .= "- rxdock.score.inter $redockTarget,\n";
+    $filter .= "- rxdock.score.restr.cavity 1.0,\n";
     foreach my $wfilter (@wfilters) {
         open( FF, "$filterDir/$wfilter" )
           || open( FF, "./$wfilter" )

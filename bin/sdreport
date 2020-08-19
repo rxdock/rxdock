@@ -21,14 +21,14 @@ use SDRecord;
 
 # Default field names and headings for rDock v4.00 scores
 my @defaultFields =
-  ( 'SCORE', 'SCORE.INTER', 'SCORE.INTRA', 'SCORE.RESTR', 'SCORE.INTER.VDW' );
+  ( 'rxdock.score', 'rxdock.score.inter', 'rxdock.score.intra', 'rxdock.score.restr', 'rxdock.score.inter.vdw' );
 my @defaultHeadings = ( 'TOTAL', 'INTER', 'INTRA', 'RESTR', 'VDW' );
 
 # Default field names and headings for normalised scores (score / #ligand heavy atoms)
 my @defaultNormFields = (
-    'SCORE.norm',       'SCORE.INTER.norm',
-    'SCORE.INTRA.norm', 'SCORE.RESTR.norm',
-    'SCORE.heavy'
+    'rxdock.score.norm',       'rxdock.score.inter.norm',
+    'rxdock.score.intra.norm', 'rxdock.score.restr.norm',
+    'rxdock.score.heavy'
 );
 my @defaultNormHeadings = ( 'TOTALn', 'INTERn', 'INTRAn', 'RESTRn', '#heavy' );
 

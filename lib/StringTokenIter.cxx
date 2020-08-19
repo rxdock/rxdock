@@ -70,7 +70,7 @@ TokenPtr StringTokenIter::translate(std::string s) {
     return new Token(Commands(Commands::EXP));
   if (s == "and")
     return new Token(Commands(Commands::AND));
-  if ((std::string::npos != s.find("SCORE")) ||
+  if ((std::string::npos != s.find(GetMetaDataPrefix() + "score")) ||
       (std::string::npos != s.find("SITE")) ||
       (std::string::npos != s.find("LIG"))) {
     contextp->Assign(s, 0.0);

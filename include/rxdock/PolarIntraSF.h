@@ -29,7 +29,7 @@ public:
   // Parameter names
   static std::string _ATTR;
 
-  PolarIntraSF(const std::string &strName = "POLAR");
+  PolarIntraSF(const std::string &strName = "polar");
   virtual ~PolarIntraSF();
 
 protected:

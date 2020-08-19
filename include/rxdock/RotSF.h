@@ -30,7 +30,7 @@ public:
   // Boolean controlling whether to include bonds to OH in  rotable bond count
   static std::string _INCOH;
 
-  RotSF(const std::string &strName = "ROT");
+  RotSF(const std::string &strName = "rot");
   virtual ~RotSF();
 
 protected:

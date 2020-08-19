@@ -36,7 +36,7 @@ public:
 
   RBTDLL_EXPORT static std::string &GetIncr();
 
-  RBTDLL_EXPORT PolarIdxSF(const std::string &strName = "POLAR");
+  RBTDLL_EXPORT PolarIdxSF(const std::string &strName = "polar");
   virtual ~PolarIdxSF();
 
   // Override BaseSF::ScoreMap to provide additional raw descriptors

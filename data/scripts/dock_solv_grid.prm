@@ -1,19 +1,19 @@
 RBT_PARAMETER_FILE_V1.00
 TITLE Free docking (with SOLVATION, grid-based VDW)
 
-SECTION SCORE
-    	INTER    SolvGridSF.prm
-    	INTRA    IntraSF.prm
-	SYSTEM   TargetSF.prm
+SECTION rxdock.score
+    	inter    SolvGridSF.prm
+    	intra    IntraSF.prm
+	system   TargetSF.prm
 END_SECTION
 
 SECTION SETSLOPE_1
 	TRANSFORM           		NullTransform
-	WEIGHT@SCORE.RESTR.CAVITY	5.0	# Dock with a high penalty for leaving the cavity
-	WEIGHT@SCORE.INTRA.DIHEDRAL	0.1	# Gradually ramp up dihedral weight from 0.1->0.5
-        ENABLED@SCORE.INTER.VDW1	TRUE	# Enable vdW grid with ECUT=1
-        ENABLED@SCORE.INTER.VDW5       	FALSE	# Disable vdW grid with ECUT=5
-        ENABLED@SCORE.INTER.VDW        	FALSE	# Disable indexed vdW
+	WEIGHT@rxdock.score.restr.cavity	5.0	# Dock with a high penalty for leaving the cavity
+	WEIGHT@rxdock.score.intra.dihedral	0.1	# Gradually ramp up dihedral weight from 0.1->0.5
+        ENABLED@rxdock.score.inter.vdw1	TRUE	# Enable vdW grid with ECUT=1
+        ENABLED@rxdock.score.inter.vdw5       	FALSE	# Disable vdW grid with ECUT=5
+        ENABLED@rxdock.score.inter.vdw        	FALSE	# Disable indexed vdW
 END_SECTION
 
 SECTION RANDOM_POP
@@ -32,9 +32,9 @@ END_SECTION
 
 SECTION SETSLOPE_3
 	TRANSFORM           		NullTransform
-	WEIGHT@SCORE.INTRA.DIHEDRAL	0.2
-        ENABLED@SCORE.INTER.VDW1       	FALSE	# Disable vdW grid with ECUT=1
-        ENABLED@SCORE.INTER.VDW5       	TRUE	# Enable vdW grid with ECUT=5
+	WEIGHT@rxdock.score.intra.dihedral	0.2
+        ENABLED@rxdock.score.inter.vdw1       	FALSE	# Disable vdW grid with ECUT=1
+        ENABLED@rxdock.score.inter.vdw5       	TRUE	# Enable vdW grid with ECUT=5
 END_SECTION
 
 SECTION GA_SLOPE3
@@ -47,10 +47,10 @@ END_SECTION
 
 SECTION SETSLOPE_5
 	TRANSFORM           		NullTransform
-	WEIGHT@SCORE.INTRA.DIHEDRAL	0.3
-        ENABLED@SCORE.INTER.VDW5       	FALSE	# Disable vdW grid with ECUT=5
-        ENABLED@SCORE.INTER.VDW		TRUE	# Enable indexed vdW
-	ECUT@SCORE.INTER.VDW		25.0
+	WEIGHT@rxdock.score.intra.dihedral	0.3
+        ENABLED@rxdock.score.inter.vdw5       	FALSE	# Disable vdW grid with ECUT=5
+        ENABLED@rxdock.score.inter.vdw		TRUE	# Enable indexed vdW
+	ECUT@rxdock.score.inter.vdw		25.0
 END_SECTION
 
 SECTION GA_SLOPE5
@@ -63,8 +63,8 @@ END_SECTION
 
 SECTION SETSLOPE_10
 	TRANSFORM           		NullTransform
-	WEIGHT@SCORE.INTRA.DIHEDRAL	0.5	# Final dihedral weight matches SF file
-	ECUT@SCORE.INTER.VDW		120.0	# Final ECUT matches SF file
+	WEIGHT@rxdock.score.intra.dihedral	0.5	# Final dihedral weight matches SF file
+	ECUT@rxdock.score.inter.vdw		120.0	# Final ECUT matches SF file
 END_SECTION
 
 SECTION MC_10K
@@ -91,6 +91,6 @@ END_SECTION
 
 SECTION FINAL
 	TRANSFORM           		NullTransform
-	WEIGHT@SCORE.RESTR.CAVITY	1.0	# revert to standard cavity penalty
+	WEIGHT@rxdock.score.restr.cavity	1.0	# revert to standard cavity penalty
 END_SECTION
 

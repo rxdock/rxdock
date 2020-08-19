@@ -124,14 +124,14 @@ void Filter::SetupLigand() {
   ((StringContextPtr)contextp)->UpdateLigs(m_spLigand);
   filteridx = 0;
   nruns = 1;
-  contextp->Assign("SCORE.NRUNS", nruns);
+  contextp->Assign(GetMetaDataPrefix() + "score.NRUNS", nruns);
 }
 
 // Called by Update when either model has changed
 void Filter::SetupScore() {
   ((StringContextPtr)contextp)
       ->UpdateScores(GetWorkSpace()->GetSF(), GetWorkSpace()->GetModel(1));
-  // write down SCORE.NRUNS to make sure is getting the
+  // write down rxdock.score.NRUNS to make sure is getting the
   // right value
   //  std::exit(1);
 }
@@ -157,7 +157,7 @@ bool Filter::Terminate() {
         filteridx++;
         if (filteridx < nTermFilters) {
           nruns = 0; // it should not stop because of NRUNS
-          contextp->Assign("SCORE.NRUNS", nruns);
+          contextp->Assign(GetMetaDataPrefix() + "score.NRUNS", nruns);
           terminationFilters[filteridx]->Accept(visitor2);
           val = terminationFilters[filteridx]->GetValue();
           LOG_F(INFO, "Go to next phase");
@@ -169,7 +169,7 @@ bool Filter::Terminate() {
                       // more phases
       } else {
         nruns = 1;
-        contextp->Assign("SCORE.NRUNS", nruns);
+        contextp->Assign(GetMetaDataPrefix() + "score.NRUNS", nruns);
         bTerm = false;
       }
     } else if (val == CONT) {
@@ -179,7 +179,7 @@ bool Filter::Terminate() {
         bTerm = true;
       } else {
         nruns++;
-        contextp->Assign("SCORE.NRUNS", nruns);
+        contextp->Assign(GetMetaDataPrefix() + "score.NRUNS", nruns);
         LOG_F(INFO, "Continue in this phase");
         bTerm = false;
       }

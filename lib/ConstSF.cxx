@@ -44,11 +44,11 @@ void ConstSF::ScoreMap(StringVariantMap &scoreMap) const {
     AddToParentMapEntry(scoreMap, rs);
 
     // Now deal with the system raw score which needs to be stored in
-    // SCORE.SYSTEM.CONST
+    // rxdock.score.system.const
     double system_rs = SystemScore();
     std::string systemName = BaseSF::_SYSTEM_SF + "." + GetName();
     scoreMap[systemName] = system_rs;
-    // increment the SCORE.SYSTEM total
+    // increment the rxdock.score.system total
     double parentScore = scoreMap[BaseSF::_SYSTEM_SF];
     parentScore += system_rs * GetWeight();
     scoreMap[BaseSF::_SYSTEM_SF] = parentScore;

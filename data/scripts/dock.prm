@@ -1,21 +1,21 @@
 RBT_PARAMETER_FILE_V1.00
 TITLE Free docking (indexed VDW)
 
-SECTION SCORE
-	INTER	 InterIdxSF.prm
-    	INTRA    IntraSF.prm
-	SYSTEM   TargetSF.prm
+SECTION rxdock.score
+	inter	 InterIdxSF.prm
+    	intra    IntraSF.prm
+	system   TargetSF.prm
 END_SECTION
 
 SECTION SETSLOPE_1
 	TRANSFORM           		NullTransform
-	WEIGHT@SCORE.RESTR.CAVITY	5.0	# Dock with a high penalty for leaving the cavity
-	WEIGHT@SCORE.INTRA.DIHEDRAL	0.1	# Gradually ramp up dihedral weight from 0.1->0.5
-	ECUT@SCORE.INTER.VDW		1.0	# Gradually ramp up energy cutoff for switching to quadratic
-	USE_4_8@SCORE.INTER.VDW		TRUE	# Start docking with a 4-8 vdW potential
-	DA1MAX@SCORE.INTER.POLAR	180.0	# Broader angular dependence
-	DA2MAX@SCORE.INTER.POLAR	180.0	# Broader angular dependence
-	DR12MAX@SCORE.INTER.POLAR	1.5	# Broader distance range
+	WEIGHT@rxdock.score.restr.cavity	5.0	# Dock with a high penalty for leaving the cavity
+	WEIGHT@rxdock.score.intra.dihedral	0.1	# Gradually ramp up dihedral weight from 0.1->0.5
+	ECUT@rxdock.score.inter.vdw		1.0	# Gradually ramp up energy cutoff for switching to quadratic
+	USE_4_8@rxdock.score.inter.vdw		TRUE	# Start docking with a 4-8 vdW potential
+	DA1MAX@rxdock.score.inter.polar	180.0	# Broader angular dependence
+	DA2MAX@rxdock.score.inter.polar	180.0	# Broader angular dependence
+	DR12MAX@rxdock.score.inter.polar	1.5	# Broader distance range
 END_SECTION
 
 SECTION RANDOM_POP
@@ -34,11 +34,11 @@ END_SECTION
 
 SECTION SETSLOPE_3
 	TRANSFORM           		NullTransform
-	WEIGHT@SCORE.INTRA.DIHEDRAL	0.2
-	ECUT@SCORE.INTER.VDW		5.0
-	DA1MAX@SCORE.INTER.POLAR	140.0
-	DA2MAX@SCORE.INTER.POLAR	140.0
-	DR12MAX@SCORE.INTER.POLAR	1.2
+	WEIGHT@rxdock.score.intra.dihedral	0.2
+	ECUT@rxdock.score.inter.vdw		5.0
+	DA1MAX@rxdock.score.inter.polar	140.0
+	DA2MAX@rxdock.score.inter.polar	140.0
+	DR12MAX@rxdock.score.inter.polar	1.2
 END_SECTION
 
 SECTION GA_SLOPE3
@@ -51,12 +51,12 @@ END_SECTION
 
 SECTION SETSLOPE_5
 	TRANSFORM           		NullTransform
-	WEIGHT@SCORE.INTRA.DIHEDRAL	0.3
-	ECUT@SCORE.INTER.VDW		25.0
-	USE_4_8@SCORE.INTER.VDW		FALSE	# Now switch to a convential 6-12 for final GA, MC, minimisation
-	DA1MAX@SCORE.INTER.POLAR	120.0
-	DA2MAX@SCORE.INTER.POLAR	120.0
-	DR12MAX@SCORE.INTER.POLAR	0.9
+	WEIGHT@rxdock.score.intra.dihedral	0.3
+	ECUT@rxdock.score.inter.vdw		25.0
+	USE_4_8@rxdock.score.inter.vdw		FALSE	# Now switch to a convential 6-12 for final GA, MC, minimisation
+	DA1MAX@rxdock.score.inter.polar	120.0
+	DA2MAX@rxdock.score.inter.polar	120.0
+	DR12MAX@rxdock.score.inter.polar	0.9
 END_SECTION
 
 SECTION GA_SLOPE5
@@ -69,11 +69,11 @@ END_SECTION
 
 SECTION SETSLOPE_10
 	TRANSFORM           		NullTransform
-	WEIGHT@SCORE.INTRA.DIHEDRAL	0.5	# Final dihedral weight matches SF file
-	ECUT@SCORE.INTER.VDW		120.0	# Final ECUT matches SF file
-	DA1MAX@SCORE.INTER.POLAR	80.0
-	DA2MAX@SCORE.INTER.POLAR	100.0
-	DR12MAX@SCORE.INTER.POLAR	0.6
+	WEIGHT@rxdock.score.intra.dihedral	0.5	# Final dihedral weight matches SF file
+	ECUT@rxdock.score.inter.vdw		120.0	# Final ECUT matches SF file
+	DA1MAX@rxdock.score.inter.polar	80.0
+	DA2MAX@rxdock.score.inter.polar	100.0
+	DR12MAX@rxdock.score.inter.polar	0.6
 END_SECTION
 
 SECTION MC_10K
@@ -100,5 +100,5 @@ END_SECTION
 
 SECTION FINAL
 	TRANSFORM           		NullTransform
-	WEIGHT@SCORE.RESTR.CAVITY	1.0	# revert to standard cavity penalty
+	WEIGHT@rxdock.score.restr.cavity	1.0	# revert to standard cavity penalty
 END_SECTION

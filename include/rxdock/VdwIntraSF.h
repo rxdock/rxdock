@@ -25,7 +25,7 @@ public:
   // Class type string
   static std::string _CT;
 
-  RBTDLL_EXPORT VdwIntraSF(const std::string &strName = "VDW");
+  RBTDLL_EXPORT VdwIntraSF(const std::string &strName = "vdw");
   virtual ~VdwIntraSF();
 
   // Request Handling method

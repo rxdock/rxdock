@@ -540,7 +540,7 @@ void SAIdxSF::ScoreMap(StringVariantMap &scoreMap) const {
     std::string intraName = BaseSF::_INTRA_SF + "." + GetName();
     scoreMap[intraName] = intra_rs;
     scoreMap[intraName + ".lig_0"] = m_lig_0;
-    // increment the SCORE.INTRA total
+    // increment the rxdock.score.intra total
     double parentScore = scoreMap[BaseSF::_INTRA_SF];
     parentScore += intra_rs * GetWeight();
     scoreMap[BaseSF::_INTRA_SF] = parentScore;
@@ -553,7 +553,7 @@ void SAIdxSF::ScoreMap(StringVariantMap &scoreMap) const {
         (m_site_free - m_site_0) + (m_solvent_free - m_solvent_0);
     std::string systemName = BaseSF::_SYSTEM_SF + "." + GetName();
     scoreMap[systemName] = system_rs;
-    // increment the SCORE.SYSTEM total
+    // increment the rxdock.score.system total
     parentScore = scoreMap[BaseSF::_SYSTEM_SF];
     parentScore += system_rs * GetWeight();
     scoreMap[BaseSF::_SYSTEM_SF] = parentScore;

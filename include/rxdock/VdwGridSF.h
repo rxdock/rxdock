@@ -31,7 +31,7 @@ public:
   static std::string _GRID;     // Suffix for grid filename
   static std::string _SMOOTHED; // Controls whether to smooth the grid values
 
-  VdwGridSF(const std::string &strName = "VDW");
+  VdwGridSF(const std::string &strName = "vdw");
   virtual ~VdwGridSF();
 
 protected:

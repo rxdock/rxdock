@@ -21,8 +21,8 @@ using namespace rxdock;
 std::string BaseSF::_CT("BaseSF");
 std::string BaseSF::_WEIGHT("WEIGHT");
 std::string BaseSF::_RANGE("RANGE");
-std::string BaseSF::_SYSTEM_SF("SCORE.SYSTEM");
-std::string BaseSF::_INTRA_SF("SCORE.INTRA");
+std::string BaseSF::_SYSTEM_SF("rxdock.score.system");
+std::string BaseSF::_INTRA_SF("rxdock.score.intra");
 
 ////////////////////////////////////////
 // Constructors/destructors
@@ -53,7 +53,8 @@ BaseSF::~BaseSF() {
 // Public methods
 ////////////////
 
-// Fully qualified name, prefixed by all ancestors (e.g. SCORE.INTER.HBOND)
+// Fully qualified name, prefixed by all ancestors (e.g.
+// rxdock.score.inter.hbond)
 std::string BaseSF::GetFullName() const {
   // If we have a parent, prefix our short name with our parents full name,
   // else full name is just our short name
@@ -86,9 +87,9 @@ void BaseSF::ScoreMap(StringVariantMap &scoreMap) const {
     // 2) We add the weighted score to the parent aggregate
     // entry. This gives us the opportunity to override
     // ScoreMap in order to divert scores away from their
-    // natural parent entry. e.g. SCORE.INTER.VDW could
+    // natural parent entry. e.g. rxdock.score.inter.vdw could
     // record intra-receptor and intra-solvent contributions
-    // under SCORE.SYSTEM.VDW
+    // under rxdock.score.system.vdw
     AddToParentMapEntry(scoreMap, rs);
   }
 }
