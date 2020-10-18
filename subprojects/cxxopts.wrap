@@ -1,10 +1,10 @@
 [wrap-file]
-directory = cxxopts-2.2.0
+directory = cxxopts-2.2.1
 
-source_url = https://github.com/jarro2783/cxxopts/archive/v2.2.0.tar.gz
-source_filename = cxxopts-2.2.0.tar.gz
-source_hash = 447dbfc2361fce9742c5d1c9cfb25731c977b405f9085a738fbd608626da8a4d
+source_url = https://github.com/jarro2783/cxxopts/archive/v2.2.1.tar.gz
+source_filename = cxxopts-2.2.1.tar.gz
+source_hash = 984aa3c8917d649b14d7f6277104ce38dd142ce378a9198ec926f03302399681
 
-patch_url = https://wrapdb.mesonbuild.com/v1/projects/cxxopts/2.2.0/1/get_zip
-patch_filename = cxxopts-2.2.0-1-wrap.zip
-patch_hash = 13ca3a2fc3510d979a25c245b563e8babff55e7e85e8c4abc5a884c1cb70555f
+patch_url = https://wrapdb.mesonbuild.com/v1/projects/cxxopts/2.2.1/1/get_zip
+patch_filename = cxxopts-2.2.1-1-wrap.zip
+patch_hash = 7b5b00456496a05769eef1b194d06d6784ba1695548c9af8e02a36e9f9c908e1
