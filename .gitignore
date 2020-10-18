@@ -1,0 +1,10 @@
+builddir*
+subprojects/cxxopts-*
+subprojects/dirent-*
+subprojects/eigen-*
+subprojects/fmt-*
+subprojects/googletest-release-*
+subprojects/loguru-*
+subprojects/nlohmann_json-*
+subprojects/pcg-cpp-*
+subprojects/packagecache
