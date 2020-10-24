@@ -152,12 +152,12 @@ int rxdock::parseDock(int argc, char *argv[]) {
       nSeed = result["s"].as<std::size_t>();
     }
 
-    operation::dock(strLigandMdlFile, strOutputMdlFile, bOutputCrd,
-                    strOutputCrdFile, bOutputHistory,
-                    strOutputHistoryFilePrefix, strReceptorPrmFile,
-                    strParamFile, bFilter, strFilterFile, bDockingRuns,
-                    nDockingRuns, bPosIonise, bNegIonise, bExplH, bTarget,
-                    dTargetScore, bContinue, bSeed, nSeed);
+    return operation::dock(strLigandMdlFile, strOutputMdlFile, bOutputCrd,
+                           strOutputCrdFile, bOutputHistory,
+                           strOutputHistoryFilePrefix, strReceptorPrmFile,
+                           strParamFile, bFilter, strFilterFile, bDockingRuns,
+                           nDockingRuns, bPosIonise, bNegIonise, bExplH,
+                           bTarget, dTargetScore, bContinue, bSeed, nSeed);
 
   } catch (const cxxopts::OptionException &e) {
     fmt::print("Error parsing options: {}\n", e.what());

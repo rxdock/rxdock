@@ -91,10 +91,10 @@ int rxdock::parseCavitySearch(int argc, char *argv[]) {
     bool printSiteDescriptors = result.count("s");
     double border = result["b"].as<double>();
 
-    operation::cavitySearch(strReceptorPrmFile, readDockingSite,
-                            writeDockingSite, writeMOEGrid, writeInsightII,
-                            writePsfCrd, listAtoms, listDistance,
-                            printSiteDescriptors, border);
+    return operation::cavitySearch(strReceptorPrmFile, readDockingSite,
+                                   writeDockingSite, writeMOEGrid,
+                                   writeInsightII, writePsfCrd, listAtoms,
+                                   listDistance, printSiteDescriptors, border);
 
   } catch (const cxxopts::OptionException &e) {
     fmt::print("Error parsing options: {}\n", e.what());
