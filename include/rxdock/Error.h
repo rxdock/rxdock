@@ -71,16 +71,7 @@ public:
   // Use to create unspecified rxdock Errors
   Error(const std::string &strFile, int nLine,
         const std::string &strMessage = "")
-      : m_strName(IDS_ERROR), m_strFile(strFile), m_strMessage(strMessage),
-        m_nLine(nLine), m_bOK(false) {
-    std::ostringstream oss;
-    oss << Name();
-    if (!File().empty())
-      oss << " at " << File() << ", line " << Line();
-    if (!Message().empty())
-      oss << std::endl << Message();
-    m_strWhat = oss.str();
-  }
+      : Error(IDS_ERROR, strFile, nLine, strMessage) {}
 
   // Default destructor
   virtual ~Error() {}
@@ -107,7 +98,16 @@ protected:
   Error(const std::string &strName, const std::string &strFile, int nLine,
         const std::string &strMessage = "")
       : m_strName(strName), m_strFile(strFile), m_strMessage(strMessage),
-        m_nLine(nLine), m_bOK(false) {}
+        m_nLine(nLine), m_bOK(false) {
+    std::ostringstream oss;
+    oss << Name();
+    if (!File().empty())
+      oss << " at " << File() << ", line " << Line();
+    if (!Message().empty())
+      oss << std::endl << Message();
+    oss.flush();
+    m_strWhat = oss.str();
+  }
 
   ///////////////////////
   // Private data
