@@ -37,7 +37,7 @@ public:
   ////////////////
 
   // Creates a single site mapper object of named class
-  virtual SiteMapper *Create(const std::string &strMapperClass,
+  virtual SiteMapper *Create(const std::string &_strMapperClass,
                              const std::string &strName);
 
   // Creates a single site mapper object whose class is defined
