@@ -67,8 +67,13 @@ SFFactory::~SFFactory() {}
 ////////////////////////////////////////
 // Public methods
 ////////////////
-BaseSF *SFFactory::Create(const std::string &strSFClass,
+BaseSF *SFFactory::Create(const std::string &_strSFClass,
                           const std::string &strName) {
+  std::string strSFClass = _strSFClass;
+  // compatibility with old format Rbt*
+  if (strSFClass.substr(0, 3) == "Rbt")
+    strSFClass = _strSFClass.substr(3, std::string::npos);
+
   // Precalculated-grid scoring functions
   if (strSFClass == VdwGridSF::_CT)
     return new VdwGridSF(strName);

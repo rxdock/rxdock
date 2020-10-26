@@ -31,8 +31,13 @@ SiteMapperFactory::~SiteMapperFactory() {}
 // Public methods
 ////////////////
 // Creates a single site mapper object of named class
-SiteMapper *SiteMapperFactory::Create(const std::string &strMapperClass,
+SiteMapper *SiteMapperFactory::Create(const std::string &_strMapperClass,
                                       const std::string &strName) {
+  std::string strMapperClass = _strMapperClass;
+  // compatibility with old format Rbt*
+  if (strMapperClass.substr(0, 3) == "Rbt")
+    strMapperClass = _strMapperClass.substr(3, std::string::npos);
+
   if (strMapperClass == SphereSiteMapper::_CT)
     return new SphereSiteMapper(strName);
   if (strMapperClass == LigandSiteMapper::_CT)

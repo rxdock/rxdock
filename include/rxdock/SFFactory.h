@@ -40,7 +40,7 @@ public:
 
   // Creates a single scoring function object of type strSFClass, and name
   // strName e.g. strSFClass = HBondIntnSF
-  virtual BaseSF *Create(const std::string &strSFClass,
+  virtual BaseSF *Create(const std::string &_strSFClass,
                          const std::string &strName);
 
   // Creates an aggregate scoring function from a parameter file source
