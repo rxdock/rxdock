@@ -28,6 +28,7 @@ ElementFileSource::ElementFileSource(const std::string &fileName)
     : BaseFileSource(fileName), m_dHBondRadiusIncr(0.0),
       m_dImplicitRadiusIncr(0.0) {
   _RBTOBJECTCOUNTER_CONSTR_("ElementFileSource");
+  m_inputFileName = fileName;
 }
 
 // Destructor
@@ -139,70 +140,49 @@ double ElementFileSource::GetImplicitRadiusIncr() {
 // Private methods
 // Pure virtual in BaseFileSource - needs to be defined here
 void ElementFileSource::Parse() {
-  const std::string strKey = "RBT_ELEMENT_FILE_V1.01";
-  const std::string strTitleKey = "TITLE ";
-  const std::string strVersionKey = "VERSION ";
-  const std::string strElementKey = "ELEMENT";
-  const std::string strHBondRadiusKey = "HBOND_RADIUS_INCREMENT";
-  const std::string strImplicitRadiusKey = "IMPLICIT_RADIUS_INCREMENT";
-
   // Only parse if we haven't already done so
   if (!m_bParsedOK) {
+    const std::string typeKey = "media-type";
+    const std::string expectedTypeValue =
+        "application/vnd.rxdock.elemental-data";
+
     ClearElementDataCache(); // Clear current cache
-    Read();                  // Read the file
+    std::ifstream inputFile(m_inputFileName);
+    json elementsData;
+    inputFile >> elementsData;
+    inputFile.close();
+    // Read();                  // Read the file
 
     try {
       FileRecListIter fileIter = m_lineRecs.begin();
       FileRecListIter fileEnd = m_lineRecs.end();
 
-      //////////////////////////////////////////////////////////
-      // 1. Check for RBT string on line 1
-      if ((*fileIter).find(strKey) != 0)
-        throw FileParseError(_WHERE_, "Missing " + strKey + " string in " +
-                                          GetFileName());
+      // Check the file type
+      std::string actualTypeValue;
+      elementsData.at(typeKey).get_to(actualTypeValue);
+      if (actualTypeValue != expectedTypeValue)
+        throw FileParseError(_WHERE_, "Wrong value for " + typeKey + " in " +
+                                          GetFileName() + ", expected " +
+                                          expectedTypeValue);
 
-      //////////////////////////////////////////////////////////
-      // 2. Parse the rest of file
-      while (++fileIter != fileEnd) {
-        // Ignore blank lines and comment lines
-        if (((*fileIter).length() == 0) || ((*fileIter).at(0) == '#')) {
-          continue;
-        }
-        // Check for Title record
-        else if ((*fileIter).find(strTitleKey) == 0) {
-          m_strTitle = *fileIter;
-          m_strTitle.erase(0, strTitleKey.length());
-        }
-        // Check for Version record
-        else if ((*fileIter).find(strVersionKey) == 0) {
-          m_strVersion = *fileIter;
-          m_strVersion.erase(0, strVersionKey.length());
-        }
-        // Check for HBond radius increment
-        else if ((*fileIter).find(strHBondRadiusKey) == 0) {
-          std::string strDummy;
-          std::istringstream istr((*fileIter).c_str());
-          istr >> strDummy >> m_dHBondRadiusIncr;
-        }
-        // Check for Implicit radius increment
-        else if ((*fileIter).find(strImplicitRadiusKey) == 0) {
-          std::string strDummy;
-          std::istringstream istr((*fileIter).c_str());
-          istr >> strDummy >> m_dImplicitRadiusIncr;
-        }
-        // Check for element record
-        else if ((*fileIter).find(strElementKey) == 0) {
-          ElementData elemData;
-          std::string strDummy;
-          std::istringstream istr((*fileIter).c_str());
-          istr >> strDummy >> elemData.atomicNo >> elemData.element >>
-              elemData.minVal >> elemData.maxVal >> elemData.commonVal >>
-              elemData.mass >> elemData.vdwRadius;
-          // Store the data in two maps, one indexed by element name, the other
-          // by atomic number
-          m_elementNameMap[elemData.element] = elemData;
-          m_atomicNumberMap[elemData.atomicNo] = elemData;
-        }
+      // Load title
+      elementsData.at("title").get_to(m_strTitle);
+
+      // Load version
+      elementsData.at("version").get_to(m_strVersion);
+
+      // Load H-bond radius increment
+      elementsData.at("h-bond-radius-increment").get_to(m_dHBondRadiusIncr);
+
+      // Load implicit radius increment
+      elementsData.at("implicit-radius-increment")
+          .get_to(m_dImplicitRadiusIncr);
+
+      // Load elements
+      for (auto &elemData : elementsData.at("elements")) {
+        ElementData elem(elemData);
+        m_elementNameMap[elem.element] = elem;
+        m_atomicNumberMap[elem.atomicNo] = elem;
       }
       //////////////////////////////////////////////////////////
       // If we get this far everything is OK

@@ -42,7 +42,7 @@ PsfFileSource::PsfFileSource(const std::string &fileName,
       new ParameterFileSource(GetDataFileName("data/sf", "IonicAtoms.prm")));
   // Open an Element data source
   m_spElementData = ElementFileSourcePtr(
-      new ElementFileSource(GetDataFileName("data", "Elements.dat")));
+      new ElementFileSource(GetDataFileName("data", "elements.json")));
   _RBTOBJECTCOUNTER_CONSTR_("PsfFileSource");
 }
 

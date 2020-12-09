@@ -18,6 +18,10 @@
 
 #include "rxdock/BaseFileSource.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // Simple struct for holding the element data
@@ -26,6 +30,25 @@ public:
   ElementData()
       : atomicNo(0), element(""), minVal(0), maxVal(0), commonVal(0), mass(0.0),
         vdwRadius(0.0) {}
+  ElementData(json j) { j.get_to(*this); }
+
+  friend void to_json(json &j, const ElementData &e) {
+    j = json{{"atomic-number", e.atomicNo}, {"element-name", e.element},
+             {"minimum-value", e.minVal},   {"maximum-value", e.maxVal},
+             {"common-value", e.commonVal}, {"atomic-mass", e.mass},
+             {"vdw-radius", e.vdwRadius}};
+  }
+
+  friend void from_json(const json &j, ElementData &e) {
+    j.at("atomic-number").get_to(e.atomicNo);
+    j.at("element-name").get_to(e.element);
+    j.at("minimum-value").get_to(e.minVal);
+    j.at("maximum-value").get_to(e.maxVal);
+    j.at("common-value").get_to(e.commonVal);
+    j.at("atomic-mass").get_to(e.mass);
+    j.at("vdw-radius").get_to(e.vdwRadius);
+  }
+
   int atomicNo;
   std::string element;
   int minVal;
@@ -94,6 +117,7 @@ protected:
 
 private:
   // Private data
+  std::string m_inputFileName;
   std::string m_strTitle;
   std::string m_strVersion;
   double m_dHBondRadiusIncr;    // Increment to add to vdW radius for H-bonding

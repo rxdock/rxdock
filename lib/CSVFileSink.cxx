@@ -27,7 +27,7 @@ CSVFileSink::CSVFileSink(const std::string &fileName, ModelPtr spModel,
       m_nDataFields(nDataFields) {
   SetAppend(true);
   m_spElementData = ElementFileSourcePtr(
-      new ElementFileSource(GetDataFileName("data", "Elements.dat")));
+      new ElementFileSource(GetDataFileName("data", "elements.json")));
   _RBTOBJECTCOUNTER_CONSTR_("CSVFileSink");
 }
 

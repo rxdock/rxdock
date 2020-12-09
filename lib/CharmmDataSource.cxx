@@ -27,7 +27,7 @@ using namespace rxdock;
 CharmmDataSource::CharmmDataSource(const std::string &strMassesFile) {
   // Need element data source to convert element names to atomic numbers
   ElementFileSourcePtr spElementData(
-      new ElementFileSource(GetDataFileName("data", "Elements.dat")));
+      new ElementFileSource(GetDataFileName("data", "elements.json")));
 
   // Initialize m_atomTypes, m_atomicNumber and m_hybridState from masses.rtf
   CharmmTypesFileSourcePtr spTypesFile(
