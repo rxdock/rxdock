@@ -300,7 +300,7 @@ if dt_smarts_dep.found() and dt_smiles_dep.found()
 endif
 
 install_data([
-    'data/cnx.rtf', 'data/masses.rtf', 'data/Elements.dat',
+    'data/cnx.rtf', 'data/masses.rtf', 'data/elements.json',
     'data/top_all22_prot_na.inp'
   ],
   install_dir : get_option('datadir') + '/' + meson.project_name().to_lower()

@@ -1,0 +1,947 @@
+{
+  "media-type": "application/vnd.rxdock.elemental-data",
+  "title": "RiboTargets elemental data file",
+  "version": "0.1.0",
+  "_comment_h-bond-radius-increment": "Hydrogen-bond donor radius increment, only really used for hydrogen (so gives radius of 1.1 - 0.6 = 0.5)",
+  "h-bond-radius-increment": -0.6,
+  "_comment_implicit-radius-increment": "Implicit hydrogen radius increment, only used for carbon and maybe nitrogen (so implicit carbon radius is 1.55 + 0.3 = 1.85)",
+  "implicit-radius-increment": 0.3,
+  "elements": [
+    {
+      "atomic-number": 0,
+      "element-name": "DU",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 0,
+      "vdw-radius": 1.1
+    },
+    {
+      "atomic-number": 1,
+      "element-name": "H",
+      "minimum-value": 1,
+      "maximum-value": 1,
+      "common-value": 1,
+      "atomic-mass": 1.008,
+      "vdw-radius": 1.1
+    },
+    {
+      "atomic-number": 2,
+      "element-name": "He",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 4.003,
+      "vdw-radius": 2.2
+    },
+    {
+      "atomic-number": 3,
+      "element-name": "Li",
+      "minimum-value": -1,
+      "maximum-value": 1,
+      "common-value": -1,
+      "atomic-mass": 6.94,
+      "vdw-radius": 1.2
+    },
+    {
+      "atomic-number": 4,
+      "element-name": "Be",
+      "minimum-value": -2,
+      "maximum-value": 2,
+      "common-value": -2,
+      "atomic-mass": 9.012,
+      "vdw-radius": 0.63
+    },
+    {
+      "atomic-number": 5,
+      "element-name": "B",
+      "minimum-value": 3,
+      "maximum-value": 5,
+      "common-value": 3,
+      "atomic-mass": 10.81,
+      "vdw-radius": 1.55
+    },
+    {
+      "atomic-number": 6,
+      "element-name": "C",
+      "minimum-value": 4,
+      "maximum-value": 4,
+      "common-value": 4,
+      "atomic-mass": 12.011,
+      "vdw-radius": 1.55
+    },
+    {
+      "atomic-number": 7,
+      "element-name": "N",
+      "minimum-value": 3,
+      "maximum-value": 3,
+      "common-value": 3,
+      "atomic-mass": 14.007,
+      "vdw-radius": 1.4
+    },
+    {
+      "atomic-number": 8,
+      "element-name": "O",
+      "minimum-value": 2,
+      "maximum-value": 2,
+      "common-value": 2,
+      "atomic-mass": 16,
+      "vdw-radius": 1.35
+    },
+    {
+      "atomic-number": 9,
+      "element-name": "F",
+      "minimum-value": 1,
+      "maximum-value": 1,
+      "common-value": 1,
+      "atomic-mass": 18.998,
+      "vdw-radius": 1.3
+    },
+    {
+      "atomic-number": 10,
+      "element-name": "Ne",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 20.17,
+      "vdw-radius": 2.02
+    },
+    {
+      "atomic-number": 11,
+      "element-name": "Na",
+      "minimum-value": -1,
+      "maximum-value": 1,
+      "common-value": -1,
+      "atomic-mass": 22.99,
+      "vdw-radius": 1.2
+    },
+    {
+      "atomic-number": 12,
+      "element-name": "Mg",
+      "minimum-value": -2,
+      "maximum-value": 2,
+      "common-value": -2,
+      "atomic-mass": 24.305,
+      "vdw-radius": 0.74
+    },
+    {
+      "atomic-number": 13,
+      "element-name": "Al",
+      "minimum-value": -3,
+      "maximum-value": 3,
+      "common-value": -3,
+      "atomic-mass": 26.982,
+      "vdw-radius": 1.2
+    },
+    {
+      "atomic-number": 14,
+      "element-name": "Si",
+      "minimum-value": 4,
+      "maximum-value": 4,
+      "common-value": 4,
+      "atomic-mass": 28.086,
+      "vdw-radius": 1.2
+    },
+    {
+      "atomic-number": 15,
+      "element-name": "P",
+      "minimum-value": 3,
+      "maximum-value": 5,
+      "common-value": 3,
+      "atomic-mass": 30.974,
+      "vdw-radius": 1.88
+    },
+    {
+      "atomic-number": 16,
+      "element-name": "S",
+      "minimum-value": 2,
+      "maximum-value": 6,
+      "common-value": 2,
+      "atomic-mass": 32.06,
+      "vdw-radius": 1.81
+    },
+    {
+      "atomic-number": 17,
+      "element-name": "Cl",
+      "minimum-value": 1,
+      "maximum-value": 7,
+      "common-value": 1,
+      "atomic-mass": 35.453,
+      "vdw-radius": 1.75
+    },
+    {
+      "atomic-number": 18,
+      "element-name": "Ar",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 39.948,
+      "vdw-radius": 2.77
+    },
+    {
+      "atomic-number": 19,
+      "element-name": "K",
+      "minimum-value": -1,
+      "maximum-value": 1,
+      "common-value": -1,
+      "atomic-mass": 39.102,
+      "vdw-radius": 1.2
+    },
+    {
+      "atomic-number": 20,
+      "element-name": "Ca",
+      "minimum-value": -2,
+      "maximum-value": 2,
+      "common-value": -2,
+      "atomic-mass": 40.08,
+      "vdw-radius": 1.09
+    },
+    {
+      "atomic-number": 21,
+      "element-name": "Sc",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 44.956,
+      "vdw-radius": 1.32
+    },
+    {
+      "atomic-number": 22,
+      "element-name": "Ti",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 47.88,
+      "vdw-radius": 1.95
+    },
+    {
+      "atomic-number": 23,
+      "element-name": "V",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 50.04,
+      "vdw-radius": 1.06
+    },
+    {
+      "atomic-number": 24,
+      "element-name": "Cr",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 51.996,
+      "vdw-radius": 1.13
+    },
+    {
+      "atomic-number": 25,
+      "element-name": "Mn",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 54.938,
+      "vdw-radius": 0.63
+    },
+    {
+      "atomic-number": 26,
+      "element-name": "Fe",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 55.847,
+      "vdw-radius": 0.71
+    },
+    {
+      "atomic-number": 27,
+      "element-name": "Co",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 58.933,
+      "vdw-radius": 1.13
+    },
+    {
+      "atomic-number": 28,
+      "element-name": "Ni",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 58.71,
+      "vdw-radius": 1.24
+    },
+    {
+      "atomic-number": 29,
+      "element-name": "Cu",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 63.546,
+      "vdw-radius": 1.15
+    },
+    {
+      "atomic-number": 30,
+      "element-name": "Zn",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 65.38,
+      "vdw-radius": 0.7
+    },
+    {
+      "atomic-number": 31,
+      "element-name": "Ga",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 69.72,
+      "vdw-radius": 1.55
+    },
+    {
+      "atomic-number": 32,
+      "element-name": "Ge",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 72.59,
+      "vdw-radius": 2.72
+    },
+    {
+      "atomic-number": 33,
+      "element-name": "As",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 74.922,
+      "vdw-radius": 0.83
+    },
+    {
+      "atomic-number": 34,
+      "element-name": "Se",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 78.96,
+      "vdw-radius": 0.9
+    },
+    {
+      "atomic-number": 35,
+      "element-name": "Br",
+      "minimum-value": 1,
+      "maximum-value": 7,
+      "common-value": 1,
+      "atomic-mass": 79.904,
+      "vdw-radius": 1.95
+    },
+    {
+      "atomic-number": 36,
+      "element-name": "Kr",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 83.8,
+      "vdw-radius": 1.9
+    },
+    {
+      "atomic-number": 37,
+      "element-name": "Rb",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 85.467,
+      "vdw-radius": 2.65
+    },
+    {
+      "atomic-number": 38,
+      "element-name": "Sr",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 87.62,
+      "vdw-radius": 2.02
+    },
+    {
+      "atomic-number": 39,
+      "element-name": "Y",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 88.806,
+      "vdw-radius": 1.61
+    },
+    {
+      "atomic-number": 40,
+      "element-name": "Zr",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 91.22,
+      "vdw-radius": 1.42
+    },
+    {
+      "atomic-number": 41,
+      "element-name": "Nb",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 92.906,
+      "vdw-radius": 1.33
+    },
+    {
+      "atomic-number": 42,
+      "element-name": "Mo",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 95.94,
+      "vdw-radius": 1.75
+    },
+    {
+      "atomic-number": 43,
+      "element-name": "Tc",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 98.91,
+      "vdw-radius": 1.8
+    },
+    {
+      "atomic-number": 44,
+      "element-name": "Ru",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 101.07,
+      "vdw-radius": 1.2
+    },
+    {
+      "atomic-number": 45,
+      "element-name": "Rh",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 102.906,
+      "vdw-radius": 1.22
+    },
+    {
+      "atomic-number": 46,
+      "element-name": "Pd",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 106.4,
+      "vdw-radius": 1.44
+    },
+    {
+      "atomic-number": 47,
+      "element-name": "Ag",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 107.868,
+      "vdw-radius": 1.55
+    },
+    {
+      "atomic-number": 48,
+      "element-name": "Cd",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 112.4,
+      "vdw-radius": 1.75
+    },
+    {
+      "atomic-number": 49,
+      "element-name": "In",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 114.82,
+      "vdw-radius": 1.46
+    },
+    {
+      "atomic-number": 50,
+      "element-name": "Sn",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 118.69,
+      "vdw-radius": 1.67
+    },
+    {
+      "atomic-number": 51,
+      "element-name": "Sb",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 121.75,
+      "vdw-radius": 1.12
+    },
+    {
+      "atomic-number": 52,
+      "element-name": "Te",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 127.6,
+      "vdw-radius": 1.26
+    },
+    {
+      "atomic-number": 53,
+      "element-name": "I",
+      "minimum-value": 1,
+      "maximum-value": 7,
+      "common-value": 1,
+      "atomic-mass": 126.905,
+      "vdw-radius": 2.15
+    },
+    {
+      "atomic-number": 54,
+      "element-name": "Xe",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 131.3,
+      "vdw-radius": 2.1
+    },
+    {
+      "atomic-number": 55,
+      "element-name": "Cs",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 132.905,
+      "vdw-radius": 3.01
+    },
+    {
+      "atomic-number": 56,
+      "element-name": "Ba",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 137.34,
+      "vdw-radius": 2.41
+    },
+    {
+      "atomic-number": 57,
+      "element-name": "La",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 138.905,
+      "vdw-radius": 1.83
+    },
+    {
+      "atomic-number": 58,
+      "element-name": "Ce",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 140.12,
+      "vdw-radius": 1.86
+    },
+    {
+      "atomic-number": 59,
+      "element-name": "Pr",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 140.908,
+      "vdw-radius": 1.62
+    },
+    {
+      "atomic-number": 60,
+      "element-name": "Nd",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 144.24,
+      "vdw-radius": 1.79
+    },
+    {
+      "atomic-number": 61,
+      "element-name": "Pm",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 145,
+      "vdw-radius": 1.76
+    },
+    {
+      "atomic-number": 62,
+      "element-name": "Sm",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 150.4,
+      "vdw-radius": 1.74
+    },
+    {
+      "atomic-number": 63,
+      "element-name": "Eu",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 151.96,
+      "vdw-radius": 1.96
+    },
+    {
+      "atomic-number": 64,
+      "element-name": "Gd",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 157.25,
+      "vdw-radius": 1.69
+    },
+    {
+      "atomic-number": 65,
+      "element-name": "Tb",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 158.925,
+      "vdw-radius": 1.66
+    },
+    {
+      "atomic-number": 66,
+      "element-name": "Dy",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 162.5,
+      "vdw-radius": 1.63
+    },
+    {
+      "atomic-number": 67,
+      "element-name": "Ho",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 164.93,
+      "vdw-radius": 1.61
+    },
+    {
+      "atomic-number": 68,
+      "element-name": "Er",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 167.26,
+      "vdw-radius": 1.59
+    },
+    {
+      "atomic-number": 69,
+      "element-name": "Tm",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 168.934,
+      "vdw-radius": 1.57
+    },
+    {
+      "atomic-number": 70,
+      "element-name": "Yb",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 173.04,
+      "vdw-radius": 1.54
+    },
+    {
+      "atomic-number": 71,
+      "element-name": "Lu",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 174.97,
+      "vdw-radius": 1.53
+    },
+    {
+      "atomic-number": 72,
+      "element-name": "Hf",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 178.49,
+      "vdw-radius": 1.4
+    },
+    {
+      "atomic-number": 73,
+      "element-name": "Ta",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 180.85,
+      "vdw-radius": 1.22
+    },
+    {
+      "atomic-number": 74,
+      "element-name": "W",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 183.85,
+      "vdw-radius": 1.26
+    },
+    {
+      "atomic-number": 75,
+      "element-name": "Re",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 186.2,
+      "vdw-radius": 1.3
+    },
+    {
+      "atomic-number": 76,
+      "element-name": "Os",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 190.2,
+      "vdw-radius": 1.58
+    },
+    {
+      "atomic-number": 77,
+      "element-name": "Ir",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 192.22,
+      "vdw-radius": 1.22
+    },
+    {
+      "atomic-number": 78,
+      "element-name": "Pt",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 195.09,
+      "vdw-radius": 1.55
+    },
+    {
+      "atomic-number": 79,
+      "element-name": "Au",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 196.967,
+      "vdw-radius": 1.45
+    },
+    {
+      "atomic-number": 80,
+      "element-name": "Hg",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 200.59,
+      "vdw-radius": 1.98
+    },
+    {
+      "atomic-number": 81,
+      "element-name": "Tl",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 204.37,
+      "vdw-radius": 1.71
+    },
+    {
+      "atomic-number": 82,
+      "element-name": "Pb",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 207.2,
+      "vdw-radius": 2.16
+    },
+    {
+      "atomic-number": 83,
+      "element-name": "Bi",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 208.981,
+      "vdw-radius": 1.73
+    },
+    {
+      "atomic-number": 84,
+      "element-name": "Po",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 209,
+      "vdw-radius": 1.21
+    },
+    {
+      "atomic-number": 85,
+      "element-name": "At",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 210,
+      "vdw-radius": 1.12
+    },
+    {
+      "atomic-number": 86,
+      "element-name": "Rn",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 222,
+      "vdw-radius": 2.3
+    },
+    {
+      "atomic-number": 87,
+      "element-name": "Fr",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 223,
+      "vdw-radius": 3.24
+    },
+    {
+      "atomic-number": 88,
+      "element-name": "Ra",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 226,
+      "vdw-radius": 2.57
+    },
+    {
+      "atomic-number": 89,
+      "element-name": "Ac",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 227,
+      "vdw-radius": 2.12
+    },
+    {
+      "atomic-number": 90,
+      "element-name": "Th",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 232.038,
+      "vdw-radius": 1.84
+    },
+    {
+      "atomic-number": 91,
+      "element-name": "Pa",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 231.036,
+      "vdw-radius": 1.6
+    },
+    {
+      "atomic-number": 92,
+      "element-name": "U",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 238.029,
+      "vdw-radius": 1.75
+    },
+    {
+      "atomic-number": 93,
+      "element-name": "Np",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 237.048,
+      "vdw-radius": 1.71
+    },
+    {
+      "atomic-number": 94,
+      "element-name": "Pu",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 244,
+      "vdw-radius": 1.67
+    },
+    {
+      "atomic-number": 95,
+      "element-name": "Am",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 243,
+      "vdw-radius": 1.66
+    },
+    {
+      "atomic-number": 96,
+      "element-name": "Cm",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 248,
+      "vdw-radius": 1.65
+    },
+    {
+      "atomic-number": 97,
+      "element-name": "Bk",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 247,
+      "vdw-radius": 1.64
+    },
+    {
+      "atomic-number": 98,
+      "element-name": "Cf",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 251,
+      "vdw-radius": 1.63
+    },
+    {
+      "atomic-number": 99,
+      "element-name": "Es",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 254,
+      "vdw-radius": 1.62
+    },
+    {
+      "atomic-number": 100,
+      "element-name": "Fm",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 257,
+      "vdw-radius": 1.61
+    },
+    {
+      "atomic-number": 101,
+      "element-name": "Md",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 256,
+      "vdw-radius": 1.6
+    },
+    {
+      "atomic-number": 102,
+      "element-name": "No",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 254,
+      "vdw-radius": 1.59
+    },
+    {
+      "atomic-number": 103,
+      "element-name": "Lr",
+      "minimum-value": 0,
+      "maximum-value": 0,
+      "common-value": 0,
+      "atomic-mass": 257,
+      "vdw-radius": 1.58
+    }
+  ]
+}

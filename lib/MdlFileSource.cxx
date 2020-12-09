@@ -32,7 +32,7 @@ MdlFileSource::MdlFileSource(const std::string &fileName, bool bPosIonisable,
       m_bImplHydrogens(bImplHydrogens) {
   // Open an Element data source
   m_spElementData = ElementFileSourcePtr(
-      new ElementFileSource(GetDataFileName("data", "Elements.dat")));
+      new ElementFileSource(GetDataFileName("data", "elements.json")));
   _RBTOBJECTCOUNTER_CONSTR_("MdlFileSource");
 }
 

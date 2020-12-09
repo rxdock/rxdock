@@ -27,7 +27,7 @@ MdlFileSink::MdlFileSink(const std::string &fileName, ModelPtr spModel)
   SetAppend(false);
   // Open an Element data source
   m_spElementData = ElementFileSourcePtr(
-      new ElementFileSource(GetDataFileName("data", "Elements.dat")));
+      new ElementFileSource(GetDataFileName("data", "elements.json")));
   _RBTOBJECTCOUNTER_CONSTR_("MdlFileSink");
 }
 
