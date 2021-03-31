@@ -23,9 +23,9 @@
 using namespace rxdock;
 
 // Static data members
-std::string CavityGridSF::_CT("CavityGridSF");
-std::string CavityGridSF::_RMAX("RMAX");
-std::string CavityGridSF::_QUADRATIC("QUADRATIC");
+const std::string CavityGridSF::_CT = "CavityGridSF";
+const std::string CavityGridSF::_RMAX = "RMAX";
+const std::string CavityGridSF::_QUADRATIC = "QUADRATIC";
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second

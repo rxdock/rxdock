@@ -24,7 +24,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string FFTGrid::_CT("FFTGrid");
+const std::string FFTGrid::_CT = "FFTGrid";
 
 ////////////////////////////////////////
 // Constructors/destructors

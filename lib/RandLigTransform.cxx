@@ -17,9 +17,9 @@
 using namespace rxdock;
 
 // Static data member for class type
-std::string RandLigTransform::_CT("RandLigTransform");
+const std::string RandLigTransform::_CT = "RandLigTransform";
 // Parameter names
-std::string RandLigTransform::_TORS_STEP("TORS_STEP");
+const std::string RandLigTransform::_TORS_STEP = "TORS_STEP";
 
 ////////////////////////////////////////
 // Constructors/destructors

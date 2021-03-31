@@ -18,7 +18,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string BaseBiMolTransform::_CT("BaseBiMolTransform");
+const std::string BaseBiMolTransform::_CT = "BaseBiMolTransform";
 
 ////////////////////////////////////////
 // Constructors/destructors

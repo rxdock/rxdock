@@ -22,9 +22,9 @@
 using namespace rxdock;
 
 // Static data members
-std::string NmrSF::_CT("NmrSF");
-std::string NmrSF::_FILENAME("FILENAME");
-std::string NmrSF::_QUADRATIC("QUADRATIC");
+const std::string NmrSF::_CT = "NmrSF";
+const std::string NmrSF::_FILENAME = "FILENAME";
+const std::string NmrSF::_QUADRATIC = "QUADRATIC";
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructors for BaseInterSF is called second

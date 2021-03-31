@@ -26,14 +26,14 @@ namespace rxdock {
 class SetupPolarSF : public BaseInterSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _RADIUS;
-  static std::string _NORM;
-  static std::string _POWER;
-  static std::string _CHGFACTOR;
+  static const std::string _RADIUS;
+  static const std::string _NORM;
+  static const std::string _POWER;
+  static const std::string _CHGFACTOR;
   // DM 14 Nov 2001 - relative strength of guanidinium intns
-  static std::string _GUANFACTOR;
+  static const std::string _GUANFACTOR;
 
   RBTDLL_EXPORT SetupPolarSF(const std::string &strName = "setup_polar");
   virtual ~SetupPolarSF();

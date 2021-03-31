@@ -15,7 +15,7 @@
 
 using namespace rxdock;
 
-std::string Parser::_CT("Parser");
+const std::string Parser::_CT = "Parser";
 Parser::Parser(const Parser &p) { _RBTOBJECTCOUNTER_COPYCONSTR_(_CT); }
 
 Parser::Parser() { _RBTOBJECTCOUNTER_CONSTR_(_CT); }

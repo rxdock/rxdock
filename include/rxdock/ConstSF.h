@@ -24,8 +24,8 @@ namespace rxdock {
 class ConstSF : public BaseInterSF {
 public:
   // Static data member for class type (i.e. "ConstSF")
-  static std::string _CT;
-  static std::string _SOLVENT_PENALTY;
+  static const std::string _CT;
+  static const std::string _SOLVENT_PENALTY;
 
   ConstSF(const std::string &strName = "const");
   virtual ~ConstSF();

@@ -46,8 +46,8 @@ double DihedralElement::operator()() const {
 }
 
 // Static data members
-std::string DihedralSF::_CT("DihedralSF");
-std::string DihedralSF::_IMPL_H_CORR("IMPL_H_CORR");
+const std::string DihedralSF::_CT = "DihedralSF";
+const std::string DihedralSF::_IMPL_H_CORR = "IMPL_H_CORR";
 
 DihedralSF::DihedralSF() {
   LOG_F(2, "DihedralSF default constructor");

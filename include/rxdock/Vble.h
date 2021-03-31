@@ -21,7 +21,7 @@ namespace rxdock {
 
 class Vble {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   enum VbleType { CTE, LIG, SCORE, SITE };
   Vble() : vt(CTE), value(0.0), name("") {
     _RBTOBJECTCOUNTER_CONSTR_(_CT);

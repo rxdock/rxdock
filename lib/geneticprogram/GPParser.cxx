@@ -19,7 +19,7 @@
 using namespace rxdock;
 using namespace rxdock::geneticprogram;
 
-std::string GPParser::_CT("GPParser");
+const std::string GPParser::_CT = "GPParser";
 int Command::ntabs = 0;
 bool Command::inside = false;
 

@@ -28,7 +28,7 @@ class SetupSASF : public BaseInterSF {
   AtomList theReceptorList; // receptor typing
 
 public:
-  static std::string _CT;
+  static const std::string _CT;
 
   SetupSASF(const std::string &strName = "SETUP_SA");
   ~SetupSASF();

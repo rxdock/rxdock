@@ -14,7 +14,7 @@
 
 using namespace rxdock;
 
-std::string Chrom::_CT = "Chrom";
+const std::string Chrom::_CT = "Chrom";
 
 Chrom::Chrom() : ChromElement() { _RBTOBJECTCOUNTER_CONSTR_(_CT); }
 

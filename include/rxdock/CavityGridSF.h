@@ -38,10 +38,10 @@ public:
   };
 
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _RMAX;
-  static std::string
+  static const std::string _RMAX;
+  static const std::string
       _QUADRATIC; // True = quadratic penalty function; false = linear
 
   CavityGridSF(const std::string &strName = "cavity");

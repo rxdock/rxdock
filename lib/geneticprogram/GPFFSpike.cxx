@@ -29,7 +29,7 @@
 using namespace rxdock;
 using namespace rxdock::geneticprogram;
 
-std::string GPFFSpike::_CT("GPFFSpike");
+const std::string GPFFSpike::_CT = "GPFFSpike";
 void GPFFSpike::ReadTables(std::istream &in, ReturnTypeArray &it,
                            ReturnTypeArray &sft) {
   ReturnType value;

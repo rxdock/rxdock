@@ -30,7 +30,7 @@
 using namespace rxdock;
 using namespace rxdock::geneticprogram;
 
-std::string GPFFHSP90::_CT("GPFFHSP90");
+const std::string GPFFHSP90::_CT = "GPFFHSP90";
 int nInversions(int idx, ReturnTypeArray &list);
 
 void GPFFHSP90::ReadTables(std::istream &in, ReturnTypeArray &it,

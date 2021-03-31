@@ -81,10 +81,10 @@ typedef DihedralList::const_iterator DihedralListConstIter;
 class DihedralSF : public virtual BaseSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _IMPL_H_CORR; // DM 6 Aug 2002 - option to correct barrier
-                                   // heights for implicit H's
+  static const std::string _IMPL_H_CORR; // DM 6 Aug 2002 - option to correct
+                                         // barrier heights for implicit H's
 
   virtual ~DihedralSF();
 

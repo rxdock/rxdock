@@ -28,7 +28,7 @@ namespace rxdock {
 class ChromPositionRefData {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Reference Cartesian axes
   static const PrincipalAxes CARTESIAN_AXES;
   ChromPositionRefData(const Model *pModel, const DockingSite *pDockSite,

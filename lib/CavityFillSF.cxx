@@ -20,7 +20,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string CavityFillSF::_CT("CavityFillSF");
+const std::string CavityFillSF::_CT = "CavityFillSF";
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second

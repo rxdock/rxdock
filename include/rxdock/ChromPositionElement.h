@@ -23,7 +23,7 @@ namespace rxdock {
 class ChromPositionElement : public ChromElement {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
 
   RBTDLL_EXPORT
   ChromPositionElement(const Model *pModel, const DockingSite *pDockSite,

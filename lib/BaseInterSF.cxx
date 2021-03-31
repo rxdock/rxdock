@@ -18,7 +18,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string BaseInterSF::_CT("BaseInterSF");
+const std::string BaseInterSF::_CT = "BaseInterSF";
 
 ////////////////////////////////////////
 // Constructors/destructors

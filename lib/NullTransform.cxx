@@ -19,7 +19,7 @@
 using namespace rxdock;
 
 // Static data member for class type
-std::string NullTransform::_CT("NullTransform");
+const std::string NullTransform::_CT = "NullTransform";
 
 ////////////////////////////////////////
 // Constructors/destructors

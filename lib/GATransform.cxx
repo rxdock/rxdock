@@ -21,16 +21,16 @@
 
 using namespace rxdock;
 
-std::string GATransform::_CT("GATransform");
-std::string GATransform::_NEW_FRACTION("NEW_FRACTION");
-std::string GATransform::_PCROSSOVER("PCROSSOVER");
-std::string GATransform::_XOVERMUT("XOVERMUT");
-std::string GATransform::_CMUTATE("CMUTATE");
-std::string GATransform::_STEP_SIZE("STEP_SIZE");
-std::string GATransform::_EQUALITY_THRESHOLD("EQUALITY_THRESHOLD");
-std::string GATransform::_NCYCLES("NCYCLES");
-std::string GATransform::_NCONVERGENCE("NCONVERGENCE");
-std::string GATransform::_HISTORY_FREQ("HISTORY_FREQ");
+const std::string GATransform::_CT = "GATransform";
+const std::string GATransform::_NEW_FRACTION = "NEW_FRACTION";
+const std::string GATransform::_PCROSSOVER = "PCROSSOVER";
+const std::string GATransform::_XOVERMUT = "XOVERMUT";
+const std::string GATransform::_CMUTATE = "CMUTATE";
+const std::string GATransform::_STEP_SIZE = "STEP_SIZE";
+const std::string GATransform::_EQUALITY_THRESHOLD = "EQUALITY_THRESHOLD";
+const std::string GATransform::_NCYCLES = "NCYCLES";
+const std::string GATransform::_NCONVERGENCE = "NCONVERGENCE";
+const std::string GATransform::_HISTORY_FREQ = "HISTORY_FREQ";
 
 GATransform::GATransform(const std::string &strName)
     : BaseBiMolTransform(_CT, strName), m_rand(GetRandInstance()) {

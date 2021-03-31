@@ -48,26 +48,26 @@ typedef SmartPtr<MCStats> MCStatsPtr; // Smart pointer
 class SimAnnTransform : public BaseBiMolTransform {
 public:
   // Static data member for class type
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _START_T;
-  static std::string _FINAL_T;
-  static std::string _BLOCK_LENGTH;
-  static std::string _SCALE_CHROM_LENGTH;
-  static std::string _NUM_BLOCKS;
-  static std::string _STEP_SIZE;
-  static std::string _MIN_ACC_RATE;
-  static std::string _PARTITION_DIST;
-  static std::string _PARTITION_FREQ;
-  static std::string _HISTORY_FREQ;
+  static const std::string _START_T;
+  static const std::string _FINAL_T;
+  static const std::string _BLOCK_LENGTH;
+  static const std::string _SCALE_CHROM_LENGTH;
+  static const std::string _NUM_BLOCKS;
+  static const std::string _STEP_SIZE;
+  static const std::string _MIN_ACC_RATE;
+  static const std::string _PARTITION_DIST;
+  static const std::string _PARTITION_FREQ;
+  static const std::string _HISTORY_FREQ;
 
-  RBTDLL_EXPORT static std::string &GetStartT();
-  RBTDLL_EXPORT static std::string &GetFinalT();
-  RBTDLL_EXPORT static std::string &GetBlockLength();
-  RBTDLL_EXPORT static std::string &GetNumBlocks();
-  RBTDLL_EXPORT static std::string &GetStepSize();
-  RBTDLL_EXPORT static std::string &GetPartitionDist();
-  RBTDLL_EXPORT static std::string &GetPartitionFreq();
+  RBTDLL_EXPORT static const std::string &GetStartT();
+  RBTDLL_EXPORT static const std::string &GetFinalT();
+  RBTDLL_EXPORT static const std::string &GetBlockLength();
+  RBTDLL_EXPORT static const std::string &GetNumBlocks();
+  RBTDLL_EXPORT static const std::string &GetStepSize();
+  RBTDLL_EXPORT static const std::string &GetPartitionDist();
+  RBTDLL_EXPORT static const std::string &GetPartitionFreq();
 
   ////////////////////////////////////////
   // Constructors/destructors

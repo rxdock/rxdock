@@ -19,7 +19,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string BaseTransform::_CT("BaseTransform");
+const std::string BaseTransform::_CT = "BaseTransform";
 
 ////////////////////////////////////////
 // Constructors/destructors

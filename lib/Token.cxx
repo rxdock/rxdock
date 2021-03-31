@@ -18,7 +18,7 @@ using namespace rxdock;
 
 static const Vble default_vble;
 
-std::string Token::_CT("Token");
+const std::string Token::_CT = "Token";
 
 ///////////////////
 // Constructors

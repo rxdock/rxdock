@@ -17,7 +17,7 @@
 
 using namespace rxdock;
 
-std::string Population::_CT("Population");
+const std::string Population::_CT = "Population";
 
 Population::Population(ChromElement *pChr, int size, BaseSF *pSF)
     : m_size(size), m_c(2.0), m_pSF(pSF), m_rand(GetRandInstance()),

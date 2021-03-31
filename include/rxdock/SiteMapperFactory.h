@@ -23,7 +23,7 @@ namespace rxdock {
 
 class SiteMapperFactory {
   // Parameter name which identifies a site mapper definition
-  static std::string _MAPPER;
+  static const std::string _MAPPER;
 
 public:
   ////////////////////////////////////////

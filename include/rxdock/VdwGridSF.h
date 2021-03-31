@@ -23,13 +23,14 @@ namespace rxdock {
 class VdwGridSF : public BaseInterSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
 
-  RBTDLL_EXPORT static std::string &GetCt();
+  RBTDLL_EXPORT static const std::string &GetCt();
 
   // Parameter names
-  static std::string _GRID;     // Suffix for grid filename
-  static std::string _SMOOTHED; // Controls whether to smooth the grid values
+  static const std::string _GRID; // Suffix for grid filename
+  static const std::string
+      _SMOOTHED; // Controls whether to smooth the grid values
 
   VdwGridSF(const std::string &strName = "vdw");
   virtual ~VdwGridSF();

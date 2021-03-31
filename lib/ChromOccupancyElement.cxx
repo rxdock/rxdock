@@ -14,7 +14,7 @@
 
 using namespace rxdock;
 
-std::string ChromOccupancyElement::_CT = "ChromOccupancyElement";
+const std::string ChromOccupancyElement::_CT = "ChromOccupancyElement";
 
 ChromOccupancyElement::ChromOccupancyElement(Model *pModel, double stepSize,
                                              double threshold)

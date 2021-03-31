@@ -21,13 +21,13 @@
 using namespace rxdock;
 
 // Static data members
-std::string PolarIdxSF::_CT("PolarIdxSF");
-std::string PolarIdxSF::_INCR("INCR");
-std::string PolarIdxSF::_ATTR("ATTR");
-std::string PolarIdxSF::_THRESHOLD_POS("THRESHOLD_POS");
-std::string PolarIdxSF::_THRESHOLD_NEG("THRESHOLD_NEG");
+const std::string PolarIdxSF::_CT = "PolarIdxSF";
+const std::string PolarIdxSF::_INCR = "INCR";
+const std::string PolarIdxSF::_ATTR = "ATTR";
+const std::string PolarIdxSF::_THRESHOLD_POS = "THRESHOLD_POS";
+const std::string PolarIdxSF::_THRESHOLD_NEG = "THRESHOLD_NEG";
 
-std::string &PolarIdxSF::GetIncr() { return _INCR; }
+const std::string &PolarIdxSF::GetIncr() { return _INCR; }
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second

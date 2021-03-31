@@ -19,9 +19,9 @@
 
 using namespace rxdock;
 
-std::string RandPopTransform::_CT("RandPopTransform");
-std::string RandPopTransform::_POP_SIZE("POP_SIZE");
-std::string RandPopTransform::_SCALE_CHROM_LENGTH("SCALE_CHROM_LENGTH");
+const std::string RandPopTransform::_CT = "RandPopTransform";
+const std::string RandPopTransform::_POP_SIZE = "POP_SIZE";
+const std::string RandPopTransform::_SCALE_CHROM_LENGTH = "SCALE_CHROM_LENGTH";
 
 RandPopTransform::RandPopTransform(const std::string &strName)
     : BaseBiMolTransform(_CT, strName) {

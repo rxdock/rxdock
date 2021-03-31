@@ -53,7 +53,7 @@ public:
   DirectorySource(const std::string &);
   virtual ~DirectorySource();
 
-  static std::string _CT;
+  static const std::string _CT;
 
   /**
    * ReadFiles should be re-defined by derived classes to match argument

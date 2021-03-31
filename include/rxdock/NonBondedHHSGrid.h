@@ -24,7 +24,7 @@ namespace rxdock {
 
 class NonBondedHHSGrid : public BaseGrid {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   NonBondedHHSGrid(const Coord &gridMin, const Coord &gridStep, unsigned int NX,
                    unsigned int NY, unsigned int NZ, unsigned int NPad = 0);
   NonBondedHHSGrid(json j);

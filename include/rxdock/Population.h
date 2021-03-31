@@ -24,7 +24,7 @@ class BaseSF; // forward definition
 
 class Population {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   // Sole constructor to create a randomised genome population of a fixed size.
   // pChr is the seed chromosome to clone to create each genome.
   // size is the population size to create.

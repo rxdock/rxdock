@@ -16,7 +16,7 @@
 
 using namespace rxdock;
 
-std::string SetupSASF::_CT("SetupSASF");
+const std::string SetupSASF::_CT = "SetupSASF";
 
 SetupSASF::SetupSASF(const std::string &strName) : BaseSF(_CT, strName) {
   LOG_F(2, "SetupSASF parameterized constructor");

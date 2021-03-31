@@ -26,7 +26,7 @@ namespace rxdock {
 class ChromDihedralRefData {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Sole constructor
   // If the tetheredAtoms list is empty, then
   //  the end of the bond with the fewest pendant atoms is rotated (other half

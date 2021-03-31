@@ -23,14 +23,14 @@
 using namespace rxdock;
 
 // Static data member for class type
-std::string LigandSiteMapper::_CT("LigandSiteMapper");
-std::string LigandSiteMapper::_REF_MOL("REF_MOL");
-std::string LigandSiteMapper::_VOL_INCR("VOL_INCR");
-std::string LigandSiteMapper::_SMALL_SPHERE("SMALL_SPHERE");
-std::string LigandSiteMapper::_GRIDSTEP("GRIDSTEP");
-std::string LigandSiteMapper::_RADIUS("RADIUS");
-std::string LigandSiteMapper::_MIN_VOLUME("MIN_VOLUME");
-std::string LigandSiteMapper::_MAX_CAVITIES("MAX_CAVITIES");
+const std::string LigandSiteMapper::_CT = "LigandSiteMapper";
+const std::string LigandSiteMapper::_REF_MOL = "REF_MOL";
+const std::string LigandSiteMapper::_VOL_INCR = "VOL_INCR";
+const std::string LigandSiteMapper::_SMALL_SPHERE = "SMALL_SPHERE";
+const std::string LigandSiteMapper::_GRIDSTEP = "GRIDSTEP";
+const std::string LigandSiteMapper::_RADIUS = "RADIUS";
+const std::string LigandSiteMapper::_MIN_VOLUME = "MIN_VOLUME";
+const std::string LigandSiteMapper::_MAX_CAVITIES = "MAX_CAVITIES";
 
 LigandSiteMapper::LigandSiteMapper(const std::string &strName)
     : SiteMapper(_CT, strName) {

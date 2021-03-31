@@ -23,7 +23,7 @@
 using namespace rxdock;
 using namespace rxdock::geneticprogram;
 
-std::string GPFFCrossDock::_CT("GPFFCrossDock");
+const std::string GPFFCrossDock::_CT = "GPFFCrossDock";
 
 void GPFFCrossDock::ReadTables(std::istream &in, ReturnTypeArray &it,
                                ReturnTypeArray &sft) {

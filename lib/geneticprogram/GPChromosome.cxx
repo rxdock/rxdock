@@ -21,7 +21,7 @@
 using namespace rxdock;
 using namespace rxdock::geneticprogram;
 
-std::string GPChromosome::_CT("GPChromosome");
+const std::string GPChromosome::_CT = "GPChromosome";
 
 // Constructors
 GPChromosome::GPChromosome(int npi, int nfi, int nn, int no, int nr, int nc) {

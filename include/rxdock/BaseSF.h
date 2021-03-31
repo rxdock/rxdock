@@ -24,17 +24,17 @@ class SFAgg; // forward declaration
 class BaseSF : public BaseObject {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _WEIGHT;
+  static const std::string _WEIGHT;
   // DM 09 Apr 2002 - max distance range over which scoring function operates
   // Subclasses are free not to use if not required
-  static std::string _RANGE;
+  static const std::string _RANGE;
   // DM 17 Jan 2006 - hardcoded name of scoring function branch under which to
   // save "system" scoring function terms (e.g. intra-receptor, intra-solvent).
   // This is a dirty (and hopefully temporary) solution!
-  static std::string _SYSTEM_SF;
-  static std::string _INTRA_SF; // Ditto, for ligand intramolecular terms
+  static const std::string _SYSTEM_SF;
+  static const std::string _INTRA_SF; // Ditto, for ligand intramolecular terms
 
   ////////////////////////////////////////
   // Constructors/destructors

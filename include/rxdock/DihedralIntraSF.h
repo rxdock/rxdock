@@ -22,7 +22,7 @@ namespace rxdock {
 class DihedralIntraSF : public BaseIntraSF, public DihedralSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
 
   DihedralIntraSF(const std::string &strName = "DIHEDRAL");

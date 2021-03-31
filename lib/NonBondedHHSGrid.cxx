@@ -16,7 +16,7 @@
 
 using namespace rxdock;
 
-std::string NonBondedHHSGrid::_CT("NonBondedHHSGrid");
+const std::string NonBondedHHSGrid::_CT = "NonBondedHHSGrid";
 
 NonBondedHHSGrid::NonBondedHHSGrid(const Coord &gridMin, const Coord &gridStep,
                                    unsigned int NX, unsigned int NY,

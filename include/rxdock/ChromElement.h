@@ -36,7 +36,7 @@ typedef XOverList::const_iterator XOverListConstIter;
 class ChromElement {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Threshold used to assess equality of two chromosome elements
   static double _THRESHOLD;
 

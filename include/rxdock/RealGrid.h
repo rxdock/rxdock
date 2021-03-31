@@ -30,7 +30,7 @@ namespace rxdock {
 class RealGrid : public BaseGrid {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors

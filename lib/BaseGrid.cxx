@@ -22,7 +22,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string BaseGrid::_CT("BaseGrid");
+const std::string BaseGrid::_CT = "BaseGrid";
 
 ////////////////////////////////////////
 // Constructors/destructors

@@ -33,7 +33,7 @@ typedef IntVbleMap::iterator IntVbleMapIter;
 
 class Context {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////
@@ -56,7 +56,7 @@ public:
 
 class CellContext : public Context {
 public:
-  // static String _CT;
+  // static const std::string _CT;
   CellContext(std::ifstream &ifile);
   CellContext();
   CellContext(const CellContext &c);
@@ -91,6 +91,7 @@ private:
 class StringContext : public Context {
 
 public:
+  // static const std::string _CT;
   StringContext();
   StringContext(SmartPtr<std::ifstream> ifile);
   StringContext(const StringContext &c);

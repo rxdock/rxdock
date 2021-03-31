@@ -20,7 +20,7 @@
 using namespace rxdock;
 using namespace rxdock::geneticprogram;
 
-std::string GPFitnessFunction::_CT("GPFitnessFunction");
+const std::string GPFitnessFunction::_CT = "GPFitnessFunction";
 
 // Constructors
 GPFitnessFunction::GPFitnessFunction()

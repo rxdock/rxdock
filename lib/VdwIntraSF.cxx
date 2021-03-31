@@ -18,7 +18,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string VdwIntraSF::_CT("VdwIntraSF");
+const std::string VdwIntraSF::_CT = "VdwIntraSF";
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second

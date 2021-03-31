@@ -26,7 +26,7 @@ namespace geneticprogram {
 
 class GPGenome {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////

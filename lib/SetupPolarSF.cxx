@@ -20,12 +20,12 @@
 using namespace rxdock;
 
 // Static data members
-std::string SetupPolarSF::_CT("SetupPolarSF");
-std::string SetupPolarSF::_RADIUS("RADIUS");
-std::string SetupPolarSF::_NORM("NORM");
-std::string SetupPolarSF::_POWER("POWER");
-std::string SetupPolarSF::_CHGFACTOR("CHGFACTOR");
-std::string SetupPolarSF::_GUANFACTOR("GUANFACTOR");
+const std::string SetupPolarSF::_CT = "SetupPolarSF";
+const std::string SetupPolarSF::_RADIUS = "RADIUS";
+const std::string SetupPolarSF::_NORM = "NORM";
+const std::string SetupPolarSF::_POWER = "POWER";
+const std::string SetupPolarSF::_CHGFACTOR = "CHGFACTOR";
+const std::string SetupPolarSF::_GUANFACTOR = "GUANFACTOR";
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second

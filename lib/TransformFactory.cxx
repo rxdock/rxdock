@@ -26,7 +26,7 @@
 using namespace rxdock;
 
 // Parameter name which identifies a scoring function definition
-std::string TransformFactory::_TRANSFORM("TRANSFORM");
+const std::string TransformFactory::_TRANSFORM = "TRANSFORM";
 
 ////////////////////////////////////////
 // Constructors/destructors

@@ -22,16 +22,16 @@ namespace rxdock {
 class SphereSiteMapper : public SiteMapper {
 public:
   // Static data member for class type
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _VOL_INCR;
-  static std::string _SMALL_SPHERE;
-  static std::string _LARGE_SPHERE;
-  static std::string _GRIDSTEP;
-  static std::string _CENTER;
-  static std::string _RADIUS;
-  static std::string _MIN_VOLUME;
-  static std::string _MAX_CAVITIES;
+  static const std::string _VOL_INCR;
+  static const std::string _SMALL_SPHERE;
+  static const std::string _LARGE_SPHERE;
+  static const std::string _GRIDSTEP;
+  static const std::string _CENTER;
+  static const std::string _RADIUS;
+  static const std::string _MIN_VOLUME;
+  static const std::string _MAX_CAVITIES;
 
   SphereSiteMapper(const std::string &strName = "SPHERE_MAPPER");
   virtual ~SphereSiteMapper();

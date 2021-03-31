@@ -18,14 +18,14 @@
 using namespace rxdock;
 
 // Static data members
-std::string VdwSF::_CT("VdwSF");
-std::string VdwSF::_USE_4_8("USE_4_8");
-std::string VdwSF::_USE_TRIPOS("USE_TRIPOS");
-std::string VdwSF::_RMAX("RMAX");
-std::string VdwSF::_ECUT("ECUT");
-std::string VdwSF::_E0("E0");
+const std::string VdwSF::_CT = "VdwSF";
+const std::string VdwSF::_USE_4_8 = "USE_4_8";
+const std::string VdwSF::_USE_TRIPOS = "USE_TRIPOS";
+const std::string VdwSF::_RMAX = "RMAX";
+const std::string VdwSF::_ECUT = "ECUT";
+const std::string VdwSF::_E0 = "E0";
 
-std::string &VdwSF::GetEcut() { return _ECUT; }
+const std::string &VdwSF::GetEcut() { return _ECUT; }
 
 VdwSF::VdwSF()
     : m_use_4_8(true), m_use_tripos(false), m_rmax(1.5), m_ecut(1.0),

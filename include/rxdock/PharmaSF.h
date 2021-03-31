@@ -24,12 +24,12 @@ namespace rxdock {
 class PharmaSF : public BaseInterSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _CONSTRAINTS_FILE;
-  static std::string _OPTIONAL_FILE;
-  static std::string _NOPT;
-  static std::string _WRITE_ERRORS;
+  static const std::string _CONSTRAINTS_FILE;
+  static const std::string _OPTIONAL_FILE;
+  static const std::string _NOPT;
+  static const std::string _WRITE_ERRORS;
 
   PharmaSF(const std::string &strName = "PHARMA");
   virtual ~PharmaSF();

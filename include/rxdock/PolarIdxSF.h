@@ -25,16 +25,16 @@ namespace rxdock {
 class PolarIdxSF : public BaseInterSF, public BaseIdxSF, public PolarSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _INCR;
-  static std::string _ATTR;
+  static const std::string _INCR;
+  static const std::string _ATTR;
   // DM 12 Jun 2002 - score thresholds used for counting attractive and
   // repulsive interactions
-  static std::string _THRESHOLD_POS;
-  static std::string _THRESHOLD_NEG;
+  static const std::string _THRESHOLD_POS;
+  static const std::string _THRESHOLD_NEG;
 
-  RBTDLL_EXPORT static std::string &GetIncr();
+  RBTDLL_EXPORT static const std::string &GetIncr();
 
   RBTDLL_EXPORT PolarIdxSF(const std::string &strName = "polar");
   virtual ~PolarIdxSF();

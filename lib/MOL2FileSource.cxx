@@ -25,12 +25,12 @@
 
 using namespace rxdock;
 
-std::string MOL2FileSource::_CT("MOL2FileSource");
+const std::string MOL2FileSource::_CT = "MOL2FileSource";
 // record delimiter strings
-std::string MOL2FileSource::_TRIPOS_DELIM("@<TRIPOS>");
-unsigned int
-    MOL2FileSource::_TRIPOS_DELIM_SIZE(MOL2FileSource::_TRIPOS_DELIM.size());
-std::string MOL2FileSource::_IDS_MOL2_RECDELIM("@<TRIPOS>MOLECULE");
+const std::string MOL2FileSource::_TRIPOS_DELIM = "@<TRIPOS>";
+const unsigned int MOL2FileSource::_TRIPOS_DELIM_SIZE =
+    MOL2FileSource::_TRIPOS_DELIM.size();
+const std::string MOL2FileSource::_IDS_MOL2_RECDELIM = "@<TRIPOS>MOLECULE";
 
 // straightforward ctor
 MOL2FileSource::MOL2FileSource(const std::string &fileName, bool bImplHydrogens)

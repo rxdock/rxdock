@@ -19,9 +19,9 @@
 using namespace rxdock;
 
 // Static data member for class type
-std::string RotSF::_CT("RotSF");
-std::string RotSF::_INCNH3("INCNH3");
-std::string RotSF::_INCOH("INCOH");
+const std::string RotSF::_CT = "RotSF";
+const std::string RotSF::_INCNH3 = "INCNH3";
+const std::string RotSF::_INCOH = "INCOH";
 
 RotSF::RotSF(const std::string &strName)
     : BaseSF(_CT, strName), nRot(0), bIncNH3(false), bIncOH(false) {

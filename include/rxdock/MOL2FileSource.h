@@ -46,11 +46,11 @@ typedef MOL2SubstructureMap::const_iterator MOL2SubstructureMapConstIter;
 
 class MOL2FileSource : public BaseMolecularFileSource {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   // record delimiter strings
-  static std::string _TRIPOS_DELIM;
-  static unsigned int _TRIPOS_DELIM_SIZE;
-  static std::string _IDS_MOL2_RECDELIM;
+  static const std::string _TRIPOS_DELIM;
+  static const unsigned int _TRIPOS_DELIM_SIZE;
+  static const std::string _IDS_MOL2_RECDELIM;
 
   MOL2FileSource(const std::string &fileName, bool bImplHydrogens = true);
   ~MOL2FileSource();

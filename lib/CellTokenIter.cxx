@@ -14,7 +14,7 @@
 
 using namespace rxdock;
 
-std::string CellTokenIter::_CT("CellTokenIter");
+const std::string CellTokenIter::_CT = "CellTokenIter";
 
 ///////////////////
 // Constructors

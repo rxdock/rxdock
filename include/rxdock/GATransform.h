@@ -22,29 +22,29 @@ namespace rxdock {
 
 class GATransform : public BaseBiMolTransform {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   // New individuals to create each cycle, as fraction of population size
-  static std::string _NEW_FRACTION;
+  static const std::string _NEW_FRACTION;
   // Probability of crossover (1-probability of mutation)
-  static std::string _PCROSSOVER;
+  static const std::string _PCROSSOVER;
   // If true, perform Cauchy mutation after each crossover
-  static std::string _XOVERMUT;
+  static const std::string _XOVERMUT;
   // If true, mutations are from Cauchy distribution; if false, from rect.
   // distribution
-  static std::string _CMUTATE;
+  static const std::string _CMUTATE;
   // Relative step size for mutations (relative to absolute step sizes defined
   // for each chromosome element)
-  static std::string _STEP_SIZE;
+  static const std::string _STEP_SIZE;
   // Two genomes are considered equal if the maximum relative difference
   // between chromosome elements is less than _EQUALITY_THRESHOLD
-  static std::string _EQUALITY_THRESHOLD;
+  static const std::string _EQUALITY_THRESHOLD;
   // Maximum number of cycles
-  static std::string _NCYCLES;
+  static const std::string _NCYCLES;
   // Terminate if the best score does not improve over _NCONVERGENCE
   // consecutive cycles
-  static std::string _NCONVERGENCE;
+  static const std::string _NCONVERGENCE;
   // Output the best pose every _HISTORY_FREQ cycles.
-  static std::string _HISTORY_FREQ;
+  static const std::string _HISTORY_FREQ;
 
   ////////////////////////////////////////
   // Constructors/destructors

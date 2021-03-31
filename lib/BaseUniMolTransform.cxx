@@ -18,7 +18,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string BaseUniMolTransform::_CT("BaseUniMolTransform");
+const std::string BaseUniMolTransform::_CT = "BaseUniMolTransform";
 
 ////////////////////////////////////////
 // Constructors/destructors

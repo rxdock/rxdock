@@ -23,7 +23,7 @@ namespace rxdock {
 class NullTransform : public BaseTransform {
 public:
   // Static data member for class type
-  static std::string _CT;
+  static const std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors

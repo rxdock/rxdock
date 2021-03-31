@@ -31,7 +31,7 @@ const bool TRANSFORMAGG_CHECK = true;
 class TransformAgg : public BaseTransform {
 public:
   // Static data member for class type (i.e. "TransformAgg")
-  static std::string _CT;
+  static const std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors

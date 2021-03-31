@@ -23,7 +23,7 @@ namespace rxdock {
 
 class AnnotationHandler {
 public:
-  static std::string _ANNOTATION_FIELD;
+  static const std::string _ANNOTATION_FIELD;
 
   ////////////////////////////////////////
   // Constructors/destructors

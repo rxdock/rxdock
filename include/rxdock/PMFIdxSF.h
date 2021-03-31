@@ -57,10 +57,11 @@ public:
    * of the PMF score. Should be read from the .prm
    * file.
    */
-  static std::string _CT;
-  static std::string _PMFDIR; /**< String pointing to the dir with PMF tables*/
-  static std::string _CC_CUTOFF;
-  static std::string _SLOPE;
+  static const std::string _CT;
+  static const std::string
+      _PMFDIR; /**< String pointing to the dir with PMF tables*/
+  static const std::string _CC_CUTOFF;
+  static const std::string _SLOPE;
   /**
    *  Observer functionalities pure virtual, so it must be
    *  overloaded.

@@ -26,7 +26,7 @@ namespace rxdock {
 class Chrom : public ChromElement {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Constructor for an empty chromosome
   RBTDLL_EXPORT Chrom();
   // Constructor for a combined chromosome for each model

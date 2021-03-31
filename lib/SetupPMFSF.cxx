@@ -18,7 +18,7 @@
 
 using namespace rxdock;
 
-std::string SetupPMFSF::_CT("SetupPMFSF");
+const std::string SetupPMFSF::_CT = "SetupPMFSF";
 
 SetupPMFSF::SetupPMFSF(const std::string &strName) : BaseSF(_CT, strName) {
   LOG_F(2, "SetupPMFSF parameterised constructor");

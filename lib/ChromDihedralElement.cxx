@@ -14,7 +14,7 @@
 
 using namespace rxdock;
 
-std::string ChromDihedralElement::_CT = "ChromDihedralElement";
+const std::string ChromDihedralElement::_CT = "ChromDihedralElement";
 
 ChromDihedralElement::ChromDihedralElement(BondPtr spBond,
                                            AtomList tetheredAtoms,

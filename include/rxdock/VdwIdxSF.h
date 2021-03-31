@@ -23,22 +23,22 @@ namespace rxdock {
 class VdwIdxSF : public BaseInterSF, public BaseIdxSF, public VdwSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
   // DM 12 Jun 2002 - score thresholds used for counting attractive and
   // repulsive interactions (thresholds represent partial vdW scores summed per
   // ligand atom, used for outputting ligand atom counts)
-  static std::string _THRESHOLD_ATTR;
-  static std::string _THRESHOLD_REP;
+  static const std::string _THRESHOLD_ATTR;
+  static const std::string _THRESHOLD_REP;
   // DM 03 Feb 2003 - score threshold for outputting individual (atom-atom)
   // lipophilic vdW interactions i.e between two non-polar carbons/hydrogens
-  static std::string _ANNOTATION_LIPO;
+  static const std::string _ANNOTATION_LIPO;
   // DM 10 Apr 2003 - vdw annotation can be quite slow so provide boolean option
   // to disable
-  static std::string _ANNOTATE;
+  static const std::string _ANNOTATE;
   // DM 14 Jun 2006 - option to disable solvent performance enhancements, mainly
   // for testing
-  static std::string _FAST_SOLVENT;
+  static const std::string _FAST_SOLVENT;
 
   RBTDLL_EXPORT VdwIdxSF(const std::string &strName = "vdw");
   virtual ~VdwIdxSF();
