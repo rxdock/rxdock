@@ -25,7 +25,7 @@ class Model;
 class ChromOccupancyRefData {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Sole constructor
   ChromOccupancyRefData(
       Model *pModel,

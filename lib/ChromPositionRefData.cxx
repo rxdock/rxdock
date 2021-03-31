@@ -14,7 +14,7 @@
 
 using namespace rxdock;
 
-std::string ChromPositionRefData::_CT = "ChromPositionRefData";
+const std::string ChromPositionRefData::_CT = "ChromPositionRefData";
 const PrincipalAxes ChromPositionRefData::CARTESIAN_AXES;
 
 ChromPositionRefData::ChromPositionRefData(

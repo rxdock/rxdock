@@ -19,7 +19,7 @@
 using namespace rxdock;
 using namespace rxdock::geneticprogram;
 
-std::string GPGenome::_CT("GPGenome");
+const std::string GPGenome::_CT = "GPGenome";
 int GPGenome::npi;
 int GPGenome::nfi;
 int GPGenome::nsfi;

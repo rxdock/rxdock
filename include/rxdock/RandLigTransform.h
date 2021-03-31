@@ -24,9 +24,9 @@ namespace rxdock {
 class RandLigTransform : public BaseUniMolTransform {
 public:
   // Static data member for class type
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _TORS_STEP;
+  static const std::string _TORS_STEP;
 
   ////////////////////////////////////////
   // Constructors/destructors

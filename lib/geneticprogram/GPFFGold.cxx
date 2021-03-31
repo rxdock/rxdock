@@ -23,7 +23,7 @@
 using namespace rxdock;
 using namespace rxdock::geneticprogram;
 
-std::string GPFFGold::_CT("GPFFGold");
+const std::string GPFFGold::_CT = "GPFFGold";
 
 void GPFFGold::ReadTables(std::istream &in, ReturnTypeArray &,
                           ReturnTypeArray &) {

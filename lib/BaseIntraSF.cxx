@@ -18,7 +18,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string BaseIntraSF::_CT("BaseIntraSF");
+const std::string BaseIntraSF::_CT = "BaseIntraSF";
 
 BaseIntraSF::BaseIntraSF() : m_zero(0.0) {
   LOG_F(2, "BaseIntraSF default constructor");

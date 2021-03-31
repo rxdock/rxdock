@@ -21,9 +21,9 @@ namespace rxdock {
 
 class RandPopTransform : public BaseBiMolTransform {
 public:
-  static std::string _CT;
-  static std::string _POP_SIZE;
-  static std::string _SCALE_CHROM_LENGTH;
+  static const std::string _CT;
+  static const std::string _POP_SIZE;
+  static const std::string _SCALE_CHROM_LENGTH;
 
   ////////////////////////////////////////
   // Constructors/destructors

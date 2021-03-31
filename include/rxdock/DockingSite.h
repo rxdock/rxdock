@@ -45,7 +45,7 @@ public:
 
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
 
   RBTDLL_EXPORT DockingSite(const CavityList &cavList, double border);
   RBTDLL_EXPORT DockingSite(json j);

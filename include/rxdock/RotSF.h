@@ -23,12 +23,12 @@ namespace rxdock {
 class RotSF : public BaseInterSF {
 public:
   // Static data member for class type
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
   // Boolean controlling whether to include bonds to NH3+ in rotable bond count
-  static std::string _INCNH3;
+  static const std::string _INCNH3;
   // Boolean controlling whether to include bonds to OH in  rotable bond count
-  static std::string _INCOH;
+  static const std::string _INCOH;
 
   RotSF(const std::string &strName = "rot");
   virtual ~RotSF();

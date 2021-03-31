@@ -32,8 +32,8 @@ public:
   // write score components
   virtual void ScoreMap(StringVariantMap &scoreMap) const;
 
-  static std::string _CT;
-  static std::string _INCR;
+  static const std::string _CT;
+  static const std::string _INCR;
 
   // Request Handling method
   // Handles the Partition request

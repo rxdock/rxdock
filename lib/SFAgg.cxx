@@ -21,7 +21,7 @@
 using namespace rxdock;
 
 // Static data member for class type
-std::string SFAgg::_CT("SFAgg");
+const std::string SFAgg::_CT = "SFAgg";
 
 ////////////////////////////////////////
 // Constructors/destructors

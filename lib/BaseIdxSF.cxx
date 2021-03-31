@@ -18,9 +18,9 @@
 using namespace rxdock;
 
 // Static data members
-std::string BaseIdxSF::_CT("BaseIdxSF");
-std::string BaseIdxSF::_GRIDSTEP("GRIDSTEP");
-std::string BaseIdxSF::_BORDER("BORDER");
+const std::string BaseIdxSF::_CT = "BaseIdxSF";
+const std::string BaseIdxSF::_GRIDSTEP = "GRIDSTEP";
+const std::string BaseIdxSF::_BORDER = "BORDER";
 
 BaseIdxSF::BaseIdxSF() : m_gridStep(0.5), m_border(1.0) {
   LOG_F(2, "BaseIdxSF default constructor");

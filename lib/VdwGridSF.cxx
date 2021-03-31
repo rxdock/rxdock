@@ -19,11 +19,11 @@
 using namespace rxdock;
 
 // Static data members
-std::string VdwGridSF::_CT("VdwGridSF");
-std::string VdwGridSF::_GRID("GRID");
-std::string VdwGridSF::_SMOOTHED("SMOOTHED");
+const std::string VdwGridSF::_CT = "VdwGridSF";
+const std::string VdwGridSF::_GRID = "GRID";
+const std::string VdwGridSF::_SMOOTHED = "SMOOTHED";
 
-std::string &VdwGridSF::GetCt() { return _CT; }
+const std::string &VdwGridSF::GetCt() { return _CT; }
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second

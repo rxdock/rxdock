@@ -21,15 +21,15 @@
 using namespace rxdock;
 
 // Static data member for class type
-std::string SphereSiteMapper::_CT("SphereSiteMapper");
-std::string SphereSiteMapper::_VOL_INCR("VOL_INCR");
-std::string SphereSiteMapper::_SMALL_SPHERE("SMALL_SPHERE");
-std::string SphereSiteMapper::_LARGE_SPHERE("LARGE_SPHERE");
-std::string SphereSiteMapper::_GRIDSTEP("GRIDSTEP");
-std::string SphereSiteMapper::_CENTER("CENTER");
-std::string SphereSiteMapper::_RADIUS("RADIUS");
-std::string SphereSiteMapper::_MIN_VOLUME("MIN_VOLUME");
-std::string SphereSiteMapper::_MAX_CAVITIES("MAX_CAVITIES");
+const std::string SphereSiteMapper::_CT = "SphereSiteMapper";
+const std::string SphereSiteMapper::_VOL_INCR = "VOL_INCR";
+const std::string SphereSiteMapper::_SMALL_SPHERE = "SMALL_SPHERE";
+const std::string SphereSiteMapper::_LARGE_SPHERE = "LARGE_SPHERE";
+const std::string SphereSiteMapper::_GRIDSTEP = "GRIDSTEP";
+const std::string SphereSiteMapper::_CENTER = "CENTER";
+const std::string SphereSiteMapper::_RADIUS = "RADIUS";
+const std::string SphereSiteMapper::_MIN_VOLUME = "MIN_VOLUME";
+const std::string SphereSiteMapper::_MAX_CAVITIES = "MAX_CAVITIES";
 
 SphereSiteMapper::SphereSiteMapper(const std::string &strName)
     : SiteMapper(_CT, strName) {

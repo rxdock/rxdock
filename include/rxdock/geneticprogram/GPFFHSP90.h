@@ -28,7 +28,7 @@ namespace geneticprogram {
 
 class GPFFHSP90 : public GPFitnessFunction {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   GPFFHSP90(ContextPtr c) : contextp(c) { _RBTOBJECTCOUNTER_CONSTR_(_CT); }
   virtual ~GPFFHSP90() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 

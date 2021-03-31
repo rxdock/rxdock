@@ -24,7 +24,7 @@ namespace rxdock {
 
 class Constraint {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////

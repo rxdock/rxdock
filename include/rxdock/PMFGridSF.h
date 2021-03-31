@@ -27,9 +27,10 @@ class PMFGridSF : public BaseInterSF {
   void ReadGrids(json pmfGrids);
 
 public:
-  static std::string _CT;       // class name
-  static std::string _GRID;     // filename extension (.grd)
-  static std::string _SMOOTHED; // controls wether to smooth the grid values
+  static const std::string _CT;   // class name
+  static const std::string _GRID; // filename extension (.grd)
+  static const std::string
+      _SMOOTHED; // controls wether to smooth the grid values
 
   PMFGridSF(const std::string &strName = "pmf-grid");
   virtual ~PMFGridSF();

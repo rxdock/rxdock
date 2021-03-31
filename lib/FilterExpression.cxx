@@ -14,7 +14,7 @@
 
 using namespace rxdock;
 
-std::string FilterExpression::_CT("FilterExpression");
+const std::string FilterExpression::_CT = "FilterExpression";
 
 FilterExpression::FilterExpression() { _RBTOBJECTCOUNTER_CONSTR_(_CT); }
 

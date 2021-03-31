@@ -22,7 +22,7 @@ using namespace rxdock;
 using namespace rxdock::geneticprogram;
 
 // Static data members for GPPopulation
-std::string GPPopulation::_CT("GPPopulation");
+const std::string GPPopulation::_CT = "GPPopulation";
 
 // Constructor
 

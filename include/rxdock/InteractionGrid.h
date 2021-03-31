@@ -112,7 +112,7 @@ typedef InteractionListMap::const_iterator InteractionListMapConstIter;
 class InteractionGrid : public BaseGrid {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   ////////////////////////////////////////
   // Constructors/destructors
   // Construct a NXxNYxNZ grid running from gridMin at gridStep resolution

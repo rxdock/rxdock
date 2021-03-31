@@ -18,7 +18,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string NonBondedGrid::_CT("NonBondedGrid");
+const std::string NonBondedGrid::_CT = "NonBondedGrid";
 
 ////////////////////////////////////////
 // Constructors/destructors

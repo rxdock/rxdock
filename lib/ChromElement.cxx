@@ -17,7 +17,7 @@
 
 using namespace rxdock;
 
-std::string ChromElement::_CT = "ChromElement";
+const std::string ChromElement::_CT = "ChromElement";
 double ChromElement::_THRESHOLD = 1E-4;
 
 double &ChromElement::GetThreshold() { return _THRESHOLD; }

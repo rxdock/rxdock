@@ -27,7 +27,7 @@ class FilterExpressionVisitor;
 
 class Filter : public BaseObject {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   RBTDLL_EXPORT Filter(std::string strfilter, bool filter = false);
   ///////////////////
   // Destructor

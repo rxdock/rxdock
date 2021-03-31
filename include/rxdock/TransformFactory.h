@@ -25,7 +25,7 @@ namespace rxdock {
 
 class TransformFactory {
   // Parameter name which identifies a scoring function definition
-  static std::string _TRANSFORM;
+  static const std::string _TRANSFORM;
 
 public:
   ////////////////////////////////////////

@@ -28,7 +28,7 @@ namespace rxdock {
 typedef SmartPtr<std::istream> istreamPtr;
 class StringTokenIter : public TokenIter {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   ///////////////////
   // Constructors
   ///////////////////

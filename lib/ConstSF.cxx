@@ -17,8 +17,8 @@
 using namespace rxdock;
 
 // Static data member for class type
-std::string ConstSF::_CT("ConstSF");
-std::string ConstSF::_SOLVENT_PENALTY("SOLVENT_PENALTY");
+const std::string ConstSF::_CT = "ConstSF";
+const std::string ConstSF::_SOLVENT_PENALTY = "SOLVENT_PENALTY";
 
 ConstSF::ConstSF(const std::string &strName)
     : BaseSF(_CT, strName), m_solventPenalty(0.5) {

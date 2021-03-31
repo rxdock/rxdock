@@ -18,7 +18,7 @@
 
 using namespace rxdock;
 
-std::string DirectorySource::_CT("DirectorySource");
+const std::string DirectorySource::_CT = "DirectorySource";
 
 /**
  * Constructor checks wether the directory exists and gives

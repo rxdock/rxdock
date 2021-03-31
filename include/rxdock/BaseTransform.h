@@ -25,7 +25,7 @@ class TransformAgg; // forward declaration
 class BaseTransform : public BaseObject {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
 
   ////////////////////////////////////////

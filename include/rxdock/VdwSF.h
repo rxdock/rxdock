@@ -26,17 +26,18 @@ namespace rxdock {
 class VdwSF : public virtual BaseSF, public virtual AnnotationHandler {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _USE_4_8; // TRUE = 4-8; FALSE = 6-12
-  static std::string
+  static const std::string _USE_4_8; // TRUE = 4-8; FALSE = 6-12
+  static const std::string
       _USE_TRIPOS; // TRUE = Tripos 5.2 well depths; FALSE = GOLD well depths
-  static std::string _RMAX; // Maximum range as a multiple of rmin
-  static std::string _ECUT; // Energy cutoff for transition to short-range
-                            // quadratic, as a multiple of well depth
-  static std::string _E0;   // Energy at zero distance, as a multiple of ECUT
+  static const std::string _RMAX; // Maximum range as a multiple of rmin
+  static const std::string _ECUT; // Energy cutoff for transition to short-range
+                                  // quadratic, as a multiple of well depth
+  static const std::string
+      _E0; // Energy at zero distance, as a multiple of ECUT
 
-  RBTDLL_EXPORT static std::string &GetEcut();
+  RBTDLL_EXPORT static const std::string &GetEcut();
 
   virtual ~VdwSF();
 

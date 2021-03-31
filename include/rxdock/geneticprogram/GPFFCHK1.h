@@ -29,7 +29,7 @@ namespace geneticprogram {
 
 class GPFFCHK1 : public GPFitnessFunction {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   GPFFCHK1(ContextPtr c) : contextp(c) { _RBTOBJECTCOUNTER_CONSTR_(_CT); }
   virtual ~GPFFCHK1() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 

@@ -20,7 +20,7 @@
 
 using namespace rxdock;
 
-std::string ChromDihedralRefData::_CT = "ChromDihedralRefData";
+const std::string ChromDihedralRefData::_CT = "ChromDihedralRefData";
 
 ChromDihedralRefData::ChromDihedralRefData(BondPtr spBond,
                                            AtomList tetheredAtoms,

@@ -32,7 +32,7 @@ const bool SFAGG_CHECK = true;
 class SFAgg : public BaseSF {
 public:
   // Static data member for class type (i.e. "SFAgg")
-  static std::string _CT;
+  static const std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors

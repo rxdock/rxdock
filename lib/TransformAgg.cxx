@@ -17,7 +17,7 @@
 using namespace rxdock;
 
 // Static data member for class type
-std::string TransformAgg::_CT("TransformAgg");
+const std::string TransformAgg::_CT = "TransformAgg";
 
 ////////////////////////////////////////
 // Constructors/destructors

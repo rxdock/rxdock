@@ -17,7 +17,7 @@
 
 using namespace rxdock;
 
-std::string StringTokenIter::_CT("StringTokenIter");
+const std::string StringTokenIter::_CT = "StringTokenIter";
 
 ///////////////////
 // Constructors

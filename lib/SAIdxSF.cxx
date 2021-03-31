@@ -20,8 +20,8 @@
 
 using namespace rxdock;
 
-std::string SAIdxSF::_CT("SAIdxSF");
-std::string SAIdxSF::_INCR("INCR");
+const std::string SAIdxSF::_CT = "SAIdxSF";
+const std::string SAIdxSF::_INCR = "INCR";
 
 SAIdxSF::SAIdxSF(const std::string &aName)
     : BaseSF(_CT, aName), m_maxR(2.0), m_bFlexRec(false), m_lig_0(0.0),

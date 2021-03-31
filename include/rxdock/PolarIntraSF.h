@@ -25,9 +25,9 @@ namespace rxdock {
 class PolarIntraSF : public BaseIntraSF, public PolarSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _ATTR;
+  static const std::string _ATTR;
 
   PolarIntraSF(const std::string &strName = "polar");
   virtual ~PolarIntraSF();

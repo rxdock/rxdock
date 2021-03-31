@@ -18,8 +18,8 @@
 using namespace rxdock;
 
 // Static data members
-std::string PolarIntraSF::_CT("PolarIntraSF");
-std::string PolarIntraSF::_ATTR("ATTR");
+const std::string PolarIntraSF::_CT = "PolarIntraSF";
+const std::string PolarIntraSF::_ATTR = "ATTR";
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second

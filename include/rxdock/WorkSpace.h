@@ -38,9 +38,9 @@ class BaseTransform; // Forward definition
 class WorkSpace : public Subject, public ParamHandler {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _NAME;
+  static const std::string _NAME;
 
   ////////////////////////////////////////
   // Constructors/destructors

@@ -26,31 +26,31 @@ namespace rxdock {
 class PolarSF : public virtual BaseSF, public virtual AnnotationHandler {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _INCR;
-  static std::string _R12FACTOR;
-  static std::string _R12INCR;
-  static std::string _DR12MIN;
-  static std::string _DR12MAX;
-  static std::string _A1;
-  static std::string _DA1MIN;
-  static std::string _DA1MAX;
-  static std::string _A2;
-  static std::string _DA2MIN;
-  static std::string _DA2MAX;
-  static std::string _INCMETAL;
-  static std::string _INCHBD;
-  static std::string _INCHBA;
-  static std::string _INCGUAN;
-  static std::string _GUAN_PLANE;
-  static std::string _ABS_DR12;
-  static std::string _LP_OSP2;
-  static std::string _LP_PHI;
-  static std::string _LP_DPHIMIN;
-  static std::string _LP_DPHIMAX;
-  static std::string _LP_DTHETAMIN;
-  static std::string _LP_DTHETAMAX;
+  static const std::string _INCR;
+  static const std::string _R12FACTOR;
+  static const std::string _R12INCR;
+  static const std::string _DR12MIN;
+  static const std::string _DR12MAX;
+  static const std::string _A1;
+  static const std::string _DA1MIN;
+  static const std::string _DA1MAX;
+  static const std::string _A2;
+  static const std::string _DA2MIN;
+  static const std::string _DA2MAX;
+  static const std::string _INCMETAL;
+  static const std::string _INCHBD;
+  static const std::string _INCHBA;
+  static const std::string _INCGUAN;
+  static const std::string _GUAN_PLANE;
+  static const std::string _ABS_DR12;
+  static const std::string _LP_OSP2;
+  static const std::string _LP_PHI;
+  static const std::string _LP_DPHIMIN;
+  static const std::string _LP_DPHIMAX;
+  static const std::string _LP_DTHETAMIN;
+  static const std::string _LP_DTHETAMAX;
 
   virtual ~PolarSF();
 

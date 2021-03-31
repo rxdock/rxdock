@@ -17,7 +17,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string DihedralIntraSF::_CT("DihedralIntraSF");
+const std::string DihedralIntraSF::_CT = "DihedralIntraSF";
 
 DihedralIntraSF::DihedralIntraSF(const std::string &strName)
     : BaseSF(_CT, strName) {

@@ -26,10 +26,10 @@ namespace rxdock {
 class BaseIdxSF : public virtual BaseSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _GRIDSTEP;
-  static std::string _BORDER;
+  static const std::string _GRIDSTEP;
+  static const std::string _BORDER;
 
   ////////////////////////////////////////
   // Constructors/destructors

@@ -16,7 +16,7 @@
 
 using namespace rxdock;
 
-std::string Genome::_CT("Genome");
+const std::string Genome::_CT = "Genome";
 
 Genome::Genome(ChromElement *pChr)
     : m_chrom(pChr->clone()), m_score(0.0), m_RWFitness(0.0) {

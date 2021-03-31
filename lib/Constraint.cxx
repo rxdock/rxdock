@@ -21,7 +21,7 @@
 using namespace rxdock;
 
 // initialization of the static data of Constraint
-std::string Constraint::_CT("Constraint");
+const std::string Constraint::_CT = "Constraint";
 unsigned int HeavyConstraint::counter =
     0; // 7 Feb 2005 (DM) new constraint type
 unsigned int HBAConstraint::counter = 0;

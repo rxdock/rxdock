@@ -61,7 +61,7 @@ void rxdock::SelectInteractionCenter::operator()(InteractionCenter *pIC) {
 }
 
 // Static data members
-std::string InteractionGrid::_CT("InteractionGrid");
+const std::string InteractionGrid::_CT = "InteractionGrid";
 
 ////////////////////////////////////////
 // Constructors/destructors

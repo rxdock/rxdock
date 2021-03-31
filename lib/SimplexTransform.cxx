@@ -30,20 +30,21 @@
 using namespace rxdock;
 
 // Static data member for class type
-std::string SimplexTransform::_CT("SimplexTransform");
+const std::string SimplexTransform::_CT = "SimplexTransform";
 // Parameter names
-std::string SimplexTransform::_MAX_CALLS("MAX_CALLS");
-std::string SimplexTransform::_NCYCLES("NCYCLES");
-std::string SimplexTransform::_STOPPING_STEP_LENGTH("STOPPING_STEP_LENGTH");
-std::string SimplexTransform::_PARTITION_DIST("PARTITION_DIST");
-std::string SimplexTransform::_STEP_SIZE("STEP_SIZE");
-std::string SimplexTransform::_CONVERGENCE("CONVERGENCE");
+const std::string SimplexTransform::_MAX_CALLS = "MAX_CALLS";
+const std::string SimplexTransform::_NCYCLES = "NCYCLES";
+const std::string SimplexTransform::_STOPPING_STEP_LENGTH =
+    "STOPPING_STEP_LENGTH";
+const std::string SimplexTransform::_PARTITION_DIST = "PARTITION_DIST";
+const std::string SimplexTransform::_STEP_SIZE = "STEP_SIZE";
+const std::string SimplexTransform::_CONVERGENCE = "CONVERGENCE";
 
-std::string &SimplexTransform::GetMaxCalls() { return _MAX_CALLS; }
+const std::string &SimplexTransform::GetMaxCalls() { return _MAX_CALLS; }
 
-std::string &SimplexTransform::GetNCycles() { return _NCYCLES; }
+const std::string &SimplexTransform::GetNCycles() { return _NCYCLES; }
 
-std::string &SimplexTransform::GetStepSize() { return _STEP_SIZE; }
+const std::string &SimplexTransform::GetStepSize() { return _STEP_SIZE; }
 
 ////////////////////////////////////////
 // Constructors/destructors

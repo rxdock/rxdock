@@ -14,7 +14,7 @@
 
 using namespace rxdock;
 
-std::string ChromPositionElement::_CT = "ChromPositionElement";
+const std::string ChromPositionElement::_CT = "ChromPositionElement";
 
 ChromPositionElement::ChromPositionElement(
     const Model *pModel, const DockingSite *pDockSite, double transStepSize,

@@ -15,7 +15,7 @@
 
 using namespace rxdock;
 
-std::string ChromOccupancyRefData::_CT = "ChromOccupancyRefData";
+const std::string ChromOccupancyRefData::_CT = "ChromOccupancyRefData";
 
 ChromOccupancyRefData::ChromOccupancyRefData(Model *pModel, double stepSize,
                                              double threshold)

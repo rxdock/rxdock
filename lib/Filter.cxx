@@ -26,7 +26,7 @@ const int CONT = -1;
 const int NEXT = 1;
 
 // Static data members
-std::string Filter::_CT("Filter");
+const std::string Filter::_CT = "Filter";
 ////////////////////////////////////////
 // Constructors/destructors
 

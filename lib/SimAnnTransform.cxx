@@ -59,32 +59,36 @@ double MCStats::Variance() const {
 double MCStats::AccRate() const { return float(_accepted) / float(_steps); }
 
 // Static data member for class type
-std::string SimAnnTransform::_CT("SimAnnTransform");
+const std::string SimAnnTransform::_CT = "SimAnnTransform";
 // Parameter names
-std::string SimAnnTransform::_START_T("START_T");
-std::string SimAnnTransform::_FINAL_T("FINAL_T");
-std::string SimAnnTransform::_BLOCK_LENGTH("BLOCK_LENGTH");
-std::string SimAnnTransform::_SCALE_CHROM_LENGTH("SCALE_CHROM_LENGTH");
-std::string SimAnnTransform::_NUM_BLOCKS("NUM_BLOCKS");
-std::string SimAnnTransform::_STEP_SIZE("STEP_SIZE");
-std::string SimAnnTransform::_MIN_ACC_RATE("MIN_ACC_RATE");
-std::string SimAnnTransform::_PARTITION_DIST("PARTITION_DIST");
-std::string SimAnnTransform::_PARTITION_FREQ("PARTITION_FREQ");
-std::string SimAnnTransform::_HISTORY_FREQ("HISTORY_FREQ");
+const std::string SimAnnTransform::_START_T = "START_T";
+const std::string SimAnnTransform::_FINAL_T = "FINAL_T";
+const std::string SimAnnTransform::_BLOCK_LENGTH = "BLOCK_LENGTH";
+const std::string SimAnnTransform::_SCALE_CHROM_LENGTH = "SCALE_CHROM_LENGTH";
+const std::string SimAnnTransform::_NUM_BLOCKS = "NUM_BLOCKS";
+const std::string SimAnnTransform::_STEP_SIZE = "STEP_SIZE";
+const std::string SimAnnTransform::_MIN_ACC_RATE = "MIN_ACC_RATE";
+const std::string SimAnnTransform::_PARTITION_DIST = "PARTITION_DIST";
+const std::string SimAnnTransform::_PARTITION_FREQ = "PARTITION_FREQ";
+const std::string SimAnnTransform::_HISTORY_FREQ = "HISTORY_FREQ";
 
-std::string &SimAnnTransform::GetStartT() { return _START_T; }
+const std::string &SimAnnTransform::GetStartT() { return _START_T; }
 
-std::string &SimAnnTransform::GetFinalT() { return _FINAL_T; }
+const std::string &SimAnnTransform::GetFinalT() { return _FINAL_T; }
 
-std::string &SimAnnTransform::GetBlockLength() { return _BLOCK_LENGTH; }
+const std::string &SimAnnTransform::GetBlockLength() { return _BLOCK_LENGTH; }
 
-std::string &SimAnnTransform::GetNumBlocks() { return _NUM_BLOCKS; }
+const std::string &SimAnnTransform::GetNumBlocks() { return _NUM_BLOCKS; }
 
-std::string &SimAnnTransform::GetStepSize() { return _STEP_SIZE; }
+const std::string &SimAnnTransform::GetStepSize() { return _STEP_SIZE; }
 
-std::string &SimAnnTransform::GetPartitionDist() { return _PARTITION_DIST; }
+const std::string &SimAnnTransform::GetPartitionDist() {
+  return _PARTITION_DIST;
+}
 
-std::string &SimAnnTransform::GetPartitionFreq() { return _PARTITION_FREQ; }
+const std::string &SimAnnTransform::GetPartitionFreq() {
+  return _PARTITION_FREQ;
+}
 
 ////////////////////////////////////////
 // Constructors/destructors

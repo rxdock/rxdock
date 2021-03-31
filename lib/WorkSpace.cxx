@@ -19,8 +19,8 @@
 using namespace rxdock;
 
 // Static data members
-std::string WorkSpace::_CT("WorkSpace");
-std::string WorkSpace::_NAME("NAME");
+const std::string WorkSpace::_CT = "WorkSpace";
+const std::string WorkSpace::_NAME = "NAME";
 
 ////////////////////////////////////////
 // Constructors/destructors

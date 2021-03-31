@@ -28,7 +28,7 @@ namespace geneticprogram {
 
 class GPFFCrossDock : public GPFitnessFunction {
 public:
-  static std::string _CT;
+  static const std::string _CT;
 
   void ReadTables(std::istream &, ReturnTypeArray &, ReturnTypeArray &);
   double CalculateFitness(GPGenomePtr, ReturnTypeArray &, ReturnTypeArray &,

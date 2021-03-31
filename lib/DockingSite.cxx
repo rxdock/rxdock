@@ -41,7 +41,7 @@ public:
 } // namespace rxdock
 
 // Static data members
-std::string DockingSite::_CT("DockingSite");
+const std::string DockingSite::_CT = "DockingSite";
 
 // STL predicate for selecting atoms within a defined distance range from
 // nearest cavity coords Uses precalculated distance grid

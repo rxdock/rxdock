@@ -23,7 +23,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string RealGrid::_CT("RealGrid");
+const std::string RealGrid::_CT = "RealGrid";
 
 ////////////////////////////////////////
 // Constructors/destructors

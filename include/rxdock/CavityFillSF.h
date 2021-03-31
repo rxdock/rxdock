@@ -24,7 +24,7 @@ namespace rxdock {
 class CavityFillSF : public BaseInterSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
   CavityFillSF(const std::string &strName = "cavity-fill");
   virtual ~CavityFillSF();

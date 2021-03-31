@@ -23,7 +23,7 @@ namespace rxdock {
 class ChromOccupancyElement : public ChromElement {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Sole constructor
   RBTDLL_EXPORT ChromOccupancyElement(Model *pModel, double stepSize,
                                       double threshold);

@@ -24,7 +24,7 @@ namespace rxdock {
 
 class SFFactory {
   // Parameter name which identifies a scoring function definition
-  static std::string _SF;
+  static const std::string _SF;
 
 public:
   ////////////////////////////////////////

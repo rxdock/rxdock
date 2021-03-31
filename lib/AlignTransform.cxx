@@ -20,10 +20,10 @@
 using namespace rxdock;
 
 // Static data member for class type
-std::string AlignTransform::_CT("AlignTransform");
+const std::string AlignTransform::_CT = "AlignTransform";
 // Parameter names
-std::string AlignTransform::_COM("COM");
-std::string AlignTransform::_AXES("AXES");
+const std::string AlignTransform::_COM = "COM";
+const std::string AlignTransform::_AXES = "AXES";
 
 ////////////////////////////////////////
 // Constructors/destructors

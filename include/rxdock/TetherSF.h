@@ -22,9 +22,9 @@ namespace rxdock {
 class TetherSF : public BaseInterSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _REFERENCE_FILE;
+  static const std::string _REFERENCE_FILE;
 
   TetherSF(const std::string &strName = "tether");
   virtual ~TetherSF();

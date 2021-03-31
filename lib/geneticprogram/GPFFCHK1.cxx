@@ -29,7 +29,7 @@
 using namespace rxdock;
 using namespace rxdock::geneticprogram;
 
-std::string GPFFCHK1::_CT("GPFFCHK1");
+const std::string GPFFCHK1::_CT = "GPFFCHK1";
 
 void GPFFCHK1::ReadTables(std::istream &in, ReturnTypeArray &it,
                           ReturnTypeArray &sft) {

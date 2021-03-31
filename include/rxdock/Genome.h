@@ -24,7 +24,7 @@ class BaseSF;
 
 class Genome {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   // Sole constructor accepting an existing chromosome.
   // A clone of the existing chromosome is stored,
   // and is deleted in the Genome destructor

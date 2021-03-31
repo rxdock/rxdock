@@ -19,10 +19,10 @@
 using namespace rxdock;
 
 // Static data members
-std::string BaseObject::_CT("BaseObject");
-std::string BaseObject::_CLASS("CLASS");
-std::string BaseObject::_NAME("NAME");
-std::string BaseObject::_ENABLED("ENABLED");
+const std::string BaseObject::_CT = "BaseObject";
+const std::string BaseObject::_CLASS = "CLASS";
+const std::string BaseObject::_NAME = "NAME";
+const std::string BaseObject::_ENABLED = "ENABLED";
 
 ////////////////////////////////////////
 // Constructors/destructors

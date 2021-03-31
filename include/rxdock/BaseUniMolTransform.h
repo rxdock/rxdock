@@ -23,7 +23,7 @@ namespace rxdock {
 class BaseUniMolTransform : public BaseTransform {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~BaseUniMolTransform();

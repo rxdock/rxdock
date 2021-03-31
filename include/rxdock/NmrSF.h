@@ -24,10 +24,10 @@ namespace rxdock {
 class NmrSF : public BaseInterSF, public BaseIdxSF {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _FILENAME; // Nmr restraint file name
-  static std::string
+  static const std::string _FILENAME; // Nmr restraint file name
+  static const std::string
       _QUADRATIC; // True = quadratic penalty function; false = linear
 
   NmrSF(const std::string &strName = "nmr");

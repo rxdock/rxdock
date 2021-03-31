@@ -28,11 +28,11 @@ class WorkSpace; // forward definition
 class BaseObject : public ParamHandler, public Observer, public RequestHandler {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _CLASS;
-  static std::string _NAME;
-  static std::string _ENABLED;
+  static const std::string _CLASS;
+  static const std::string _NAME;
+  static const std::string _ENABLED;
 
   ////////////////////////////////////////
   // Constructors/destructors

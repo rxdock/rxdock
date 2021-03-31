@@ -19,10 +19,10 @@
 
 using namespace rxdock;
 
-std::string Context::_CT("Context");
-// std::string StringContext::_CT("StringContext");
-// std::string CellContext::_CT("CellContext");
-std::string Vble::_CT("Vble");
+const std::string Context::_CT = "Context";
+// const std::string StringContext::_CT = "StringContext";
+// const std::string CellContext::_CT = "CellContext";
+const std::string Vble::_CT = "Vble";
 
 Context::Context() {
   LOG_F(2, "Context base context constructor");

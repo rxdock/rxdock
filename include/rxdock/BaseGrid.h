@@ -27,7 +27,7 @@ namespace rxdock {
 class BaseGrid {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
 
   ////////////////////////////////////////
   // Constructors/destructors

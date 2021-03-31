@@ -28,7 +28,7 @@ class FilterExpressionVisitor;
 
 class FilterExpression {
 public:
-  static std::string _CT;
+  static const std::string _CT;
   virtual void Print() = 0;
   virtual void Accept(FilterExpressionVisitor &) = 0;
   virtual int GetNOps() = 0;

@@ -27,16 +27,16 @@ class AromIdxSF : public BaseInterSF,
                   public AnnotationHandler {
 public:
   // Class type string
-  static std::string _CT;
+  static const std::string _CT;
   // Parameter names
-  static std::string _INCR;
-  static std::string _R12;
-  static std::string _DR12MIN;
-  static std::string _DR12MAX;
-  static std::string _DAMIN;
-  static std::string _DAMAX;
+  static const std::string _INCR;
+  static const std::string _R12;
+  static const std::string _DR12MIN;
+  static const std::string _DR12MAX;
+  static const std::string _DAMIN;
+  static const std::string _DAMAX;
   // DM 12 Jun 2002 - score threshold used for counting aromatic interactions
-  static std::string _THRESHOLD;
+  static const std::string _THRESHOLD;
 
   AromIdxSF(const std::string &strName = "arom");
   virtual ~AromIdxSF();

@@ -18,7 +18,7 @@
 using namespace rxdock;
 
 // Static data members
-std::string SiteMapper::_CT("SiteMapper");
+const std::string SiteMapper::_CT = "SiteMapper";
 
 ////////////////////////////////////////
 // Constructors/destructors
