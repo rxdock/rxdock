@@ -136,7 +136,6 @@ TEST_F(OccupancyTest, VdwSFSolventModes) {
 TEST_F(OccupancyTest, FlexAtomFactoryReceptor) {
   int expected[2][3] = {{2034, 10, 0}, {2044, 0, 0}};
   ModelPtr spReceptor = m_workSpace->GetReceptor();
-  bool isTestOK = true;
   // Test two modes:
   // mode 0 is as read from PRM file (flex OH/NH3+)
   // mode 1 is fixed receptor
@@ -158,12 +157,10 @@ TEST_F(OccupancyTest, FlexAtomFactoryReceptor) {
     //  std::cout << "Tethered: " << (*iter)->GetAtomName() << ": " <<
     //  (*iter)->GetUser1Value() << std::endl;
     //}
-    if ((nFixed != expected[mode][0]) || (nTethered != expected[mode][1]) ||
-        (nFree != expected[mode][2])) {
-      isTestOK = false;
-    }
+    ASSERT_EQ(nFixed, expected[mode][0]);
+    ASSERT_EQ(nTethered, expected[mode][1]);
+    ASSERT_EQ(nFree, expected[mode][2]);
   }
-  ASSERT_TRUE(isTestOK);
 }
 
 // 6) Checks the results of FlexAtomFactory for solvent flexibility modes
@@ -172,13 +169,11 @@ TEST_F(OccupancyTest, FlexAtomFactorySolvent) {
   // for each value of model flexibility mode
   int expected[9][3] = {{3, 0, 0}, {0, 3, 0}, {0, 3, 0}, {0, 3, 0}, {0, 3, 0},
                         {0, 3, 0}, {0, 0, 3}, {0, 0, 3}, {0, 0, 3}};
-  bool isTestOK = false;
   ModelList solventList = m_workSpace->GetSolvent();
   if (!solventList.empty()) {
     ModelPtr solvent = solventList.front();
-    isTestOK = CheckFlexAtomFactory(solventList.front(), expected);
+    CheckFlexAtomFactory(solventList.front(), expected);
   }
-  ASSERT_TRUE(isTestOK);
 }
 
 // 7) Checks the results of FlexAtomFactory for ligand flexibility modes
@@ -188,12 +183,10 @@ TEST_F(OccupancyTest, FlexAtomFactoryLigand) {
   int expected[9][3] = {{0, 0, 44}, {0, 0, 44}, {0, 0, 44},
                         {0, 0, 44}, {0, 0, 44}, {0, 0, 44},
                         {0, 0, 44}, {0, 0, 44}, {0, 0, 44}};
-  bool isTestOK = false;
   ModelPtr spLigand = m_workSpace->GetLigand();
   if (!spLigand.Null()) {
-    isTestOK = CheckFlexAtomFactory(spLigand, expected);
+    CheckFlexAtomFactory(spLigand, expected);
   }
-  ASSERT_TRUE(isTestOK);
 }
 
 double OccupancyTest::CompareScoresForDisabledAndNoSolvent() {
@@ -226,8 +219,7 @@ double OccupancyTest::CompareScoresForDisabledAndNoSolvent() {
   return retVal;
 }
 
-bool OccupancyTest::CheckFlexAtomFactory(Model *pModel, int expected[9][3]) {
-  bool retVal = true;
+void OccupancyTest::CheckFlexAtomFactory(Model *pModel, int expected[9][3]) {
   if (pModel) {
     FlexData *pFlexData = pModel->GetFlexData();
     FlexAtomFactory flexAtomFactory;
@@ -259,13 +251,11 @@ bool OccupancyTest::CheckFlexAtomFactory(Model *pModel, int expected[9][3]) {
       //  std::cout << "Tethered: " << (*iter)->GetAtomName() << ": " <<
       //  (*iter)->GetUser1Value() << std::endl;
       //}
-      if ((nFixed != expected[mode][0]) || (nTethered != expected[mode][1]) ||
-          (nFree != expected[mode][2])) {
-        retVal = false;
-      }
+      ASSERT_EQ(nFixed, expected[mode][0]);
+      ASSERT_EQ(nTethered, expected[mode][1]);
+      ASSERT_EQ(nFree, expected[mode][2]);
     }
   }
-  return retVal;
 }
 
 double OccupancyTest::CompareScoresForSolventModes() {

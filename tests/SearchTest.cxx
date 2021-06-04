@@ -102,14 +102,11 @@ TEST_F(SearchTest, GA) {
   spTransformAgg->Add(pRandPop);
   spTransformAgg->Add(pGA);
   m_workSpace->SetTransform(spTransformAgg);
-  bool isOK(true);
   try {
-    m_workSpace->Run();
+    ASSERT_NO_THROW(m_workSpace->Run());
   } catch (Error &e) {
     std::cout << e.Message() << std::endl;
-    isOK = false;
   }
-  ASSERT_TRUE(isOK);
 }
 
 // 4 Run a sample Simplex
@@ -123,14 +120,11 @@ TEST_F(SearchTest, Simplex) {
   // spTransformAgg->Add(pRandPop);
   spTransformAgg->Add(pSimplex);
   m_workSpace->SetTransform(spTransformAgg);
-  bool isOK(true);
   try {
-    m_workSpace->Run();
+    ASSERT_NO_THROW(m_workSpace->Run());
   } catch (Error &e) {
     std::cout << e.Message() << std::endl;
-    isOK = false;
   }
-  ASSERT_TRUE(isOK);
 }
 
 // 5 Run a sample simulated annealing
@@ -144,15 +138,12 @@ TEST_F(SearchTest, SimAnn) {
   pSimAnn->SetParameter(SimAnnTransform::GetPartitionDist(), 0.0);
   pSimAnn->SetParameter(SimAnnTransform::GetPartitionFreq(), 0);
   m_workSpace->SetTransform(pSimAnn);
-  bool isOK(true);
   try {
-    m_workSpace->Run();
+    ASSERT_NO_THROW(m_workSpace->Run());
   } catch (Error &e) {
     std::cout << e.Message() << std::endl;
-    isOK = false;
   }
   delete pSimAnn;
-  ASSERT_TRUE(isOK);
 }
 
 // 6 Check we can reload solvent coords from ligand SD file
@@ -164,7 +155,6 @@ TEST_F(SearchTest, Restart) {
   pSimplex->SetParameter(SimplexTransform::GetStepSize(), 1.0);
   spTransformAgg->Add(pSimplex);
   m_workSpace->SetTransform(spTransformAgg);
-  bool isOK(true);
   double finalScore(0.0);
   double restartScore(0.0);
   try {
@@ -172,8 +162,8 @@ TEST_F(SearchTest, Restart) {
     MolecularFileSinkPtr spMdlFileSink(
         new MdlFileSink("restart.sd", ModelPtr()));
     m_workSpace->SetSink(spMdlFileSink);
-    m_workSpace->Run();
-    m_workSpace->Save();
+    ASSERT_NO_THROW(m_workSpace->Run());
+    ASSERT_NO_THROW(m_workSpace->Save());
     finalScore = m_workSpace->GetSF()->Score();
     // Reload the receptor, minimised ligand and solvent
     std::string prmFileName = GetDataFileName("", "1YET.prm");
@@ -181,12 +171,15 @@ TEST_F(SearchTest, Restart) {
     MolecularFileSourcePtr spMdlFileSource(
         new MdlFileSource("restart.sd", true, true, true));
     // Ligand segment is always called H, solvent will be H2, H3 etc.
-    spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H"));
+    ASSERT_NO_THROW(
+        spMdlFileSource->SetSegmentFilterMap(ConvertStringToSegmentMap("H")));
     PRMFactory prmFactory(spPrmSource, m_workSpace->GetDockingSite());
-    m_workSpace->SetReceptor(prmFactory.CreateReceptor());
-    m_workSpace->SetLigand(prmFactory.CreateLigand(spMdlFileSource));
-    m_workSpace->SetSolvent(prmFactory.CreateSolvent());
-    m_workSpace->UpdateModelCoordsFromChromRecords(spMdlFileSource);
+    ASSERT_NO_THROW(m_workSpace->SetReceptor(prmFactory.CreateReceptor()));
+    ASSERT_NO_THROW(
+        m_workSpace->SetLigand(prmFactory.CreateLigand(spMdlFileSource)));
+    ASSERT_NO_THROW(m_workSpace->SetSolvent(prmFactory.CreateSolvent()));
+    ASSERT_NO_THROW(
+        m_workSpace->UpdateModelCoordsFromChromRecords(spMdlFileSource));
     restartScore = m_workSpace->GetSF()->Score();
     // StringVariantMap scoreMap;
     // m_workSpace->GetSF()->ScoreMap(scoreMap);
@@ -198,8 +191,6 @@ TEST_F(SearchTest, Restart) {
     std::cout << "Restart score = " << restartScore << std::endl;
   } catch (Error &e) {
     std::cout << e.Message() << std::endl;
-    isOK = false;
   }
-  ASSERT_TRUE(isOK);
   ASSERT_LT(std::fabs(restartScore - finalScore), 0.01);
 }
