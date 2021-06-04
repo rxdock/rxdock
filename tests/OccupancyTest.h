@@ -32,7 +32,7 @@ protected:
   // Helper functions
   double CompareScoresForDisabledAndNoSolvent();
   double CompareScoresForSolventModes();
-  bool CheckFlexAtomFactory(Model *pModel, int expected[9][3]);
+  void CheckFlexAtomFactory(Model *pModel, int expected[9][3]);
   BiMolWorkSpacePtr m_workSpace;
   ModelList m_solventList;
 };

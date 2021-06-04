@@ -259,13 +259,15 @@ TEST_F(ChromTest, NullCrossover) {
   ChromElementPtr clone2 = m_chrom_1koc->clone();
   ChromElementPtr clone3 = m_chrom_1koc->clone();
   ChromElementPtr clone4 = m_chrom_1koc->clone();
-  bool isEqualBeforeXOver =
-      (*clone1 == *clone2) && (*clone1 == *clone3) && (*clone1 == *clone4);
+  // is equal before crossover
+  ASSERT_EQ(*clone1, *clone2);
+  ASSERT_EQ(*clone1, *clone3);
+  ASSERT_EQ(*clone1, *clone4);
   Crossover(clone1, clone2, clone3, clone4);
-  bool isEqualAfterXOver =
-      (*clone1 == *clone2) && (*clone1 == *clone3) && (*clone1 == *clone4);
-  ASSERT_TRUE(isEqualBeforeXOver);
-  ASSERT_TRUE(isEqualAfterXOver);
+  // is equal after crossover
+  ASSERT_EQ(*clone1, *clone2);
+  ASSERT_EQ(*clone1, *clone3);
+  ASSERT_EQ(*clone1, *clone4);
 }
 
 // 17) Check that conversion from quaternion to Euler angles and back
@@ -311,16 +313,15 @@ TEST_F(ChromTest, CompareWithNullChrom) {
 // 20) Check that Compare() after a single mutation never returns greater than
 // the relative mutation distance (loops over 10000 repeats)
 TEST_F(ChromTest, CompareAfterMutate) {
-  bool isOK(true);
   Rand &rand = GetRandInstance();
-  for (int i = 0; (i < 10000) && isOK; i++) {
+  for (int i = 0; i < 10000; i++) {
     ChromElementPtr clone = m_chrom_1koc->clone();
     double mutationDistance = rand.GetRandom01();
     clone->Mutate(mutationDistance);
     double cmp = m_chrom_1koc->Compare(*clone);
-    isOK = (cmp >= 0.0) && (cmp <= mutationDistance);
+    ASSERT_GE(cmp, 0.0);
+    ASSERT_LE(cmp, mutationDistance);
   }
-  ASSERT_TRUE(isOK);
 }
 
 // 21) Test operator== with modified _THRESHOLD
@@ -386,16 +387,14 @@ TEST_F(ChromTest, PopulationRWFitness) {
   PopulationPtr pop = new Population(m_chrom_1koc, popSize, m_SF);
   const GenomeList &genomeList = pop->GetGenomeList();
   double lastValue = 0.0;
-  bool isAscending = true;
-  for (GenomeListConstIter iter = genomeList.begin();
-       (iter != genomeList.end()) && isAscending; ++iter) {
+  for (GenomeListConstIter iter = genomeList.begin(); iter != genomeList.end();
+       ++iter) {
     double value = (*iter)->GetRWFitness();
     // std::cout << (*iter)->GetScore() << "\t" << (*iter)->GetRWFitness() <<
     // std::endl;
-    isAscending = (value >= lastValue);
+    ASSERT_GE(value, lastValue);
     lastValue = value;
   }
-  ASSERT_TRUE(isAscending);
   ASSERT_LT(std::fabs(lastValue - 1.0), TINY);
 }
 
@@ -437,17 +436,15 @@ TEST_F(ChromTest, PopulationGAstep) {
   bool isOK = true;
   try {
     for (int i = 0; (i < nIter) && isOK; ++i) {
-      pop->GAstep(nReplicates, relStepSize, equalityThreshold, pcross, xovermut,
-                  cmutate);
+      ASSERT_NO_THROW(pop->GAstep(nReplicates, relStepSize, equalityThreshold,
+                                  pcross, xovermut, cmutate));
       double score = pop->Best()->GetScore();
-      isOK = (score >= lastScore);
+      ASSERT_GE(score, lastScore);
       lastScore = score;
     }
   } catch (Error &e) {
     std::cout << e.Message() << std::endl;
-    isOK = false;
   }
-  ASSERT_TRUE(isOK);
 }
 
 // 29) Checks the behaviour of Model::GetChrom if flex data has not been
