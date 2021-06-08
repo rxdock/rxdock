@@ -164,6 +164,7 @@ TEST_F(SearchTest, Restart) {
     m_workSpace->SetSink(spMdlFileSink);
     ASSERT_NO_THROW(m_workSpace->Run());
     ASSERT_NO_THROW(m_workSpace->Save());
+    ASSERT_NE(m_workSpace->GetSF(), nullptr);
     finalScore = m_workSpace->GetSF()->Score();
     // Reload the receptor, minimised ligand and solvent
     std::string prmFileName = GetDataFileName("", "1YET.prm");
