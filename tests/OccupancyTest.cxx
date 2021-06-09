@@ -22,7 +22,7 @@ void OccupancyTest::SetUp() {
   try {
     // Create the docking site, receptor, and ligand objects
     const std::string &wsName = "1YET";
-    std::string prmFileName = GetDataFileName("", wsName + ".prm");
+    std::string prmFileName = GetDataFileName("", wsName + ".json");
     std::string ligFileName = GetDataFileName("", wsName + "_c.sd");
     std::string dockingSiteFileName =
         GetDataFileName("", wsName + "-docking-site.json");

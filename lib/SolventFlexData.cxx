@@ -14,8 +14,8 @@
 
 using namespace rxdock;
 
-const std::string &SolventFlexData::_OCCUPANCY = "OCCUPANCY";
-const std::string &SolventFlexData::_OCCUPANCY_STEP = "OCCUPANCY_STEP";
+const std::string &SolventFlexData::_OCCUPANCY = "occupancy";
+const std::string &SolventFlexData::_OCCUPANCY_STEP = "occupancy-step";
 
 SolventFlexData::SolventFlexData(DockingSite *pDockSite)
     : LigandFlexData(pDockSite) {

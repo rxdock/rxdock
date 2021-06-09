@@ -88,11 +88,13 @@ protected:
 
 private:
   // Private data
+  std::string m_inputFileName;
   std::string m_strTitle;
   std::string m_strVersion;
   StringVariantMap m_paramsMap;
   std::vector<std::string> m_sectionNames; // List(vector) of section names
   std::string m_strSection;                // Current section
+  bool m_json;
 };
 
 // useful typedefs

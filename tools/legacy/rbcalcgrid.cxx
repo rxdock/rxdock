@@ -101,10 +101,10 @@ int main(int argc, char *argv[]) {
 
   // Command line arguments and default values
   std::string strSuffix(".json");
-  std::string strReceptorPrmFile;             // Receptor param file
-  std::string strSFFile("calcgrid_attr.prm"); // Scoring function file
-  double gs(0.5);                             // grid step
-  double border(1.0);                         // grid border around docking site
+  std::string strReceptorPrmFile;                   // Receptor param file
+  std::string strSFFile("vdw-potential-attr.json"); // Scoring function file
+  double gs(0.5);                                   // grid step
+  double border(1.0); // grid border around docking site
 
   // Brief help message
   if (argc == 1) {
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
            "site params)"
         << std::endl;
     std::cout << "\t\t-p<SFPrmFile> - scoring function param file (either "
-                 "calcgrid_vdw1.prm or calcgrid_vdw5.prm)"
+                 "vdw-potential-ecut-1.json or vdw-potential-ecut-5.json)"
               << std::endl;
     std::cout << "\t\t-g<GridStep> - grid step (default=0.5A)" << std::endl;
     std::cout

@@ -19,13 +19,13 @@ using namespace rxdock;
 
 // Static data members
 const std::string AromIdxSF::_CT = "AromIdxSF";
-const std::string AromIdxSF::_INCR = "INCR";
-const std::string AromIdxSF::_R12 = "R12";
-const std::string AromIdxSF::_DR12MIN = "DR12MIN";
-const std::string AromIdxSF::_DR12MAX = "DR12MAX";
-const std::string AromIdxSF::_DAMIN = "DAMIN";
-const std::string AromIdxSF::_DAMAX = "DAMAX";
-const std::string AromIdxSF::_THRESHOLD = "THRESHOLD";
+const std::string AromIdxSF::_INCR = "increment";
+const std::string AromIdxSF::_R12 = "r12";
+const std::string AromIdxSF::_DR12MIN = "dr12-minimum";
+const std::string AromIdxSF::_DR12MAX = "dr12-maximum";
+const std::string AromIdxSF::_DAMIN = "da-minimum";
+const std::string AromIdxSF::_DAMAX = "da-maximum";
+const std::string AromIdxSF::_THRESHOLD = "threshold";
 
 AromIdxSF::AromIdxSF(const std::string &strName)
     : BaseSF(_CT, strName), m_R12(3.5), m_DR12Min(0.25), m_DR12Max(0.6),

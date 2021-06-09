@@ -19,7 +19,7 @@
 using namespace rxdock;
 
 // Parameter name which identifies a scoring function definition
-const std::string SiteMapperFactory::_MAPPER = "SITE_MAPPER";
+const std::string SiteMapperFactory::_MAPPER = "site-mapper";
 
 ////////////////////////////////////////
 // Constructors/destructors

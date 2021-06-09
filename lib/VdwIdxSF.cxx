@@ -22,11 +22,12 @@ using namespace rxdock;
 
 // Static data members
 const std::string VdwIdxSF::_CT = "VdwIdxSF";
-const std::string VdwIdxSF::_THRESHOLD_ATTR = "THRESHOLD_ATTR";
-const std::string VdwIdxSF::_THRESHOLD_REP = "THRESHOLD_REP";
-const std::string VdwIdxSF::_ANNOTATION_LIPO = "ANNOTATION_LIPO";
-const std::string VdwIdxSF::_ANNOTATE = "ANNOTATE";
-const std::string VdwIdxSF::_FAST_SOLVENT = "FAST_SOLVENT";
+const std::string VdwIdxSF::_THRESHOLD_ATTR = "attribute-threshold";
+const std::string VdwIdxSF::_THRESHOLD_REP = "representation-threshold";
+const std::string VdwIdxSF::_ANNOTATION_LIPO =
+    "lipophilic-annotation-threshold";
+const std::string VdwIdxSF::_ANNOTATE = "enable-annotations";
+const std::string VdwIdxSF::_FAST_SOLVENT = "fast-solvent";
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second

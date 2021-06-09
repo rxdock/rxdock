@@ -19,8 +19,8 @@ using namespace rxdock;
 
 // Static data members
 const std::string BaseSF::_CT = "BaseSF";
-const std::string BaseSF::_WEIGHT = "WEIGHT";
-const std::string BaseSF::_RANGE = "RANGE";
+const std::string BaseSF::_WEIGHT = "weight";
+const std::string BaseSF::_RANGE = "range";
 const std::string BaseSF::_SYSTEM_SF = "rxdock.score.system";
 const std::string BaseSF::_INTRA_SF = "rxdock.score.intra";
 

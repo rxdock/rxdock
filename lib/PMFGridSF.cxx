@@ -21,8 +21,8 @@
 using namespace rxdock;
 
 const std::string PMFGridSF::_CT = "PMFGridSF";
-const std::string PMFGridSF::_GRID = "GRID";
-const std::string PMFGridSF::_SMOOTHED = "SMOOTHED";
+const std::string PMFGridSF::_GRID = "grid";
+const std::string PMFGridSF::_SMOOTHED = "smoothed";
 
 PMFGridSF::PMFGridSF(const std::string &strName)
     : BaseSF(_CT, strName), m_bSmoothed(true) {

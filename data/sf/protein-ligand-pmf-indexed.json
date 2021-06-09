@@ -1,0 +1,39 @@
+{
+  "media-type": "application/vnd.rxdock.scoring-function",
+  "title": "Protein-ligand PMF (indexed version)",
+  "version": "0.1.0",
+  "_comment_const1": "Constant scoring function",
+  "_comment_const2": "Represents loss of translation, rotational entropy of ligand",
+  "const": {
+    "scoring-function": "ConstSF",
+    "_comment_weight": "Free-energy weighting",
+    "weight": 5.4
+  },
+  "_comment_rot1": "Rotational scoring function",
+  "_comment_rot2": "Represents loss of torsional entropy of ligand",
+  "rot": {
+    "scoring-function": "RotSF",
+    "_comment_weight": "Free-energy weighting",
+    "weight": 1
+  },
+  "_comment_setup-pmf": "Setup PMF atom types",
+  "setup-pmf": {
+    "scoring-function": "SetupPMFSF"
+  },
+  "_comment_pmf": "Intermolecular PMF",
+  "pmf": {
+    "scoring-function": "PMFIdxSF",
+    "_comment_slope": "slope of the repulsive short-range linear term",
+    "slope": -3,
+    "_comment_C-C-cutoff": "count only shorter C_receptor - C_ligand interactions",
+    "C-C-cutoff": 6,
+    "_comment_overall-cutoff": "value of overall cutoff (similar to C cutoff but for all types)",
+    "_disabled_overall-cutoff": 9,
+    "weight": 1,
+    "_comment_grid-step": "indexed grid distance (need not be dense)",
+    "grid-step": 1,
+    "border": 1,
+    "_comment_pmf-directory": "${RBT_ROOT/}data/pmf where the .pmfs are",
+    "pmf-directory": "data/pmf"
+  }
+}

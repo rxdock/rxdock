@@ -1,0 +1,18 @@
+{
+  "media-type": "application/vnd.rxdock.parameters",
+  "title": "vdw potential (4-8 functional form, ECUT = 5.0)",
+  "version": "0.1.0",
+  "scoring-function": "VdwIdxSF",
+  "_comment_weight": "Free-energy weighting",
+  "weight": 1,
+  "_comment_use-4-8": "true => Use 4-8 potential (Ref (16))",
+  "use-4-8": true,
+  "_comment_use-tripos": "false => IP/POL method for k_i,j",
+  "use-tripos": false,
+  "_comment_rmax": "Truncate at rmax*rmin",
+  "rmax": 1.5,
+  "_comment_ecut": "Switch to quadratic at E=ecut*kij",
+  "ecut": 5,
+  "_comment_e0": "At r=0, E=e0*ecut*kij",
+  "e0": 1.5
+}

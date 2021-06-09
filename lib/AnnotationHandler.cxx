@@ -15,7 +15,7 @@
 using namespace rxdock;
 
 // Static data members
-const std::string AnnotationHandler::_ANNOTATION_FIELD = "ANNOTATIONS";
+const std::string AnnotationHandler::_ANNOTATION_FIELD = "annotations";
 
 ////////////////////////////////////////
 // Constructors/destructors

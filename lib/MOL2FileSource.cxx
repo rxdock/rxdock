@@ -38,8 +38,8 @@ MOL2FileSource::MOL2FileSource(const std::string &fileName, bool bImplHydrogens)
       m_bImplHydrogens(bImplHydrogens) {
   m_spElementData = ElementFileSourcePtr(
       new ElementFileSource(GetDataFileName("data", "elements.json")));
-  m_spParamSource = ParameterFileSourcePtr(
-      new ParameterFileSource(GetDataFileName("data/sf", "IonicAtoms.prm")));
+  m_spParamSource = ParameterFileSourcePtr(new ParameterFileSource(
+      GetDataFileName("data", "ionic-atom-charges.json")));
   m_NL = 0; // make line counter zero
   // initialize MOLECULE descriptors
   nAtoms = nBonds = nSubstructures = nFeatures = nSets = 0;

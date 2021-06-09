@@ -32,13 +32,13 @@ using namespace rxdock;
 // Static data member for class type
 const std::string SimplexTransform::_CT = "SimplexTransform";
 // Parameter names
-const std::string SimplexTransform::_MAX_CALLS = "MAX_CALLS";
-const std::string SimplexTransform::_NCYCLES = "NCYCLES";
+const std::string SimplexTransform::_MAX_CALLS = "maximum-number-of-calls";
+const std::string SimplexTransform::_NCYCLES = "number-of-cycles";
 const std::string SimplexTransform::_STOPPING_STEP_LENGTH =
-    "STOPPING_STEP_LENGTH";
-const std::string SimplexTransform::_PARTITION_DIST = "PARTITION_DIST";
-const std::string SimplexTransform::_STEP_SIZE = "STEP_SIZE";
-const std::string SimplexTransform::_CONVERGENCE = "CONVERGENCE";
+    "stopping-step-length";
+const std::string SimplexTransform::_PARTITION_DIST = "partition-distance";
+const std::string SimplexTransform::_STEP_SIZE = "step-size";
+const std::string SimplexTransform::_CONVERGENCE = "convergence";
 
 const std::string &SimplexTransform::GetMaxCalls() { return _MAX_CALLS; }
 

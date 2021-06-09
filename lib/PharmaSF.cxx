@@ -22,10 +22,10 @@ using namespace rxdock;
 
 // Static data members
 const std::string PharmaSF::_CT = "PharmaSF";
-const std::string PharmaSF::_CONSTRAINTS_FILE = "CONSTRAINTS_FILE";
-const std::string PharmaSF::_OPTIONAL_FILE = "OPTIONAL_FILE";
-const std::string PharmaSF::_NOPT = "NOPT";
-const std::string PharmaSF::_WRITE_ERRORS = "WRITE_ERRORS";
+const std::string PharmaSF::_CONSTRAINTS_FILE = "constraints-file";
+const std::string PharmaSF::_OPTIONAL_FILE = "optional-file";
+const std::string PharmaSF::_NOPT = "number-of-optional-parameters";
+const std::string PharmaSF::_WRITE_ERRORS = "write-errors";
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second

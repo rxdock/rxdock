@@ -22,7 +22,7 @@ using namespace rxdock;
 
 // Static data members
 const std::string TetherSF::_CT = "TetherSF";
-const std::string TetherSF::_REFERENCE_FILE = "REFERENCE_FILE";
+const std::string TetherSF::_REFERENCE_FILE = "reference-file";
 
 // NB - Virtual base class constructor (BaseSF) gets called first,
 // implicit constructor for BaseInterSF is called second

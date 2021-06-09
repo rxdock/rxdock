@@ -56,7 +56,7 @@
 using namespace rxdock;
 
 // Parameter name which identifies a scoring function definition
-const std::string SFFactory::_SF = "SCORING_FUNCTION";
+const std::string SFFactory::_SF = "scoring-function";
 
 ////////////////////////////////////////
 // Constructors/destructors

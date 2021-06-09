@@ -26,6 +26,8 @@
 #include <fmt/format.h>
 #include <fmt/ostream.h>
 
+static const std::string _MAPPER = "mapper";
+
 int rxdock::operation::cavitySearch(std::string strReceptorPrmFile,
                                     bool readDockingSite, bool writeDockingSite,
                                     bool writeMOEGrid, bool writeInsightII,
@@ -46,7 +48,7 @@ int rxdock::operation::cavitySearch(std::string strReceptorPrmFile,
         GetDataFileName("data/receptors", strReceptorPrmFile)));
 
     // Create the receptor model from the file names in the parameter file
-    spRecepPrmSource->SetSection();
+    spRecepPrmSource->SetSection(PRMFactory::_REC_SECTION);
     PRMFactory prmFactory(spRecepPrmSource);
     ModelPtr spReceptor = prmFactory.CreateReceptor();
 
@@ -67,7 +69,7 @@ int rxdock::operation::cavitySearch(std::string strReceptorPrmFile,
     else {
       SiteMapperFactoryPtr spMapperFactory(new SiteMapperFactory());
       SiteMapperPtr spMapper =
-          spMapperFactory->CreateFromFile(spRecepPrmSource, "MAPPER");
+          spMapperFactory->CreateFromFile(spRecepPrmSource, _MAPPER);
       spMapper->Register(spWS);
       spWS->SetReceptor(spReceptor);
       fmt::print("Site mapper: {}\n", *spMapper);

@@ -1,0 +1,44 @@
+{
+  "media-type": "application/vnd.rxdock.parameters",
+  "title": "GELDANAMYCIN BOUND TO THE HSP90 GELDANAMYCIN-BINDING DOMAIN",
+  "version": "0.1.0",
+  "receptor": {
+    "_comment_file": "receptor coordinate and topology file",
+    "file": "R_1YET_protein.mol2",
+    "_comment_topology-file": "topology file for receptor",
+    "topology-file": "1YET_for_viewer.psf",
+    "_comment_coordinate-file": "coordinate file for receptor",
+    "coordinate-file": "1YET_for_viewer.crd",
+    "flexibility-distance": 3,
+    "dihedral-maximum-mutation-step": 10
+  },
+  "ligand": {
+    "translational-step": 2,
+    "rotational-step": 30,
+    "translational-mode": "free",
+    "rotational-mode": "free"
+  },
+  "solvent": {
+    "file": "P_1YET_watx_cav.pdb",
+    "translational-step": 0.1,
+    "rotational-step": 10,
+    "maximum-translation": 0.5,
+    "maximum-rotation": 30
+  },
+  "_comment_mapper": "cavity definition: reference ligand method",
+  "mapper": {
+    "site-mapper": "LigandSiteMapper",
+    "excluded-volume-radius-increment": 0,
+    "grid-step": 0.5,
+    "region-radius": 6,
+    "reference-molecule": "1YET_c.sd",
+    "small-sphere-radius": 1,
+    "minimum-cavity-volume": 100,
+    "maximum-cavities": 1
+  },
+  "_comment_cavity": "cavity restraint penalty",
+  "cavity": {
+    "scoring-function": "CavityGridSF",
+    "weight": 1
+  }
+}

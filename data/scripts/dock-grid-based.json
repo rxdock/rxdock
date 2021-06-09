@@ -1,0 +1,111 @@
+{
+  "media-type": "application/vnd.rxdock.run-script",
+  "title": "Free docking (grid-based VDW)",
+  "version": "0.1.0",
+  "rxdock.score": {
+    "inter": "intermolecular-grid-based.json",
+    "intra": "intra-ligand.json",
+    "system": "intra-target.json"
+  },
+  "set-slope-1": {
+    "transform": "NullTransform",
+    "_comment_weight@rxdock.score.restr.cavity": "Dock with a high penalty for leaving the cavity",
+    "weight@rxdock.score.restr.cavity": 5,
+    "_comment_weight@rxdock.score.intra.dihedral": "Gradually ramp up dihedral weight from 0.1->0.5",
+    "weight@rxdock.score.intra.dihedral": 0.1,
+    "_comment_enabled@rxdock.score.inter.vdw1": "Enable vdW grid with ECUT=1",
+    "enabled@rxdock.score.inter.vdw1": true,
+    "_comment_enabled@rxdock.score.inter.vdw5": "Disable vdW grid with ECUT=5",
+    "enabled@rxdock.score.inter.vdw5": false,
+    "_comment_enabled@rxdock.score.inter.vdw": "Disable indexed vdW",
+    "enabled@rxdock.score.inter.vdw": false
+  },
+  "random-population": {
+    "transform": "RandPopTransform",
+    "population-size": 50,
+    "scale-chromosome-length": true
+  },
+  "ga-slope-1": {
+    "transform": "GATransform",
+    "_comment_crossover-probability": "Prob. of crossover",
+    "crossover-probability": 0.4,
+    "_comment_crossover-mutation": "Cauchy mutation after each crossover",
+    "crossover-mutation": true,
+    "_comment_crossover-mutate": "True = Cauchy; False = Rectang. for regular mutations",
+    "crossover-mutate": false,
+    "_comment_step-size": "Max translational mutation",
+    "step-size": 1
+  },
+  "set-slope-3": {
+    "transform": "NullTransform",
+    "weight@rxdock.score.intra.dihedral": 0.2,
+    "ecut@rxdock.score.inter.vdw": 5,
+    "_comment_enabled@rxdock.score.inter.vdw1": "Disable vdW grid with ECUT=1",
+    "enabled@rxdock.score.inter.vdw1": false,
+    "_comment_enabled@rxdock.score.inter.vdw5": "Enable vdW grid with ECUT=5",
+    "enabled@rxdock.score.inter.vdw5": true
+  },
+  "ga-slope-3": {
+    "transform": "GATransform",
+    "_comment_crossover-probability": "Prob. of crossover",
+    "crossover-probability": 0.4,
+    "_comment_crossover-mutation": "Cauchy mutation after each crossover",
+    "crossover-mutation": true,
+    "_comment_crossover-mutate": "True = Cauchy; False = Rectang. for regular mutations",
+    "crossover-mutate": false,
+    "_comment_step-size": "Max torsional mutation",
+    "step-size": 1
+  },
+  "set-slope-5": {
+    "transform": "NullTransform",
+    "weight@rxdock.score.intra.dihedral": 0.3,
+    "ecut@rxdock.score.inter.vdw": 25,
+    "_comment_enabled@rxdock.score.inter.vdw5": "Disable vdW grid with ECUT=5",
+    "enabled@rxdock.score.inter.vdw5": false,
+    "_comment_enabled@rxdock.score.inter.vdw": "Enable indexed vdW",
+    "enabled@rxdock.score.inter.vdw": true
+  },
+  "ga-slope-5": {
+    "transform": "GATransform",
+    "_comment_crossover-probability": "Prob. of crossover",
+    "crossover-probability": 0.4,
+    "_comment_crossover-mutation": "Cauchy mutation after each crossover",
+    "crossover-mutation": true,
+    "_comment_crossover-mutate": "True = Cauchy; False = Rectang. for regular mutations",
+    "crossover-mutate": false,
+    "_comment_step-size": "Max torsional mutation",
+    "step-size": 1
+  },
+  "set-slope-10": {
+    "transform": "NullTransform",
+    "_comment_weight@rxdock.score.intra.dihedral": "Final dihedral weight matches SF file",
+    "weight@rxdock.score.intra.dihedral": 0.5,
+    "_comment_ecut@rxdock.score.inter.vdw": "Final ECUT matches SF file",
+    "ecut@rxdock.score.inter.vdw": 120
+  },
+  "monte-carlo-10K": {
+    "transform": "SimAnnTransform",
+    "start-temperature": 10,
+    "final-temperature": 10,
+    "number-of-blocks": 5,
+    "step-size": 0.1,
+    "minimum-metropolis-acceptance-rate": 0.25,
+    "partition-distance": 8,
+    "partition-frequency": 50,
+    "history-frequency": 0
+  },
+  "simplex": {
+    "transform": "SimplexTransform",
+    "maximum-number-of-calls": 200,
+    "number-of-cycles": 20,
+    "stopping-step-length": 0.001,
+    "partition-distance": 8,
+    "step-size": 1,
+    "convergence": 0.001
+  },
+  "final": {
+    "transform": "NullTransform",
+    "_comment_weight@rxdock.score.restr.cavity": "Revert to standard cavity penalty",
+    "weight@rxdock.score.restr.cavity": 1
+  }
+}

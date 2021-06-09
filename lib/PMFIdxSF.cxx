@@ -30,9 +30,9 @@ const unsigned int cPlStart =
 const unsigned int cPlVal = 2; // index value to get the PMF plateau value
 
 const std::string PMFIdxSF::_CT = "PMFIdxSF";
-const std::string PMFIdxSF::_PMFDIR = "PMFDIR";
-const std::string PMFIdxSF::_CC_CUTOFF = "CC_CUTOFF";
-const std::string PMFIdxSF::_SLOPE = "SLOPE";
+const std::string PMFIdxSF::_PMFDIR = "pmf-directory";
+const std::string PMFIdxSF::_CC_CUTOFF = "C-C-cutoff";
+const std::string PMFIdxSF::_SLOPE = "slope";
 
 double delta; // used for linear interpolation
 

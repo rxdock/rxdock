@@ -1,0 +1,82 @@
+{
+  "media-type": "application/vnd.rxdock.scoring-function",
+  "title": "Intermolecular scoring function (with SOLVATION, grid-based VDW)",
+  "version": "0.1.0",
+  "_comment_const1": "Constant scoring function",
+  "_comment_const2": "Represents loss of translation, rotational entropy of ligand",
+  "const": {
+    "scoring-function": "ConstSF",
+    "weight": 5.4
+  },
+  "_comment_rot1": "Rotational scoring function",
+  "_comment_rot2": "Represents loss of torsional entropy of ligand",
+  "rot": {
+    "scoring-function": "RotSF",
+    "weight": 1
+  },
+  "_comment_setup-polar": "Pseudo SFs for setting up atomic attributes for polar and lipo atoms",
+  "setup-polar": {
+    "scoring-function": "SetupPolarSF",
+    "radius": 5,
+    "norm": 25,
+    "power": 0.5,
+    "charge-factor": 0.5,
+    "guanidine-factor": 0.5
+  },
+  "_comment_polar": "Hydrogen-bond scoring function (also Metal-acceptor, C.cat - acceptor)",
+  "polar": {
+    "scoring-function": "PolarIdxSF",
+    "weight": 5,
+    "r12-factor": 1,
+    "r12-increment": 0.05,
+    "dr12-minimum": 0.25,
+    "dr12-maximum": 0.6,
+    "a1": 180,
+    "da1-minimum": 30,
+    "da1-maximum": 80,
+    "a2": 180,
+    "da2-minimum": 60,
+    "da2-maximum": 100,
+    "inc-metal": true,
+    "inc-HBD": true,
+    "inc-HBA": true,
+    "inc-guan": true,
+    "guan-plane": true,
+    "abs-dr12": true,
+    "grid-step": 0.5,
+    "range": 4.41,
+    "increment": 2.46,
+    "attractive": true,
+    "lp-osp2": true,
+    "lp-phi": 45,
+    "lp-dphi-minimum": 15,
+    "lp-dphi-maximum": 30,
+    "lp-dtheta-minimum": 20,
+    "lp-dtheta-maximum": 60
+  },
+  "_comment_vdw1": "vdW scoring functions",
+  "_comment_vdw2": "Two precalculated grids are loaded with different values of ECUT; each is initially disabled; we also load an indexed-grid version which is enabled",
+  "vdw1": {
+    "scoring-function": "VdwGridSF",
+    "weight": 1.5,
+    "grid": "_vdw1.grd",
+    "smoothed": false,
+    "enabled": false
+  },
+  "vdw5": {
+    "scoring-function": "VdwGridSF",
+    "weight": 1.5,
+    "grid": "_vdw5.grd",
+    "smoothed": false,
+    "enabled": false
+  },
+  "vdw": {
+    "scoring-function": "VdwIdxSF",
+    "weight": 1.5,
+    "use-4-8": false,
+    "use-tripos": false,
+    "rmax": 1.5,
+    "ecut": 120,
+    "e0": 1.5
+  }
+}

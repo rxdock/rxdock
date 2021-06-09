@@ -22,11 +22,26 @@ using namespace rxdock;
 // Constructors
 ParameterFileSource::ParameterFileSource(const char *fileName)
     : BaseFileSource(fileName) {
+  std::string name(fileName);
+  m_inputFileName = name;
+  std::string ext = name.substr(name.size() - 5, 5);
+  if (ext == ".json") {
+    m_json = true;
+  } else {
+    m_json = false;
+  }
   _RBTOBJECTCOUNTER_CONSTR_("ParameterFileSource");
 }
 
 ParameterFileSource::ParameterFileSource(const std::string &fileName)
     : BaseFileSource(fileName) {
+  m_inputFileName = fileName;
+  std::string ext = fileName.substr(fileName.size() - 5, 5);
+  if (ext == ".json") {
+    m_json = true;
+  } else {
+    m_json = false;
+  }
   _RBTOBJECTCOUNTER_CONSTR_("ParameterFileSource");
 }
 
@@ -143,85 +158,89 @@ void ParameterFileSource::SetSection(const std::string &strSection) {
 
 // Pure virtual in BaseFileSource - needs to be defined here
 void ParameterFileSource::Parse() {
-  const std::string strKey = "RBT_PARAMETER_FILE_V1.00";
-  const std::string strTitleKey = "TITLE ";
-  const std::string strVersionKey = "VERSION ";
-  const std::string strSectionKey = "SECTION ";
-  const std::string strEndSectionKey = "END_SECTION";
-
   // Only parse if we haven't already done so
   if (!m_bParsedOK) {
+    const std::string typeKey = "media-type";
+    const std::vector<std::string> expectedTypeValues{
+        "application/vnd.rxdock.parameters",
+        "application/vnd.rxdock.run-script",
+        "application/vnd.rxdock.scoring-function"};
+
     ClearParamsCache(); // Clear current cache
-    Read();             // Read the file
+    std::ifstream inputFile(m_inputFileName);
+    json params;
+    inputFile >> params;
+    inputFile.close();
 
     try {
-      FileRecListIter fileIter = m_lineRecs.begin();
-      FileRecListIter fileEnd = m_lineRecs.end();
+      // Check the file type
+      std::string actualTypeValue;
+      params.at(typeKey).get_to(actualTypeValue);
+      params.erase(typeKey);
+      if (std::find(expectedTypeValues.begin(), expectedTypeValues.end(),
+                    actualTypeValue) == expectedTypeValues.end())
+        throw FileParseError(
+            _WHERE_,
+            "Wrong value for " + typeKey + " in " + GetFileName() +
+                ", expected any of " +
+                fmt::format("{}", fmt::join(expectedTypeValues, ", ")));
 
-      //////////////////////////////////////////////////////////
-      // 1. Check for RBT string on line 1
-      if ((*fileIter).find(strKey) != 0)
-        throw FileParseError(_WHERE_, "Missing " + strKey + " string in " +
-                                          GetFileName());
+      // Load title
+      params.at("title").get_to(m_strTitle);
+      params.erase("title");
+      LOG_F(1, "ParameterFileSource::Parse: Title = ", m_strTitle);
 
-      //////////////////////////////////////////////////////////
-      // 2. Parse the rest of file
-      while (++fileIter != fileEnd) {
-        // Ignore blank lines and comment lines
-        if (((*fileIter).length() == 0) || ((*fileIter).at(0) == '#')) {
-          LOG_F(1, "ParameterFileSource::Parse: Comment record");
-          continue;
+      // Load version
+      params.at("version").get_to(m_strVersion);
+      params.erase("version");
+      LOG_F(1, "ParameterFileSource::Parse: Version = ", m_strVersion);
+
+      // Load elements
+      for (auto &section : params.items()) {
+        std::string sectionKey = section.key();
+        LOG_F(2,
+              "ParameterFileSource::Parse: section {} contains parameters {}",
+              sectionKey, section.value().dump());
+        if (sectionKey.rfind("_comment_", 0) == std::string::npos) {
+          AddSection(sectionKey);
+          for (auto &param : section.value().items()) {
+            if (param.key().rfind("_comment_", 0) == std::string::npos &&
+                param.key().rfind("_previous_", 0) == std::string::npos) {
+              std::string paramName = GetFullParameterName(param.key());
+              Variant paramVariant;
+              json paramValue = param.value();
+              if (paramValue.is_boolean()) {
+                paramVariant = paramValue.get<bool>();
+              } else if (paramValue.is_number()) {
+                paramVariant = paramValue.get<double>();
+              } else if (paramValue.is_string()) {
+                paramVariant = paramValue.get<std::string>();
+              } else if (paramValue.is_array()) {
+                paramVariant = paramValue.dump();
+              } else {
+                throw FileParseError(
+                    _WHERE_,
+                    "Wrong type for " + param.key() + " in " + GetFileName() +
+                        ", expected boolean, number, string, or array");
+              }
+              m_paramsMap[paramName] = paramVariant;
+              LOG_F(1, "ParameterFileSource::Parse: {} = {}", paramName,
+                    paramValue.dump());
+            } else {
+              LOG_F(1, "ParameterFileSource::Parse: not parsing {} = {}",
+                    param.key(), param.value());
+            }
+          }
+        } else {
+          LOG_F(1, "ParameterFileSource::Parse: not parsing {} = {}",
+                section.key(), section.value());
         }
-        // Check for Title record
-        else if ((*fileIter).find(strTitleKey) == 0) {
-          m_strTitle = *fileIter;
-          m_strTitle.erase(0, strTitleKey.length());
-          LOG_F(1, "ParameterFileSource::Parse: Title = ", m_strTitle);
-        }
-        // Check for Version record
-        else if ((*fileIter).find(strVersionKey) == 0) {
-          m_strVersion = *fileIter;
-          m_strVersion.erase(0, strVersionKey.length());
-          LOG_F(1, "ParameterFileSource::Parse: Version = ", m_strVersion);
-        }
-        // Check for Section record
-        else if ((*fileIter).find(strSectionKey) == 0) {
-          std::string strSection;
-          std::string strDummy;
-          std::istringstream istr(*fileIter);
-          istr >> strDummy >> strSection;
-          AddSection(strSection);
-        }
-        // Check for End Section record
-        else if ((*fileIter).find(strEndSectionKey) == 0) {
-          // Just have to set an empty section name to return to the
-          // default unnamed section
-          SetSection();
-        }
-        // Assume everything else is a Key=Parameter name, Value=parameter value
-        // pair
-        else {
-          std::string strParamName;
-          // DM 12 May 1999 - read as string then convert to variant
-          std::string strParamValue;
-          std::istringstream istr(*fileIter);
-          istr >> strParamName >> strParamValue;
-          // Prefix the parameter name with the section name and ::
-          // Hopefully, this will ensure unique parameter names between sections
-          strParamName = GetFullParameterName(strParamName);
-          m_paramsMap[strParamName] = Variant(strParamValue);
-          LOG_F(1, "ParameterFileSource::Parse: {} = {}", strParamName,
-                strParamValue);
-        }
+        SetSection();
       }
-      //////////////////////////////////////////////////////////
+
       // If we get this far everything is OK
       m_bParsedOK = true;
-      SetSection(); // Reset to the unnamed section, in case the final
-                    // END_SECTION record is missing
-    }
-
-    catch (Error &error) {
+    } catch (Error &error) {
       ClearParamsCache();
       throw; // Rethrow the Error
     }

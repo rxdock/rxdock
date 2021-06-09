@@ -1,0 +1,156 @@
+{
+  "media-type": "application/vnd.rxdock.parameters",
+  "title": "Receptor ionic atom definitions",
+  "version": "0.1.0",
+  "_comment_1": "Formal charges for RNA atoms",
+  "_comment_A/Ade": "adenine",
+  "A": {
+    "O1P": -0.5,
+    "O2P": -0.5
+  },
+  "ADE": {
+    "O1P": -0.5,
+    "O2P": -0.5
+  },
+  "_comment_C/Cyt": "cytosine",
+  "C": {
+    "O1P": -0.5,
+    "O2P": -0.5
+  },
+  "CYT": {
+    "O1P": -0.5,
+    "O2P": -0.5
+  },
+  "_comment_G/Gua": "guanine",
+  "G": {
+    "O1P": -0.5,
+    "O2P": -0.5
+  },
+  "GUA": {
+    "O1P": -0.5,
+    "O2P": -0.5
+  },
+  "_comment_U/Ura": "uracil",
+  "U": {
+    "O1P": -0.5,
+    "O2P": -0.5
+  },
+  "URA": {
+    "O1P": -0.5,
+    "O2P": -0.5
+  },
+  "_comment_2": "Formal charges for amino acids",
+  "_comment_Lys": "lysine (+)",
+  "LYS": {
+    "HZ1": 0.333,
+    "HZ2": 0.333,
+    "HZ3": 0.333
+  },
+  "_comment_Arg": "arginine (+)",
+  "ARG": {
+    "HE": 0.167,
+    "HH11": 0.167,
+    "HH12": 0.167,
+    "HH21": 0.167,
+    "HH22": 0.167,
+    "CZ": 0.167
+  },
+  "_comment_Hsp": "??? (+)",
+  "HSP": {
+    "HD1": 0.333,
+    "HE2": 0.333,
+    "CE1": 0.333
+  },
+  "_comment_His": "histidine (+)",
+  "HIS": {
+    "mandatory-atoms": [
+      "HD1",
+      "HE2"
+    ],
+    "HD1": 0.333,
+    "HE2": 0.333,
+    "CE1": 0.333
+  },
+  "_comment_Asp": "aspartate (-)",
+  "ASP": {
+    "forbidden-atoms": [
+      "HD1",
+      "HD2"
+    ],
+    "OD1": -0.5,
+    "OD2": -0.5
+  },
+  "_comment_Glu": "glutamate (-)",
+  "GLU": {
+    "forbidden-atoms": [
+      "HE1",
+      "HE2"
+    ],
+    "OE1": -0.5,
+    "OE2": -0.5
+  },
+  "_comment_3": "Formal charges for metal cations",
+  "NA": {
+    "NA": 1
+  },
+  "MG": {
+    "MG": 1
+  },
+  "K": {
+    "K": 1
+  },
+  "CA": {
+    "CA": 1
+  },
+  "V": {
+    "V": 1
+  },
+  "MN": {
+    "MN": 1
+  },
+  "FE": {
+    "FE": 1
+  },
+  "_comment_4": "Specific entries for GOLD PDB test set",
+  "FS4": {
+    "FE1": 1,
+    "FE2": 1,
+    "FE3": 1,
+    "FE4": 1
+  },
+  "HEM": {
+    "FE": 1
+  },
+  "NI": {
+    "NI": 1
+  },
+  "ZN": {
+    "ZN": 1
+  },
+  "_comment_5": "Specific entries for ASTEX MOL2 test set",
+  "HG": {
+    "HG": 1
+  },
+  "CD": {
+    "CD": 1
+  },
+  "FS": {
+    "FE1": 1,
+    "FE2": 1,
+    "FE3": 1,
+    "FE4": 1
+  },
+  "CO": {
+    "CO": 1
+  },
+  "_comment_6": "The following metals occur in undefined residues",
+  "UNK": {
+    "MG": 1,
+    "MN": 1,
+    "ZN": 1,
+    "FE1": 1,
+    "FE2": 1,
+    "FE3": 1,
+    "FE4": 1
+  }
+}

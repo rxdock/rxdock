@@ -24,7 +24,7 @@ void ChromTest::SetUp() {
     // Create a receptor model, ligand model, and docking site
     const std::string &wsName = "1koc";
     std::string prmFileName =
-        GetDataFileName("data/receptors", wsName + ".prm");
+        GetDataFileName("data/receptors", wsName + ".json");
     std::string ligFileName = GetDataFileName("", wsName + "_c.sd");
     std::string dockingSiteFileName =
         GetDataFileName("data/grids", wsName + "-docking-site.json");

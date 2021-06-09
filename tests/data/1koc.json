@@ -1,0 +1,32 @@
+{
+  "media-type": "application/vnd.rxdock.parameters",
+  "title": "RNA APTAMER COMPLEXED WITH ARGININE, NMR",
+  "version": "0.1.0",
+  "receptor": {
+    "_comment_topology-file": "topology file for receptor",
+    "topology-file": "1koc.psf",
+    "_comment_coordinate-file": "coordinate file for receptor",
+    "coordinate-file": "1koc.crd",
+    "_comment_segment-name": "Segment name for receptor in the above files",
+    "segment-name": "P1KO",
+    "_comment_masses-file": "CHARMm file containing atom types",
+    "masses-file": "masses.rtf",
+    "flexiblity-distance": 3
+  },
+  "_comment_mapper": "cavity definition: reference ligand method",
+  "mapper": {
+    "site-mapper": "LigandSiteMapper",
+    "excluded-volume-radius-increment": 0,
+    "grid-step": 0.5,
+    "region-radius": 4,
+    "reference-molecule": "1koc_c.sd",
+    "small-sphere-radius": 1,
+    "minimum-cavity-volume": 100,
+    "maximum-cavities": 1
+  },
+  "_comment_cavity": "cavity restraint penalty",
+  "cavity": {
+    "scoring-function": "CavityGridSF",
+    "weight": 1
+  }
+}
