@@ -30,7 +30,6 @@ jobs:
 
       - name: Build
         run: |
-          cd rxdock
           meson -Dbuildtype=release -Dtests=true builddir
           ninja -C builddir
           
