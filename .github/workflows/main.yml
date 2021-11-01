@@ -30,9 +30,11 @@ jobs:
           sudo apt-get install libeigen3-dev build-essential cmake pkg-config ninja-build
           pip install meson
         
-
       - name: Build
         run: |
           meson -Dbuildtype=release -Dtests=true builddir
           ninja -C builddir
+          
+      - name: Test
+        run: ninja test -C builddir         
           
