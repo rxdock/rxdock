@@ -26,7 +26,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Deps
-        run: sudo apt-get install meson libfmt-dev libeigen3-dev build-essential cmake pkg-config
+        run: | 
+          sudo apt-get install libeigen3-dev build-essential cmake pkg-config
+          pip install meson
+        
 
       - name: Build
         run: |
