@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+
+from multiprocessing import Pool, cpu_count
+from subprocess import PIPE, Popen
+from sys import argv
+
+
+def rxcmd(i):
+    program_args = ["sleep", *[arg.format(i + 1) for arg in argv[1:]]]
+    print("Process {} running {}".format(i, program_args))
+    proc = Popen(program_args, stdout=PIPE, stderr=PIPE)
+    out, err = proc.communicate()
+
+    out_file = open("rxcmd{}.out".format(i), "w")
+    out_file.write(out.decode())
+    out_file.close()
+
+    err_file = open("rxcmd{}.err".format(i), "w")
+    err_file.write(err.decode())
+    err_file.close()
+
+
+if __name__ == '__main__':
+    n = cpu_count()
+    print("Found {} CPUs, will run {}, processes".format(n, n))
+    if len(argv) > 1:
+        print("Using {} as arguments".format(argv))
+        with Pool(n) as p:
+            p.map(rxcmd, range(n))
+    else:
+        print("No arguments specified")
+        exit(1)
