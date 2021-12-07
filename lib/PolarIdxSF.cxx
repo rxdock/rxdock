@@ -22,10 +22,10 @@ using namespace rxdock;
 
 // Static data members
 const std::string PolarIdxSF::_CT = "PolarIdxSF";
-const std::string PolarIdxSF::_INCR = "INCR";
-const std::string PolarIdxSF::_ATTR = "ATTR";
-const std::string PolarIdxSF::_THRESHOLD_POS = "THRESHOLD_POS";
-const std::string PolarIdxSF::_THRESHOLD_NEG = "THRESHOLD_NEG";
+const std::string PolarIdxSF::_INCR = "increment";
+const std::string PolarIdxSF::_ATTR = "attractive";
+const std::string PolarIdxSF::_THRESHOLD_POS = "threshold-positive";
+const std::string PolarIdxSF::_THRESHOLD_NEG = "threshold-negative";
 
 const std::string &PolarIdxSF::GetIncr() { return _INCR; }
 

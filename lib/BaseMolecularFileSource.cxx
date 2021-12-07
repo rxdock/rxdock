@@ -356,8 +356,8 @@ BondList BaseMolecularFileSource::GetBondListWithFilter() {
 // and Forbidden atoms in spParamSource
 void BaseMolecularFileSource::SetupPartialIonicGroups(
     AtomList &atoms, ParameterFileSourcePtr spParamSource) {
-  const std::string _MANDATORY("MANDATORY");
-  const std::string _FORBIDDEN("FORBIDDEN");
+  const std::string _MANDATORY("mandatory-atoms");
+  const std::string _FORBIDDEN("forbidden-atoms");
   if (atoms.empty()) {
     LOG_F(WARNING, "SetupPartialIonicGroups: Empty atom list");
     return;
@@ -385,8 +385,11 @@ void BaseMolecularFileSource::SetupPartialIonicGroups(
   if (std::find(atList.begin(), atList.end(), _MANDATORY) != atList.end()) {
     std::string mandatory =
         spParamSource->GetParameterValueAsString(_MANDATORY);
-    std::vector<std::string> mandAtoms =
-        ConvertDelimitedStringToList(mandatory);
+    std::vector<std::string> mandAtoms;
+    if (!mandatory.empty()) {
+      json mandJson = json::parse(mandatory);
+      mandJson.get_to(mandAtoms);
+    }
     unsigned int nPresent = GetNumMatchingAtoms(atoms, mandAtoms);
     if (nPresent != mandAtoms.size()) {
       LOG_F(INFO,
@@ -395,13 +398,18 @@ void BaseMolecularFileSource::SetupPartialIonicGroups(
             nPresent, mandAtoms.size(), leadAtom->GetFullAtomName());
       return;
     }
-    std::remove(atList.begin(), atList.end(), _MANDATORY);
+    atList.erase(std::remove(atList.begin(), atList.end(), _MANDATORY),
+                 atList.end());
+    atList.push_back("");
   }
   if (std::find(atList.begin(), atList.end(), _FORBIDDEN) != atList.end()) {
     std::string forbidden =
         spParamSource->GetParameterValueAsString(_FORBIDDEN);
-    std::vector<std::string> forbAtoms =
-        ConvertDelimitedStringToList(forbidden);
+    std::vector<std::string> forbAtoms;
+    if (!forbidden.empty()) {
+      json forbJson = json::parse(forbidden);
+      forbJson.get_to(forbAtoms);
+    }
     int nPresent = GetNumMatchingAtoms(atoms, forbAtoms);
     if (nPresent > 0) {
       LOG_F(INFO,
@@ -410,7 +418,9 @@ void BaseMolecularFileSource::SetupPartialIonicGroups(
             nPresent, leadAtom->GetFullAtomName());
       return;
     }
-    std::remove(atList.begin(), atList.end(), _FORBIDDEN);
+    atList.erase(std::remove(atList.begin(), atList.end(), _FORBIDDEN),
+                 atList.end());
+    atList.push_back("");
   }
 
   for (std::vector<std::string>::const_iterator aIter = atList.begin();
@@ -420,6 +430,8 @@ void BaseMolecularFileSource::SetupPartialIonicGroups(
     LOG_F(1, "SetupPartialIonicGroups: Trying to match {}", *aIter);
     // Find the atoms which match the specifier string
     AtomList selectedAtoms = GetMatchingAtomList(atoms, *aIter);
+    LOG_F(INFO, "SetupPartialIonicGroups: matched {} atoms",
+          selectedAtoms.size());
     // Now we've got the matching atoms, set the group charge on each atom
     for (AtomListIter iter = selectedAtoms.begin(); iter != selectedAtoms.end();
          iter++) {

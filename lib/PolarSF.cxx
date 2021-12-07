@@ -22,28 +22,28 @@ using namespace rxdock;
 
 // Static data members
 const std::string PolarSF::_CT = "PolarSF";
-const std::string PolarSF::_R12FACTOR = "R12FACTOR";
-const std::string PolarSF::_R12INCR = "R12INCR";
-const std::string PolarSF::_DR12MIN = "DR12MIN";
-const std::string PolarSF::_DR12MAX = "DR12MAX";
-const std::string PolarSF::_A1 = "A1";
-const std::string PolarSF::_DA1MIN = "DA1MIN";
-const std::string PolarSF::_DA1MAX = "DA1MAX";
-const std::string PolarSF::_A2 = "A2";
-const std::string PolarSF::_DA2MIN = "DA2MIN";
-const std::string PolarSF::_DA2MAX = "DA2MAX";
-const std::string PolarSF::_INCMETAL = "INCMETAL";
-const std::string PolarSF::_INCHBD = "INCHBD";
-const std::string PolarSF::_INCHBA = "INCHBA";
-const std::string PolarSF::_INCGUAN = "INCGUAN";
-const std::string PolarSF::_GUAN_PLANE = "GUAN_PLANE";
-const std::string PolarSF::_ABS_DR12 = "ABS_DR12";
-const std::string PolarSF::_LP_OSP2 = "LP_OSP2";
-const std::string PolarSF::_LP_PHI = "LP_PHI";
-const std::string PolarSF::_LP_DPHIMIN = "LP_DPHIMIN";
-const std::string PolarSF::_LP_DPHIMAX = "LP_DPHIMAX";
-const std::string PolarSF::_LP_DTHETAMIN = "LP_DTHETAMIN";
-const std::string PolarSF::_LP_DTHETAMAX = "LP_DTHETAMAX";
+const std::string PolarSF::_R12FACTOR = "r12-factor";
+const std::string PolarSF::_R12INCR = "r12-increment";
+const std::string PolarSF::_DR12MIN = "dr12-minimum";
+const std::string PolarSF::_DR12MAX = "dr12-maximum";
+const std::string PolarSF::_A1 = "a1";
+const std::string PolarSF::_DA1MIN = "da1-minimum";
+const std::string PolarSF::_DA1MAX = "da1-maximum";
+const std::string PolarSF::_A2 = "a2";
+const std::string PolarSF::_DA2MIN = "da2-minimum";
+const std::string PolarSF::_DA2MAX = "da2-maximum";
+const std::string PolarSF::_INCMETAL = "inc-metal";
+const std::string PolarSF::_INCHBD = "inc-HBD";
+const std::string PolarSF::_INCHBA = "inc-HBA";
+const std::string PolarSF::_INCGUAN = "inc-guan";
+const std::string PolarSF::_GUAN_PLANE = "guan-plane";
+const std::string PolarSF::_ABS_DR12 = "abs-dr12";
+const std::string PolarSF::_LP_OSP2 = "lp-osp2";
+const std::string PolarSF::_LP_PHI = "lp-phi";
+const std::string PolarSF::_LP_DPHIMIN = "lp-dphi-minimum";
+const std::string PolarSF::_LP_DPHIMAX = "lp-dphi-maximum";
+const std::string PolarSF::_LP_DTHETAMIN = "lp-dtheta-minimum";
+const std::string PolarSF::_LP_DTHETAMAX = "lp-dtheta-maximum";
 
 PolarSF::PolarSF()
     : m_R12Factor(1.0), m_R12Incr(0.6), m_DR12Min(0.25), m_DR12Max(0.6),

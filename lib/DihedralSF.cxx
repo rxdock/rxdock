@@ -47,14 +47,14 @@ double DihedralElement::operator()() const {
 
 // Static data members
 const std::string DihedralSF::_CT = "DihedralSF";
-const std::string DihedralSF::_IMPL_H_CORR = "IMPL_H_CORR";
+const std::string DihedralSF::_IMPL_H_CORR = "implicit-H-correction";
 
 DihedralSF::DihedralSF() {
   LOG_F(2, "DihedralSF default constructor");
   // Add parameters
   AddParameter(_IMPL_H_CORR, false);
   m_spDihedralSource = ParameterFileSourcePtr(new ParameterFileSource(
-      GetDataFileName("data/sf", "Tripos52_dihedrals.prm")));
+      GetDataFileName("data", "tripos-5-2-dihedrals.json")));
   m_centralPairs = m_spDihedralSource->GetSectionList();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -215,18 +215,19 @@ DihedralElement::prms DihedralSF::FindDihedralParams(TriposAtomType::eType t1,
       LOG_F(1, "Matched {} outer pair", strww);
     }
   } else {
-    m_spDihedralSource->SetSection();
-    strParams = m_spDihedralSource->GetParameterValueAsString("DEFAULT");
+    const std::string _DEFAULT("default");
+    m_spDihedralSource->SetSection(_DEFAULT);
+    strParams = m_spDihedralSource->GetParameterValueAsString(_DEFAULT);
     LOG_F(
         WARNING,
-        "DihedralSF::FindDihedralParams: No match for {}: using DEFAULT params",
+        "DihedralSF::FindDihedralParams: No match for {}: using default params",
         str23);
   }
 
-  std::vector<std::string> paramList = ConvertDelimitedStringToList(strParams);
-  // Add checks on #params
-  double k = std::atof(paramList[0].c_str());
-  double s = std::atof(paramList[1].c_str());
+  json paramsJson = json::parse(strParams);
+  double k, s;
+  paramsJson.at(0).get_to(k);
+  paramsJson.at(1).get_to(s);
   LOG_F(1, "DihedralSF::FindDihedralParams: Assigned {},{},{},{}\tk={}, s={}",
         str1, str2, str3, str4, k, s);
   return DihedralElement::prms(s, k);

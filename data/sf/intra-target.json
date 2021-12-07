@@ -1,0 +1,11 @@
+{
+  "media-type": "application/vnd.rxdock.scoring-function",
+  "title": "Intra-target scoring function",
+  "version": "0.1.0",
+  "sections": ["dihedral"],
+  "dihedral": {
+    "scoring-function": "DihedralTargetSF",
+    "weight": 0.5,
+    "implicit-H-correction": true
+  }
+}

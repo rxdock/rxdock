@@ -39,7 +39,7 @@ namespace operation {
 
 static const std::string _ROOT_SF = "rxdock.score";
 static const std::string _RESTRAINT_SF = "restr";
-static const std::string _ROOT_TRANSFORM = "DOCK";
+static const std::string _ROOT_TRANSFORM = "dock";
 
 } // namespace operation
 } // namespace rxdock

@@ -1,0 +1,13 @@
+{
+  "media-type": "application/vnd.rxdock.run-script",
+  "title": "Score only (protein-ligand PMF)",
+  "version": "0.1.0",
+  "rxdock.score": {
+    "inter": "protein-ligand-pmf-indexed.json",
+    "intra": "intra-ligand.json",
+    "target": "intra-target.json"
+  },
+  "final": {
+    "transform": "NullTransform"
+  }
+}

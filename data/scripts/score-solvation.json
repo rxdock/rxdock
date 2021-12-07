@@ -1,0 +1,13 @@
+{
+  "media-type": "application/vnd.rxdock.run-script",
+  "title": "Score only (with SOLVATION)",
+  "version": "0.1.0",
+  "rxdock.score": {
+    "inter": "intermolecular-solvation-indexed.json",
+    "intra": "intra-ligand.json",
+    "system": "intra-target.json"
+  },
+  "final": {
+    "transform": "NullTransform"
+  }
+}

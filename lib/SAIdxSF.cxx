@@ -21,7 +21,7 @@
 using namespace rxdock;
 
 const std::string SAIdxSF::_CT = "SAIdxSF";
-const std::string SAIdxSF::_INCR = "INCR";
+const std::string SAIdxSF::_INCR = "incr";
 
 SAIdxSF::SAIdxSF(const std::string &aName)
     : BaseSF(_CT, aName), m_maxR(2.0), m_bFlexRec(false), m_lig_0(0.0),
@@ -33,8 +33,8 @@ SAIdxSF::SAIdxSF(const std::string &aName)
   // each atom Will be adjusted dynamically in Setup, based on max radius of any
   // atom type r_s = solvent probe radius (constant 0.6)
   AddParameter(_INCR, m_maxR + 2 * HHS_Solvation::r_s);
-  m_spSolvSource = ParameterFileSourcePtr(
-      new ParameterFileSource(GetDataFileName("data/sf", "solvation_asp.prm")));
+  m_spSolvSource = ParameterFileSourcePtr(new ParameterFileSource(
+      GetDataFileName("data", "atomic-solvation.json")));
   Setup();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -567,10 +567,17 @@ void SAIdxSF::Setup() {
   // Dummy read to force parsing of file, otherwise the first SetSection is
   // overridden
   std::vector<std::string> secList = m_spSolvSource->GetSectionList();
+
+  std::string _R("r");
+  std::string _PARAM_P("p");
+  std::string _ASP("asp");
+  std::string _CHG_SCALING("charge-scaling");
+  /*
   std::string _R("R");
   std::string _PARAM_P("P");
   std::string _ASP("ASP");
   std::string _CHG_SCALING("CHG_SCALING");
+  */
   m_solvTable.clear();
 
   for (int i = HHSType::UNDEFINED; i < HHSType::MAXTYPES; i++) {

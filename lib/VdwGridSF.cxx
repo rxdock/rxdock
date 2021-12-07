@@ -20,8 +20,8 @@ using namespace rxdock;
 
 // Static data members
 const std::string VdwGridSF::_CT = "VdwGridSF";
-const std::string VdwGridSF::_GRID = "GRID";
-const std::string VdwGridSF::_SMOOTHED = "SMOOTHED";
+const std::string VdwGridSF::_GRID = "grid";
+const std::string VdwGridSF::_SMOOTHED = "smoothed";
 
 const std::string &VdwGridSF::GetCt() { return _CT; }
 

@@ -301,6 +301,8 @@ endif
 
 install_data([
     'data/cnx.rtf', 'data/masses.rtf', 'data/elements.json',
+    'data/atomic-solvation.json', 'data/ionic-atom-charges.json',
+    'data/tripos-5-2-dihedrals.json', 'data/tripos-5-2-vdw.json',
     'data/top_all22_prot_na.inp'
   ],
   install_dir : get_option('datadir') + '/' + meson.project_name().to_lower()
@@ -468,24 +470,22 @@ install_data([
 )
 
 install_data([
-    'data/scripts/dock_grid.prm', 'data/scripts/dock.prm',
-    'data/scripts/dock_solv_grid.prm', 'data/scripts/dock_solv.prm',
-    'data/scripts/minimise.prm', 'data/scripts/minimise_solv.prm',
-    'data/scripts/score_pmf.prm', 'data/scripts/score.prm',
-    'data/scripts/score_solv.prm'
+    'data/scripts/dock-grid-based.json', 'data/scripts/dock.json',
+    'data/scripts/dock-solvation-grid-based.json', 'data/scripts/dock-solvation.json',
+    'data/scripts/minimise.json', 'data/scripts/minimise-solvation.json',
+    'data/scripts/score-pmf.json', 'data/scripts/score.json',
+    'data/scripts/score-solvation.json'
   ],
   install_dir : get_option('datadir') + '/' + meson.project_name().to_lower() +
                 '/' + 'scripts'
 )
 
 install_data([
-    'data/sf/calcgrid_vdw1.prm', 'data/sf/calcgrid_vdw5.prm',
-    'data/sf/InterGridSF.prm', 'data/sf/InterIdxSF.prm',
-    'data/sf/IntraSF.prm', 'data/sf/IonicAtoms.prm',
-    'data/sf/PMFIdxSF.prm', 'data/sf/SolvGridSF.prm',
-    'data/sf/SolvIdxSF.prm', 'data/sf/TargetSF.prm',
-    'data/sf/solvation_asp.prm', 'data/sf/Tripos52_dihedrals.prm',
-    'data/sf/Tripos52_vdw.prm'
+    'data/sf/vdw-potential-ecut-1.json', 'data/sf/vdw-potential-ecut-5.json',
+    'data/sf/intermolecular-grid-based.json', 'data/sf/intermolecular-indexed.json',
+    'data/sf/intra-ligand.json',
+    'data/sf/protein-ligand-pmf-indexed.json', 'data/sf/intermolecular-solvation-grid-based.json',
+    'data/sf/intermolecular-solvation-indexed.json', 'data/sf/intra-target.json'
   ],
   install_dir : get_option('datadir') + '/' + meson.project_name().to_lower() +
                 '/' + 'sf'
@@ -511,7 +511,7 @@ if tests_opt
     test(
       'cavity-search-1koc', rxcmd, args : [
         'cavity-search',
-        '-r', meson.current_source_dir() + rbtHomePath + '/1koc.prm',
+        '-r', meson.current_source_dir() + rbtHomePath + '/1koc.json',
         '-W'
       ],
       env : [
@@ -523,7 +523,7 @@ if tests_opt
     test(
       'cavity-search-1yet', rxcmd, args : [
         'cavity-search',
-        '-r', meson.current_source_dir() + rbtHomePath + '/1YET.prm',
+        '-r', meson.current_source_dir() + rbtHomePath + '/1YET.json',
         '-W'
       ],
       env : [
@@ -535,7 +535,7 @@ if tests_opt
     test(
       'cavity-search-1yet-test', rxcmd, args : [
         'cavity-search',
-        '-r', meson.current_source_dir() + rbtHomePath + '/1YET_test.prm',
+        '-r', meson.current_source_dir() + rbtHomePath + '/1YET_test.json',
         '-W'
       ],
       env : [
@@ -556,9 +556,9 @@ if tests_opt
     test(
       'dock-1yet-test', rxcmd, args : [
         'dock',
-        '-r', meson.current_source_dir() + rbtHomePath + '/1YET_test.prm',
+        '-r', meson.current_source_dir() + rbtHomePath + '/1YET_test.json',
         '-i', meson.current_source_dir() + rbtHomePath + '/1YET_c.sd',
-        '-p', 'dock.prm', '-n', '1', '-s', '48151623',
+        '-p', 'dock.json', '-n', '1', '-s', '48151623',
         '-o', meson.current_source_dir() + rbtHomePath + '/1YET_test_out.sd'
       ],
       env : [

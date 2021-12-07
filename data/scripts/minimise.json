@@ -1,0 +1,22 @@
+{
+  "media-type": "application/vnd.rxdock.run-script",
+  "title": "Simplex minimisation",
+  "version": "0.1.0",
+  "rxdock.score": {
+    "inter": "intermolecular-indexed.json",
+    "intra": "intra-ligand.json",
+    "system": "intra-target.json"
+  },
+  "simplex": {
+    "transform": "SimplexTransform",
+    "maximum-number-of-calls": 200,
+    "number-of-cycles": 20,
+    "stopping-step-length": 0.001,
+    "partition-distance": 8,
+    "step-size": 1,
+    "convergence": 0.001
+  },
+  "final": {
+    "transform": "NullTransform"
+  }
+}

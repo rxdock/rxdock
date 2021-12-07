@@ -28,17 +28,21 @@
 using namespace rxdock;
 
 const std::string &PRMFactory::_CT = "PRMFactory";
-const std::string &PRMFactory::_REC_SECTION = "";
-const std::string &PRMFactory::_REC_FILE = "RECEPTOR_FILE";
-const std::string &PRMFactory::_REC_TOPOL_FILE = "RECEPTOR_TOPOL_FILE";
-const std::string &PRMFactory::_REC_COORD_FILE = "RECEPTOR_COORD_FILE";
+const std::string &PRMFactory::_REC_SECTION = "receptor";
+const std::string &PRMFactory::_REC_FILE = "file";
+const std::string &PRMFactory::_REC_TOPOL_FILE = "topology-file";
+const std::string &PRMFactory::_REC_COORD_FILE = "coordinate-file";
 const std::string &PRMFactory::_REC_NUM_COORD_FILES =
-    "RECEPTOR_NUM_COORD_FILES";
-const std::string &PRMFactory::_REC_FLEX_DISTANCE = "RECEPTOR_FLEX";
-const std::string &PRMFactory::_REC_DIHEDRAL_STEP = "RECEPTOR_DIHEDRAL_STEP";
-const std::string &PRMFactory::_LIG_SECTION = "LIGAND";
-const std::string &PRMFactory::_SOLV_SECTION = "SOLVENT";
-const std::string &PRMFactory::_SOLV_FILE = "FILE";
+    "number-of-coordinate-files";
+const std::string &PRMFactory::_REC_FLEX_DISTANCE = "flexibility-distance";
+const std::string &PRMFactory::_REC_DIHEDRAL_STEP =
+    "dihedral-maximum-mutation-step";
+const std::string &PRMFactory::_REC_ALL_H = "keep-all-hydrogens";
+const std::string &PRMFactory::_REC_MASSES_FILE = "masses-file";
+const std::string &PRMFactory::_REC_SEGMENT_NAME = "segment-name";
+const std::string &PRMFactory::_LIG_SECTION = "ligand";
+const std::string &PRMFactory::_SOLV_SECTION = "solvent";
+const std::string &PRMFactory::_SOLV_FILE = "file";
 
 PRMFactory::PRMFactory(ParameterFileSource *pParamSource)
     : m_pParamSource(pParamSource), m_pDS(nullptr) {}
@@ -47,6 +51,11 @@ PRMFactory::PRMFactory(ParameterFileSource *pParamSource, DockingSite *pDS)
     : m_pParamSource(pParamSource), m_pDS(pDS) {}
 ModelPtr PRMFactory::CreateReceptor() {
   ModelPtr retVal;
+
+  // Parameter file gets parsed here
+  std::string title = m_pParamSource->GetTitle();
+  LOG_F(INFO, "Using parameter file: {}", title);
+
   m_pParamSource->SetSection(_REC_SECTION);
   // Detect if we have an ensemble of receptor coordinate files defined
   bool bEnsemble =
@@ -55,8 +64,10 @@ ModelPtr PRMFactory::CreateReceptor() {
 
   // Read topology and coordinates from a single molecular file source
   if (m_pParamSource->isParameterPresent(_REC_FILE)) {
-    LOG_F(INFO, "Using RECEPTOR_FILE as combined source of topology and 3D "
-                "coordinates");
+    LOG_F(INFO,
+          "Using {}::{} as combined source of topology and 3D "
+          "coordinates",
+          _REC_SECTION, _REC_FILE);
     std::string strFile = m_pParamSource->GetParameterValueAsString(_REC_FILE);
     MolecularFileSourcePtr theSource = CreateMolFileSource(strFile);
     bool isOK = theSource->isAtomListSupported() &&
@@ -75,7 +86,8 @@ ModelPtr PRMFactory::CreateReceptor() {
   }
   // Read topology and coordinates separately from two molecular file sources
   else {
-    LOG_F(INFO, "Using RECEPTOR_TOPOL_FILE as topology source");
+    LOG_F(INFO, "Using {}::{} as topology source", _REC_SECTION,
+          _REC_TOPOL_FILE);
     std::string strTopolFile =
         m_pParamSource->GetParameterValueAsString(_REC_TOPOL_FILE);
     MolecularFileSourcePtr theTopolSource = CreateMolFileSource(strTopolFile);
@@ -83,15 +95,18 @@ ModelPtr PRMFactory::CreateReceptor() {
                 theTopolSource->isBondListSupported();
     if (!isOK) {
       LOG_F(ERROR,
-            "Incompatible file type for RECEPTOR_TOPOL_FILE option. File type "
-            "must provide topology information (atom list and bond list)");
+            "Incompatible file type for {}::{} option. File type must provide "
+            "topology information (atom list and bond list)",
+            _REC_SECTION, _REC_TOPOL_FILE);
       throw BadReceptorFile(_WHERE_, "Inappropriate molecular file type for " +
-                                         _REC_TOPOL_FILE + " option");
+                                         _REC_SECTION + "::" + _REC_TOPOL_FILE +
+                                         " option");
     }
     retVal = new Model(theTopolSource);
     if (!bEnsemble) {
       // Now read coord file
-      LOG_F(INFO, "Using RECEPTOR_COORD_FILE as source of 3D coordinates");
+      LOG_F(INFO, "Using {}::{} as source of 3D coordinates", _REC_SECTION,
+            _REC_COORD_FILE);
       std::string strCoordFile =
           m_pParamSource->GetParameterValueAsString(_REC_COORD_FILE);
       MolecularFileSourcePtr theCoordSource = CreateMolFileSource(strCoordFile);
@@ -100,11 +115,12 @@ ModelPtr PRMFactory::CreateReceptor() {
       if (!isOK) {
         LOG_F(
             ERROR,
-            "Incompatible file type for RECEPTOR_COORD_FILE option. File type "
-            "must provide coordinate information (atom list with 3D coords)");
-        throw BadReceptorFile(_WHERE_,
-                              "Inappropriate molecular file type for " +
-                                  _REC_COORD_FILE + " option");
+            "Incompatible file type for {}::{} option. File type must provide "
+            "coordinate information (atom list with 3D coords)",
+            _REC_SECTION, _REC_COORD_FILE);
+        throw BadReceptorFile(
+            _WHERE_, "Inappropriate molecular file type for " + _REC_SECTION +
+                         "::" + _REC_COORD_FILE + " option");
       }
       retVal->UpdateCoords(theCoordSource);
     }
@@ -114,9 +130,9 @@ ModelPtr PRMFactory::CreateReceptor() {
   if (bEnsemble) {
     int n = m_pParamSource->GetParameterValue(_REC_NUM_COORD_FILES);
     LOG_F(INFO,
-          "Using ensemble of RECEPTOR_COORD_FILE's as source of 3D coordinates "
+          "Using ensemble of {}::{}'s as source of 3D coordinates "
           "(N={})",
-          n);
+          _REC_SECTION, _REC_COORD_FILE, n);
     for (int i = 1; i <= n; i++) {
       std::ostringstream ostr;
       ostr << _REC_COORD_FILE << "_" << i;
@@ -174,8 +190,10 @@ ModelList PRMFactory::CreateSolvent() {
     bool isOK =
         theSource->isAtomListSupported() && theSource->isCoordinatesSupported();
     if (!isOK) {
-      LOG_F(ERROR, "Incompatible file type for SOLVENT::FILE option. File type "
-                   "must provide atom list and coordinates in a single file");
+      LOG_F(ERROR,
+            "Incompatible file type for {}::{} option. File type must "
+            "provide atom list and coordinates in a single file",
+            _SOLV_SECTION, _SOLV_FILE);
       throw BadReceptorFile(_WHERE_, "Inappropriate molecular file type for " +
                                          _SOLV_SECTION + "::" + _SOLV_FILE +
                                          " option");
@@ -278,7 +296,8 @@ void PRMFactory::AttachReceptorFlexData(Model *pReceptor) {
           m_pParamSource->GetParameterValue(_REC_DIHEDRAL_STEP);
       pFlexData->SetParameter(ReceptorFlexData::_DIHEDRAL_STEP,
                               dihedralStepSize);
-      LOG_F(INFO, "RECEPTOR_DIHEDRAL_STEP = {}", dihedralStepSize);
+      LOG_F(INFO, "{}::{} = {}", _REC_SECTION, _REC_DIHEDRAL_STEP,
+            dihedralStepSize);
     }
     pReceptor->SetFlexData(pFlexData);
     LOG_F(INFO, "RECEPTOR FLEXIBILITY PARAMETERS: {}", *pFlexData);
@@ -364,8 +383,8 @@ PRMFactory::CreateMolFileSource(const std::string &fileName) {
         fullFileName);
 
   bool bImplH = true;
-  if (m_pParamSource->isParameterPresent("RECEPTOR_ALL_H")) {
-    Variant vAllH(m_pParamSource->GetParameterValueAsString("RECEPTOR_ALL_H"));
+  if (m_pParamSource->isParameterPresent(_REC_ALL_H)) {
+    Variant vAllH(m_pParamSource->GetParameterValueAsString(_REC_ALL_H));
     bImplH = !vAllH.GetBool();
   }
 
@@ -373,7 +392,7 @@ PRMFactory::CreateMolFileSource(const std::string &fileName) {
     retVal = new MOL2FileSource(fullFileName, bImplH);
   } else if (fileTypeUpper == "PSF") {
     std::string strMassesFile =
-        m_pParamSource->GetParameterValueAsString("RECEPTOR_MASSES_FILE");
+        m_pParamSource->GetParameterValueAsString(_REC_MASSES_FILE);
     strMassesFile = GetDataFileName("data", strMassesFile);
     LOG_F(1,
           "PRMFactory::CreateMolFileSource: Using file {} to lookup Charmm "
@@ -393,9 +412,9 @@ PRMFactory::CreateMolFileSource(const std::string &fileName) {
                           fileType + " is not a supported molecular file type");
   }
 
-  if (m_pParamSource->isParameterPresent("RECEPTOR_SEGMENT_NAME")) {
+  if (m_pParamSource->isParameterPresent(_REC_SEGMENT_NAME)) {
     std::string strSegmentName =
-        m_pParamSource->GetParameterValueAsString("RECEPTOR_SEGMENT_NAME");
+        m_pParamSource->GetParameterValueAsString(_REC_SEGMENT_NAME);
     SegmentMap segmentMap = ConvertStringToSegmentMap(strSegmentName);
     retVal->SetSegmentFilterMap(segmentMap);
     LOG_F(1,

@@ -127,7 +127,9 @@ public:
     return m_sl.empty() ? std::string() : m_sl.front();
   }
   std::vector<std::string> GetStringList() const { return m_sl; }
-  bool GetBool() const { return m_d != 0.0 || GetString() == _TRUE; }
+  bool GetBool() const {
+    return m_d != 0.0 || GetString() == _TRUE || GetString() == "true";
+  }
   Coord GetCoord() const {
     Coord c;
     if (m_sl.empty())

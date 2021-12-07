@@ -38,8 +38,8 @@ PsfFileSource::PsfFileSource(const std::string &fileName,
   // friendly string variety
   m_spCharmmData = CharmmDataSourcePtr(new CharmmDataSource(strMassesFile));
   // DM 13 Jun 2000 - new separate prm file for receptor ionic atom definitions
-  m_spParamSource = ParameterFileSourcePtr(
-      new ParameterFileSource(GetDataFileName("data/sf", "IonicAtoms.prm")));
+  m_spParamSource = ParameterFileSourcePtr(new ParameterFileSource(
+      GetDataFileName("data", "ionic-atom-charges.json")));
   // Open an Element data source
   m_spElementData = ElementFileSourcePtr(
       new ElementFileSource(GetDataFileName("data", "elements.json")));

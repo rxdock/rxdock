@@ -19,7 +19,7 @@ void SearchTest::SetUp() {
   try {
     // Create the docking site, receptor, ligand and solvent objects
     const std::string &wsName = "1YET";
-    std::string prmFileName = GetDataFileName("", wsName + ".prm");
+    std::string prmFileName = GetDataFileName("", wsName + ".json");
     std::string ligFileName = GetDataFileName("", wsName + "_c.sd");
     std::string dockingSiteFileName =
         GetDataFileName("", wsName + "-docking-site.json");
@@ -167,7 +167,7 @@ TEST_F(SearchTest, Restart) {
     ASSERT_NE(m_workSpace->GetSF(), nullptr);
     finalScore = m_workSpace->GetSF()->Score();
     // Reload the receptor, minimised ligand and solvent
-    std::string prmFileName = GetDataFileName("", "1YET.prm");
+    std::string prmFileName = GetDataFileName("", "1YET.json");
     ParameterFileSourcePtr spPrmSource(new ParameterFileSource(prmFileName));
     MolecularFileSourcePtr spMdlFileSource(
         new MdlFileSource("restart.sd", true, true, true));

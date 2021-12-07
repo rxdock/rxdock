@@ -14,8 +14,8 @@
 
 using namespace rxdock;
 
-const std::string &ReceptorFlexData::_FLEX_DISTANCE = "FLEX_DISTANCE";
-const std::string &ReceptorFlexData::_DIHEDRAL_STEP = "DIHEDRAL_STEP";
+const std::string &ReceptorFlexData::_FLEX_DISTANCE = "flexibility-distance";
+const std::string &ReceptorFlexData::_DIHEDRAL_STEP = "dihedral-step";
 
 ReceptorFlexData::ReceptorFlexData(DockingSite *pDockSite)
     : FlexData(pDockSite) {

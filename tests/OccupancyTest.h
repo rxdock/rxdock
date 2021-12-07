@@ -1,7 +1,7 @@
 // Unit tests for solvent occupancy
 //
 // Required input files:
-// 1YET.prm  rDock receptor file
+// 1YET.json RxDock receptor file
 // 1YET.psf  Receptor topology file
 // 1YET.crd  Receptor coordinate file
 // 1YET_c.sd Ligand coordinate file

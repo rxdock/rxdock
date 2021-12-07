@@ -15,15 +15,15 @@
 
 using namespace rxdock;
 
-const std::string &LigandFlexData::_TRANS_STEP = "TRANS_STEP";
-const std::string &LigandFlexData::_ROT_STEP = "ROT_STEP";
-const std::string &LigandFlexData::_DIHEDRAL_STEP = "DIHEDRAL_STEP";
-const std::string &LigandFlexData::_TRANS_MODE = "TRANS_MODE";
-const std::string &LigandFlexData::_ROT_MODE = "ROT_MODE";
-const std::string &LigandFlexData::_DIHEDRAL_MODE = "DIHEDRAL_MODE";
-const std::string &LigandFlexData::_MAX_TRANS = "MAX_TRANS";
-const std::string &LigandFlexData::_MAX_ROT = "MAX_ROT";
-const std::string &LigandFlexData::_MAX_DIHEDRAL = "MAX_DIHEDRAL";
+const std::string &LigandFlexData::_TRANS_STEP = "translational-step";
+const std::string &LigandFlexData::_ROT_STEP = "rotational-step";
+const std::string &LigandFlexData::_DIHEDRAL_STEP = "dihedral-step";
+const std::string &LigandFlexData::_TRANS_MODE = "translational-mode";
+const std::string &LigandFlexData::_ROT_MODE = "rotational-mode";
+const std::string &LigandFlexData::_DIHEDRAL_MODE = "dihedral-mode";
+const std::string &LigandFlexData::_MAX_TRANS = "maximum-translation";
+const std::string &LigandFlexData::_MAX_ROT = "maximum-rotation";
+const std::string &LigandFlexData::_MAX_DIHEDRAL = "maximum-dihedral";
 
 const std::string &LigandFlexData::GetTransMode() { return _TRANS_MODE; }
 

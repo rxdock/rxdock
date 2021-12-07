@@ -19,11 +19,11 @@ using namespace rxdock;
 
 // Static data members
 const std::string VdwSF::_CT = "VdwSF";
-const std::string VdwSF::_USE_4_8 = "USE_4_8";
-const std::string VdwSF::_USE_TRIPOS = "USE_TRIPOS";
-const std::string VdwSF::_RMAX = "RMAX";
-const std::string VdwSF::_ECUT = "ECUT";
-const std::string VdwSF::_E0 = "E0";
+const std::string VdwSF::_USE_4_8 = "use-4-8";
+const std::string VdwSF::_USE_TRIPOS = "use-tripos";
+const std::string VdwSF::_RMAX = "rmax";
+const std::string VdwSF::_ECUT = "ecut";
+const std::string VdwSF::_E0 = "e0";
 
 const std::string &VdwSF::GetEcut() { return _ECUT; }
 
@@ -38,7 +38,7 @@ VdwSF::VdwSF()
   AddParameter(_ECUT, m_ecut);
   AddParameter(_E0, m_e0);
   m_spVdwSource = ParameterFileSourcePtr(
-      new ParameterFileSource(GetDataFileName("data/sf", "Tripos52_vdw.prm")));
+      new ParameterFileSource(GetDataFileName("data", "tripos-5-2-vdw.json")));
   Setup();
   _RBTOBJECTCOUNTER_CONSTR_(_CT);
 }
@@ -295,12 +295,12 @@ void VdwSF::Setup() {
   // Dummy read to force parsing of file, otherwise the first SetSection is
   // overridden
   std::vector<std::string> secList = m_spVdwSource->GetSectionList();
-  std::string _R("R");
-  std::string _K("K");
-  std::string _IP("IP");
-  std::string _POL("POL");
-  std::string _ISHBD("isHBD");
-  std::string _ISHBA("isHBA");
+  std::string _R("r");
+  std::string _K("k");
+  std::string _IP("ip");
+  std::string _POL("pol");
+  std::string _ISHBD("is-hbd");
+  std::string _ISHBA("is-hba");
   m_vdwTable =
       VdwTable(TriposAtomType::MAXTYPES, VdwRow(TriposAtomType::MAXTYPES));
   m_maxRange = std::vector<double>(TriposAtomType::MAXTYPES, 0.0);

@@ -36,6 +36,9 @@ public:
   static const std::string &_REC_NUM_COORD_FILES;
   static const std::string &_REC_FLEX_DISTANCE;
   static const std::string &_REC_DIHEDRAL_STEP;
+  static const std::string &_REC_ALL_H;
+  static const std::string &_REC_MASSES_FILE;
+  static const std::string &_REC_SEGMENT_NAME;
 
   // Ligand parameters
   static const std::string &_LIG_SECTION;

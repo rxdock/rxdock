@@ -61,16 +61,18 @@ double MCStats::AccRate() const { return float(_accepted) / float(_steps); }
 // Static data member for class type
 const std::string SimAnnTransform::_CT = "SimAnnTransform";
 // Parameter names
-const std::string SimAnnTransform::_START_T = "START_T";
-const std::string SimAnnTransform::_FINAL_T = "FINAL_T";
-const std::string SimAnnTransform::_BLOCK_LENGTH = "BLOCK_LENGTH";
-const std::string SimAnnTransform::_SCALE_CHROM_LENGTH = "SCALE_CHROM_LENGTH";
-const std::string SimAnnTransform::_NUM_BLOCKS = "NUM_BLOCKS";
-const std::string SimAnnTransform::_STEP_SIZE = "STEP_SIZE";
-const std::string SimAnnTransform::_MIN_ACC_RATE = "MIN_ACC_RATE";
-const std::string SimAnnTransform::_PARTITION_DIST = "PARTITION_DIST";
-const std::string SimAnnTransform::_PARTITION_FREQ = "PARTITION_FREQ";
-const std::string SimAnnTransform::_HISTORY_FREQ = "HISTORY_FREQ";
+const std::string SimAnnTransform::_START_T = "start-temperature";
+const std::string SimAnnTransform::_FINAL_T = "final-temperature";
+const std::string SimAnnTransform::_BLOCK_LENGTH = "block-length";
+const std::string SimAnnTransform::_SCALE_CHROM_LENGTH =
+    "scale-chromosome-length";
+const std::string SimAnnTransform::_NUM_BLOCKS = "number-of-blocks";
+const std::string SimAnnTransform::_STEP_SIZE = "step-size";
+const std::string SimAnnTransform::_MIN_ACC_RATE =
+    "minimum-metropolis-acceptance-rate";
+const std::string SimAnnTransform::_PARTITION_DIST = "partition-distance";
+const std::string SimAnnTransform::_PARTITION_FREQ = "partition-frequency";
+const std::string SimAnnTransform::_HISTORY_FREQ = "history-frequency";
 
 const std::string &SimAnnTransform::GetStartT() { return _START_T; }
 

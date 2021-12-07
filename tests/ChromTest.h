@@ -1,7 +1,7 @@
 // Unit tests for ChromElement and subclasses
 //
 // Required input files:
-// 1koc.prm  rDock receptor file
+// 1koc.json RxDock receptor file
 // 1koc.psf  Receptor topology file
 // 1koc.crd  Receptor coordinate file
 // 1koc_c.sd Ligand coordinate file

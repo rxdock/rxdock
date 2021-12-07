@@ -1,0 +1,264 @@
+{
+  "media-type": "application/vnd.rxdock.parameters",
+  "title": "vdW parameters from Tripos 5.2 force field and GOLD paper",
+  "version": "0.1.0",
+  "sections": ["H", "H.P", "C.cat", "C.3", "C.3.H1", "C.3.H2", "C.3.H3", "C.2", "C.2.H1", "C.2.H2", "C.ar", "C.ar.H1", "C.1", "C.1.H1", "N.4", "N.3", "N.pl3", "N.am", "N.2", "N.ar", "N.1", "O.co2", "O.3", "O.2", "S.3", "S.o", "S.o2", "S.2", "P.3", "F", "Cl", "Br", "I", "Na", "K", "Ca", "Mg", "Li", "Al", "Si", "UNDEFINED", "Du", "LP"],
+  "_comment_revision-history-2002-05-15-DM": "Added extended types (carbons with implicit Hs, plus polar H)",
+  "_comment_revision-history-2002-05-13-DM": "Initial version from J Comp Chem, 10 (1989) 982-1012 and J Mol Biol, 267 (1997) 727-748",
+  "_comment_H": "Hydrogen",
+  "H": {
+    "r": 1.5,
+    "k": 0.042,
+    "ip": 13.6,
+    "pol": 4
+  },
+  "H.P": {
+    "r": 1.2,
+    "k": 0.042,
+    "ip": 13.6,
+    "pol": 4,
+    "is-hbd": true
+  },
+  "_comment_C": "Carbon",
+  "C.cat": {
+    "r": 1.7,
+    "k": 0.107,
+    "ip": 15.62,
+    "pol": 13.8
+  },
+  "C.3": {
+    "r": 1.7,
+    "k": 0.107,
+    "ip": 14.61,
+    "pol": 13.8
+  },
+  "_comment_C.3.H": "Increment R by 0.1 for each implicit hydrogen. Need to adjust POL to maintain same well depth. Leave K untouched for now.",
+  "C.3.H1": {
+    "r": 1.8,
+    "k": 0.107,
+    "ip": 14.61,
+    "pol": 16.38
+  },
+  "C.3.H2": {
+    "r": 1.9,
+    "k": 0.107,
+    "ip": 14.61,
+    "pol": 19.27
+  },
+  "C.3.H3": {
+    "r": 2,
+    "k": 0.107,
+    "ip": 14.61,
+    "pol": 22.47
+  },
+  "C.2": {
+    "r": 1.7,
+    "k": 0.107,
+    "ip": 15.62,
+    "pol": 13.8
+  },
+  "C.2.H1": {
+    "r": 1.8,
+    "k": 0.107,
+    "ip": 15.62,
+    "pol": 16.38
+  },
+  "C.2.H2": {
+    "r": 1.9,
+    "k": 0.107,
+    "ip": 15.62,
+    "pol": 19.27
+  },
+  "C.ar": {
+    "r": 1.7,
+    "k": 0.107,
+    "ip": 15.62,
+    "pol": 13.8
+  },
+  "C.ar.H1": {
+    "r": 1.8,
+    "k": 0.107,
+    "ip": 15.62,
+    "pol": 16.38
+  },
+  "C.1": {
+    "r": 1.7,
+    "k": 0.107,
+    "ip": 17.47,
+    "pol": 13.8
+  },
+  "C.1.H1": {
+    "r": 1.8,
+    "k": 0.107,
+    "ip": 17.47,
+    "pol": 16.38
+  },
+  "_comment_N": "Nitrogen",
+  "N.4": {
+    "r": 1.55,
+    "k": 0.095,
+    "ip": 33.29,
+    "pol": 8.4
+  },
+  "N.3": {
+    "r": 1.55,
+    "k": 0.095,
+    "ip": 18.93,
+    "pol": 8.4,
+    "is-hba": true
+  },
+  "N.pl3": {
+    "r": 1.55,
+    "k": 0.095,
+    "ip": 19.72,
+    "pol": 8.4
+  },
+  "N.am": {
+    "r": 1.55,
+    "k": 0.095,
+    "ip": 19.72,
+    "pol": 8.4
+  },
+  "N.2": {
+    "r": 1.55,
+    "k": 0.095,
+    "ip": 22.1,
+    "pol": 8.4,
+    "is-hba": true
+  },
+  "N.ar": {
+    "r": 1.55,
+    "k": 0.095,
+    "ip": 22.1,
+    "pol": 8.4,
+    "is-hba": true
+  },
+  "N.1": {
+    "r": 1.55,
+    "k": 0.095,
+    "ip": 23.91,
+    "pol": 8.4,
+    "is-hba": true
+  },
+  "_comment_O": "Oxygen",
+  "O.co2": {
+    "r": 1.52,
+    "k": 0.116,
+    "ip": 35.12,
+    "pol": 5.4,
+    "is-hba": true
+  },
+  "O.3": {
+    "r": 1.52,
+    "k": 0.116,
+    "ip": 24.39,
+    "pol": 5.4,
+    "is-hba": true
+  },
+  "O.2": {
+    "r": 1.52,
+    "k": 0.116,
+    "ip": 26.65,
+    "pol": 5.4,
+    "is-hba": true
+  },
+  "_comment_S": "Sulphur",
+  "S.3": {
+    "r": 1.8,
+    "k": 0.314,
+    "ip": 15.5,
+    "pol": 29.4
+  },
+  "S.o": {
+    "r": 1.7,
+    "k": 0.314,
+    "ip": 15.5,
+    "pol": 29.4
+  },
+  "S.o2": {
+    "r": 1.7,
+    "k": 0.314,
+    "ip": 15.5,
+    "pol": 29.4
+  },
+  "S.2": {
+    "r": 1.8,
+    "k": 0.314,
+    "ip": 17.78,
+    "pol": 29.4
+  },
+  "_comment_P": "Phosphorous",
+  "P.3": {
+    "r": 1.8,
+    "k": 0.314,
+    "ip": 16.78,
+    "pol": 40.6
+  },
+  "_comment_1": "Halides",
+  "F": {
+    "r": 1.47,
+    "k": 0.109,
+    "ip": 20.86,
+    "pol": 3.7
+  },
+  "Cl": {
+    "r": 1.75,
+    "k": 0.314,
+    "ip": 15.03,
+    "pol": 21.8
+  },
+  "Br": {
+    "r": 1.85,
+    "k": 0.434,
+    "ip": 13.1,
+    "pol": 31.2
+  },
+  "I": {
+    "r": 1.98,
+    "k": 0.623,
+    "ip": 12.67,
+    "pol": 49
+  },
+  "_comment_2": "Metals",
+  "Na": {
+    "r": 1.2,
+    "k": 0.4
+  },
+  "K": {
+    "r": 1.2,
+    "k": 0.4
+  },
+  "Ca": {
+    "r": 1.2,
+    "k": 0.6
+  },
+  "Mg": {
+    "r": 1.2,
+    "k": 0.6
+  },
+  "Li": {
+    "r": 1.2,
+    "k": 0.4
+  },
+  "Al": {
+    "r": 1.2,
+    "k": 0.042
+  },
+  "Si": {
+    "r": 1.2,
+    "k": 0.042
+  },
+  "_comment_3": "Undefined types",
+  "UNDEFINED": {
+    "r": 1.2,
+    "k": 0.6
+  },
+  "Du": {
+    "r": 1.2,
+    "k": 0.042
+  },
+  "LP": {
+    "r": 1.2,
+    "k": 0.042
+  }
+}
