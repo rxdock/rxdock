@@ -1,3 +1,5 @@
+.. _docking-in-3-steps:
+
 Docking in 3 steps
 ==================
 

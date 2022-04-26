@@ -1,3 +1,5 @@
+.. _build-system:
+
 Build system
 ============
 
