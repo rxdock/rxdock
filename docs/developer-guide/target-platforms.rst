@@ -1,3 +1,5 @@
+.. _target-platforms:
+
 Target platforms
 ================
 
