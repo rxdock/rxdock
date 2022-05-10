@@ -28,7 +28,7 @@ const std::string IDS_COPYRIGHT =
     " molecular docking program is licensed under GNU LGPL version 3.\n" +
     IDS_NAME +
     " is maintained by Vedran Miletić, Patrik Nikolić, and Luka Vretenar.\n"
-    "Visit https://www.rxdock.org/ for more information.";
+    "Visit https://rxdock.gitlab.io/ for more information.";
 
 const std::string IDS_PRODUCT = "librxdock.so";
 

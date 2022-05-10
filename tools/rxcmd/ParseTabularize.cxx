@@ -1,7 +1,7 @@
 //===-- ParseTabularize.cxx - Parse CLI params for Tabularize ---*- C++ -*-===//
 //
 // Part of the RxDock project, under the GNU LGPL version 3.
-// Visit https://www.rxdock.org/ for more information.
+// Visit https://rxdock.gitlab.io/ for more information.
 // Copyright (c) 1998--2006 RiboTargets (subsequently Vernalis (R&D) Ltd)
 // Copyright (c) 2006--2012 University of York
 // Copyright (c) 2012--2014 University of Barcelona
