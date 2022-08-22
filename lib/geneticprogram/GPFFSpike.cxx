@@ -72,7 +72,7 @@ void GPFFSpike::ReadTables(std::istream &in, ReturnTypeArray &it,
     i++;
     in >> recordn;
   }
-  LOG_F(1, "Read: {}", inputTable[0][0]);
+  LOG_F(1, "Read: {}", *inputTable[0][0]);
   it = inputTable;
   LOG_F(1, "Input table row size: {}", it[0].size());
   sft = SFTable;
