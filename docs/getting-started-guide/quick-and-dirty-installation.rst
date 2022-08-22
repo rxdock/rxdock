@@ -106,7 +106,7 @@ with all the functionalities aspiring computational chemists need, but the
 major hurdle in getting new users onboard and proving it to them is the
 seemingly archaic way of installing and using the software. The graphical user
 interface is non-existent, the software itself cannot be found maintained in
-the relevant Linux (or `macOS Homebrew <https://brew.sh/>`__), or
+the relevant Linux (or `macOS Homebrew <https://brew.sh/>`__, or
 `FreeBSD Ports <https://www.freebsd.org/ports/>`__, etc.) repositories, you have
 to set up your working directory every time you start using |Dock|, you have to
 build the software from its sources, and all of that sounds very taxing and
