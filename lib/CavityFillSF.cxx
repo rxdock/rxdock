@@ -166,3 +166,28 @@ double CavityFillSF::RawScore() const {
 void CavityFillSF::ParameterUpdated(const std::string &strName) {
   BaseSF::ParameterUpdated(strName);
 }
+
+void rxdock::to_json(json &j, const CavityFillSF &sf) {
+  json atomList;
+  for (const auto &cIter : sf.m_ligAtomList) {
+    json atom = *cIter;
+    atomList.push_back(atom);
+  }
+
+  j = json{{"atoms", atomList}};
+  if (atomList.size() > 0 && !sf.m_spGrid.Null()) {
+    j["fft-grid"] = *sf.m_spGrid;
+  }
+}
+
+void rxdock::from_json(const json &j, CavityFillSF &sf) {
+  sf.m_ligAtomList.clear();
+  sf.m_ligAtomList.reserve(j.at("atoms").size());
+  for (auto &atom : j.at("atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    sf.m_ligAtomList.push_back(spAtom);
+  }
+  if (sf.m_ligAtomList.size() > 0) {
+    sf.m_spGrid = FFTGridPtr(new FFTGrid(j.at("fft-grid")));
+  }
+}

@@ -116,3 +116,13 @@ FilterIfExp::~FilterIfExp() { _RBTOBJECTCOUNTER_DESTR_(_CT); }
 void FilterIfExp::Accept(FilterExpressionVisitor &visitor) {
   visitor.VisitIfExp(this);
 }
+
+void rxdock::to_json(json &j, const FilterExpression &filterExpression) {
+  j = json{{"value", filterExpression.value}};
+}
+
+void rxdock::from_json(const json &j, FilterExpression &filterExpression) {
+  j.at("value").get_to(filterExpression.value);
+
+  // subclasses missing
+}

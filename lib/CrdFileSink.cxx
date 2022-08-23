@@ -158,3 +158,11 @@ void CrdFileSink::Render() {
     throw; // Rethrow the Error
   }
 }
+
+void rxdock::to_json(json &j, const CrdFileSink &crdFileSink) {
+  j = json{{"num-atoms-line-rec", crdFileSink.m_numAtomsLineRec}};
+}
+
+void rxdock::from_json(const json &j, CrdFileSink &crdFileSink) {
+  j.at("num-atoms-line-rec").get_to(crdFileSink.m_numAtomsLineRec);
+}

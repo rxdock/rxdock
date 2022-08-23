@@ -131,3 +131,12 @@ void BaseIdxSF::OwnParameterUpdated(const std::string &strName) {
     m_border = GetParameter(_BORDER);
   }
 }
+
+void rxdock::to_json(json &j, const BaseIdxSF &baseIdxSF) {
+  j = json{{"grid-step", baseIdxSF.m_gridStep}, {"border", baseIdxSF.m_border}};
+}
+
+void rxdock::from_json(const json &j, BaseIdxSF &baseIdxSF) {
+  j.at("grid-step").get_to(baseIdxSF.m_gridStep);
+  j.at("border").get_to(baseIdxSF.m_border);
+}

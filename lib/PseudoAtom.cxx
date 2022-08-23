@@ -85,3 +85,19 @@ void PseudoAtom::UpdateCoords() {
   }
   SetCoords(coord);
 }
+
+void rxdock::to_json(json &j, const PseudoAtom &pseudoAtom) {
+  json atomList;
+  for (const auto &aIter : pseudoAtom.m_atomList) {
+    json atom = *aIter;
+    atomList.push_back(atom);
+  }
+  j = json{{"atoms", atomList}};
+}
+
+void rxdock::from_json(const json &j, PseudoAtom &pseudoAtom) {
+  for (auto &atom : j.at("atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    pseudoAtom.m_atomList.push_back(spAtom);
+  }
+}

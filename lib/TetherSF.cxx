@@ -107,3 +107,25 @@ double TetherSF::RawScore() const {
 void TetherSF::ParameterUpdated(const std::string &strName) {
   BaseSF::ParameterUpdated(strName);
 }
+
+void rxdock::to_json(json &j, const TetherSF &tetsf) {
+  json atomList;
+  for (const auto &cIter : tetsf.m_ligAtomList) {
+    json atom = *cIter;
+    atomList.push_back(atom);
+  }
+  j = json{{"lig-atom-list", atomList},
+           {"tet-atom-list", tetsf.m_tetherAtomList},
+           {"tet-coords", tetsf.m_tetherCoords}};
+}
+
+void rxdock::from_json(const json &j, TetherSF &tetsf) {
+  tetsf.m_ligAtomList.clear();
+  tetsf.m_ligAtomList.reserve(j.at("lig-atom-list").size());
+  for (auto &atom : j.at("lig-atom-list")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    tetsf.m_ligAtomList.push_back(spAtom);
+  }
+  j.at("tet-atom-list").get_to(tetsf.m_tetherAtomList);
+  j.at("tet-coords").get_to(tetsf.m_tetherCoords);
+}

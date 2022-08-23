@@ -21,6 +21,10 @@
 #include "rxdock/BaseSF.h"
 #include "rxdock/InteractionGrid.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class PolarSF : public virtual BaseSF, public virtual AnnotationHandler {
@@ -53,6 +57,9 @@ public:
   static const std::string _LP_DTHETAMAX;
 
   virtual ~PolarSF();
+
+  friend void to_json(json &j, const PolarSF &polarSF);
+  friend void from_json(const json &j, PolarSF &polarSF);
 
 protected:
   PolarSF();
@@ -101,9 +108,9 @@ protected:
 private:
   // Generic scoring function primitive
   inline double f1(double DR, const f1prms &prms) const {
-    return (DR > prms.DRMax)
-               ? 0.0
-               : (DR > prms.DRMin) ? 1.0 - prms.slope * (DR - prms.DRMin) : 1.0;
+    return (DR > prms.DRMax)   ? 0.0
+           : (DR > prms.DRMin) ? 1.0 - prms.slope * (DR - prms.DRMin)
+                               : 1.0;
   }
 
   void UpdateLPprms();
@@ -129,6 +136,9 @@ private:
   f1prms m_PHI_plane_prms;
   f1prms m_THETAprms;
 };
+
+void to_json(json &j, const PolarSF &polarSF);
+void from_json(const json &j, PolarSF &polarSF);
 
 } // namespace rxdock
 

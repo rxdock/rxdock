@@ -202,3 +202,33 @@ void Population::EvaluateRWFitness() {
     (*iter)->NormaliseRWFitness(partialSum);
   }
 }
+
+void rxdock::to_json(json &j, const Population &population) {
+  json genomeList;
+  for (const auto &aIter : population.m_pop) {
+    json genome = *aIter;
+    genomeList.push_back(genome);
+  }
+
+  j = json{{"pop-gen", genomeList},
+           {"size", population.m_size},
+           {"sig-trunc-mul", population.m_c},
+           //{"score-funk", population.m_pSF}, TODO or skip
+           //{"rand", population.m_rand},
+           {"score-mean", population.m_scoreMean},
+           {"score-var", population.m_scoreVariance}};
+}
+
+void rxdock::from_json(const json &j, Population &population) {
+  /*for (auto &genome : j.at("pop-gen")) {
+    GenomePtr spGenome = GenomePtr(new Genome(genome));
+    population.m_pop.push_back(spGenome);
+  }*/ //TODO default constructor disabled
+
+  j.at("size").get_to(population.m_size);
+  j.at("sig-trunc-mul").get_to(population.m_c);
+  // j.at("score-funk").get_to(population.m_pSF); TODO or skip
+  // j.at("rand").get_to(population.m_rand);
+  j.at("score-mean").get_to(population.m_scoreMean);
+  j.at("score-var").get_to(population.m_scoreVariance);
+}

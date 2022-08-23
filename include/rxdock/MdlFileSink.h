@@ -18,6 +18,10 @@
 #include "rxdock/BaseMolecularFileSink.h"
 #include "rxdock/ElementFileSource.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // DM 19 June 2006
@@ -38,6 +42,9 @@ public:
   RBTDLL_EXPORT MdlFileSink(const std::string &fileName, ModelPtr spModel);
 
   virtual ~MdlFileSink(); // Default destructor
+
+  friend void to_json(json &j, const MdlFileSink &mdlFileSink);
+  friend void from_json(const json &j, MdlFileSink &mdlFileSink);
 
   ////////////////////////////////////////
   // Public methods
@@ -83,6 +90,9 @@ private:
   AtomIdMap m_atomIdMap; // Keep track of logical atom IDs as rendered to
                          // file
 };
+
+void to_json(json &j, const MdlFileSink &mdlFileSink);
+void from_json(const json &j, MdlFileSink &mdlFileSink);
 
 // Useful typedefs
 typedef SmartPtr<MdlFileSink> MdlFileSinkPtr; // Smart pointer

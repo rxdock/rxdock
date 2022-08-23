@@ -88,3 +88,56 @@ void ChromPositionRefData::SetModelValue(const Coord &com,
     (*iter)->Translate(com);         // Move to new centre of mass
   }
 }
+
+void rxdock::to_json(json &j, const ChromPositionRefData &chrposrdata) {
+  json atomList;
+  for (const auto &aIter : chrposrdata.m_refAtoms) {
+    json atom = *aIter;
+    atomList.push_back(atom);
+  }
+  json atomRList;
+  for (const auto &aIter : chrposrdata.m_movableAtoms) {
+    json atom = *aIter;
+    atomRList.push_back(atom);
+  }
+
+  j = json{{"ref-atoms", atomList},
+           {"movable-atoms", atomRList},
+           {"start-coords", chrposrdata.m_startCoords},
+           {"trans-step-size", chrposrdata.m_transStepSize},
+           {"rot-step-size", chrposrdata.m_rotStepSize},
+           {"init-com", chrposrdata.m_initialCom},
+           {"init-orient", chrposrdata.m_initialOrientation},
+           {"init-quat", chrposrdata.m_initialQuat},
+           // eMode
+           // eMode
+           {"length", chrposrdata.m_length},
+           {"over-length", chrposrdata.m_xOverLength},
+           {"max-trans", chrposrdata.m_maxTrans},
+           {"max-rot", chrposrdata.m_maxRot}};
+}
+
+void rxdock::from_json(const json &j, ChromPositionRefData &chrposrdata) {
+  for (auto &atom : j.at("ref-atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    chrposrdata.m_refAtoms.push_back(spAtom);
+  }
+
+  for (auto &atom : j.at("movable-atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    chrposrdata.m_movableAtoms.push_back(spAtom);
+  }
+
+  j.at("start-coords").get_to(chrposrdata.m_startCoords);
+  j.at("trans-step-size").get_to(chrposrdata.m_transStepSize);
+  j.at("rot-step-size").get_to(chrposrdata.m_rotStepSize);
+  j.at("init-com").get_to(chrposrdata.m_initialCom);
+  j.at("init-orient").get_to(chrposrdata.m_initialOrientation);
+  j.at("init-quat").get_to(chrposrdata.m_initialQuat);
+  // eMode
+  // eMOde
+  j.at("length").get_to(chrposrdata.m_length);
+  j.at("over-length").get_to(chrposrdata.m_xOverLength);
+  j.at("max-trans").get_to(chrposrdata.m_maxTrans);
+  j.at("max-rot").get_to(chrposrdata.m_maxRot);
+}

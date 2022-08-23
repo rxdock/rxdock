@@ -31,6 +31,14 @@ public:
   double s; // Scalar component
   Vector v; // Vector component
 
+  friend void to_json(json &j, const Quat &quat) {
+    j = json{{"scalar", quat.s}, {"vector", quat.v}};
+  };
+  friend void from_json(const json &j, Quat &quat) {
+    j.at("scalar").get_to(quat.s);
+    j.at("vector").get_to(quat.v);
+  };
+
   ///////////////////////////////////////////////
   // Constructors/destructors:
   ///////////////////////////

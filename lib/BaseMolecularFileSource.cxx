@@ -441,3 +441,40 @@ void BaseMolecularFileSource::SetupPartialIonicGroups(
     }
   }
 }
+
+void rxdock::to_json(json &j, const BaseMolecularFileSource &baseMolFilSrc) {
+  json atomList;
+  for (const auto &cIter : baseMolFilSrc.m_atomList) {
+    json atom = *cIter;
+    atomList.push_back(atom);
+  }
+  json bondList;
+  for (const auto &aIter : baseMolFilSrc.m_bondList) {
+    json bond = *aIter;
+    bondList.push_back(bond);
+  }
+
+  j = json{{"title-list", baseMolFilSrc.m_titleList},
+           {"atom-list", atomList},
+           {"bond-list", bondList},
+           {"seg-map", baseMolFilSrc.m_segmentMap},
+           {"data-map", baseMolFilSrc.m_dataMap},
+           {"seg-fil-map", baseMolFilSrc.m_segmentFilterMap}};
+}
+
+void rxdock::from_json(const json &j, BaseMolecularFileSource &baseMolFilSrc) {
+  j.at("title-list").get_to(baseMolFilSrc.m_titleList);
+
+  for (auto &atom : j.at("atom-list")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    baseMolFilSrc.m_atomList.push_back(spAtom);
+  }
+  for (auto &bond : j.at("bond-list")) {
+    BondPtr spBond = BondPtr(new Bond(bond));
+    baseMolFilSrc.m_bondList.push_back(spBond);
+  }
+
+  j.at("seg-map").get_to(baseMolFilSrc.m_segmentMap);
+  j.at("data-map").get_to(baseMolFilSrc.m_dataMap);
+  j.at("seg-fil-map").get_to(baseMolFilSrc.m_segmentFilterMap);
+}

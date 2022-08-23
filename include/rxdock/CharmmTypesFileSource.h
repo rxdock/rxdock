@@ -18,6 +18,10 @@
 
 #include "rxdock/BaseFileSource.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // Simple struct for holding the type info in masses.rtf
@@ -32,6 +36,9 @@ public:
   std::string comment;
 };
 
+void to_json(json &j, const CharmmType &charmmType);
+void from_json(const json &j, CharmmType &charmmType);
+
 typedef std::vector<CharmmType> CharmmTypeList;
 typedef CharmmTypeList::iterator CharmmTypeListIter;
 
@@ -43,6 +50,11 @@ public:
 
   // Destructor
   virtual ~CharmmTypesFileSource();
+
+  friend void to_json(json &j,
+                      const CharmmTypesFileSource &charmmTypesFileSource);
+  friend void from_json(const json &j,
+                        CharmmTypesFileSource &charmmTypesFileSource);
 
   ////////////////////////////////////////
   // Public methods
@@ -71,6 +83,9 @@ private:
   // Private data
   CharmmTypeList m_typesList;
 };
+
+void to_json(json &j, const CharmmTypesFileSource &charmmTypesFileSource);
+void from_json(const json &j, CharmmTypesFileSource &charmmTypesFileSource);
 
 // useful typedefs
 typedef SmartPtr<CharmmTypesFileSource>

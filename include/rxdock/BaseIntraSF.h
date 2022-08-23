@@ -18,6 +18,10 @@
 #include "rxdock/BaseSF.h"
 #include "rxdock/Model.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class BaseIntraSF : public virtual BaseSF {
@@ -28,6 +32,9 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~BaseIntraSF();
+
+  friend void to_json(json &j, const BaseIntraSF &baseIntraSF);
+  friend void from_json(const json &j, BaseIntraSF &baseIntraSF);
 
   ////////////////////////////////////////
   // Public methods
@@ -71,6 +78,9 @@ private:
   // i.e. all intramolecular scores are reported relative to the initial score
   double m_zero;
 };
+
+void to_json(json &j, const BaseIntraSF &baseIntraSF);
+void from_json(const json &j, BaseIntraSF &baseIntraSF);
 
 } // namespace rxdock
 

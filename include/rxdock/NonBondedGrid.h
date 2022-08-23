@@ -18,6 +18,10 @@
 #include "rxdock/Atom.h"
 #include "rxdock/BaseGrid.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // A map of atom vectors indexed by unsigned int
@@ -46,6 +50,9 @@ public:
   NonBondedGrid(json j);
 
   ~NonBondedGrid(); // Default destructor
+
+  /*friend void to_json(json &j, const NonBondedGrid &nonBondedGrid);
+  friend void from_json(const json &j, NonBondedGrid &nonBondedGrid);*/
 
   // Copy constructor
   NonBondedGrid(const NonBondedGrid &);
@@ -113,6 +120,9 @@ private:
       m_atomMap; // Used to store the receptor atom lists at each grid point
   const AtomRList m_emptyList; // Dummy list used by GetAtomList
 };
+
+/*void to_json(json &j, const NonBondedGrid &nonBondedGrid);
+void from_json(const json &j, NonBondedGrid &nonBondedGrid);*/
 
 // Useful typedefs
 typedef SmartPtr<NonBondedGrid> NonBondedGridPtr; // Smart pointer

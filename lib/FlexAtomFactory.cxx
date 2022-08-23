@@ -135,3 +135,40 @@ void FlexAtomFactory::VisitLigandFlexData(LigandFlexData *pFlexData) {
 void FlexAtomFactory::VisitSolventFlexData(SolventFlexData *pFlexData) {
   VisitLigandFlexData(pFlexData);
 }
+
+void rxdock::to_json(json &j, const FlexAtomFactory &flexAtomFactory) {
+  json atomRList;
+  for (const auto &aIter : flexAtomFactory.m_fixedAtomList) {
+    json atom = *aIter;
+    atomRList.push_back(atom);
+  }
+  json atomRList2;
+  for (const auto &aIter : flexAtomFactory.m_tetheredAtomList) {
+    json atom = *aIter;
+    atomRList.push_back(atom);
+  }
+  json atomRList3;
+  for (const auto &aIter : flexAtomFactory.m_freeAtomList) {
+    json atom = *aIter;
+    atomRList.push_back(atom);
+  }
+
+  j = json{{"fixed-atom-list", atomRList},
+           {"tethered-atom-list", atomRList2},
+           {"free-atom-list", atomRList3}};
+}
+
+void rxdock::from_json(const json &j, FlexAtomFactory &flexAtomFactory) {
+  for (auto &atom : j.at("fixed-atom-list")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    flexAtomFactory.m_fixedAtomList.push_back(spAtom);
+  }
+  for (auto &atom : j.at("tethered-atom-list")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    flexAtomFactory.m_tetheredAtomList.push_back(spAtom);
+  }
+  for (auto &atom : j.at("free-atom-list")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    flexAtomFactory.m_freeAtomList.push_back(spAtom);
+  }
+}

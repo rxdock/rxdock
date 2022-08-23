@@ -21,6 +21,10 @@
 #include "rxdock/ParamHandler.h"
 #include "rxdock/RequestHandler.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class WorkSpace; // forward definition
@@ -33,6 +37,9 @@ public:
   static const std::string _CLASS;
   static const std::string _NAME;
   static const std::string _ENABLED;
+
+  friend void to_json(json &j, const BaseObject &baseObject);
+  friend void from_json(const json &j, BaseObject &baseObject);
 
   ////////////////////////////////////////
   // Constructors/destructors
@@ -105,6 +112,9 @@ private:
   WorkSpace *m_workspace;
   bool m_enabled;
 };
+
+void to_json(json &j, const BaseObject &baseObject);
+void from_json(const json &j, BaseObject &baseObject);
 
 // Useful typedefs
 typedef std::vector<BaseObject *> BaseObjectList; // Vector of smart pointers

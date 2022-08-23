@@ -18,6 +18,10 @@
 #include "rxdock/FlexDataVisitor.h"
 #include "rxdock/RealGrid.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class CavityGridSF : public BaseInterSF {
@@ -33,9 +37,15 @@ public:
     virtual void VisitSolventFlexData(SolventFlexData *);
     AtomRList GetAtomList() const { return m_atomList; }
 
+    friend void to_json(json &j, const HeavyAtomFactory &heavyAtomFactory);
+    friend void from_json(const json &j, HeavyAtomFactory &heavyAtomFactory);
+
   private:
     AtomRList m_atomList;
   };
+
+  void to_json(json &j, const HeavyAtomFactory &heavyAtomFactory);
+  void from_json(const json &j, HeavyAtomFactory &heavyAtomFactory);
 
   // Class type string
   static const std::string _CT;
@@ -46,6 +56,9 @@ public:
 
   CavityGridSF(const std::string &strName = "cavity");
   virtual ~CavityGridSF();
+
+  friend void to_json(json &j, const CavityGridSF &cavGridSF);
+  friend void from_json(const json &j, CavityGridSF &cavGridSF);
 
 protected:
   virtual void SetupReceptor();
@@ -64,6 +77,9 @@ private:
   double m_rMax;
   bool m_bQuadratic; // synchronised with QUADRATIC named parameter
 };
+
+void to_json(json &j, const CavityGridSF &cavGridSF);
+void from_json(const json &j, CavityGridSF &cavGridSF);
 
 } // namespace rxdock
 

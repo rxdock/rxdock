@@ -91,3 +91,29 @@ void CharmmTypesFileSource::Parse() {
 }
 
 void CharmmTypesFileSource::ClearTypesCache() { m_typesList.clear(); }
+
+void rxdock::to_json(json &j, const CharmmType &charmmType) {
+  j = json{{"atom-type", charmmType.nAtomType},
+           {"str-atom-type", charmmType.strAtomType},
+           {"mass", charmmType.mass},
+           {"element", charmmType.element},
+           {"comment", charmmType.comment}};
+}
+
+void rxdock::from_json(const json &j, CharmmType &charmmType) {
+  j.at("atom-type").get_to(charmmType.nAtomType);
+  j.at("str-atom-type").get_to(charmmType.strAtomType);
+  j.at("mass").get_to(charmmType.mass);
+  j.at("element").get_to(charmmType.element);
+  j.at("comment").get_to(charmmType.comment);
+}
+
+void rxdock::to_json(json &j,
+                     const CharmmTypesFileSource &charmmTypesFileSource) {
+  j = json{{"atom-type", charmmTypesFileSource.m_typesList}};
+}
+
+void rxdock::from_json(const json &j,
+                       CharmmTypesFileSource &charmmTypesFileSource) {
+  j.at("atom-type").get_to(charmmTypesFileSource.m_typesList);
+}

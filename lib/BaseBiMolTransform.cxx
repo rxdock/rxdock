@@ -80,3 +80,25 @@ void BaseBiMolTransform::Update(Subject *theChangedSubject) {
     SetupTransform();
   }
 }
+
+void rxdock::to_json(json &j, const BaseBiMolTransform &baseBiMolTrans) {
+  json modelList;
+  for (const auto &aIter : baseBiMolTrans.m_solventList) {
+    json model = *aIter;
+    modelList.push_back(model);
+  }
+
+  j = json{{"receptor", *baseBiMolTrans.m_spReceptor},
+           {"ligand", *baseBiMolTrans.m_spLigand},
+           {"model-list", modelList}};
+}
+
+void rxdock::from_json(const json &j, BaseBiMolTransform &baseBiMolTrans) {
+  j.at("receptor").get_to(*baseBiMolTrans.m_spReceptor);
+  j.at("ligand").get_to(*baseBiMolTrans.m_spLigand);
+
+  for (auto &model : j.at("model-list")) {
+    ModelPtr spModel = ModelPtr(new Model(model));
+    baseBiMolTrans.m_solventList.push_back(spModel);
+  }
+}

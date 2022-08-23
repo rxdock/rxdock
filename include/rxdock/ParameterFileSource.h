@@ -18,6 +18,10 @@
 #include "rxdock/BaseFileSource.h"
 #include "rxdock/Variant.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class ParameterFileSource : public BaseFileSource {
@@ -28,6 +32,9 @@ public:
 
   // Destructor
   virtual ~ParameterFileSource();
+
+  friend void to_json(json &j, const ParameterFileSource &parameterFileSrc);
+  friend void from_json(const json &j, ParameterFileSource &parameterFileSrc);
 
   ////////////////////////////////////////
   // Public methods
@@ -96,6 +103,9 @@ private:
   std::string m_strSection;                // Current section
   bool m_json;
 };
+
+void to_json(json &j, const ParameterFileSource &parameterFileSrc);
+void from_json(const json &j, ParameterFileSource &parameterFileSrc);
 
 // useful typedefs
 typedef SmartPtr<ParameterFileSource> ParameterFileSourcePtr; // Smart pointer

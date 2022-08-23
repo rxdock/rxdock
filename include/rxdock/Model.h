@@ -21,6 +21,10 @@
 #include "rxdock/PseudoAtom.h"
 #include "rxdock/Variant.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class BaseMolecularFileSource;
@@ -40,8 +44,13 @@ public:
   // Use with caution
   RBTDLL_EXPORT Model(AtomList &atomList, BondList &bondList);
 
+  Model(json j);
+
   // Default destructor
   virtual ~Model();
+
+  friend void to_json(json &j, const Model &model);
+  friend void from_json(const json &j, Model &model);
 
   //////////////////////////
   // Friend functions/classes
@@ -347,6 +356,9 @@ private:
   double m_occupancy; // Occupancy value (0->1), in support of solvent occupancy
   bool m_enabled;     // Enabled state, depends on occupancy value and threshold
 };
+
+void to_json(json &j, const Model &model);
+void from_json(const json &j, Model &model);
 
 // Useful typedefs
 typedef SmartPtr<Model> ModelPtr;        // Smart pointer

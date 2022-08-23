@@ -147,3 +147,14 @@ void BaseSF::ParameterUpdated(const std::string &strName) {
     BaseObject::ParameterUpdated(strName);
   }
 }
+
+void rxdock::to_json(json &j, const BaseSF &baseSF) {
+  // parent pointer skipped
+  j = json{{"weight", baseSF.m_weight}, {"range", baseSF.m_range}};
+}
+
+void rxdock::from_json(const json &j, BaseSF &baseSF) {
+  // parent pointer skipped
+  j.at("weight").get_to(baseSF.m_weight);
+  j.at("range").get_to(baseSF.m_range);
+}

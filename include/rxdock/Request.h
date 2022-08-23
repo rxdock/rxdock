@@ -20,6 +20,10 @@
 
 #include "rxdock/Variant.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 typedef int RequestID;
@@ -36,6 +40,26 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~Request() {}
+
+  Request(json j) {
+    j.get_to(*this);
+    _RBTOBJECTCOUNTER_CONSTR_("Request");
+  }
+
+  friend void to_json(json &j, const Request &request) {
+    /*json variantList;
+    for (const auto &aIter : request.m_parameters) {
+      json request = *aIter;
+      variantList.push_back(request);
+    }*/
+    j = json{{"request-id", request.m_id},
+             {"variant-list", request.m_parameters}};
+  }
+
+  friend void from_json(const json &j, Request &request) {
+    j.at("request-id").get_to(request.m_id);
+    j.at("variant-list").get_to(request.m_parameters);
+  }
 
   ////////////////////////////////////////
   // Public methods

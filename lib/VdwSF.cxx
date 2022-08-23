@@ -483,3 +483,25 @@ void VdwSF::Partition(const AtomRList &atomList, const AtomRListList &intns,
           (*iter)->GetFullAtomName(), intns[id].size(), prtIntns[id].size());
   }
 }
+
+void rxdock::to_json(json &j, const VdwSF &vswSF) {
+  j = json{{"use-4-8", vswSF.m_use_4_8},
+           {"use-tripos", vswSF.m_use_tripos},
+           {"r-max", vswSF.m_rmax},
+           {"ecut", vswSF.m_ecut},
+           {"e0", vswSF.m_e0},
+           {"vdw-source", *vswSF.m_spVdwSource},
+           //{"vdw-table", vswSF.m_vdwTable}, TODO
+           {"max-range", vswSF.m_maxRange}};
+}
+
+void rxdock::from_json(const json &j, VdwSF &vswSF) {
+  j.at("use-4-8").get_to(vswSF.m_use_4_8);
+  j.at("use-tripos").get_to(vswSF.m_use_tripos);
+  j.at("r-max").get_to(vswSF.m_rmax);
+  j.at("ecut").get_to(vswSF.m_ecut);
+  j.at("e0").get_to(vswSF.m_e0);
+  j.at("vdw-source").get_to(*vswSF.m_spVdwSource);
+  // j.at("vdw-table").get_to(vswSF.m_vdwTable); TODO
+  j.at("max-range").get_to(vswSF.m_maxRange);
+}

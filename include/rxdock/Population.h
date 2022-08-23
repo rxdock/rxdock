@@ -18,6 +18,10 @@
 #include "rxdock/Error.h"
 #include "rxdock/Genome.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class BaseSF; // forward definition
@@ -40,6 +44,9 @@ public:
   // null.
   RBTDLL_EXPORT Population(ChromElement *pChr, int size, BaseSF *pSF);
   virtual ~Population();
+
+  friend void to_json(json &j, const Population &population);
+  friend void from_json(const json &j, Population &population);
 
   // Gets the maximum size of the population as defined in the constructor.
   int GetMaxSize() const { return m_size; }
@@ -94,6 +101,9 @@ private:
   double m_scoreMean;     // the average raw score across all genomes
   double m_scoreVariance; // the variance of raw scores across all genomes
 };
+
+void to_json(json &j, const Population &population);
+void from_json(const json &j, Population &population);
 
 typedef SmartPtr<Population> PopulationPtr;
 

@@ -17,6 +17,10 @@
 
 #include "rxdock/Atom.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class PseudoAtom : public Atom {
@@ -27,6 +31,9 @@ public:
   // Constructor supplying atom list of constituent atoms
   PseudoAtom(const AtomList &atomList, int nAtomId = -1,
              std::string strAtomName = "PSEUDO");
+
+  friend void to_json(json &j, const PseudoAtom &pseudoAtom);
+  friend void from_json(const json &j, PseudoAtom &pseudoAtom);
 
   // Default destructor
   virtual ~PseudoAtom();
@@ -76,6 +83,9 @@ private:
   // Private data
   AtomList m_atomList; // List of smart pointers to constituent atoms
 };
+
+void to_json(json &j, const PseudoAtom &pseudoAtom);
+void from_json(const json &j, PseudoAtom &pseudoAtom);
 
 // Useful typedefs
 typedef SmartPtr<PseudoAtom> PseudoAtomPtr;        // Smart pointer

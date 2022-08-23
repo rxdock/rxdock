@@ -18,6 +18,10 @@
 #include "rxdock/BaseInterSF.h"
 #include "rxdock/RealGrid.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class VdwGridSF : public BaseInterSF {
@@ -34,6 +38,9 @@ public:
 
   VdwGridSF(const std::string &strName = "vdw");
   virtual ~VdwGridSF();
+
+  friend void to_json(json &j, const VdwGridSF &vdwGridSF);
+  friend void from_json(const json &j, VdwGridSF &vdwGridSF);
 
 protected:
   virtual void SetupReceptor();
@@ -54,6 +61,9 @@ private:
   TriposAtomTypeList m_ligAtomTypes;
   bool m_bSmoothed;
 };
+
+void to_json(json &j, const VdwGridSF &vdwGridSF);
+void from_json(const json &j, VdwGridSF &vdwGridSF);
 
 } // namespace rxdock
 

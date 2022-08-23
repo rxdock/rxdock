@@ -120,3 +120,17 @@ void BaseFileSink::Open(bool bAppend) {
 void BaseFileSink::Close() { m_fileOut.close(); }
 
 void BaseFileSink::ClearCache() { m_lineRecs.clear(); }
+
+void rxdock::to_json(json &j, const BaseFileSink &baseFileSink) {
+  j = json{{"line-recs", baseFileSink.m_lineRecs},
+           {"file-name", baseFileSink.m_strFileName},
+           // fileOut skipped
+           {"append", baseFileSink.m_bAppend}};
+}
+
+void rxdock::from_json(const json &j, BaseFileSink &baseFileSink) {
+  j.at("line-recs").get_to(baseFileSink.m_lineRecs);
+  j.at("file-name").get_to(baseFileSink.m_strFileName);
+  // fileOut skipped
+  j.at("append").get_to(baseFileSink.m_bAppend);
+}

@@ -194,3 +194,123 @@ void ModelMutator::Setup() {
     }
   }
 }
+
+void rxdock::to_json(json &j, const ModelMutator &modelMutator) {
+  // model pointer skipped
+
+  json bondList;
+  for (const auto &aIter : modelMutator.m_rotBonds) {
+    json bond = *aIter;
+    bondList.push_back(bond);
+  }
+
+  json atomRList1;
+  for (const auto &aIter : modelMutator.m_dih1Atoms) {
+    json atom = *aIter;
+    atomRList1.push_back(atom);
+  }
+
+  json atomRList2;
+  for (const auto &aIter : modelMutator.m_dih2Atoms) {
+    json atom = *aIter;
+    atomRList2.push_back(atom);
+  }
+
+  json atomRList3;
+  for (const auto &aIter : modelMutator.m_dih3Atoms) {
+    json atom = *aIter;
+    atomRList3.push_back(atom);
+  }
+
+  json atomRList4;
+  for (const auto &aIter : modelMutator.m_dih4Atoms) {
+    json atom = *aIter;
+    atomRList4.push_back(atom);
+  }
+
+  json atomRListList1;
+  for (const auto &aListIter : modelMutator.m_rotAtoms) {
+    json atomRList;
+    for (const auto &aIter : aListIter) {
+      json atom = *aIter;
+      atomRList.push_back(atom);
+    }
+    atomRListList1.push_back(atomRList);
+  }
+
+  json atomRListList2;
+  for (const auto &aListIter : modelMutator.m_flexIntns) {
+    json atomRList;
+    for (const auto &aIter : aListIter) {
+      json atom = *aIter;
+      atomRList.push_back(atom);
+    }
+    atomRListList2.push_back(atomRList);
+  }
+
+  json atomListT;
+  for (const auto &aIter : modelMutator.m_tetheredAtoms) {
+    json atom = *aIter;
+    atomListT.push_back(atom);
+  }
+
+  j = json{{"bonds", bondList},
+           {"dihedral1-atoms", atomRList1},
+           {"dihedral2-atoms", atomRList2},
+           {"dihedral3-atoms", atomRList3},
+           {"dihedral4-atoms", atomRList4},
+           {"rot-atoms", atomRListList1},
+           {"flex-intns", atomRListList2},
+           {"tethered-atoms", atomListT}};
+}
+
+void rxdock::from_json(const json &j, ModelMutator &modelMutator) {
+  // model pointer skipped
+  for (auto &bond : j.at("bonds")) {
+    BondPtr spBond = BondPtr(new Bond(bond));
+    modelMutator.m_rotBonds.push_back(spBond);
+  }
+
+  for (auto &atom : j.at("dihedral1-atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    modelMutator.m_dih1Atoms.push_back(spAtom);
+  }
+
+  for (auto &atom : j.at("dihedral2-atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    modelMutator.m_dih2Atoms.push_back(spAtom);
+  }
+
+  for (auto &atom : j.at("dihedral3-atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    modelMutator.m_dih3Atoms.push_back(spAtom);
+  }
+
+  for (auto &atom : j.at("dihedral4-atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    modelMutator.m_dih4Atoms.push_back(spAtom);
+  }
+
+  for (auto &atomList : j.at("rot-atoms")) {
+    AtomRList spAtoms;
+    for (auto &atom : atomList) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      spAtoms.push_back(spAtom);
+    }
+    modelMutator.m_rotAtoms.push_back(spAtoms);
+  }
+
+  for (auto &atomList : j.at("flex-intns")) {
+    AtomRList spAtoms;
+    for (auto &atom : atomList) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      spAtoms.push_back(spAtom);
+    }
+    modelMutator.m_flexIntns.push_back(spAtoms);
+  }
+
+  for (auto &atom : j.at("tethered-atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    modelMutator.m_tetheredAtoms.push_back(spAtom);
+  }
+}

@@ -18,6 +18,10 @@
 #include "rxdock/BaseSF.h"
 #include "rxdock/Model.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class BaseInterSF : public virtual BaseSF {
@@ -28,6 +32,9 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~BaseInterSF();
+
+  friend void to_json(json &j, const BaseInterSF &baseInterSF);
+  friend void from_json(const json &j, BaseInterSF &baseInterSF);
 
   ////////////////////////////////////////
   // Public methods
@@ -72,6 +79,9 @@ private:
   ModelPtr m_spLigand;
   ModelList m_solventList;
 };
+
+void to_json(json &j, const BaseInterSF &baseInterSF);
+void from_json(const json &j, BaseInterSF &baseInterSF);
 
 } // namespace rxdock
 

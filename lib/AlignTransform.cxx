@@ -142,3 +142,23 @@ void AlignTransform::Execute() {
     }
   }
 }
+
+void rxdock::to_json(json &j, const AlignTransform &alignTransform) {
+  json cavityList;
+  for (const auto &aIter : alignTransform.m_cavities) {
+    json cavity = *aIter;
+    cavityList.push_back(cavity);
+  }
+  j = json{{"cavity-list", cavityList},
+           {"cumulative-size", alignTransform.m_cumulSize},
+           {"total-size", alignTransform.m_totalSize}};
+}
+
+void rxdock::from_json(const json &j, AlignTransform &alignTransform) {
+  for (auto &cavity : j.at("cavity-list")) {
+    CavityPtr spCavity = CavityPtr(new Cavity(cavity));
+    alignTransform.m_cavities.push_back(spCavity);
+  }
+  j.at("cumulative-size").get_to(alignTransform.m_cumulSize);
+  j.at("total-size").get_to(alignTransform.m_totalSize);
+}

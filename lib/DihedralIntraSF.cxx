@@ -58,3 +58,20 @@ void DihedralIntraSF::ClearModel() {
   }
   m_dihList.clear();
 }
+/*
+void rxdock::to_json(json &j, const DihedralIntraSF &dihedralIntraSF) {
+  json dihedralList;
+  for (const auto &aIter : dihedralIntraSF.m_dihList) {
+    json dihedral = *aIter;
+    dihedralList.push_back(dihedral);
+  }
+
+  j = json{{"dihedral-list", dihedralList}};
+}
+
+void rxdock::from_json(const json &j, DihedralIntraSF &dihedralIntraSF) {
+  for (auto &dihedral : j.at("dihedral-list")) {
+    DihedralElement *pDihedral = new DihedralElement(dihedral);
+    dihedralIntraSF.m_dihList.push_back(pDihedral);
+  }
+}*/

@@ -117,6 +117,15 @@ public:
   operator bool() const { return GetBool(); }
   operator Coord() const { return GetCoord(); }
 
+  friend void to_json(json &j, const Variant &v) {
+    j = json{{"double", v.m_d}, {"string-list", v.m_sl}};
+  }
+
+  friend void from_json(const json &j, Variant &v) {
+    j.at("double").get_to(v.m_d);
+    j.at("string-list").get_to(v.m_sl);
+  }
+
   ////////////////////////////////////////
   // Public methods
   ////////////////

@@ -18,6 +18,10 @@
 #include "rxdock/BaseInterSF.h"
 #include "rxdock/VdwSF.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class VdwIdxSF : public BaseInterSF, public BaseIdxSF, public VdwSF {
@@ -42,6 +46,9 @@ public:
 
   RBTDLL_EXPORT VdwIdxSF(const std::string &strName = "vdw");
   virtual ~VdwIdxSF();
+
+  friend void to_json(json &j, const VdwIdxSF &vdwIdxSF);
+  friend void from_json(const json &j, VdwIdxSF &vdwIdxSF);
 
   // Override BaseSF::ScoreMap to provide additional raw descriptors
   virtual void ScoreMap(StringVariantMap &scoreMap) const;
@@ -94,6 +101,9 @@ private:
   bool m_bFlexRec;
   bool m_bFastSolvent;
 };
+
+void to_json(json &j, const VdwIdxSF &vdwIdxSF);
+void from_json(const json &j, VdwIdxSF &vdwIdxSF);
 
 } // namespace rxdock
 

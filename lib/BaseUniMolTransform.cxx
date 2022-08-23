@@ -56,3 +56,11 @@ void BaseUniMolTransform::Update(Subject *theChangedSubject) {
     }
   }
 }
+
+void rxdock::to_json(json &j, const BaseUniMolTransform &baseUniMolTrans) {
+  j = json{{"ligand", *baseUniMolTrans.m_spLigand}};
+}
+
+void rxdock::from_json(const json &j, BaseUniMolTransform &baseUniMolTrans) {
+  j.at("ligand").get_to(*baseUniMolTrans.m_spLigand);
+}

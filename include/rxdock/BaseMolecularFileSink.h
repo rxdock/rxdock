@@ -20,6 +20,10 @@
 #include "rxdock/BaseFileSink.h"
 #include "rxdock/Model.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class BaseMolecularFileSink : public BaseFileSink {
@@ -31,6 +35,9 @@ public:
                         bool bUseModelSegmentNames = true);
 
   virtual ~BaseMolecularFileSink(); // Default destructor
+
+  friend void to_json(json &j, const BaseMolecularFileSink &baseBiMolFSink);
+  friend void from_json(const json &j, BaseMolecularFileSink &baseBiMolFSink);
 
   ////////////////////////////////////////
   // Public methods
@@ -105,6 +112,9 @@ private:
   ModelList m_solventList;
   bool m_bMultiConf;
 };
+
+void to_json(json &j, const BaseMolecularFileSink &baseBiMolFSink);
+void from_json(const json &j, BaseMolecularFileSink &baseBiMolFSink);
 
 // Useful typedefs
 typedef SmartPtr<BaseMolecularFileSink> MolecularFileSinkPtr; // Smart pointer

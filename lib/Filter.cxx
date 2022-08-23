@@ -218,3 +218,56 @@ bool Filter::Write() {
   }
   return bWrite;
 }
+
+void rxdock::to_json(json &j, const Filter &filter) {
+  /* todo abstract class
+  json filterExpressionList;
+  for (const auto &aIter : filter.terminationFilters) {
+    json filterExpression = *aIter;
+    filterExpressionList.push_back(filterExpression);
+  }
+
+  json filterExpressionList2;
+  for (const auto &aIter : filter.writtingFilter) {
+    json filterExpression = *aIter;
+    filterExpressionList2.push_back(filterExpression);
+  }*/
+
+  j = json{
+      {"filteridx", filter.filteridx},
+      {"term-filters", filter.nTermFilters},
+      {"write-filters", filter.nWriteFilters},
+      {"runs", filter.nruns},
+      {"max-runs", filter.maxnruns},
+      /*{"termination-filters", filterExpressionList},
+      {"writting-filter", filterExpressionList2},*/
+      {"rec", *filter.m_spReceptor},
+      {"lig", *filter.m_spLigand},
+      //{"context-ptr", filter.contextp}
+  };
+}
+
+void rxdock::from_json(const json &j, Filter &filter) {
+  j.at("filteridx").get_to(filter.filteridx);
+  j.at("term-filters").get_to(filter.nTermFilters);
+  j.at("write-filters").get_to(filter.nWriteFilters);
+  j.at("runs").get_to(filter.nruns);
+  j.at("max-runs").get_to(filter.maxnruns);
+
+  /*for (auto &filterExpression : j.at("termination-filters")) {
+    FilterExpressionPtr spFilterExpression = FilterExpressionPtr(new
+  FilterExpression(filterExpression));
+    filter.terminationFilters.push_back(spFilterExpression);
+  }
+
+  for (auto &filterExpression : j.at("writting-filter")) {
+    FilterExpressionPtr spFilterExpression = FilterExpressionPtr(new
+  FilterExpression(filterExpression));
+    filter.writtingFilter.push_back(spFilterExpression);
+  }*/
+
+  j.at("rec").get_to(*filter.m_spReceptor);
+  j.at("lig").get_to(*filter.m_spLigand);
+
+  // skipping context
+}

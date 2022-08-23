@@ -73,3 +73,12 @@ void BaseIntraSF::ScoreMap(StringVariantMap &scoreMap) const {
     scoreMap[name + ".0"] = m_zero;
   }
 }
+
+void rxdock::to_json(json &j, const BaseIntraSF &baseIntraSF) {
+  j = json{{"ligand", *baseIntraSF.m_spLigand}, {"m-zero", baseIntraSF.m_zero}};
+}
+
+void rxdock::from_json(const json &j, BaseIntraSF &baseIntraSF) {
+  j.at("ligand").get_to(*baseIntraSF.m_spLigand);
+  j.at("m-zero").get_to(baseIntraSF.m_zero);
+}

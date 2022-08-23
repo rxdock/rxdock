@@ -45,6 +45,24 @@ double DihedralElement::operator()() const {
   return score;
 }
 
+void rxdock::to_json(json &j, const DihedralElement &dihedralElement) {
+  j = json{
+      {"atom1-p", *dihedralElement.m_pAtom1},
+      {"atom2-p", *dihedralElement.m_pAtom2},
+      {"atom3-p", *dihedralElement.m_pAtom3},
+      {"atom4-p", *dihedralElement.m_pAtom4},
+      //{"prms", dihedralElement.m_prms} TODO
+  };
+}
+
+void rxdock::from_json(const json &j, DihedralElement &dihedralElement) {
+  j.at("atom1-p").get_to(*dihedralElement.m_pAtom1);
+  j.at("atom2-p").get_to(*dihedralElement.m_pAtom2);
+  j.at("atom3-p").get_to(*dihedralElement.m_pAtom3);
+  j.at("atom4-p").get_to(*dihedralElement.m_pAtom4);
+  // j.at("prms").get_to(*dihedralElement.m_pAtom1);
+}
+
 // Static data members
 const std::string DihedralSF::_CT = "DihedralSF";
 const std::string DihedralSF::_IMPL_H_CORR = "implicit-H-correction";
@@ -295,4 +313,19 @@ void DihedralSF::CalcBondedAtoms(Atom *pAtom1, Atom *pAtom2,
           "DihedralSF::CalcBondedAtoms: unexpected hybridisation state for {}",
           pAtom1->GetFullAtomName());
   }
+}
+
+void rxdock::to_json(json &j, const DihedralSF &dihedralSF) {
+  j = json{
+      {"dihedral-source", *dihedralSF.m_spDihedralSource},
+      {"central-pairs", dihedralSF.m_centralPairs},
+      // Enum TODO
+  };
+}
+
+void rxdock::from_json(const json &j, DihedralSF &dihedralSF) {
+  j.at("dihedral-source").get_to(*dihedralSF.m_spDihedralSource);
+  j.at("dihedral-source").get_to(dihedralSF.m_centralPairs);
+
+  // TODO Enum
 }

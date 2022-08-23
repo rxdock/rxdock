@@ -199,3 +199,17 @@ void MdlFileSink::RenderData(const StringVariantMap &dataMap) {
     }
   }
 }
+
+void rxdock::to_json(json &j, const MdlFileSink &mdlFileSink) {
+  j = json{
+      {"sp-elem-data", *mdlFileSink.m_spElementData},
+      {"first-render", mdlFileSink.m_bFirstRender},
+      //{"atom-id-map", mdlFileSink.m_atomIdMap} TODO
+  };
+}
+
+void rxdock::from_json(const json &j, MdlFileSink &mdlFileSink) {
+  j.at("sp-elem-data").get_to(*mdlFileSink.m_spElementData);
+  j.at("first-render").get_to(mdlFileSink.m_bFirstRender);
+  // j.at("atom-id-map").get_to(mdlFileSink.m_atomIdMap); TODO
+}

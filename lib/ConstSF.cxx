@@ -82,3 +82,11 @@ void ConstSF::ParameterUpdated(const std::string &strName) {
     BaseSF::ParameterUpdated(strName);
   }
 }
+
+void rxdock::to_json(json &j, const ConstSF &consf) {
+  j = json{{"solv-penalty", consf.m_solventPenalty}};
+}
+
+void rxdock::from_json(const json &j, ConstSF &consf) {
+  j.at("solv-penalty").get_to(consf.m_solventPenalty);
+}

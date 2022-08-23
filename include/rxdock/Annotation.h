@@ -19,6 +19,10 @@
 #include "rxdock/Atom.h"
 #include "rxdock/Config.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class Annotation {
@@ -26,7 +30,11 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   Annotation(const Atom *pAtom1, const Atom *pAtom2, double dist, double score);
+  Annotation(json j);
   virtual ~Annotation();
+
+  friend void to_json(json &j, const Annotation &annotation);
+  friend void from_json(const json &j, Annotation &annotation);
 
   ////////////////////////////////////////
   // Public methods
@@ -90,6 +98,8 @@ typedef AnnotationList::const_iterator AnnotationListConstIter;
 ///////////////////////////////////////////////
 // Non-member functions (in rxdock namespace)
 //////////////////////////////////////////
+void to_json(json &j, const Annotation &annotation);
+void from_json(const json &j, Annotation &annotation);
 
 ////////////////////////////////////////////////////////
 // Comparison functions for sorting Annotation* containers

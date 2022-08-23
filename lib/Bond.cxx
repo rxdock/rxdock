@@ -48,6 +48,11 @@ Bond::Bond(int nBondId, AtomPtr &spAtom1, AtomPtr &spAtom2,
   _RBTOBJECTCOUNTER_CONSTR_("Bond");
 }
 
+Bond::Bond(json j) {
+  j.get_to(*this);
+  _RBTOBJECTCOUNTER_CONSTR_("Bond");
+}
+
 // Default destructor
 Bond::~Bond() {
   // DM 04 Dec 1998  Unregister the bond with the constituent atoms
@@ -108,6 +113,26 @@ std::ostream &rxdock::operator<<(std::ostream &s, const Bond &bond) {
            << "-" << spAtom2->GetAtomId()
            << ", Bond order=" << bond.m_nFormalBondOrder;
   //	   << std::endl << *spAtom1 << std::endl << *spAtom2;
+}
+
+void rxdock::to_json(json &j, const Bond &bond) {
+  j = json{{"bond-id", bond.m_nBondId},
+           {"atom1", *bond.m_spAtom1},
+           {"atom2", *bond.m_spAtom2},
+           {"formal-bond-order", bond.m_nFormalBondOrder},
+           {"partial-bond-order", bond.m_dPartialBondOrder},
+           {"cyclic", bond.m_bCyclic},
+           {"selected", bond.m_bSelected}};
+}
+
+void rxdock::from_json(const json &j, Bond &bond) {
+  j.at("bond-id").get_to(bond.m_nBondId);
+  bond.m_spAtom1 = new Atom(j.at("atom1"));
+  bond.m_spAtom2 = new Atom(j.at("atom2"));
+  j.at("formal-bond-order").get_to(bond.m_nFormalBondOrder);
+  j.at("partial-bond-order").get_to(bond.m_dPartialBondOrder);
+  j.at("cyclic").get_to(bond.m_bCyclic);
+  j.at("selected").get_to(bond.m_bSelected);
 }
 
 ////////////////////////////////////////

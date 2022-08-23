@@ -18,6 +18,10 @@
 
 #include "rxdock/BaseSF.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // Only check SF aggregate assertions in debug build
@@ -39,6 +43,9 @@ public:
   RBTDLL_EXPORT SFAgg(const std::string &strName = GetMetaDataPrefix() +
                                                    "score");
   virtual ~SFAgg();
+
+  friend void to_json(json &j, const SFAgg &sfAgg);
+  friend void from_json(const json &j, SFAgg &sfAgg);
 
   ////////////////////////////////////////
   // Public methods
@@ -102,6 +109,9 @@ private:
   BaseSFList m_sf;
   int m_nNonHLigandAtoms; // for normalised scores (score / non-H ligand atoms)
 };
+
+void to_json(json &j, const SFAgg &sfAgg);
+void from_json(const json &j, SFAgg &sfAgg);
 
 // Useful typedefs
 typedef SmartPtr<SFAgg> SFAggPtr;        // Smart pointer

@@ -19,6 +19,10 @@
 #include "rxdock/BaseInterSF.h"
 #include "rxdock/FFTGrid.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class CavityFillSF : public BaseInterSF {
@@ -28,6 +32,9 @@ public:
   // Parameter names
   CavityFillSF(const std::string &strName = "cavity-fill");
   virtual ~CavityFillSF();
+ 
+  friend void to_json(json &j, const CavityFillSF &sf);
+  friend void from_json(const json &j, CavityFillSF &sf);
 
 protected:
   virtual void SetupReceptor();
@@ -40,6 +47,9 @@ private:
   FFTGridPtr m_spGrid;
   AtomList m_ligAtomList;
 };
+
+void to_json(json &j, const CavityFillSF &sf);
+void from_json(const json &j, CavityFillSF &sf);
 
 } // namespace rxdock
 

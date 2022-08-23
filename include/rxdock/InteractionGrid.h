@@ -18,6 +18,10 @@
 #include "rxdock/Atom.h"
 #include "rxdock/BaseGrid.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // simple container for up to 3 atoms, to hold one half of an interaction
@@ -31,6 +35,10 @@ public:
     _RBTOBJECTCOUNTER_CONSTR_("InteractionCenter");
   }
   ~InteractionCenter() { _RBTOBJECTCOUNTER_DESTR_("InteractionCenter"); }
+
+  friend void to_json(json &j, const InteractionCenter &interactionCenter);
+  friend void from_json(const json &j, InteractionCenter &interactionCenter);
+
   Atom *GetAtom1Ptr() const { return m_pAtom1; }
   Atom *GetAtom2Ptr() const { return m_pAtom2; }
   Atom *GetAtom3Ptr() const { return m_pAtom3; }
@@ -50,6 +58,9 @@ private:
   Atom *m_pAtom3;
   eLP m_LP;
 };
+
+void to_json(json &j, const InteractionCenter &interactionCenter);
+void from_json(const json &j, InteractionCenter &interactionCenter);
 
 typedef std::vector<InteractionCenter *>
     InteractionCenterList; // Vector of regular pointers
@@ -124,6 +135,9 @@ public:
 
   ~InteractionGrid(); // Default destructor
 
+  /*friend void to_json(json &j, const InteractionGrid &interactionGrid);
+  friend void from_json(const json &j, InteractionGrid &interactionGrid);*/
+
   // Copy constructor
   InteractionGrid(const InteractionGrid &);
   // Copy constructor taking base class argument
@@ -189,6 +203,9 @@ private:
                                 // at each grid point
   const InteractionCenterList m_emptyList; // Dummy list used by GetAtomList
 };
+/*
+void to_json(json &j, const InteractionGrid &interactionGrid);
+void from_json(const json &j, InteractionGrid &interactionGrid);*/
 
 // Useful typedefs
 typedef SmartPtr<InteractionGrid> InteractionGridPtr; // Smart pointer

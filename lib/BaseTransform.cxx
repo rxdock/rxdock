@@ -107,3 +107,22 @@ void BaseTransform::SendSFRequests() {
     pSF->HandleRequest(*iter);
   }
 }
+
+void rxdock::to_json(json &j, const BaseTransform &bt) {
+  // skipping parent pointer
+  json requestList;
+  for (const auto &aIter : bt.m_SFRequests) {
+    json request = *aIter;
+    requestList.push_back(request);
+  }
+
+  j = json{{"request-list", requestList}};
+}
+
+void rxdock::from_json(const json &j, BaseTransform &bt) {
+  // skipping parent pointer
+  for (auto &request : j.at("request-list")) {
+    RequestPtr spRequest = RequestPtr(new Request(request));
+    bt.m_SFRequests.push_back(spRequest);
+  }
+}

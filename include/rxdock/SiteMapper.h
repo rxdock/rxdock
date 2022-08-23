@@ -25,6 +25,10 @@
 #include "rxdock/Config.h"
 #include "rxdock/Model.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class SiteMapper : public BaseObject {
@@ -35,6 +39,10 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~SiteMapper();
+
+  friend void to_json(json &j, const SiteMapper &siteMapper);
+  friend void from_json(const json &j, SiteMapper &siteMapper);
+
   ////////////////////////////////////////
   // Public methods
   ////////////////
@@ -74,6 +82,9 @@ private:
   //////////////
   ModelPtr m_spReceptor;
 };
+
+void to_json(json &j, const SiteMapper &siteMapper);
+void from_json(const json &j, SiteMapper &siteMapper);
 
 // Useful typedefs
 typedef SmartPtr<SiteMapper> SiteMapperPtr; // Smart pointer

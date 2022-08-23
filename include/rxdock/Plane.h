@@ -17,6 +17,10 @@
 
 #include "rxdock/Coord.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class Plane {
@@ -53,6 +57,15 @@ public:
   // Destructor
   virtual ~Plane() {}
 
+  friend void to_json(json &j, const Plane &plane) {
+    j = json{{"vec-nor", plane.m_vnorm}, {"dis", plane.m_d}};
+  }
+
+  friend void from_json(const json &j, Plane &plane) {
+    j.at("vec-nor").get_to(plane.m_vnorm);
+    j.at("dis").get_to(plane.m_d);
+  }
+
   ///////////////////////////////////////////////
   // Operator functions:
   /////////////////////
@@ -82,14 +95,12 @@ public:
     // same as sign of c (vnorm.xyz(2)) when d==0 and c<>0,
     // and same as sign of b (vnorm.xyz(1)) otherwise
     double l = m_vnorm.Length();
-    int iSign = (m_d < 0.0)
-                    ? 1
-                    : (m_d > 0.0) ? -1
-                                  : (m_vnorm.xyz(2) < 0.0)
-                                        ? -1
-                                        : (m_vnorm.xyz(2) > 0.0)
-                                              ? 1
-                                              : (m_vnorm.xyz(1) < 0.0) ? -1 : 1;
+    int iSign = (m_d < 0.0)              ? 1
+                : (m_d > 0.0)            ? -1
+                : (m_vnorm.xyz(2) < 0.0) ? -1
+                : (m_vnorm.xyz(2) > 0.0) ? 1
+                : (m_vnorm.xyz(1) < 0.0) ? -1
+                                         : 1;
     l *= iSign;
     // Check for divide by zero
     if (l != 0.0) {

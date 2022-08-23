@@ -49,6 +49,36 @@ protected:
   PMFType GetPMFfor_rS(AtomPtr);
 
   bool IsChargedNitrogen(AtomPtr); // true for guanidino or other charged
+
+private:
+  friend void to_json(json &j, const SetupPMFSF &pmfsf) {
+    json atomList;
+    for (const auto &cIter : pmfsf.theLigandList) {
+      json atom = *cIter;
+      atomList.push_back(atom);
+    }
+    json atomList2;
+    for (const auto &cIter : pmfsf.theReceptorList) {
+      json atom = *cIter;
+      atomList2.push_back(atom);
+    }
+
+    j = json{{"lig-list", atomList}, {"recep-list", atomList2}};
+  };
+  friend void from_json(const json &j, SetupPMFSF &pmfsf) {
+    pmfsf.theLigandList.clear();
+    pmfsf.theLigandList.reserve(j.at("lig-list").size());
+    for (auto &atom : j.at("lig-list")) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      pmfsf.theLigandList.push_back(spAtom);
+    }
+    pmfsf.theReceptorList.clear();
+    pmfsf.theReceptorList.reserve(j.at("recep-list").size());
+    for (auto &atom : j.at("recep-list")) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      pmfsf.theReceptorList.push_back(spAtom);
+    }
+  };
 };
 
 } // namespace rxdock

@@ -41,6 +41,38 @@ protected:
 
   void SetupReceptorSATypes(void);
   void SetupLigandSATypes(void);
+
+private:
+  friend void to_json(json &j, const SetupSASF &sasf) {
+    json atomList;
+    for (const auto &cIter : sasf.theLigandList) {
+      json atom = *cIter;
+      atomList.push_back(atom);
+    }
+    json atomList2;
+    for (const auto &cIter : sasf.theReceptorList) {
+      json atom = *cIter;
+      atomList2.push_back(atom);
+    }
+
+    j = json{{"ligand-list", atomList}, {"receptor-list", atomList2}};
+  };
+
+  friend void from_json(const json &j, SetupSASF &sasf) {
+    sasf.theLigandList.clear();
+    sasf.theLigandList.reserve(j.at("atoms").size());
+    for (auto &atom : j.at("atoms")) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      sasf.theLigandList.push_back(spAtom);
+    }
+
+    sasf.theReceptorList.clear();
+    sasf.theReceptorList.reserve(j.at("atoms").size());
+    for (auto &atom : j.at("atoms")) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      sasf.theReceptorList.push_back(spAtom);
+    }
+  };
 };
 
 } // namespace rxdock

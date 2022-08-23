@@ -18,6 +18,10 @@
 #include "rxdock/BaseObject.h"
 #include "rxdock/Config.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class TransformAgg; // forward declaration
@@ -31,6 +35,9 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~BaseTransform();
+
+  friend void to_json(json &j, const BaseTransform &bt);
+  friend void from_json(const json &j, BaseTransform &bt);
 
   // Give aggregates access to BaseSF private methods/data
   friend class TransformAgg;
@@ -93,6 +100,9 @@ private:
   BaseTransform *m_parent;
   RequestList m_SFRequests;
 };
+
+void to_json(json &j, const BaseTransform &bt);
+void from_json(const json &j, BaseTransform &bt);
 
 // Useful typedefs
 typedef std::vector<BaseTransform *>

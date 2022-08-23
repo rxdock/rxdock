@@ -18,6 +18,10 @@
 #include "rxdock/BaseIntraSF.h"
 #include "rxdock/VdwSF.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class VdwIntraSF : public BaseIntraSF, public VdwSF {
@@ -27,6 +31,9 @@ public:
 
   RBTDLL_EXPORT VdwIntraSF(const std::string &strName = "vdw");
   virtual ~VdwIntraSF();
+
+  friend void to_json(json &j, const VdwIntraSF &vdwIntraSF);
+  friend void from_json(const json &j, VdwIntraSF &vdwIntraSF);
 
   // Request Handling method
   // Handles the Partition request
@@ -46,6 +53,9 @@ private:
       m_prtIntns; // The partitioned interactions (within partition distance)
   AtomRList m_ligAtomList;
 };
+
+void to_json(json &j, const VdwIntraSF &vdwIntraSF);
+void from_json(const json &j, VdwIntraSF &vdwIntraSF);
 
 } // namespace rxdock
 

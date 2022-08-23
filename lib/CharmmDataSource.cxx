@@ -145,3 +145,19 @@ Atom::eHybridState CharmmDataSource::ConvertCommentStringToHybridState(
   else
     return Atom::UNDEFINED;
 }
+
+void rxdock::to_json(json &j, const CharmmDataSource &charDatSrc) {
+  j = json{{"atom-types", charDatSrc.m_atomTypes},
+           {"imp-hydrog", charDatSrc.m_implicitHydrogens},
+           {"at-num", charDatSrc.m_atomicNumber},
+           {"form-charg", charDatSrc.m_formalCharge},
+           {"hyb-state", charDatSrc.m_hybridState}};
+}
+
+void rxdock::from_json(const json &j, CharmmDataSource &charDatSrc) {
+  j.at("atom-types").get_to(charDatSrc.m_atomTypes);
+  j.at("imp-hydrog").get_to(charDatSrc.m_implicitHydrogens);
+  j.at("at-num").get_to(charDatSrc.m_atomicNumber);
+  j.at("form-charg").get_to(charDatSrc.m_formalCharge);
+  j.at("hyb-state").get_to(charDatSrc.m_hybridState);
+}

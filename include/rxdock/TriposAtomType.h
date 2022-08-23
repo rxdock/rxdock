@@ -17,6 +17,10 @@
 
 #include "rxdock/Config.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class Atom;
@@ -89,6 +93,9 @@ public:
   RBTDLL_EXPORT TriposAtomType();
   RBTDLL_EXPORT virtual ~TriposAtomType();
 
+  friend void to_json(json &j, const TriposAtomType &triposAtomType);
+  friend void from_json(const json &j, TriposAtomType &triposAtomType);
+
   ////////////////////////////////////////
   // Public methods
   ////////////////
@@ -128,6 +135,9 @@ private:
   //////////////
   std::vector<info> m_typeInfo;
 };
+
+void to_json(json &j, const TriposAtomType &triposAtomType);
+void from_json(const json &j, TriposAtomType &triposAtomType);
 
 // Useful typedefs
 typedef std::vector<TriposAtomType::info> TriposInfoList;

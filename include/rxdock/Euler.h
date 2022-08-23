@@ -39,6 +39,10 @@
 
 #include "rxdock/Quat.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class Euler {
@@ -92,11 +96,17 @@ public:
              << ", Bank = " << euler.m_bank;
   }
 
+  friend void to_json(json &j, const Euler &eul);
+  friend void from_json(const json &j, Euler &eul);
+
 private:
   double m_heading;  // heading angle (radians)
   double m_attitude; // attitude angle (radians)
   double m_bank;     // bank angle (radians)
 };
+
+void to_json(json &j, const Euler &eul);
+void from_json(const json &j, Euler &eul);
 
 } // namespace rxdock
 

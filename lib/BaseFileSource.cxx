@@ -263,3 +263,29 @@ void BaseFileSource::ClearCache() {
   m_bParsedOK = false; // Tell the Parse function in derived classes that
   // it will have to reparse the file
 }
+
+void rxdock::to_json(json &j, const BaseFileSource &baseFileSource) {
+  j = json{{"file-name", baseFileSource.m_strFileName},
+           {"file-size", baseFileSource.m_fileSize},
+           {"read", baseFileSource.m_bReadOK},
+           {"num-reads", baseFileSource.m_numReads},
+           {"bytes-read", baseFileSource.m_bytesRead},
+           // fileIn skipped
+           {"buffer", *baseFileSource.m_szBuf},
+           {"file-open", baseFileSource.m_bFileOpen},
+           {"multi-rec", baseFileSource.m_bMultiRec},
+           {"rec-delim", baseFileSource.m_strRecDelim}};
+}
+
+void rxdock::from_json(const json &j, BaseFileSource &baseFileSource) {
+  j.at("file-name").get_to(baseFileSource.m_strFileName);
+  j.at("file-size").get_to(baseFileSource.m_fileSize);
+  j.at("read").get_to(baseFileSource.m_bReadOK);
+  j.at("num-reads").get_to(baseFileSource.m_numReads);
+  j.at("bytes-read").get_to(baseFileSource.m_bytesRead);
+  // fileIn skipped
+  j.at("buffer").get_to(*baseFileSource.m_szBuf);
+  j.at("file-open").get_to(baseFileSource.m_bFileOpen);
+  j.at("multi-rec").get_to(baseFileSource.m_bMultiRec);
+  j.at("rec-delim").get_to(baseFileSource.m_strRecDelim);
+}

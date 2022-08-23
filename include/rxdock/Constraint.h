@@ -20,6 +20,10 @@
 #include "rxdock/Error.h"
 #include "rxdock/Model.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class Constraint {
@@ -31,6 +35,11 @@ public:
   Constraint(Coord, double);
   Constraint(const Constraint &);
   Constraint();
+
+  Constraint(json j);
+
+  friend void to_json(json &j, const Constraint &constraint);
+  friend void from_json(const json &j, Constraint &constraint);
 
   ///////////////////
   // Destructor
@@ -59,6 +68,9 @@ private:
   // Private data
   /////////////////////
 };
+
+void to_json(json &j, const Constraint &constraint);
+void from_json(const json &j, Constraint &constraint);
 
 // Useful typedefs
 typedef SmartPtr<Constraint> ConstraintPtr;        // Smart pointer

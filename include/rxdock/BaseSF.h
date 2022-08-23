@@ -17,6 +17,10 @@
 #include "rxdock/BaseObject.h"
 #include "rxdock/Config.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class SFAgg; // forward declaration
@@ -39,6 +43,9 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~BaseSF();
+
+  friend void to_json(json &j, const BaseSF &baseSF);
+  friend void from_json(const json &j, BaseSF &baseSF);
 
   // Give aggregates access to BaseSF private methods/data
   friend class SFAgg;
@@ -106,6 +113,9 @@ private:
   double m_weight;
   double m_range;
 };
+
+void to_json(json &j, const BaseSF &baseSF);
+void from_json(const json &j, BaseSF &baseSF);
 
 // Useful typedefs
 typedef std::vector<BaseSF *> BaseSFList; // Vector of smart pointers

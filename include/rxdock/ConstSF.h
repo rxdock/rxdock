@@ -19,6 +19,10 @@
 
 #include "rxdock/BaseInterSF.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class ConstSF : public BaseInterSF {
@@ -31,6 +35,9 @@ public:
   virtual ~ConstSF();
 
   virtual void ScoreMap(StringVariantMap &scoreMap) const;
+
+  friend void to_json(json &j, const ConstSF &consf);
+  friend void from_json(const json &j, ConstSF &consf);
 
 protected:
   virtual void SetupReceptor() {}
@@ -46,6 +53,8 @@ private:
   double SystemScore() const;
   double m_solventPenalty;
 };
+void to_json(json &j, const ConstSF &consf);
+void from_json(const json &j, ConstSF &consf);
 
 } // namespace rxdock
 

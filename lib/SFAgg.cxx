@@ -200,3 +200,18 @@ double SFAgg::RawScore() const {
   }
   return score;
 }
+
+void rxdock::to_json(json &j, const SFAgg &sfAgg) {
+  json baseSFList;
+  for (const auto &aIter : sfAgg.m_sf) {
+    json baseSF = *aIter;
+    baseSFList.push_back(baseSF);
+  }
+
+  j = json{{"sf", baseSFList}, {"n-nonH-lig-atoms", sfAgg.m_nNonHLigandAtoms}};
+}
+/*
+void rxdock::from_json(const json &j, SFAgg &sfAgg) {
+
+}
+*/

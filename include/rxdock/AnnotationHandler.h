@@ -19,6 +19,10 @@
 
 #include "rxdock/Annotation.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class AnnotationHandler {
@@ -28,6 +32,9 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~AnnotationHandler(); // Default destructor
+
+  friend void to_json(json &j, const AnnotationHandler &annotationHandler);
+  friend void from_json(const json &j, AnnotationHandler &annotationHandler);
 
   ////////////////////////////////////////
   // Public methods
@@ -69,6 +76,9 @@ private:
   mutable bool m_bEnabled;
   mutable AnnotationList m_annotationList;
 };
+
+void to_json(json &j, const AnnotationHandler &annotationHandler);
+void from_json(const json &j, AnnotationHandler &annotationHandler);
 
 } // namespace rxdock
 

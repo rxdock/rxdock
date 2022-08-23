@@ -18,6 +18,10 @@
 #include "rxdock/Atom.h"
 #include "rxdock/Config.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // Added by DM, 8 Dec 1998 for HybridState lookup method
@@ -35,6 +39,9 @@ public:
       const std::string &strMassesFile = GetDataFileName("data", "masses.rtf"));
 
   ~CharmmDataSource(); // Default destructor
+
+  friend void to_json(json &j, const CharmmDataSource &charDatSrc);
+  friend void from_json(const json &j, CharmmDataSource &charDatSrc);
 
   ////////////////////////////////////////
   // Public methods
@@ -83,6 +90,9 @@ private:
   std::map<std::string, int> m_formalCharge;
   StringHybridStateMap m_hybridState; // DM 8 Dec 1998
 };
+
+void to_json(json &j, const CharmmDataSource &charDatSrc);
+void from_json(const json &j, CharmmDataSource &charDatSrc);
 
 // useful typedefs
 typedef SmartPtr<CharmmDataSource> CharmmDataSourcePtr; // Smart pointer

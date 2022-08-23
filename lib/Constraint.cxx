@@ -342,3 +342,23 @@ void RingAromaticConstraint::AddAtomList(ModelPtr lig, bool bCheck) {
     throw LigandError(_WHERE_, ostr.str());
   }
 }
+
+void rxdock::to_json(json &j, const Constraint &constraint) {
+  json atomList;
+  for (const auto &aIter : constraint.m_atomList) {
+    json atom = *aIter;
+    atomList.push_back(atom);
+  }
+  j = json{{"coord", constraint.coord},
+           {"tolerance", constraint.tolerance},
+           {"atoms", atomList}};
+}
+
+void rxdock::from_json(const json &j, Constraint &constraint) {
+  j.at("coord").get_to(constraint.coord);
+  j.at("tolerance").get_to(constraint.tolerance);
+  for (auto &atom : j.at("atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    constraint.m_atomList.push_back(spAtom);
+  }
+}

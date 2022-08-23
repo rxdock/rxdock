@@ -66,3 +66,11 @@ bool Token::IsMul() { return (!isvble && comm.IsMul()); }
 bool Token::IsDiv() { return (!isvble && comm.IsDiv()); }
 bool Token::IsAnd() { return (!isvble && comm.IsAnd()); }
 bool Token::IsIf() { return (!isvble && comm.IsIf()); }
+
+void rxdock::to_json(json &j, const Token &token) {
+  j = json{{"command", token.comm}};
+}
+
+void rxdock::from_json(const json &j, Token &token) {
+  // TODO
+}

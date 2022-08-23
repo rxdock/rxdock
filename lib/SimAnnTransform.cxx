@@ -287,3 +287,21 @@ void SimAnnTransform::MC(double t, int blockLen, double stepSize) {
   // This would not be the case if the last Metropolis test were failed
   m_chrom->SyncToModel();
 }
+
+void rxdock::to_json(json &j, const SimAnnTransform &simAnnTransform) {
+  j = json{//{"stats", simAnnTransform.m_spStats},
+           // skipping rand
+           {"part-req", *simAnnTransform.m_spPartReq},
+           //{"chrom", simAnnTransform.m_chrom},
+           {"min-vect", simAnnTransform.m_minVector},
+           {"last-good-vect", simAnnTransform.m_lastGoodVector}};
+}
+
+void rxdock::from_json(const json &j, SimAnnTransform &simAnnTransform) {
+  // j.at("stats").get_to(simAnnTransform.m_spStats);
+  // skipping rand
+  j.at("part-req").get_to(*simAnnTransform.m_spPartReq);
+  // j.at("chrom").get_to(simAnnTransform.m_chrom);
+  j.at("min-vect").get_to(simAnnTransform.m_minVector);
+  j.at("last-good-vect").get_to(simAnnTransform.m_lastGoodVector);
+}

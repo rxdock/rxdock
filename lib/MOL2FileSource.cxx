@@ -467,12 +467,11 @@ void MOL2FileSource::FixImplicitHydrogenCount() {
     // Compare actual and expected bond count based on hybridisation state
     // Asssume SP3 (4 bonds) if hyb state is undefined
     int actual = (*iter)->GetNumBonds();
-    int expected =
-        (hyb == Atom::SP3)
-            ? 4
-            : (hyb == Atom::SP2)
-                  ? 3
-                  : (hyb == Atom::AROM) ? 3 : (hyb == Atom::SP) ? 2 : 4;
+    int expected = (hyb == Atom::SP3)    ? 4
+                   : (hyb == Atom::SP2)  ? 3
+                   : (hyb == Atom::AROM) ? 3
+                   : (hyb == Atom::SP)   ? 2
+                                         : 4;
     int nImplH = expected - actual;
     // Pick up fragmented aromatic rings here
     // Cannot have more than one explicit or implicit hydrogen to an aromatic
@@ -534,16 +533,15 @@ void MOL2FileSource::FixTriposTypes() {
     if (nImplH > 0) {
       switch (t) {
       case TriposAtomType::C_3:
-        xt = (nImplH == 3)
-                 ? TriposAtomType::C_3_H3
-                 : (nImplH == 2) ? TriposAtomType::C_3_H2
-                                 : (nImplH == 1) ? TriposAtomType::C_3_H1
-                                                 : TriposAtomType::C_3;
+        xt = (nImplH == 3)   ? TriposAtomType::C_3_H3
+             : (nImplH == 2) ? TriposAtomType::C_3_H2
+             : (nImplH == 1) ? TriposAtomType::C_3_H1
+                             : TriposAtomType::C_3;
         break;
       case TriposAtomType::C_2:
-        xt = (nImplH == 2)
-                 ? TriposAtomType::C_2_H2
-                 : (nImplH == 1) ? TriposAtomType::C_2_H1 : TriposAtomType::C_2;
+        xt = (nImplH == 2)   ? TriposAtomType::C_2_H2
+             : (nImplH == 1) ? TriposAtomType::C_2_H1
+                             : TriposAtomType::C_2;
         break;
       case TriposAtomType::C_ar:
         xt = (nImplH == 1) ? TriposAtomType::C_ar_H1 : TriposAtomType::C_ar;
@@ -686,4 +684,48 @@ void MOL2FileSource::Tokenize(const std::string &aString,
   std::stringstream ss(aString);
   while (ss >> buf)
     aTokensBuf.push_back(buf);
+}
+
+void rxdock::to_json(json &j, const MOL2Substructure &mol2Structure) {
+  j = json{{"subst-name", mol2Structure.subst_name},
+           {"root-atom", mol2Structure.root_atom},
+           {"chain", mol2Structure.chain},
+           {"sub-type", mol2Structure.sub_type}};
+}
+
+void rxdock::from_json(const json &j, MOL2Substructure &mol2Structure) {
+  j.at("subst-name").get_to(mol2Structure.subst_name);
+  j.at("root-atom").get_to(mol2Structure.root_atom);
+  j.at("chain").get_to(mol2Structure.chain);
+  j.at("sub-type").get_to(mol2Structure.sub_type);
+}
+
+void rxdock::to_json(json &j, const MOL2FileSource &mol2FileSrc) {
+  j = json{{"n-of-lines", mol2FileSrc.m_NL},
+           {"n-atoms", mol2FileSrc.nAtoms},
+           {"n-bonds", mol2FileSrc.nBonds},
+           {"n-substructures", mol2FileSrc.nSubstructures},
+           {"n-features", mol2FileSrc.nFeatures},
+           {"n-sets", mol2FileSrc.nSets},
+           // not writing mol2Substructure map
+           //{"n-ss-atoms", mol2FileSrc.m_ssAtoms},
+           {"sp-element-data", *mol2FileSrc.m_spElementData},
+           {"sp-param-source", *mol2FileSrc.m_spParamSource},
+           // Enum
+           {"imp-hydrogens", mol2FileSrc.m_bImplHydrogens}};
+}
+
+void rxdock::from_json(const json &j, MOL2FileSource &mol2FileSrc) {
+  j.at("n-of-lines").get_to(mol2FileSrc.m_NL);
+  j.at("n-atoms").get_to(mol2FileSrc.nAtoms);
+  j.at("n-bonds").get_to(mol2FileSrc.nBonds);
+  j.at("n-substructures").get_to(mol2FileSrc.nSubstructures);
+  j.at("n-features").get_to(mol2FileSrc.nFeatures);
+  j.at("n-sets").get_to(mol2FileSrc.nSets);
+  // not writing mol2Substructure map
+  // j.at("n-ss-atoms").get_to(mol2FileSrc.m_ssAtoms);
+  j.at("sp-element-data").get_to(*mol2FileSrc.m_spElementData);
+  j.at("sp-param-source").get_to(*mol2FileSrc.m_spParamSource);
+  // Enum
+  j.at("imp-hydrogens").get_to(mol2FileSrc.m_bImplHydrogens);
 }

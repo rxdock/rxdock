@@ -116,3 +116,60 @@ void VdwIntraSF::ParameterUpdated(const std::string &strName) {
   VdwSF::OwnParameterUpdated(strName);
   BaseSF::ParameterUpdated(strName);
 }
+
+void rxdock::to_json(json &j, const VdwIntraSF &vdwIntraSF) {
+  json atomRListList;
+  for (const auto &aListIter : vdwIntraSF.m_vdwIntns) {
+    json atomRList;
+    for (const auto &aIter : aListIter) {
+      json atom = *aIter;
+      atomRList.push_back(atom);
+    }
+    atomRListList.push_back(atomRList);
+  }
+
+  json atomRListList2;
+  for (const auto &aListIter : vdwIntraSF.m_prtIntns) {
+    json atomRList;
+    for (const auto &aIter : aListIter) {
+      json atom = *aIter;
+      atomRList.push_back(atom);
+    }
+    atomRListList2.push_back(atomRList);
+  }
+
+  json atomRList;
+  for (const auto &aIter : vdwIntraSF.m_ligAtomList) {
+    json atom = *aIter;
+    atomRList.push_back(atom);
+  }
+
+  j = json{{"vdw-intns", atomRListList},
+           {"prt-intns", atomRListList2},
+           {"lig-at-li", atomRList}};
+}
+
+void rxdock::from_json(const json &j, VdwIntraSF &vdwIntraSF) {
+  for (auto &atomList : j.at("vdw-intns")) {
+    AtomRList spAtoms;
+    for (auto &atom : atomList) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      spAtoms.push_back(spAtom);
+    }
+    vdwIntraSF.m_vdwIntns.push_back(spAtoms);
+  }
+
+  for (auto &atomList : j.at("prt-intns")) {
+    AtomRList spAtoms;
+    for (auto &atom : atomList) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      spAtoms.push_back(spAtom);
+    }
+    vdwIntraSF.m_prtIntns.push_back(spAtoms);
+  }
+
+  for (auto &atom : j.at("lig-at-li")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    vdwIntraSF.m_ligAtomList.push_back(spAtom);
+  }
+}

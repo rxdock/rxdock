@@ -64,3 +64,20 @@ void RandLigTransform::Execute() {
     spLigand->RotateBond(*iter, thetaDeg, false);
   }
 }
+
+void rxdock::to_json(json &j, const RandLigTransform &randLigTrans) {
+  json bondList;
+  for (const auto &aIter : randLigTrans.m_rotableBonds) {
+    json bond = *aIter;
+    bondList.push_back(bond);
+  }
+
+  j = json{{"rotable-bonds", bondList}};
+}
+
+void rxdock::from_json(const json &j, RandLigTransform &randLigTrans) {
+  for (auto &bond : j.at("rotable-bonds")) {
+    BondPtr spBond = BondPtr(new Bond(bond));
+    randLigTrans.m_rotableBonds.push_back(spBond);
+  }
+}

@@ -207,3 +207,41 @@ void PharmaSF::ScoreMap(StringVariantMap &scoreMap) const {
     }
   }
 }
+
+void rxdock::to_json(json &j, const PharmaSF &pharmaSF) {
+  json constraintList;
+  for (const auto &aIter : pharmaSF.m_constrList) {
+    json constraint = *aIter;
+    constraintList.push_back(constraint);
+  }
+
+  json constraintList2;
+  for (const auto &aIter : pharmaSF.m_optList) {
+    json constraint = *aIter;
+    constraintList2.push_back(constraint);
+  }
+
+  j = json{{"constr-list", constraintList},
+           {"opt-list", constraintList2},
+           {"n-opt", pharmaSF.m_nopt},
+           {"sp-err-file", *pharmaSF.m_spErrorFile},
+           {"write-err", pharmaSF.m_bWriteErrors},
+           {"con-scores", pharmaSF.m_conScores},
+           {"opt-scores", pharmaSF.m_optScores}};
+}
+
+void rxdock::from_json(const json &j, PharmaSF &pharmaSF) {
+  /*for (auto &constraint : j.at("constr-list")) {
+    ConstraintPtr spConstraint = ConstraintPtr(new Constraint(constraint));
+    pharmaSF.m_constrList.push_back(spConstraint);
+  }
+  for (auto &constraint : j.at("opt-list")) {
+    ConstraintPtr spConstraint = ConstraintPtr(new Constraint(constraint));
+    pharmaSF.m_optList.push_back(spConstraint);
+  }   TODO*/
+  j.at("n-opt").get_to(pharmaSF.m_nopt);
+  j.at("sp-err-file").get_to(*pharmaSF.m_spErrorFile);
+  j.at("write-err").get_to(pharmaSF.m_bWriteErrors);
+  j.at("con-scores").get_to(pharmaSF.m_conScores);
+  j.at("opt-scores").get_to(pharmaSF.m_optScores);
+}

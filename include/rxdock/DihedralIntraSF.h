@@ -17,6 +17,10 @@
 #include "rxdock/BaseIntraSF.h"
 #include "rxdock/DihedralSF.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class DihedralIntraSF : public BaseIntraSF, public DihedralSF {
@@ -27,6 +31,9 @@ public:
 
   DihedralIntraSF(const std::string &strName = "dihedral");
   virtual ~DihedralIntraSF();
+
+  friend void to_json(json &j, const DihedralIntraSF &dihedralIntraSF);
+  friend void from_json(const json &j, DihedralIntraSF &dihedralIntraSF);
 
 protected:
   virtual void SetupScore();
@@ -39,6 +46,9 @@ protected:
 private:
   DihedralList m_dihList;
 };
+
+void to_json(json &j, const DihedralIntraSF &dihedralIntraSF);
+void from_json(const json &j, DihedralIntraSF &dihedralIntraSF);
 
 } // namespace rxdock
 

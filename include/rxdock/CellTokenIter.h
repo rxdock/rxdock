@@ -23,6 +23,10 @@
 
 #include "rxdock/TokenIter.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class CellTokenIter : public TokenIter {
@@ -38,6 +42,9 @@ public:
   // Destructor
   //////////////////
   virtual ~CellTokenIter();
+
+  friend void to_json(json &j, const CellTokenIter &callTokIt);
+  friend void from_json(const json &j, CellTokenIter &callTokIt);
 
   virtual void copy(const CellTokenIter &);
   // void First();
@@ -56,6 +63,9 @@ private:
   std::stack<int> cells;
   ContextPtr contextp;
 };
+
+void to_json(json &j, const CellTokenIter &callTokIt);
+void from_json(const json &j, CellTokenIter &callTokIt);
 
 // Useful typedefs
 typedef SmartPtr<CellTokenIter> CellTokenIterPtr; // Smart pointer

@@ -66,3 +66,21 @@ void AnnotationHandler::ClearAnnotationList() const {
 void AnnotationHandler::EnableAnnotations(bool bEnabled) const {
   m_bEnabled = bEnabled;
 }
+
+void rxdock::to_json(json &j, const AnnotationHandler &annotationHandler) {
+  json annotationList;
+  for (const auto &aIter : annotationHandler.m_annotationList) {
+    json annotation = *aIter;
+    annotationList.push_back(annotation);
+  }
+  j = json{{"enabled", annotationHandler.m_bEnabled},
+           {"annotations", annotationList}};
+}
+
+void rxdock::from_json(const json &j, AnnotationHandler &annotationHandler) {
+  j.at("enabled").get_to(annotationHandler.m_bEnabled);
+  for (auto &annotation : j.at("annotations")) {
+    AnnotationPtr spAnnotation = AnnotationPtr(new Annotation(annotation));
+    annotationHandler.m_annotationList.push_back(spAnnotation);
+  }
+}

@@ -48,3 +48,11 @@ void SiteMapper::Update(Subject *theChangedSubject) {
     }
   }
 }
+
+void rxdock::to_json(json &j, const SiteMapper &siteMapper) {
+  j = json{{"sp-receptor", *siteMapper.m_spReceptor}};
+}
+
+void rxdock::from_json(const json &j, SiteMapper &siteMapper) {
+  j.at("sp-receptor").get_to(*siteMapper.m_spReceptor);
+}

@@ -18,6 +18,10 @@
 #include "rxdock/Atom.h"
 #include "rxdock/Config.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class Bond {
@@ -32,6 +36,8 @@ public:
   // Cconstructor supplying all parameters
   Bond(int nBondId, AtomPtr &spAtom1, AtomPtr &spAtom2,
        int nFormalBondOrder = 1);
+
+  Bond(json j);
 
   virtual ~Bond(); // Default destructor
 
@@ -48,6 +54,9 @@ public:
   // without using the accessor functions
   RBTDLL_EXPORT friend std::ostream &operator<<(std::ostream &s,
                                                 const Bond &bond);
+
+  friend void to_json(json &j, const Bond &bond);
+  friend void from_json(const json &j, Bond &bond);
 
   ////////////////////////////////////////
   // Public accessor functions
@@ -131,6 +140,9 @@ typedef BondList::const_iterator BondListConstIter;
 //////////////////////////////////////////
 
 std::ostream &operator<<(std::ostream &s, const Bond &bond);
+
+void to_json(json &j, const Bond &bond);
+void from_json(const json &j, Bond &bond);
 
 ////////////////////////////////////////////
 // Predicates (for use by STL algorithms)

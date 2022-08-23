@@ -17,6 +17,10 @@
 
 #include "rxdock/BaseMolecularFileSink.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class CrdFileSink : public BaseMolecularFileSink {
@@ -27,6 +31,9 @@ public:
   RBTDLL_EXPORT CrdFileSink(const std::string &fileName, ModelPtr spModel);
 
   virtual ~CrdFileSink(); // Default destructor
+
+  friend void to_json(json &j, const CrdFileSink &crdFileSink);
+  friend void from_json(const json &j, CrdFileSink &crdFileSink);
 
   ////////////////////////////////////////
   // Public methods
@@ -68,6 +75,9 @@ private:
   //////////////
   unsigned int m_numAtomsLineRec;
 };
+
+void to_json(json &j, const CrdFileSink &crdFileSink);
+void from_json(const json &j, CrdFileSink &crdFileSink);
 
 // Useful typedefs
 typedef SmartPtr<CrdFileSink> CrdFileSinkPtr; // Smart pointer

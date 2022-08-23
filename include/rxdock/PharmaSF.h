@@ -19,6 +19,10 @@
 #include "rxdock/BaseMolecularFileSink.h"
 #include "rxdock/Constraint.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class PharmaSF : public BaseInterSF {
@@ -33,6 +37,10 @@ public:
 
   PharmaSF(const std::string &strName = "pharma");
   virtual ~PharmaSF();
+
+  friend void to_json(json &j, const PharmaSF &pharmaSF);
+  friend void from_json(const json &j, PharmaSF &pharmaSF);
+
   // Override BaseSF::ScoreMap to provide additional raw descriptors
   virtual void ScoreMap(StringVariantMap &scoreMap) const;
 
@@ -55,6 +63,9 @@ private:
   mutable std::vector<double> m_conScores; // Mandatory constraint scores
   mutable std::vector<double> m_optScores; // Optional constraint scores
 };
+
+void to_json(json &j, const PharmaSF &pharmaSF);
+void from_json(const json &j, PharmaSF &pharmaSF);
 
 } // namespace rxdock
 

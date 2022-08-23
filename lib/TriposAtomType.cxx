@@ -279,3 +279,11 @@ void TriposAtomType::SetupTypeInfo() {
   m_typeInfo[S_o2] = info("S.o2", 16, Atom::SP2);
   m_typeInfo[Si] = info("Si", 14, Atom::UNDEFINED);
 }
+/*
+void rxdock::to_json(json &j, const TriposAtomType &triposAtomType) {
+  j = json{{"type-info", triposAtomType.m_typeInfo}};
+}
+
+void rxdock::from_json(const json &j, TriposAtomType &triposAtomType) {
+  j.at("type-info").get_to(triposAtomType.m_typeInfo);
+}*/

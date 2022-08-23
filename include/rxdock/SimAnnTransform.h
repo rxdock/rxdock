@@ -18,6 +18,10 @@
 #include "rxdock/ChromElement.h"
 #include "rxdock/Rand.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // Simple class to keep track of Monte Carlo sampling statistics
@@ -74,6 +78,9 @@ public:
   RBTDLL_EXPORT SimAnnTransform(const std::string &strName = "SIMANN");
   virtual ~SimAnnTransform();
 
+  friend void to_json(json &j, const SimAnnTransform &simAnnTransform);
+  friend void from_json(const json &j, SimAnnTransform &simAnnTransform);
+
   ////////////////////////////////////////
   // Public methods
   ////////////////
@@ -116,6 +123,9 @@ private:
   std::vector<double> m_lastGoodVector; // Saved chromosome before each MC
                                         // mutation (to allow revert)
 };
+
+void to_json(json &j, const SimAnnTransform &simAnnTransform);
+void from_json(const json &j, SimAnnTransform &simAnnTransform);
 
 // Useful typedefs
 typedef SmartPtr<SimAnnTransform> SimAnnTransformPtr; // Smart pointer

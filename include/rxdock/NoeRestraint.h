@@ -17,6 +17,10 @@
 
 #include "rxdock/Atom.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // NOE Restraint type
@@ -44,7 +48,13 @@ public:
   // Public data
   std::vector<std::string> names;
   eNoeType type;
+
+  friend void to_json(json &j, const NoeEndNames &noeEndNames);
+  friend void from_json(const json &j, NoeEndNames &noeEndNames);
 };
+
+void to_json(json &j, const NoeEndNames &noeEndNames);
+void from_json(const json &j, NoeEndNames &noeEndNames);
 
 // Insertion operator for the above
 std::ostream &operator<<(std::ostream &s, const NoeEndNames &n);
@@ -61,7 +71,13 @@ public:
   // Public data
   AtomList atoms;
   eNoeType type;
+
+  friend void to_json(json &j, const NoeEndAtoms &noeEndAtoms);
+  friend void from_json(const json &j, NoeEndAtoms &noeEndAtoms);
 };
+
+void to_json(json &j, const NoeEndAtoms &noeEndAtoms);
+void from_json(const json &j, NoeEndAtoms &noeEndAtoms);
 
 // Insertion operator for the above
 std::ostream &operator<<(std::ostream &s, const NoeEndAtoms &n);
@@ -77,7 +93,13 @@ public:
   NoeEndNames from;
   NoeEndNames to;
   double maxDist;
+
+  friend void to_json(json &j, const NoeRestraintNames &noeRestraintNames);
+  friend void from_json(const json &j, NoeRestraintNames &noeRestraintNames);
 };
+
+void to_json(json &j, const NoeRestraintNames &noeRestraintNames);
+void from_json(const json &j, NoeRestraintNames &noeRestraintNames);
 
 // Insertion operator for the above
 std::ostream &operator<<(std::ostream &s, const NoeRestraintNames &noe);
@@ -100,7 +122,13 @@ public:
   NoeEndAtoms to;
   // Double minDist;
   double maxDist;
+
+  friend void to_json(json &j, const NoeRestraintAtoms &noeRestraintAtoms);
+  friend void from_json(const json &j, NoeRestraintAtoms &noeRestraintAtoms);
 };
+
+void to_json(json &j, const NoeRestraintAtoms &noeRestraintAtoms);
+void from_json(const json &j, NoeRestraintAtoms &noeRestraintAtoms);
 
 // Insertion operator for the above
 std::ostream &operator<<(std::ostream &s, const NoeRestraintAtoms &noe);
@@ -115,7 +143,13 @@ public:
   // Public data
   NoeEndNames from;
   double maxDist;
+
+  friend void to_json(json &j, const StdRestraintNames &stdRestraintNames);
+  friend void from_json(const json &j, StdRestraintNames &stdRestraintNames);
 };
+
+void to_json(json &j, const StdRestraintNames &stdRestraintNames);
+void from_json(const json &j, StdRestraintNames &stdRestraintNames);
 
 // Insertion operator for the above
 std::ostream &operator<<(std::ostream &s, const StdRestraintNames &std);
@@ -136,7 +170,13 @@ public:
   // Public data
   NoeEndAtoms from;
   double maxDist;
+
+  friend void to_json(json &j, const StdRestraintAtoms &stdRestraintAtoms);
+  friend void from_json(const json &j, StdRestraintAtoms &stdRestraintAtoms);
 };
+
+void to_json(json &j, const StdRestraintAtoms &stdRestraintAtoms);
+void from_json(const json &j, StdRestraintAtoms &stdRestraintAtoms);
 
 // Insertion operator for the above
 std::ostream &operator<<(std::ostream &s, const StdRestraintAtoms &std);

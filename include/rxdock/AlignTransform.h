@@ -19,6 +19,10 @@
 #include "rxdock/Cavity.h"
 #include "rxdock/Rand.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class AlignTransform : public BaseBiMolTransform {
@@ -33,6 +37,9 @@ public:
   // Constructors/destructors
   AlignTransform(const std::string &strName = "ALIGN");
   virtual ~AlignTransform();
+
+  friend void to_json(json &j, const AlignTransform &alignTransform);
+  friend void from_json(const json &j, AlignTransform &alignTransform);
 
   ////////////////////////////////////////
   // Public methods
@@ -71,6 +78,9 @@ private:
   std::vector<int> m_cumulSize; // Cumulative sizes, for weighted probabilities
   int m_totalSize;              // Total size of all cavities
 };
+
+void to_json(json &j, const AlignTransform &alignTransform);
+void from_json(const json &j, AlignTransform &alignTransform);
 
 // Useful typedefs
 typedef SmartPtr<AlignTransform> AlignTransformPtr; // Smart pointer

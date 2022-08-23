@@ -17,6 +17,10 @@
 
 #include "rxdock/BaseInterSF.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class TetherSF : public BaseInterSF {
@@ -28,6 +32,9 @@ public:
 
   TetherSF(const std::string &strName = "tether");
   virtual ~TetherSF();
+
+  friend void to_json(json &j, const TetherSF &tetsf);
+  friend void from_json(const json &j, TetherSF &tetsf);
 
 protected:
   virtual void SetupReceptor();
@@ -44,6 +51,9 @@ private:
   std::vector<int> m_tetherAtomList;
   CoordList m_tetherCoords;
 };
+
+void to_json(json &j, const TetherSF &tetsf);
+void from_json(const json &j, TetherSF &tetsf);
 
 } // namespace rxdock
 

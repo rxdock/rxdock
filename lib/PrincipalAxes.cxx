@@ -326,3 +326,21 @@ Quat rxdock::GetQuatFromAlignVectors(const Vector &v, const Vector &ref) {
   }
   return retVal;
 }
+
+void rxdock::to_json(json &j, const PrincipalAxes &principalAxes) {
+  j = json{
+      {"com", principalAxes.com},          {"axis-1", principalAxes.axis1},
+      {"axis-2", principalAxes.axis2},     {"axis-3", principalAxes.axis3},
+      {"moment-1", principalAxes.moment1}, {"moment-2", principalAxes.moment2},
+      {"moment-3", principalAxes.moment3}};
+}
+
+void rxdock::from_json(const json &j, PrincipalAxes &principalAxes) {
+  j.at("com").get_to(principalAxes.com);
+  j.at("axis-1").get_to(principalAxes.axis1);
+  j.at("axis-2").get_to(principalAxes.axis2);
+  j.at("axis-3").get_to(principalAxes.axis3);
+  j.at("moment-1").get_to(principalAxes.moment1);
+  j.at("moment-2").get_to(principalAxes.moment2);
+  j.at("moment-3").get_to(principalAxes.moment3);
+}

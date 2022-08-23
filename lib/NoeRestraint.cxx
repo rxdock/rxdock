@@ -152,3 +152,71 @@ std::ostream &rxdock::operator<<(std::ostream &s,
   s << std.from << " - receptor: dist<" << std.maxDist;
   return s;
 }
+
+void rxdock::to_json(json &j, const NoeEndNames &noeEndNames) {
+  j = json{{"names", noeEndNames.names}, {"type", noeEndNames.type}};
+}
+void rxdock::from_json(const json &j, NoeEndNames &noeEndNames) {
+  j.at("names").get_to(noeEndNames.names);
+  j.at("type").get_to(noeEndNames.type);
+}
+
+void rxdock::to_json(json &j, const NoeEndAtoms &noeEndAtoms) {
+  json atomList;
+  for (const auto &aIter : noeEndAtoms.atoms) {
+    json atom = *aIter;
+    atomList.push_back(atom);
+  }
+
+  j = json{
+      {"atoms", atomList}
+      // skipping Enum
+  };
+}
+void rxdock::from_json(const json &j, NoeEndAtoms &noeEndAtoms) {
+  for (auto &atom : j.at("atoms")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    noeEndAtoms.atoms.push_back(spAtom);
+  }
+  // skipping Enum
+}
+
+void rxdock::to_json(json &j, const NoeRestraintNames &noeRestraintNames) {
+  j = json{{"from", noeRestraintNames.from},
+           {"to", noeRestraintNames.to},
+           {"max-dis", noeRestraintNames.maxDist}};
+}
+void rxdock::from_json(const json &j, NoeRestraintNames &noeRestraintNames) {
+  j.at("from").get_to(noeRestraintNames.from);
+  j.at("to").get_to(noeRestraintNames.to);
+  j.at("max-dis").get_to(noeRestraintNames.maxDist);
+}
+
+void rxdock::to_json(json &j, const NoeRestraintAtoms &noeRestraintAtoms) {
+  j = json{{"from", noeRestraintAtoms.from},
+           {"to", noeRestraintAtoms.to},
+           {"max-dis", noeRestraintAtoms.maxDist}};
+}
+void rxdock::from_json(const json &j, NoeRestraintAtoms &noeRestraintAtoms) {
+  j.at("from").get_to(noeRestraintAtoms.from);
+  j.at("to").get_to(noeRestraintAtoms.to);
+  j.at("max-dis").get_to(noeRestraintAtoms.maxDist);
+}
+
+void rxdock::to_json(json &j, const StdRestraintNames &stdRestraintNames) {
+  j = json{{"from", stdRestraintNames.from},
+           {"max-dis", stdRestraintNames.maxDist}};
+}
+void rxdock::from_json(const json &j, StdRestraintNames &stdRestraintNames) {
+  j.at("from").get_to(stdRestraintNames.from);
+  j.at("max-dis").get_to(stdRestraintNames.maxDist);
+}
+
+void rxdock::to_json(json &j, const StdRestraintAtoms &stdRestraintAtoms) {
+  j = json{{"from", stdRestraintAtoms.from},
+           {"max-dis", stdRestraintAtoms.maxDist}};
+}
+void rxdock::from_json(const json &j, StdRestraintAtoms &stdRestraintAtoms) {
+  j.at("from").get_to(stdRestraintAtoms.from);
+  j.at("max-dis").get_to(stdRestraintAtoms.maxDist);
+}

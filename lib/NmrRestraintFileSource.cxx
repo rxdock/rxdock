@@ -185,3 +185,15 @@ eNoeType NmrRestraintFileSource::NoeRestraintType(std::string &strAtomNames) {
   }
   return restraintType;
 }
+
+void rxdock::to_json(json &j,
+                     const NmrRestraintFileSource &nmrRestrainfFileSrc) {
+  j = json{{"noe-restraint-list", nmrRestrainfFileSrc.m_noeRestraintList},
+           {"std-restraint-list", nmrRestrainfFileSrc.m_stdRestraintList}};
+}
+
+void rxdock::from_json(const json &j,
+                       NmrRestraintFileSource &nmrRestrainfFileSrc) {
+  j.at("noe-restraint-list").get_to(nmrRestrainfFileSrc.m_noeRestraintList);
+  j.at("std-restraint-list").get_to(nmrRestrainfFileSrc.m_stdRestraintList);
+}

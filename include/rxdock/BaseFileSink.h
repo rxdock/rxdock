@@ -22,6 +22,10 @@
 
 #include "rxdock/Config.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class BaseFileSink {
@@ -32,6 +36,9 @@ public:
   BaseFileSink(const std::string &fileName);
 
   virtual ~BaseFileSink(); // Default destructor
+
+  friend void to_json(json &j, const BaseFileSink &baseFileSink);
+  friend void from_json(const json &j, BaseFileSink &baseFileSink);
 
   ////////////////////////////////////////
   // Public methods
@@ -96,6 +103,9 @@ private:
   std::ofstream m_fileOut;
   bool m_bAppend; // If true, Write() appends to file rather than overwriting
 };
+
+void to_json(json &j, const BaseFileSink &baseFileSink);
+void from_json(const json &j, BaseFileSink &baseFileSink);
 
 // Useful typedefs
 typedef SmartPtr<BaseFileSink> BaseFileSinkPtr; // Smart pointer

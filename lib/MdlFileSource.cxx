@@ -1068,3 +1068,19 @@ void MdlFileSource::RemoveNonPolarHydrogens() {
 void MdlFileSource::SetCyclicFlags() {
   SetAtomAndBondCyclicFlags(m_atomList, m_bondList);
 }
+
+void rxdock::to_json(json &j, const MdlFileSource &mdlFileSrc) {
+  j = json{
+      {"sp-element-data", *mdlFileSrc.m_spElementData},
+      {"pos-is-ionisable", mdlFileSrc.m_bPosIonisable},
+      {"neg-ionisable", mdlFileSrc.m_bNegIonisable},
+      {"imp-hydrogens", mdlFileSrc.m_bImplHydrogens},
+  };
+}
+
+void rxdock::from_json(const json &j, MdlFileSource &mdlFileSrc) {
+  j.at("sp-element-data").get_to(*mdlFileSrc.m_spElementData);
+  j.at("pos-is-ionisable").get_to(mdlFileSrc.m_bPosIonisable);
+  j.at("neg-ionisable").get_to(mdlFileSrc.m_bNegIonisable);
+  j.at("imp-hydrogens").get_to(mdlFileSrc.m_bImplHydrogens);
+}

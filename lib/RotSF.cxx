@@ -70,3 +70,15 @@ void RotSF::ParameterUpdated(const std::string &strName) {
     BaseSF::ParameterUpdated(strName);
   }
 }
+
+void rxdock::to_json(json &j, const RotSF &rotsf) {
+  j = json{{"n-rot", rotsf.nRot},
+           {"inc-nh3", rotsf.bIncNH3},
+           {"inc-oh", rotsf.bIncOH}};
+}
+
+void rxdock::from_json(const json &j, RotSF &rotsf) {
+  j.at("n-rot").get_to(rotsf.nRot);
+  j.at("inc-nh3").get_to(rotsf.bIncNH3);
+  j.at("inc-oh").get_to(rotsf.bIncOH);
+}

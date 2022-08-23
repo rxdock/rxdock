@@ -249,3 +249,35 @@ void InteractionGrid::CopyGrid(const InteractionGrid &grid) {
 
 // DM 3 Nov 2000 - create InteractionListMap of the appropriate size
 void InteractionGrid::CreateMap() { m_intnMap = InteractionListMap(GetN()); }
+
+void rxdock::to_json(json &j, const InteractionCenter &interactionCenter) {
+  j = json{{"atom1", *interactionCenter.m_pAtom1},
+           {"atom2", *interactionCenter.m_pAtom2},
+           {"atom3", *interactionCenter.m_pAtom3},
+           {"lp", interactionCenter.m_LP}};
+}
+
+void rxdock::from_json(const json &j, InteractionCenter &interactionCenter) {
+  j.at("atom1").get_to(*interactionCenter.m_pAtom1);
+  j.at("atom2").get_to(*interactionCenter.m_pAtom2);
+  j.at("atom3").get_to(*interactionCenter.m_pAtom3);
+  j.at("lp").get_to(interactionCenter.m_LP);
+}
+/*
+void rxdock::to_json(json &j, const InteractionGrid &interactionGrid) {
+  json intersectionListMap;
+  for (const auto &aListIter : interactionGrid.m_intnMap) {
+    json intersectionCenterList;
+    for (const auto &aIter : aListIter) {
+      json interactionCenter = *aIter;
+      intersectionCenterList.push_back(interactionCenter);
+    }
+    intersectionListMap.push_back(intersectionCenterList);
+  }
+
+  j = json{{"lp", intersectionListMap}};
+}
+
+void rxdock::from_json(const json &j, InteractionGrid &interactionGrid) {
+  j.at("atom1").get_to(*interactionGrid.m_pAtom1);
+}*/

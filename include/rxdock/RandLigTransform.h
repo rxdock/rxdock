@@ -19,6 +19,10 @@
 #include "rxdock/BaseUniMolTransform.h"
 #include "rxdock/Rand.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class RandLigTransform : public BaseUniMolTransform {
@@ -32,6 +36,9 @@ public:
   // Constructors/destructors
   RandLigTransform(const std::string &strName = "RANDLIG");
   virtual ~RandLigTransform();
+
+  friend void to_json(json &j, const RandLigTransform &randLigTrans);
+  friend void from_json(const json &j, RandLigTransform &randLigTrans);
 
   ////////////////////////////////////////
   // Public methods
@@ -65,6 +72,9 @@ private:
   Rand &m_rand; // keep a reference to the singleton random number generator
   BondList m_rotableBonds;
 };
+
+void to_json(json &j, const RandLigTransform &randLigTrans);
+void from_json(const json &j, RandLigTransform &randLigTrans);
 
 // Useful typedefs
 typedef SmartPtr<RandLigTransform> RandLigTransformPtr; // Smart pointer

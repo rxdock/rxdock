@@ -296,3 +296,23 @@ ParameterFileSource::GetFullParameterName(const std::string &strParamName) {
   else
     return GetSection() + "::" + strParamName;
 }
+
+void rxdock::to_json(json &j, const ParameterFileSource &parameterFileSrc) {
+  j = json{{"input-file-name", parameterFileSrc.m_inputFileName},
+           {"str-title", parameterFileSrc.m_strTitle},
+           {"str-ver", parameterFileSrc.m_strVersion},
+           {"params-map", parameterFileSrc.m_paramsMap},
+           {"section-names", parameterFileSrc.m_sectionNames},
+           {"str-section", parameterFileSrc.m_strSection},
+           {"json", parameterFileSrc.m_json}};
+}
+
+void rxdock::from_json(const json &j, ParameterFileSource &parameterFileSrc) {
+  j.at("input-file-name").get_to(parameterFileSrc.m_inputFileName);
+  j.at("str-title").get_to(parameterFileSrc.m_strTitle);
+  j.at("str-ver").get_to(parameterFileSrc.m_strVersion);
+  j.at("params-map").get_to(parameterFileSrc.m_paramsMap);
+  j.at("section-names").get_to(parameterFileSrc.m_sectionNames);
+  j.at("str-section").get_to(parameterFileSrc.m_strSection);
+  j.at("json").get_to(parameterFileSrc.m_json);
+}

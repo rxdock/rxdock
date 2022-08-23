@@ -23,6 +23,10 @@
 
 #include <list>
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class Model; // Forward declaration
@@ -74,6 +78,7 @@ public:
                 eHybridState eState =
                     UNDEFINED, // DM 8 Dec 1998 Changed from SP3 to UNDEFINED
                 unsigned int nHydrogens = 0, int nFormalCharge = 0);
+  Atom(json j);
 
   // Default destructor
   virtual ~Atom();
@@ -93,6 +98,8 @@ public:
   // without using the accessor functions
   RBTDLL_EXPORT friend std::ostream &operator<<(std::ostream &s,
                                                 const Atom &atom);
+  friend void to_json(json &j, const Atom &atom);
+  friend void from_json(const json &j, Atom &atom);
 
   // Virtual function for dumping atom details to an output stream
   // Derived classes (e.g. pseudoatom) can override if required
@@ -379,6 +386,9 @@ typedef AtomTrueList::const_iterator AtomTrueListConstIter;
 //////////////////////////////////////////
 
 std::ostream &operator<<(std::ostream &s, const Atom &atom);
+
+void to_json(json &j, const Atom &atom);
+void from_json(const json &j, Atom &site);
 
 ////////////////////////////////////////////
 // Calculation functions

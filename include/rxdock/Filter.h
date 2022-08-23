@@ -21,6 +21,10 @@
 #include "rxdock/Context.h"
 #include "rxdock/FilterExpression.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class FilterExpressionVisitor;
@@ -33,6 +37,10 @@ public:
   // Destructor
   //////////////////
   virtual ~Filter();
+
+  friend void to_json(json &j, const Filter &filter);
+  friend void from_json(const json &j, Filter &filter);
+
   // Override Observer pure virtual
   // Notify observer that subject has changed
   virtual void Update(Subject *theChangedSubject);
@@ -63,6 +71,9 @@ private:
   ModelPtr m_spLigand;
   ContextPtr contextp;
 };
+
+void to_json(json &j, const Filter &filter);
+void from_json(const json &j, Filter &filter);
 
 // Useful typedefs
 typedef SmartPtr<Filter> FilterPtr; // Smart pointer

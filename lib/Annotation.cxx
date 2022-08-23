@@ -23,6 +23,8 @@ Annotation::Annotation(const Atom *pAtom1, const Atom *pAtom2, double dist,
                        double score)
     : m_pAtom1(pAtom1), m_pAtom2(pAtom2), m_dist(dist), m_score(score) {}
 
+Annotation::Annotation(json j) { j.get_to(*this); }
+
 Annotation::~Annotation() {}
 
 ////////////////////////////////////////
@@ -101,4 +103,18 @@ void Annotation::operator+=(const Annotation &ann) {
   // Score represents the total score between the ligand and the target residue
   m_score += ann.GetScore();
   return;
+}
+
+void rxdock::to_json(json &j, const Annotation &annotation) {
+  j = json{{"atom1", *annotation.m_pAtom1},
+           {"atom2", *annotation.m_pAtom2},
+           {"distance", annotation.m_dist},
+           {"score", annotation.m_score}};
+}
+
+void rxdock::from_json(const json &j, Annotation &annotation) {
+  annotation.m_pAtom1 = new Atom(j.at("atom1"));
+  annotation.m_pAtom2 = new Atom(j.at("atom2"));
+  j.at("distance").get_to(annotation.m_dist);
+  j.at("score").get_to(annotation.m_score);
 }

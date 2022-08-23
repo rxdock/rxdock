@@ -18,6 +18,10 @@
 #include "rxdock/Atom.h"
 #include "rxdock/Config.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // Struct for holding principal axes info
@@ -36,6 +40,9 @@ public:
   double moment2;
   double moment3;
 };
+
+void to_json(json &j, const PrincipalAxes &principalAxes);
+void from_json(const json &j, PrincipalAxes &principalAxes);
 
 typedef std::vector<PrincipalAxes> PrincipalAxesList;
 typedef PrincipalAxesList::iterator PrincipalAxesListIter;

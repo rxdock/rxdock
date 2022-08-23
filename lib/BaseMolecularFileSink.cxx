@@ -95,3 +95,35 @@ void BaseMolecularFileSink::Reset() {
 ////////////////////////////////////////
 // Private methods
 /////////////////
+
+void rxdock::to_json(json &j, const BaseMolecularFileSink &baseBiMolFSink) {
+  json modelList;
+  for (const auto &aIter : baseBiMolFSink.m_solventList) {
+    json model = *aIter;
+    modelList.push_back(model);
+  }
+
+  j = json{{"atom-id", baseBiMolFSink.m_nAtomId},
+           {"subunit-id", baseBiMolFSink.m_nSubunitId},
+           {"segment-id", baseBiMolFSink.m_nSegmentId},
+           {"model-seg-names", baseBiMolFSink.m_bUseModelSegmentNames},
+
+           {"model", *baseBiMolFSink.m_spModel},
+           {"solvent-list", modelList},
+           {"multi-conf", baseBiMolFSink.m_bMultiConf}};
+}
+
+void rxdock::from_json(const json &j, BaseMolecularFileSink &baseBiMolFSink) {
+  j.at("atom-id").get_to(baseBiMolFSink.m_nAtomId);
+  j.at("subunit-id").get_to(baseBiMolFSink.m_nSubunitId);
+  j.at("segment-id").get_to(baseBiMolFSink.m_nSegmentId);
+  j.at("model-seg-names").get_to(baseBiMolFSink.m_bUseModelSegmentNames);
+  j.at("model").get_to(*baseBiMolFSink.m_spModel);
+
+  for (auto &model : j.at("solvent-list")) {
+    ModelPtr spModel = ModelPtr(new Model(model));
+    baseBiMolFSink.m_solventList.push_back(spModel);
+  }
+
+  j.at("multi-conf").get_to(baseBiMolFSink.m_bMultiConf);
+}

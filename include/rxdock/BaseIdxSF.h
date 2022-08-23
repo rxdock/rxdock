@@ -21,6 +21,10 @@
 #include "rxdock/NonBondedGrid.h"
 #include "rxdock/NonBondedHHSGrid.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class BaseIdxSF : public virtual BaseSF {
@@ -42,6 +46,9 @@ public:
   void SetGridStep(double step);
   double GetBorder() const;
   void SetBorder(double border);
+
+  friend void to_json(json &j, const BaseIdxSF &baseIdxSF);
+  friend void from_json(const json &j, BaseIdxSF &baseIdxSF);
 
 protected:
   ////////////////////////////////////////
@@ -82,6 +89,9 @@ private:
   double m_gridStep;
   double m_border;
 };
+
+void to_json(json &j, const BaseIdxSF &baseIdxSF);
+void from_json(const json &j, BaseIdxSF &baseIdxSF);
 
 } // namespace rxdock
 

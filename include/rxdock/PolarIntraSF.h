@@ -20,6 +20,10 @@
 #include "rxdock/InteractionGrid.h"
 #include "rxdock/PolarSF.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class PolarIntraSF : public BaseIntraSF, public PolarSF {
@@ -31,6 +35,9 @@ public:
 
   PolarIntraSF(const std::string &strName = "polar");
   virtual ~PolarIntraSF();
+
+  friend void to_json(json &j, const PolarIntraSF &polarIntraSF);
+  friend void from_json(const json &j, PolarIntraSF &polarIntraSF);
 
 protected:
   virtual void SetupScore();
@@ -55,6 +62,9 @@ private:
   InteractionListMap m_prtIntns;
   bool m_bAttr;
 };
+
+void to_json(json &j, const PolarIntraSF &polarIntraSF);
+void from_json(const json &j, PolarIntraSF &polarIntraSF);
 
 } // namespace rxdock
 

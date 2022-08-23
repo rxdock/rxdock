@@ -16,6 +16,10 @@
 #include "rxdock/BaseInterSF.h"
 #include "rxdock/RealGrid.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class PMFGridSF : public BaseInterSF {
@@ -41,6 +45,43 @@ protected:
   virtual void SetupScore() {}
   virtual double RawScore() const;
   unsigned int GetCorrectedType(PMFType aType) const;
+
+private:
+  friend void to_json(json &j, const PMFGridSF &sf) {
+    json atomList;
+    for (const auto &cIter : sf.theLigandList) {
+      json atom = *cIter;
+      atomList.push_back(atom);
+    }
+    json grids;
+    for (const auto &cIter : sf.theGrids) {
+      json grid = *cIter;
+      grids.push_back(grid);
+    }
+
+    j = json{{"smoothed", sf.m_bSmoothed},
+             {"atoms", atomList},
+             {"pmf-types", sf.theTypeList},
+             {"pmf-data", grids}};
+  };
+  friend void from_json(const json &j, PMFGridSF &sf) {
+    j.at("smoothed").get_to(sf.m_bSmoothed);
+
+    sf.theLigandList.clear();
+    sf.theLigandList.reserve(j.at("atoms").size());
+    for (auto &atom : j.at("atoms")) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      sf.theLigandList.push_back(spAtom);
+    }
+    j.at("pmf-types").get_to(sf.theTypeList);
+
+    sf.theGrids.clear();
+    sf.theGrids.reserve(j.at("grids").size());
+    for (auto &grid : j.at("grids")) {
+      RealGridPtr spGrid = RealGridPtr(new RealGrid(grid));
+      sf.theGrids.push_back(spGrid);
+    }
+  };
 };
 
 } // namespace rxdock

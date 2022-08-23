@@ -21,6 +21,10 @@
 #include "rxdock/Bond.h"
 #include "rxdock/PrincipalAxes.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class Model; // forward declaration
@@ -38,6 +42,10 @@ public:
   // Constructors/destructors
   ModelMutator(Model *pModel, const BondList &rotBonds,
                const AtomList &tetheredAtoms);
+
+  friend void to_json(json &j, const ModelMutator &modelMutator);
+  friend void from_json(const json &j, ModelMutator &modelMutator);
+
   virtual ~ModelMutator(); // Default destructor
 
   ////////////////////////////////////////
@@ -105,6 +113,9 @@ private:
   // of ModelMutator Could be subclassed if necessary
   AtomList m_tetheredAtoms;
 };
+
+void to_json(json &j, const ModelMutator &modelMutator);
+void from_json(const json &j, ModelMutator &modelMutator);
 
 // Useful typedefs
 typedef SmartPtr<ModelMutator> ModelMutatorPtr; // Smart pointer

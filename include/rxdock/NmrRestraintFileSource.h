@@ -40,6 +40,10 @@
 #include "rxdock/BaseFileSource.h"
 #include "rxdock/NoeRestraint.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class NmrRestraintFileSource : public BaseFileSource {
@@ -50,6 +54,11 @@ public:
 
   // Destructor
   virtual ~NmrRestraintFileSource();
+
+  friend void to_json(json &j,
+                      const NmrRestraintFileSource &nmrRestrainfFileSrc);
+  friend void from_json(const json &j,
+                        NmrRestraintFileSource &nmrRestrainfFileSrc);
 
   ////////////////////////////////////////
   // Public methods
@@ -95,6 +104,9 @@ private:
   NoeRestraintNamesList m_noeRestraintList;
   StdRestraintNamesList m_stdRestraintList;
 };
+
+void to_json(json &j, const NmrRestraintFileSource &nmrRestrainfFileSrc);
+void from_json(const json &j, NmrRestraintFileSource &nmrRestrainfFileSrc);
 
 // Useful typedefs
 typedef SmartPtr<NmrRestraintFileSource>

@@ -80,3 +80,15 @@ std::ostream &operator<<(std::ostream &s, const Genome &g) {
   g.Print(s);
   return s;
 }
+
+void rxdock::to_json(json &j, const Genome &genome) {
+  j = json{// skipping chromosome pointer
+           {"score", genome.m_score},
+           {"RWFitness", genome.m_RWFitness}};
+}
+
+void rxdock::from_json(const json &j, Genome &genome) {
+  // skipping chromosome pointer
+  j.at("score").get_to(genome.m_score);
+  j.at("RWFitness").get_to(genome.m_RWFitness);
+}

@@ -20,6 +20,10 @@
 #include "rxdock/BaseInterSF.h"
 #include "rxdock/Plane.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class AromIdxSF : public BaseInterSF,
@@ -40,6 +44,9 @@ public:
 
   AromIdxSF(const std::string &strName = "arom");
   virtual ~AromIdxSF();
+
+  friend void to_json(json &j, const AromIdxSF &aromIdxSF);
+  friend void from_json(const json &j, AromIdxSF &aromIdxSF);
 
   // Override BaseSF::ScoreMap to provide additional raw descriptors
   // virtual void ScoreMap(StringVariantMap& scoreMap) const;
@@ -81,9 +88,9 @@ private:
 
   // Generic scoring function primitive (deviation from ideal geometry)
   inline double f1(double DR, const f1prms &prms) const {
-    return (DR > prms.DRMax)
-               ? 0.0
-               : (DR > prms.DRMin) ? 1.0 - prms.slope * (DR - prms.DRMin) : 1.0;
+    return (DR > prms.DRMax)   ? 0.0
+           : (DR > prms.DRMin) ? 1.0 - prms.slope * (DR - prms.DRMin)
+                               : 1.0;
   }
 
   // The actual aromatic score, between a given interaction center and a list of
@@ -119,6 +126,9 @@ private:
   mutable double m_pp; // pi-pi score
   double m_threshold;
 };
+
+void to_json(json &j, const Bond &bond);
+void from_json(const json &j, Bond &bond);
 
 } // namespace rxdock
 

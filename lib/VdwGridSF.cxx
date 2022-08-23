@@ -201,3 +201,28 @@ void VdwGridSF::ParameterUpdated(const std::string &strName) {
     BaseSF::ParameterUpdated(strName);
   }
 }
+
+void rxdock::to_json(json &j, const VdwGridSF &vdwGridSF) {
+  json atomRList;
+  for (const auto &aIter : vdwGridSF.m_ligAtomList) {
+    json atom = *aIter;
+    atomRList.push_back(atom);
+  }
+
+  j = json{// Real grid TODO
+           {"lig-atom-list", atomRList},
+           // triposatomtypelist TODO
+           {"soothed", vdwGridSF.m_bSmoothed}};
+}
+
+void rxdock::from_json(const json &j, VdwGridSF &vdwGridSF) {
+  // Real grid TODO
+
+  for (auto &atom : j.at("lig-atom-list")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    vdwGridSF.m_ligAtomList.push_back(spAtom);
+  }
+
+  // triposatomtypelist TODO
+  j.at("soothed").get_to(vdwGridSF.m_bSmoothed);
+}

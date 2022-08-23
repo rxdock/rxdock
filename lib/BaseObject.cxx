@@ -178,3 +178,13 @@ void BaseObject::ParameterUpdated(const std::string &strName) {
     ParamHandler::ParameterUpdated(strName);
   }
 }
+
+void rxdock::to_json(json &j, const BaseObject &baseObject) {
+  // workspace pointer skipped
+  j = json{{"enabled", baseObject.m_enabled}};
+}
+
+void rxdock::from_json(const json &j, BaseObject &baseObject) {
+  // model pointer skipped
+  j.at("enabled").get_to(baseObject.m_enabled);
+}

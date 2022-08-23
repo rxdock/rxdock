@@ -77,3 +77,11 @@ void CellTokenIter::copy(const CellTokenIter &ti) {
   current = ti.current;
   cells = ti.cells;
 }
+
+void rxdock::to_json(json &j, const CellTokenIter &callTokIt) {
+  j = json{{"atom-types", *callTokIt.current}};
+}
+
+void rxdock::from_json(const json &j, CellTokenIter &callTokIt) {
+  // TODO
+}

@@ -19,6 +19,10 @@
 #include "rxdock/BaseMolecularDataSource.h"
 #include "rxdock/ParameterFileSource.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class BaseMolecularFileSource : public BaseFileSource,
@@ -36,6 +40,9 @@ public:
 
   // Destructor
   virtual ~BaseMolecularFileSource();
+
+  friend void to_json(json &j, const BaseMolecularFileSource &baseMolFilSrc);
+  friend void from_json(const json &j, BaseMolecularFileSource &baseMolFilSrc);
 
   // Pure virtual methods from BaseMolecularDataSource
   void Reset();
@@ -108,6 +115,9 @@ private:
   // Private data
   SegmentMap m_segmentFilterMap;
 };
+
+void to_json(json &j, const BaseMolecularFileSource &baseMolFilSrc);
+void from_json(const json &j, BaseMolecularFileSource &baseMolFilSrc);
 
 // useful typedefs
 typedef SmartPtr<BaseMolecularFileSource>

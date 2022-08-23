@@ -22,6 +22,10 @@
 
 #include <iostream>
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class FilterExpressionVisitor;
@@ -37,6 +41,10 @@ public:
   // Destructor
   //////////////////
   virtual ~FilterExpression();
+
+  friend void to_json(json &j, const FilterExpression &filterExpression);
+  friend void from_json(const json &j, FilterExpression &filterExpression);
+
   ReturnType GetValue() { return value; }
   void SetValue(ReturnType v) { value = v; }
 
@@ -48,6 +56,9 @@ protected:
   FilterExpression(); // Default constructor disabled
   ReturnType value;
 };
+
+void to_json(json &j, const FilterExpression &filterExpression);
+void from_json(const json &j, FilterExpression &filterExpression);
 
 // Useful typedefs
 typedef SmartPtr<FilterExpression> FilterExpressionPtr; // Smart pointer

@@ -21,6 +21,10 @@
 #include "rxdock/Config.h"
 #include "rxdock/Variant.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class ParamHandler {
@@ -28,6 +32,9 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~ParamHandler(); // Default destructor
+
+  friend void to_json(json &j, const ParamHandler &paramHandler);
+  friend void from_json(const json &j, ParamHandler &paramHandler);
 
   ////////////////////////////////////////
   // Public methods
@@ -88,6 +95,9 @@ private:
   //////////////
   StringVariantMap m_parameters;
 };
+
+void to_json(json &j, const ParamHandler &paramHandler);
+void from_json(const json &j, ParamHandler &paramHandler);
 
 ////////////////////////////////////////
 // Non-member functions

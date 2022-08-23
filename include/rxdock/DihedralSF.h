@@ -24,6 +24,10 @@
 #include "rxdock/ParameterFileSource.h"
 #include "rxdock/TriposAtomType.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // Class for holding dihedral atom specifiers and force field params
@@ -56,6 +60,10 @@ public:
   // potential
   DihedralElement(Atom *pAtom1, Atom *pAtom2, Atom *pAtom3, Atom *pAtom4,
                   const prms &dihprms);
+
+  friend void to_json(json &j, const DihedralElement &dihedralElem);
+  friend void from_json(const json &j, DihedralElement &dihedralElem);
+
   double operator()() const; // Calculate dihedral score for this interaction
   Atom *GetAtom1Ptr() const { return m_pAtom1; }
   Atom *GetAtom2Ptr() const { return m_pAtom2; }
@@ -73,6 +81,9 @@ private:
   std::vector<prms> m_prms;
 };
 
+void to_json(json &j, const DihedralElement &dihedralElem);
+void from_json(const json &j, DihedralElement &dihedralElem);
+
 // Useful typedefs
 typedef std::vector<DihedralElement *> DihedralList; // Vector of smart pointers
 typedef DihedralList::iterator DihedralListIter;
@@ -87,6 +98,9 @@ public:
                                          // barrier heights for implicit H's
 
   virtual ~DihedralSF();
+
+  friend void to_json(json &j, const DihedralSF &dihedralSF);
+  friend void from_json(const json &j, DihedralSF &dihedralSF);
 
 protected:
   DihedralSF();
@@ -113,6 +127,9 @@ private:
   std::vector<std::string> m_centralPairs;
   TriposAtomType m_triposType;
 };
+
+void to_json(json &j, const DihedralSF &dihedralSF);
+void from_json(const json &j, DihedralSF &dihedralSF);
 
 } // namespace rxdock
 

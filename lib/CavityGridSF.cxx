@@ -161,3 +161,49 @@ void CavityGridSF::HeavyAtomFactory::VisitSolventFlexData(
                  std::back_inserter(m_atomList), std::not1(isAtomicNo_eq(1)));
   }
 }
+
+void rxdock::to_json(json &j,
+                     const CavityGridSF::HeavyAtomFactory &heavyAtomFactory) {
+  json atomRList;
+  for (const auto &aIter : heavyAtomFactory.m_atomList) {
+    json atom = *aIter;
+    atomRList.push_back(atom);
+  }
+
+  j = json{{"atom-list", atomRList}};
+}
+
+void rxdock::from_json(const json &j,
+                       CavityGridSF::HeavyAtomFactory &heavyAtomFactory) {
+  for (auto &atom : j.at("atom-list")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    heavyAtomFactory.m_atomList.push_back(spAtom);
+  }
+}
+
+void rxdock::to_json(json &j, const CavityGridSF &cavGridSF) {
+  json atomRList;
+  for (const auto &aIter : cavGridSF.m_atomList) {
+    json atom = *aIter;
+    atomRList.push_back(atom);
+  }
+
+  j = json{{"sp-grid", *cavGridSF.m_spGrid},
+           {"max-dist", cavGridSF.m_maxDist},
+           {"atom-list", atomRList},
+           {"r-max", cavGridSF.m_rMax},
+           {"b-quad", cavGridSF.m_bQuadratic}};
+}
+
+void rxdock::from_json(const json &j, CavityGridSF &cavGridSF) {
+  j.at("sp-grid").get_to(*cavGridSF.m_spGrid);
+  j.at("max-dist").get_to(cavGridSF.m_maxDist);
+
+  for (auto &atom : j.at("atom-list")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    cavGridSF.m_atomList.push_back(spAtom);
+  }
+
+  j.at("r-max").get_to(cavGridSF.m_rMax);
+  j.at("b-quad").get_to(cavGridSF.m_bQuadratic);
+}

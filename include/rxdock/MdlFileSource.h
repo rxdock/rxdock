@@ -18,6 +18,10 @@
 #include "rxdock/BaseMolecularFileSource.h"
 #include "rxdock/ElementFileSource.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 const std::string IDS_MDL_RECDELIM = "$$$$";
@@ -33,6 +37,9 @@ public:
 
   // Default destructor
   virtual ~MdlFileSource();
+
+  friend void to_json(json &j, const MdlFileSource &mdlFileSrc);
+  friend void from_json(const json &j, MdlFileSource &mdlFileSrc);
 
   ////////////////////////////////////////
   // Override public methods from BaseMolecularDataSource
@@ -111,6 +118,9 @@ private:
   bool m_bNegIonisable;  // If true, deprotonate Otri-Hsp3
   bool m_bImplHydrogens; // If true, non-hydrogen bonding hydrogens are removed
 };
+
+void to_json(json &j, const MdlFileSource &mdlFileSrc);
+void from_json(const json &j, MdlFileSource &mdlFileSrc);
 
 // useful typedefs
 typedef SmartPtr<MdlFileSource> MdlFileSourcePtr; // Smart pointer

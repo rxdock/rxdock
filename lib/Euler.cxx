@@ -47,3 +47,15 @@ void Euler::FromQuat(const Quat &q) {
                         1.0 - 2.0 * (sq.xyz(0) + sq.xyz(1)));
   }
 }
+
+void rxdock::to_json(json &j, const Euler &eul) {
+  j = json{{"heading", eul.m_heading},
+           {"attitude", eul.m_attitude},
+           {"bank", eul.m_bank}};
+}
+
+void rxdock::from_json(const json &j, Euler &eul) {
+  j.at("heading").get_to(eul.m_heading);
+  j.at("attitude").get_to(eul.m_attitude);
+  j.at("bank").get_to(eul.m_bank);
+}

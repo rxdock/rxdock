@@ -19,6 +19,10 @@
 #include "rxdock/Config.h"
 #include "rxdock/Vble.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class Token {
@@ -36,6 +40,10 @@ public:
   // Destructor
   //////////////////
   virtual ~Token();
+
+  friend void to_json(json &j, const Token &token);
+  friend void from_json(const json &j, Token &token);
+
   const Vble &GetVble() const;
   //  void SetVbleNumber(Int);
 
@@ -64,6 +72,9 @@ private:
   const Vble &vble;
   bool isvble;
 };
+
+void to_json(json &j, const Token &token);
+void from_json(const json &j, Token &token);
 
 // Useful typedefs
 typedef SmartPtr<Token> TokenPtr;        // Smart pointer

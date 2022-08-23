@@ -19,6 +19,10 @@
 
 #include "rxdock/Config.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // useful typedefs
@@ -38,6 +42,9 @@ public:
 
   // Default destructor
   virtual ~BaseFileSource();
+
+  friend void to_json(json &j, const BaseFileSource &baseFileSource);
+  friend void from_json(const json &j, BaseFileSource &baseFileSource);
 
   // Public methods
 
@@ -98,6 +105,9 @@ private:
   bool m_bMultiRec; // Is file multi-record ?
   std::string m_strRecDelim; // Record delimiter
 };
+
+void to_json(json &j, const BaseFileSource &baseFileSource);
+void from_json(const json &j, BaseFileSource &baseFileSource);
 
 } // namespace rxdock
 

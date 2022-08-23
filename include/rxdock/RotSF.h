@@ -18,6 +18,10 @@
 
 #include "rxdock/BaseInterSF.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class RotSF : public BaseInterSF {
@@ -33,6 +37,9 @@ public:
   RotSF(const std::string &strName = "rot");
   virtual ~RotSF();
 
+  friend void to_json(json &j, const RotSF &rotsf);
+  friend void from_json(const json &j, RotSF &rotsf);
+
 protected:
   virtual void SetupReceptor();
   virtual void SetupLigand();
@@ -45,6 +52,9 @@ private:
   bool bIncNH3;
   bool bIncOH;
 };
+
+void to_json(json &j, const RotSF &rotsf);
+void from_json(const json &j, RotSF &rotsf);
 
 } // namespace rxdock
 

@@ -67,6 +67,11 @@ Atom::Atom(int nAtomId, int nAtomicNo /*= 6*/,
   _RBTOBJECTCOUNTER_CONSTR_("Atom");
 }
 
+Atom::Atom(json j) {
+  j.get_to(*this);
+  _RBTOBJECTCOUNTER_CONSTR_("Atom");
+}
+
 // Default destructor
 Atom::~Atom() { _RBTOBJECTCOUNTER_DESTR_("Atom"); }
 
@@ -147,6 +152,62 @@ Atom &Atom::operator=(const Atom &atom) {
 // Insertion operator (primarily for debugging)
 std::ostream &rxdock::operator<<(std::ostream &s, const Atom &atom) {
   return atom.Print(s);
+}
+
+void rxdock::to_json(json &j, const Atom &atom) {
+  j = json{{"atomic-number", atom.m_nAtomicNo},
+           {"atom-id", atom.m_nAtomId},
+           {"atom-name", atom.m_strAtomName},
+           {"subunit-it", atom.m_strSubunitId},
+           {"subunit-name", atom.m_strSubunitName},
+           {"segment-name", atom.m_strSegmentName},
+           {"state", atom.m_eState},
+           {"number-of-hydrogens", atom.m_nHydrogens},
+           {"formal-charge", atom.m_nFormalCharge},
+           // not writing model
+           // not writing bond-map
+           {"cyclic", atom.m_bCyclic},
+           {"selected", atom.m_bSelected},
+           {"user-boolenan-1", atom.m_bUser1},
+           {"user-double-1", atom.m_dUser1},
+           {"user-double-2", atom.m_dUser2},
+           {"pmf-type", atom.m_nPMFType},
+           {"tripos-type", atom.m_triposType},
+           {"coordinates", atom.m_coord},
+           {"partial-charge", atom.m_dPartialCharge},
+           {"group-charge", atom.m_dGroupCharge},
+           {"atomic-mass", atom.m_dAtomicMass},
+           {"vdw-radius", atom.m_dVdwRadius},
+           {"force-field-type", atom.m_strFFType},
+           {"saved-coordinates", atom.m_savedCoords}};
+}
+
+void rxdock::from_json(const json &j, Atom &atom) {
+  j.at("atomic-number").get_to(atom.m_nAtomicNo);
+  j.at("atom-id").get_to(atom.m_nAtomId);
+  j.at("atom-name").get_to(atom.m_strAtomName);
+  j.at("subunit-it").get_to(atom.m_strSubunitId);
+  j.at("subunit-name").get_to(atom.m_strSubunitName);
+  j.at("segment-name").get_to(atom.m_strSegmentName);
+  j.at("state").get_to(atom.m_eState);
+  j.at("number-of-hydrogens").get_to(atom.m_nHydrogens);
+  j.at("formal-charge").get_to(atom.m_nFormalCharge);
+  // not writing model
+  // not writing bond-map
+  j.at("cyclic").get_to(atom.m_bCyclic);
+  j.at("selected").get_to(atom.m_bSelected);
+  j.at("user-boolenan-1").get_to(atom.m_bUser1);
+  j.at("user-double-1").get_to(atom.m_dUser1);
+  j.at("user-double-2").get_to(atom.m_dUser2);
+  j.at("pmf-type").get_to(atom.m_nPMFType);
+  j.at("tripos-type").get_to(atom.m_triposType);
+  j.at("coordinates").get_to(atom.m_coord);
+  j.at("partial-charge").get_to(atom.m_dPartialCharge);
+  j.at("group-charge").get_to(atom.m_dGroupCharge);
+  j.at("atomic-mass").get_to(atom.m_dAtomicMass);
+  j.at("vdw-radius").get_to(atom.m_dVdwRadius);
+  j.at("force-field-type").get_to(atom.m_strFFType);
+  j.at("saved-coordinates").get_to(atom.m_savedCoords);
 }
 
 // Virtual function for dumping atom details to an output stream

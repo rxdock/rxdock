@@ -545,3 +545,214 @@ double VdwIdxSF::LigandSolventScore() const {
   }
   return score;
 }
+
+void rxdock::to_json(json &j, const VdwIdxSF &vdwIdxSF) {
+  json atomList;
+  for (const auto &aIter : vdwIdxSF.m_recAtomList) {
+    json atom = *aIter;
+    atomList.push_back(atom);
+  }
+
+  json atomRList;
+  for (const auto &aIter : vdwIdxSF.m_recRigidAtomList) {
+    json atom = *aIter;
+    atomRList.push_back(atom);
+  }
+
+  json atomRList2;
+  for (const auto &aIter : vdwIdxSF.m_recFlexAtomList) {
+    json atom = *aIter;
+    atomRList2.push_back(atom);
+  }
+
+  json atomRList3;
+  for (const auto &aIter : vdwIdxSF.m_ligAtomList) {
+    json atom = *aIter;
+    atomRList3.push_back(atom);
+  }
+
+  json atomRList4;
+  for (const auto &aIter : vdwIdxSF.m_solventAtomList) {
+    json atom = *aIter;
+    atomRList4.push_back(atom);
+  }
+
+  json atomRList5;
+  for (const auto &aIter : vdwIdxSF.m_solventFixTethAtomList) {
+    json atom = *aIter;
+    atomRList5.push_back(atom);
+  }
+
+  json atomRList6;
+  for (const auto &aIter : vdwIdxSF.m_solventFreeAtomList) {
+    json atom = *aIter;
+    atomRList6.push_back(atom);
+  }
+
+  json atomRListList;
+  for (const auto &aListIter : vdwIdxSF.m_recFlexIntns) {
+    json atomRList;
+    for (const auto &aIter : aListIter) {
+      json atom = *aIter;
+      atomRList.push_back(atom);
+    }
+    atomRListList.push_back(atomRList);
+  }
+
+  json atomRListList2;
+  for (const auto &aListIter : vdwIdxSF.m_recFlexPrtIntns) {
+    json atomRList;
+    for (const auto &aIter : aListIter) {
+      json atom = *aIter;
+      atomRList.push_back(atom);
+    }
+    atomRListList2.push_back(atomRList);
+  }
+
+  json atomRListList3;
+  for (const auto &aListIter : vdwIdxSF.m_solventFixTethIntns) {
+    json atomRList;
+    for (const auto &aIter : aListIter) {
+      json atom = *aIter;
+      atomRList.push_back(atom);
+    }
+    atomRListList3.push_back(atomRList);
+  }
+
+  json atomRListList4;
+  for (const auto &aListIter : vdwIdxSF.m_solventFixTethPrtIntns) {
+    json atomRList;
+    for (const auto &aIter : aListIter) {
+      json atom = *aIter;
+      atomRList.push_back(atom);
+    }
+    atomRListList4.push_back(atomRList);
+  }
+
+  json atomRListList5;
+  for (const auto &aListIter : vdwIdxSF.m_solventFreeIntns) {
+    json atomRList;
+    for (const auto &aIter : aListIter) {
+      json atom = *aIter;
+      atomRList.push_back(atom);
+    }
+    atomRListList5.push_back(atomRList);
+  }
+
+  j = json{{"grid", *vdwIdxSF.m_spGrid},
+           {"solvent-grid", *vdwIdxSF.m_spSolventGrid},
+           {"rec-atom-list", atomList},
+           {"rec-rigid-at-li", atomRList},
+           {"rec-flex-at-li", atomRList2},
+           {"lig-at-li", atomRList3},
+           {"solv-at-li", atomRList4},
+           {"solv-fix-teth-at-li", atomRList5},
+           {"solv-free-at-li", atomRList6},
+           {"rec-flex-intns", atomRListList},
+           {"rec-flex-prt-intns", atomRListList2},
+           {"solv-fix-teth-intns", atomRListList3},
+           {"solv-fix-teth-prt-intns", atomRListList4},
+           {"solv-free-intns", atomRListList5},
+           {"n-attr", vdwIdxSF.m_nAttr},
+           {"n-rep", vdwIdxSF.m_nRep},
+           {"attr-thresh", vdwIdxSF.m_attrThreshold},
+           {"rep-thresh", vdwIdxSF.m_repThreshold},
+           {"lipo-annot", vdwIdxSF.m_lipoAnnot},
+           {"annotate", vdwIdxSF.m_bAnnotate},
+           {"flex-rec", vdwIdxSF.m_bFlexRec},
+           {"fast-solv", vdwIdxSF.m_bFastSolvent}};
+}
+
+void rxdock::from_json(const json &j, VdwIdxSF &vdwIdxSF) {
+  j.at("grid").get_to(*vdwIdxSF.m_spGrid);
+  j.at("solvent-grid").get_to(*vdwIdxSF.m_spSolventGrid);
+
+  for (auto &atom : j.at("rec-atom-list")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    vdwIdxSF.m_recAtomList.push_back(spAtom);
+  }
+
+  for (auto &atom : j.at("rec-rigid-at-li")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    vdwIdxSF.m_recRigidAtomList.push_back(spAtom);
+  }
+
+  for (auto &atom : j.at("rec-flex-at-li")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    vdwIdxSF.m_recFlexAtomList.push_back(spAtom);
+  }
+
+  for (auto &atom : j.at("lig-at-li")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    vdwIdxSF.m_ligAtomList.push_back(spAtom);
+  }
+
+  for (auto &atom : j.at("solv-at-li")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    vdwIdxSF.m_solventAtomList.push_back(spAtom);
+  }
+
+  for (auto &atom : j.at("solv-fix-teth-at-li")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    vdwIdxSF.m_solventFixTethAtomList.push_back(spAtom);
+  }
+
+  for (auto &atom : j.at("solv-free-at-li")) {
+    AtomPtr spAtom = AtomPtr(new Atom(atom));
+    vdwIdxSF.m_solventFreeAtomList.push_back(spAtom);
+  }
+
+  for (auto &atomList : j.at("rec-flex-intns")) {
+    AtomRList spAtoms;
+    for (auto &atom : atomList) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      spAtoms.push_back(spAtom);
+    }
+    vdwIdxSF.m_recFlexIntns.push_back(spAtoms);
+  }
+
+  for (auto &atomList : j.at("rec-flex-prt-intns")) {
+    AtomRList spAtoms;
+    for (auto &atom : atomList) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      spAtoms.push_back(spAtom);
+    }
+    vdwIdxSF.m_recFlexPrtIntns.push_back(spAtoms);
+  }
+
+  for (auto &atomList : j.at("solv-fix-teth-intns")) {
+    AtomRList spAtoms;
+    for (auto &atom : atomList) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      spAtoms.push_back(spAtom);
+    }
+    vdwIdxSF.m_solventFixTethIntns.push_back(spAtoms);
+  }
+
+  for (auto &atomList : j.at("solv-fix-teth-prt-intns")) {
+    AtomRList spAtoms;
+    for (auto &atom : atomList) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      spAtoms.push_back(spAtom);
+    }
+    vdwIdxSF.m_solventFixTethPrtIntns.push_back(spAtoms);
+  }
+
+  for (auto &atomList : j.at("solv-free-intns")) {
+    AtomRList spAtoms;
+    for (auto &atom : atomList) {
+      AtomPtr spAtom = AtomPtr(new Atom(atom));
+      spAtoms.push_back(spAtom);
+    }
+    vdwIdxSF.m_solventFreeIntns.push_back(spAtoms);
+  }
+
+  j.at("n-attr").get_to(vdwIdxSF.m_nAttr);
+  j.at("n-rep").get_to(vdwIdxSF.m_nRep);
+  j.at("attr-thresh").get_to(vdwIdxSF.m_attrThreshold);
+  j.at("rep-thresh").get_to(vdwIdxSF.m_repThreshold);
+  j.at("lipo-annot").get_to(vdwIdxSF.m_lipoAnnot);
+  j.at("annotate").get_to(vdwIdxSF.m_bAnnotate);
+  j.at("flex-rec").get_to(vdwIdxSF.m_bFlexRec);
+  j.at("fast-solv").get_to(vdwIdxSF.m_bFastSolvent);
+}

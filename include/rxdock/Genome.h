@@ -18,6 +18,10 @@
 
 #include "rxdock/ChromElement.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class BaseSF;
@@ -35,6 +39,9 @@ public:
   Genome &operator=(const Genome &);
   Genome *clone() const;
   virtual ~Genome();
+
+  friend void to_json(json &j, const Genome &genome);
+  friend void from_json(const json &j, Genome &genome);
 
   // Gets the underlying chromosome
   ChromElement *GetChrom() const { return m_chrom; }
@@ -90,6 +97,9 @@ private:
   double m_RWFitness; // scaled value of the raw score suitable for use
                       // with roulette wheel selection
 };
+
+void to_json(json &j, const Genome &genome);
+void from_json(const json &j, Genome &genome);
 
 // Useful typedefs
 typedef SmartPtr<Genome> GenomePtr;        // Smart pointer

@@ -18,6 +18,10 @@
 #include "rxdock/FlexDataVisitor.h"
 #include "rxdock/Model.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // The main use of FlexAtomFactory is to aid with scoring function
@@ -68,11 +72,17 @@ public:
   AtomRList GetTetheredAtomList() const { return m_tetheredAtomList; }
   AtomRList GetFreeAtomList() const { return m_freeAtomList; }
 
+  friend void to_json(json &j, const FlexAtomFactory &flexAtomFactory);
+  friend void from_json(const json &j, FlexAtomFactory &flexAtomFactory);
+
 private:
   AtomRList m_fixedAtomList;
   AtomRList m_tetheredAtomList;
   AtomRList m_freeAtomList;
 };
+
+void to_json(json &j, const FlexAtomFactory &flexAtomFactory);
+void from_json(const json &j, FlexAtomFactory &flexAtomFactory);
 
 } // namespace rxdock
 

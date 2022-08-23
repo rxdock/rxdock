@@ -599,3 +599,49 @@ void PolarSF::UpdateLPprms() {
       f1prms(0.0, m_LP_PHI + m_LP_DPHIMin, m_LP_PHI + m_LP_DPHIMax);
   m_THETAprms = f1prms(0.0, m_LP_DTHETAMin, m_LP_DTHETAMax);
 }
+
+void rxdock::to_json(json &j, const PolarSF &polarSF) {
+  j = json{
+      {"R12-factor", polarSF.m_R12Factor},
+      {"R12-incr", polarSF.m_R12Incr},
+      {"DR12-min", polarSF.m_DR12Min},
+      {"DR12-max", polarSF.m_DR12Max},
+      {"A1", polarSF.m_A1},
+      {"DA1-min", polarSF.m_DA1Min},
+      {"DA1-max", polarSF.m_DA1Max},
+      {"A2", polarSF.m_A2},
+      {"DA2-min", polarSF.m_DA2Min},
+      {"DA2-ma", polarSF.m_DA2Max},
+      {"abs-DR12", polarSF.m_bAbsDR12},
+      {"LP-PHI", polarSF.m_LP_PHI},
+      {"LP-DPHI-min", polarSF.m_LP_DPHIMin},
+      {"LP-DPHI-max", polarSF.m_LP_DPHIMax},
+      {"LP-DTHETA-min", polarSF.m_LP_DTHETAMin},
+      {"LP-DTHETA-max", polarSF.m_LP_DTHETAMax},
+      //{"PHI-lp-prms", polarSF.m_PHI_lp_prms},
+      //{"PHI-plane-prms", polarSF.m_PHI_plane_prms},
+      //{"THETA-prms", polarSF.m_THETAprms}  TODO
+  };
+}
+
+void rxdock::from_json(const json &j, PolarSF &polarSF) {
+  j.at("R12-factor").get_to(polarSF.m_R12Factor);
+  j.at("R12-incr").get_to(polarSF.m_R12Incr);
+  j.at("DR12-min").get_to(polarSF.m_DR12Min);
+  j.at("DR12-max").get_to(polarSF.m_DR12Max);
+  j.at("A1").get_to(polarSF.m_A1);
+  j.at("DA1-min").get_to(polarSF.m_DA1Min);
+  j.at("DA1-max").get_to(polarSF.m_DA1Max);
+  j.at("A2").get_to(polarSF.m_A2);
+  j.at("DA2-min").get_to(polarSF.m_DA2Min);
+  j.at("DA2-ma").get_to(polarSF.m_DA2Max);
+  j.at("abs-DR12").get_to(polarSF.m_bAbsDR12);
+  j.at("LP-PHI").get_to(polarSF.m_LP_PHI);
+  j.at("LP-DPHI-min").get_to(polarSF.m_LP_DPHIMin);
+  j.at("LP-DPHI-max").get_to(polarSF.m_LP_DPHIMax);
+  j.at("LP-DTHETA-min").get_to(polarSF.m_LP_DTHETAMin);
+  j.at("LP-DTHETA-max").get_to(polarSF.m_LP_DTHETAMax);
+  // j.at("PHI-lp-prms").get_to(polarSF.m_PHI_lp_prms);
+  // j.at("PHI-plane-prms").get_to(polarSF.m_PHI_plane_prms);
+  // j.at("THETA-prms").get_to(polarSF.m_THETAprms); TODO
+}

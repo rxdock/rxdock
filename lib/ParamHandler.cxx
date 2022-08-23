@@ -105,3 +105,11 @@ std::ostream &rxdock::operator<<(std::ostream &s, const ParamHandler &ph) {
   ph.Print(s);
   return s;
 }
+
+void rxdock::to_json(json &j, const ParamHandler &paramHandler) {
+  j = json{{"parameters", paramHandler.m_parameters}};
+}
+
+void rxdock::from_json(const json &j, ParamHandler &paramHandler) {
+  j.at("parameters").get_to(paramHandler.m_parameters);
+}

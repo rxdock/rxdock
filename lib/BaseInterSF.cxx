@@ -78,3 +78,25 @@ void BaseInterSF::Update(Subject *theChangedSubject) {
     SetupScore();
   }
 }
+
+void rxdock::to_json(json &j, const BaseInterSF &baseInterSF) {
+  json modelList;
+  for (const auto &aIter : baseInterSF.m_solventList) {
+    json model = *aIter;
+    modelList.push_back(model);
+  }
+
+  j = json{{"receptor", *baseInterSF.m_spReceptor},
+           {"ligand", *baseInterSF.m_spLigand},
+           {"model-list", modelList}};
+}
+
+void rxdock::from_json(const json &j, BaseInterSF &baseInterSF) {
+  j.at("receptor").get_to(*baseInterSF.m_spReceptor);
+  j.at("ligand").get_to(*baseInterSF.m_spLigand);
+
+  for (auto &model : j.at("model-list")) {
+    ModelPtr spModel = ModelPtr(new Model(model));
+    baseInterSF.m_solventList.push_back(spModel);
+  }
+}

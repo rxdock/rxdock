@@ -21,6 +21,10 @@
 #include "rxdock/ParameterFileSource.h"
 #include "rxdock/TriposAtomType.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class VdwSF : public virtual BaseSF, public virtual AnnotationHandler {
@@ -40,6 +44,9 @@ public:
   RBTDLL_EXPORT static const std::string &GetEcut();
 
   virtual ~VdwSF();
+
+  friend void to_json(json &j, const VdwSF &vswSF);
+  friend void from_json(const json &j, VdwSF &vswSF);
 
 protected:
   VdwSF();
@@ -156,6 +163,9 @@ private:
   std::vector<double>
       m_maxRange; // Vector of max ranges for each Tripos atom type
 };
+
+void to_json(json &j, const VdwSF &vswSF);
+void from_json(const json &j, VdwSF &vswSF);
 
 } // namespace rxdock
 

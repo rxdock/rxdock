@@ -23,6 +23,10 @@
 #include "rxdock/Euler.h"
 #include "rxdock/Model.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class ChromPositionRefData {
@@ -61,6 +65,9 @@ public:
   void GetModelValue(Coord &com, Euler &orientation) const;
   void SetModelValue(const Coord &com, const Euler &orientation);
 
+  friend void to_json(json &j, const ChromPositionRefData &chrposrdata);
+  friend void from_json(const json &j, ChromPositionRefData &chrposrdata);
+
 private:
   AtomList m_refAtoms;
   AtomRList m_movableAtoms;
@@ -81,6 +88,9 @@ private:
   // Only used if m_rotMode == TETHERED
   double m_maxRot;
 };
+
+void to_json(json &j, const ChromPositionRefData &chrposrdata);
+void from_json(const json &j, ChromPositionRefData &chrposrdata);
 
 typedef SmartPtr<ChromPositionRefData> ChromPositionRefDataPtr; // Smart pointer
 

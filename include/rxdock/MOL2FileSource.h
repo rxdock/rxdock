@@ -17,6 +17,10 @@
 #include "rxdock/ElementFileSource.h"
 #include "rxdock/ParameterFileSource.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 // Simple struct for holding MOL2 SUBSTRUCTURE records
@@ -31,12 +35,18 @@ public:
   std::string GetChain() const { return chain; };
   std::string GetType() const { return sub_type; };
 
+  friend void to_json(json &j, const MOL2Substructure &mol2Structure);
+  friend void from_json(const json &j, MOL2Substructure &mol2Structure);
+
 private:
   std::string subst_name;
   int root_atom;
   std::string chain;
   std::string sub_type;
 };
+
+void to_json(json &j, const MOL2Substructure &mol2Structure);
+void from_json(const json &j, MOL2Substructure &mol2Structure);
 
 // A MOL2SubstructureMap stores MOL2Substructures keyed by SUBSTRUCTURE ID
 // (subst_id)
@@ -54,6 +64,10 @@ public:
 
   MOL2FileSource(const std::string &fileName, bool bImplHydrogens = true);
   ~MOL2FileSource();
+
+  friend void to_json(json &j, const MOL2FileSource &mol2FileSrc);
+  friend void from_json(const json &j, MOL2FileSource &mol2FileSrc);
+
   bool isTitleListSupported() { return true; }
   bool isAtomListSupported() { return true; }
   bool isCoordinatesSupported() { return true; }
@@ -114,6 +128,9 @@ private:
   TriposAtomType m_typer; // Tripos atom typing object
   bool m_bImplHydrogens;
 };
+
+void to_json(json &j, const MOL2FileSource &mol2FileSrc);
+void from_json(const json &j, MOL2FileSource &mol2FileSrc);
 
 // usual smart pointer
 typedef SmartPtr<MOL2FileSource> MOL2FileSourcePtr;

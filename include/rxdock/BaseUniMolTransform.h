@@ -18,6 +18,10 @@
 #include "rxdock/BaseTransform.h"
 #include "rxdock/Model.h"
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 namespace rxdock {
 
 class BaseUniMolTransform : public BaseTransform {
@@ -27,6 +31,9 @@ public:
   ////////////////////////////////////////
   // Constructors/destructors
   virtual ~BaseUniMolTransform();
+
+  friend void to_json(json &j, const BaseUniMolTransform &baseUniMolTrans);
+  friend void from_json(const json &j, BaseUniMolTransform &baseUniMolTrans);
 
   ////////////////////////////////////////
   // Public methods
@@ -63,6 +70,9 @@ private:
   //////////////
   ModelPtr m_spLigand;
 };
+
+void to_json(json &j, const BaseUniMolTransform &baseUniMolTrans);
+void from_json(const json &j, BaseUniMolTransform &baseUniMolTrans);
 
 } // namespace rxdock
 
