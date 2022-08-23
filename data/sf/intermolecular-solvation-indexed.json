@@ -2,6 +2,7 @@
   "media-type": "application/vnd.rxdock.scoring-function",
   "title": "Intermolecular scoring function (with solvation, indexed VDW)",
   "version": "0.1.0",
+  "sections": ["const", "rot", "setup-polar", "polar", "vdw", "solv"],
   "_comment_const1": "Constant scoring function",
   "_comment_const2": "Represents loss of translation, rotational entropy of ligand",
   "_comment_revision-history-2006-06-14-DM": "Also calculates solvent penalty for all enabled solvent; solvent penalty is defined as a fraction of the ligand binding penalty i.e. ligand binding penalty = 1.0 * weight; solvent binding penalty = N(enabled solvent) * solvent penalty * weight; 0.37 * 5.4 = 2.0 kJ/mol, which corresponds to GOLD Chemscore penalty (Verdonk et al, J. Med. Chem. 2005 (48) 6504-6515)",
@@ -51,8 +52,8 @@
     "attractive": true,
     "lp-osp2": true,
     "lp-phi": 45,
-    "lp-dhpi-minimum": 15,
-    "lp-dhpi-maximum": 30,
+    "lp-dphi-minimum": 15,
+    "lp-dphi-maximum": 30,
     "lp-dtheta-minimum": 20,
     "lp-dtheta-maximum": 60
   },

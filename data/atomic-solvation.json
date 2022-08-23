@@ -2,6 +2,7 @@
   "media-type": "application/vnd.rxdock.parameters",
   "title": "Atomic solvation parameters (ASP) for quick solvent-accessible surface area (SASA) calculation",
   "version": "0.1.0",
+  "sections": ["UNDEFINED", "C_sp3", "CH_sp3", "CH2_sp3", "CH3_sp3", "C_sp2", "CH_sp2", "CH2_sp2", "C_sp2p", "C_ar", "CH_ar", "C_sp", "C_sp3_P", "CH_sp3_P", "CH2_sp3_P", "CH3_sp3_P", "C_sp2_P", "CH_sp2_P", "CH2_sp2_P", "C_ar_P", "CH_ar_P", "H", "HO", "HN", "HNp", "HS", "O_sp3", "OH_sp3", "OW", "O_tri", "OH_tri", "O_sp2", "ON", "Om", "N_sp3", "NH_sp3", "NH2_sp3", "N_sp3p", "N_tri", "NH_tri", "NH2_tri", "N_sp2", "N_sp2p", "N_ar", "N_sp", "S_sp3", "S_sp2", "P", "F", "Cl", "Br", "I", "Metal"],
   "UNDEFINED": {
     "r": 1.2,
     "p": 1,
